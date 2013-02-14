@@ -36,6 +36,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.io.UnsupportedEncodingException;
 
 import flex2.compiler.io.VirtualFile;
+import flex2.tools.Fcsh;
 
 /**
  * The basic idea here is to let you keep all your configuration knowledge in your configuration object,
@@ -636,6 +637,20 @@ public final class ConfigurationBuffer
         return info.getArgCount();
     }
 
+    private static boolean cachedStrings = false;
+    private static String compile_checksumCache;
+    private static String compile_checksum_tsCache;
+    private static String link_checksumCache;
+    private static String link_checksum_tsCache;
+
+    public static void clearLivecodingCache() {
+        cachedStrings = false;
+        compile_checksumCache = null;
+        compile_checksum_tsCache = null;
+        link_checksumCache = null;
+        link_checksum_tsCache = null;
+    }
+
     /**
      * commit - bake the resolved map to the configuration
      */
@@ -650,6 +665,21 @@ public final class ConfigurationBuffer
             if (varMap.containsKey( var ))
             {
                 commitVariable( config, var, done );
+            }
+        }
+
+        if (Fcsh.livecodingSession) {
+            if (cachedStrings) {
+                compile_checksum.append(compile_checksumCache);
+                compile_checksum_ts.append(compile_checksum_tsCache);
+                link_checksum.append(link_checksumCache);
+                link_checksum_ts.append(link_checksum_tsCache);
+            } else {
+                compile_checksumCache = compile_checksum.toString();
+                compile_checksum_tsCache = compile_checksum_ts.toString();
+                link_checksumCache = link_checksum.toString();
+                link_checksum_tsCache = link_checksum_ts.toString();
+                cachedStrings = true;
             }
         }
 
@@ -702,7 +732,9 @@ public final class ConfigurationBuffer
 
                 info.getSetterMethod().invoke( targetconfig, args );
 
-	            calculateChecksum(targetconfig, info, var, args);
+                if (Fcsh.livecodingSession && !cachedStrings) {
+                    calculateChecksum(targetconfig, info, var, args);
+                }
             }
             catch (Exception e)
             {

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <varelement var="jar://$FLEX_HOME$/lib/batik-all-flex.jar!/" value="FLEX_HOME/lib/batik-all-flex.jar" />
+    <varelement var="jar://$FLEX_HOME$/lib/xercesImpl.jar!/" value="FLEX_HOME/lib/xercesImpl.jar" />
+    <varelement var="jar://$FLEX_HOME$/lib/velocity-dep-1.4-flex.jar!/" value="FLEX_HOME/lib/velocity-dep-1.4-flex.jar" />
+    <varelement var="jar://$FLEX_HOME$/lib/commons-collections.jar!/" value="FLEX_HOME/lib/commons-collections.jar" />
+    <varelement var="jar://$FLEX_HOME$/lib/saxon9.jar!/" value="FLEX_HOME/lib/saxon9.jar" />
+    <varelement var="jar://$FLEX_HOME$/lib/batik-all-flex.jar!/" value="FLEX_HOME/lib/batik-all-flex.jar" />
+    <varelement var="jar://$FLEX_HOME$/lib/xercesImpl.jar!/" value="FLEX_HOME/lib/xercesImpl.jar" />
+    <varelement var="jar://$FLEX_HOME$/lib/velocity-dep-1.4-flex.jar!/" value="FLEX_HOME/lib/velocity-dep-1.4-flex.jar" />
+    <varelement var="jar://$FLEX_HOME$/lib/commons-collections.jar!/" value="FLEX_HOME/lib/commons-collections.jar" />
+    <varelement var="jar://$FLEX_HOME$/lib/saxon9.jar!/" value="FLEX_HOME/lib/saxon9.jar" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/../modules/compiler/src/java" expected_position="0" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../modules/compiler/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../modules/compiler">
+      <sourceFolder url="file://$MODULE_DIR$/../modules/compiler/src/java" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="module" module-name="flex-asc" />
+    <orderEntry type="module" module-name="flex-fxgutils" />
+    <orderEntry type="module" module-name="flex-swfutils" />
+    <orderEntry type="module-library">
+      <library name="junit3">
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="xercesImpl.jar">
+        <CLASSES>
+          <root url="jar://$FLEX_HOME$/lib/xercesImpl.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="commons-collections.jar">
+        <CLASSES>
+          <root url="jar://$FLEX_HOME$/lib/commons-collections.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="saxon9.jar">
+        <CLASSES>
+          <root url="jar://$FLEX_HOME$/lib/saxon9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="xml-batik" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/external/xml-apis-ext.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../modules/thirdparty/velocity/bin/velocity-1.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>
+

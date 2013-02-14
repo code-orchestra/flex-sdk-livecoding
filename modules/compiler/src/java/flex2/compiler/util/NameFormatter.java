@@ -23,6 +23,7 @@ import flex2.compiler.Source;
 import flex2.compiler.SymbolTable;
 import flex2.compiler.mxml.lang.StandardDefs;
 import flex2.compiler.swc.SwcScript;
+import flex2.tools.Fcsh;
 
 /**
  * AS3 definition name conversion utilities.
@@ -104,7 +105,12 @@ public class NameFormatter
         else
         {
             int i = toDot(n).lastIndexOf('.');
-            result = i > 0 ? (n.substring(0, i) + ':' + n.substring(i + 1)).intern() : n;
+            if (i > 0) {
+                String s = n.substring(0, i) + ':' + n.substring(i + 1);
+                result = Fcsh.livecodingSession ? s : s.intern();
+            } else {
+                result = n;
+            }
         }
 
         return result;

@@ -37,6 +37,7 @@ import macromedia.asc.parser.MetaDataEvaluator;
 import macromedia.asc.parser.MetaDataNode;
 import macromedia.asc.semantics.MetaData;
 import macromedia.asc.semantics.Value;
+import macromedia.asc.util.Context;
 import macromedia.asc.util.Decimal128;
 
 @SuppressWarnings("nls")
@@ -1157,11 +1158,11 @@ public class AbcData implements java.io.Externalizable
 
         size = buf.readU32();
         this.strings = new String[size];
-        this.strings[0] = "".intern();
+        this.strings[0] = Context.livecodingSession ? "" : "".intern();
         for (int i = 1; i < size; i++)
         {
             int length = buf.readU32();
-            this.strings[i] = buf.readString(length).intern();
+            this.strings[i] = Context.livecodingSession ? buf.readString(length) : buf.readString(length).intern();
             buf.skip(length);   //  readString() doesn't reset pos pointer.
         }
         

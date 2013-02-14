@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$MODULE_DIR$/../modules/thirdparty/batik/lib/js.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/../modules/thirdparty/batik/lib/pdf-transcoder.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/../modules/thirdparty/batik/lib/xerces_2_5_0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/../modules/thirdparty/batik/lib/xml-apis.jar!/" />
+    <src_description expected_position="4">
+      <src_folder value="file://$MODULE_DIR$/../modules/thirdparty/batik/sources" expected_position="0" />
+      <src_folder value="file://$MODULE_DIR$/../modules/thirdparty/batik/test-sources" expected_position="1" />
+      <src_folder value="file://$MODULE_DIR$/../modules/thirdparty/batik/resources" expected_position="6" />
+      <src_folder value="file://$MODULE_DIR$/../modules/thirdparty/batik/test-resources" expected_position="7" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../modules/thirdparty/batik/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../modules/thirdparty/batik">
+      <sourceFolder url="file://$MODULE_DIR$/../modules/thirdparty/batik/sources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../modules/thirdparty/batik/test-sources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../modules/thirdparty/batik/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../modules/thirdparty/batik/test-resources" isTestSource="false" />
+    </content>
+    <orderEntry type="module-library">
+      <library name="js.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../modules/thirdparty/batik/lib/js.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="pdf-transcoder.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../modules/thirdparty/batik/lib/pdf-transcoder.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="xerces_2_5_0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../modules/thirdparty/batik/lib/xerces_2_5_0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="xml-apis.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../modules/thirdparty/batik/lib/xml-apis.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/external/xml-apis-ext.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/external/xalan.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/external/jacl-1.2.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/external/tcljava-1.2.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/external/jython-2.2-beta1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/batik-all-flex.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>
+

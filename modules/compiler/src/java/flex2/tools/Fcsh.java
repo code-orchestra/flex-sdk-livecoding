@@ -31,6 +31,7 @@ import flex2.compiler.config.ConfigurationException;
 import flex2.compiler.i18n.I18nUtils;
 import flex2.compiler.io.FileUtil;
 import flex2.compiler.io.VirtualFile;
+import flex2.compiler.swc.Swc;
 import flex2.compiler.swc.SwcAPI;
 import flex2.compiler.swc.SwcCache;
 import flex2.compiler.swc.SwcException;
@@ -42,6 +43,7 @@ import flex2.linker.LinkerAPI;
 import flex2.linker.LinkerException;
 import flex2.tools.Mxmlc.InitialSetup;
 import flex2.tools.Mxmlc.OutputMessage;
+import macromedia.asc.util.Context;
 
 import java.io.*;
 import java.util.*;
@@ -53,6 +55,8 @@ import java.util.*;
  */
 public class Fcsh extends Tool
 {
+    public static boolean livecodingSession;
+
     public static void main(String[] args) throws IOException
     {
         exit = false;
@@ -90,6 +94,11 @@ public class Fcsh extends Tool
                 if (Trace.error)
                 {
                     t.printStackTrace();
+                }
+            } finally {
+                if (livecodingSession) {
+                    targets.clear();
+                    processes.clear();
                 }
             }
 
@@ -319,6 +328,19 @@ public class Fcsh extends Tool
             }
 
             exit = true;
+        }
+        else if (s.equals("livecoding.start"))
+        {
+            livecodingSession = true;
+            Context.livecodingSession = true;
+        }
+        else if (s.equals("livecoding.stop"))
+        {
+            CompilerAPI.clearLivecodingCache();
+            ConfigurationBuffer.clearLivecodingCache();
+            Swc.clearLivecodingCache();
+            livecodingSession = false;
+            Context.livecodingSession = false;
         }
         else
         {

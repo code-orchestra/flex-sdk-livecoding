@@ -26,6 +26,7 @@ import flex2.compiler.util.NameFormatter;
 import flex2.compiler.util.NameMappings;
 import flex2.compiler.util.QName;
 import flex2.compiler.util.ThreadLocalToolkit;
+import flex2.tools.Fcsh;
 
 import java.util.*;
 
@@ -63,8 +64,10 @@ public class SwcGroup
 		this.swcs = swcs;
 		this.rslGroup = null;
 		updateNameMappings();
-		updateFiles();
-		updateMaps();
+        if (!Fcsh.livecodingSession) {
+            updateFiles();
+        }
+        updateMaps();
 	}
 
 	/**
@@ -78,7 +81,9 @@ public class SwcGroup
         this.swcs = swcs;
         this.rslGroup = rslGroup;
         updateNameMappings();
-        updateFiles();
+        if (!Fcsh.livecodingSession) {
+            updateFiles();
+        }
         updateMaps();
     }
 

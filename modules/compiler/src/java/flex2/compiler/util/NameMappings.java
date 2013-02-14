@@ -19,6 +19,8 @@
 
 package flex2.compiler.util;
 
+import flex2.tools.Fcsh;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
@@ -142,13 +144,17 @@ public class NameMappings
         else
         {
             classMap = new HashMap<String, String>();
-            namespaceMap.put(namespaceURI.intern(), classMap);
+            namespaceMap.put(Fcsh.livecodingSession ? namespaceURI : namespaceURI.intern(), classMap);
         }
 
         String current = classMap.get(localPart);
         if (current == null)
         {
-            classMap.put(localPart.intern(), className.intern());
+            if (Fcsh.livecodingSession) {
+                classMap.put(localPart, className);
+            } else {
+                classMap.put(localPart.intern(), className.intern());
+            }
         }
         else if (! current.equals(className))
         {

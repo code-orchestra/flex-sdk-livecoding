@@ -95,10 +95,11 @@ public final class Names
         
         for (int id = hashTable[i]; id != -1; id = next[id])
         {
-            if (this.name[id] == name && type[id] == ty)
+            boolean b = Context.livecodingSession ? this.name[id].equals(name) : this.name[id] == name;
+            if (b && type[id] == ty)
                 return id;
             
-            if (profile) {collisions++; if (this.name[id] == name) named_collisions++;}
+            if (profile) {collisions++; if (b) named_collisions++;}
         }
         
         if (profile) {misses++; collisions--;}
@@ -148,14 +149,16 @@ public final class Names
         byte namespaceKind = namespace.getNamespaceKind();
         assert namespaceName == namespaceName.intern();
         
-        do {   
-            if (this.name[id] == name && this.type[id] == type &&  
-                namespaceName == this.namespace[id].name && 
+        do {
+            boolean b = Context.livecodingSession ? this.name[id].equals(name) : this.name[id] == name;
+            boolean b1 = Context.livecodingSession ? namespaceName.equals(this.namespace[id].name) : namespaceName == this.namespace[id].name;
+            if (b && this.type[id] == type &&
+                    b1 &&
                 namespaceKind == this.namespace[id].getNamespaceKind() )
             {
                 return id;
             }  
-            if (profile) {collisions++;if (this.name[id] == name) named_collisions++;}
+            if (profile) {collisions++;if (b) named_collisions++;}
             id = next[id];
 		} while (id != -1);
         
@@ -270,7 +273,8 @@ public final class Names
 
         for (int id=hashTable[hv]; id != -1; id = next[id])
         {
-            if (this.name[id] == name && this.type[id] == type)
+            boolean b = Context.livecodingSession ? this.name[id].equals(name) : this.name[id] == name;
+            if (b && this.type[id] == type)
                 return true;
         }
         return false;
@@ -293,7 +297,8 @@ public final class Names
 
         for (id=hashTable[hv]; id != -1; id = next[id])
         {
-        	if (this.name[id] == name && this.type[id] == type)
+            boolean b = Context.livecodingSession ? this.name[id].equals(name) : this.name[id] == name;
+            if (b && this.type[id] == type)
         	{
         		if (q == null)
         		{
@@ -302,7 +307,7 @@ public final class Names
         		q.put(namespace[id], slot[id]);
                 if (profile) lookups++;
         	}
-            else if (profile) {collisions++;if (this.name[id] == name) named_collisions++;}
+            else if (profile) {collisions++;if (b) named_collisions++;}
 		}
         if (profile) {if (q==null) misses++;}
 		return q;

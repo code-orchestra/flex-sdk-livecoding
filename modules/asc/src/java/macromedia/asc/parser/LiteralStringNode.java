@@ -70,7 +70,7 @@ public class LiteralStringNode extends Node
 	{
 		void_result = false;
 
-		if (intern)
+		if (!Context.livecodingSession && intern)
 		{
 			this.value = value.intern();
 		}

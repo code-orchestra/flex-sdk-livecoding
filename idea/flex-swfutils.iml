@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <varelement var="jar://$FLEX_HOME$/lib/batik-all-flex.jar!/" value="FLEX_HOME/lib/batik-all-flex.jar" />
+    <varelement var="jar://$FLEX_HOME$/lib/batik-all-flex.jar!/" value="FLEX_HOME/lib/batik-all-flex.jar" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/../modules/swfutils/src/java" expected_position="0" />
+      <src_folder value="file://$MODULE_DIR$/../modules/swfutils/test/java" expected_position="1" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../modules/swfutils/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../modules/swfutils">
+      <sourceFolder url="file://$MODULE_DIR$/../modules/swfutils/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../modules/swfutils/test/java" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="module" module-name="flex-asc" />
+    <orderEntry type="module-library">
+      <library name="junit3">
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="xml-batik" />
+  </component>
+</module>
+

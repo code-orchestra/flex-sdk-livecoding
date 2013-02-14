@@ -49,7 +49,7 @@ public class IdentifierNode extends Node
 	{
 		super(pos);
 
-		if (intern)
+		if (!Context.livecodingSession && intern)
 		{
             this.name = name.intern();
 		}
@@ -61,7 +61,8 @@ public class IdentifierNode extends Node
 
 		// It's safe to use == here, because name is interned above
 		// and ASTERISK is interned.
-		if (name == ASTERISK)
+        boolean b = Context.livecodingSession ? name.equals(ASTERISK) : name == ASTERISK;
+        if (b)
 		{
 			setAny(true);
 		}
@@ -101,12 +102,8 @@ public class IdentifierNode extends Node
 	public boolean hasAttribute(String name)
 	{
 		assert name.intern() == name;
-		if (this.name == name)
-		{
-			return true;
-		}
-		return false;
-	}
+        return Context.livecodingSession ? this.name.equals(name) : this.name == name;
+    }
 
     public String toString()
     {

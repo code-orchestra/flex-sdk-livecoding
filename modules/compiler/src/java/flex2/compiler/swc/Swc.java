@@ -60,6 +60,7 @@ import flex2.compiler.util.ThreadLocalToolkit;
 import flex2.linker.LinkerConfiguration;
 import flex2.linker.LinkerException;
 import flex2.linker.SimpleMovie;
+import flex2.tools.Fcsh;
 import flex2.tools.PreLink;
 import flex2.tools.VersionInfo;
 
@@ -469,6 +470,19 @@ public class Swc
         archive.putFile( file );
     }
 
+    private class ReaderResult {
+        public Versions versions;
+        public SwcFeatures swcFeatures;
+        public Map<String, SwcComponent> components;
+        public Map<String, SwcLibrary> libraries;
+    }
+
+    private static Map<String, ReaderResult> readerCache = new HashMap<String, ReaderResult>();
+
+    public static void clearLivecodingCache() {
+        readerCache.clear();
+    }
+
     // changed from private to protected to support Flash Authoring - jkamerer 2007.07.30
     protected void read() throws Exception
     {
@@ -477,20 +491,53 @@ public class Swc
 
 	    try
 	    {
-		    catalogFile = archive.getFile( CATALOG_XML );
+            ReaderResult readerResult = readerCache.get(archive.getLocation());
+            if (readerResult != null) {
+                versions = readerResult.versions;
+                swcFeatures = readerResult.swcFeatures;
+                components = readerResult.components;
+                libraries = new HashMap<String, SwcLibrary>();
+                for (String path : readerResult.libraries.keySet()) {
+                    SwcLibrary newLibrary = new SwcLibrary(this, path);
+                    SwcLibrary oldLibrary = readerResult.libraries.get(path);
+                    Iterator<SwcScript> scriptIterator = oldLibrary.getScriptIterator();
+                    while (scriptIterator.hasNext()) {
+                        SwcScript script = scriptIterator.next();
+                        Set<String> defs = new HashSet<String>();
+                        Iterator<String> definitionIterator = script.getDefinitionIterator();
+                        while (definitionIterator.hasNext()) {
+                            defs.add(definitionIterator.next());
+                        }
+                        newLibrary.addScript(script.getName(), defs, script.getDependencySet(), script.getLastModified(), script.getSignatureChecksum());
+                    }
+                    newLibrary.setDigests(oldLibrary.getDigests());
+                    libraries.put(path, newLibrary);
+                }
+            } else {
+                catalogFile = archive.getFile( CATALOG_XML );
 
-		    if (catalogFile == null)
-		    {
-			    throw new SwcException.CatalogNotFound();
-		    }
-		    stream = catalogFile.getInputStream();
-		    CatalogReader reader = new CatalogReader(new BufferedInputStream(stream), this, archive);
-		    reader.read();
+                if (catalogFile == null)
+                {
+                    throw new SwcException.CatalogNotFound();
+                }
+                stream = catalogFile.getInputStream();
+                CatalogReader reader = new CatalogReader(new BufferedInputStream(stream), this, archive);
+                reader.read();
 
-		    versions = reader.getVersions();
-		    swcFeatures = reader.getFeatures();
-		    components = reader.getComponents();
-		    libraries = reader.getLibraries();
+                versions = reader.getVersions();
+                swcFeatures = reader.getFeatures();
+                components = reader.getComponents();
+                libraries = reader.getLibraries();
+
+                if (Fcsh.livecodingSession) {
+                    readerResult = new ReaderResult();
+                    readerResult.versions = versions;
+                    readerResult.swcFeatures = swcFeatures;
+                    readerResult.components = components;
+                    readerResult.libraries = libraries;
+                    readerCache.put(archive.getLocation(), readerResult);
+                }
+            }
 
 			/**
 			 * version checking:

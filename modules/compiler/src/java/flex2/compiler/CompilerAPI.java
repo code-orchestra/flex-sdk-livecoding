@@ -62,6 +62,7 @@ import flex2.linker.LinkerConfiguration;
 import flex2.linker.LinkerException;
 import flex2.linker.SimpleMovie;
 import flex2.tools.CompcPreLink;
+import flex2.tools.Fcsh;
 import flex2.tools.oem.ProgressMeter;
 
 import java.io.IOException;
@@ -204,9 +205,18 @@ public final class CompilerAPI
         }
     }
 
+    private static NameMappings mappings;
+
+    public static void clearLivecodingCache() {
+        mappings = null;
+    }
+
     public static NameMappings getNameMappings(Configuration configuration)
     {
-        NameMappings mappings = new NameMappings();
+        if (Fcsh.livecodingSession && mappings != null) {
+            return mappings;
+        }
+        mappings = new NameMappings();
         Map<String, List<VirtualFile>> manifests = configuration.getCompilerConfiguration().getNamespacesConfiguration().getManifestMappings();
         if (manifests != null)
         {
@@ -1672,8 +1682,10 @@ public final class CompilerAPI
                 ThreadLocalToolkit.getBenchmark().benchmark(l10n.getLocalizedTextString(new OutputTime(sources.size())));
             }
 
-            // must close swc file handles...
-            swcContext.close();
+            if (!Fcsh.livecodingSession) {
+                // must close swc file handles...
+                swcContext.close();
+            }
             symbolTable.cleanClassTable();
             symbolTable.adjustProgress();
 

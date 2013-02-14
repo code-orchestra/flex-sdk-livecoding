@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <varelement var="jar://$ANT17_JAR$!/" value="ANT17_JAR" />
+    <varelement var="jar://$ANT17_JAR$!/" value="ANT17_JAR" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/../modules/antTasks/src" expected_position="0" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../modules/antTasks/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../modules/antTasks">
+      <sourceFolder url="file://$MODULE_DIR$/../modules/antTasks/src" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="module" module-name="flex-asc" />
+    <orderEntry type="module" module-name="flex-compiler" />
+    <orderEntry type="module" module-name="flex-swfutils" />
+    <orderEntry type="module-library">
+      <library name="ANT17_JAR">
+        <CLASSES>
+          <root url="jar://$ANT17_JAR$!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>
+

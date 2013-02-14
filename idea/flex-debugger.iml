@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../modules/debugger/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../modules/debugger">
+      <sourceFolder url="file://$MODULE_DIR$/../modules/debugger/src/java" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="module" module-name="flex-asc" />
+    <orderEntry type="module" module-name="flex-compiler" />
+    <orderEntry type="module" module-name="flex-swfutils" />
+  </component>
+</module>
+

@@ -19,6 +19,8 @@
 
 package macromedia.asc.semantics;
 
+import macromedia.asc.util.Context;
+
 /**
  *
  * @author Erik Tierney
@@ -58,7 +60,7 @@ public class QName
 		{
 			if (ns != null && ns.name.length() != 0) // public, just return the name
 			{
-				fullname = (ns.name + ":" + name).intern();
+				fullname = Context.livecodingSession ? (ns.name + ":" + name): (ns.name + ":" + name).intern();
 			}
 			else
 			{

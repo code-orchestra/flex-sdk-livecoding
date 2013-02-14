@@ -74,8 +74,8 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 		{
 			//assert key == key.intern() : key;
 			//assert value == value.intern() : value;
-			this.key = key.intern();
-			this.obj = value.intern();
+			this.key = Context.livecodingSession ? key : key.intern();
+			this.obj = Context.livecodingSession ? value : value.intern();
 		}
 	}
 

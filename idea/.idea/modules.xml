@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/flex-antTasks.iml" filepath="$PROJECT_DIR$/flex-antTasks.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flex-asc.iml" filepath="$PROJECT_DIR$/flex-asc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flex-compiler.iml" filepath="$PROJECT_DIR$/flex-compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flex-debugger.iml" filepath="$PROJECT_DIR$/flex-debugger.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flex-fxgutils.iml" filepath="$PROJECT_DIR$/flex-fxgutils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flex-swfutils.iml" filepath="$PROJECT_DIR$/flex-swfutils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xml-batik.iml" filepath="$PROJECT_DIR$/xml-batik.iml" />
+    </modules>
+  </component>
+</project>
+

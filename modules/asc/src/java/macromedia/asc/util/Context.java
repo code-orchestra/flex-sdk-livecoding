@@ -53,7 +53,9 @@ import static macromedia.asc.embedding.avmplus.RuntimeConstants.*;
  */
 public final class Context implements ErrorConstants
 {
-	
+
+    public static boolean livecodingSession;
+
     private String parser_scanner_input_origin;
     private String qualified_origin;
     public Parser parser;
@@ -192,7 +194,7 @@ public final class Context implements ErrorConstants
     public String getUniqueNamespaceName( String base, Context cx )
     {
         String name = base + "$" + cx.statics.ticket_count++;
-        return name.intern();
+        return Context.livecodingSession ? name : name.intern();
     }
 
     public String getFileInternalNamespaceName()
@@ -1407,7 +1409,7 @@ public final class Context implements ErrorConstants
 			uri = uri.substring(0, uri.length()-1);
 			//System.out.println("stripping "+version+" from uri='"+uri+"'");
 		}
-		return uri.intern();
+		return Context.livecodingSession ? uri : uri.intern();
 	}
 
     public ObjectValue getNamespace(String name)

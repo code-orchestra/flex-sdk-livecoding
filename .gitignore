@@ -1,0 +1,9 @@
+/lib/*.jar
+/lib/external/optional
+/lib/external/xercesPatch.jar
+/idea/.idea/workspace.xml
+/idea/.idea/inspectionProfiles
+/modules/compiler/src/java/velocity.log
+/modules/asc/lib
+classes
+classes15 	

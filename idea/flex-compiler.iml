@@ -6,11 +6,6 @@
     <varelement var="jar://$FLEX_HOME$/lib/velocity-dep-1.4-flex.jar!/" value="FLEX_HOME/lib/velocity-dep-1.4-flex.jar" />
     <varelement var="jar://$FLEX_HOME$/lib/commons-collections.jar!/" value="FLEX_HOME/lib/commons-collections.jar" />
     <varelement var="jar://$FLEX_HOME$/lib/saxon9.jar!/" value="FLEX_HOME/lib/saxon9.jar" />
-    <varelement var="jar://$FLEX_HOME$/lib/batik-all-flex.jar!/" value="FLEX_HOME/lib/batik-all-flex.jar" />
-    <varelement var="jar://$FLEX_HOME$/lib/xercesImpl.jar!/" value="FLEX_HOME/lib/xercesImpl.jar" />
-    <varelement var="jar://$FLEX_HOME$/lib/velocity-dep-1.4-flex.jar!/" value="FLEX_HOME/lib/velocity-dep-1.4-flex.jar" />
-    <varelement var="jar://$FLEX_HOME$/lib/commons-collections.jar!/" value="FLEX_HOME/lib/commons-collections.jar" />
-    <varelement var="jar://$FLEX_HOME$/lib/saxon9.jar!/" value="FLEX_HOME/lib/saxon9.jar" />
     <src_description expected_position="0">
       <src_folder value="file://$MODULE_DIR$/../modules/compiler/src/java" expected_position="0" />
     </src_description>

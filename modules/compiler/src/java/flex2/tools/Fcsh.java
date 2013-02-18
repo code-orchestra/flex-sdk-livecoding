@@ -77,6 +77,7 @@ public class Fcsh extends Tool
         prompt();
         while ((s = r.readLine()) != null)
         {
+            long started = System.currentTimeMillis();
             CompilerAPI.useConsoleLogger();
 
             if (s.trim().length() == 0)
@@ -96,10 +97,11 @@ public class Fcsh extends Tool
                     t.printStackTrace();
                 }
             } finally {
-                if (livecodingSession) {
-                    targets.clear();
-                    processes.clear();
-                }
+//                if (livecodingSession) {
+//                    targets.clear();
+//                    processes.clear();
+//                }
+                System.out.println((System.currentTimeMillis() - started) + "ms");
             }
 
             if (exit)

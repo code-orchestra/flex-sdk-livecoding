@@ -2,7 +2,6 @@
 <module type="JAVA_MODULE" version="4">
   <component name="EclipseModuleManager">
     <varelement var="jar://$ANT17_JAR$!/" value="ANT17_JAR" />
-    <varelement var="jar://$ANT17_JAR$!/" value="ANT17_JAR" />
     <src_description expected_position="0">
       <src_folder value="file://$MODULE_DIR$/../modules/antTasks/src" expected_position="0" />
     </src_description>

@@ -44,7 +44,7 @@ public class PackageDefinitionNode extends DefinitionNode
     
 	public int var_count;
 	public int temp_count;
-	public Context cx;
+	public transient Context cx;
 
 	public boolean package_retrieved;
     public boolean in_this_pkg;

@@ -32,7 +32,7 @@ public class ImportDirectiveNode extends DefinitionNode
 	public PackageDefinitionNode pkg_node;
 	public ReferenceValue ref;
 	public boolean package_retrieved;
-	public Context cx;
+	public transient Context cx;
 
 	public ImportDirectiveNode(PackageDefinitionNode pkgdef, AttributeListNode attrs, PackageNameNode name, PackageDefinitionNode pkg_node, Context cx)
 	{

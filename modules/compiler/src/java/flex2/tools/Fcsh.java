@@ -19,10 +19,12 @@
 
 package flex2.tools;
 
+import codeOrchestra.TMExtension;
 import flash.localization.LocalizationManager;
 import flash.localization.ResourceBundleLocalizer;
 import flash.util.Trace;
 import flex2.compiler.*;
+import flex2.compiler.as3.As3Compiler;
 import flex2.compiler.common.CompilerConfiguration;
 import flex2.compiler.common.Configuration;
 import flex2.compiler.common.DefaultsConfigurator;
@@ -894,6 +896,8 @@ public class Fcsh extends Tool
 
             Transcoder[] transcoders = WebTierAPI.getTranscoders( configuration );
             SubCompiler[] compilers = WebTierAPI.getCompilers(compilerConfig, mappings, transcoders);
+
+            ((As3Compiler) compilers[0]).addCompilerExtension(new TMExtension());
 
             // construct the SWF file name...
             VirtualFile projector = configuration.getProjector();

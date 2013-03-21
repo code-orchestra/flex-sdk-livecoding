@@ -141,7 +141,7 @@ public class ObjectValue extends Value implements Comparable
         }
     }
 
-    public Builder builder;
+    public transient Builder builder;
     public TypeInfo type;
     private String value = EMPTY_STRING;
     private NumberUsage numberUsage;

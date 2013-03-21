@@ -48,7 +48,7 @@ public class FunctionCommonNode extends Node
 
 	public String debug_name = "";
 	public int needsArguments;
-	public Context cx;
+	public transient Context cx;
 	public int kind;
     public ObjectList<String> namespace_ids;
     public StatementListNode use_stmts;

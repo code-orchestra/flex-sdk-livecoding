@@ -21,7 +21,9 @@ package macromedia.asc.semantics;
 
 import macromedia.asc.util.Context;
 
-public class TypeInfo
+import java.io.Serializable;
+
+public class TypeInfo implements Serializable
 {
     private boolean is_nullable;
     private boolean is_default;

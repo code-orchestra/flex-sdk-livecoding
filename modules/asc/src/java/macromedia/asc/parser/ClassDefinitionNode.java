@@ -42,7 +42,7 @@ public class ClassDefinitionNode extends DefinitionNode
 	public TypeValue cframe;
 	public ObjectValue iframe;
 	public int is_dynamic;
-	public Context cx;
+	public transient Context cx;
 	public String debug_name;
     public String package_name;
     public boolean owns_cframe;

@@ -29,9 +29,9 @@ public class IncludeDirectiveNode extends DefinitionNode
 {
 	public LiteralStringNode filespec;
 	public ProgramNode program;
-    public Context cx;
+    public transient Context cx;
     public boolean in_this_include;
-    public Context prev_cx;
+    public transient Context prev_cx;
 
 	public IncludeDirectiveNode(Context cx, LiteralStringNode filespec, ProgramNode program)
 	{

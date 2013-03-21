@@ -1774,6 +1774,9 @@ public final class CompilerAPI
         for (int i = 0, n = units.size(); i < n; i++)
         {
             CompilationUnit unit = units.get(i);
+            if (unit == null) {
+                continue;
+            }
             Source source = unit.getSource();
 
             if (!source.isInternal() && !source.isCompiled())
@@ -3239,6 +3242,8 @@ public final class CompilerAPI
 
     // this will be set by asdoc. if true source from disk will be preferred over source from swc
     private static boolean skipTimestampCheck = false;
+
+    public static Set<Source> addedSources = new HashSet<Source>();
     
     private static int findDefinition(List<Source> sources, SourceList sourceList, SourcePathBase sourcePath,
                                       ResourceContainer resources, CompilerSwcContext swcContext,
@@ -3267,6 +3272,18 @@ public final class CompilerAPI
                (!s.getCompilationUnit().hasTypeInfo)))))
         {
             s = swcSource;
+        }
+
+        if (s == null) {
+            Iterator<Source> iterator = addedSources.iterator();
+            while (iterator.hasNext()) {
+                Source source = iterator.next();
+                if (source.getRelativePath().equals(namespaceURI) && source.getShortName().equals(localPart)) {
+                    s = source;
+                    iterator.remove();
+                    break;
+                }
+            }
         }
 
         if (s != null)

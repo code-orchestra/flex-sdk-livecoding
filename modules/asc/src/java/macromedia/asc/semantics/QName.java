@@ -21,11 +21,13 @@ package macromedia.asc.semantics;
 
 import macromedia.asc.util.Context;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Erik Tierney
  */
-public class QName
+public class QName implements Serializable
 {
     public ObjectValue ns;
     public String name;

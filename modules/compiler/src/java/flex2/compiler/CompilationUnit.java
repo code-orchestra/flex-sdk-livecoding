@@ -496,6 +496,11 @@ public final class CompilationUnit
 		return workflow;
 	}
 
+    public void setParsedState() {
+        state = SyntaxTree;
+        workflow = 14;
+    }
+
 	public Object getSyntaxTree()
 	{
 		return syntaxTree;

@@ -21,6 +21,7 @@ import macromedia.asc.util.*;
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.MetaDataNode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +41,7 @@ import static macromedia.asc.parser.Tokens.*;
  *
  * @author Jeff Dyer
  */
-public abstract class Slot
+public abstract class Slot implements Serializable
 {
 	public static final int PUSH_none = 0;
 	public static final int PUSH_env = 0x1 << 0;

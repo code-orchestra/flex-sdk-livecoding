@@ -19,6 +19,7 @@
 
 package macromedia.asc.util;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.Map;
 import java.util.TreeMap;
@@ -29,7 +30,7 @@ import static macromedia.asc.parser.Tokens.*;
 /**
  * @author Jeff Dyer
  */
-public final class Names
+public final class Names implements Serializable
 {   
     
     // Some counters that help in evaluating performance (only used if profile is true)

@@ -19,6 +19,7 @@
 
 package macromedia.asc.parser;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.TreeMap;
 import macromedia.asc.util.*;
@@ -29,7 +30,7 @@ import macromedia.asc.semantics.*;
  *
  * @author Jeff Dyer
  */
-public class Node
+public class Node implements Serializable
 {
 	/* HACK -- JAVA ONLY
 	 * Since a lot of code generation uses toString methods,

@@ -19,7 +19,9 @@
 
 package macromedia.asc.util;
 
-public abstract class NumberConstant {
+import java.io.Serializable;
+
+public abstract class NumberConstant implements Serializable {
 	
 	protected final static double MAXUINT = ((double)Integer.MAX_VALUE) * 2 + 1;
 

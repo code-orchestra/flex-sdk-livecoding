@@ -19,13 +19,15 @@ package macromedia.asc.semantics;
 
 import macromedia.asc.util.*;
 
+import java.io.Serializable;
+
 /**
  * The value class from which all other values derive. Immediate
  * children are ObjectValue, and ReferenceValue.
  *
  * @author Jeff Dyer
  */
-public abstract class Value
+public abstract class Value implements Serializable
 {
     protected int flags;
 

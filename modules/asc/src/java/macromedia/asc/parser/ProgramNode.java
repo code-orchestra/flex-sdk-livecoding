@@ -39,7 +39,7 @@ public class ProgramNode extends Node
 	public int temp_count;
 	public int var_count;
 	public ObjectList<Block> blocks;
-	public Context cx;
+	public transient Context cx;
 	public boolean has_unnamed_package;
 
 	public ObjectValue frame;

@@ -14,6 +14,7 @@ import java.util.*;
 public class TMExtension extends AbstractTreeModificationExtension {
 
     private Map<String, String> modelDependenciesUnits = new HashMap<String, String>();
+    private boolean liveCodingStarterAdded;
 
     @Override
     protected void performModifications(CompilationUnit unit) {
@@ -179,17 +180,17 @@ public class TMExtension extends AbstractTreeModificationExtension {
         ExpressionStatementNode expressionStatementNode = new ExpressionStatementNode(new ListNode(null, memberExpressionNode, -1));
         classCONode.staticInitializer.add(expressionStatementNode);
 
-        /*
-            public var thisScope : Main;
-         */
-        classCONode.fields.add(new FieldCONode("thisScope", className));
-
-        /*
-            public function LiveMethod_com_example_Main_foo( thisScope : Main ){
-                this.thisScope = thisScope;
-            }
-         */
         if (!staticMethod) {
+            /*
+               public var thisScope : Main;
+            */
+            classCONode.fields.add(new FieldCONode("thisScope", className));
+
+            /*
+               public function LiveMethod_com_example_Main_foo( thisScope : Main ){
+                   this.thisScope = thisScope;
+               }
+            */
             MethodCONode constructor = new MethodCONode(liveCodingClassName, null, cx);
             constructor.addParameter("thisScope", className);
             memberExpressionNode = new MemberExpressionNode(
@@ -230,6 +231,7 @@ public class TMExtension extends AbstractTreeModificationExtension {
                 ),
                 -1)));
         StatementListNode tryblock = new StatementListNode(null);
+        methodBody.removeLast(); // Removes last ReturnStatement
         tryblock.items.addAll(methodBody); // TODO: Method body is unmodified here!
         StatementListNode catchlist = new StatementListNode(new CatchClauseNode(
                 TreeUtil.createParameterNode("e", "Error"),
@@ -305,7 +307,11 @@ public class TMExtension extends AbstractTreeModificationExtension {
         for (String name : projectNavigator.getClassNames(packageName)) {
             constructor.statements.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(name), -1)));
         }
-        // TODO: LiveCodingStarter
+        if (!liveCodingStarterAdded) {
+            constructor.statements.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier("LiveCodingSessionStarter", "prototype"), -1)));
+            addLiveCodingStarterUnit(packageName, cx);
+            liveCodingStarterAdded = true;
+        }
         for (String name : projectNavigator.getLiveCodingClassNames(packageName)) {
             constructor.statements.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(name, "prototype"), -1)));
         }
@@ -314,6 +320,20 @@ public class TMExtension extends AbstractTreeModificationExtension {
             node.is_new = true;
             constructor.statements.add(new ExpressionStatementNode(new ListNode(null, new MemberExpressionNode(null, node, -1), -1)));
         }
+        /* TODO: These imports does not help to resolve ModelDependencies classes, IDUNNO why. But we can skip it:
+
+           If model A depends on model B, then there exists at least one class in A that refers to a class in B.
+           Also that class in B refers to ModelDependencies_B. So ModelDependencies_B will surely get into project,
+           even without direct reference in ModelDependencies_A
+
+        for (String depName : projectNavigator.getModelDependencies(packageName)) {
+            String depClassName = "ModelDependencies_" + depName.replaceAll("\\.", "_");
+            CallExpressionNode node = new CallExpressionNode(new IdentifierNode(depClassName, -1), null);
+            node.is_new = true;
+            constructor.statements.add(new ExpressionStatementNode(new ListNode(null, new MemberExpressionNode(null, node, -1), -1)));
+            classCONode.addImport(depName, depClassName);
+        }
+        */
         constructor.statements.add(new ReturnStatementNode(null));
         classCONode.methods.add(constructor);
 
@@ -326,5 +346,42 @@ public class TMExtension extends AbstractTreeModificationExtension {
 
         classCONode.addToProject();
         return className;
+    }
+
+    private void addLiveCodingStarterUnit(String packageName, Context cx) {
+        ClassCONode classCONode = new ClassCONode(packageName, "LiveCodingSessionStarter", cx);
+        classCONode.staticInitializer.add(new ExpressionStatementNode(new ListNode(
+                null,
+                TreeUtil.createCall(
+                        "LiveCodingCodeFlowUtil",
+                        "setMaxLoopCount",
+                        new ArgumentListNode(new LiteralNumberNode("10000"), -1)
+                ),
+                -1
+        )));
+        classCONode.staticInitializer.add(new ExpressionStatementNode(new ListNode(
+                null,
+                TreeUtil.createCall(
+                        "LiveCodingCodeFlowUtil",
+                        "setMaxRecursionCount",
+                        new ArgumentListNode(new LiteralNumberNode("100"), -1)
+                ),
+                -1
+        )));
+        classCONode.staticInitializer.add(new ExpressionStatementNode(new ListNode(
+                null,
+                new MemberExpressionNode(
+                        TreeUtil.createCall("LiveCodeRegistry", "getInstance", null),
+                        new CallExpressionNode(
+                                new IdentifierNode("initSession", -1),
+                                new ArgumentListNode(new LiteralStringNode("123456"), -1)
+                        ),
+                        -1
+                ),
+                -1
+        )));
+        classCONode.addImport("codeOrchestra.actionScript.liveCoding.util", "LiveCodingCodeFlowUtil");
+        classCONode.addImport("codeOrchestra.actionScript.liveCoding.util", "LiveCodeRegistry");
+        classCONode.addToProject();
     }
 }

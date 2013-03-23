@@ -4,6 +4,10 @@ package codeOrchestra;
  * @author Anton.I.Neverov
  */
 public class ProvidedPackages {
+
+    // This list of classes is needed to differentiate user-provided and codeorchestra-provided classes during parsing phase.
+    // TODO: Put these classes into swc
+
     public static String[] packages = new String[] {
             "codeOrchestra.actionScript.collections.util.ModelDependencies_codeOrchestra_actionScript_collections_util",
             "codeOrchestra.actionScript.enums.util.ModelDependencies_codeOrchestra_actionScript_enums_util",

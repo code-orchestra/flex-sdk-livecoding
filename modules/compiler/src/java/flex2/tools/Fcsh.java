@@ -58,6 +58,8 @@ import java.util.*;
 public class Fcsh extends Tool
 {
     public static boolean livecodingSession;
+    public static boolean livecodingTransformMode;
+    public static boolean livecodingTransformModeSecondPass;
 
     public static void main(String[] args) throws IOException
     {
@@ -345,6 +347,63 @@ public class Fcsh extends Tool
             Swc.clearLivecodingCache();
             livecodingSession = false;
             Context.livecodingSession = false;
+        }
+        else if (s.startsWith("lccompc") || s.startsWith("lcmxmlc"))
+        {
+            livecodingTransformMode = true;
+            boolean isCompc = s.startsWith("lccompc");
+
+            StringTokenizer t = new StringTokenizer(s.substring((isCompc ? "lccompc" : "lcmxmlc").length()).trim(), " ");
+            String[] args = new String[t.countTokens()];
+            for (int i = 0; t.hasMoreTokens(); i++)
+            {
+                args[i] = t.nextToken();
+            }
+
+            for (int i = 0; i < 2; i++) {
+                livecodingTransformModeSecondPass = i == 1;
+                if (args.length == 1)
+                {
+                    try
+                    {
+                        int id = Integer.parseInt(args[0]);
+                        Target target = targets.get("" + id);
+                        if (target == null)
+                        {
+                            ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new TargetNotFound("" + id)));
+                        }
+                        else
+                        {
+                            if (isCompc) {
+                                compc(target.args, id);
+                            } else {
+                                mxmlc(target.args, id);
+                            }
+                        }
+                    }
+                    catch (NumberFormatException ex)
+                    {
+                        ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new AssignTargetID(counter)));
+                        if (isCompc) {
+                            compc(args, counter++);
+                        } else {
+                            mxmlc(args, counter++);
+                        }
+                    }
+                }
+                else
+                {
+                    ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new AssignTargetID(counter)));
+                    if (isCompc) {
+                        compc(args, counter++);
+                    } else {
+                        mxmlc(args, counter++);
+                    }
+                }
+                livecodingTransformModeSecondPass = false;
+            }
+
+            livecodingTransformMode = false;
         }
         else
         {

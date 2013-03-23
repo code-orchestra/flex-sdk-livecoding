@@ -2,21 +2,12 @@ package codeOrchestra;
 
 import codeOrchestra.tree.ProjectNavigator;
 import flex2.compiler.CompilationUnit;
-import flex2.compiler.CompilerAPI;
-import flex2.compiler.CompilerContext;
-import flex2.compiler.Source;
 import flex2.compiler.as3.Extension;
 import flex2.compiler.as3.reflect.TypeTable;
-import flex2.compiler.mxml.lang.StandardDefs;
-import flex2.compiler.util.QName;
+import flex2.tools.Fcsh;
 import macromedia.asc.parser.*;
-import macromedia.asc.util.Context;
-import macromedia.asc.util.ObjectList;
 
 import java.io.*;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Anton.I.Neverov
@@ -75,10 +66,6 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         }
     }
 
-    private boolean isTransformMode() {
-        return new File(TEMP_DIR + File.separator + "transform").exists(); // TODO: Need a CL param
-    }
-
     protected abstract void performModifications(CompilationUnit unit);
 
     private void traceStep(String step, String unitPath) {
@@ -89,7 +76,10 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
     @Override
     public final void parse1(CompilationUnit unit, TypeTable typeTable) {
-        if (isTransformMode()) {
+        if (!Fcsh.livecodingTransformMode) {
+            return;
+        }
+        if (Fcsh.livecodingTransformModeSecondPass) {
             loadSyntaxTrees();
             performModifications(unit);
         } else {
@@ -100,31 +90,49 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
     @Override
     public final void parse2(CompilationUnit unit, TypeTable typeTable) {
+        if (!Fcsh.livecodingTransformMode) {
+            return;
+        }
         traceStep("parse2", unit.getSource().getRawLocation());
     }
 
     @Override
     public final void analyze1(CompilationUnit unit, TypeTable typeTable) {
+        if (!Fcsh.livecodingTransformMode) {
+            return;
+        }
         traceStep("analyze1", unit.getSource().getRawLocation());
     }
 
     @Override
     public final void analyze2(CompilationUnit unit, TypeTable typeTable) {
+        if (!Fcsh.livecodingTransformMode) {
+            return;
+        }
         traceStep("analyze2", unit.getSource().getRawLocation());
     }
 
     @Override
     public final void analyze3(CompilationUnit unit, TypeTable typeTable) {
+        if (!Fcsh.livecodingTransformMode) {
+            return;
+        }
         traceStep("analyze3", unit.getSource().getRawLocation());
     }
 
     @Override
     public final void analyze4(CompilationUnit unit, TypeTable typeTable) {
+        if (!Fcsh.livecodingTransformMode) {
+            return;
+        }
         traceStep("analyze4", unit.getSource().getRawLocation());
     }
 
     @Override
     public final void generate(CompilationUnit unit, TypeTable typeTable) {
+        if (!Fcsh.livecodingTransformMode) {
+            return;
+        }
         traceStep("generate", unit.getSource().getRawLocation());
     }
 }

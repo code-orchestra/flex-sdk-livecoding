@@ -164,7 +164,7 @@
 
 		<echo message="Building lib/mxmlc.jar"/>
         <jar file="${module.jar}" basedir="${module.classes}"
-            includes="**/*.properties,flex2/compiler/**/*,flex2/license/**/*,flex2/linker/**/*,flex2/tools/*,flex2/tools/oem/Message.class,flex2/tools/oem/ProgressMeter.class,flex2/tools/oem/Component.class,flex2/tools/oem/Script.class,flash/**/*,flex/**/*"
+            includes="**/*.properties,flex2/compiler/**/*,flex2/license/**/*,flex2/linker/**/*,flex2/tools/*,flex2/tools/oem/Message.class,flex2/tools/oem/ProgressMeter.class,flex2/tools/oem/Component.class,flex2/tools/oem/Script.class,flash/**/*,flex/**/*,codeOrchestra/**/*"
             excludes="flex2/tools/Shell*,flex2/tools/Optimizer*,flex2/tools/Digest*,flex2/tools/SwcDependencies*">
             <include name="META-INF/LICENSE"/>
             <include name="META-INF/NOTICE"/>

@@ -19,7 +19,9 @@
 
 package macromedia.asc.util;
 
-public final class ByteList
+import java.io.Serializable;
+
+public final class ByteList implements Serializable
 {
 	public ByteList(ByteList list)
 	{

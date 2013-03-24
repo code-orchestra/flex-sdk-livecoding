@@ -19,7 +19,8 @@
 
 package flex2.tools;
 
-import codeOrchestra.TMExtension;
+import codeOrchestra.LCBaseExtension;
+import codeOrchestra.LCIncrementalExtension;
 import flash.localization.LocalizationManager;
 import flash.localization.ResourceBundleLocalizer;
 import flash.util.Trace;
@@ -58,8 +59,9 @@ import java.util.*;
 public class Fcsh extends Tool
 {
     public static boolean livecodingSession;
-    public static boolean livecodingTransformMode;
-    public static boolean livecodingTransformModeSecondPass;
+    public static boolean livecodingBaseMode;
+    public static boolean livecodingIncrementalMode;
+    public static boolean livecodingBaseModeSecondPass;
 
     public static void main(String[] args) throws IOException
     {
@@ -350,8 +352,12 @@ public class Fcsh extends Tool
         }
         else if (s.startsWith("lccompc") || s.startsWith("lcmxmlc"))
         {
-            livecodingTransformMode = true;
             boolean isCompc = s.startsWith("lccompc");
+            if (isCompc) {
+                livecodingIncrementalMode = true;
+            } else {
+                livecodingBaseMode = true;
+            }
 
             StringTokenizer t = new StringTokenizer(s.substring((isCompc ? "lccompc" : "lcmxmlc").length()).trim(), " ");
             String[] args = new String[t.countTokens()];
@@ -360,8 +366,8 @@ public class Fcsh extends Tool
                 args[i] = t.nextToken();
             }
 
-            for (int i = 0; i < 2; i++) {
-                livecodingTransformModeSecondPass = i == 1;
+            for (int i = 0; i < (isCompc ? 1 : 2); i++) {
+                livecodingBaseModeSecondPass = i == 1;
                 if (args.length == 1)
                 {
                     try
@@ -400,10 +406,11 @@ public class Fcsh extends Tool
                         mxmlc(args, counter++);
                     }
                 }
-                livecodingTransformModeSecondPass = false;
+                livecodingBaseModeSecondPass = false;
             }
 
-            livecodingTransformMode = false;
+            livecodingBaseMode = false;
+            livecodingIncrementalMode = false;
         }
         else
         {
@@ -956,7 +963,9 @@ public class Fcsh extends Tool
             Transcoder[] transcoders = WebTierAPI.getTranscoders( configuration );
             SubCompiler[] compilers = WebTierAPI.getCompilers(compilerConfig, mappings, transcoders);
 
-            ((As3Compiler) compilers[0]).addCompilerExtension(new TMExtension());
+            if (livecodingBaseMode) {
+                ((As3Compiler) compilers[0]).addCompilerExtension(new LCBaseExtension());
+            }
 
             // construct the SWF file name...
             VirtualFile projector = configuration.getProjector();
@@ -1218,6 +1227,11 @@ public class Fcsh extends Tool
             //    get standard bundle of compilers, transcoders
             Transcoder[] transcoders = WebTierAPI.getTranscoders( configuration );
             SubCompiler[] compilers = WebTierAPI.getCompilers(compilerConfig, mappings, transcoders);
+
+            if (livecodingIncrementalMode) {
+                String fqClassName = configuration.getClasses().get(0); // Assume that only one class is provided in incremental phase
+                ((As3Compiler) compilers[0]).addCompilerExtension(new LCIncrementalExtension(fqClassName));
+            }
 
             // construct the SWC file name...
             s.outputName = FileUtil.getCanonicalPath(FileUtil.openFile(configuration.getOutput()));

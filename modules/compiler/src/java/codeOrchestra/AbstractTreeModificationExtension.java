@@ -20,7 +20,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
     protected ProjectNavigator projectNavigator;
 
-    private void saveSyntaxTree(CompilationUnit unit) {
+    protected void saveSyntaxTree(CompilationUnit unit) {
         String shortName = unit.getSource().getShortName();
         String serializedPath = TEMP_DIR + File.separator + shortName + SERIALIZED_AST;
         Object syntaxTree = unit.getSyntaxTree();
@@ -37,7 +37,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         }
     }
 
-    private void loadSyntaxTrees() {
+    protected void loadSyntaxTrees() {
         if (projectNavigator != null) {
             return;
         }
@@ -76,21 +76,16 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
     @Override
     public final void parse1(CompilationUnit unit, TypeTable typeTable) {
-        if (!Fcsh.livecodingTransformMode) {
+        if (!(Fcsh.livecodingBaseMode || Fcsh.livecodingIncrementalMode)) { // Extra check
             return;
         }
-        if (Fcsh.livecodingTransformModeSecondPass) {
-            loadSyntaxTrees();
-            performModifications(unit);
-        } else {
-            saveSyntaxTree(unit);
-        }
+        performModifications(unit);
         traceStep("parse1", unit.getSource().getRawLocation());
     }
 
     @Override
     public final void parse2(CompilationUnit unit, TypeTable typeTable) {
-        if (!Fcsh.livecodingTransformMode) {
+        if (!Fcsh.livecodingBaseMode) {
             return;
         }
         traceStep("parse2", unit.getSource().getRawLocation());
@@ -98,7 +93,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
     @Override
     public final void analyze1(CompilationUnit unit, TypeTable typeTable) {
-        if (!Fcsh.livecodingTransformMode) {
+        if (!Fcsh.livecodingBaseMode) {
             return;
         }
         traceStep("analyze1", unit.getSource().getRawLocation());
@@ -106,7 +101,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
     @Override
     public final void analyze2(CompilationUnit unit, TypeTable typeTable) {
-        if (!Fcsh.livecodingTransformMode) {
+        if (!Fcsh.livecodingBaseMode) {
             return;
         }
         traceStep("analyze2", unit.getSource().getRawLocation());
@@ -114,7 +109,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
     @Override
     public final void analyze3(CompilationUnit unit, TypeTable typeTable) {
-        if (!Fcsh.livecodingTransformMode) {
+        if (!Fcsh.livecodingBaseMode) {
             return;
         }
         traceStep("analyze3", unit.getSource().getRawLocation());
@@ -122,7 +117,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
     @Override
     public final void analyze4(CompilationUnit unit, TypeTable typeTable) {
-        if (!Fcsh.livecodingTransformMode) {
+        if (!Fcsh.livecodingBaseMode) {
             return;
         }
         traceStep("analyze4", unit.getSource().getRawLocation());
@@ -130,7 +125,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
     @Override
     public final void generate(CompilationUnit unit, TypeTable typeTable) {
-        if (!Fcsh.livecodingTransformMode) {
+        if (!Fcsh.livecodingBaseMode) {
             return;
         }
         traceStep("generate", unit.getSource().getRawLocation());

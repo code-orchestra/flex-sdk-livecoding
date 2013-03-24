@@ -2,6 +2,7 @@ package codeOrchestra;
 
 import codeOrchestra.tree.*;
 import flex2.compiler.CompilationUnit;
+import flex2.tools.Fcsh;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
 import macromedia.asc.util.ObjectList;
@@ -11,13 +12,20 @@ import java.util.*;
 /**
  * @author Anton.I.Neverov
  */
-public class TMExtension extends AbstractTreeModificationExtension {
+public class LCBaseExtension extends AbstractTreeModificationExtension {
 
     private Map<String, String> modelDependenciesUnits = new HashMap<String, String>();
     private boolean liveCodingStarterAdded;
 
     @Override
     protected void performModifications(CompilationUnit unit) {
+        if (Fcsh.livecodingBaseModeSecondPass) {
+            loadSyntaxTrees();
+        } else {
+            saveSyntaxTree(unit);
+            return;
+        }
+
         ClassDefinitionNode classDefinitionNode = TreeNavigator.getClassDefinition(unit);
 
         String packageName = classDefinitionNode.pkgdef.name.id.pkg_part;

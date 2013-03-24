@@ -4083,7 +4083,7 @@ public final class CompilerAPI
 
     private static boolean generate(CompilationUnit u, flex2.compiler.SubCompiler[] compilers, SymbolTable symbolTable)
     {
-//        if (Fcsh.livecodingTransformMode && !Fcsh.livecodingTransformModeSecondPass) {
+//        if (Fcsh.livecodingBaseMode && !Fcsh.livecodingBaseModeSecondPass) {
 //            // On first pass we do not need to generate artifact, just collect syntax trees
 //            return true;
 //        }

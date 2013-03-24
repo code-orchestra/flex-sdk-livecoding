@@ -78,4 +78,15 @@ public class ProjectNavigator {
 
         return modelDependencies.get(packageName);
     }
+
+    public ProgramNode getSyntaxTree(String packageName, String className) {
+        for (ProgramNode programNode : loadedSyntaxTrees) {
+            ClassDefinitionNode classDefinition = TreeNavigator.getClassDefinition(programNode);
+            if (classDefinition.pkgdef.name.id.pkg_part.equals(packageName) && classDefinition.name.name.equals(className)) {
+                return programNode;
+            }
+        }
+        return null;
+    }
+
 }

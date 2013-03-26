@@ -10,7 +10,11 @@ public class ThrowStatementNodeVisitor extends NodeVisitor<ThrowStatementNode> {
     protected StuffToCompare createStuffToCompare(ThrowStatementNode left, ThrowStatementNode right) {
         StuffToCompare stuffToCompare = new StuffToCompare();
 
-		
+        stuffToCompare.leftChildren.add(left.expr);
+        stuffToCompare.rightChildren.add(right.expr);
+
+        stuffToCompare.leftLeaves.add(left.finallyInserted);
+        stuffToCompare.rightLeaves.add(right.finallyInserted);
 
         return stuffToCompare;
     }

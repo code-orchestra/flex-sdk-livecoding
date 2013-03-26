@@ -3,6 +3,9 @@ package codeOrchestra.tree;
 import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Anton.I.Neverov
  */
@@ -84,4 +87,24 @@ public class TreeUtil {
         classDefinitionNode.pkgdef.statements.items.add(importDirectiveNode);
     }
 
+    public static FunctionDefinitionNode removeAllMethodsAndClearConstructor(ClassDefinitionNode classDefinitionNode) {
+        List<FunctionDefinitionNode> allMethodDefinitions = TreeNavigator.getAllMethodDefinitions(classDefinitionNode);
+        Iterator<FunctionDefinitionNode> iterator = allMethodDefinitions.iterator();
+        FunctionDefinitionNode constructor = null;
+        while (iterator.hasNext()) {
+            FunctionDefinitionNode functionDefinitionNode = iterator.next();
+            if (TreeNavigator.isConstructor(functionDefinitionNode, classDefinitionNode)) {
+                constructor = functionDefinitionNode;
+                constructor.fexpr.body.items.clear();
+            } else {
+                iterator.remove();
+            }
+        }
+        if (constructor == null) {
+            MethodCONode methodCONode = new MethodCONode(classDefinitionNode.name.name, null, classDefinitionNode.cx);
+            constructor = methodCONode.getFunctionDefinitionNode();
+            classDefinitionNode.statements.items.add(constructor);
+        }
+        return constructor;
+    }
 }

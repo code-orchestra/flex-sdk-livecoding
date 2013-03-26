@@ -5,12 +5,12 @@ import macromedia.asc.parser.GetExpressionNode;
 /**
  * @author Anton.I.Neverov
  */
-public class GetExpressionNodeVisitor extends NodeVisitor<GetExpressionNode> {
+public class GetExpressionNodeVisitor extends SelectorNodeVisitor<GetExpressionNode> {
     @Override
     protected StuffToCompare createStuffToCompare(GetExpressionNode left, GetExpressionNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+        StuffToCompare stuffToCompare = super.createStuffToCompare(left, right);
 
-		
+		// Nothing here
 
         return stuffToCompare;
     }

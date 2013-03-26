@@ -25,6 +25,7 @@ public class ClassCONode extends CONode {
     public final List<MethodCONode> methods = new ArrayList<MethodCONode>();
     public final List<FieldCONode> fields = new ArrayList<FieldCONode>();
     public final List<Node> staticInitializer = new ArrayList<Node>();
+    public final List<String> interfaces = new ArrayList<String>();
     private final List<String[]> imports = new ArrayList<String[]>();
     private Context cx;
 //    private StandardDefs standardDefs;
@@ -107,10 +108,21 @@ public class ClassCONode extends CONode {
         statementListNode.items.add(myClass);
         ((ProgramNode) compilationUnit.getSyntaxTree()).statements.items.add(myClass);
 
+        // Interfaces
+        if (!interfaces.isEmpty()) {
+            String firstInterface = interfaces.remove(0);
+            myClass.interfaces = new ListNode(null, TreeUtil.createIdentifier(firstInterface), -1);
+            for (String anInterface : interfaces) {
+                myClass.interfaces.items.add(TreeUtil.createIdentifier(firstInterface));
+            }
+        }
+
         // Imports
         for (String[] anImport : imports) {
             TreeUtil.addImport(compilationUnit, anImport[0], anImport[1]);
         }
+
+        cx.addValidImport(packageName + ":" + className);
     }
 
 }

@@ -10,7 +10,8 @@ public class ParenListExpressionNodeVisitor extends NodeVisitor<ParenListExpress
     protected StuffToCompare createStuffToCompare(ParenListExpressionNode left, ParenListExpressionNode right) {
         StuffToCompare stuffToCompare = new StuffToCompare();
 
-		
+        stuffToCompare.leftChildren.add(left.expr);
+        stuffToCompare.rightChildren.add(right.expr);
 
         return stuffToCompare;
     }

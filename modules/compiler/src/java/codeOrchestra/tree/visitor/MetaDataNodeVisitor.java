@@ -5,7 +5,7 @@ import macromedia.asc.parser.MetaDataNode;
 /**
  * @author Anton.I.Neverov
  */
-public class MetaDataNodeVisitor extends NodeVisitor<MetaDataNode> {
+public class MetaDataNodeVisitor<N extends MetaDataNode> extends NodeVisitor<N> {
     @Override
     protected StuffToCompare createStuffToCompare(MetaDataNode left, MetaDataNode right) {
         StuffToCompare stuffToCompare = new StuffToCompare();
@@ -13,9 +13,7 @@ public class MetaDataNodeVisitor extends NodeVisitor<MetaDataNode> {
         stuffToCompare.leftChildren.add(left.data);
         stuffToCompare.rightChildren.add(right.data);
 
-        // TODO: Could this be a back-reference?
-        stuffToCompare.leftChildren.add(left.def);
-        stuffToCompare.rightChildren.add(right.def);
+        // def is a back-reference, ignore it
 
         stuffToCompare.leftLeaves.add(left.getMetadata());
         stuffToCompare.rightLeaves.add(right.getMetadata());

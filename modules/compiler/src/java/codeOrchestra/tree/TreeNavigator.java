@@ -47,7 +47,7 @@ public class TreeNavigator {
         return null;
     }
 
-    private static List<FunctionDefinitionNode> getAllMethodDefinitions(ClassDefinitionNode classDefinitionNode) {
+    static List<FunctionDefinitionNode> getAllMethodDefinitions(ClassDefinitionNode classDefinitionNode) {
         List<FunctionDefinitionNode> functionDefinitionNodes = new ArrayList<FunctionDefinitionNode>();
         for (Node item : classDefinitionNode.statements.items) {
             if (item instanceof FunctionDefinitionNode) {
@@ -57,7 +57,7 @@ public class TreeNavigator {
         return  functionDefinitionNodes;
     }
 
-    private static boolean isConstructor(FunctionDefinitionNode functionDefinitionNode, ClassDefinitionNode classDefinitionNode) {
+    static boolean isConstructor(FunctionDefinitionNode functionDefinitionNode, ClassDefinitionNode classDefinitionNode) {
         return functionDefinitionNode.name.identifier.name.equals(classDefinitionNode.name.name);
     }
 

@@ -1,13 +1,16 @@
 package codeOrchestra;
 
-import codeOrchestra.tree.ProjectNavigator;
+import codeOrchestra.tree.*;
 import flex2.compiler.CompilationUnit;
 import flex2.compiler.as3.Extension;
 import flex2.compiler.as3.reflect.TypeTable;
 import flex2.tools.Fcsh;
 import macromedia.asc.parser.*;
+import macromedia.asc.util.Context;
+import macromedia.asc.util.ObjectList;
 
 import java.io.*;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
@@ -129,5 +132,156 @@ public abstract class AbstractTreeModificationExtension implements Extension {
             return;
         }
         traceStep("generate", unit.getSource().getRawLocation());
+    }
+
+    protected String addLiveCodingClass(String className, FunctionDefinitionNode functionDefinitionNode, ObjectList<Node> methodBody, boolean incremental) {
+        boolean staticMethod = TreeNavigator.isStaticMethod(functionDefinitionNode);
+        TypeExpressionNode methodResult = (TypeExpressionNode) functionDefinitionNode.fexpr.signature.result;
+        String timeStamp = String.valueOf(System.currentTimeMillis());
+        String liveCodingClassName;
+        if (incremental) {
+            liveCodingClassName = "Method_" + className + "_" + functionDefinitionNode.name.identifier.name + "_" + timeStamp;
+        } else {
+            liveCodingClassName = LiveCodingUtil.constructLiveCodingClassName(functionDefinitionNode, className);
+        }
+        Context cx = functionDefinitionNode.cx;
+        String packageName;
+        if (incremental) {
+            packageName = "codeOrchestra.liveCoding.load";
+        } else {
+            packageName = functionDefinitionNode.pkgdef.name.id.pkg_part;
+        }
+        ClassCONode classCONode = new ClassCONode(packageName, liveCodingClassName, cx);
+
+        List<ImportDirectiveNode> imports = TreeNavigator.getImports(functionDefinitionNode.pkgdef);
+        for (ImportDirectiveNode anImport : imports) {
+            classCONode.addImport(anImport.name.id.pkg_part, anImport.name.id.def_part);
+        }
+        classCONode.addImport("codeOrchestra.actionScript.liveCoding.util", "LiveCodingCodeFlowUtil");
+        classCONode.addImport("codeOrchestra.actionScript.liveCoding.util", "LiveCodeRegistry");
+        if (incremental) {
+            classCONode.addImport(functionDefinitionNode.pkgdef.name.id.pkg_part, className);
+            classCONode.addImport("codeOrchestra.actionScript.liveCoding.util", "IMethodCodeUpdate");
+            classCONode.interfaces.add("IMethodCodeUpdate");
+        }
+        MemberExpressionNode memberExpressionNode = null;
+
+        if (!incremental) {
+            /*
+                   {
+                     LiveCodeRegistry.getInstance().putMethod("com.example.Main.foo", LiveMethod_com_example_Main_foo);
+                   }
+                */
+            ArgumentListNode args = new ArgumentListNode(
+                    new LiteralStringNode(LiveCodingUtil.constructLiveCodingMethodId(functionDefinitionNode, className)),
+                    -1
+            );
+            args.items.add(TreeUtil.createIdentifier(liveCodingClassName));
+            memberExpressionNode = new MemberExpressionNode(
+                    TreeUtil.createCall("LiveCodeRegistry", "getInstance", null),
+                    new CallExpressionNode(new IdentifierNode("putMethod", -1), args),
+                    -1
+            );
+            ExpressionStatementNode expressionStatementNode = new ExpressionStatementNode(new ListNode(null, memberExpressionNode, -1));
+            classCONode.staticInitializer.add(expressionStatementNode);
+        }
+
+        if (!staticMethod) {
+            /*
+               public var thisScope : Main;
+            */
+            classCONode.fields.add(new FieldCONode("thisScope", className));
+
+            /*
+               public function LiveMethod_com_example_Main_foo( thisScope : Main ){
+                   this.thisScope = thisScope;
+               }
+            */
+            MethodCONode constructor = new MethodCONode(liveCodingClassName, null, cx);
+            constructor.addParameter("thisScope", className);
+            memberExpressionNode = new MemberExpressionNode(
+                    new ThisExpressionNode(),
+                    new SetExpressionNode(
+                            new IdentifierNode("thisScope", -1),
+                            new ArgumentListNode(TreeUtil.createIdentifier("thisScope"), -1)
+                    ),
+                    -1
+            );
+            constructor.statements.add(new ListNode(null, memberExpressionNode, -1));
+            constructor.statements.add(new ReturnStatementNode(null));
+            classCONode.methods.add(constructor);
+        }
+
+        /*
+            public function run (  ) : void {
+                LiveCodingCodeFlowUtil.checkRecursion("com.example.LiveMethod_com_example_Main_foo.run");
+                try {
+                    ...
+                } catch ( e : Error ) {
+
+                }
+                [return null;]
+            }
+         */
+
+        MethodCONode runMethod = new MethodCONode(
+                "run",
+                methodResult == null ? null : ((IdentifierNode) ((MemberExpressionNode) methodResult.expr).selector.expr).name, // TODO: rewrite
+                cx
+        );
+        runMethod.statements.add(new ExpressionStatementNode(new ListNode(null,
+                TreeUtil.createCall(
+                        "LiveCodingCodeFlowUtil",
+                        "checkRecursion",
+                        new ArgumentListNode(new LiteralStringNode(packageName + "." + liveCodingClassName + ".run"), -1)
+                ),
+                -1)));
+        StatementListNode tryblock = new StatementListNode(null);
+        methodBody.removeLast(); // Removes last ReturnStatement
+        tryblock.items.addAll(methodBody); // TODO: Method body is unmodified here!
+        StatementListNode catchlist = new StatementListNode(new CatchClauseNode(
+                TreeUtil.createParameterNode("e", "Error"),
+                new StatementListNode(null))
+        );
+        runMethod.statements.add(new TryStatementNode(tryblock, catchlist, null));
+        if (methodResult != null) {
+            runMethod.statements.add(new ReturnStatementNode(new ListNode(null, new LiteralNullNode(), -1)));
+        }
+        runMethod.statements.add(new ReturnStatementNode(null));
+        classCONode.methods.add(runMethod);
+
+        if (incremental) {
+            /*
+                public function getMethodId (  ) : String {
+                    return "com.example.Main.foo";
+                }
+             */
+            MethodCONode getMethodIdNode = new MethodCONode("getMethodId", "String", cx);
+            getMethodIdNode.statements.add(new ReturnStatementNode(new ListNode(
+                    null,
+                    new LiteralStringNode(LiveCodingUtil.constructLiveCodingMethodId(functionDefinitionNode, className)),
+                    -1
+            )));
+            getMethodIdNode.statements.add(new ReturnStatementNode(null));
+            classCONode.methods.add(getMethodIdNode);
+
+            /*
+               public function getMethodUpdateTime (  ) : String {
+                   return "1361962995859";
+               }
+            */
+            MethodCONode getMethodUpdateTime = new MethodCONode("getMethodUpdateTime", "String", cx);
+            getMethodUpdateTime.statements.add(new ReturnStatementNode(new ListNode(
+                    null,
+                    new LiteralStringNode(timeStamp),
+                    -1
+            )));
+            getMethodUpdateTime.statements.add(new ReturnStatementNode(null));
+            classCONode.methods.add(getMethodUpdateTime);
+        }
+
+        classCONode.addToProject();
+
+        return liveCodingClassName;
     }
 }

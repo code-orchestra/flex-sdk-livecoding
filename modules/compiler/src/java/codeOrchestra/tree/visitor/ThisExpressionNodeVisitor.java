@@ -10,7 +10,7 @@ public class ThisExpressionNodeVisitor extends NodeVisitor<ThisExpressionNode> {
     protected StuffToCompare createStuffToCompare(ThisExpressionNode left, ThisExpressionNode right) {
         StuffToCompare stuffToCompare = new StuffToCompare();
 
-		
+		// Nothing here
 
         return stuffToCompare;
     }

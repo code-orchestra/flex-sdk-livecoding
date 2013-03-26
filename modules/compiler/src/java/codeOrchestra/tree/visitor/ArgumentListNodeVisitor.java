@@ -13,8 +13,7 @@ public class ArgumentListNodeVisitor extends NodeVisitor<ArgumentListNode> {
         stuffToCompare.leftChildren.addAll(left.items);
         stuffToCompare.rightChildren.addAll(right.items);
 
-        stuffToCompare.leftLeaves.addAll(left.expected_types);
-        stuffToCompare.rightLeaves.addAll(right.expected_types);
+        // expected_types == null right after parse1 phase
 
         stuffToCompare.leftLeaves.add(left.decl_styles);
         stuffToCompare.rightLeaves.add(right.decl_styles);

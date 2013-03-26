@@ -1,18 +1,13 @@
 package codeOrchestra;
 
 import codeOrchestra.tree.TreeNavigator;
+import codeOrchestra.tree.TreeUtil;
 import codeOrchestra.tree.visitor.NodeVisitor;
 import codeOrchestra.tree.visitor.NodeVisitorFactory;
 import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
-import macromedia.asc.util.Context;
+import macromedia.asc.util.ObjectList;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,43 +15,50 @@ import java.util.List;
  */
 public class LCIncrementalExtension extends AbstractTreeModificationExtension {
 
-    private final String liveCodingClassName;
-    private final String liveCodingPackageName;
+    private final String initialClassName;
+    private final String initialPackageName;
 
     public LCIncrementalExtension(String fqClassName) {
         String[] parts = fqClassName.split(":");
-        liveCodingPackageName = parts[0];
-        liveCodingClassName = parts[1];
+        initialPackageName = parts[0];
+        initialClassName = parts[1];
     }
 
     @Override
     protected void performModifications(CompilationUnit unit) {
-        ClassDefinitionNode modifiedClass = TreeNavigator.getClassDefinition(unit);
-        if (!(liveCodingPackageName.equals(modifiedClass.pkgdef.name.id.pkg_part) && liveCodingClassName.equals(modifiedClass.name.name))) {
+        long l = System.currentTimeMillis();
+
+        ClassDefinitionNode classDefinitionNode = TreeNavigator.getClassDefinition(unit);
+        String className = classDefinitionNode.name.name;
+        if (!(initialPackageName.equals(classDefinitionNode.pkgdef.name.id.pkg_part) && initialClassName.equals(className))) {
             return;
         }
 
         loadSyntaxTrees();
         saveSyntaxTree(unit);
-        ProgramNode syntaxTree = projectNavigator.getSyntaxTree(modifiedClass.pkgdef.name.id.pkg_part, modifiedClass.name.name);
+        ProgramNode syntaxTree = projectNavigator.getSyntaxTree(classDefinitionNode.pkgdef.name.id.pkg_part, className);
         ClassDefinitionNode originalClass = TreeNavigator.getClassDefinition(syntaxTree);
-        FunctionDefinitionNode changedMethod = findChangedMethod(originalClass, modifiedClass);
+
+        FunctionDefinitionNode changedMethod = findChangedMethod(originalClass, classDefinitionNode);
+        System.out.println("Comparison of files took " + (System.currentTimeMillis() - l) + "ms");
 
         if (changedMethod != null) {
-            processMethod(changedMethod);
+            ObjectList<Node> oldBody = changedMethod.fexpr.body.items;
+            changedMethod.fexpr.body.items = new ObjectList<Node>();
+            String liveCodingClassName = addLiveCodingClass(className, changedMethod, oldBody, true);
+
+            FunctionDefinitionNode constructor = TreeUtil.removeAllMethodsAndClearConstructor(classDefinitionNode);
+            constructor.fexpr.body.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(liveCodingClassName), -1)));
+            TreeUtil.addImport(unit, "codeOrchestra.liveCoding.load", liveCodingClassName);
         }
     }
 
-    private void processMethod(FunctionDefinitionNode functionDefinitionNode) {
-        System.out.println(functionDefinitionNode.name.identifier.name);
-    }
-
-    /*
-        Returns first changed method
-
-        We hope that:
-            only one method can be changed in one incremental step
-            method order remains unchanged
+    /**
+     * Returns first changed method
+     *
+     * We hope that:
+     *  only one method can be changed in one incremental step
+     *  method order remains unchanged
      */
     private FunctionDefinitionNode findChangedMethod(ClassDefinitionNode originalClass, ClassDefinitionNode modifiedClass) {
         List<FunctionDefinitionNode> originalMethodDefinitions = TreeNavigator.getMethodDefinitions(originalClass);
@@ -74,7 +76,6 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
             if (!visitor.compareTrees(oM, mM)) {
                 return mM;
             }
-
         }
 
         return null;

@@ -8,18 +8,31 @@ import macromedia.asc.semantics.TypeInfo;
 import macromedia.asc.util.NumberConstant;
 import macromedia.asc.util.NumberUsage;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
  */
 public abstract class NodeVisitor<N extends Node> {
 
+    private Map<N, Integer> visitedNodes = new HashMap<N, Integer>();
+    private static boolean testMode = false;
+
     /**
      * This is implemented only for comparing function bodies!
      */
     public boolean compareTrees(N left, N right) {
+        if (testMode) {
+            // Infinite recursion check
+            if (visitedNodes.containsKey(left)) {
+                visitedNodes.put(left, visitedNodes.get(left) + 1);
+            } else {
+                visitedNodes.put(left, 0);
+            }
+            if (visitedNodes.get(left) > 30) {
+                throw new RuntimeException();
+            }
+        }
         StuffToCompare stuffToCompare = createStuffToCompare(left, right);
         return compare(stuffToCompare);
     }
@@ -64,6 +77,9 @@ public abstract class NodeVisitor<N extends Node> {
         }
         if (left == null || right == null) {
             return false;
+        }
+        if (left instanceof Node || right instanceof Node) {
+            throw new RuntimeException();
         }
         if (left.getClass() != right.getClass()) {
             return false;
@@ -145,6 +161,12 @@ public abstract class NodeVisitor<N extends Node> {
 
     private boolean compareMetaDatas(MetaData left, MetaData right) {
         if (!compareObjects(left.id, right.id)) {
+            return false;
+        }
+        if (left.values == null && right.values == null) {
+            return true;
+        }
+        if (left.values == null || right.values == null) {
             return false;
         }
         if (left.values.length != right.values.length) {

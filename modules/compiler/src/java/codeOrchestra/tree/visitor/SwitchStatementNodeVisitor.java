@@ -10,7 +10,14 @@ public class SwitchStatementNodeVisitor extends NodeVisitor<SwitchStatementNode>
     protected StuffToCompare createStuffToCompare(SwitchStatementNode left, SwitchStatementNode right) {
         StuffToCompare stuffToCompare = new StuffToCompare();
 
-		
+        stuffToCompare.leftChildren.add(left.expr);
+        stuffToCompare.rightChildren.add(right.expr);
+
+        stuffToCompare.leftChildren.add(left.statements);
+        stuffToCompare.rightChildren.add(right.statements);
+
+        stuffToCompare.leftLeaves.add(left.loop_index);
+        stuffToCompare.rightLeaves.add(right.loop_index);
 
         return stuffToCompare;
     }

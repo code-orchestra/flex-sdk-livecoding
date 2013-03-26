@@ -28,8 +28,8 @@ import static macromedia.asc.parser.Tokens.*;
  */
 public class DocCommentNode extends MetaDataNode
 {
-    MetaDataNode metaData; // some comments are associated with other metadata (in addition to a definition)
-    boolean is_default;
+    public MetaDataNode metaData; // some comments are associated with other metadata (in addition to a definition)
+    public boolean is_default;
 
      DocCommentNode(LiteralArrayNode data)
 	{

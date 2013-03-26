@@ -10,7 +10,8 @@ public class SuperExpressionNodeVisitor extends NodeVisitor<SuperExpressionNode>
     protected StuffToCompare createStuffToCompare(SuperExpressionNode left, SuperExpressionNode right) {
         StuffToCompare stuffToCompare = new StuffToCompare();
 
-		
+        stuffToCompare.leftChildren.add(left.expr);
+        stuffToCompare.rightChildren.add(right.expr);
 
         return stuffToCompare;
     }

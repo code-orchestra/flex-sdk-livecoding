@@ -10,7 +10,14 @@ public class WithStatementNodeVisitor extends NodeVisitor<WithStatementNode> {
     protected StuffToCompare createStuffToCompare(WithStatementNode left, WithStatementNode right) {
         StuffToCompare stuffToCompare = new StuffToCompare();
 
-		
+        stuffToCompare.leftChildren.add(left.expr);
+        stuffToCompare.rightChildren.add(right.expr);
+
+        stuffToCompare.leftChildren.add(left.statement);
+        stuffToCompare.rightChildren.add(right.statement);
+
+        stuffToCompare.leftLeaves.add(left.activation);
+        stuffToCompare.rightLeaves.add(right.activation);
 
         return stuffToCompare;
     }

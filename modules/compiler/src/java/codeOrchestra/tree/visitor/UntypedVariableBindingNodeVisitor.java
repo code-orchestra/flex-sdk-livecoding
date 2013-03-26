@@ -10,7 +10,14 @@ public class UntypedVariableBindingNodeVisitor extends NodeVisitor<UntypedVariab
     protected StuffToCompare createStuffToCompare(UntypedVariableBindingNode left, UntypedVariableBindingNode right) {
         StuffToCompare stuffToCompare = new StuffToCompare();
 
-		
+        stuffToCompare.leftChildren.add(left.identifier);
+        stuffToCompare.rightChildren.add(right.identifier);
+
+        stuffToCompare.leftChildren.add(left.initializer);
+        stuffToCompare.rightChildren.add(right.initializer);
+
+        stuffToCompare.leftLeaves.add(left.ref);
+        stuffToCompare.rightLeaves.add(right.ref);
 
         return stuffToCompare;
     }

@@ -10,7 +10,8 @@ public class RestExpressionNodeVisitor extends NodeVisitor<RestExpressionNode> {
     protected StuffToCompare createStuffToCompare(RestExpressionNode left, RestExpressionNode right) {
         StuffToCompare stuffToCompare = new StuffToCompare();
 
-		
+        stuffToCompare.leftChildren.add(left.expr);
+        stuffToCompare.rightChildren.add(right.expr);
 
         return stuffToCompare;
     }

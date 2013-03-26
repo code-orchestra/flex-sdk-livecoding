@@ -134,4 +134,8 @@ public abstract class SelectorNode extends Node
 	{
 		return skip;
 	}
+
+    public int getFlags() {
+        return flags;
+    }
 }

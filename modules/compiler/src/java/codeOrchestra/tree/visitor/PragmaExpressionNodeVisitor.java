@@ -10,7 +10,11 @@ public class PragmaExpressionNodeVisitor extends NodeVisitor<PragmaExpressionNod
     protected StuffToCompare createStuffToCompare(PragmaExpressionNode left, PragmaExpressionNode right) {
         StuffToCompare stuffToCompare = new StuffToCompare();
 
-		
+        stuffToCompare.leftChildren.add(left.identifier);
+        stuffToCompare.rightChildren.add(right.identifier);
+
+        stuffToCompare.leftChildren.add(left.arg);
+        stuffToCompare.rightChildren.add(right.arg);
 
         return stuffToCompare;
     }

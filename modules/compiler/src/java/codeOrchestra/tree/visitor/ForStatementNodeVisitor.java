@@ -1,33 +1,30 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.ForStatementNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class ForStatementNodeVisitor extends NodeVisitor<ForStatementNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(ForStatementNode left, ForStatementNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final ForStatementNode node) {
+        return new ArrayList<Node>() {{
+            add(node.initialize);
+            add(node.test);
+            add(node.increment);
+            add(node.statement);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.initialize);
-        stuffToCompare.rightChildren.add(right.initialize);
-
-        stuffToCompare.leftChildren.add(left.test);
-        stuffToCompare.rightChildren.add(right.test);
-
-        stuffToCompare.leftChildren.add(left.increment);
-        stuffToCompare.rightChildren.add(right.increment);
-
-        stuffToCompare.leftChildren.add(left.statement);
-        stuffToCompare.rightChildren.add(right.statement);
-
-        stuffToCompare.leftLeaves.add(left.is_forin);
-        stuffToCompare.rightLeaves.add(right.is_forin);
-
-        stuffToCompare.leftLeaves.add(left.loop_index);
-        stuffToCompare.rightLeaves.add(right.loop_index);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final ForStatementNode node) {
+        return new ArrayList<Object>() {{
+            add(node.is_forin);
+            add(node.loop_index);
+        }};
     }
 }

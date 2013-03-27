@@ -1,30 +1,28 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.SelectorNode;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public abstract class SelectorNodeVisitor<N extends SelectorNode> extends NodeVisitor<N> {
     @Override
-    protected StuffToCompare createStuffToCompare(SelectorNode left, SelectorNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(N node) {
+        return Collections.singletonList(node.expr);
+    }
 
-        stuffToCompare.leftChildren.add(left.expr);
-        stuffToCompare.rightChildren.add(right.expr);
-
-        stuffToCompare.leftLeaves.add(left.base);
-        stuffToCompare.rightLeaves.add(right.base);
-
-        stuffToCompare.leftLeaves.add(left.ref);
-        stuffToCompare.rightLeaves.add(right.ref);
-
-        stuffToCompare.leftLeaves.add(left.is_package);
-        stuffToCompare.rightLeaves.add(right.is_package);
-
-        stuffToCompare.leftLeaves.add(left.getFlags());
-        stuffToCompare.rightLeaves.add(right.getFlags());
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final N node) {
+        return new ArrayList<Object>() {{
+            add(node.base);
+            add(node.ref);
+            add(node.is_package);
+            add(node.getFlags());
+        }};
     }
 }

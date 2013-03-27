@@ -1,24 +1,26 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.MemberExpressionNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class MemberExpressionNodeVisitor extends NodeVisitor<MemberExpressionNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(MemberExpressionNode left, MemberExpressionNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final MemberExpressionNode node) {
+        return new ArrayList<Node>() {{
+            add(node.base);
+            add(node.selector);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.base);
-        stuffToCompare.rightChildren.add(right.base);
-
-        stuffToCompare.leftChildren.add(left.selector);
-        stuffToCompare.rightChildren.add(right.selector);
-
-        stuffToCompare.leftLeaves.add(left.ref);
-        stuffToCompare.rightLeaves.add(right.ref);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(MemberExpressionNode node) {
+        return Collections.<Object>singletonList(node.ref);
     }
 }

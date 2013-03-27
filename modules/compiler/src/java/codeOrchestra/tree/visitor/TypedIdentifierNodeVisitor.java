@@ -1,24 +1,26 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.TypedIdentifierNode;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class TypedIdentifierNodeVisitor extends NodeVisitor<TypedIdentifierNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(TypedIdentifierNode left, TypedIdentifierNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final TypedIdentifierNode node) {
+        return new ArrayList<Node>() {{
+            add(node.identifier);
+            add(node.type);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.identifier);
-        stuffToCompare.rightChildren.add(right.identifier);
-
-        stuffToCompare.leftChildren.add(left.type);
-        stuffToCompare.rightChildren.add(right.type);
-
-        stuffToCompare.leftLeaves.add(left.no_anno);
-        stuffToCompare.rightLeaves.add(right.no_anno);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(TypedIdentifierNode node) {
+        return Collections.<Object>singletonList(node.no_anno);
     }
 }

@@ -1,27 +1,26 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.AttributeListNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class AttributeListNodeVisitor extends NodeVisitor<AttributeListNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(AttributeListNode left, AttributeListNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(AttributeListNode node) {
+        return node.items;
+    }
 
-        stuffToCompare.leftChildren.addAll(left.items);
-        stuffToCompare.rightChildren.addAll(right.items);
-
-        stuffToCompare.leftLeaves.addAll(left.namespaces);
-        stuffToCompare.rightLeaves.addAll(right.namespaces);
-
-        stuffToCompare.leftLeaves.addAll(left.namespace_ids);
-        stuffToCompare.rightLeaves.addAll(right.namespace_ids);
-
-        stuffToCompare.leftLeaves.add(left.getUserNamespace());
-        stuffToCompare.rightLeaves.add(right.getUserNamespace());
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final AttributeListNode node) {
+        return new ArrayList<Object>() {{
+            add(node.namespaces);
+            add(node.namespace_ids);
+            add(node.getUserNamespace());
+        }};
     }
 }

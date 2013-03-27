@@ -1,27 +1,28 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.LiteralNumberNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class LiteralNumberNodeVisitor extends NodeVisitor<LiteralNumberNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(LiteralNumberNode left, LiteralNumberNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(LiteralNumberNode node) {
+        return Collections.emptyList();
+    }
 
-        stuffToCompare.leftLeaves.add(left.type);
-        stuffToCompare.rightLeaves.add(right.type);
-
-        stuffToCompare.leftLeaves.add(left.value);
-        stuffToCompare.rightLeaves.add(right.value);
-
-        stuffToCompare.leftLeaves.add(left.numericValue);
-        stuffToCompare.rightLeaves.add(right.numericValue);
-
-        stuffToCompare.leftLeaves.add(left.numberUsage);
-        stuffToCompare.rightLeaves.add(right.numberUsage);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final LiteralNumberNode node) {
+        return new ArrayList<Object>() {{
+            add(node.type);
+            add(node.value);
+            add(node.numericValue);
+            add(node.numberUsage);
+        }};
     }
 }

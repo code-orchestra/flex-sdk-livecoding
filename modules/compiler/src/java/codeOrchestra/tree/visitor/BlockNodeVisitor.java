@@ -1,21 +1,26 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.BlockNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class BlockNodeVisitor extends NodeVisitor<BlockNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(BlockNode left, BlockNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final BlockNode node) {
+        return new ArrayList<Node>() {{
+            add(node.attributes);
+            add(node.statements);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.attributes);
-        stuffToCompare.rightChildren.add(right.attributes);
-
-        stuffToCompare.leftChildren.add(left.statements);
-        stuffToCompare.rightChildren.add(right.statements);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(BlockNode node) {
+        return Collections.emptyList();
     }
 }

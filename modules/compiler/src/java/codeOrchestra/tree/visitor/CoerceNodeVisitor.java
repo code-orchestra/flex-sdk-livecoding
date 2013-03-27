@@ -1,30 +1,28 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.CoerceNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class CoerceNodeVisitor extends NodeVisitor<CoerceNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(CoerceNode left, CoerceNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(CoerceNode node) {
+        return Collections.singletonList(node.expr);
+    }
 
-        stuffToCompare.leftChildren.add(left.expr);
-        stuffToCompare.rightChildren.add(right.expr);
-
-        stuffToCompare.leftLeaves.add(left.actual);
-        stuffToCompare.rightLeaves.add(right.actual);
-
-        stuffToCompare.leftLeaves.add(left.expected);
-        stuffToCompare.rightLeaves.add(right.expected);
-
-        stuffToCompare.leftLeaves.add(left.void_result);
-        stuffToCompare.rightLeaves.add(right.void_result);
-
-        stuffToCompare.leftLeaves.add(left.is_explicit);
-        stuffToCompare.rightLeaves.add(right.is_explicit);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final CoerceNode node) {
+        return new ArrayList<Object>() {{
+            add(node.actual);
+            add(node.expected);
+            add(node.void_result);
+            add(node.is_explicit);
+        }};
     }
 }

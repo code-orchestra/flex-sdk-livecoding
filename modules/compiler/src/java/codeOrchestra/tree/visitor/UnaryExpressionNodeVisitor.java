@@ -1,29 +1,27 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.UnaryExpressionNode;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class UnaryExpressionNodeVisitor extends NodeVisitor<UnaryExpressionNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(UnaryExpressionNode left, UnaryExpressionNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(UnaryExpressionNode node) {
+        return Collections.singletonList(node.expr);
+    }
 
-        stuffToCompare.leftChildren.add(left.expr);
-        stuffToCompare.rightChildren.add(right.expr);
-
-        stuffToCompare.leftLeaves.add(left.op);
-        stuffToCompare.rightLeaves.add(right.op);
-
-        stuffToCompare.leftLeaves.add(left.ref);
-        stuffToCompare.rightLeaves.add(right.ref);
-
-        // TODO: Slot?
-
-        stuffToCompare.leftLeaves.add(left.numberUsage);
-        stuffToCompare.rightLeaves.add(right.numberUsage);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final UnaryExpressionNode node) {
+        return new ArrayList<Object>() {{
+            add(node.op);
+            add(node.ref);
+            add(node.numberUsage);
+        }};
     }
 }

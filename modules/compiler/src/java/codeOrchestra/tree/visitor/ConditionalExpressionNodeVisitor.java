@@ -1,30 +1,29 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.ConditionalExpressionNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class ConditionalExpressionNodeVisitor extends NodeVisitor<ConditionalExpressionNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(ConditionalExpressionNode left, ConditionalExpressionNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final ConditionalExpressionNode node) {
+        return new ArrayList<Node>() {{
+            add(node.condition);
+            add(node.thenexpr);
+            add(node.elseexpr);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.condition);
-        stuffToCompare.rightChildren.add(right.condition);
-
-        stuffToCompare.leftChildren.add(left.thenexpr);
-        stuffToCompare.rightChildren.add(right.thenexpr);
-
-        stuffToCompare.leftChildren.add(left.elseexpr);
-        stuffToCompare.rightChildren.add(right.elseexpr);
-
-        stuffToCompare.leftLeaves.add(left.thenvalue);
-        stuffToCompare.rightLeaves.add(right.thenvalue);
-
-        stuffToCompare.leftLeaves.add(left.elsevalue);
-        stuffToCompare.rightLeaves.add(right.elsevalue);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final ConditionalExpressionNode node) {
+        return new ArrayList<Object>() {{
+            add(node.thenvalue);
+            add(node.elsevalue);
+        }};
     }
 }

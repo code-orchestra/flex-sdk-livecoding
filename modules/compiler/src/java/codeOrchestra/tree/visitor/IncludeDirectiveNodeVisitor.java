@@ -1,17 +1,25 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.IncludeDirectiveNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
-public class IncludeDirectiveNodeVisitor extends NodeVisitor<IncludeDirectiveNode> {
+public class IncludeDirectiveNodeVisitor extends DefinitionNodeVisitor<IncludeDirectiveNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(IncludeDirectiveNode left, IncludeDirectiveNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final IncludeDirectiveNode node) {
+        return new ArrayList<Node>() {{
+            addAll(IncludeDirectiveNodeVisitor.super.getChildren(node));
+            add(node.filespec);
+        }};
+    }
 
-		
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(IncludeDirectiveNode node) {
+        return super.getLeaves(node);
     }
 }

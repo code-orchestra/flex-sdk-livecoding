@@ -1,18 +1,25 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.UseRoundingNode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class UseRoundingNodeVisitor extends UsePragmaNodeVisitor<UseRoundingNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(UseRoundingNode left, UseRoundingNode right) {
-        StuffToCompare stuffToCompare = super.createStuffToCompare(left, right);
+    protected List<Node> getChildren(UseRoundingNode node) {
+        return super.getChildren(node);
+    }
 
-        stuffToCompare.leftLeaves.add(left.mode);
-        stuffToCompare.rightLeaves.add(right.mode);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final UseRoundingNode node) {
+        return new ArrayList<Object>() {{
+            addAll(UseRoundingNodeVisitor.super.getChildren(node));
+            add(node.mode);
+        }};
     }
 }

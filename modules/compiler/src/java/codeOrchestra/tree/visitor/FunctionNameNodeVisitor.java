@@ -1,21 +1,22 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.FunctionNameNode;
+import macromedia.asc.parser.Node;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class FunctionNameNodeVisitor extends NodeVisitor<FunctionNameNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(FunctionNameNode left, FunctionNameNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(FunctionNameNode node) {
+        return Collections.<Node>singletonList(node.identifier);
+    }
 
-        stuffToCompare.leftChildren.add(left.identifier);
-        stuffToCompare.rightChildren.add(right.identifier);
-
-        stuffToCompare.leftLeaves.add(left.kind);
-        stuffToCompare.rightLeaves.add(right.kind);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(FunctionNameNode node) {
+        return Collections.<Object>singletonList(node.kind);
     }
 }

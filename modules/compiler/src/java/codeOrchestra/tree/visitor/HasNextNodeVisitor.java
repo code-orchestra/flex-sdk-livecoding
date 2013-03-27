@@ -1,21 +1,26 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.HasNextNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class HasNextNodeVisitor extends NodeVisitor<HasNextNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(HasNextNode left, HasNextNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final HasNextNode node) {
+        return new ArrayList<Node>() {{
+            add(node.indexRegister);
+            add(node.objectRegister);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.indexRegister);
-        stuffToCompare.rightChildren.add(right.indexRegister);
-
-        stuffToCompare.leftChildren.add(left.objectRegister);
-        stuffToCompare.rightChildren.add(right.objectRegister);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(HasNextNode node) {
+        return Collections.emptyList();
     }
 }

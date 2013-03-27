@@ -1,18 +1,22 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.LiteralRegExpNode;
+import macromedia.asc.parser.Node;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class LiteralRegExpNodeVisitor extends NodeVisitor<LiteralRegExpNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(LiteralRegExpNode left, LiteralRegExpNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(LiteralRegExpNode node) {
+        return Collections.emptyList();
+    }
 
-        stuffToCompare.leftLeaves.add(left.value);
-        stuffToCompare.rightLeaves.add(right.value);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(LiteralRegExpNode node) {
+        return Collections.<Object>singletonList(node.value);
     }
 }

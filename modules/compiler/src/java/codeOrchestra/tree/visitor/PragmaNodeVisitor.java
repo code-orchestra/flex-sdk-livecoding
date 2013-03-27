@@ -1,18 +1,22 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.PragmaNode;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class PragmaNodeVisitor extends NodeVisitor<PragmaNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(PragmaNode left, PragmaNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(PragmaNode node) {
+        return Collections.<Node>singletonList(node.list);
+    }
 
-        stuffToCompare.leftChildren.add(left.list);
-        stuffToCompare.rightChildren.add(right.list);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(PragmaNode node) {
+        return Collections.emptyList();
     }
 }

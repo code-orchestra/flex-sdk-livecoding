@@ -1,18 +1,25 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.ListErrorNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class ListErrorNodeVisitor extends ListNodeVisitor<ListErrorNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(ListErrorNode left, ListErrorNode right) {
-        StuffToCompare stuffToCompare = super.createStuffToCompare(left, right);
+    protected List<Node> getChildren(final ListErrorNode node) {
+        return super.getChildren(node);
+    }
 
-        stuffToCompare.leftLeaves.add(left.value);
-        stuffToCompare.rightLeaves.add(right.value);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final ListErrorNode node) {
+        return new ArrayList<Object>() {{
+            addAll(ListErrorNodeVisitor.super.getLeaves(node));
+            add(node.value);
+        }};
     }
 }

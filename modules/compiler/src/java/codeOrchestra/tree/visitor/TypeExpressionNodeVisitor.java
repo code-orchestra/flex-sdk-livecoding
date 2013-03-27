@@ -1,24 +1,26 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.TypeExpressionNode;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class TypeExpressionNodeVisitor extends NodeVisitor<TypeExpressionNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(TypeExpressionNode left, TypeExpressionNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(TypeExpressionNode node) {
+        return Collections.singletonList(node.expr);
+    }
 
-        stuffToCompare.leftChildren.add(left.expr);
-        stuffToCompare.rightChildren.add(right.expr);
-
-        stuffToCompare.leftLeaves.add(left.nullable_annotation);
-        stuffToCompare.rightLeaves.add(right.nullable_annotation);
-
-        stuffToCompare.leftLeaves.add(left.is_nullable);
-        stuffToCompare.rightLeaves.add(right.is_nullable);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final TypeExpressionNode node) {
+        return new ArrayList<Object>() {{
+            add(node.nullable_annotation);
+            add(node.is_nullable);
+        }};
     }
 }

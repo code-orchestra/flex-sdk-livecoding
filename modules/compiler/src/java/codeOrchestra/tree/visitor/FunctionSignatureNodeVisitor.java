@@ -1,29 +1,28 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.FunctionSignatureNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class FunctionSignatureNodeVisitor extends NodeVisitor<FunctionSignatureNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(FunctionSignatureNode left, FunctionSignatureNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final FunctionSignatureNode node) {
+        return new ArrayList<Node>() {{
+            add(node.parameter);
+            add(node.result);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.parameter);
-        stuffToCompare.rightChildren.add(right.parameter);
-
-        stuffToCompare.leftChildren.add(left.result);
-        stuffToCompare.rightChildren.add(right.result);
-
-        // TODO inits ?
-
-        stuffToCompare.leftLeaves.add(left.type);
-        stuffToCompare.rightLeaves.add(right.type);
-
-        stuffToCompare.leftLeaves.add(left.typeref);
-        stuffToCompare.rightLeaves.add(right.typeref);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final FunctionSignatureNode node) {
+        return new ArrayList<Object>() {{
+            add(node.type);
+            add(node.typeref);
+        }};
     }
 }

@@ -1,24 +1,26 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.SwitchStatementNode;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class SwitchStatementNodeVisitor extends NodeVisitor<SwitchStatementNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(SwitchStatementNode left, SwitchStatementNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final SwitchStatementNode node) {
+        return new ArrayList<Node>() {{
+            add(node.expr);
+            add(node.statements);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.expr);
-        stuffToCompare.rightChildren.add(right.expr);
-
-        stuffToCompare.leftChildren.add(left.statements);
-        stuffToCompare.rightChildren.add(right.statements);
-
-        stuffToCompare.leftLeaves.add(left.loop_index);
-        stuffToCompare.rightLeaves.add(right.loop_index);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(SwitchStatementNode node) {
+        return Collections.<Object>singletonList(node.loop_index);
     }
 }

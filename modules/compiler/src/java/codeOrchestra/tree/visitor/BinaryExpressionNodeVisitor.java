@@ -1,32 +1,29 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.BinaryExpressionNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class BinaryExpressionNodeVisitor extends NodeVisitor<BinaryExpressionNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(BinaryExpressionNode left, BinaryExpressionNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final BinaryExpressionNode node) {
+        return new ArrayList<Node>() {{
+            add(node.lhs);
+            add(node.rhs);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.lhs);
-        stuffToCompare.rightChildren.add(right.lhs);
-
-        stuffToCompare.leftChildren.add(left.rhs);
-        stuffToCompare.rightChildren.add(right.rhs);
-
-        stuffToCompare.leftLeaves.add(left.op);
-        stuffToCompare.rightLeaves.add(right.op);
-
-        // TODO: Do we need to compare slots?
-
-        stuffToCompare.leftLeaves.add(left.lhstype);
-        stuffToCompare.rightLeaves.add(right.rhstype);
-
-        stuffToCompare.leftLeaves.add(left.numberUsage);
-        stuffToCompare.rightLeaves.add(right.numberUsage);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final BinaryExpressionNode node) {
+        return new ArrayList<Object>() {{
+            add(node.op);
+            add(node.lhstype);
+            add(node.rhstype);
+        }};
     }
 }

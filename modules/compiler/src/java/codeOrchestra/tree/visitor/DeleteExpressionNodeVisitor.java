@@ -1,20 +1,25 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.DeleteExpressionNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class DeleteExpressionNodeVisitor extends SelectorNodeVisitor<DeleteExpressionNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(DeleteExpressionNode left, DeleteExpressionNode right) {
-        StuffToCompare stuffToCompare = super.createStuffToCompare(left, right);
+    protected List<Node> getChildren(DeleteExpressionNode node) {
+        return super.getChildren(node);
+    }
 
-        // TODO: Slot?
-
-        stuffToCompare.leftLeaves.add(left.op);
-        stuffToCompare.rightLeaves.add(right.op);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final DeleteExpressionNode node) {
+        return new ArrayList<Object>() {{
+            addAll(DeleteExpressionNodeVisitor.super.getLeaves(node));
+            add(node.op);
+        }};
     }
 }

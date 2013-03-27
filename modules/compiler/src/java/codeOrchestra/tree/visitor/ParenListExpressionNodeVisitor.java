@@ -1,18 +1,22 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.ParenListExpressionNode;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class ParenListExpressionNodeVisitor extends NodeVisitor<ParenListExpressionNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(ParenListExpressionNode left, ParenListExpressionNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(ParenListExpressionNode node) {
+        return Collections.singletonList(node.expr);
+    }
 
-        stuffToCompare.leftChildren.add(left.expr);
-        stuffToCompare.rightChildren.add(right.expr);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(ParenListExpressionNode node) {
+        return Collections.emptyList();
     }
 }

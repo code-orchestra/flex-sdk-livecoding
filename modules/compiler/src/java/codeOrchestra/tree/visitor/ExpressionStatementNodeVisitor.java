@@ -1,30 +1,28 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.ExpressionStatementNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class ExpressionStatementNodeVisitor extends NodeVisitor<ExpressionStatementNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(ExpressionStatementNode left, ExpressionStatementNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(ExpressionStatementNode node) {
+        return Collections.singletonList(node.expr);
+    }
 
-        stuffToCompare.leftChildren.add(left.expr);
-        stuffToCompare.rightChildren.add(right.expr);
-
-        stuffToCompare.leftLeaves.add(left.gen_bits);
-        stuffToCompare.rightLeaves.add(right.gen_bits);
-
-        stuffToCompare.leftLeaves.add(left.ref);
-        stuffToCompare.rightLeaves.add(right.ref);
-
-        stuffToCompare.leftLeaves.add(left.expected_type);
-        stuffToCompare.rightLeaves.add(right.expected_type);
-
-        stuffToCompare.leftLeaves.add(left.is_var_stmt);
-        stuffToCompare.rightLeaves.add(right.is_var_stmt);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final ExpressionStatementNode node) {
+        return new ArrayList<Object>() {{
+            add(node.gen_bits);
+            add(node.ref);
+            add(node.expected_type);
+            add(node.is_var_stmt);
+        }};
     }
 }

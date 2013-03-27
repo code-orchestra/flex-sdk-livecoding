@@ -1,23 +1,22 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.MetaDataNode;
+import macromedia.asc.parser.Node;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class MetaDataNodeVisitor<N extends MetaDataNode> extends NodeVisitor<N> {
     @Override
-    protected StuffToCompare createStuffToCompare(MetaDataNode left, MetaDataNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(N node) {
+        return Collections.<Node>singletonList(node.data);
+    }
 
-        stuffToCompare.leftChildren.add(left.data);
-        stuffToCompare.rightChildren.add(right.data);
-
-        // def is a back-reference, ignore it
-
-        stuffToCompare.leftLeaves.add(left.getMetadata());
-        stuffToCompare.rightLeaves.add(right.getMetadata());
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(N node) {
+        return Collections.<Object>singletonList(node.getMetadata());
     }
 }

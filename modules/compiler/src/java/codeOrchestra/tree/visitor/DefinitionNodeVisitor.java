@@ -1,26 +1,26 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.DefinitionNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public abstract class DefinitionNodeVisitor<N extends DefinitionNode> extends NodeVisitor<N> {
     @Override
-    protected StuffToCompare createStuffToCompare(DefinitionNode left, DefinitionNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final N node) {
+        return new ArrayList<Node>() {{
+            add(node.attrs);
+            add(node.metaData);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.attrs);
-        stuffToCompare.rightChildren.add(right.attrs);
-
-        stuffToCompare.leftChildren.add(left.metaData);
-        stuffToCompare.rightChildren.add(right.metaData);
-
-        // pkgdef is a back-reference, so we do not visit it
-
-        stuffToCompare.leftLeaves.add(left.skip());
-        stuffToCompare.rightLeaves.add(right.skip());
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(N node) {
+        return Collections.<Object>singletonList(node.skip());
     }
 }

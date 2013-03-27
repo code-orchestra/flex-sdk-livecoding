@@ -1,39 +1,32 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.ParameterNode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class ParameterNodeVisitor<N extends ParameterNode> extends NodeVisitor<N> {
     @Override
-    protected StuffToCompare createStuffToCompare(ParameterNode left, ParameterNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final N node) {
+        return new ArrayList<Node>() {{
+            add(node.identifier);
+            add(node.type);
+            add(node.init);
+            add(node.attrs);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.identifier);
-        stuffToCompare.rightChildren.add(right.identifier);
-
-        stuffToCompare.leftChildren.add(left.type);
-        stuffToCompare.rightChildren.add(right.type);
-
-        stuffToCompare.leftChildren.add(left.init);
-        stuffToCompare.rightChildren.add(right.init);
-
-        stuffToCompare.leftChildren.add(left.attrs);
-        stuffToCompare.rightChildren.add(right.attrs);
-
-        stuffToCompare.leftLeaves.add(left.kind);
-        stuffToCompare.rightLeaves.add(right.kind);
-
-        stuffToCompare.leftLeaves.add(left.ref);
-        stuffToCompare.rightLeaves.add(right.ref);
-
-        stuffToCompare.leftLeaves.add(left.typeref);
-        stuffToCompare.rightLeaves.add(right.typeref);
-
-        stuffToCompare.leftLeaves.add(left.no_anno);
-        stuffToCompare.rightLeaves.add(right.no_anno);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final N node) {
+        return new ArrayList<Object>() {{
+            add(node.kind);
+            add(node.ref);
+            add(node.typeref);
+            add(node.no_anno);
+        }};
     }
 }

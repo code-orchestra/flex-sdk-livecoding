@@ -1,29 +1,30 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.FunctionDefinitionNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class FunctionDefinitionNodeVisitor<N extends FunctionDefinitionNode> extends DefinitionNodeVisitor<N> {
     @Override
-    protected StuffToCompare createStuffToCompare(FunctionDefinitionNode left, FunctionDefinitionNode right) {
-        StuffToCompare stuffToCompare = super.createStuffToCompare(left, right);
+    protected List<Node> getChildren(final N node) {
+        return new ArrayList<Node>() {{
+            addAll(FunctionDefinitionNodeVisitor.super.getChildren(node));
+            add(node.name);
+            add(node.fexpr);
+            add(node.init);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.name);
-        stuffToCompare.rightChildren.add(right.name);
-
-        stuffToCompare.leftChildren.add(left.fexpr);
-        stuffToCompare.rightChildren.add(right.fexpr);
-
-        stuffToCompare.leftChildren.add(left.init);
-        stuffToCompare.rightChildren.add(right.init);
-
-        stuffToCompare.leftLeaves.add(left.fun);
-        stuffToCompare.rightLeaves.add(right.fun);
-
-        // TODO: Other fields?
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final N node) {
+        return new ArrayList<Object>() {{
+            addAll(FunctionDefinitionNodeVisitor.super.getLeaves(node));
+            add(node.fun);
+        }};
     }
 }

@@ -1,18 +1,22 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.RestExpressionNode;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class RestExpressionNodeVisitor extends NodeVisitor<RestExpressionNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(RestExpressionNode left, RestExpressionNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(RestExpressionNode node) {
+        return Collections.singletonList(node.expr);
+    }
 
-        stuffToCompare.leftChildren.add(left.expr);
-        stuffToCompare.rightChildren.add(right.expr);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(RestExpressionNode node) {
+        return Collections.emptyList();
     }
 }

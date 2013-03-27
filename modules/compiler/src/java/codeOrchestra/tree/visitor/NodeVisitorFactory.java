@@ -30,6 +30,7 @@ public class NodeVisitorFactory {
         visitors.put(CoerceNode.class, new CoerceNodeVisitor());
         visitors.put(CommentNode.class, new CommentNodeVisitor());
         visitors.put(ConditionalExpressionNode.class, new ConditionalExpressionNodeVisitor());
+        visitors.put(ConfigNamespaceDefinitionNode.class, new ConfigNamespaceDefinitionNodeVisitor());
         visitors.put(ContinueStatementNode.class, new ContinueStatementNodeVisitor());
         visitors.put(DefaultXMLNamespaceNode.class, new DefaultXMLNamespaceNodeVisitor());
         visitors.put(DeleteExpressionNode.class, new DeleteExpressionNodeVisitor());

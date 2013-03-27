@@ -1,21 +1,22 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.DefaultXMLNamespaceNode;
+import macromedia.asc.parser.Node;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class DefaultXMLNamespaceNodeVisitor extends NodeVisitor<DefaultXMLNamespaceNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(DefaultXMLNamespaceNode left, DefaultXMLNamespaceNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(DefaultXMLNamespaceNode node) {
+        return Collections.singletonList(node.expr);
+    }
 
-        stuffToCompare.leftChildren.add(left.expr);
-        stuffToCompare.rightChildren.add(right.expr);
-
-        stuffToCompare.leftLeaves.add(left.ref);
-        stuffToCompare.rightLeaves.add(right.ref);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(DefaultXMLNamespaceNode node) {
+        return Collections.<Object>singletonList(node.ref);
     }
 }

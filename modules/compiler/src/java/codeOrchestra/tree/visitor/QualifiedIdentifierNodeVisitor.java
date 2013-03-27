@@ -1,21 +1,28 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.QualifiedIdentifierNode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class QualifiedIdentifierNodeVisitor<N extends QualifiedIdentifierNode> extends IdentifierNodeVisitor<N> {
     @Override
-    protected StuffToCompare createStuffToCompare(QualifiedIdentifierNode left, QualifiedIdentifierNode right) {
-        StuffToCompare stuffToCompare = super.createStuffToCompare(left, right);
+    protected List<Node> getChildren(final N node) {
+        return new ArrayList<Node>() {{
+            addAll(QualifiedIdentifierNodeVisitor.super.getChildren(node));
+            add(node.qualifier);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.qualifier);
-        stuffToCompare.rightChildren.add(right.qualifier);
-
-        stuffToCompare.leftLeaves.add(left.is_config_name);
-        stuffToCompare.rightLeaves.add(right.is_config_name);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final N node) {
+        return new ArrayList<Object>() {{
+            addAll(QualifiedIdentifierNodeVisitor.super.getLeaves(node));
+            add(node.is_config_name);
+        }};
     }
 }

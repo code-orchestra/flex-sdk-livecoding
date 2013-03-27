@@ -1,27 +1,28 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.StoreRegisterNode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class StoreRegisterNodeVisitor extends NodeVisitor<StoreRegisterNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(StoreRegisterNode left, StoreRegisterNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final StoreRegisterNode node) {
+        return new ArrayList<Node>() {{
+            add(node.reg);
+            add(node.expr);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.reg);
-        stuffToCompare.rightChildren.add(right.reg);
-
-        stuffToCompare.leftChildren.add(left.expr);
-        stuffToCompare.rightChildren.add(right.expr);
-
-        stuffToCompare.leftLeaves.add(left.type);
-        stuffToCompare.rightLeaves.add(right.type);
-
-        stuffToCompare.leftLeaves.add(left.void_result);
-        stuffToCompare.rightLeaves.add(right.void_result);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final StoreRegisterNode node) {
+        return new ArrayList<Object>() {{
+            add(node.type);
+            add(node.void_result);
+        }};
     }
 }

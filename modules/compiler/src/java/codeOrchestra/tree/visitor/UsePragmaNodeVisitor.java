@@ -1,21 +1,26 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.UsePragmaNode;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class UsePragmaNodeVisitor<N extends UsePragmaNode> extends NodeVisitor<N> {
     @Override
-    protected StuffToCompare createStuffToCompare(UsePragmaNode left, UsePragmaNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final N node) {
+        return new ArrayList<Node>() {{
+            add(node.identifier);
+            add(node.argument);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.identifier);
-        stuffToCompare.rightChildren.add(right.identifier);
-
-        stuffToCompare.leftChildren.add(left.argument);
-        stuffToCompare.rightChildren.add(right.argument);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(N node) {
+        return Collections.emptyList();
     }
 }

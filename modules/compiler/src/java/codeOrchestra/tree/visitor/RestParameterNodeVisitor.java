@@ -1,18 +1,22 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.RestParameterNode;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class RestParameterNodeVisitor extends ParameterNodeVisitor<RestParameterNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(RestParameterNode left, RestParameterNode right) {
-        StuffToCompare stuffToCompare = super.createStuffToCompare(left, right);
+    protected List<Node> getChildren(RestParameterNode node) {
+        return Collections.singletonList(node.parameter);
+    }
 
-        stuffToCompare.leftChildren.add(left.parameter);
-        stuffToCompare.rightChildren.add(right.parameter);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(RestParameterNode node) {
+        return Collections.emptyList();
     }
 }

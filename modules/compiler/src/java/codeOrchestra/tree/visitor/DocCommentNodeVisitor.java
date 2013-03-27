@@ -1,21 +1,22 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.DocCommentNode;
+import macromedia.asc.parser.Node;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class DocCommentNodeVisitor extends MetaDataNodeVisitor<DocCommentNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(DocCommentNode left, DocCommentNode right) {
-        StuffToCompare stuffToCompare = super.createStuffToCompare(left, right);
+    protected List<Node> getChildren(DocCommentNode node) {
+        return Collections.<Node>singletonList(node.metaData);
+    }
 
-        stuffToCompare.leftChildren.add(left.metaData);
-        stuffToCompare.rightChildren.add(right.metaData);
-
-        stuffToCompare.leftLeaves.add(left.is_default);
-        stuffToCompare.rightLeaves.add(right.is_default);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(DocCommentNode node) {
+        return Collections.<Object>singletonList(node.is_default);
     }
 }

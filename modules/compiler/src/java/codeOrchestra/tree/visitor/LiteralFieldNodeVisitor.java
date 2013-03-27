@@ -1,24 +1,26 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.LiteralFieldNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class LiteralFieldNodeVisitor extends NodeVisitor<LiteralFieldNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(LiteralFieldNode left, LiteralFieldNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final LiteralFieldNode node) {
+        return new ArrayList<Node>() {{
+            add(node.name);
+            add(node.value);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.name);
-        stuffToCompare.rightChildren.add(right.name);
-
-        stuffToCompare.leftChildren.add(left.value);
-        stuffToCompare.rightChildren.add(right.value);
-
-        stuffToCompare.leftLeaves.add(left.ref);
-        stuffToCompare.rightLeaves.add(right.ref);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(LiteralFieldNode node) {
+        return Collections.<Object>singletonList(node.ref);
     }
 }

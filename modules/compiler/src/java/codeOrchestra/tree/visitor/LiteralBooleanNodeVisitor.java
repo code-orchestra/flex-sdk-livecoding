@@ -1,18 +1,22 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.LiteralBooleanNode;
+import macromedia.asc.parser.Node;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class LiteralBooleanNodeVisitor extends NodeVisitor<LiteralBooleanNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(LiteralBooleanNode left, LiteralBooleanNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(LiteralBooleanNode node) {
+        return Collections.emptyList();
+    }
 
-        stuffToCompare.leftLeaves.add(left.value);
-        stuffToCompare.rightLeaves.add(right.value);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(LiteralBooleanNode node) {
+        return Collections.<Object>singletonList(node.value);
     }
 }

@@ -1,24 +1,26 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.UntypedVariableBindingNode;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class UntypedVariableBindingNodeVisitor extends NodeVisitor<UntypedVariableBindingNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(UntypedVariableBindingNode left, UntypedVariableBindingNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final UntypedVariableBindingNode node) {
+        return new ArrayList<Node>() {{
+            add(node.identifier);
+            add(node.initializer);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.identifier);
-        stuffToCompare.rightChildren.add(right.identifier);
-
-        stuffToCompare.leftChildren.add(left.initializer);
-        stuffToCompare.rightChildren.add(right.initializer);
-
-        stuffToCompare.leftLeaves.add(left.ref);
-        stuffToCompare.rightLeaves.add(right.ref);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(UntypedVariableBindingNode node) {
+        return Collections.<Object>singletonList(node.ref);
     }
 }

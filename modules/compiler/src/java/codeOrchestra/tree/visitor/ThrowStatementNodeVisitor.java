@@ -1,21 +1,22 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.ThrowStatementNode;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class ThrowStatementNodeVisitor extends NodeVisitor<ThrowStatementNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(ThrowStatementNode left, ThrowStatementNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(ThrowStatementNode node) {
+        return Collections.singletonList(node.expr);
+    }
 
-        stuffToCompare.leftChildren.add(left.expr);
-        stuffToCompare.rightChildren.add(right.expr);
-
-        stuffToCompare.leftLeaves.add(left.finallyInserted);
-        stuffToCompare.rightLeaves.add(right.finallyInserted);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(ThrowStatementNode node) {
+        return Collections.<Object>singletonList(node.finallyInserted);
     }
 }

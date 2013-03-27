@@ -1,6 +1,11 @@
 package codeOrchestra.tree.visitor;
 
+import codeOrchestra.tree.processor.CollectingProcessor;
+import codeOrchestra.tree.processor.INodeProcessor;
+import com.sun.istack.internal.NotNull;
 import macromedia.asc.parser.Node;
+import macromedia.asc.parser.PackageDefinitionNode;
+import macromedia.asc.parser.ProgramNode;
 import macromedia.asc.semantics.MetaData;
 import macromedia.asc.semantics.ObjectValue;
 import macromedia.asc.semantics.ReferenceValue;
@@ -15,45 +20,40 @@ import java.util.*;
  */
 public abstract class NodeVisitor<N extends Node> {
 
-    private Map<N, Integer> visitedNodes = new HashMap<N, Integer>();
-    private static boolean testMode = false;
+    private static Map<Node, Integer> visitedNodes = new HashMap<Node, Integer>();
+    private static boolean testMode = true;
 
     /**
      * This is implemented only for comparing function bodies!
      */
     public boolean compareTrees(N left, N right) {
         if (testMode) {
-            // Infinite recursion check
-            if (visitedNodes.containsKey(left)) {
-                visitedNodes.put(left, visitedNodes.get(left) + 1);
-            } else {
-                visitedNodes.put(left, 0);
-            }
-            if (visitedNodes.get(left) > 30) {
-                throw new RuntimeException();
-            }
+            checkInfiniteRecursion(left);
         }
-        StuffToCompare stuffToCompare = createStuffToCompare(left, right);
-        return compare(stuffToCompare);
-    }
 
-    protected abstract StuffToCompare createStuffToCompare(N left, N right);
+        List<Node> leftChildren = getChildren(left);
+        List<Node> rightChildren = getChildren(right);
+        List<Object> leftLeaves = getLeaves(left);
+        List<Object> rightLeaves = getLeaves(right);
 
-    protected boolean compare(StuffToCompare stuffToCompare) {
-        if (stuffToCompare.leftLeaves.size() != stuffToCompare.rightLeaves.size()) {
+        if (leftChildren == null || rightChildren == null || leftLeaves == null || rightLeaves == null) {
+            throw new RuntimeException();
+        }
+
+        if (leftLeaves.size() != rightLeaves.size()) {
             return false;
         }
-        if (stuffToCompare.leftChildren.size() != stuffToCompare.rightChildren.size()) {
+        if (leftChildren.size() != rightChildren.size()) {
             return false;
         }
-        for (int i = 0; i < stuffToCompare.leftLeaves.size(); i++) {
-            if (!compareObjects(stuffToCompare.leftLeaves.get(i), stuffToCompare.rightLeaves.get(i))) {
+        for (int i = 0; i < leftLeaves.size(); i++) {
+            if (!compareObjects(leftLeaves.get(i), rightLeaves.get(i))) {
                 return false;
             }
         }
-        for (int i = 0; i < stuffToCompare.leftChildren.size(); i++) {
-            Node leftChild = stuffToCompare.leftChildren.get(i);
-            Node rightChild = stuffToCompare.rightChildren.get(i);
+        for (int i = 0; i < leftChildren.size(); i++) {
+            Node leftChild = leftChildren.get(i);
+            Node rightChild = rightChildren.get(i);
             if (leftChild == null && rightChild == null) {
                 continue;
             }
@@ -68,8 +68,74 @@ public abstract class NodeVisitor<N extends Node> {
                 return false;
             }
         }
+
+        if (testMode) {
+            visitedNodes.clear();
+        }
+
         return true;
     }
+
+    public static void applyToTree(Node treeRoot, INodeProcessor nodeProcessor) {
+        Queue<Node> nodesToProcess = new LinkedList<Node>();
+        if (treeRoot instanceof ProgramNode) {
+            treeRoot = ((ProgramNode) treeRoot).pkgdefs.get(0);
+        }
+        nodesToProcess.add(treeRoot);
+
+        Node node;
+        while ((node = nodesToProcess.poll()) != null) {
+            if (testMode) {
+                checkInfiniteRecursion(node);
+            }
+            nodeProcessor.process(node);
+            NodeVisitor visitor = NodeVisitorFactory.getVisitor(node.getClass());
+            List<Node> children = visitor.getChildren(node);
+            if (children == null) {
+                throw new RuntimeException();
+            }
+            for (Node child : children) {
+                if (child != null && !(child instanceof PackageDefinitionNode)) { // PackageDefinitionNode contains itself in its statements
+                    nodesToProcess.add(child);
+                }
+            }
+        }
+
+        if (testMode) {
+            visitedNodes.clear();
+        }
+    }
+
+    private static void checkInfiniteRecursion(Node node) {
+        if (visitedNodes.containsKey(node)) {
+            visitedNodes.put(node, visitedNodes.get(node) + 1);
+        } else {
+            visitedNodes.put(node, 0);
+        }
+        if (visitedNodes.get(node) > 30) {
+            throw new RuntimeException();
+        }
+    }
+
+    public static List<Node> getDescendants(Node treeRoot) {
+        return getDescendants(treeRoot, Collections.<Class>emptySet());
+    }
+
+    public static List<Node> getDescendants(Node treeRoot, Class nodeClass) {
+        return getDescendants(treeRoot, Collections.singleton(nodeClass));
+    }
+
+    public static List<Node> getDescendants(Node treeRoot, Set<Class> nodeClasses) {
+        CollectingProcessor collectingProcessor = new CollectingProcessor(nodeClasses);
+        applyToTree(treeRoot, collectingProcessor);
+        return collectingProcessor.getNodes();
+    }
+
+    // TODO: It does not return children that are known to be null right after parse1
+    protected abstract List<Node> getChildren(N node);
+
+    // TODO: It does not return leaves for nodes higher in tree than FunctionDefinitionNode
+    protected abstract List<Object> getLeaves(N node);
 
     protected boolean compareObjects(Object left, Object right) {
         if (left == null && right == null) {
@@ -178,12 +244,5 @@ public abstract class NodeVisitor<N extends Node> {
             }
         }
         return true;
-    }
-
-    protected static class StuffToCompare {
-        final List<Node> leftChildren = new ArrayList<Node>();
-        final List<Node> rightChildren = new ArrayList<Node>();
-        final List<Object> leftLeaves = new ArrayList<Object>();
-        final List<Object> rightLeaves = new ArrayList<Object>();
     }
 }

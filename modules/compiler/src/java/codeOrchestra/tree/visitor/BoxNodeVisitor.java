@@ -1,24 +1,26 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.BoxNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class BoxNodeVisitor extends NodeVisitor<BoxNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(BoxNode left, BoxNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(BoxNode node) {
+        return Collections.singletonList(node.expr);
+    }
 
-        stuffToCompare.leftChildren.add(left.expr);
-        stuffToCompare.rightChildren.add(right.expr);
-
-        stuffToCompare.leftLeaves.add(left.actual);
-        stuffToCompare.rightLeaves.add(right.actual);
-
-        stuffToCompare.leftLeaves.add(left.void_result);
-        stuffToCompare.rightLeaves.add(right.void_result);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final BoxNode node) {
+        return new ArrayList<Object>() {{
+            add(node.actual);
+            add(node.void_result);
+        }};
     }
 }

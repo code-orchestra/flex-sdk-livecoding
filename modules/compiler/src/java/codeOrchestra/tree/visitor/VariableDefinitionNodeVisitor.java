@@ -1,21 +1,28 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.VariableDefinitionNode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class VariableDefinitionNodeVisitor<N extends VariableDefinitionNode> extends DefinitionNodeVisitor<N> {
     @Override
-    protected StuffToCompare createStuffToCompare(VariableDefinitionNode left, VariableDefinitionNode right) {
-        StuffToCompare stuffToCompare = super.createStuffToCompare(left, right);
+    protected List<Node> getChildren(final N node) {
+        return new ArrayList<Node>() {{
+            addAll(VariableDefinitionNodeVisitor.super.getChildren(node));
+            add(node.list);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.list);
-        stuffToCompare.rightChildren.add(right.list);
-
-        stuffToCompare.leftLeaves.add(left.kind);
-        stuffToCompare.rightLeaves.add(right.kind);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final N node) {
+        return new ArrayList<Object>() {{
+            addAll(VariableDefinitionNodeVisitor.super.getLeaves(node));
+            add(node.kind);
+        }};
     }
 }

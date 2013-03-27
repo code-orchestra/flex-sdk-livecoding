@@ -1,21 +1,22 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.SuperStatementNode;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class SuperStatementNodeVisitor extends NodeVisitor<SuperStatementNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(SuperStatementNode left, SuperStatementNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(SuperStatementNode node) {
+        return Collections.<Node>singletonList(node.call);
+    }
 
-        stuffToCompare.leftChildren.add(left.call);
-        stuffToCompare.rightChildren.add(right.call);
-
-        stuffToCompare.leftLeaves.add(left.baseobj);
-        stuffToCompare.rightLeaves.add(right.baseobj);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(SuperStatementNode node) {
+        return Collections.<Object>singletonList(node.baseobj);
     }
 }

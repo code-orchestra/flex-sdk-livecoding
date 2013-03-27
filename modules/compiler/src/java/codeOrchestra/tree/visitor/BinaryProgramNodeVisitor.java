@@ -1,17 +1,21 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.BinaryProgramNode;
+import macromedia.asc.parser.Node;
+
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
-public class BinaryProgramNodeVisitor extends NodeVisitor<BinaryProgramNode> {
+public class BinaryProgramNodeVisitor extends ProgramNodeVisitor<BinaryProgramNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(BinaryProgramNode left, BinaryProgramNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(BinaryProgramNode node) {
+        return super.getChildren(node);
+    }
 
-		
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(BinaryProgramNode node) {
+        return super.getLeaves(node);
     }
 }

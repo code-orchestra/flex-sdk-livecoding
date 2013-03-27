@@ -1,18 +1,22 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.ToObjectNode;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class ToObjectNodeVisitor extends NodeVisitor<ToObjectNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(ToObjectNode left, ToObjectNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(ToObjectNode node) {
+        return Collections.singletonList(node.expr);
+    }
 
-        stuffToCompare.leftChildren.add(left.expr);
-        stuffToCompare.rightChildren.add(right.expr);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(ToObjectNode node) {
+        return Collections.emptyList();
     }
 }

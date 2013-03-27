@@ -1,21 +1,29 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.CallExpressionNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class CallExpressionNodeVisitor extends SelectorNodeVisitor<CallExpressionNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(CallExpressionNode left, CallExpressionNode right) {
-        StuffToCompare stuffToCompare = super.createStuffToCompare(left, right);
+    protected List<Node> getChildren(final CallExpressionNode node) {
+        return new ArrayList<Node>() {{
+            addAll(CallExpressionNodeVisitor.super.getChildren(node));
+            add(node.args);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.args);
-        stuffToCompare.rightChildren.add(right.args);
-
-        stuffToCompare.leftLeaves.add(left.is_new);
-        stuffToCompare.rightLeaves.add(right.is_new);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final CallExpressionNode node) {
+        return new ArrayList<Object>() {{
+            addAll(CallExpressionNodeVisitor.super.getLeaves(node));
+            add(node.is_new);
+        }};
     }
 }

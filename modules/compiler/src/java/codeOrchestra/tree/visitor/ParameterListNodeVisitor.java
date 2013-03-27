@@ -1,24 +1,26 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.ParameterListNode;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class ParameterListNodeVisitor extends NodeVisitor<ParameterListNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(ParameterListNode left, ParameterListNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(ParameterListNode node) {
+        return new ArrayList<Node>(node.items);
+    }
 
-        stuffToCompare.leftChildren.addAll(left.items);
-        stuffToCompare.rightChildren.addAll(right.items);
-
-        stuffToCompare.leftLeaves.addAll(left.types);
-        stuffToCompare.rightLeaves.addAll(right.types);
-
-        stuffToCompare.leftLeaves.add(left.decl_styles);
-        stuffToCompare.rightLeaves.add(right.decl_styles);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final ParameterListNode node) {
+        return new ArrayList<Object>() {{
+            add(node.types);
+            add(node.decl_styles);
+        }};
     }
 }

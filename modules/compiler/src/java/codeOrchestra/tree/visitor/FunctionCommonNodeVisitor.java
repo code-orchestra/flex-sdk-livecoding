@@ -1,29 +1,27 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.FunctionCommonNode;
+import macromedia.asc.parser.Node;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class FunctionCommonNodeVisitor extends NodeVisitor<FunctionCommonNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(FunctionCommonNode left, FunctionCommonNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(final FunctionCommonNode node) {
+        return new ArrayList<Node>() {{
+            add(node.identifier);
+            add(node.signature);
+            add(node.body);
+        }};
+    }
 
-        stuffToCompare.leftChildren.add(left.identifier);
-        stuffToCompare.rightChildren.add(right.identifier);
-
-        stuffToCompare.leftChildren.add(left.signature);
-        stuffToCompare.rightChildren.add(right.signature);
-
-        stuffToCompare.leftChildren.add(left.body);
-        stuffToCompare.rightChildren.add(right.body);
-
-        stuffToCompare.leftLeaves.add(left.kind);
-        stuffToCompare.rightLeaves.add(right.kind);
-
-        // TODO: Other fields?
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(FunctionCommonNode node) {
+        return Collections.<Object>singletonList(node.kind);
     }
 }

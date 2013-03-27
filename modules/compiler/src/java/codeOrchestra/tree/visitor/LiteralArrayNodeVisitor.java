@@ -1,21 +1,22 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.LiteralArrayNode;
+import macromedia.asc.parser.Node;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class LiteralArrayNodeVisitor extends NodeVisitor<LiteralArrayNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(LiteralArrayNode left, LiteralArrayNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(LiteralArrayNode node) {
+        return Collections.<Node>singletonList(node.elementlist);
+    }
 
-        stuffToCompare.leftChildren.add(left.elementlist);
-        stuffToCompare.rightChildren.add(right.elementlist);
-
-        stuffToCompare.leftLeaves.add(left.value);
-        stuffToCompare.rightLeaves.add(right.value);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(LiteralArrayNode node) {
+        return Collections.<Object>singletonList(node.value);
     }
 }

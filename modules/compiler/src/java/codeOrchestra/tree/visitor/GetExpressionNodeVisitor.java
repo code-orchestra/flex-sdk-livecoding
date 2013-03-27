@@ -1,17 +1,21 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.GetExpressionNode;
+import macromedia.asc.parser.Node;
+
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class GetExpressionNodeVisitor extends SelectorNodeVisitor<GetExpressionNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(GetExpressionNode left, GetExpressionNode right) {
-        StuffToCompare stuffToCompare = super.createStuffToCompare(left, right);
+    protected List<Node> getChildren(GetExpressionNode node) {
+        return super.getChildren(node);
+    }
 
-		// Nothing here
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(GetExpressionNode node) {
+        return super.getLeaves(node);
     }
 }

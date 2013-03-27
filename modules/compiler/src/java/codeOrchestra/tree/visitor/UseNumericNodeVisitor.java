@@ -1,18 +1,26 @@
 package codeOrchestra.tree.visitor;
 
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.UseNumericNode;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class UseNumericNodeVisitor extends UsePragmaNodeVisitor<UseNumericNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(UseNumericNode left, UseNumericNode right) {
-        StuffToCompare stuffToCompare = super.createStuffToCompare(left, right);
+    protected List<Node> getChildren(UseNumericNode node) {
+        return super.getChildren(node);
+    }
 
-        stuffToCompare.leftLeaves.add(left.numeric_mode);
-        stuffToCompare.rightLeaves.add(right.numeric_mode);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(final UseNumericNode node) {
+        return new ArrayList<Object>() {{
+            addAll(UseNumericNodeVisitor.super.getChildren(node));
+            add(node.numeric_mode);
+        }};
     }
 }

@@ -1,21 +1,22 @@
 package codeOrchestra.tree.visitor;
 
 import macromedia.asc.parser.LiteralXMLNode;
+import macromedia.asc.parser.Node;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Anton.I.Neverov
  */
 public class LiteralXMLNodeVisitor extends NodeVisitor<LiteralXMLNode> {
     @Override
-    protected StuffToCompare createStuffToCompare(LiteralXMLNode left, LiteralXMLNode right) {
-        StuffToCompare stuffToCompare = new StuffToCompare();
+    protected List<Node> getChildren(LiteralXMLNode node) {
+        return Collections.<Node>singletonList(node.list);
+    }
 
-        stuffToCompare.leftChildren.add(left.list);
-        stuffToCompare.rightChildren.add(right.list);
-
-        stuffToCompare.leftLeaves.add(left.is_xmllist);
-        stuffToCompare.rightLeaves.add(right.is_xmllist);
-
-        return stuffToCompare;
+    @Override
+    protected List<Object> getLeaves(LiteralXMLNode node) {
+        return Collections.<Object>singletonList(node.is_xmllist);
     }
 }

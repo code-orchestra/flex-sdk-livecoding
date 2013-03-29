@@ -17,7 +17,7 @@ import java.util.List;
  */
 public abstract class AbstractTreeModificationExtension implements Extension {
 
-    private static boolean TRACE = true;
+    protected static boolean TRACE = true;
     private static final String TEMP_DIR = "C:\\Temp\\serializedAST";
     public static final String SERIALIZED_AST = ".serializedAST";
 

@@ -1,6 +1,5 @@
 package codeOrchestra;
 
-import codeOrchestra.tree.RegularNode;
 import codeOrchestra.tree.TreeNavigator;
 import codeOrchestra.tree.TreeUtil;
 import codeOrchestra.tree.visitor.NodeVisitor;
@@ -9,6 +8,7 @@ import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.ObjectList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,28 +40,33 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
         ProgramNode syntaxTree = projectNavigator.getSyntaxTree(classDefinitionNode.pkgdef.name.id.pkg_part, className);
         ClassDefinitionNode originalClass = TreeNavigator.getClassDefinition(syntaxTree);
 
-        FunctionDefinitionNode changedMethod = findChangedMethod(originalClass, classDefinitionNode);
-        System.out.println("Comparison of files took " + (System.currentTimeMillis() - l) + "ms");
+        List<FunctionDefinitionNode> changedMethods = findChangedMethods(originalClass, classDefinitionNode);
+        if (TRACE) {
+            System.out.println("Comparison of files took " + (System.currentTimeMillis() - l) + "ms");
+        }
 
-        if (changedMethod != null) {
+        ArrayList<String> liveCodingClassNames = new ArrayList<String>();
+        for(FunctionDefinitionNode changedMethod : changedMethods) {
             ObjectList<Node> oldBody = changedMethod.fexpr.body.items;
             changedMethod.fexpr.body.items = new ObjectList<Node>();
             String liveCodingClassName = addLiveCodingClass(className, changedMethod, oldBody, true);
-
-            FunctionDefinitionNode constructor = TreeUtil.removeAllMethodsAndClearConstructor(classDefinitionNode);
+            liveCodingClassNames.add(liveCodingClassName);
+        }
+        FunctionDefinitionNode constructor = TreeUtil.removeAllMethodsAndClearConstructor(classDefinitionNode);
+        for (String liveCodingClassName : liveCodingClassNames) {
             constructor.fexpr.body.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(liveCodingClassName), -1)));
             TreeUtil.addImport(unit, "codeOrchestra.liveCoding.load", liveCodingClassName);
+            System.out.println("livecoding class name: " + liveCodingClassName);
         }
+
     }
 
     /**
      * Returns first changed method
      *
-     * We hope that:
-     *  only one method can be changed in one incremental step
-     *  method order remains unchanged
+     * We hope that method order remains unchanged
      */
-    private FunctionDefinitionNode findChangedMethod(ClassDefinitionNode originalClass, ClassDefinitionNode modifiedClass) {
+    private List<FunctionDefinitionNode> findChangedMethods(ClassDefinitionNode originalClass, ClassDefinitionNode modifiedClass) {
         List<FunctionDefinitionNode> originalMethodDefinitions = TreeNavigator.getMethodDefinitions(originalClass);
         List<FunctionDefinitionNode> modifiedMethodDefinitions = TreeNavigator.getMethodDefinitions(modifiedClass);
 
@@ -69,17 +74,18 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
             throw new RuntimeException();
         }
 
+        ArrayList<FunctionDefinitionNode> result = new ArrayList<FunctionDefinitionNode>();
         for (int i = 0; i < originalMethodDefinitions.size(); i++) {
             FunctionDefinitionNode oM = originalMethodDefinitions.get(i);
             FunctionDefinitionNode mM = modifiedMethodDefinitions.get(i);
 
             NodeVisitor visitor = NodeVisitorFactory.getVisitor(FunctionDefinitionNode.class);
             if (!visitor.compareTrees(oM, mM)) {
-                return mM;
+                result.add(mM);
             }
         }
 
-        return null;
+        return result;
     }
 
 }

@@ -352,23 +352,33 @@ public class Fcsh extends Tool
             Context.livecodingSession = false;
         }
          // CodeOrchestra: added elseif
-        else if (s.startsWith("lccompc") || s.startsWith("lcmxmlc"))
+        else if (s.startsWith("lccompc") || s.startsWith("lcmxmlc") || s.startsWith("lcicompc"))
         {
-            boolean isCompc = s.startsWith("lccompc");
-            if (isCompc) {
+            boolean isCompc = s.startsWith("lccompc") || s.startsWith("lcicompc");
+
+            if (s.startsWith("lcicompc")) {
                 livecodingIncrementalMode = true;
             } else {
                 livecodingBaseMode = true;
             }
 
-            StringTokenizer t = new StringTokenizer(s.substring((isCompc ? "lccompc" : "lcmxmlc").length()).trim(), " ");
+            int l;
+            if (s.startsWith("lccompc")) {
+                l = "lccompc".length();
+            } else if (s.startsWith("lcmxmlc")) {
+                l = "lcmxmlc".length();
+            } else {
+                l = "lcicompc".length();
+            }
+
+            StringTokenizer t = new StringTokenizer(s.substring(l).trim(), " ");
             String[] args = new String[t.countTokens()];
             for (int i = 0; t.hasMoreTokens(); i++)
             {
                 args[i] = t.nextToken();
             }
 
-            for (int i = 0; i < (isCompc ? 1 : 2); i++) {
+            for (int i = 0; i < (livecodingIncrementalMode ? 1 : 2); i++) {
                 livecodingBaseModeSecondPass = i == 1;
                 if (args.length == 1)
                 {

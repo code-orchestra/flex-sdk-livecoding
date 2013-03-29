@@ -4,6 +4,7 @@ import macromedia.asc.parser.ImportNode;
 import macromedia.asc.parser.Node;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class ImportNodeVisitor extends NodeVisitor<ImportNode> {
     @Override
-    protected List<Node> getChildren(ImportNode node) {
-        return Collections.<Node>singletonList(node.filespec);
+    public LinkedHashMap<Node, String> getChildren(final ImportNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.filespec, "filespec");
+        }};
     }
 
     @Override

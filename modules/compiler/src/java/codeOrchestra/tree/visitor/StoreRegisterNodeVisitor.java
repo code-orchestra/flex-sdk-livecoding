@@ -4,6 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.StoreRegisterNode;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,10 +12,10 @@ import java.util.List;
  */
 public class StoreRegisterNodeVisitor extends NodeVisitor<StoreRegisterNode> {
     @Override
-    protected List<Node> getChildren(final StoreRegisterNode node) {
-        return new ArrayList<Node>() {{
-            add(node.reg);
-            add(node.expr);
+    public LinkedHashMap<Node, String> getChildren(final StoreRegisterNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.reg, "reg");
+            put(node.expr, "expr");
         }};
     }
 

@@ -4,6 +4,7 @@ import macromedia.asc.parser.InvokeNode;
 import macromedia.asc.parser.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,10 +12,10 @@ import java.util.List;
  */
 public class InvokeNodeVisitor extends SelectorNodeVisitor<InvokeNode> {
     @Override
-    protected List<Node> getChildren(final InvokeNode node) {
-        return new ArrayList<Node>() {{
-            addAll(InvokeNodeVisitor.super.getChildren(node));
-            add(node.args);
+    public LinkedHashMap<Node, String> getChildren(final InvokeNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            putAll(InvokeNodeVisitor.super.getChildren(node));
+            put(node.args, "args");
         }};
     }
 

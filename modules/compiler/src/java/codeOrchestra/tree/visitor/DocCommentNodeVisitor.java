@@ -4,6 +4,7 @@ import macromedia.asc.parser.DocCommentNode;
 import macromedia.asc.parser.Node;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class DocCommentNodeVisitor extends MetaDataNodeVisitor<DocCommentNode> {
     @Override
-    protected List<Node> getChildren(DocCommentNode node) {
-        return Collections.<Node>singletonList(node.metaData);
+    public LinkedHashMap<Node, String> getChildren(final DocCommentNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.metaData, "metaData");
+        }};
     }
 
     @Override

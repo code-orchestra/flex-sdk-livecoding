@@ -4,6 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.RestExpressionNode;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class RestExpressionNodeVisitor extends NodeVisitor<RestExpressionNode> {
     @Override
-    protected List<Node> getChildren(RestExpressionNode node) {
-        return Collections.singletonList(node.expr);
+    public LinkedHashMap<Node, String> getChildren(final RestExpressionNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.expr, "expr");
+        }};
     }
 
     @Override

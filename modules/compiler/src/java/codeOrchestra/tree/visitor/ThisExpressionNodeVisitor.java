@@ -4,6 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.ThisExpressionNode;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,8 @@ import java.util.List;
  */
 public class ThisExpressionNodeVisitor extends NodeVisitor<ThisExpressionNode> {
     @Override
-    protected List<Node> getChildren(ThisExpressionNode node) {
-        return Collections.emptyList();
+    public LinkedHashMap<Node, String> getChildren(ThisExpressionNode node) {
+        return emptyMap;
     }
 
     @Override

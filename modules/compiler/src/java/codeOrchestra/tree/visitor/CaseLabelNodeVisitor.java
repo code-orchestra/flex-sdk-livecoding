@@ -4,6 +4,7 @@ import macromedia.asc.parser.CaseLabelNode;
 import macromedia.asc.parser.Node;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class CaseLabelNodeVisitor extends NodeVisitor<CaseLabelNode> {
     @Override
-    protected List<Node> getChildren(CaseLabelNode node) {
-        return Collections.singletonList(node.label);
+    public LinkedHashMap<Node, String> getChildren(final CaseLabelNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.label, "label");
+        }};
     }
 
     @Override

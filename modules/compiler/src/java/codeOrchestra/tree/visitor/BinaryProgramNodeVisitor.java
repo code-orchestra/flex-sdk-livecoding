@@ -3,6 +3,7 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.BinaryProgramNode;
 import macromedia.asc.parser.Node;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class BinaryProgramNodeVisitor extends ProgramNodeVisitor<BinaryProgramNode> {
     @Override
-    protected List<Node> getChildren(BinaryProgramNode node) {
+    public LinkedHashMap<Node, String> getChildren(BinaryProgramNode node) {
         return super.getChildren(node);
     }
 

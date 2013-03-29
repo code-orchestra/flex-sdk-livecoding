@@ -4,6 +4,7 @@ import macromedia.asc.parser.ListErrorNode;
 import macromedia.asc.parser.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public class ListErrorNodeVisitor extends ListNodeVisitor<ListErrorNode> {
     @Override
-    protected List<Node> getChildren(final ListErrorNode node) {
+    public LinkedHashMap<Node, String> getChildren(final ListErrorNode node) {
         return super.getChildren(node);
     }
 

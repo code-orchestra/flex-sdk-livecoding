@@ -4,6 +4,7 @@ import macromedia.asc.parser.IdentifierErrorNode;
 import macromedia.asc.parser.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,14 +12,14 @@ import java.util.List;
  */
 public class IdentifierErrorNodeVisitor extends IdentifierNodeVisitor<IdentifierErrorNode> {
     @Override
-    protected List<Node> getChildren(IdentifierErrorNode node) {
+    public LinkedHashMap<Node, String> getChildren(IdentifierErrorNode node) {
         return super.getChildren(node);
     }
 
     @Override
     protected List<Object> getLeaves(final IdentifierErrorNode node) {
         return new ArrayList<Object>() {{
-            addAll(IdentifierErrorNodeVisitor.super.getChildren(node));
+            addAll(IdentifierErrorNodeVisitor.super.getLeaves(node));
             add(node.value);
         }};
     }

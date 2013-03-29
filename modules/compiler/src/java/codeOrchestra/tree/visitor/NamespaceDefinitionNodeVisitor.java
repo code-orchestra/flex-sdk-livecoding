@@ -3,7 +3,7 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.NamespaceDefinitionNode;
 import macromedia.asc.parser.Node;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,11 +11,11 @@ import java.util.List;
  */
 public class NamespaceDefinitionNodeVisitor<N extends NamespaceDefinitionNode> extends DefinitionNodeVisitor<N> {
     @Override
-    protected List<Node> getChildren(final N node) {
-        return new ArrayList<Node>() {{
-            addAll(NamespaceDefinitionNodeVisitor.super.getChildren(node));
-            add(node.name);
-            add(node.value);
+    public LinkedHashMap<Node, String> getChildren(final N node) {
+        return new LinkedHashMap<Node, String>() {{
+            putAll(NamespaceDefinitionNodeVisitor.super.getChildren(node));
+            put(node.name, "name");
+            put(node.value, "value");
         }};
     }
 

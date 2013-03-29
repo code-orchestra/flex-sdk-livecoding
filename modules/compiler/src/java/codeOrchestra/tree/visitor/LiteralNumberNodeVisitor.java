@@ -3,17 +3,15 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.LiteralNumberNode;
 import macromedia.asc.parser.Node;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
  */
 public class LiteralNumberNodeVisitor extends NodeVisitor<LiteralNumberNode> {
     @Override
-    protected List<Node> getChildren(LiteralNumberNode node) {
-        return Collections.emptyList();
+    public LinkedHashMap<Node, String> getChildren(LiteralNumberNode node) {
+        return emptyMap;
     }
 
     @Override

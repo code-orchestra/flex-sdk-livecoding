@@ -4,6 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.TryStatementNode;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,11 +12,11 @@ import java.util.List;
  */
 public class TryStatementNodeVisitor extends NodeVisitor<TryStatementNode> {
     @Override
-    protected List<Node> getChildren(final TryStatementNode node) {
-        return new ArrayList<Node>() {{
-            add(node.tryblock);
-            add(node.catchlist);
-            add(node.finallyblock);
+    public LinkedHashMap<Node, String> getChildren(final TryStatementNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.tryblock, "tryblock");
+            put(node.catchlist, "catchlist");
+            put(node.finallyblock, "finallyblock");
         }};
     }
 

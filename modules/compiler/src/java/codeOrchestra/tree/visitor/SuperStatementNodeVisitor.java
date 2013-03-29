@@ -4,6 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.SuperStatementNode;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class SuperStatementNodeVisitor extends NodeVisitor<SuperStatementNode> {
     @Override
-    protected List<Node> getChildren(SuperStatementNode node) {
-        return Collections.<Node>singletonList(node.call);
+    public LinkedHashMap<Node, String> getChildren(final SuperStatementNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.call, "call");
+        }};
     }
 
     @Override

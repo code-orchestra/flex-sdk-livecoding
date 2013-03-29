@@ -3,17 +3,15 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.CommentNode;
 import macromedia.asc.parser.Node;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
  */
 public class CommentNodeVisitor extends NodeVisitor<CommentNode> {
     @Override
-    protected List<Node> getChildren(CommentNode node) {
-        return Collections.emptyList();
+    public LinkedHashMap<Node, String> getChildren(CommentNode node) {
+        return emptyMap;
     }
 
     @Override

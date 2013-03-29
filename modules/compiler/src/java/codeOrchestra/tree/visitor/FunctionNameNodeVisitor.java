@@ -4,6 +4,7 @@ import macromedia.asc.parser.FunctionNameNode;
 import macromedia.asc.parser.Node;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class FunctionNameNodeVisitor extends NodeVisitor<FunctionNameNode> {
     @Override
-    protected List<Node> getChildren(FunctionNameNode node) {
-        return Collections.<Node>singletonList(node.identifier);
+    public LinkedHashMap<Node, String> getChildren(final FunctionNameNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.identifier, "identifier");
+        }};
     }
 
     @Override

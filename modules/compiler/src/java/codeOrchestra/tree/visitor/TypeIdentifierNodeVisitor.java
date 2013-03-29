@@ -3,7 +3,7 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.TypeIdentifierNode;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,11 +11,11 @@ import java.util.List;
  */
 public class TypeIdentifierNodeVisitor extends IdentifierNodeVisitor<TypeIdentifierNode> {
     @Override
-    protected List<Node> getChildren(final TypeIdentifierNode node) {
-        return new ArrayList<Node>() {{
-            addAll(TypeIdentifierNodeVisitor.super.getChildren(node));
-            add(node.base);
-            add(node.typeArgs);
+    public LinkedHashMap<Node, String> getChildren(final TypeIdentifierNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            putAll(TypeIdentifierNodeVisitor.super.getChildren(node));
+            put(node.base, "base");
+            put(node.typeArgs, "typeArgs");
         }};
     }
 

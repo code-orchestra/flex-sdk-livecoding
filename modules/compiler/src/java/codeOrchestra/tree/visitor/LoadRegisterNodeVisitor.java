@@ -4,6 +4,7 @@ import macromedia.asc.parser.LoadRegisterNode;
 import macromedia.asc.parser.Node;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class LoadRegisterNodeVisitor extends NodeVisitor<LoadRegisterNode> {
     @Override
-    protected List<Node> getChildren(LoadRegisterNode node) {
-        return Collections.<Node>singletonList(node.reg);
+    public LinkedHashMap<Node, String> getChildren(final LoadRegisterNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.reg, "reg");
+        }};
     }
 
     @Override

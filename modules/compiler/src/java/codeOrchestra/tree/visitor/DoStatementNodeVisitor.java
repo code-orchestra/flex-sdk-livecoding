@@ -3,19 +3,17 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.DoStatementNode;
 import macromedia.asc.parser.Node;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
  */
 public class DoStatementNodeVisitor extends NodeVisitor<DoStatementNode> {
     @Override
-    protected List<Node> getChildren(final DoStatementNode node) {
-        return new ArrayList<Node>() {{
-            add(node.statements);
-            add(node.expr);
+    public LinkedHashMap<Node, String> getChildren(final DoStatementNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.statements, "statements");
+            put(node.expr, "expr");
         }};
     }
 

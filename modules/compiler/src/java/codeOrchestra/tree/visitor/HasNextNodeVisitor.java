@@ -3,19 +3,17 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.HasNextNode;
 import macromedia.asc.parser.Node;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
  */
 public class HasNextNodeVisitor extends NodeVisitor<HasNextNode> {
     @Override
-    protected List<Node> getChildren(final HasNextNode node) {
-        return new ArrayList<Node>() {{
-            add(node.indexRegister);
-            add(node.objectRegister);
+    public LinkedHashMap<Node, String> getChildren(final HasNextNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.indexRegister, "indexRegister");
+            put(node.objectRegister, "objectRegister");
         }};
     }
 

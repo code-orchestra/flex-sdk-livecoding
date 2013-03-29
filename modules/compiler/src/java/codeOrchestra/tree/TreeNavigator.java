@@ -1,10 +1,13 @@
 package codeOrchestra.tree;
 
+import codeOrchestra.tree.visitor.NodeVisitor;
+import codeOrchestra.tree.visitor.NodeVisitorFactory;
 import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**

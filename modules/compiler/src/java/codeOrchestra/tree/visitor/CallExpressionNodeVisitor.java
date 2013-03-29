@@ -4,7 +4,7 @@ import macromedia.asc.parser.CallExpressionNode;
 import macromedia.asc.parser.Node;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -12,10 +12,10 @@ import java.util.List;
  */
 public class CallExpressionNodeVisitor extends SelectorNodeVisitor<CallExpressionNode> {
     @Override
-    protected List<Node> getChildren(final CallExpressionNode node) {
-        return new ArrayList<Node>() {{
-            addAll(CallExpressionNodeVisitor.super.getChildren(node));
-            add(node.args);
+    public LinkedHashMap<Node, String> getChildren(final CallExpressionNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            putAll(CallExpressionNodeVisitor.super.getChildren(node));
+            put(node.args, "args");
         }};
     }
 

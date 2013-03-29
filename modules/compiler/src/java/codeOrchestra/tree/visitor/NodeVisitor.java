@@ -2,7 +2,6 @@ package codeOrchestra.tree.visitor;
 
 import codeOrchestra.tree.processor.CollectingProcessor;
 import codeOrchestra.tree.processor.INodeProcessor;
-import com.sun.istack.internal.NotNull;
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.PackageDefinitionNode;
 import macromedia.asc.parser.ProgramNode;
@@ -22,6 +21,7 @@ public abstract class NodeVisitor<N extends Node> {
 
     private static Map<Node, Integer> visitedNodes = new HashMap<Node, Integer>();
     private static boolean testMode = true;
+    protected static final LinkedHashMap<Node, String> emptyMap = new LinkedHashMap<Node, String>();
 
     /**
      * This is implemented only for comparing function bodies!
@@ -31,12 +31,13 @@ public abstract class NodeVisitor<N extends Node> {
             checkInfiniteRecursion(left);
         }
 
-        List<Node> leftChildren = getChildren(left);
-        List<Node> rightChildren = getChildren(right);
+        // We use LinkedHashMap, so keyset iteration goes in the same order as nodes were inserted
+        List<Node> leftChildren = new ArrayList<Node>(getChildren(left).keySet());
+        List<Node> rightChildren = new ArrayList<Node>(getChildren(right).keySet());
         List<Object> leftLeaves = getLeaves(left);
         List<Object> rightLeaves = getLeaves(right);
 
-        if (leftChildren == null || rightChildren == null || leftLeaves == null || rightLeaves == null) {
+        if (leftLeaves == null || rightLeaves == null) {
             throw new RuntimeException();
         }
 
@@ -90,11 +91,8 @@ public abstract class NodeVisitor<N extends Node> {
             }
             nodeProcessor.process(node);
             NodeVisitor visitor = NodeVisitorFactory.getVisitor(node.getClass());
-            List<Node> children = visitor.getChildren(node);
-            if (children == null) {
-                throw new RuntimeException();
-            }
-            for (Node child : children) {
+            Set<Node> nodeSet = visitor.getChildren(node).keySet();
+            for (Node child : nodeSet) {
                 if (child != null && !(child instanceof PackageDefinitionNode)) { // PackageDefinitionNode contains itself in its statements
                     nodesToProcess.add(child);
                 }
@@ -132,7 +130,7 @@ public abstract class NodeVisitor<N extends Node> {
     }
 
     // TODO: It does not return children that are known to be null right after parse1
-    protected abstract List<Node> getChildren(N node);
+    public abstract LinkedHashMap<Node, String> getChildren(N node);
 
     // TODO: It does not return leaves for nodes higher in tree than FunctionDefinitionNode
     protected abstract List<Object> getLeaves(N node);

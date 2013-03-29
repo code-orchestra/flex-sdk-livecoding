@@ -4,6 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.VariableBindingNode;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,11 +12,11 @@ import java.util.List;
  */
 public class VariableBindingNodeVisitor extends NodeVisitor<VariableBindingNode> {
     @Override
-    protected List<Node> getChildren(final VariableBindingNode node) {
-        return new ArrayList<Node>() {{
-            add(node.variable);
-            add(node.initializer);
-            add(node.attrs);
+    public LinkedHashMap<Node, String> getChildren(final VariableBindingNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.variable, "variable");
+            put(node.initializer, "initializer");
+            put(node.attrs, "attrs");
         }};
     }
 

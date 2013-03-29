@@ -4,6 +4,7 @@ import macromedia.asc.parser.FunctionDefinitionNode;
 import macromedia.asc.parser.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,12 +12,12 @@ import java.util.List;
  */
 public class FunctionDefinitionNodeVisitor<N extends FunctionDefinitionNode> extends DefinitionNodeVisitor<N> {
     @Override
-    protected List<Node> getChildren(final N node) {
-        return new ArrayList<Node>() {{
-            addAll(FunctionDefinitionNodeVisitor.super.getChildren(node));
-            add(node.name);
-            add(node.fexpr);
-            add(node.init);
+    public LinkedHashMap<Node, String> getChildren(final N node) {
+        return new LinkedHashMap<Node, String>() {{
+            putAll(FunctionDefinitionNodeVisitor.super.getChildren(node));
+            put(node.name, "name");
+            put(node.fexpr, "fexpr");
+            put(node.init, "init");
         }};
     }
 

@@ -3,17 +3,17 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.CoerceNode;
 import macromedia.asc.parser.Node;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
  */
 public class CoerceNodeVisitor extends NodeVisitor<CoerceNode> {
     @Override
-    protected List<Node> getChildren(CoerceNode node) {
-        return Collections.singletonList(node.expr);
+    public LinkedHashMap<Node, String> getChildren(final CoerceNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.expr, "expr");
+        }};
     }
 
     @Override

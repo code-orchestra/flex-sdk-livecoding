@@ -3,19 +3,17 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.MemberExpressionNode;
 import macromedia.asc.parser.Node;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
  */
 public class MemberExpressionNodeVisitor extends NodeVisitor<MemberExpressionNode> {
     @Override
-    protected List<Node> getChildren(final MemberExpressionNode node) {
-        return new ArrayList<Node>() {{
-            add(node.base);
-            add(node.selector);
+    public LinkedHashMap<Node, String> getChildren(final MemberExpressionNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.base, "base");
+            put(node.selector, "selector");
         }};
     }
 

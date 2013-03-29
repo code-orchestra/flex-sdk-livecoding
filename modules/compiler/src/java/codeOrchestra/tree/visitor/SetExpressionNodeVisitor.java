@@ -4,6 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.SetExpressionNode;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,10 +12,10 @@ import java.util.List;
  */
 public class SetExpressionNodeVisitor extends SelectorNodeVisitor<SetExpressionNode> {
     @Override
-    protected List<Node> getChildren(final SetExpressionNode node) {
-        return new ArrayList<Node>() {{
-            addAll(SetExpressionNodeVisitor.super.getChildren(node));
-            add(node.args);
+    public LinkedHashMap<Node, String> getChildren(final SetExpressionNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            putAll(SetExpressionNodeVisitor.super.getChildren(node));
+            put(node.args, "args");
         }};
     }
 

@@ -4,6 +4,7 @@ import macromedia.asc.parser.ContinueStatementNode;
 import macromedia.asc.parser.Node;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class ContinueStatementNodeVisitor extends NodeVisitor<ContinueStatementNode> {
     @Override
-    protected List<Node> getChildren(ContinueStatementNode node) {
-        return Collections.<Node>singletonList(node.id);
+    public LinkedHashMap<Node, String> getChildren(final ContinueStatementNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.id, "id");
+        }};
     }
 
     @Override

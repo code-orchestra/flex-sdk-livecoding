@@ -4,6 +4,7 @@ import macromedia.asc.parser.IncrementNode;
 import macromedia.asc.parser.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public class IncrementNodeVisitor extends SelectorNodeVisitor<IncrementNode> {
     @Override
-    protected List<Node> getChildren(IncrementNode node) {
+    public LinkedHashMap<Node, String> getChildren(IncrementNode node) {
         return super.getChildren(node);
     }
 

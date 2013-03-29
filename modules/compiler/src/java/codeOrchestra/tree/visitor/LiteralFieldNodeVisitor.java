@@ -3,19 +3,17 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.LiteralFieldNode;
 import macromedia.asc.parser.Node;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
  */
 public class LiteralFieldNodeVisitor extends NodeVisitor<LiteralFieldNode> {
     @Override
-    protected List<Node> getChildren(final LiteralFieldNode node) {
-        return new ArrayList<Node>() {{
-            add(node.name);
-            add(node.value);
+    public LinkedHashMap<Node, String> getChildren(final LiteralFieldNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.name, "name");
+            put(node.value, "value");
         }};
     }
 

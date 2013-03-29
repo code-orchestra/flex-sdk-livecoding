@@ -4,6 +4,7 @@ import macromedia.asc.parser.CatchClauseNode;
 import macromedia.asc.parser.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,10 +12,10 @@ import java.util.List;
  */
 public class CatchClauseNodeVisitor extends NodeVisitor<CatchClauseNode> {
     @Override
-    protected List<Node> getChildren(final CatchClauseNode node) {
-        return new ArrayList<Node>() {{
-            add(node.parameter);
-            add(node.statements);
+    public LinkedHashMap<Node, String> getChildren(final CatchClauseNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.parameter, "parameter");
+            put(node.statements, "statements");
         }};
     }
 

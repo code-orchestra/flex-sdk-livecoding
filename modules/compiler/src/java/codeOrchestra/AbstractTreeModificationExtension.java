@@ -238,7 +238,19 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 -1)));
         StatementListNode tryblock = new StatementListNode(null);
         methodBody.removeLast(); // Removes last ReturnStatement
-        tryblock.items.addAll(methodBody); // TODO: Method body is unmodified here!
+
+        if (!staticMethod) {
+            // Replace all `this` references with `thisScope`
+            for (Node node : methodBody) {
+                RegularNode regularNode = new RegularNode(node);
+                List<RegularNode> thisNodes = regularNode.getDescendants(ThisExpressionNode.class);
+                for (RegularNode thisNode : thisNodes) {
+                    thisNode.replace(TreeUtil.createIdentifier("thisScope"));
+                }
+            }
+        }
+
+        tryblock.items.addAll(methodBody);
         StatementListNode catchlist = new StatementListNode(new CatchClauseNode(
                 TreeUtil.createParameterNode("e", "Error"),
                 new StatementListNode(null))

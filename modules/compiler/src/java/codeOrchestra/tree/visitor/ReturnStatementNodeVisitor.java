@@ -4,6 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.ReturnStatementNode;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class ReturnStatementNodeVisitor extends NodeVisitor<ReturnStatementNode> {
     @Override
-    protected List<Node> getChildren(ReturnStatementNode node) {
-        return Collections.singletonList(node.expr);
+    public LinkedHashMap<Node, String> getChildren(final ReturnStatementNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.expr, "expr");
+        }};
     }
 
     @Override

@@ -4,6 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.ToObjectNode;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class ToObjectNodeVisitor extends NodeVisitor<ToObjectNode> {
     @Override
-    protected List<Node> getChildren(ToObjectNode node) {
-        return Collections.singletonList(node.expr);
+    public LinkedHashMap<Node, String> getChildren(final ToObjectNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.expr, "expr");
+        }};
     }
 
     @Override

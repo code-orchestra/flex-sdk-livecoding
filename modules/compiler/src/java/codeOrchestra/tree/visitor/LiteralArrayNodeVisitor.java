@@ -4,6 +4,7 @@ import macromedia.asc.parser.LiteralArrayNode;
 import macromedia.asc.parser.Node;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class LiteralArrayNodeVisitor extends NodeVisitor<LiteralArrayNode> {
     @Override
-    protected List<Node> getChildren(LiteralArrayNode node) {
-        return Collections.<Node>singletonList(node.elementlist);
+    public LinkedHashMap<Node, String> getChildren(final LiteralArrayNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.elementlist, "elementlist");
+        }};
     }
 
     @Override

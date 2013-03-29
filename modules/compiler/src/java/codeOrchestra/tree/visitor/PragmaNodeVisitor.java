@@ -4,6 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.PragmaNode;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class PragmaNodeVisitor extends NodeVisitor<PragmaNode> {
     @Override
-    protected List<Node> getChildren(PragmaNode node) {
-        return Collections.<Node>singletonList(node.list);
+    public LinkedHashMap<Node, String> getChildren(final PragmaNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.list, "list");
+        }};
     }
 
     @Override

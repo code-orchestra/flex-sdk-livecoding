@@ -4,6 +4,7 @@ import macromedia.asc.parser.BreakStatementNode;
 import macromedia.asc.parser.Node;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class BreakStatementNodeVisitor extends NodeVisitor<BreakStatementNode> {
     @Override
-    protected List<Node> getChildren(BreakStatementNode node) {
-        return Collections.<Node>singletonList(node.id);
+    public LinkedHashMap<Node, String> getChildren(final BreakStatementNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.id, "id");
+        }};
     }
 
     @Override

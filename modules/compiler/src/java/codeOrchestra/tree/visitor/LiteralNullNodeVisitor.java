@@ -4,6 +4,7 @@ import macromedia.asc.parser.LiteralNullNode;
 import macromedia.asc.parser.Node;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,8 @@ import java.util.List;
  */
 public class LiteralNullNodeVisitor extends NodeVisitor<LiteralNullNode> {
     @Override
-    protected List<Node> getChildren(LiteralNullNode node) {
-        return Collections.emptyList();
+    public LinkedHashMap<Node, String> getChildren(LiteralNullNode node) {
+        return emptyMap;
     }
 
     @Override

@@ -3,17 +3,17 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.UnaryExpressionNode;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
  */
 public class UnaryExpressionNodeVisitor extends NodeVisitor<UnaryExpressionNode> {
     @Override
-    protected List<Node> getChildren(UnaryExpressionNode node) {
-        return Collections.singletonList(node.expr);
+    public LinkedHashMap<Node, String> getChildren(final UnaryExpressionNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.expr, "expr");
+        }};
     }
 
     @Override

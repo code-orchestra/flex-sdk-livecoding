@@ -4,6 +4,7 @@ import macromedia.asc.parser.AttributeListNode;
 import macromedia.asc.parser.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,12 @@ import java.util.List;
  */
 public class AttributeListNodeVisitor extends NodeVisitor<AttributeListNode> {
     @Override
-    protected List<Node> getChildren(AttributeListNode node) {
-        return node.items;
+    public LinkedHashMap<Node, String> getChildren(final AttributeListNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            for (Node item : node.items) {
+                put(item, "items");
+            }
+        }};
     }
 
     @Override

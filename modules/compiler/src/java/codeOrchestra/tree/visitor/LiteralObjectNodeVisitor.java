@@ -4,6 +4,7 @@ import macromedia.asc.parser.LiteralObjectNode;
 import macromedia.asc.parser.Node;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class LiteralObjectNodeVisitor extends NodeVisitor<LiteralObjectNode> {
     @Override
-    protected List<Node> getChildren(LiteralObjectNode node) {
-        return Collections.<Node>singletonList(node.fieldlist);
+    public LinkedHashMap<Node, String> getChildren(final LiteralObjectNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.fieldlist, "fieldlist");
+        }};
     }
 
     @Override

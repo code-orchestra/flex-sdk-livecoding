@@ -4,6 +4,7 @@ import macromedia.asc.parser.MetaDataNode;
 import macromedia.asc.parser.Node;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class MetaDataNodeVisitor<N extends MetaDataNode> extends NodeVisitor<N> {
     @Override
-    protected List<Node> getChildren(N node) {
-        return Collections.<Node>singletonList(node.data);
+    public LinkedHashMap<Node, String> getChildren(final N node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.data, "data");
+        }};
     }
 
     @Override

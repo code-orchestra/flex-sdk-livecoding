@@ -1,5 +1,6 @@
 package codeOrchestra;
 
+import codeOrchestra.tree.RegularNode;
 import codeOrchestra.tree.TreeNavigator;
 import codeOrchestra.tree.TreeUtil;
 import codeOrchestra.tree.visitor.NodeVisitor;

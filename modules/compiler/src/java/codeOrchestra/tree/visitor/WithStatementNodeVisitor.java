@@ -3,19 +3,17 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.WithStatementNode;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
  */
 public class WithStatementNodeVisitor extends NodeVisitor<WithStatementNode> {
     @Override
-    protected List<Node> getChildren(final WithStatementNode node) {
-        return new ArrayList<Node>() {{
-            add(node.expr);
-            add(node.statement);
+    public LinkedHashMap<Node, String> getChildren(final WithStatementNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.expr, "expr");
+            put(node.statement, "statement");
         }};
     }
 

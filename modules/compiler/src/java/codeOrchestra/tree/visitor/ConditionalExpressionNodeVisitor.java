@@ -4,6 +4,7 @@ import macromedia.asc.parser.ConditionalExpressionNode;
 import macromedia.asc.parser.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,11 +12,11 @@ import java.util.List;
  */
 public class ConditionalExpressionNodeVisitor extends NodeVisitor<ConditionalExpressionNode> {
     @Override
-    protected List<Node> getChildren(final ConditionalExpressionNode node) {
-        return new ArrayList<Node>() {{
-            add(node.condition);
-            add(node.thenexpr);
-            add(node.elseexpr);
+    public LinkedHashMap<Node, String> getChildren(final ConditionalExpressionNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.condition, "condition");
+            put(node.thenexpr, "thenexpr");
+            put(node.elseexpr, "elseexpr");
         }};
     }
 

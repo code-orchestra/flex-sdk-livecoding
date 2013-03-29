@@ -4,6 +4,7 @@ import macromedia.asc.parser.LabeledStatementNode;
 import macromedia.asc.parser.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,10 +12,10 @@ import java.util.List;
  */
 public class LabeledStatementNodeVisitor extends NodeVisitor<LabeledStatementNode> {
     @Override
-    protected List<Node> getChildren(final LabeledStatementNode node) {
-        return new ArrayList<Node>() {{
-            add(node.label);
-            add(node.statement);
+    public LinkedHashMap<Node, String> getChildren(final LabeledStatementNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.label, "label");
+            put(node.statement, "statement");
         }};
     }
 

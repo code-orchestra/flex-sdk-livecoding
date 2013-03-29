@@ -4,6 +4,7 @@ import macromedia.asc.parser.FunctionSignatureNode;
 import macromedia.asc.parser.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,10 +12,10 @@ import java.util.List;
  */
 public class FunctionSignatureNodeVisitor extends NodeVisitor<FunctionSignatureNode> {
     @Override
-    protected List<Node> getChildren(final FunctionSignatureNode node) {
-        return new ArrayList<Node>() {{
-            add(node.parameter);
-            add(node.result);
+    public LinkedHashMap<Node, String> getChildren(final FunctionSignatureNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.parameter, "parameter");
+            put(node.result, "result");
         }};
     }
 

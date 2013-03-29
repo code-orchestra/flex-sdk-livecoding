@@ -4,6 +4,7 @@ import macromedia.asc.parser.DeleteExpressionNode;
 import macromedia.asc.parser.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public class DeleteExpressionNodeVisitor extends SelectorNodeVisitor<DeleteExpressionNode> {
     @Override
-    protected List<Node> getChildren(DeleteExpressionNode node) {
+    public LinkedHashMap<Node, String> getChildren(DeleteExpressionNode node) {
         return super.getChildren(node);
     }
 

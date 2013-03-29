@@ -3,7 +3,7 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.IncludeDirectiveNode;
 import macromedia.asc.parser.Node;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,10 +11,10 @@ import java.util.List;
  */
 public class IncludeDirectiveNodeVisitor extends DefinitionNodeVisitor<IncludeDirectiveNode> {
     @Override
-    protected List<Node> getChildren(final IncludeDirectiveNode node) {
-        return new ArrayList<Node>() {{
-            addAll(IncludeDirectiveNodeVisitor.super.getChildren(node));
-            add(node.filespec);
+    public LinkedHashMap<Node, String> getChildren(final IncludeDirectiveNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            putAll(IncludeDirectiveNodeVisitor.super.getChildren(node));
+            put(node.filespec, "filespec");
         }};
     }
 

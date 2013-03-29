@@ -4,6 +4,7 @@ import macromedia.asc.parser.LiteralBooleanNode;
 import macromedia.asc.parser.Node;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,8 @@ import java.util.List;
  */
 public class LiteralBooleanNodeVisitor extends NodeVisitor<LiteralBooleanNode> {
     @Override
-    protected List<Node> getChildren(LiteralBooleanNode node) {
-        return Collections.emptyList();
+    public LinkedHashMap<Node, String> getChildren(LiteralBooleanNode node) {
+        return emptyMap;
     }
 
     @Override

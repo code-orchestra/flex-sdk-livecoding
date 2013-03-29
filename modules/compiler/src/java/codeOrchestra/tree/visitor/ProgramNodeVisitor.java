@@ -3,23 +3,21 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.ProgramNode;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
  */
 public class ProgramNodeVisitor<N extends ProgramNode> extends NodeVisitor<N> {
     @Override
-    protected List<Node> getChildren(final ProgramNode node) {
-        return new ArrayList<Node>() {{
-            add(node.statements);
+    public LinkedHashMap<Node, String> getChildren(final N node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.statements, "statements");
         }};
     }
 
     @Override
-    protected List<Object> getLeaves(ProgramNode node) {
+    protected List<Object> getLeaves(N node) {
         return Collections.emptyList();
     }
 }

@@ -3,8 +3,7 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.ApplyTypeExprNode;
 import macromedia.asc.parser.Node;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -12,10 +11,10 @@ import java.util.List;
  */
 public class ApplyTypeExprNodeVisitor extends SelectorNodeVisitor<ApplyTypeExprNode> {
     @Override
-    protected List<Node> getChildren(final ApplyTypeExprNode node) {
-        return new ArrayList<Node>() {{
-            addAll(ApplyTypeExprNodeVisitor.super.getChildren(node));
-            add(node.typeArgs);
+    public LinkedHashMap<Node, String> getChildren(final ApplyTypeExprNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            putAll(ApplyTypeExprNodeVisitor.super.getChildren(node));
+            put(node.typeArgs, "typeArgs");
         }};
     }
 

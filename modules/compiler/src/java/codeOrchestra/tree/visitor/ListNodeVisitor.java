@@ -4,7 +4,7 @@ import macromedia.asc.parser.ListNode;
 import macromedia.asc.parser.Node;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -12,8 +12,12 @@ import java.util.List;
  */
 public class ListNodeVisitor<N extends ListNode> extends NodeVisitor<N> {
     @Override
-    protected List<Node> getChildren(N node) {
-        return node.items;
+    public LinkedHashMap<Node, String> getChildren(final N node) {
+        return new LinkedHashMap<Node, String>() {{
+            for (Node item : node.items) {
+                put(item, "items");
+            }
+        }};
     }
 
     @Override

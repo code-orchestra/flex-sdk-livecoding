@@ -4,6 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.QualifiedIdentifierNode;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,10 +12,10 @@ import java.util.List;
  */
 public class QualifiedIdentifierNodeVisitor<N extends QualifiedIdentifierNode> extends IdentifierNodeVisitor<N> {
     @Override
-    protected List<Node> getChildren(final N node) {
-        return new ArrayList<Node>() {{
-            addAll(QualifiedIdentifierNodeVisitor.super.getChildren(node));
-            add(node.qualifier);
+    public LinkedHashMap<Node, String> getChildren(final N node) {
+        return new LinkedHashMap<Node, String>() {{
+            putAll(QualifiedIdentifierNodeVisitor.super.getChildren(node));
+            put(node.qualifier, "qualifier");
         }};
     }
 

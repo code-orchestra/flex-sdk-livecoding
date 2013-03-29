@@ -4,6 +4,7 @@ import macromedia.asc.parser.BinaryExpressionNode;
 import macromedia.asc.parser.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,10 +12,10 @@ import java.util.List;
  */
 public class BinaryExpressionNodeVisitor extends NodeVisitor<BinaryExpressionNode> {
     @Override
-    protected List<Node> getChildren(final BinaryExpressionNode node) {
-        return new ArrayList<Node>() {{
-            add(node.lhs);
-            add(node.rhs);
+    public LinkedHashMap<Node, String> getChildren(final BinaryExpressionNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.lhs, "lhs");
+            put(node.rhs, "rhs");
         }};
     }
 

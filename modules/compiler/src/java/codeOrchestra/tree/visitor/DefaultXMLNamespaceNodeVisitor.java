@@ -4,6 +4,7 @@ import macromedia.asc.parser.DefaultXMLNamespaceNode;
 import macromedia.asc.parser.Node;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class DefaultXMLNamespaceNodeVisitor extends NodeVisitor<DefaultXMLNamespaceNode> {
     @Override
-    protected List<Node> getChildren(DefaultXMLNamespaceNode node) {
-        return Collections.singletonList(node.expr);
+    public LinkedHashMap<Node, String> getChildren(final DefaultXMLNamespaceNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.expr, "expr");
+        }};
     }
 
     @Override

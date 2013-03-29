@@ -4,6 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.QualifiedExpressionNode;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,10 +12,10 @@ import java.util.List;
  */
 public class QualifiedExpressionNodeVisitor extends QualifiedIdentifierNodeVisitor<QualifiedExpressionNode> {
     @Override
-    protected List<Node> getChildren(final QualifiedExpressionNode node) {
-        return new ArrayList<Node>() {{
-            addAll(QualifiedExpressionNodeVisitor.super.getChildren(node));
-            add(node.expr);
+    public LinkedHashMap<Node, String> getChildren(final QualifiedExpressionNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            putAll(QualifiedExpressionNodeVisitor.super.getChildren(node));
+            put(node.expr, "expr");
         }};
     }
 

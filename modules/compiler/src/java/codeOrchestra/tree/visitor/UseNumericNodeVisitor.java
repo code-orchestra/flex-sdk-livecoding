@@ -4,7 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.UseNumericNode;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -12,14 +12,14 @@ import java.util.List;
  */
 public class UseNumericNodeVisitor extends UsePragmaNodeVisitor<UseNumericNode> {
     @Override
-    protected List<Node> getChildren(UseNumericNode node) {
+    public LinkedHashMap<Node, String> getChildren(UseNumericNode node) {
         return super.getChildren(node);
     }
 
     @Override
     protected List<Object> getLeaves(final UseNumericNode node) {
         return new ArrayList<Object>() {{
-            addAll(UseNumericNodeVisitor.super.getChildren(node));
+            addAll(UseNumericNodeVisitor.super.getLeaves(node));
             add(node.numeric_mode);
         }};
     }

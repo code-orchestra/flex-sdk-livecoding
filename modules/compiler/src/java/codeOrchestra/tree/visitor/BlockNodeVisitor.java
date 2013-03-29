@@ -3,19 +3,17 @@ package codeOrchestra.tree.visitor;
 import macromedia.asc.parser.BlockNode;
 import macromedia.asc.parser.Node;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
  */
 public class BlockNodeVisitor extends NodeVisitor<BlockNode> {
     @Override
-    protected List<Node> getChildren(final BlockNode node) {
-        return new ArrayList<Node>() {{
-            add(node.attributes);
-            add(node.statements);
+    public LinkedHashMap<Node, String> getChildren(final BlockNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.attributes, "attributes");
+            put(node.statements, "statements");
         }};
     }
 

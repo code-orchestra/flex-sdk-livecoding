@@ -4,6 +4,7 @@ import macromedia.asc.parser.EmptyStatementNode;
 import macromedia.asc.parser.Node;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,8 @@ import java.util.List;
  */
 public class EmptyStatementNodeVisitor extends NodeVisitor<EmptyStatementNode> {
     @Override
-    protected List<Node> getChildren(EmptyStatementNode node) {
-        return Collections.emptyList();
+    public LinkedHashMap<Node, String> getChildren(EmptyStatementNode node) {
+        return emptyMap;
     }
 
     @Override

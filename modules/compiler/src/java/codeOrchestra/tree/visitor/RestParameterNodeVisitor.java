@@ -4,6 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.RestParameterNode;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,8 +12,10 @@ import java.util.List;
  */
 public class RestParameterNodeVisitor extends ParameterNodeVisitor<RestParameterNode> {
     @Override
-    protected List<Node> getChildren(RestParameterNode node) {
-        return Collections.singletonList(node.parameter);
+    public LinkedHashMap<Node, String> getChildren(final RestParameterNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            put(node.parameter, "parameter");
+        }};
     }
 
     @Override

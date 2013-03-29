@@ -4,7 +4,7 @@ import macromedia.asc.parser.Node;
 import macromedia.asc.parser.ParameterListNode;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -12,8 +12,12 @@ import java.util.List;
  */
 public class ParameterListNodeVisitor extends NodeVisitor<ParameterListNode> {
     @Override
-    protected List<Node> getChildren(ParameterListNode node) {
-        return new ArrayList<Node>(node.items);
+    public LinkedHashMap<Node, String> getChildren(final ParameterListNode node) {
+        return new LinkedHashMap<Node, String>() {{
+            for (Node item : node.items) {
+                put(item, "items");
+            }
+        }};
     }
 
     @Override

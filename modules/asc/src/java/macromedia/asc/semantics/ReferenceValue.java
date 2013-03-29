@@ -147,10 +147,11 @@ public final class ReferenceValue extends Value implements ErrorConstants
         return getType(cx,this.getKind());
     }
 
-    /**
+     // CodeOrchestra: added method
+    /*
         This method MUST NOT be used in compilation process
      */
-    public TypeInfo getType()
+    public TypeInfo getType() 
     {
         return type;
     }

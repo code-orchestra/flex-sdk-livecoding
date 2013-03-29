@@ -496,6 +496,7 @@ public final class CompilationUnit
 		return workflow;
 	}
 
+     // CodeOrchestra: added method
     public void setParsedState() {
         state = SyntaxTree;
         workflow = 14;

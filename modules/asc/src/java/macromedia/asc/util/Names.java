@@ -30,7 +30,7 @@ import static macromedia.asc.parser.Tokens.*;
 /**
  * @author Jeff Dyer
  */
-public final class Names implements Serializable
+public final class Names implements Serializable // CodeOrchestra: made serializable
 {   
     
     // Some counters that help in evaluating performance (only used if profile is true)

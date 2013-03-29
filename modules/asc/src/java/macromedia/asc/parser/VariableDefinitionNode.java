@@ -31,7 +31,7 @@ public class VariableDefinitionNode extends DefinitionNode
 {
 	public int kind;
 	public ListNode list;
-	public transient Context cx;
+	public transient Context cx; // CodeOrchestra: made transient
 
 	public VariableDefinitionNode(PackageDefinitionNode pkgdef, AttributeListNode attrs, int kind, ListNode list, int pos)
 	{

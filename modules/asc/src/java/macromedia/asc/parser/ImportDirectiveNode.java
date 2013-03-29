@@ -32,7 +32,7 @@ public class ImportDirectiveNode extends DefinitionNode
 	public PackageDefinitionNode pkg_node;
 	public ReferenceValue ref;
 	public boolean package_retrieved;
-	public transient Context cx;
+	public transient Context cx; // CodeOrchestra: made transient
 
 	public ImportDirectiveNode(PackageDefinitionNode pkgdef, AttributeListNode attrs, PackageNameNode name, PackageDefinitionNode pkg_node, Context cx)
 	{

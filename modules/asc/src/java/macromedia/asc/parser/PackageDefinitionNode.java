@@ -44,7 +44,7 @@ public class PackageDefinitionNode extends DefinitionNode
     
 	public int var_count;
 	public int temp_count;
-	public transient Context cx;
+	public transient Context cx; // CodeOrchestra: made transient
 
 	public boolean package_retrieved;
     public boolean in_this_pkg;

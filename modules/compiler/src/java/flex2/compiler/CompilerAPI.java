@@ -1774,6 +1774,7 @@ public final class CompilerAPI
         for (int i = 0, n = units.size(); i < n; i++)
         {
             CompilationUnit unit = units.get(i);
+             // CodeOrchestra: added if
             if (unit == null) {
                 continue;
             }
@@ -3243,7 +3244,7 @@ public final class CompilerAPI
     // this will be set by asdoc. if true source from disk will be preferred over source from swc
     private static boolean skipTimestampCheck = false;
 
-    public static Set<Source> addedSources = new HashSet<Source>();
+    public static Set<Source> addedSources = new HashSet<Source>();  // CodeOrchestra: added
     
     private static int findDefinition(List<Source> sources, SourceList sourceList, SourcePathBase sourcePath,
                                       ResourceContainer resources, CompilerSwcContext swcContext,
@@ -3274,6 +3275,7 @@ public final class CompilerAPI
             s = swcSource;
         }
 
+         // CodeOrchestra: added if
         if (s == null) {
             Iterator<Source> iterator = addedSources.iterator();
             while (iterator.hasNext()) {
@@ -4083,6 +4085,7 @@ public final class CompilerAPI
 
     private static boolean generate(CompilationUnit u, flex2.compiler.SubCompiler[] compilers, SymbolTable symbolTable)
     {
+// CodeOrchestra: TODO: investigate
 //        if (Fcsh.livecodingBaseMode && !Fcsh.livecodingBaseModeSecondPass) {
 //            // On first pass we do not need to generate artifact, just collect syntax trees
 //            return true;

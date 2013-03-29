@@ -30,7 +30,7 @@ import macromedia.asc.semantics.*;
  *
  * @author Jeff Dyer
  */
-public class Node implements Serializable
+public class Node implements Serializable // CodeOrchestra: made serializable
 {
 	/* HACK -- JAVA ONLY
 	 * Since a lot of code generation uses toString methods,

@@ -41,7 +41,7 @@ import static macromedia.asc.parser.Tokens.*;
  *
  * @author Jeff Dyer
  */
-public abstract class Slot implements Serializable
+public abstract class Slot implements Serializable // CodeOrchestra: made serializable
 {
 	public static final int PUSH_none = 0;
 	public static final int PUSH_env = 0x1 << 0;

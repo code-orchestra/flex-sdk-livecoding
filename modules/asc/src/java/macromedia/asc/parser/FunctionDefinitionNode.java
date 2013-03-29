@@ -37,7 +37,7 @@ public class FunctionDefinitionNode extends DefinitionNode
 	public int fixedCount;
 	public ObjectValue fun;
 	public ReferenceValue ref;
-	public transient Context cx;
+	public transient Context cx; // CodeOrchestra: made transient
 	public ExpressionStatementNode init;
 	public boolean needs_init;
     public boolean is_prototype;

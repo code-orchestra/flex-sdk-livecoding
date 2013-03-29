@@ -27,7 +27,7 @@ import java.io.Serializable;
  *
  * @author Erik Tierney
  */
-public class QName implements Serializable
+public class QName implements Serializable // CodeOrchestra: made serializable
 {
     public ObjectValue ns;
     public String name;

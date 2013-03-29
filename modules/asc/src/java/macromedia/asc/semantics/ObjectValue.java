@@ -141,7 +141,7 @@ public class ObjectValue extends Value implements Comparable
         }
     }
 
-    public transient Builder builder;
+    public transient Builder builder; // CodeOrchestra: made transient
     public TypeInfo type;
     private String value = EMPTY_STRING;
     private NumberUsage numberUsage;

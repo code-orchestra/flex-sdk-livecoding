@@ -58,6 +58,7 @@ import java.util.*;
  */
 public class Fcsh extends Tool
 {
+     // CodeOrchestra: added fields
     public static boolean livecodingSession;
     public static boolean livecodingBaseMode;
     public static boolean livecodingIncrementalMode;
@@ -350,6 +351,7 @@ public class Fcsh extends Tool
             livecodingSession = false;
             Context.livecodingSession = false;
         }
+         // CodeOrchestra: added elseif
         else if (s.startsWith("lccompc") || s.startsWith("lcmxmlc"))
         {
             boolean isCompc = s.startsWith("lccompc");
@@ -963,6 +965,7 @@ public class Fcsh extends Tool
             Transcoder[] transcoders = WebTierAPI.getTranscoders( configuration );
             SubCompiler[] compilers = WebTierAPI.getCompilers(compilerConfig, mappings, transcoders);
 
+             // CodeOrchestra: added if
             if (livecodingBaseMode) {
                 ((As3Compiler) compilers[0]).addCompilerExtension(new LCBaseExtension());
             }
@@ -1228,6 +1231,7 @@ public class Fcsh extends Tool
             Transcoder[] transcoders = WebTierAPI.getTranscoders( configuration );
             SubCompiler[] compilers = WebTierAPI.getCompilers(compilerConfig, mappings, transcoders);
 
+             // CodeOrchestra: added if
             if (livecodingIncrementalMode) {
                 String fqClassName = configuration.getClasses().get(0); // Assume that only one class is provided in incremental phase
                 ((As3Compiler) compilers[0]).addCompilerExtension(new LCIncrementalExtension(fqClassName));

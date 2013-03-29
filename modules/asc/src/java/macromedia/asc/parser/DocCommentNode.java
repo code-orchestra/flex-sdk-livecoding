@@ -28,6 +28,7 @@ import static macromedia.asc.parser.Tokens.*;
  */
 public class DocCommentNode extends MetaDataNode
 {
+     // CodeOrchestra: made metaData and is_default public
     public MetaDataNode metaData; // some comments are associated with other metadata (in addition to a definition)
     public boolean is_default;
 

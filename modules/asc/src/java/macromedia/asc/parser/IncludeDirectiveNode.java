@@ -29,9 +29,9 @@ public class IncludeDirectiveNode extends DefinitionNode
 {
 	public LiteralStringNode filespec;
 	public ProgramNode program;
-    public transient Context cx;
+    public transient Context cx; // CodeOrchestra: made transient
     public boolean in_this_include;
-    public transient Context prev_cx;
+    public transient Context prev_cx; // CodeOrchestra: made transient
 
 	public IncludeDirectiveNode(Context cx, LiteralStringNode filespec, ProgramNode program)
 	{

@@ -135,6 +135,7 @@ public abstract class SelectorNode extends Node
 		return skip;
 	}
 
+     // CodeOrchestra: added method
     public int getFlags() {
         return flags;
     }

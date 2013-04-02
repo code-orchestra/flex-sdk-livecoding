@@ -33,7 +33,7 @@
     <orderEntry type="module-library">
       <library name="xercesImpl.jar">
         <CLASSES>
-          <root url="jar://$FLEX_HOME$/lib/xercesImpl.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/external/xercesImpl.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -42,7 +42,7 @@
     <orderEntry type="module-library">
       <library name="commons-collections.jar">
         <CLASSES>
-          <root url="jar://$FLEX_HOME$/lib/commons-collections.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/external/commons-collections.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -51,7 +51,7 @@
     <orderEntry type="module-library">
       <library name="saxon9.jar">
         <CLASSES>
-          <root url="jar://$FLEX_HOME$/lib/saxon9.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/external/saxon9.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

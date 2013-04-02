@@ -20,6 +20,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../modules/thirdparty/batik/test-sources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../modules/thirdparty/batik/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../modules/thirdparty/batik/test-resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../modules/thirdparty/batik/sources-1.4" isTestSource="false" />
     </content>
     <orderEntry type="module-library">
       <library name="js.jar">

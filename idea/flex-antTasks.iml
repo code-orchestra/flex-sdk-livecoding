@@ -20,7 +20,7 @@
     <orderEntry type="module-library">
       <library name="ANT17_JAR">
         <CLASSES>
-          <root url="jar://$ANT17_JAR$!/" />
+          <root url="jar://$MODULE_DIR$/../lib/external/ant.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

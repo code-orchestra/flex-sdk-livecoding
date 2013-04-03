@@ -18,14 +18,23 @@ import java.util.List;
 public abstract class AbstractTreeModificationExtension implements Extension {
 
     protected static boolean TRACE = true;
-    private static final String TEMP_DIR = "C:\\Temp\\serializedAST";
     public static final String SERIALIZED_AST = ".serializedAST";
 
     protected ProjectNavigator projectNavigator;
 
+    private static String getTmpDir() {
+        File serializedASTDir = new File(System.getProperty("java.io.tmpdir"), "serializedAST");
+
+        if (!serializedASTDir.exists()) {
+            serializedASTDir.mkdirs();
+        }
+
+        return serializedASTDir.getPath();
+    }
+
     protected void saveSyntaxTree(CompilationUnit unit) {
         String shortName = unit.getSource().getShortName();
-        String serializedPath = TEMP_DIR + File.separator + shortName + SERIALIZED_AST;
+        String serializedPath = getTmpDir() + File.separator + shortName + SERIALIZED_AST;
         Object syntaxTree = unit.getSyntaxTree();
         if (!(syntaxTree instanceof ProgramNode)) {
             throw new RuntimeException("Syntax tree of unit " + unit.getSource().getName() + " is not a ProgramNode, it is " + syntaxTree.getClass());
@@ -47,7 +56,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
         projectNavigator = new ProjectNavigator();
 
-        File dir = new File(TEMP_DIR);
+        File dir = new File(getTmpDir());
         File[] files = dir.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {

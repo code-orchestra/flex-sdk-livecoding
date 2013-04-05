@@ -19,7 +19,7 @@ public class DeliveryMessageBuilder {
     private ClassDefinitionNode classDefinitionNode;
 
     public DeliveryMessageBuilder(String fqName, List<FunctionDefinitionNode> definitionNodes, Map<FunctionDefinitionNode, String> functionToClassNames, ClassDefinitionNode classDefinitionNode) {
-        this.fqName = fqName;
+        this.fqName = fqName.replace(":", ".");
         this.definitionNodes = definitionNodes;
         this.functionToClassNames = functionToClassNames;
         this.classDefinitionNode = classDefinitionNode;

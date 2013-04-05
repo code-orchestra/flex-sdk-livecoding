@@ -55,13 +55,13 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
             ObjectList<Node> oldBody = changedMethod.fexpr.body.items;
             changedMethod.fexpr.body.items = new ObjectList<Node>();
             String liveCodingClassName = addLiveCodingClass(className, changedMethod, oldBody, true);
+            functionToClassNames.put(changedMethod, liveCodingClassName);
             liveCodingClassNames.add(liveCodingClassName);
         }
         FunctionDefinitionNode constructor = TreeUtil.removeAllMethodsAndClearConstructor(classDefinitionNode);
         for (String liveCodingClassName : liveCodingClassNames) {
             constructor.fexpr.body.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(liveCodingClassName), -1)));
             TreeUtil.addImport(unit, "codeOrchestra.liveCoding.load", liveCodingClassName);
-//            System.out.println("livecoding class name: " + liveCodingClassName);
         }
 
         System.out.println("Delivery Message: [" + new DeliveryMessageBuilder(fqName, changedMethods, functionToClassNames, classDefinitionNode).build() + "]");

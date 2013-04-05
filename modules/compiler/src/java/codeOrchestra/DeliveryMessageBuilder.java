@@ -37,7 +37,7 @@ public class DeliveryMessageBuilder {
             sb.append("codeOrchestra.liveCoding.load.").append(deliveryClassName).append(":");
             sb.append(fqName).append(":");
             sb.append(functionDefinitionNode.name.identifier.name).append(":");
-            sb.append(LiveCodingUtil.constructLiveCodingMethodId(functionDefinitionNode, fqName)).append(":");
+            sb.append(LiveCodingUtil.constructLiveCodingMethodId(functionDefinitionNode, shortNameFromLongName(fqName))).append(":");
             sb.append(TreeNavigator.isStaticMethod(functionDefinitionNode) ? "1" : "0").append(":");
 
             // TODO: add static initializer support
@@ -61,6 +61,15 @@ public class DeliveryMessageBuilder {
 
         return sb.toString();
     }
+
+    private static String shortNameFromLongName(String fqName) {
+        if (fqName == null) return fqName;
+        int offset = fqName.lastIndexOf('.');
+        if (offset < 0) return fqName;
+
+        return fqName.substring(offset + 1);
+    }
+
 
 //    private String getMethodId
 

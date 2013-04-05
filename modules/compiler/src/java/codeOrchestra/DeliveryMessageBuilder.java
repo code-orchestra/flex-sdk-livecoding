@@ -52,7 +52,7 @@ public class DeliveryMessageBuilder {
             }
             sb.append(":");
 
-            sb.append(System.currentTimeMillis()); // TODO: wrong timestamp?
+            sb.append(getTimestamp(deliveryClassName));
 
             if (iterator.hasNext()) {
                 sb.append("|");
@@ -70,7 +70,8 @@ public class DeliveryMessageBuilder {
         return fqName.substring(offset + 1);
     }
 
-
-//    private String getMethodId
+    private static String getTimestamp(String deliveryClassName) {
+        return deliveryClassName.substring(deliveryClassName.length() - 13);
+    }
 
 }

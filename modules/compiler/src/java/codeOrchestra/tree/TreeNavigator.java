@@ -60,7 +60,7 @@ public class TreeNavigator {
         return  functionDefinitionNodes;
     }
 
-    static boolean isConstructor(FunctionDefinitionNode functionDefinitionNode, ClassDefinitionNode classDefinitionNode) {
+    public static boolean isConstructor(FunctionDefinitionNode functionDefinitionNode, ClassDefinitionNode classDefinitionNode) {
         return functionDefinitionNode.name.identifier.name.equals(classDefinitionNode.name.name);
     }
 

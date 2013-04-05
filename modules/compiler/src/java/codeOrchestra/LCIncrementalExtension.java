@@ -9,18 +9,22 @@ import macromedia.asc.parser.*;
 import macromedia.asc.util.ObjectList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Anton.I.Neverov
  */
 public class LCIncrementalExtension extends AbstractTreeModificationExtension {
 
+    private final String fqName;
     private final String initialClassName;
     private final String initialPackageName;
 
     public LCIncrementalExtension(String fqClassName) {
         String[] parts = fqClassName.split(":");
+        fqName = fqClassName;
         initialPackageName = parts[0];
         initialClassName = parts[1];
     }
@@ -46,6 +50,7 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
         }
 
         ArrayList<String> liveCodingClassNames = new ArrayList<String>();
+        Map<FunctionDefinitionNode, String> functionToClassNames = new HashMap<FunctionDefinitionNode, String>();
         for(FunctionDefinitionNode changedMethod : changedMethods) {
             ObjectList<Node> oldBody = changedMethod.fexpr.body.items;
             changedMethod.fexpr.body.items = new ObjectList<Node>();
@@ -56,9 +61,10 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
         for (String liveCodingClassName : liveCodingClassNames) {
             constructor.fexpr.body.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(liveCodingClassName), -1)));
             TreeUtil.addImport(unit, "codeOrchestra.liveCoding.load", liveCodingClassName);
-            System.out.println("livecoding class name: " + liveCodingClassName);
+//            System.out.println("livecoding class name: " + liveCodingClassName);
         }
 
+        System.out.println("Delivery Message: [" + new DeliveryMessageBuilder(fqName, changedMethods, functionToClassNames, classDefinitionNode).build() + "]");
     }
 
     /**

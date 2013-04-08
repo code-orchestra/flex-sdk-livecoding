@@ -203,7 +203,9 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         args.items.add(new LiteralBooleanNode(true));
         CallExpressionNode selector = new CallExpressionNode(new IdentifierNode("addEventListener", -1), args);
         MemberExpressionNode item = new MemberExpressionNode(TreeUtil.createCall("LiveCodeRegistry", "getInstance", null), selector, -1);
-        constructorDefinition.fexpr.body.items.add(new ExpressionStatementNode(new ListNode(null, item, -1)));
+        ExpressionStatementNode listenerAddExpressionStatement = new ExpressionStatementNode(new ListNode(null, item, -1));
+        ObjectList<Node> constructorBody = constructorDefinition.fexpr.body.items;
+        constructorBody.add(constructorBody.size() - 1, listenerAddExpressionStatement);
     }
 
     private String addModelDependenciesUnit(String packageName, Context cx) {
@@ -282,7 +284,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                         TreeUtil.createCall("LiveCodeRegistry", "getInstance", null),
                         new CallExpressionNode(
                                 new IdentifierNode("initSession", -1),
-                                new ArgumentListNode(new LiteralStringNode("123456"), -1)
+                                new ArgumentListNode(new LiteralStringNode("123456"), -1) // TODO: randomize
                         ),
                         -1
                 ),

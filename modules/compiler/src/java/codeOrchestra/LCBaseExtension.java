@@ -265,7 +265,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 TreeUtil.createCall(
                         "LiveCodingCodeFlowUtil",
                         "setMaxLoopCount",
-                        new ArgumentListNode(new LiteralNumberNode("10000"), -1)
+                        new ArgumentListNode(new LiteralNumberNode("10000"), -1) // TODO: make configurable
                 ),
                 -1
         )));
@@ -284,7 +284,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                         TreeUtil.createCall("LiveCodeRegistry", "getInstance", null),
                         new CallExpressionNode(
                                 new IdentifierNode("initSession", -1),
-                                new ArgumentListNode(new LiteralStringNode("123456"), -1) // TODO: randomize
+                                new ArgumentListNode(new LiteralStringNode(generateSessionId()), -1) // TODO: randomize
                         ),
                         -1
                 ),
@@ -294,4 +294,9 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         classCONode.addImport("codeOrchestra.actionScript.liveCoding.util", "LiveCodeRegistry");
         classCONode.addToProject();
     }
+
+    private static String generateSessionId() {
+        return UUID.randomUUID().toString().substring(0, 8);
+    }
+
 }

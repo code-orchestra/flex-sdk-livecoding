@@ -19,8 +19,10 @@
 
 package flex2.tools;
 
+import codeOrchestra.AbstractTreeModificationExtension;
 import codeOrchestra.LCBaseExtension;
 import codeOrchestra.LCIncrementalExtension;
+import codeOrchestra.util.FileUtils;
 import flash.localization.LocalizationManager;
 import flash.localization.ResourceBundleLocalizer;
 import flash.util.Trace;
@@ -337,6 +339,10 @@ public class Fcsh extends Tool
             }
 
             exit = true;
+        }
+        else if (s.equals("livecoding.caches.delete"))
+        {
+            FileUtils.clear(new File(AbstractTreeModificationExtension.getCachesDir()));
         }
         else if (s.equals("livecoding.start"))
         {

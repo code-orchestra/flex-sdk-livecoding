@@ -23,10 +23,16 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
     private final String initialPackageName;
 
     public LCIncrementalExtension(String fqClassName) {
-        String[] parts = fqClassName.split(":");
         fqName = fqClassName;
-        initialPackageName = parts[0];
-        initialClassName = parts[1];
+
+        if (fqClassName.contains(":")) {
+            String[] parts = fqClassName.split(":");
+            initialPackageName = parts[0];
+            initialClassName = parts[1];
+        } else {
+            initialPackageName = "";
+            initialClassName = fqClassName;
+        }
     }
 
     @Override

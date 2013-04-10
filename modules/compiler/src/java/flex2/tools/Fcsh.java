@@ -1355,7 +1355,7 @@ public class Fcsh extends Tool
         catch (Throwable t) // IOException, Throwable
         {
             ThreadLocalToolkit.logError(t.getMessage());
-            if (Trace.error)
+//            if (Trace.error)
             {
                 t.printStackTrace();
             }

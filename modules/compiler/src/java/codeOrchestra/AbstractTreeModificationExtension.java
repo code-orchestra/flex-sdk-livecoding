@@ -91,7 +91,14 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         if (!(Fcsh.livecodingBaseMode || Fcsh.livecodingIncrementalMode)) { // Extra check
             return;
         }
-        performModifications(unit);
+
+        try {
+            performModifications(unit);
+        } catch (Throwable t) {
+            System.out.println("Error during custom AST modifications:");
+            t.printStackTrace();
+        }
+
         traceStep("parse1", unit.getSource().getRawLocation());
     }
 

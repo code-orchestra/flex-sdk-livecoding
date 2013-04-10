@@ -37,6 +37,10 @@ public class ProvidedPackages {
     }
 
     public static boolean isProvidedPackage(String packageName) {
+        if ("".equals(packageName)) {
+            return false;
+        }
+
         for (String s : packages) {
             if (s.startsWith(packageName)) {
                 return true;

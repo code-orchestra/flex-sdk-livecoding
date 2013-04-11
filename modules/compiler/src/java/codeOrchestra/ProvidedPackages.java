@@ -14,7 +14,7 @@ public class ProvidedPackages {
             "codeOrchestra.actionScript.extensionMethods.methods.ModelDependencies_codeOrchestra_actionScript_extensionMethods_methods",
             "codeOrchestra.actionScript.liveCoding.util.ModelDependencies_codeOrchestra_actionScript_liveCoding_util",
             "codeOrchestra.actionScript.logging.logUtil.ModelDependencies_codeOrchestra_actionScript_logging_logUtil",
-            "codeOrchestra.actionScript.util.ModelDependencies_codeOrchestra_actionScript_util",
+            "codeOrchestra.actionScript.util.ModelDependencies_codeOrchestra_actionScript_util"/*,
             "org.casalib.control.ModelDependencies_org_casalib_control",
             "org.casalib.core.ModelDependencies_org_casalib_core",
             "org.casalib.errors.ModelDependencies_org_casalib_errors",
@@ -25,7 +25,7 @@ public class ProvidedPackages {
             "org.casalib.process.ModelDependencies_org_casalib_process",
             "org.casalib.time.ModelDependencies_org_casalib_time",
             "org.casalib.util.ModelDependencies_org_casalib_util",
-            "org.casalib.ui.ModelDependencies_org_casalib_ui"
+            "org.casalib.ui.ModelDependencies_org_casalib_ui"  */
     };
 
     public static String[] getClassNames() {

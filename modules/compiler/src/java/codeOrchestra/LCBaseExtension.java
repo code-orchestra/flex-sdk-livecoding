@@ -34,12 +34,12 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             modelDependenciesUnits.put(packageName, mdClassName);
         }
 
-        if (LiveCodingUtil.hasLiveAnnotation(classDefinitionNode)) {
+        if (LiveCodingUtil.canBeUsedForLiveCoding(classDefinitionNode)) {
             TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "LiveCodeRegistry");
             TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "MethodUpdateEvent");
 
             for (FunctionDefinitionNode methodDefinition : TreeNavigator.getMethodDefinitions(classDefinitionNode)) {
-                if (LiveCodingUtil.hasLiveAnnotation(methodDefinition)) {
+                if (LiveCodingUtil.canBeUsedForLiveCoding(methodDefinition)) {
                     extractMethodToLiveCodingClass(methodDefinition, classDefinitionNode);
                 }
             }
@@ -72,7 +72,10 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
         fillStubMethodBody(functionDefinitionNode, classDefinitionNode.name.name);
         addLiveCodingClass(classDefinitionNode.name.name, functionDefinitionNode, oldBody, false);
-        addListener(functionDefinitionNode, classDefinitionNode);
+
+        if (LiveCodingUtil.isLiveCodeUpdateListener(functionDefinitionNode)) {
+            addListener(functionDefinitionNode, classDefinitionNode);
+        }
     }
 
     private void fillStubMethodBody(FunctionDefinitionNode functionDefinitionNode, String className) {

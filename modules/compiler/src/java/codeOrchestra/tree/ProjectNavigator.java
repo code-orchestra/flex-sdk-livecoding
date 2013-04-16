@@ -21,11 +21,11 @@ public class ProjectNavigator {
             if (!classDefinition.pkgdef.name.id.pkg_part.equals(packageName)) {
                 continue;
             }
-            if (!LiveCodingUtil.hasLiveAnnotation(classDefinition)) {
+            if (!LiveCodingUtil.canBeUsedForLiveCoding(classDefinition)) {
                 continue;
             }
             for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(classDefinition)) {
-                if (!LiveCodingUtil.hasLiveAnnotation(functionDefinitionNode)) {
+                if (!LiveCodingUtil.canBeUsedForLiveCoding(functionDefinitionNode)) {
                     continue;
                 }
                 result.add(LiveCodingUtil.constructLiveCodingClassName(functionDefinitionNode, classDefinition.name.name));

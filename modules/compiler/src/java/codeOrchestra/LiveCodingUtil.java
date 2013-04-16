@@ -5,8 +5,52 @@ import macromedia.asc.parser.*;
 
 /**
  * @author Anton.I.Neverov
+ * @author Alexander Eliseyev
  */
 public class LiveCodingUtil {
+
+    public static final String LIVE_ANNOTATION = "Live";
+    public static final String LIVE_CODE_DISABLE_ANNOTATION = "LiveCodeDisable";
+    public static final String CODE_UPDATE_METHOD_ANNOTATION = "CodeUpdateMethod";
+    public static final String LIVE_CODE_UPDATE_LISTENER_ANNOTATION = "LiveCodeUpdateListener";
+    public static final String LIVE_CONSOLE_ANNOTATION = "LiveConsole";
+
+    public static boolean canBeUsedForLiveCoding(ClassDefinitionNode cl) {
+        if (cl == null) {
+            return false;
+        }
+        if (hasAnnotation(cl, LIVE_CODE_DISABLE_ANNOTATION)) {
+            return false;
+        }
+        if (LiveCodingCLIParameters.getLiveMethods() == LiveMethods.ANNOTATED && !hasAnnotation(cl, LIVE_ANNOTATION)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean canBeUsedForLiveCoding(FunctionDefinitionNode function) {
+        if (function == null) {
+            return false;
+        }
+        if (TreeNavigator.isGetter(function) || TreeNavigator.isSetter(function)) {
+            if (!LiveCodingCLIParameters.makeGettersSettersLive()) {
+                return false;
+            }
+        }
+        if (hasAnnotation(function, LIVE_CODE_DISABLE_ANNOTATION)) {
+            return false;
+        }
+        if (hasAnnotation(function, CODE_UPDATE_METHOD_ANNOTATION)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean isLiveCodeUpdateListener(FunctionDefinitionNode function) {
+        return hasAnnotation(function, LIVE_CODE_UPDATE_LISTENER_ANNOTATION) || hasAnnotation(function, LIVE_CONSOLE_ANNOTATION);
+    }
 
     public static String constructLiveCodingClassName(FunctionDefinitionNode functionDefinitionNode, String className) {
         return "LiveMethod_" + constructLiveCodingMethodId(functionDefinitionNode, className).replaceAll("\\.", "_");
@@ -29,18 +73,18 @@ public class LiveCodingUtil {
         return builder.toString();
     }
 
-    public static boolean hasLiveAnnotation(DefinitionNode definitionNode) {
+    private static boolean hasAnnotation(DefinitionNode definitionNode, String annotation) {
         if (definitionNode.metaData == null) { return false; }
+
         for (Node item : definitionNode.metaData.items) {
             if (item instanceof MetaDataNode) {
-                if ("Live".equals(((MetaDataNode) item).getId()) && definitionNode instanceof ClassDefinitionNode) {
-                    return true;
-                }
-                if ("LiveCodeUpdateListener".equals(((MetaDataNode) item).getId()) && definitionNode instanceof FunctionDefinitionNode) {
+                if (annotation.equals(((MetaDataNode) item).getId())) {
                     return true;
                 }
             }
         }
+
         return false;
     }
+
 }

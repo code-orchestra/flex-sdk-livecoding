@@ -7,6 +7,15 @@ public class LiveCodingCLIParameters {
 
     private static final int DEFAULT_MAX_ITERATIONS_COUNT = 10000;
 
+    public static LiveMethods getLiveMethods() {
+        String liveMethodsStringValue = System.getProperty("codeOrchestra.live.liveMethods");
+        if (liveMethodsStringValue == null) {
+            return LiveMethods.ANNOTATED;
+        }
+
+        return LiveMethods.parseValue(liveMethodsStringValue);
+    }
+
     public static boolean makeGettersSettersLive() {
         return Boolean.parseBoolean(System.getProperty("codeOrchestra.live.gettersSetters"));
     }

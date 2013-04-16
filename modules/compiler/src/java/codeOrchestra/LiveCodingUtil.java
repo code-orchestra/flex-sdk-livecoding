@@ -9,7 +9,7 @@ import macromedia.asc.parser.*;
 public class LiveCodingUtil {
 
     public static String constructLiveCodingClassName(FunctionDefinitionNode functionDefinitionNode, String className) {
-        return"LiveMethod_" + constructLiveCodingMethodId(functionDefinitionNode, className).replaceAll("\\.", "_");
+        return "LiveMethod_" + constructLiveCodingMethodId(functionDefinitionNode, className).replaceAll("\\.", "_");
     }
 
     public static String constructLiveCodingMethodId(FunctionDefinitionNode functionDefinitionNode, String className) {

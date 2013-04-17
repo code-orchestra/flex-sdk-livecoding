@@ -276,7 +276,8 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                     thisNode.replace(TreeUtil.createIdentifier("thisScope"));
                 }
 
-                // TODO: replace all field references without 'this.' to 'thisScope.x'
+                // COLT-25
+                // Replace all field/method references without 'this.' to 'thisScope.x'
                 List<RegularNode> memberExpressionNodes = regularNode.getDescendants(MemberExpressionNode.class);
                 for (RegularNode regularMemberExprNode : memberExpressionNodes) {
                     MemberExpressionNode memberExpression = (MemberExpressionNode) regularMemberExprNode.getASTNode();
@@ -289,8 +290,6 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                         }
                     }
                 }
-
-                // TODO: same goes for methods
             }
         }
 

@@ -6,7 +6,6 @@ import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.ClassDefinitionNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
@@ -35,6 +34,21 @@ public class DigestManager {
 
     public boolean isAvailable(String fqName) {
         return availableFqNames.contains(fqName);
+    }
+
+    public boolean isMemberVisibleInsideClass(String classFqName, String memberName) {
+        IClassDigest classDigest = digestsMap.get(classFqName);
+        while (classDigest != null) {
+            if (classDigest.getMembers().contains(memberName)) {
+                return true;
+            }
+
+            if (classDigest.getSuperClassFQName() != null) {
+                classDigest = digestsMap.get(classDigest.getSuperClassFQName());
+            }
+        }
+
+        return false;
     }
 
     public void init() {
@@ -74,8 +88,6 @@ public class DigestManager {
                 availableFqNames.add(fqName);
             }
         }
-
-        // TODO: take fq names from SWCs
     }
 
     public void addToDigestUnresolved(CompilationUnit cu, ClassDefinitionNode classDefinitionNode) {
@@ -85,16 +97,6 @@ public class DigestManager {
 
         SourceClassDigest classDigest = new SourceClassDigest(classDefinitionNode);
         unresolvedDigests.put(classDigest.getFqName(), classDigest);
-    }
-
-    private File getSourceDigestsFolder() {
-        File digestsFolder = new File(System.getProperty("java.io.tmpdir"), "coltDigests");
-
-        if (!digestsFolder.exists()) {
-            digestsFolder.mkdirs();
-        }
-
-        return digestsFolder;
     }
 
     public void resolve() {

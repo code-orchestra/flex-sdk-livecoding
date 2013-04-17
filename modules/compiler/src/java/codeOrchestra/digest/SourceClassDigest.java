@@ -21,7 +21,7 @@ public class SourceClassDigest implements IClassDigest {
 
     private String superClassFQName;
 
-    private Set<String> membersList = new HashSet<String>();
+    private Set<String> members = new HashSet<String>();
 
     public SourceClassDigest(ClassDefinitionNode cl) {
         // Name
@@ -55,11 +55,23 @@ public class SourceClassDigest implements IClassDigest {
         }
 
         // Members
-        // TODO: implement
+        // Fields
+        for (VariableDefinitionNode fieldDefinition : TreeNavigator.getFieldDefinitions(cl)) {
+            for (Node item : fieldDefinition.list.items) {
+                if (item instanceof VariableBindingNode) {
+                    VariableBindingNode variableBindingNode = (VariableBindingNode) item;
+                    members.add(variableBindingNode.variable.identifier.name);
+                }
+            }
+        }
+        // Methods
+        for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(cl)) {
+            members.add(functionDefinitionNode.name.identifier.name);
+        }
     }
 
-    public Set<String> getMembersList() {
-        return membersList;
+    public Set<String> getMembers() {
+        return members;
     }
 
     public String getSuperClassFQName() {

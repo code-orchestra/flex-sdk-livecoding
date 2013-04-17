@@ -27,7 +27,7 @@ public class SWCClassDigest implements IClassDigest {
     }
 
     @Override
-    public Set<String> getMembersList() {
+    public Set<String> getMembers() {
         return members;
     }
 

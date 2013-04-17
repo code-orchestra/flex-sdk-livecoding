@@ -50,6 +50,16 @@ public class TreeNavigator {
         return null;
     }
 
+    public static List<VariableDefinitionNode> getFieldDefinitions(ClassDefinitionNode classDefinitionNode) {
+        List<VariableDefinitionNode> variableDefinitionNodes = new ArrayList<VariableDefinitionNode>();
+        for (Node item : classDefinitionNode.statements.items) {
+            if (item instanceof VariableDefinitionNode) {
+                variableDefinitionNodes.add((VariableDefinitionNode) item);
+            }
+        }
+        return variableDefinitionNodes;
+    }
+
     static List<FunctionDefinitionNode> getAllMethodDefinitions(ClassDefinitionNode classDefinitionNode) {
         List<FunctionDefinitionNode> functionDefinitionNodes = new ArrayList<FunctionDefinitionNode>();
         for (Node item : classDefinitionNode.statements.items) {

@@ -1,10 +1,12 @@
 package codeOrchestra;
 
+import codeOrchestra.digest.DigestManager;
 import codeOrchestra.tree.*;
 import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
 import flex2.compiler.as3.Extension;
 import flex2.compiler.as3.reflect.TypeTable;
+import flex2.compiler.swc.Digest;
 import flex2.tools.Fcsh;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
@@ -177,6 +179,8 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         }
         ClassCONode classCONode = new ClassCONode(packageName, liveCodingClassName, cx);
 
+        String originalClassFqName = StringUtils.longNameFromNamespaceAndShortName(functionDefinitionNode.pkgdef.name.id.pkg_part, className);
+
         List<ImportDirectiveNode> imports = TreeNavigator.getImports(functionDefinitionNode.pkgdef);
         for (ImportDirectiveNode anImport : imports) {
             classCONode.addImport(anImport.name.id.pkg_part, anImport.name.id.def_part);
@@ -280,12 +284,13 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                         SelectorNode selector = memberExpression.selector;
                         IdentifierNode identifier = selector.getIdentifier();
 
-                        // TODO: delete
-                        if (identifier != null && identifier.name.equals("dx")) {
+                        if (identifier != null && DigestManager.getInstance().isMemberVisibleInsideClass(originalClassFqName, identifier.name)) {
                             memberExpression.base = TreeUtil.createIdentifier("thisScope");
                         }
                     }
                 }
+
+                // TODO: same goes for methods
             }
         }
 

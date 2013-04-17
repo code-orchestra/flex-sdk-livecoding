@@ -4,15 +4,12 @@ import codeOrchestra.tree.TreeNavigator;
 import codeOrchestra.util.StringUtils;
 import macromedia.asc.parser.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Alexander Eliseyev
  */
-public class ClassDigest {
+public class SourceClassDigest implements IClassDigest {
 
     private String name;
     private String packageName;
@@ -24,9 +21,9 @@ public class ClassDigest {
 
     private String superClassFQName;
 
-    private List<String> membersList = new ArrayList<String>();
+    private Set<String> membersList = new HashSet<String>();
 
-    public ClassDigest(ClassDefinitionNode cl) {
+    public SourceClassDigest(ClassDefinitionNode cl) {
         // Name
         packageName = cl.pkgdef.name.id.pkg_part;
         name = cl.name.name;
@@ -61,7 +58,7 @@ public class ClassDigest {
         // TODO: implement
     }
 
-    public List<String> getMembersList() {
+    public Set<String> getMembersList() {
         return membersList;
     }
 

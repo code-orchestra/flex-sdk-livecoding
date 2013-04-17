@@ -389,7 +389,7 @@ public class Fcsh extends Tool
                 livecodingBaseModeSecondPass = i == 1;
 
                 if (livecodingBaseModeSecondPass) {
-                    DigestManager.getInstance().initAvailableFqNames();
+                    DigestManager.getInstance().init();
                     DigestManager.getInstance().resolve();
                 }
 

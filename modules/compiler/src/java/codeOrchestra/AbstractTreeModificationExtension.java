@@ -1,6 +1,7 @@
 package codeOrchestra;
 
 import codeOrchestra.tree.*;
+import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
 import flex2.compiler.as3.Extension;
 import flex2.compiler.as3.reflect.TypeTable;
@@ -33,8 +34,15 @@ public abstract class AbstractTreeModificationExtension implements Extension {
     }
 
     protected void saveSyntaxTree(CompilationUnit unit) {
-        String shortName = unit.getSource().getShortName();
-        String serializedPath = getCachesDir() + File.separator + shortName + SERIALIZED_AST;
+        ClassDefinitionNode classDefinition = TreeNavigator.getClassDefinition(unit);
+        if (classDefinition == null) {
+            return;
+        }
+
+        String fqName = StringUtils.longNameFromNamespaceAndShortName(classDefinition.pkgdef.name.id.pkg_part, classDefinition.name.name);
+
+        String serializedPath = getCachesDir() + File.separator + fqName + SERIALIZED_AST;
+
         Object syntaxTree = unit.getSyntaxTree();
         if (!(syntaxTree instanceof ProgramNode)) {
             throw new RuntimeException("Syntax tree of unit " + unit.getSource().getName() + " is not a ProgramNode, it is " + syntaxTree.getClass());
@@ -262,6 +270,21 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 List<RegularNode> thisNodes = regularNode.getDescendants(ThisExpressionNode.class);
                 for (RegularNode thisNode : thisNodes) {
                     thisNode.replace(TreeUtil.createIdentifier("thisScope"));
+                }
+
+                // TODO: replace all field references without 'this.' to 'thisScope.x'
+                List<RegularNode> memberExpressionNodes = regularNode.getDescendants(MemberExpressionNode.class);
+                for (RegularNode regularMemberExprNode : memberExpressionNodes) {
+                    MemberExpressionNode memberExpression = (MemberExpressionNode) regularMemberExprNode.getASTNode();
+                    if (memberExpression.base == null) {
+                        SelectorNode selector = memberExpression.selector;
+                        IdentifierNode identifier = selector.getIdentifier();
+
+                        // TODO: delete
+                        if (identifier != null && identifier.name.equals("dx")) {
+                            memberExpression.base = TreeUtil.createIdentifier("thisScope");
+                        }
+                    }
                 }
             }
         }

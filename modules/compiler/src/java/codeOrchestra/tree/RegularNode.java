@@ -204,6 +204,10 @@ public class RegularNode {
         return myNode.getClass();
     }
 
+    public Node getASTNode() {
+        return myNode;
+    }
+
     public List<RegularNode> getChildren() {
         return myChildren;
     }

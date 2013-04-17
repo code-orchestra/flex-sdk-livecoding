@@ -22,6 +22,7 @@ package flex2.tools;
 import codeOrchestra.AbstractTreeModificationExtension;
 import codeOrchestra.LCBaseExtension;
 import codeOrchestra.LCIncrementalExtension;
+import codeOrchestra.digest.DigestManager;
 import codeOrchestra.util.FileUtils;
 import flash.localization.LocalizationManager;
 import flash.localization.ResourceBundleLocalizer;
@@ -386,6 +387,12 @@ public class Fcsh extends Tool
 
             for (int i = 0; i < (livecodingIncrementalMode ? 1 : 2); i++) {
                 livecodingBaseModeSecondPass = i == 1;
+
+                if (livecodingBaseModeSecondPass) {
+                    DigestManager.getInstance().initAvailableFqNames();
+                    DigestManager.getInstance().resolve();
+                }
+
                 if (args.length == 1)
                 {
                     try

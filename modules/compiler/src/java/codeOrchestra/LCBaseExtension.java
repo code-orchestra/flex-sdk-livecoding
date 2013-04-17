@@ -1,5 +1,6 @@
 package codeOrchestra;
 
+import codeOrchestra.digest.DigestManager;
 import codeOrchestra.tree.*;
 import flex2.compiler.CompilationUnit;
 import flex2.tools.Fcsh;
@@ -19,14 +20,18 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
     @Override
     protected void performModifications(CompilationUnit unit) {
-        if (Fcsh.livecodingBaseModeSecondPass) {
-            loadSyntaxTrees();
-        } else {
-            saveSyntaxTree(unit);
+        ClassDefinitionNode classDefinitionNode = TreeNavigator.getClassDefinition(unit);
+        if (classDefinitionNode == null) {
             return;
         }
 
-        ClassDefinitionNode classDefinitionNode = TreeNavigator.getClassDefinition(unit);
+        if (Fcsh.livecodingBaseModeSecondPass) {
+            loadSyntaxTrees();
+        } else {
+            DigestManager.getInstance().addToDigestUnresolved(unit, classDefinitionNode);
+            saveSyntaxTree(unit);
+            return;
+        }
 
         String packageName = classDefinitionNode.pkgdef.name.id.pkg_part;
         if (!modelDependenciesUnits.keySet().contains(packageName) && !ProvidedPackages.isProvidedPackage(packageName)) {

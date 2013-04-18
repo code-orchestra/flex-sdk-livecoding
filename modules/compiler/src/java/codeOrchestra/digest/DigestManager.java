@@ -2,19 +2,17 @@ package codeOrchestra.digest;
 
 import codeOrchestra.AbstractTreeModificationExtension;
 import codeOrchestra.LiveCodingCLIParameters;
+import codeOrchestra.util.FileUtils;
 import codeOrchestra.util.XMLUtils;
-import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.ClassDefinitionNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FilenameFilter;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Alexander Eliseyev
@@ -70,10 +68,10 @@ public class DigestManager {
 
         // 2 - Load digests and fq names from SWCs
         File digestsDir = getSWCDigestsFolder();
-        File[] digestFiles = digestsDir.listFiles(new FilenameFilter() {
+        List<File> digestFiles = FileUtils.listFileRecursively(digestsDir, new FileFilter() {
             @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(DIGEST_EXTENSION);
+            public boolean accept(File file) {
+                return file.getName().endsWith(DIGEST_EXTENSION);
             }
         });
         for (File digestFile : digestFiles) {

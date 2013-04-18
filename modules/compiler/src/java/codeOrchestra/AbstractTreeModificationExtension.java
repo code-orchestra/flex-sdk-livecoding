@@ -272,7 +272,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
             for (Node node : methodBody) {
                 // Replace all `this` references with `thisScope`
                 RegularNode regularNode = new RegularNode(node);
-                List<RegularNode> thisNodes = regularNode.getDescendants(ThisExpressionNode.class);
+                List<RegularNode> thisNodes = regularNode.getDescendants(ThisExpressionNode.class, FunctionCommonNode.class);
                 for (RegularNode thisNode : thisNodes) {
                     thisNode.replace(TreeUtil.createIdentifier("thisScope"));
                 }

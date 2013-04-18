@@ -230,7 +230,15 @@ public class RegularNode {
         return getDescendants(Collections.singleton(filter));
     }
 
+    public List<RegularNode> getDescendants(Class filter, Class stopFilter) {
+        return getDescendants(Collections.singleton(filter), Collections.singleton(stopFilter));
+    }
+
     public List<RegularNode> getDescendants(Set<Class> filter) {
+        return getDescendants(filter, Collections.<Class>emptySet());
+    }
+
+    public List<RegularNode> getDescendants(Set<Class> filter, Set<Class> stopFilter) {
         Queue<RegularNode> nodes = new LinkedList<RegularNode>();
         nodes.add(this);
 
@@ -238,6 +246,9 @@ public class RegularNode {
         RegularNode node;
 
         while ((node = nodes.poll()) != null) {
+            if (!stopFilter.isEmpty() && stopFilter.contains(node.getNodeClass())) {
+                continue;
+            }
             if (filter.isEmpty() || filter.contains(node.getNodeClass())) {
                 result.add(node);
             }

@@ -1,6 +1,7 @@
 package codeOrchestra.digest;
 
 import codeOrchestra.AbstractTreeModificationExtension;
+import codeOrchestra.LiveCodingCLIParameters;
 import codeOrchestra.util.XMLUtils;
 import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.ClassDefinitionNode;
@@ -68,7 +69,7 @@ public class DigestManager {
         }
 
         // 2 - Load digests and fq names from SWCs
-        File digestsDir = new File("/Users/buildserver/TMP/digest/"); // TODO: make configurable!
+        File digestsDir = getSWCDigestsFolder();
         File[] digestFiles = digestsDir.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
@@ -90,7 +91,11 @@ public class DigestManager {
         }
     }
 
-    public void addToDigestUnresolved(CompilationUnit cu, ClassDefinitionNode classDefinitionNode) {
+    private File getSWCDigestsFolder() {
+        return new File(LiveCodingCLIParameters.getDigestsFolder());
+    }
+
+    public void addToDigestUnresolved(ClassDefinitionNode classDefinitionNode) {
         if (classDefinitionNode == null) {
             return;
         }

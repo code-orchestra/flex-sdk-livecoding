@@ -267,9 +267,10 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         StatementListNode tryblock = new StatementListNode(null);
         methodBody.removeLast(); // Removes last ReturnStatement
 
+        // 'This' scope modifications
         if (!staticMethod) {
-            // Replace all `this` references with `thisScope`
             for (Node node : methodBody) {
+                // Replace all `this` references with `thisScope`
                 RegularNode regularNode = new RegularNode(node);
                 List<RegularNode> thisNodes = regularNode.getDescendants(ThisExpressionNode.class);
                 for (RegularNode thisNode : thisNodes) {

@@ -7,6 +7,10 @@ public class LiveCodingCLIParameters {
 
     private static final int DEFAULT_MAX_ITERATIONS_COUNT = 10000;
 
+    public static String getDigestsFolder() {
+        return System.getProperty("codeOrchestra.digestsDir");
+    }
+
     public static LiveMethods getLiveMethods() {
         String liveMethodsStringValue = System.getProperty("codeOrchestra.live.liveMethods");
         if (liveMethodsStringValue == null) {

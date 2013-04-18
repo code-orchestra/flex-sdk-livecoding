@@ -28,7 +28,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         if (Fcsh.livecodingBaseModeSecondPass) {
             loadSyntaxTrees();
         } else {
-            DigestManager.getInstance().addToDigestUnresolved(unit, classDefinitionNode);
+            DigestManager.getInstance().addToDigestUnresolved(classDefinitionNode);
             saveSyntaxTree(unit);
             return;
         }

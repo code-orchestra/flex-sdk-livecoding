@@ -76,10 +76,32 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         functionDefinitionNode.fexpr.body.items = new ObjectList<Node>();
 
         fillStubMethodBody(functionDefinitionNode, classDefinitionNode.name.name);
+        makePrivateMembersPublic(classDefinitionNode);
         addLiveCodingClass(classDefinitionNode.name.name, functionDefinitionNode, oldBody, false);
 
         if (LiveCodingUtil.isLiveCodeUpdateListener(functionDefinitionNode)) {
             addListener(functionDefinitionNode, classDefinitionNode);
+        }
+    }
+
+    private void makePrivateMembersPublic(ClassDefinitionNode classDefinitionNode) {
+        // Fields
+        for (VariableDefinitionNode variableDefinitionNode : TreeNavigator.getFieldDefinitions(classDefinitionNode)) {
+            ListNode listNode = variableDefinitionNode.list;
+            if (listNode != null) {
+                for (Node item : listNode.items) {
+                    if (item instanceof VariableBindingNode) {
+                        VariableBindingNode variableBindingNode = (VariableBindingNode) item;
+                        AttributeListNode attributeListNode = variableBindingNode.attrs;
+                        TreeUtil.makePublic(attributeListNode);
+                    }
+                }
+            }
+        }
+
+        // Methods
+        for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(classDefinitionNode)) {
+            TreeUtil.makePublic(functionDefinitionNode.attrs);
         }
     }
 

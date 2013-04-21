@@ -8,8 +8,31 @@ import java.util.List;
 
 /**
  * @author Anton.I.Neverov
+ * @author Alexander Eliseyev
  */
 public class TreeUtil {
+
+    public static void makePublic(AttributeListNode attributeListNode) {
+        for (Node node : attributeListNode.items) {
+            if (node instanceof ListNode) {
+                ListNode listNode1 = (ListNode) node;
+                for (Node item1 : listNode1.items) {
+                    if (item1 instanceof MemberExpressionNode) {
+                        MemberExpressionNode memberExpressionNode = (MemberExpressionNode) item1;
+                        if (memberExpressionNode.selector instanceof GetExpressionNode) {
+                            GetExpressionNode getExpressionNode = (GetExpressionNode) memberExpressionNode.selector;
+                            if (getExpressionNode.expr instanceof IdentifierNode) {
+                                IdentifierNode identifierNode =  (IdentifierNode) getExpressionNode.expr;
+                                if ("private".equals(identifierNode.name)) {
+                                    identifierNode.name = "public";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     public static MemberExpressionNode createPublicModifier() {
         return createIdentifier("public");

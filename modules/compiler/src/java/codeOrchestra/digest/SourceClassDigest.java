@@ -22,6 +22,7 @@ public class SourceClassDigest implements IClassDigest {
     private String superClassFQName;
 
     private Set<String> members = new HashSet<String>();
+    private Set<String> staticMembers = new HashSet<String>();
 
     public SourceClassDigest(ClassDefinitionNode cl) {
         // Name
@@ -60,18 +61,32 @@ public class SourceClassDigest implements IClassDigest {
             for (Node item : fieldDefinition.list.items) {
                 if (item instanceof VariableBindingNode) {
                     VariableBindingNode variableBindingNode = (VariableBindingNode) item;
-                    members.add(variableBindingNode.variable.identifier.name);
+                    String fieldName = variableBindingNode.variable.identifier.name;
+
+                    members.add(fieldName);
+                    if (TreeNavigator.isStaticField(variableBindingNode)) {
+                        staticMembers.add(fieldName);
+                    }
                 }
             }
         }
         // Methods
         for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(cl)) {
-            members.add(functionDefinitionNode.name.identifier.name);
+            String methodName = functionDefinitionNode.name.identifier.name;
+
+            members.add(methodName);
+            if (TreeNavigator.isStaticMethod(functionDefinitionNode)) {
+                staticMembers.add(methodName);
+            }
         }
     }
 
     public Set<String> getMembers() {
         return members;
+    }
+
+    public Set<String> getStaticMembers() {
+        return staticMembers;
     }
 
     public String getSuperClassFQName() {

@@ -88,8 +88,22 @@ public class TreeNavigator {
         return methodHasAttribute(functionDefinitionNode, "static");
     }
 
+    public static boolean isStaticField(VariableBindingNode variableBindingNode) {
+        return fieldHasAttribute(variableBindingNode, "static");
+    }
+
     private static boolean methodHasAttribute(FunctionDefinitionNode functionDefinitionNode, String attrName) {
-        for (Node item : functionDefinitionNode.attrs.items) {
+        AttributeListNode attributeListNode = functionDefinitionNode.attrs;
+        return hasAttribute(attrName, attributeListNode);
+    }
+
+    private static boolean fieldHasAttribute(VariableBindingNode variableBindingNode, String attrName) {
+        AttributeListNode attributeListNode = variableBindingNode.attrs;
+        return hasAttribute(attrName, attributeListNode);
+    }
+
+    private static boolean hasAttribute(String attrName, AttributeListNode attributeListNode) {
+        for (Node item : attributeListNode.items) {
             Node node;
             if (item instanceof ListNode) {
                 node = ((ListNode) item).items.at(0);

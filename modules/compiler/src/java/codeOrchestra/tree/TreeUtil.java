@@ -30,6 +30,11 @@ public class TreeUtil {
                         }
                     }
                 }
+            } else if (node instanceof IdentifierNode) {
+                IdentifierNode identifierNode =  (IdentifierNode) node;
+                if ("private".equals(identifierNode.name)) {
+                    identifierNode.name = "public";
+                }
             }
         }
     }

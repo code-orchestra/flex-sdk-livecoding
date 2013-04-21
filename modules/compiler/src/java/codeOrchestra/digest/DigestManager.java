@@ -35,6 +35,24 @@ public class DigestManager {
         return availableFqNames.contains(fqName);
     }
 
+    /**
+     * @return FQ name of the static member owner
+     */
+    public String findOwnerOfStaticMember(String classFqName, String memberName) {
+        IClassDigest classDigest = digestsMap.get(classFqName);
+        while (classDigest != null) {
+            if (classDigest.getStaticMembers().contains(memberName)) {
+                return classDigest.getFqName();
+            }
+
+            if (classDigest.getSuperClassFQName() != null) {
+                classDigest = digestsMap.get(classDigest.getSuperClassFQName());
+            }
+        }
+
+        return null;
+    }
+
     public boolean isMemberVisibleInsideClass(String classFqName, String memberName) {
         IClassDigest classDigest = digestsMap.get(classFqName);
         while (classDigest != null) {

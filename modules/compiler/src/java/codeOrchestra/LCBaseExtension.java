@@ -161,6 +161,18 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             or
             [return] method.run();
          */
+
+        // COLT-57
+        ArgumentListNode argumentListNode = null;
+        ParameterListNode parameterListNode = functionDefinitionNode.fexpr.signature.parameter;
+        if (parameterListNode != null && parameterListNode.items.size() > 0) {
+            argumentListNode = new ArgumentListNode(TreeUtil.createIdentifier(parameterListNode.items.get(0).identifier.name), -1);
+            if (parameterListNode.items.size() > 1) {
+                for (int i = 1; i < parameterListNode.items.size(); i++) {
+                    argumentListNode.items.add(TreeUtil.createIdentifier(parameterListNode.items.get(i).identifier.name));
+                }
+            }
+        }
         ListNode expr;
         if (!staticMethod) {
             CallExpressionNode callExpressionNode = new CallExpressionNode(
@@ -169,10 +181,10 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             );
             callExpressionNode.is_new = true;
             ListNode base = new ListNode(null, new MemberExpressionNode(null, callExpressionNode, -1), -1);
-            CallExpressionNode selector = new CallExpressionNode(new IdentifierNode("run", -1), null);
+            CallExpressionNode selector = new CallExpressionNode(new IdentifierNode("run", -1), argumentListNode);
             expr = new ListNode(null, new MemberExpressionNode(base, selector, -1), -1);
         } else {
-            expr = new ListNode(null, TreeUtil.createCall("method", "run", null), -1);
+            expr = new ListNode(null, TreeUtil.createCall("method", "run", argumentListNode), -1);
         }
         if (isVoid) {
             newBody.add(new ExpressionStatementNode(expr));

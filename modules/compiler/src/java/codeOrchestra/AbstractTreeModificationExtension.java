@@ -192,6 +192,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
             classCONode.addImport("codeOrchestra.actionScript.liveCoding.util", "IMethodCodeUpdate");
             classCONode.interfaces.add("IMethodCodeUpdate");
         }
+        classCONode.addImport("codeOrchestra.actionScript.logging.logUtil", "LogUtil");
         MemberExpressionNode memberExpressionNode = null;
 
         if (!incremental) {
@@ -265,6 +266,9 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 ),
                 -1)));
         StatementListNode tryblock = new StatementListNode(null);
+        for (ParameterNode parameterNode : functionDefinitionNode.fexpr.signature.parameter.items) {
+            runMethod.addParameter(parameterNode.identifier.name, ((IdentifierNode) ((MemberExpressionNode) ((TypeExpressionNode) parameterNode.type).expr).selector.expr).name);
+        }
         methodBody.removeLast(); // Removes last ReturnStatement
 
         // 'This' scope modifications
@@ -277,17 +281,42 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                     thisNode.replace(TreeUtil.createIdentifier("thisScope"));
                 }
 
-                // COLT-25
-                // Replace all field/method references without 'this.' to 'thisScope.x'
+                // COLT-38 - Transform trace() to LogUtil.log()
+                // COLT-25 - Replace all field/method references without 'this.' to 'thisScope.x'
                 List<RegularNode> memberExpressionNodes = regularNode.getDescendants(MemberExpressionNode.class);
                 for (RegularNode regularMemberExprNode : memberExpressionNodes) {
                     MemberExpressionNode memberExpression = (MemberExpressionNode) regularMemberExprNode.getASTNode();
                     if (memberExpression.base == null) {
                         SelectorNode selector = memberExpression.selector;
-                        IdentifierNode identifier = selector.getIdentifier();
 
-                        if (identifier != null && DigestManager.getInstance().isMemberVisibleInsideClass(originalClassFqName, identifier.name)) {
-                            memberExpression.base = TreeUtil.createIdentifier("thisScope");
+                        if (selector instanceof CallExpressionNode) {
+                            if ("trace".equals(selector.getIdentifier().name)) {
+                                CallExpressionNode callExpressionNode = (CallExpressionNode) selector;
+
+                                ArgumentListNode errorTraceArguments = new ArgumentListNode(new LiteralStringNode("trace"), -1);
+                                errorTraceArguments.items.add(new LiteralStringNode(""));
+                                errorTraceArguments.items.add(new LiteralStringNode(""));
+                                errorTraceArguments.items.add(new LiteralStringNode(originalClassFqName));
+                                errorTraceArguments.items.add(callExpressionNode.args.items.get(0));
+
+                                callExpressionNode.expr = new IdentifierNode("log", -1);
+                                callExpressionNode.args = errorTraceArguments;
+
+                                memberExpression.base = TreeUtil.createIdentifier("LogUtil");
+                                continue;
+                            }
+                        }
+
+                        IdentifierNode identifier = selector.getIdentifier();
+                        if (identifier != null ) {
+                            if (DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name) != null) {
+                                String ownerOfStaticMemberFqName = DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name);
+                                String shortName = StringUtils.shortNameFromLongName(ownerOfStaticMemberFqName);
+                                memberExpression.base = TreeUtil.createIdentifier(shortName);
+                                // TODO: add import!
+                            } else if (DigestManager.getInstance().isMemberVisibleInsideClass(originalClassFqName, identifier.name)) {
+                                memberExpression.base = TreeUtil.createIdentifier("thisScope");
+                            }
                         }
                     }
                 }
@@ -295,9 +324,21 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         }
 
         tryblock.items.addAll(methodBody);
+        ArgumentListNode errorTraceArguments = new ArgumentListNode(new LiteralStringNode("error"), -1);
+        errorTraceArguments.items.add(new LiteralStringNode(""));
+        errorTraceArguments.items.add(new LiteralStringNode(""));
+        errorTraceArguments.items.add(new LiteralStringNode(classCONode.getFQName()));
+        errorTraceArguments.items.add(new LiteralStringNode("Base method execute error"));
+        errorTraceArguments.items.add(TreeUtil.createIdentifier("e"));
         StatementListNode catchlist = new StatementListNode(new CatchClauseNode(
                 TreeUtil.createParameterNode("e", "Error"),
-                new StatementListNode(null))
+                new StatementListNode(new ExpressionStatementNode(new ListNode(null,
+                        TreeUtil.createCall(
+                                "LogUtil",
+                                "log",
+                                errorTraceArguments
+                        ),
+                        -1))))
         );
         runMethod.statements.add(new TryStatementNode(tryblock, catchlist, null));
         if (methodResult != null) {

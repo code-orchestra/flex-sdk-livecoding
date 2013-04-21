@@ -1,6 +1,7 @@
 package codeOrchestra.tree;
 
 import codeOrchestra.FakeASVirtualFile;
+import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
 import flex2.compiler.CompilerAPI;
 import flex2.compiler.CompilerContext;
@@ -55,6 +56,10 @@ public class ClassCONode extends CONode {
 
     public void addImport(String packageName, String className) {
         imports.add(new String[] {packageName, className});
+    }
+
+    public String getFQName() {
+        return StringUtils.longNameFromNamespaceAndShortName(packageName, className);
     }
 
     @Override

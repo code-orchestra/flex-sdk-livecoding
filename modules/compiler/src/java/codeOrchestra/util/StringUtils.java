@@ -16,4 +16,13 @@ public class StringUtils {
         return str == null || str.trim().isEmpty();
     }
 
+    public static String shortNameFromLongName(String fqName) {
+        if (fqName == null) return fqName;
+        int offset = fqName.lastIndexOf('.');
+        if (offset < 0) return fqName;
+
+        return fqName.substring(offset + 1);
+    }
+
+
 }

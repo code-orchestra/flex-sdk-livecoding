@@ -2,6 +2,7 @@ package codeOrchestra;
 
 import codeOrchestra.digest.DigestManager;
 import codeOrchestra.tree.*;
+import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
 import flex2.tools.Fcsh;
 import macromedia.asc.parser.*;
@@ -205,7 +206,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 new BinaryExpressionNode(
                         Tokens.EQUALS_TOKEN,
                         TreeUtil.createIdentifier("e", "classFqn"),
-                        new LiteralStringNode(functionDefinitionNode.pkgdef.name.id.pkg_part + "." + className)
+                        new LiteralStringNode(StringUtils.longNameFromNamespaceAndShortName(functionDefinitionNode.pkgdef.name.id.pkg_part, className))
                 ),
                 -1
         );

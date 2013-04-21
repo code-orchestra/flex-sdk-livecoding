@@ -6,6 +6,29 @@ package codeOrchestra;
 public class LiveCodingCLIParameters {
 
     private static final int DEFAULT_MAX_ITERATIONS_COUNT = 10000;
+    private static final int DEFAULT_TRACE_HOST = 6126;
+    private static final String DEFAULT_LOCALHOST = "localhost";
+
+    public static String getTraceHost() {
+        String traceHost = System.getProperty("codeOrchestra.trace.host");
+        if (traceHost == null) {
+            return DEFAULT_LOCALHOST;
+        }
+        return traceHost;
+    }
+
+    public static int getTracePort() {
+        String tracePort = System.getProperty("codeOrchestra.trace.port");
+        if (tracePort == null) {
+            return DEFAULT_TRACE_HOST;
+        }
+
+        try {
+            return Integer.valueOf(tracePort);
+        } catch (NumberFormatException e) {
+            return DEFAULT_TRACE_HOST;
+        }
+    }
 
     public static String getDigestsFolder() {
         return System.getProperty("codeOrchestra.digestsDir");

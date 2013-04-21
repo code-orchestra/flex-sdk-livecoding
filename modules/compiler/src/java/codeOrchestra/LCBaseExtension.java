@@ -303,6 +303,20 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
     private void addLiveCodingStarterUnit(String packageName, Context cx) {
         ClassCONode classCONode = new ClassCONode(packageName, "LiveCodingSessionStarter", cx);
+
+        // COLT-41
+        ArgumentListNode setSocketArgs = new ArgumentListNode(new LiteralStringNode(LiveCodingCLIParameters.getTraceHost()), -1);
+        setSocketArgs.items.add(new LiteralNumberNode(String.valueOf(LiveCodingCLIParameters.getTracePort())));
+        classCONode.staticInitializer.add(new ExpressionStatementNode(new ListNode(
+                null,
+                TreeUtil.createCall(
+                        "LogUtil",
+                        "setSocketAddress",
+                        setSocketArgs
+                ),
+                -1
+        )));
+
         classCONode.staticInitializer.add(new ExpressionStatementNode(new ListNode(
                 null,
                 TreeUtil.createCall(
@@ -312,6 +326,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 ),
                 -1
         )));
+
         classCONode.staticInitializer.add(new ExpressionStatementNode(new ListNode(
                 null,
                 TreeUtil.createCall(
@@ -321,6 +336,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 ),
                 -1
         )));
+
         classCONode.staticInitializer.add(new ExpressionStatementNode(new ListNode(
                 null,
                 new MemberExpressionNode(
@@ -333,6 +349,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 ),
                 -1
         )));
+        classCONode.addImport("codeOrchestra.actionScript.logging.logUtil", "LogUtil");
         classCONode.addImport("codeOrchestra.actionScript.liveCoding.util", "LiveCodingCodeFlowUtil");
         classCONode.addImport("codeOrchestra.actionScript.liveCoding.util", "LiveCodeRegistry");
         classCONode.addToProject();

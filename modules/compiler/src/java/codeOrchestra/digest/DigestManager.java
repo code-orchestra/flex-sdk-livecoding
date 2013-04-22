@@ -3,6 +3,7 @@ package codeOrchestra.digest;
 import codeOrchestra.AbstractTreeModificationExtension;
 import codeOrchestra.LiveCodingCLIParameters;
 import codeOrchestra.util.FileUtils;
+import codeOrchestra.util.StringUtils;
 import codeOrchestra.util.XMLUtils;
 import macromedia.asc.parser.ClassDefinitionNode;
 import org.w3c.dom.Document;
@@ -25,6 +26,9 @@ public class DigestManager {
     public static DigestManager getInstance() {
         return instance;
     }
+
+    // package name -> set of short names
+    private Map<String, Set<String>> compiledClasses = new HashMap<String, Set<String>>();
 
     private Set<String> availableFqNames = new HashSet<String>();
 
@@ -68,6 +72,10 @@ public class DigestManager {
         return false;
     }
 
+    public Set<String> getShortNamesFromPackage(String pack) {
+        return compiledClasses.get(pack);
+    }
+
     public void init() {
         availableFqNames.clear();
 
@@ -81,7 +89,19 @@ public class DigestManager {
         });
         for (File file : files) {
             String fileName = file.getName();
-            availableFqNames.add(fileName.substring(0, fileName.length() - AbstractTreeModificationExtension.SERIALIZED_AST.length()));
+            String fqName = fileName.substring(0, fileName.length() - AbstractTreeModificationExtension.SERIALIZED_AST.length());
+
+            String shortName = StringUtils.shortNameFromLongName(fqName);
+            String packageName = StringUtils.namespaceFromLongName(fqName);
+
+            Set<String> packageShortNames = compiledClasses.get(packageName);
+            if (packageShortNames == null) {
+                packageShortNames = new HashSet<String>();
+                compiledClasses.put(packageName, packageShortNames);
+            }
+            packageShortNames.add(shortName);
+
+            availableFqNames.add(fqName);
         }
 
         // 2 - Load digests and fq names from SWCs

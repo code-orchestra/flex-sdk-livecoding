@@ -13,6 +13,7 @@ import macromedia.asc.util.ObjectList;
 
 import java.io.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Anton.I.Neverov
@@ -178,7 +179,8 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         }
         ClassCONode classCONode = new ClassCONode(packageName, liveCodingClassName, cx);
 
-        String originalClassFqName = StringUtils.longNameFromNamespaceAndShortName(functionDefinitionNode.pkgdef.name.id.pkg_part, className);
+        String originalPackageName = functionDefinitionNode.pkgdef.name.id.pkg_part;
+        String originalClassFqName = StringUtils.longNameFromNamespaceAndShortName(originalPackageName, className);
 
         List<ImportDirectiveNode> imports = TreeNavigator.getImports(functionDefinitionNode.pkgdef);
         for (ImportDirectiveNode anImport : imports) {
@@ -312,7 +314,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                         }
 
                         IdentifierNode identifier = selector.getIdentifier();
-                        if (identifier != null ) {
+                        if (identifier != null) {
                             if (DigestManager.getInstance().isInstanceMemberVisibleInsideClass(originalClassFqName, identifier.name)) {
                                 memberExpression.base = TreeUtil.createIdentifier("thisScope");
                             } else if (DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name) != null) {
@@ -320,6 +322,16 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                                 String shortName = StringUtils.shortNameFromLongName(ownerOfStaticMemberFqName);
                                 memberExpression.base = TreeUtil.createIdentifier(shortName);
                                 // TODO: add import!
+                            } else {
+                                String possibleClassName = identifier.name;
+                                if (className.equals(possibleClassName)) {
+                                    continue;
+                                }
+
+                                Set<String> shortNamesFromPackage = DigestManager.getInstance().getShortNamesFromPackage(originalPackageName);
+                                if (shortNamesFromPackage != null && shortNamesFromPackage.contains(possibleClassName)) {
+                                    selector.expr = new QualifiedIdentifierNode(new LiteralStringNode(originalPackageName), possibleClassName, -1);
+                                }
                             }
                         }
                     }

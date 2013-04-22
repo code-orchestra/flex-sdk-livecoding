@@ -23,6 +23,7 @@ public class SourceClassDigest implements IClassDigest {
 
     private Set<String> members = new HashSet<String>();
     private Set<String> staticMembers = new HashSet<String>();
+    private Set<String> instanceMembers = new HashSet<String>();
 
     public SourceClassDigest(ClassDefinitionNode cl) {
         // Name
@@ -66,6 +67,8 @@ public class SourceClassDigest implements IClassDigest {
                     members.add(fieldName);
                     if (TreeNavigator.isStaticField(variableBindingNode)) {
                         staticMembers.add(fieldName);
+                    } else {
+                        instanceMembers.add(fieldName);
                     }
                 }
             }
@@ -77,12 +80,18 @@ public class SourceClassDigest implements IClassDigest {
             members.add(methodName);
             if (TreeNavigator.isStaticMethod(functionDefinitionNode)) {
                 staticMembers.add(methodName);
+            } else {
+                instanceMembers.add(methodName);
             }
         }
     }
 
     public Set<String> getMembers() {
         return members;
+    }
+
+    public Set<String> getInstanceMembers() {
+        return instanceMembers;
     }
 
     public Set<String> getStaticMembers() {

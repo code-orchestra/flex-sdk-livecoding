@@ -53,10 +53,10 @@ public class DigestManager {
         return null;
     }
 
-    public boolean isMemberVisibleInsideClass(String classFqName, String memberName) {
+    public boolean isInstanceMemberVisibleInsideClass(String classFqName, String memberName) {
         IClassDigest classDigest = digestsMap.get(classFqName);
         while (classDigest != null) {
-            if (classDigest.getMembers().contains(memberName)) {
+            if (classDigest.getInstanceMembers().contains(memberName)) {
                 return true;
             }
 

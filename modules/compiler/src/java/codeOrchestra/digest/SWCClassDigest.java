@@ -11,8 +11,10 @@ import java.util.Set;
  */
 public class SWCClassDigest implements IClassDigest {
 
+    private Set<String> instanceMembers = new HashSet<String>();
     private Set<String> staticMembers = new HashSet<String>();
     private Set<String> members = new HashSet<String>();
+
     private String fqName;
     private String superClassFqName;
 
@@ -28,6 +30,8 @@ public class SWCClassDigest implements IClassDigest {
             members.add(memberName);
             if (memberElement.hasAttribute("static")) {
                 staticMembers.add(memberName);
+            } else {
+                instanceMembers.add(memberName);
             }
         }
     }
@@ -35,6 +39,11 @@ public class SWCClassDigest implements IClassDigest {
     @Override
     public Set<String> getMembers() {
         return members;
+    }
+
+    @Override
+    public Set<String> getInstanceMembers() {
+        return instanceMembers;
     }
 
     @Override

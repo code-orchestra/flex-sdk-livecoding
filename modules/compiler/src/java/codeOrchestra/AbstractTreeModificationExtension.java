@@ -6,7 +6,6 @@ import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
 import flex2.compiler.as3.Extension;
 import flex2.compiler.as3.reflect.TypeTable;
-import flex2.compiler.swc.Digest;
 import flex2.tools.Fcsh;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
@@ -266,9 +265,14 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 ),
                 -1)));
         StatementListNode tryblock = new StatementListNode(null);
-        for (ParameterNode parameterNode : functionDefinitionNode.fexpr.signature.parameter.items) {
-            runMethod.addParameter(parameterNode.identifier.name, ((IdentifierNode) ((MemberExpressionNode) ((TypeExpressionNode) parameterNode.type).expr).selector.expr).name);
+
+        ParameterListNode parameters = functionDefinitionNode.fexpr.signature.parameter;
+        if (parameters != null) {
+            for (ParameterNode parameterNode : parameters.items) {
+                runMethod.addParameter(parameterNode.identifier.name, ((IdentifierNode) ((MemberExpressionNode) ((TypeExpressionNode) parameterNode.type).expr).selector.expr).name);
+            }
         }
+
         methodBody.removeLast(); // Removes last ReturnStatement
 
         // 'This' scope modifications
@@ -309,13 +313,13 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
                         IdentifierNode identifier = selector.getIdentifier();
                         if (identifier != null ) {
-                            if (DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name) != null) {
+                            if (DigestManager.getInstance().isInstanceMemberVisibleInsideClass(originalClassFqName, identifier.name)) {
+                                memberExpression.base = TreeUtil.createIdentifier("thisScope");
+                            } else if (DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name) != null) {
                                 String ownerOfStaticMemberFqName = DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name);
                                 String shortName = StringUtils.shortNameFromLongName(ownerOfStaticMemberFqName);
                                 memberExpression.base = TreeUtil.createIdentifier(shortName);
                                 // TODO: add import!
-                            } else if (DigestManager.getInstance().isMemberVisibleInsideClass(originalClassFqName, identifier.name)) {
-                                memberExpression.base = TreeUtil.createIdentifier("thisScope");
                             }
                         }
                     }

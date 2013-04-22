@@ -73,6 +73,20 @@ public class LiveCodingUtil {
         return builder.toString();
     }
 
+    public static MetaDataNode getAnnotation(DefinitionNode definitionNode, String annotation) {
+        if (definitionNode.metaData == null) { return null; }
+
+        for (Node item : definitionNode.metaData.items) {
+            if (item instanceof MetaDataNode) {
+                if (annotation.equals(((MetaDataNode) item).getId())) {
+                    return (MetaDataNode) item;
+                }
+            }
+        }
+
+        return null;
+    }
+
     private static boolean hasAnnotation(DefinitionNode definitionNode, String annotation) {
         if (definitionNode.metaData == null) { return false; }
 

@@ -206,28 +206,82 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 }
             }
          */
+
+        String classFqn = StringUtils.longNameFromNamespaceAndShortName(functionDefinitionNode.pkgdef.name.id.pkg_part, classDefinitionNode.name.name);
+        String methodNameToFilter = null;
+        boolean weak = true;
+        int priority = 0;
+
+        MetaDataNode annotation = LiveCodingUtil.getAnnotation(functionDefinitionNode, "LiveCodeUpdateListener");
+        if (annotation != null) {
+            String annotationClassFqn = annotation.getValue("classFqn");
+            if (!StringUtils.isEmpty(annotationClassFqn)) {
+                classFqn = annotationClassFqn;
+            }
+
+            String annotationMethod = annotation.getValue("method");
+            if (!StringUtils.isEmpty(annotationMethod)) {
+                methodNameToFilter = annotationMethod;
+            }
+
+            String annotationWeak = annotation.getValue("weak");
+            if (!StringUtils.isEmpty(annotationWeak)) {
+                weak = Boolean.parseBoolean(annotationWeak);
+            }
+
+            String annotationPriority = annotation.getValue("priority");
+            if (!StringUtils.isEmpty(annotationPriority)) {
+                priority = Integer.parseInt(annotationPriority);
+            }
+        }
+
         boolean staticMethod = TreeNavigator.isStaticMethod(functionDefinitionNode);
         String id = UUID.randomUUID().toString(); // TODO: Just any unique id?
-        String methodName = functionDefinitionNode.name.identifier.name;
-        String listenerName = methodName + "_codeUpdateListener" + id;
+        String listenerName = functionDefinitionNode.name.identifier.name + "_codeUpdateListener" + id;
         MethodCONode listener = new MethodCONode(listenerName, null, classDefinitionNode.cx);
         listener.addParameter("e", "MethodUpdateEvent");
-        String className = classDefinitionNode.name.name;
-        ListNode condition = new ListNode(
-                null,
-                new BinaryExpressionNode(
-                        Tokens.EQUALS_TOKEN,
-                        TreeUtil.createIdentifier("e", "classFqn"),
-                        new LiteralStringNode(StringUtils.longNameFromNamespaceAndShortName(functionDefinitionNode.pkgdef.name.id.pkg_part, className))
-                ),
-                -1
-        );
-        StatementListNode thenactions = new StatementListNode(new ExpressionStatementNode(new ListNode(
-                null,
-                TreeUtil.createCall(null, methodName, null),
-                -1
-        )));
-        listener.statements.add(new IfStatementNode(condition, thenactions, null));
+
+        Node firstStatement = null;
+        MemberExpressionNode methodCall = TreeUtil.createCall(null, functionDefinitionNode.name.identifier.name, null);
+        if ("*".equals(classFqn)) {
+            firstStatement = new ExpressionStatementNode(new ListNode(null, methodCall, -1));
+        } else {
+            ListNode condition = new ListNode(
+                    null,
+                    new BinaryExpressionNode(
+                            Tokens.EQUALS_TOKEN,
+                            TreeUtil.createIdentifier("e", "classFqn"),
+                            new LiteralStringNode(classFqn)
+                    ),
+                    -1
+            );
+            StatementListNode thenactions = new StatementListNode(new ExpressionStatementNode(new ListNode(
+                    null,
+                    methodCall,
+                    -1
+            )));
+            firstStatement = new IfStatementNode(condition, thenactions, null);
+        }
+
+        if (!StringUtils.isEmpty(methodNameToFilter)) {
+            ListNode condition = new ListNode(
+                    null,
+                    new BinaryExpressionNode(
+                            Tokens.EQUALS_TOKEN,
+                            TreeUtil.createIdentifier("e", "methodName"),
+                            new LiteralStringNode(methodNameToFilter)
+                    ),
+                    -1
+            );
+            StatementListNode thenactions = new StatementListNode(new ExpressionStatementNode(new ListNode(
+                    null,
+                    firstStatement,
+                    -1
+            )));
+            firstStatement = new IfStatementNode(condition, thenactions, null);
+        }
+
+        listener.statements.add(firstStatement);
         listener.statements.add(new ReturnStatementNode(null));
         listener.isStatic = staticMethod;
         classDefinitionNode.statements.items.add(listener.getFunctionDefinitionNode());
@@ -239,11 +293,11 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
          */
         FunctionDefinitionNode constructorDefinition = TreeNavigator.getConstructorDefinition(classDefinitionNode);
         ArgumentListNode args = new ArgumentListNode(TreeUtil.createIdentifier("MethodUpdateEvent", "METHOD_UPDATE"), -1);
-        MemberExpressionNode qListenerName = staticMethod ? TreeUtil.createIdentifier(className, listenerName) : TreeUtil.createThisIdentifier(listenerName);
+        MemberExpressionNode qListenerName = staticMethod ? TreeUtil.createIdentifier(classDefinitionNode.name.name, listenerName) : TreeUtil.createThisIdentifier(listenerName);
         args.items.add(qListenerName);
         args.items.add(new LiteralBooleanNode(false));
-        args.items.add(new LiteralNumberNode("0"));
-        args.items.add(new LiteralBooleanNode(true));
+        args.items.add(new LiteralNumberNode(String.valueOf(priority)));
+        args.items.add(new LiteralBooleanNode(weak));
         CallExpressionNode selector = new CallExpressionNode(new IdentifierNode("addEventListener", -1), args);
         MemberExpressionNode item = new MemberExpressionNode(TreeUtil.createCall("LiveCodeRegistry", "getInstance", null), selector, -1);
         ExpressionStatementNode listenerAddExpressionStatement = new ExpressionStatementNode(new ListNode(null, item, -1));

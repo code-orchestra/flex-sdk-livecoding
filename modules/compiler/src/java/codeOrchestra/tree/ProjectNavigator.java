@@ -34,6 +34,30 @@ public class ProjectNavigator {
         return result;
     }
 
+    public Set<String> getLiveCodingClassNames(String packageName, String className) {
+        // TODO: At this step livecoding classes are not created yet, so we collect names of methods assuming that every one of them will be extracted to some class
+        HashSet<String> result = new HashSet<String>();
+        for (ProgramNode syntaxTree : loadedSyntaxTrees) {
+            ClassDefinitionNode classDefinition = TreeNavigator.getClassDefinition(syntaxTree);
+            if (!classDefinition.pkgdef.name.id.pkg_part.equals(packageName)) {
+                continue;
+            }
+            if (!classDefinition.name.name.equals(className)) {
+                continue;
+            }
+            if (!LiveCodingUtil.canBeUsedForLiveCoding(classDefinition)) {
+                continue;
+            }
+            for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(classDefinition)) {
+                if (!LiveCodingUtil.canBeUsedForLiveCoding(functionDefinitionNode)) {
+                    continue;
+                }
+                result.add(LiveCodingUtil.constructLiveCodingClassName(functionDefinitionNode, classDefinition.name.name));
+            }
+        }
+        return result;
+    }
+
     public Set<String> getClassNames(String packageName) {
         HashSet<String> result = new HashSet<String>();
         for (ProgramNode syntaxTree : loadedSyntaxTrees) {

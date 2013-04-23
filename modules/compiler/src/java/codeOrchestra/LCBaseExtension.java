@@ -35,6 +35,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         }
 
         String packageName = classDefinitionNode.pkgdef.name.id.pkg_part;
+        String className = classDefinitionNode.name.name;
         if (!modelDependenciesUnits.keySet().contains(packageName) && !ProvidedPackages.isProvidedPackage(packageName)) {
             String mdClassName = addModelDependenciesUnit(packageName, classDefinitionNode.cx);
             modelDependenciesUnits.put(packageName, mdClassName);
@@ -69,6 +70,11 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                     -1
             );
             classDefinitionNode.statements.items.add(new VariableDefinitionNode(classDefinitionNode.pkgdef, attrs, Tokens.VAR_TOKEN, listNode, -1));
+
+            // COLT-67
+            for (String ownLiveMethodClass : projectNavigator.getLiveCodingClassNames(packageName, className)) {
+                classDefinitionNode.statements.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(ownLiveMethodClass, "prototype"), -1)));
+            }
         }
     }
 
@@ -319,9 +325,12 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             addLiveCodingStarterUnit(packageName, cx);
             liveCodingStarterAdded = true;
         }
+        // We now do it in the live classes constructor
+        /*
         for (String name : projectNavigator.getLiveCodingClassNames(packageName)) {
             constructor.statements.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(name, "prototype"), -1)));
         }
+        */
         for (String name : ProvidedPackages.getClassNames()) {
             CallExpressionNode node = new CallExpressionNode(new IdentifierNode(name, -1), null);
             node.is_new = true;

@@ -28,6 +28,7 @@ public class ClassCONode extends CONode {
     public final List<Node> staticInitializer = new ArrayList<Node>();
     public final List<String> interfaces = new ArrayList<String>();
     private final List<String[]> imports = new ArrayList<String[]>();
+    private boolean dynamic;
     private Context cx;
 //    private StandardDefs standardDefs;
 
@@ -56,6 +57,14 @@ public class ClassCONode extends CONode {
 
     public void addImport(String packageName, String className) {
         imports.add(new String[] {packageName, className});
+    }
+
+    public boolean isDynamic() {
+        return dynamic;
+    }
+
+    public void setDynamic(boolean dynamic) {
+        this.dynamic = dynamic;
     }
 
     public String getFQName() {
@@ -99,6 +108,9 @@ public class ClassCONode extends CONode {
 
         // Class
         AttributeListNode attrs = new AttributeListNode(TreeUtil.createPublicModifier(), -1);
+        if (isDynamic()) {
+            attrs.items.add(TreeUtil.createDynamicModifier());
+        }
         StatementListNode classStatements = new StatementListNode(null);
         myClass = new ClassDefinitionNode(
                 cx,

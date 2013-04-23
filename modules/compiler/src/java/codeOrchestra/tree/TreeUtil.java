@@ -51,6 +51,10 @@ public class TreeUtil {
         return createIdentifier("static");
     }
 
+    public static MemberExpressionNode createDynamicModifier() {
+        return createIdentifier("dynamic");
+    }
+
     public static MemberExpressionNode createIdentifier(String name) {
         return createIdentifier(null, name);
     }

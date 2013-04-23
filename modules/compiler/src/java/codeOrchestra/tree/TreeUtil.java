@@ -165,6 +165,7 @@ public class TreeUtil {
         ClassDefinitionNode newClass = classCONode.getMyClass();
         newClass.baseclass = internalClass.baseclass;
         newClass.statements = internalClass.statements;
+        newClass.interfaces = internalClass.interfaces;
 
         for (Name inheritanceName : inheritance) {
             if (inheritanceName instanceof MultiName) {

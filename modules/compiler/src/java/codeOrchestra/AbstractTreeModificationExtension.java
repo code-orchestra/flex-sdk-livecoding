@@ -283,60 +283,61 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         methodBody.removeLast(); // Removes last ReturnStatement
 
         // 'This' scope modifications
-        if (!staticMethod) {
-            for (Node node : methodBody) {
-                // Replace all `this` references with `thisScope`
-                RegularNode regularNode = new RegularNode(node);
-                List<RegularNode> thisNodes = regularNode.getDescendants(ThisExpressionNode.class, FunctionCommonNode.class);
+        for (Node statement : methodBody) {
+            RegularNode statementRegularNode = new RegularNode(statement);
+
+            // Replace all `this` references with `thisScope`
+            if (!staticMethod) {
+                List<RegularNode> thisNodes = statementRegularNode.getDescendants(ThisExpressionNode.class, FunctionCommonNode.class);
                 for (RegularNode thisNode : thisNodes) {
                     thisNode.replace(TreeUtil.createIdentifier("thisScope"));
                 }
+            }
 
-                // COLT-38 - Transform trace() to LogUtil.log()
-                // COLT-25 - Replace all field/method references without 'this.' to 'thisScope.x'
-                List<RegularNode> memberExpressionNodes = regularNode.getDescendants(MemberExpressionNode.class);
-                for (RegularNode regularMemberExprNode : memberExpressionNodes) {
-                    MemberExpressionNode memberExpression = (MemberExpressionNode) regularMemberExprNode.getASTNode();
-                    if (memberExpression.base == null) {
-                        SelectorNode selector = memberExpression.selector;
+            // COLT-38 - Transform trace() to LogUtil.log()
+            // COLT-25 - Replace all field/method references without 'this.' to 'thisScope.x'
+            List<RegularNode> memberExpressionNodes = statementRegularNode.getDescendants(MemberExpressionNode.class);
+            for (RegularNode regularMemberExprNode : memberExpressionNodes) {
+                MemberExpressionNode memberExpression = (MemberExpressionNode) regularMemberExprNode.getASTNode();
+                if (memberExpression.base == null) {
+                    SelectorNode selector = memberExpression.selector;
 
-                        if (selector instanceof CallExpressionNode) {
-                            if ("trace".equals(selector.getIdentifier().name)) {
-                                CallExpressionNode callExpressionNode = (CallExpressionNode) selector;
+                    if (selector instanceof CallExpressionNode) {
+                        if ("trace".equals(selector.getIdentifier().name)) {
+                            CallExpressionNode callExpressionNode = (CallExpressionNode) selector;
 
-                                ArgumentListNode errorTraceArguments = new ArgumentListNode(new LiteralStringNode("trace"), -1);
-                                errorTraceArguments.items.add(new LiteralStringNode(""));
-                                errorTraceArguments.items.add(new LiteralStringNode(""));
-                                errorTraceArguments.items.add(new LiteralStringNode(originalClassFqName));
-                                errorTraceArguments.items.add(callExpressionNode.args.items.get(0));
+                            ArgumentListNode errorTraceArguments = new ArgumentListNode(new LiteralStringNode("trace"), -1);
+                            errorTraceArguments.items.add(new LiteralStringNode(""));
+                            errorTraceArguments.items.add(new LiteralStringNode(""));
+                            errorTraceArguments.items.add(new LiteralStringNode(originalClassFqName));
+                            errorTraceArguments.items.add(callExpressionNode.args.items.get(0));
 
-                                callExpressionNode.expr = new IdentifierNode("log", -1);
-                                callExpressionNode.args = errorTraceArguments;
+                            callExpressionNode.expr = new IdentifierNode("log", -1);
+                            callExpressionNode.args = errorTraceArguments;
 
-                                memberExpression.base = TreeUtil.createIdentifier("LogUtil");
+                            memberExpression.base = TreeUtil.createIdentifier("LogUtil");
+                            continue;
+                        }
+                    }
+
+                    IdentifierNode identifier = selector.getIdentifier();
+                    if (identifier != null) {
+                        if (!staticMethod && DigestManager.getInstance().isInstanceMemberVisibleInsideClass(originalClassFqName, identifier.name)) {
+                            memberExpression.base = TreeUtil.createIdentifier("thisScope");
+                        } else if (DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name) != null) {
+                            String ownerOfStaticMemberFqName = DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name);
+                            String shortName = StringUtils.shortNameFromLongName(ownerOfStaticMemberFqName);
+                            memberExpression.base = TreeUtil.createIdentifier(shortName);
+                            // TODO: add import!
+                        } else {
+                            String possibleClassName = identifier.name;
+                            if (className.equals(possibleClassName)) {
                                 continue;
                             }
-                        }
 
-                        IdentifierNode identifier = selector.getIdentifier();
-                        if (identifier != null) {
-                            if (DigestManager.getInstance().isInstanceMemberVisibleInsideClass(originalClassFqName, identifier.name)) {
-                                memberExpression.base = TreeUtil.createIdentifier("thisScope");
-                            } else if (DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name) != null) {
-                                String ownerOfStaticMemberFqName = DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name);
-                                String shortName = StringUtils.shortNameFromLongName(ownerOfStaticMemberFqName);
-                                memberExpression.base = TreeUtil.createIdentifier(shortName);
-                                // TODO: add import!
-                            } else {
-                                String possibleClassName = identifier.name;
-                                if (className.equals(possibleClassName)) {
-                                    continue;
-                                }
-
-                                Set<String> shortNamesFromPackage = DigestManager.getInstance().getShortNamesFromPackage(originalPackageName);
-                                if (shortNamesFromPackage != null && shortNamesFromPackage.contains(possibleClassName)) {
-                                    selector.expr = new QualifiedIdentifierNode(new LiteralStringNode(originalPackageName), possibleClassName, -1);
-                                }
+                            Set<String> shortNamesFromPackage = DigestManager.getInstance().getShortNamesFromPackage(originalPackageName);
+                            if (shortNamesFromPackage != null && shortNamesFromPackage.contains(possibleClassName)) {
+                                selector.expr = new QualifiedIdentifierNode(new LiteralStringNode(originalPackageName), possibleClassName, -1);
                             }
                         }
                     }

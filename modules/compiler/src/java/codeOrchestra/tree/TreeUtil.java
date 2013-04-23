@@ -1,10 +1,21 @@
 package codeOrchestra.tree;
 
+import codeOrchestra.FakeASVirtualFile;
+import codeOrchestra.digest.DigestManager;
 import flex2.compiler.CompilationUnit;
+import flex2.compiler.CompilerAPI;
+import flex2.compiler.CompilerContext;
+import flex2.compiler.Source;
+import flex2.compiler.util.MultiName;
+import flex2.compiler.util.Name;
+import flex2.compiler.util.QName;
 import macromedia.asc.parser.*;
+import macromedia.asc.util.Context;
+import macromedia.asc.util.ObjectList;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Anton.I.Neverov
@@ -139,4 +150,36 @@ public class TreeUtil {
         }
         return constructor;
     }
+
+    public static void createUnitFromInternalClass(ClassDefinitionNode internalClass, String packageName, Context cx, List<ImportDirectiveNode> imports, Set<Name> inheritance) {
+        String className = internalClass.name.name;
+        ClassCONode classCONode = new ClassCONode(packageName, className, cx);
+
+        for (ImportDirectiveNode importDirectiveNode : imports) {
+            PackageIdentifiersNode packageIdentifierNode = importDirectiveNode.name.id;
+            classCONode.addImport(packageIdentifierNode.pkg_part, packageIdentifierNode.def_part);
+        }
+
+        classCONode.addToProject();
+
+        ClassDefinitionNode newClass = classCONode.getMyClass();
+        newClass.baseclass = internalClass.baseclass;
+        newClass.statements = internalClass.statements;
+
+        for (Name inheritanceName : inheritance) {
+            if (inheritanceName instanceof MultiName) {
+                MultiName multiName = (MultiName) inheritanceName;
+
+                for (int i = 0; i < multiName.getNumQNames(); i++) {
+                    QName qName = multiName.getQName(i);
+                    if (DigestManager.getInstance().isAvailable(qName)) {
+                        classCONode.getCompilationUnit().inheritance.add(qName);
+                    }
+                }
+            } else if (inheritanceName instanceof QName) {
+                classCONode.getCompilationUnit().inheritance.add(inheritanceName);
+            }
+        }
+    }
+
 }

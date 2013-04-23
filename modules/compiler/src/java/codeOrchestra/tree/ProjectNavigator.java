@@ -17,7 +17,7 @@ public class ProjectNavigator {
         // TODO: At this step livecoding classes are not created yet, so we collect names of methods assuming that every one of them will be extracted to some class
         HashSet<String> result = new HashSet<String>();
         for (ProgramNode syntaxTree : loadedSyntaxTrees) {
-            ClassDefinitionNode classDefinition = TreeNavigator.getClassDefinition(syntaxTree);
+            ClassDefinitionNode classDefinition = TreeNavigator.getPackageClassDefinition(syntaxTree);
             if (!classDefinition.pkgdef.name.id.pkg_part.equals(packageName)) {
                 continue;
             }
@@ -38,7 +38,7 @@ public class ProjectNavigator {
         // TODO: At this step livecoding classes are not created yet, so we collect names of methods assuming that every one of them will be extracted to some class
         HashSet<String> result = new HashSet<String>();
         for (ProgramNode syntaxTree : loadedSyntaxTrees) {
-            ClassDefinitionNode classDefinition = TreeNavigator.getClassDefinition(syntaxTree);
+            ClassDefinitionNode classDefinition = TreeNavigator.getPackageClassDefinition(syntaxTree);
             if (!classDefinition.pkgdef.name.id.pkg_part.equals(packageName)) {
                 continue;
             }
@@ -61,7 +61,7 @@ public class ProjectNavigator {
     public Set<String> getClassNames(String packageName) {
         HashSet<String> result = new HashSet<String>();
         for (ProgramNode syntaxTree : loadedSyntaxTrees) {
-            ClassDefinitionNode classDefinition = TreeNavigator.getClassDefinition(syntaxTree);
+            ClassDefinitionNode classDefinition = TreeNavigator.getPackageClassDefinition(syntaxTree);
             if (!classDefinition.pkgdef.name.id.pkg_part.equals(packageName)) {
                 continue;
             }
@@ -76,7 +76,7 @@ public class ProjectNavigator {
 
             // Fill user packages
             for (ProgramNode programNode : loadedSyntaxTrees) {
-                ClassDefinitionNode classDefinition = TreeNavigator.getClassDefinition(programNode);
+                ClassDefinitionNode classDefinition = TreeNavigator.getPackageClassDefinition(programNode);
                 String name = classDefinition.pkgdef.name.id.pkg_part;
                 modelDependencies.put(name, new HashSet<String>() {
                     @Override
@@ -88,7 +88,7 @@ public class ProjectNavigator {
 
             // Fill filtered dependencies
             for (ProgramNode programNode : loadedSyntaxTrees) {
-                ClassDefinitionNode classDefinition = TreeNavigator.getClassDefinition(programNode);
+                ClassDefinitionNode classDefinition = TreeNavigator.getPackageClassDefinition(programNode);
                 PackageDefinitionNode pkgdef = classDefinition.pkgdef;
                 String name = pkgdef.name.id.pkg_part;
 
@@ -105,7 +105,7 @@ public class ProjectNavigator {
 
     public ProgramNode getSyntaxTree(String packageName, String className) {
         for (ProgramNode programNode : loadedSyntaxTrees) {
-            ClassDefinitionNode classDefinition = TreeNavigator.getClassDefinition(programNode);
+            ClassDefinitionNode classDefinition = TreeNavigator.getPackageClassDefinition(programNode);
             if (classDefinition.pkgdef.name.id.pkg_part.equals(packageName) && classDefinition.name.name.equals(className)) {
                 return programNode;
             }

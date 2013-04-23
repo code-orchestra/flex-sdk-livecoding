@@ -5,6 +5,7 @@ import codeOrchestra.LiveCodingCLIParameters;
 import codeOrchestra.util.FileUtils;
 import codeOrchestra.util.StringUtils;
 import codeOrchestra.util.XMLUtils;
+import flex2.compiler.util.QName;
 import macromedia.asc.parser.ClassDefinitionNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -37,6 +38,10 @@ public class DigestManager {
 
     public boolean isAvailable(String fqName) {
         return availableFqNames.contains(fqName);
+    }
+
+    public boolean isAvailable(QName qName) {
+        return isAvailable(qName.toString().replace(":", "."));
     }
 
     /**
@@ -147,4 +152,5 @@ public class DigestManager {
         }
         unresolvedDigests.clear();
     }
+
 }

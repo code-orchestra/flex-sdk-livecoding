@@ -48,7 +48,7 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
         loadSyntaxTrees();
         saveSyntaxTree(unit);
         ProgramNode syntaxTree = projectNavigator.getSyntaxTree(classDefinitionNode.pkgdef.name.id.pkg_part, className);
-        ClassDefinitionNode originalClass = TreeNavigator.getClassDefinition(syntaxTree);
+        ClassDefinitionNode originalClass = TreeNavigator.getPackageClassDefinition(syntaxTree);
 
         List<FunctionDefinitionNode> changedMethods = findChangedMethods(originalClass, classDefinitionNode);
         if (TRACE) {

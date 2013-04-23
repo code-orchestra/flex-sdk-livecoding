@@ -38,6 +38,7 @@ public class ClassCONode extends CONode {
 
     // Misc
     private boolean addedToProject;
+    private CompilationUnit compilationUnit;
 
     public ClassCONode(String packageName, String className, Context cx/*, StandardDefs standardDefs*/) {
         this.packageName = packageName;
@@ -73,7 +74,7 @@ public class ClassCONode extends CONode {
 
     @Override
     protected void generateTree() {
-        generateSelf();
+        compilationUnit = generateSelf();
         for (Node node : staticInitializer) {
             myClass.statements.items.add(node);
         }
@@ -89,7 +90,7 @@ public class ClassCONode extends CONode {
         }
     }
 
-    private void generateSelf() {
+    private CompilationUnit generateSelf() {
         // Compilation unit
         mySource = new Source(new FakeASVirtualFile(className), packageName, className, null, false, false);
         CompilerContext compilerContext = new CompilerContext();
@@ -140,6 +141,15 @@ public class ClassCONode extends CONode {
         }
 
         cx.addValidImport(packageName + ":" + className);
+
+        return compilationUnit;
     }
 
+    public ClassDefinitionNode getMyClass() {
+        return myClass;
+    }
+
+    public CompilationUnit getCompilationUnit() {
+        return compilationUnit;
+    }
 }

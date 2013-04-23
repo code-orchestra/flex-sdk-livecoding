@@ -36,12 +36,15 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
         String packageName = classDefinitionNode.pkgdef.name.id.pkg_part;
         String className = classDefinitionNode.name.name;
+
         if (!modelDependenciesUnits.keySet().contains(packageName) && !ProvidedPackages.isProvidedPackage(packageName)) {
             String mdClassName = addModelDependenciesUnit(packageName, classDefinitionNode.cx);
             modelDependenciesUnits.put(packageName, mdClassName);
         }
 
         if (LiveCodingUtil.canBeUsedForLiveCoding(classDefinitionNode)) {
+            classDefinitionNode.attrs.items.add(TreeUtil.createDynamicModifier());
+
             TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "LiveCodeRegistry");
             TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "MethodUpdateEvent");
 
@@ -49,6 +52,22 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 if (LiveCodingUtil.canBeUsedForLiveCoding(methodDefinition)) {
                     extractMethodToLiveCodingClass(methodDefinition, classDefinitionNode);
                 }
+            }
+
+            // Extract all internal classes
+            List<String> internalClassesNames = new ArrayList<String>();
+            ProgramNode syntaxTree = (ProgramNode) unit.getSyntaxTree();
+            for (ClassDefinitionNode internalClass : TreeNavigator.getInternalClassDefinitions(syntaxTree)) {
+                internalClassesNames.add(internalClass.name.name);
+
+                // Detach
+                syntaxTree.statements.items.remove(internalClass);
+
+                // Make public
+                internalClass.attrs = new AttributeListNode(TreeUtil.createPublicModifier(), -1);
+
+                // Add as a separate unit
+                TreeUtil.createUnitFromInternalClass(internalClass, packageName, classDefinitionNode.cx, TreeNavigator.getImports(syntaxTree), unit.inheritance);
             }
 
             /*
@@ -74,6 +93,9 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             // COLT-67
             for (String ownLiveMethodClass : projectNavigator.getLiveCodingClassNames(packageName, className)) {
                 classDefinitionNode.statements.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(ownLiveMethodClass, "prototype"), -1)));
+            }
+            for (String internalClassName : internalClassesNames) {
+                classDefinitionNode.statements.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(internalClassName, "prototype"), -1)));
             }
         }
     }

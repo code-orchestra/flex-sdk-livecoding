@@ -1,13 +1,10 @@
 package codeOrchestra.tree;
 
-import codeOrchestra.tree.visitor.NodeVisitor;
-import codeOrchestra.tree.visitor.NodeVisitorFactory;
 import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -16,14 +13,33 @@ import java.util.List;
 public class TreeNavigator {
 
     public static ClassDefinitionNode getClassDefinition(CompilationUnit unit) {
-        return getClassDefinition(((ProgramNode) unit.getSyntaxTree()));
+        return getPackageClassDefinition(((ProgramNode) unit.getSyntaxTree()));
     }
 
-    public static ClassDefinitionNode getClassDefinition(ProgramNode programNode) {
+    public static List<ClassDefinitionNode> getInternalClassDefinitions(ProgramNode programNode) {
+        List<ClassDefinitionNode> result = new ArrayList<ClassDefinitionNode>();
+
         StatementListNode statements = programNode.statements;
         for (Node item : statements.items) {
             if (item instanceof ClassDefinitionNode) {
-                return (ClassDefinitionNode) item;
+                ClassDefinitionNode classDefinitionNode = (ClassDefinitionNode) item;
+                if (classDefinitionNode.pkgdef == null) {
+                    result.add(classDefinitionNode);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static ClassDefinitionNode getPackageClassDefinition(ProgramNode programNode) {
+        StatementListNode statements = programNode.statements;
+        for (Node item : statements.items) {
+            if (item instanceof ClassDefinitionNode) {
+                ClassDefinitionNode classDefinitionNode = (ClassDefinitionNode) item;
+                if (classDefinitionNode.pkgdef != null) {
+                    return classDefinitionNode;
+                }
             }
         }
         return null;
@@ -38,7 +54,7 @@ public class TreeNavigator {
                 iterator.remove();
             }
         }
-        return  functionDefinitionNodes;
+        return functionDefinitionNodes;
     }
 
     public static FunctionDefinitionNode getConstructorDefinition(ClassDefinitionNode classDefinitionNode) {
@@ -67,7 +83,7 @@ public class TreeNavigator {
                 functionDefinitionNodes.add((FunctionDefinitionNode) item);
             }
         }
-        return  functionDefinitionNodes;
+        return functionDefinitionNodes;
     }
 
     public static boolean isConstructor(FunctionDefinitionNode functionDefinitionNode, ClassDefinitionNode classDefinitionNode) {
@@ -77,6 +93,16 @@ public class TreeNavigator {
     public static List<ImportDirectiveNode> getImports(PackageDefinitionNode packageDefinitionNode) {
         List<ImportDirectiveNode> importDirectiveNodes = new ArrayList<ImportDirectiveNode>();
         for (Node item : packageDefinitionNode.statements.items) {
+            if (item instanceof ImportDirectiveNode) {
+                importDirectiveNodes.add((ImportDirectiveNode) item);
+            }
+        }
+        return importDirectiveNodes;
+    }
+
+    public static List<ImportDirectiveNode> getImports(ProgramNode programNode) {
+        List<ImportDirectiveNode> importDirectiveNodes = new ArrayList<ImportDirectiveNode>();
+        for (Node item : programNode.statements.items) {
             if (item instanceof ImportDirectiveNode) {
                 importDirectiveNodes.add((ImportDirectiveNode) item);
             }
@@ -112,11 +138,17 @@ public class TreeNavigator {
             } else {
                 continue;
             }
-            if (!(node instanceof MemberExpressionNode)) { continue; }
+            if (!(node instanceof MemberExpressionNode)) {
+                continue;
+            }
             SelectorNode selector = ((MemberExpressionNode) node).selector;
-            if (!(selector instanceof GetExpressionNode)) { continue; }
+            if (!(selector instanceof GetExpressionNode)) {
+                continue;
+            }
             Node expr = selector.expr;
-            if (!(expr instanceof IdentifierNode)) { continue; }
+            if (!(expr instanceof IdentifierNode)) {
+                continue;
+            }
             if (((IdentifierNode) expr).name.equals(attrName)) {
                 return true;
             }

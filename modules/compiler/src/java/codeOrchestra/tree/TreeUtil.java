@@ -101,7 +101,7 @@ public class TreeUtil {
         return new ParameterNode(
                 Tokens.VAR_TOKEN,
                 new IdentifierNode(paramName, -1),
-                new TypeExpressionNode(createIdentifier(paramType), true, false),
+                paramType != null ? new TypeExpressionNode(createIdentifier(paramType), true, false) : null,
                 null // Place initializer here if needed
         );
     }

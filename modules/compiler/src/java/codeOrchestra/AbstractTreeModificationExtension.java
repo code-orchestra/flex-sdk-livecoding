@@ -259,6 +259,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 methodResult == null ? null : ((IdentifierNode) ((MemberExpressionNode) methodResult.expr).selector.expr).name, // TODO: rewrite
                 cx
         );
+        runMethod.isStatic = staticMethod;
         runMethod.statements.add(new ExpressionStatementNode(new ListNode(null,
                 TreeUtil.createCall(
                         "LiveCodingCodeFlowUtil",
@@ -271,7 +272,11 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         ParameterListNode parameters = functionDefinitionNode.fexpr.signature.parameter;
         if (parameters != null) {
             for (ParameterNode parameterNode : parameters.items) {
-                runMethod.addParameter(parameterNode.identifier.name, ((IdentifierNode) ((MemberExpressionNode) ((TypeExpressionNode) parameterNode.type).expr).selector.expr).name);
+                if (parameterNode.type == null) {
+                    runMethod.addParameter(parameterNode.identifier.name, null);
+                } else {
+                    runMethod.addParameter(parameterNode.identifier.name, ((IdentifierNode) ((MemberExpressionNode) ((TypeExpressionNode) parameterNode.type).expr).selector.expr).name);
+                }
             }
         }
 

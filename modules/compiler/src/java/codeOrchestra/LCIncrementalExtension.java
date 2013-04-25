@@ -83,13 +83,18 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
         List<FunctionDefinitionNode> modifiedMethodDefinitions = TreeNavigator.getMethodDefinitions(modifiedClass);
 
         if (originalMethodDefinitions.size() != modifiedMethodDefinitions.size()) {
-            throw new RuntimeException();
+            throw new RuntimeException("Number of methods has changed");
         }
 
         ArrayList<FunctionDefinitionNode> result = new ArrayList<FunctionDefinitionNode>();
         for (int i = 0; i < originalMethodDefinitions.size(); i++) {
             FunctionDefinitionNode oM = originalMethodDefinitions.get(i);
             FunctionDefinitionNode mM = modifiedMethodDefinitions.get(i);
+
+            // COLT-77
+            if (LiveCodingUtil.hasAnnotation(oM, LiveCodingUtil.LIVE_CODE_DISABLE_ANNOTATION) || LiveCodingUtil.hasAnnotation(mM, LiveCodingUtil.LIVE_CODE_DISABLE_ANNOTATION)) {
+                continue;
+            }
 
             NodeVisitor visitor = NodeVisitorFactory.getVisitor(FunctionDefinitionNode.class);
             if (!visitor.compareTrees(oM, mM)) {

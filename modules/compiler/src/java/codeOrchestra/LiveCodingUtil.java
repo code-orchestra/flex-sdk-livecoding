@@ -87,7 +87,7 @@ public class LiveCodingUtil {
         return null;
     }
 
-    private static boolean hasAnnotation(DefinitionNode definitionNode, String annotation) {
+    public static boolean hasAnnotation(DefinitionNode definitionNode, String annotation) {
         if (definitionNode.metaData == null) { return false; }
 
         for (Node item : definitionNode.metaData.items) {

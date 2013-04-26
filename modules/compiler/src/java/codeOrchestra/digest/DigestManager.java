@@ -78,6 +78,23 @@ public class DigestManager {
         return null;
     }
 
+    public IClassDigest findVisibleOwnerOfInstanceMember(String classFqName, String memberName) {
+        IClassDigest classDigest = digestsMap.get(classFqName);
+        while (classDigest != null) {
+            for (Member member : classDigest.getInstanceMembers()) {
+                if (member.getName().equals(memberName)) {
+                    return classDigest;
+                }
+            }
+
+            if (classDigest.getSuperClassFQName() != null) {
+                classDigest = digestsMap.get(classDigest.getSuperClassFQName());
+            }
+        }
+
+        return null;
+    }
+
     public boolean isInstanceMemberVisibleInsideClass(String classFqName, String memberName) {
         IClassDigest classDigest = digestsMap.get(classFqName);
         while (classDigest != null) {

@@ -14,6 +14,7 @@ public class Member {
         this.name = name;
         this.isStatic = isStatic;
         this.kind = kind;
+        this.visibility = visibility;
     }
 
     public Visibility getVisibility() {

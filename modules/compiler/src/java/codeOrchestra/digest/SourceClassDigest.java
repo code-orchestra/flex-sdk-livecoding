@@ -93,6 +93,16 @@ public class SourceClassDigest implements IClassDigest {
         }
     }
 
+    @Override
+    public Member getInstanceMember(String name) {
+        for (Member instanceMember : instanceMembers) {
+            if (name.equals(instanceMember.getName())) {
+                return instanceMember;
+            }
+        }
+        return null;
+    }
+
     public Set<Member> getMembers() {
         return members;
     }

@@ -1,6 +1,9 @@
 package codeOrchestra;
 
 import codeOrchestra.digest.DigestManager;
+import codeOrchestra.digest.IClassDigest;
+import codeOrchestra.digest.Member;
+import codeOrchestra.digest.Visibility;
 import codeOrchestra.tree.*;
 import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
@@ -340,6 +343,40 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                                 selector.expr = new QualifiedIdentifierNode(new LiteralStringNode(originalPackageName), possibleClassName, -1);
                             }
                         }
+                    }
+                }
+            }
+
+            // COLT-34 redirect protected/super references
+            for (RegularNode regularMemberExprNode : memberExpressionNodes) {
+                MemberExpressionNode memberExpression = (MemberExpressionNode) regularMemberExprNode.getASTNode();
+                Node base = memberExpression.base;
+                if (base == null) {
+                    continue;
+                }
+
+                if (base instanceof MemberExpressionNode) {
+                    // thisScope.protectedMember
+                    MemberExpressionNode memberExpressionBase = (MemberExpressionNode) base;
+
+                    if (memberExpressionBase.base == null && memberExpressionBase.selector.getIdentifier().name.equals("thisScope")) {
+                        String accessorName = memberExpression.selector.getIdentifier().name;
+                        IClassDigest visibleOwnerInsideClass = DigestManager.getInstance().findVisibleOwnerOfInstanceMember(originalClassFqName, accessorName);
+                        if (visibleOwnerInsideClass != null) {
+                            Member instanceMember = visibleOwnerInsideClass.getInstanceMember(accessorName);
+                            if (instanceMember.getVisibility() == Visibility.PROTECTED) {
+                                String newAccessorName = accessorName + "_protected" + DigestManager.getInstance().getInheritanceLevel(visibleOwnerInsideClass.getFqName());
+                                memberExpression.selector.getIdentifier().name = newAccessorName;
+                            }
+                        }
+                    }
+                } else if (base instanceof SuperExpressionNode) {
+                    String accessorName = memberExpression.selector.getIdentifier().name;
+                    IClassDigest visibleOwnerInsideClass = DigestManager.getInstance().findVisibleOwnerOfInstanceMember(originalClassFqName, accessorName);
+                    if (visibleOwnerInsideClass != null) {
+                        String newAccessorName = accessorName + "_overriden_super" + DigestManager.getInstance().getInheritanceLevel(visibleOwnerInsideClass.getFqName());
+                        memberExpression.selector.getIdentifier().name = newAccessorName;
+                        memberExpression.base = TreeUtil.createIdentifier("thisScope");
                     }
                 }
             }

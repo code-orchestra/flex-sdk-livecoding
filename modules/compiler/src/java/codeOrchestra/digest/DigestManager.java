@@ -38,6 +38,25 @@ public class DigestManager {
     private Map<String, IClassDigest> digestsMap = new HashMap<String, IClassDigest>();
     private Map<String, SourceClassDigest> unresolvedDigests = new HashMap<String, SourceClassDigest>();
 
+    public List<IMember> getVisibleInstanceProtectedMembers(String classFqName) {
+        List<IMember> result = new ArrayList<IMember>();
+
+        IClassDigest classDigest = digestsMap.get(classFqName);
+        while (classDigest != null) {
+            for (IMember member : classDigest.getInstanceMembers()) {
+                if (member.getVisibility() == Visibility.PROTECTED && !result.contains(member)) {
+                    result.add(member);
+                }
+            }
+
+            if (classDigest.getSuperClassFQName() != null) {
+                classDigest = digestsMap.get(classDigest.getSuperClassFQName());
+            }
+        }
+
+        return result;
+    }
+
     public int getInheritanceLevel(String fqName) {
         int level = 0;
 

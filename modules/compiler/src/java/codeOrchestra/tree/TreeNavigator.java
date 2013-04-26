@@ -167,11 +167,15 @@ public class TreeNavigator {
 
     private static boolean hasAttribute(String attrName, AttributeListNode attributeListNode) {
         for (Node item : attributeListNode.items) {
-            Node node;
+            Node node = null;
             if (item instanceof ListNode) {
                 node = ((ListNode) item).items.at(0);
             } else if (item instanceof MemberExpressionNode) {
                 node = item;
+            } else if (item instanceof IdentifierNode) {
+                if (((IdentifierNode) item).name.equals(attrName)) {
+                    return true;
+                }
             } else {
                 continue;
             }

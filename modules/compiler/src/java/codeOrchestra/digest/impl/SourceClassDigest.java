@@ -67,6 +67,8 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
 
                     String typeShortName = getShortTypeName(variableBindingNode.variable.type);
                     SourceMember member = new SourceMember(fieldName, typeShortName, TreeNavigator.isStaticField(variableBindingNode), MemberKind.FIELD, TreeNavigator.getVisibility(fieldDefinition));
+
+                    members.add(member);
                     if (member.isStatic()) {
                         staticMembers.add(member);
                     } else {

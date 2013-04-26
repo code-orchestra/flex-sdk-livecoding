@@ -1,6 +1,9 @@
 package codeOrchestra;
 
 import codeOrchestra.digest.DigestManager;
+import codeOrchestra.digest.IMember;
+import codeOrchestra.digest.IParameter;
+import codeOrchestra.digest.MemberKind;
 import codeOrchestra.tree.*;
 import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
@@ -36,6 +39,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
         String packageName = classDefinitionNode.pkgdef.name.id.pkg_part;
         String className = classDefinitionNode.name.name;
+        String classFqName = StringUtils.longNameFromNamespaceAndShortName(packageName, className);
 
         if (!modelDependenciesUnits.keySet().contains(packageName) && !ProvidedPackages.isProvidedPackage(packageName)) {
             String mdClassName = addModelDependenciesUnit(packageName, classDefinitionNode.cx);
@@ -52,11 +56,21 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 if (LiveCodingUtil.canBeUsedForLiveCoding(methodDefinition)) {
                     extractMethodToLiveCodingClass(methodDefinition, classDefinitionNode);
                 }
-            }
-            for (VariableDefinitionNode variableDefinitionNode : TreeNavigator.getFieldDefinitions(classDefinitionNode)) {
-                processField(variableDefinitionNode, classDefinitionNode);
-            }
 
+                // COLT-34
+                if (TreeNavigator.isOverridingMethod(methodDefinition)) {
+                    processOverridingMethod(methodDefinition, classDefinitionNode);
+                }
+            }
+            // COLT-34
+            for (IMember protectedMember : DigestManager.getInstance().getVisibleInstanceProtectedMembers(classFqName)) {
+                MemberKind kind = protectedMember.getKind();
+                if (kind == MemberKind.FIELD) {
+                    processProtectedField(protectedMember, classDefinitionNode);
+                } else if (EnumSet.of(MemberKind.GETTER, MemberKind.SETTER, MemberKind.METHOD).contains(kind)) {
+                    processProtectedMethod(protectedMember, classDefinitionNode);
+                }
+            }
 
             // Extract all internal classes
             List<String> internalClassesNames = new ArrayList<String>();
@@ -108,14 +122,6 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         ObjectList<Node> oldBody = functionDefinitionNode.fexpr.body.items;
         functionDefinitionNode.fexpr.body.items = new ObjectList<Node>();
 
-        // COLT-34
-        if (TreeNavigator.isProtectedMethod(functionDefinitionNode)) {
-            processProtectedMethod(functionDefinitionNode, classDefinitionNode);
-        }
-        if (TreeNavigator.isOverridingMethod(functionDefinitionNode)) {
-            processOverridingMethod(functionDefinitionNode, classDefinitionNode);
-        }
-
         String className = classDefinitionNode.name.name;
         fillStubMethodBody(functionDefinitionNode, className);
         makePrivateMembersPublic(classDefinitionNode);
@@ -127,89 +133,94 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         }
     }
 
-    private void processField(VariableDefinitionNode variableDefinitionNode, ClassDefinitionNode classDefinitionNode) {
+    private void processProtectedField(IMember member, ClassDefinitionNode classDefinitionNode) {
         int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(TreeUtil.getFqName(classDefinitionNode));
 
-        if (TreeNavigator.isProtectedField(variableDefinitionNode)) {
-            for (int i = 0; i < variableDefinitionNode.countVars(); i++) {
-                VariableBindingNode node = (VariableBindingNode) variableDefinitionNode.list.items.get(i);
+        String fieldName = member.getName();
+        String accessorName = fieldName + "_protected" + inheritanceLevel;
 
-                String fieldName = node.variable.identifier.name;
-                String accessorName = fieldName + "_protected" + inheritanceLevel;
+        // Setter
+        MethodCONode setter = new MethodCONode(accessorName, null, classDefinitionNode.cx);
+        FunctionDefinitionNode setterNode = setter.getFunctionDefinitionNode();
+        ParameterNode parameterNode = new ParameterNode(
+                Tokens.VAR_TOKEN,
+                new IdentifierNode(fieldName, -1),
+                TreeUtil.getType(member.getType()),
+                null
+        );
+        setterNode.fexpr.signature.parameter = new ParameterListNode(null, parameterNode, -1);
+        setterNode.name.kind = Tokens.SET_TOKEN;
+        setterNode.skipLiveCoding = true;
+        setterNode.pkgdef = classDefinitionNode.pkgdef;
+        setterNode.fexpr.internal_name = fieldName + "$0";
 
-                // Setter
-                MethodCONode setter = new MethodCONode(accessorName, null, classDefinitionNode.cx);
-                FunctionDefinitionNode setterNode = setter.getFunctionDefinitionNode();
-                try {
-                    ParameterNode parameterNode = new ParameterNode(
-                            Tokens.VAR_TOKEN,
-                            new IdentifierNode(fieldName, -1),
-                            node.variable.type.clone(),
-                            null
-                    );
-                    setterNode.fexpr.signature.parameter = new ParameterListNode(null, parameterNode, -1);
-                } catch (CloneNotSupportedException e) {
-                    // ignore
-                }
-                setterNode.name.kind = Tokens.SET_TOKEN;
-                setterNode.skipLiveCoding = true;
-                setterNode.pkgdef = classDefinitionNode.pkgdef;
-                setterNode.fexpr.internal_name = fieldName + "$0";
-                StatementListNode setterBody = setterNode.fexpr.body;
-                setterBody.items.add(new ExpressionStatementNode(new ListNode(null,
-                        new MemberExpressionNode(new ThisExpressionNode(),
-                                new SetExpressionNode(
-                                        new IdentifierNode(fieldName, -1),
-                                        new ArgumentListNode(TreeUtil.createIdentifier(fieldName), -1)
-                                )
-                , -1), -1)));
-                classDefinitionNode.statements.items.add(setterNode);
+        StatementListNode setterBody = setterNode.fexpr.body;
+        setterBody.items.add(new ExpressionStatementNode(new ListNode(null,
+                new MemberExpressionNode(new ThisExpressionNode(),
+                        new SetExpressionNode(
+                                new IdentifierNode(fieldName, -1),
+                                new ArgumentListNode(TreeUtil.createIdentifier(fieldName), -1)
+                        )
+                        , -1), -1)));
+        classDefinitionNode.statements.items.add(setterNode);
 
-                // Getter
-                MethodCONode getter = new MethodCONode(accessorName, null, classDefinitionNode.cx);
-                FunctionDefinitionNode getterNode = getter.getFunctionDefinitionNode();
-                getterNode.name.kind = Tokens.GET_TOKEN;
-                getterNode.skipLiveCoding = true;
-                getterNode.pkgdef = classDefinitionNode.pkgdef;
-                getterNode.fexpr.internal_name = fieldName + "$1";
-                StatementListNode getterBody = getterNode.fexpr.body;
-                try {
-                    getterNode.fexpr.signature.result = node.variable.type.clone();
-                } catch (CloneNotSupportedException e) {
-                    // ignore
-                }
-                getterBody.items.add(new ReturnStatementNode(new MemberExpressionNode(new ThisExpressionNode(), new GetExpressionNode(TreeUtil.createIdentifier(fieldName)), -1)));
-                classDefinitionNode.statements.items.add(getterNode);
-            }
-        }
+        // Getter
+        MethodCONode getter = new MethodCONode(accessorName, null, classDefinitionNode.cx);
+        FunctionDefinitionNode getterNode = getter.getFunctionDefinitionNode();
+        getterNode.name.kind = Tokens.GET_TOKEN;
+        getterNode.skipLiveCoding = true;
+        getterNode.pkgdef = classDefinitionNode.pkgdef;
+        getterNode.fexpr.internal_name = fieldName + "$1";
+        getterNode.fexpr.signature.result = TreeUtil.getType(member.getType());
+
+        StatementListNode getterBody = getterNode.fexpr.body;
+        getterBody.items.add(new ReturnStatementNode(new MemberExpressionNode(new ThisExpressionNode(), new GetExpressionNode(TreeUtil.createIdentifier(fieldName)), -1)));
+        classDefinitionNode.statements.items.add(getterNode);
     }
 
-    private void processProtectedMethod(FunctionDefinitionNode functionDefinitionNode, ClassDefinitionNode classDefinitionNode) {
-        if (TreeNavigator.isStaticMethod(functionDefinitionNode)) {
-            return;
-        }
+    private void processProtectedMethod(IMember member, ClassDefinitionNode classDefinitionNode) {
+        boolean isVoid = "void".equals(member.getType());
 
-        boolean isVoid = functionDefinitionNode.fexpr.signature.result == null;
         int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(TreeUtil.getFqName(classDefinitionNode));
-        String functionName = functionDefinitionNode.name.identifier.name;
+        String functionName = member.getName();
         String accessorName = functionName + "_protected" + inheritanceLevel;
         MethodCONode protectedAccessor = new MethodCONode(accessorName, null, classDefinitionNode.cx);
 
         FunctionDefinitionNode accessorFunctionDefinitionNode = protectedAccessor.getFunctionDefinitionNode();
         accessorFunctionDefinitionNode.skipLiveCoding = true;
         accessorFunctionDefinitionNode.fexpr.needsArguments = 0x1;
-        accessorFunctionDefinitionNode.pkgdef = functionDefinitionNode.pkgdef;
-        accessorFunctionDefinitionNode.name.kind = functionDefinitionNode.name.kind;
-        try {
-            accessorFunctionDefinitionNode.fexpr.signature = (FunctionSignatureNode) functionDefinitionNode.fexpr.signature.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+        accessorFunctionDefinitionNode.pkgdef = classDefinitionNode.pkgdef;
+
+        if (member.getKind() == MemberKind.GETTER) {
+            accessorFunctionDefinitionNode.name.kind = Tokens.GET_TOKEN;
+        } else if (member.getKind() == MemberKind.SETTER) {
+            accessorFunctionDefinitionNode.name.kind = Tokens.SET_TOKEN;
         }
-        StatementListNode newBody = accessorFunctionDefinitionNode.fexpr.body;
+
+        accessorFunctionDefinitionNode.fexpr.signature.result = TreeUtil.getType(member.getType());
+        if (!member.getParameters().isEmpty()) {
+            IParameter firstParameter = member.getParameters().get(0);
+            accessorFunctionDefinitionNode.fexpr.signature.parameter = new ParameterListNode(
+                    null,
+                    new ParameterNode(Tokens.VAR_TOKEN,
+                            new IdentifierNode(firstParameter.getName(), -1),
+                            TreeUtil.getType(firstParameter.getType()),
+                            null),
+                    -1);
+
+            for (int i = 1; i < member.getParameters().size(); i++) {
+                IParameter parameter = member.getParameters().get(i);
+                accessorFunctionDefinitionNode.fexpr.signature.parameter.items.add(new ParameterNode(Tokens.VAR_TOKEN,
+                        new IdentifierNode(parameter.getName(), -1),
+                        TreeUtil.getType(parameter.getType()),
+                        null));
+            }
+        }
 
         /*
          this.someProtectedMethod.apply(this, arguments);
         */
+        StatementListNode newBody = accessorFunctionDefinitionNode.fexpr.body;
         ArgumentListNode args = new ArgumentListNode(new ThisExpressionNode(), -1);
         args.items.add(TreeUtil.createIdentifier("arguments".intern()));
         Node expr = new ListNode(null, new MemberExpressionNode(

@@ -25,6 +25,20 @@ import java.util.Set;
  */
 public class TreeUtil {
 
+    public static Node getType(String fqName) {
+        if ("void".equals(fqName)) {
+            return null;
+        }
+
+        if (fqName.contains(".")) {
+            String packageName = StringUtils.namespaceFromLongName(fqName);
+            String className = StringUtils.shortNameFromLongName(fqName);
+            return new TypeExpressionNode(new MemberExpressionNode(null, new GetExpressionNode(new QualifiedIdentifierNode(new LiteralStringNode(packageName), className, -1)), -1), true, false);
+        } else {
+            return new TypeExpressionNode(TreeUtil.createIdentifier(fqName), true, false);
+        }
+    }
+
     public static MemberKind getMemberKind(DefinitionNode definitionNode) {
         if (definitionNode instanceof VariableDefinitionNode) {
             return MemberKind.FIELD;

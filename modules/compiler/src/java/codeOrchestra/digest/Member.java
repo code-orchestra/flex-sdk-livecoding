@@ -8,11 +8,16 @@ public class Member {
     private String name;
     private boolean isStatic;
     private MemberKind kind;
+    private Visibility visibility;
 
-    public Member(String name, boolean isStatic, MemberKind kind) {
+    public Member(String name, boolean isStatic, MemberKind kind, Visibility visibility) {
         this.name = name;
         this.isStatic = isStatic;
         this.kind = kind;
+    }
+
+    public Visibility getVisibility() {
+        return visibility;
     }
 
     public String getName() {

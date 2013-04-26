@@ -64,7 +64,7 @@ public class SourceClassDigest implements IClassDigest {
                     VariableBindingNode variableBindingNode = (VariableBindingNode) item;
                     String fieldName = variableBindingNode.variable.identifier.name;
 
-                    Member member = new Member(fieldName, TreeNavigator.isStaticField(variableBindingNode), MemberKind.FIELD);
+                    Member member = new Member(fieldName, TreeNavigator.isStaticField(variableBindingNode), MemberKind.FIELD, TreeNavigator.getVisibility(fieldDefinition));
                     if (member.isStatic()) {
                         staticMembers.add(member);
                     } else {
@@ -83,7 +83,7 @@ public class SourceClassDigest implements IClassDigest {
                 memberKind = MemberKind.SETTER;
             }
 
-            Member member = new Member(methodName, TreeNavigator.isStaticMethod(functionDefinitionNode), memberKind);
+            Member member = new Member(methodName, TreeNavigator.isStaticMethod(functionDefinitionNode), memberKind, TreeNavigator.getVisibility(functionDefinitionNode));
             members.add(member);
             if (member.isStatic()) {
                 staticMembers.add(member);

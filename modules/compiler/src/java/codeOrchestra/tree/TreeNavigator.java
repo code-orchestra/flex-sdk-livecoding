@@ -1,5 +1,6 @@
 package codeOrchestra.tree;
 
+import codeOrchestra.digest.Visibility;
 import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
 
@@ -11,6 +12,25 @@ import java.util.List;
  * @author Anton.I.Neverov
  */
 public class TreeNavigator {
+
+    public static Visibility getVisibility(DefinitionNode definitionNode) {
+        AttributeListNode attrs = definitionNode.attrs;
+        if (attrs == null) {
+            return Visibility.UNKNOWN;
+        }
+
+        if (hasAttribute("public", attrs)) {
+            return Visibility.PUBLIC;
+        } else if (hasAttribute("protected", attrs)) {
+            return Visibility.PROTECTED;
+        } else if (hasAttribute("private", attrs)) {
+            return Visibility.PRIVATE;
+        } else if (hasAttribute("internal", attrs)) {
+            return Visibility.INTERNAL;
+        }
+
+        return Visibility.UNKNOWN;
+    }
 
     public static ClassDefinitionNode getClassDefinition(CompilationUnit unit) {
         return getPackageClassDefinition(((ProgramNode) unit.getSyntaxTree()));

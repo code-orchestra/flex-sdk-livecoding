@@ -1,5 +1,6 @@
-package codeOrchestra.digest;
+package codeOrchestra.digest.impl;
 
+import codeOrchestra.digest.*;
 import codeOrchestra.tree.TreeNavigator;
 import codeOrchestra.util.StringUtils;
 import macromedia.asc.parser.*;
@@ -9,7 +10,7 @@ import java.util.*;
 /**
  * @author Alexander Eliseyev
  */
-public class SourceClassDigest implements IClassDigest {
+public class SourceClassDigest implements IClassDigest, ITypeResolver {
 
     private String name;
     private String packageName;
@@ -21,9 +22,9 @@ public class SourceClassDigest implements IClassDigest {
 
     private String superClassFQName;
 
-    private Set<Member> members = new HashSet<Member>();
-    private Set<Member> staticMembers = new HashSet<Member>();
-    private Set<Member> instanceMembers = new HashSet<Member>();
+    private Set<IMember> members = new HashSet<IMember>();
+    private Set<IMember> staticMembers = new HashSet<IMember>();
+    private Set<IMember> instanceMembers = new HashSet<IMember>();
 
     public SourceClassDigest(ClassDefinitionNode cl) {
         // Name
@@ -64,7 +65,8 @@ public class SourceClassDigest implements IClassDigest {
                     VariableBindingNode variableBindingNode = (VariableBindingNode) item;
                     String fieldName = variableBindingNode.variable.identifier.name;
 
-                    Member member = new Member(fieldName, TreeNavigator.isStaticField(variableBindingNode), MemberKind.FIELD, TreeNavigator.getVisibility(fieldDefinition));
+                    String typeShortName = getShortTypeName(variableBindingNode.variable.type);
+                    SourceMember member = new SourceMember(fieldName, typeShortName, TreeNavigator.isStaticField(variableBindingNode), MemberKind.FIELD, TreeNavigator.getVisibility(fieldDefinition));
                     if (member.isStatic()) {
                         staticMembers.add(member);
                     } else {
@@ -82,8 +84,16 @@ public class SourceClassDigest implements IClassDigest {
             } else if (TreeNavigator.isSetter(functionDefinitionNode)) {
                 memberKind = MemberKind.SETTER;
             }
+            String typeShortName = getShortTypeName(functionDefinitionNode.fexpr.signature.result);
 
-            Member member = new Member(methodName, TreeNavigator.isStaticMethod(functionDefinitionNode), memberKind, TreeNavigator.getVisibility(functionDefinitionNode));
+            SourceMember member = new SourceMember(methodName, typeShortName, TreeNavigator.isStaticMethod(functionDefinitionNode), memberKind, TreeNavigator.getVisibility(functionDefinitionNode));
+            ParameterListNode parameters = functionDefinitionNode.fexpr.signature.parameter;
+            if (parameters != null) {
+                for (ParameterNode parameterNode : parameters.items) {
+                    member.addParameter(parameterNode.identifier.name, getShortTypeName(parameterNode.type));
+                }
+            }
+
             members.add(member);
             if (member.isStatic()) {
                 staticMembers.add(member);
@@ -93,9 +103,29 @@ public class SourceClassDigest implements IClassDigest {
         }
     }
 
+    private String getShortTypeName(Node typeNode) {
+        if (typeNode == null) {
+            return "void";
+        }
+        if (typeNode instanceof TypeExpressionNode) {
+            TypeExpressionNode typeExpressionNode = (TypeExpressionNode) typeNode;
+            Node typeNodeExpression = typeExpressionNode.expr;
+            if (typeNodeExpression instanceof IdentifierNode) {
+                return ((IdentifierNode) typeNodeExpression).name;
+            } else if (typeNodeExpression instanceof MemberExpressionNode) {
+                return ((MemberExpressionNode) typeNodeExpression).selector.getIdentifier().name;
+            } else {
+                System.err.println("*** Warning: Unsupported type expression node: " + typeNodeExpression.getClass().getSimpleName());
+            }
+        } else {
+            System.err.println("*** Warning: Unsupported type node: " + typeNode.getClass().getSimpleName());
+        }
+        return null;
+    }
+
     @Override
-    public Member getInstanceMember(String name) {
-        for (Member instanceMember : instanceMembers) {
+    public IMember getInstanceMember(String name) {
+        for (IMember instanceMember : instanceMembers) {
             if (name.equals(instanceMember.getName())) {
                 return instanceMember;
             }
@@ -103,15 +133,11 @@ public class SourceClassDigest implements IClassDigest {
         return null;
     }
 
-    public Set<Member> getMembers() {
-        return members;
-    }
-
-    public Set<Member> getInstanceMembers() {
+    public Set<IMember> getInstanceMembers() {
         return instanceMembers;
     }
 
-    public Set<Member> getStaticMembers() {
+    public Set<IMember> getStaticMembers() {
         return staticMembers;
     }
 
@@ -120,39 +146,48 @@ public class SourceClassDigest implements IClassDigest {
     }
 
     public void resolve() {
-        if (superClassShortName == null) {
-            return;
+        this.superClassFQName = tryResolve(superClassShortName);
+        for (IMember member : members) {
+            ((SourceMember) member).resolve(this);
+        }
+    }
+
+    public String tryResolve(String shortClassName) {
+        if (shortClassName == null) {
+            return null;
+        }
+
+        if ("*".equals(shortClassName) || "void".equals(shortClassName)) {
+            return shortClassName;
         }
 
         // Try explicit imports
-        String fqNameCandidate = importMap.get(superClassShortName);
+        String fqNameCandidate = importMap.get(shortClassName);
         if (fqNameCandidate != null) {
-            superClassFQName = fqNameCandidate;
-            return;
+            return fqNameCandidate;
         }
 
         // Try asterix imports
         for (String asterixPackage : asterixImports) {
-            fqNameCandidate = tryResolve(asterixPackage, superClassShortName);
+            fqNameCandidate = tryResolve(asterixPackage, shortClassName);
             if (fqNameCandidate != null) {
-                superClassFQName = fqNameCandidate;
-                return;
+                return fqNameCandidate;
             }
         }
 
         // Try same package
-        fqNameCandidate = tryResolve(packageName, superClassShortName);
+        fqNameCandidate = tryResolve(packageName, shortClassName);
         if (fqNameCandidate != null) {
-            superClassFQName = fqNameCandidate;
-            return;
+            return fqNameCandidate;
         }
 
         // Try default package
-        fqNameCandidate = tryResolve("", superClassShortName);
+        fqNameCandidate = tryResolve("", shortClassName);
         if (fqNameCandidate != null) {
-            superClassFQName = fqNameCandidate;
-            return;
+            return fqNameCandidate;
         }
+
+        return shortClassName;
     }
 
     /**

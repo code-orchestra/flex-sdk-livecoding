@@ -1,16 +1,20 @@
-package codeOrchestra.digest;
+package codeOrchestra.digest.impl;
+
+import codeOrchestra.digest.IMember;
+import codeOrchestra.digest.MemberKind;
+import codeOrchestra.digest.Visibility;
 
 /**
  * @author Alexander Eliseyev
  */
-public class Member {
+public abstract class AbstractMember implements IMember {
 
     private String name;
     private boolean isStatic;
     private MemberKind kind;
     private Visibility visibility;
 
-    public Member(String name, boolean isStatic, MemberKind kind, Visibility visibility) {
+    public AbstractMember(String name, boolean isStatic, MemberKind kind, Visibility visibility) {
         this.name = name;
         this.isStatic = isStatic;
         this.kind = kind;
@@ -51,15 +55,15 @@ public class Member {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Member other = (Member) obj;
-        if (isStatic != other.isStatic)
+        IMember other = (IMember) obj;
+        if (isStatic != other.isStatic())
             return false;
-        if (kind != other.kind)
+        if (kind != other.getKind())
             return false;
         if (name == null) {
-            if (other.name != null)
+            if (other.getName() != null)
                 return false;
-        } else if (!name.equals(other.name))
+        } else if (!name.equals(other.getName()))
             return false;
         return true;
     }

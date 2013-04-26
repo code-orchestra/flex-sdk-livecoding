@@ -1,5 +1,9 @@
-package codeOrchestra.digest;
+package codeOrchestra.digest.impl;
 
+import codeOrchestra.digest.IClassDigest;
+import codeOrchestra.digest.IMember;
+import codeOrchestra.digest.MemberKind;
+import codeOrchestra.digest.Visibility;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -11,9 +15,9 @@ import java.util.Set;
  */
 public class SWCClassDigest implements IClassDigest {
 
-    private Set<Member> instanceMembers = new HashSet<Member>();
-    private Set<Member> staticMembers = new HashSet<Member>();
-    private Set<Member> members = new HashSet<Member>();
+    private Set<IMember> instanceMembers = new HashSet<IMember>();
+    private Set<IMember> staticMembers = new HashSet<IMember>();
+    private Set<IMember> members = new HashSet<IMember>();
 
     private String fqName;
     private String superClassFqName;
@@ -26,12 +30,18 @@ public class SWCClassDigest implements IClassDigest {
         for (int i = 0; i < membersList.getLength(); i++) {
             Element memberElement = (Element) membersList.item(i);
 
-            Member member = new Member(
+            SWCMember member = new SWCMember(
                     memberElement.getAttribute("name"),
+                    memberElement.getAttribute("type"),
                     memberElement.hasAttribute("static"),
                     MemberKind.valueOf(memberElement.getAttribute("kind")),
                     memberElement.hasAttribute("visibility") ? Visibility.valueOf(memberElement.getAttribute("visibility")) : Visibility.UNKNOWN
             );
+            NodeList parameters = memberElement.getElementsByTagName("parameter");
+            for (int j = 0; j < parameters.getLength(); j++) {
+                Element parameterElement = (Element) parameters.item(j);
+                member.addParameter(parameterElement.getAttribute("name"), parameterElement.getAttribute("type"));
+            }
 
             members.add(member);
             if (member.isStatic()) {
@@ -43,8 +53,8 @@ public class SWCClassDigest implements IClassDigest {
     }
 
     @Override
-    public Member getInstanceMember(String name) {
-        for (Member instanceMember : instanceMembers) {
+    public IMember getInstanceMember(String name) {
+        for (IMember instanceMember : instanceMembers) {
             if (name.equals(instanceMember.getName())) {
                 return instanceMember;
             }
@@ -53,17 +63,12 @@ public class SWCClassDigest implements IClassDigest {
     }
 
     @Override
-    public Set<Member> getMembers() {
-        return members;
-    }
-
-    @Override
-    public Set<Member> getInstanceMembers() {
+    public Set<IMember> getInstanceMembers() {
         return instanceMembers;
     }
 
     @Override
-    public Set<Member> getStaticMembers() {
+    public Set<IMember> getStaticMembers() {
         return staticMembers;
     }
 

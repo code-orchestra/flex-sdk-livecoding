@@ -2,7 +2,7 @@ package codeOrchestra;
 
 import codeOrchestra.digest.DigestManager;
 import codeOrchestra.digest.IClassDigest;
-import codeOrchestra.digest.Member;
+import codeOrchestra.digest.IMember;
 import codeOrchestra.digest.Visibility;
 import codeOrchestra.tree.*;
 import codeOrchestra.util.StringUtils;
@@ -363,7 +363,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                         String accessorName = memberExpression.selector.getIdentifier().name;
                         IClassDigest visibleOwnerInsideClass = DigestManager.getInstance().findVisibleOwnerOfInstanceMember(originalClassFqName, accessorName);
                         if (visibleOwnerInsideClass != null) {
-                            Member instanceMember = visibleOwnerInsideClass.getInstanceMember(accessorName);
+                            IMember instanceMember = visibleOwnerInsideClass.getInstanceMember(accessorName);
                             if (instanceMember.getVisibility() == Visibility.PROTECTED) {
                                 String newAccessorName = accessorName + "_protected" + DigestManager.getInstance().getInheritanceLevel(visibleOwnerInsideClass.getFqName());
                                 memberExpression.selector.getIdentifier().name = newAccessorName;
@@ -371,6 +371,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                         }
                     }
                 } else if (base instanceof SuperExpressionNode) {
+                    // super.someMember
                     String accessorName = memberExpression.selector.getIdentifier().name;
                     IClassDigest visibleOwnerInsideClass = DigestManager.getInstance().findVisibleOwnerOfInstanceMember(originalClassFqName, accessorName);
                     if (visibleOwnerInsideClass != null) {
@@ -382,6 +383,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
             }
         }
 
+        // Wrap it in try/catch and log the error in catch
         tryblock.items.addAll(methodBody);
         ArgumentListNode errorTraceArguments = new ArgumentListNode(new LiteralStringNode("error"), -1);
         errorTraceArguments.items.add(new LiteralStringNode(""));

@@ -2,6 +2,8 @@ package codeOrchestra.digest;
 
 import codeOrchestra.AbstractTreeModificationExtension;
 import codeOrchestra.LiveCodingCLIParameters;
+import codeOrchestra.digest.impl.SWCClassDigest;
+import codeOrchestra.digest.impl.SourceClassDigest;
 import codeOrchestra.util.FileUtils;
 import codeOrchestra.util.StringUtils;
 import codeOrchestra.util.XMLUtils;
@@ -64,7 +66,7 @@ public class DigestManager {
     public String findOwnerOfStaticMember(String classFqName, String memberName) {
         IClassDigest classDigest = digestsMap.get(classFqName);
         while (classDigest != null) {
-            for (Member member : classDigest.getStaticMembers()) {
+            for (IMember member : classDigest.getStaticMembers()) {
                 if (member.getName().equals(memberName)) {
                     return classDigest.getFqName();
                 }
@@ -81,7 +83,7 @@ public class DigestManager {
     public IClassDigest findVisibleOwnerOfInstanceMember(String classFqName, String memberName) {
         IClassDigest classDigest = digestsMap.get(classFqName);
         while (classDigest != null) {
-            for (Member member : classDigest.getInstanceMembers()) {
+            for (IMember member : classDigest.getInstanceMembers()) {
                 if (member.getName().equals(memberName)) {
                     return classDigest;
                 }
@@ -98,7 +100,7 @@ public class DigestManager {
     public boolean isInstanceMemberVisibleInsideClass(String classFqName, String memberName) {
         IClassDigest classDigest = digestsMap.get(classFqName);
         while (classDigest != null) {
-            for (Member member : classDigest.getInstanceMembers()) {
+            for (IMember member : classDigest.getInstanceMembers()) {
                 if (member.getName().equals(memberName)) {
                     return true;
                 }

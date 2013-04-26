@@ -15,6 +15,7 @@ public class FieldCONode extends CONode {
     public String fieldName;
     public String fieldType;
     public Node initializer;
+    public boolean isStatic;
 
     // Set by parent node generator
     PackageDefinitionNode packageDefinitionNode;
@@ -30,6 +31,9 @@ public class FieldCONode extends CONode {
     @Override
     protected void generateTree() {
         AttributeListNode attrs = new AttributeListNode(TreeUtil.createPublicModifier(), -1);
+        if (isStatic) {
+            attrs.items.add(TreeUtil.createStaticModifier());
+        }
         ListNode list = new ListNode(null, new VariableBindingNode(
                 packageDefinitionNode,
                 attrs,
@@ -42,6 +46,11 @@ public class FieldCONode extends CONode {
                 initializer
         ), -1);
         variableDefinitionNode = new VariableDefinitionNode(packageDefinitionNode, attrs, Tokens.VAR_TOKEN, list, -1);
+    }
+
+    public VariableDefinitionNode getVariableDefinitionNode() {
+        generateTree();
+        return variableDefinitionNode;
     }
 
 }

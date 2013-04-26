@@ -11,9 +11,9 @@ import java.util.Set;
  */
 public class SWCClassDigest implements IClassDigest {
 
-    private Set<String> instanceMembers = new HashSet<String>();
-    private Set<String> staticMembers = new HashSet<String>();
-    private Set<String> members = new HashSet<String>();
+    private Set<Member> instanceMembers = new HashSet<Member>();
+    private Set<Member> staticMembers = new HashSet<Member>();
+    private Set<Member> members = new HashSet<Member>();
 
     private String fqName;
     private String superClassFqName;
@@ -25,29 +25,34 @@ public class SWCClassDigest implements IClassDigest {
         NodeList membersList = traitElement.getElementsByTagName("member");
         for (int i = 0; i < membersList.getLength(); i++) {
             Element memberElement = (Element) membersList.item(i);
-            String memberName = memberElement.getAttribute("name");
 
-            members.add(memberName);
-            if (memberElement.hasAttribute("static")) {
-                staticMembers.add(memberName);
+            Member member = new Member(
+                    memberElement.getAttribute("name"),
+                    memberElement.hasAttribute("static"),
+                    MemberKind.valueOf(memberElement.getAttribute("kind"))
+            );
+
+            members.add(member);
+            if (member.isStatic()) {
+                staticMembers.add(member);
             } else {
-                instanceMembers.add(memberName);
+                instanceMembers.add(member);
             }
         }
     }
 
     @Override
-    public Set<String> getMembers() {
+    public Set<Member> getMembers() {
         return members;
     }
 
     @Override
-    public Set<String> getInstanceMembers() {
+    public Set<Member> getInstanceMembers() {
         return instanceMembers;
     }
 
     @Override
-    public Set<String> getStaticMembers() {
+    public Set<Member> getStaticMembers() {
         return staticMembers;
     }
 

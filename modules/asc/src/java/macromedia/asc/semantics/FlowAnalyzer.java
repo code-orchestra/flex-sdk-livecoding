@@ -5794,7 +5794,8 @@ else
     {
         switch( this_contexts.last() )
         {
-            case global_this:
+            case global_this: // CodeOrchestra
+                break;
             case error_this:
                 cx.error(node.pos(),kError_InvalidSuperExpression);
                 break;

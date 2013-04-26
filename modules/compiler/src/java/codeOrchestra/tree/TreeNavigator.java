@@ -110,6 +110,18 @@ public class TreeNavigator {
         return importDirectiveNodes;
     }
 
+    public static boolean isOverridingMethod(FunctionDefinitionNode functionDefinitionNode) {
+        return methodHasAttribute(functionDefinitionNode, "override");
+    }
+
+    public static boolean isProtectedField(VariableDefinitionNode variableDefinitionNode) {
+        return fieldHasAttribute(variableDefinitionNode, "protected");
+    }
+
+    public static boolean isProtectedMethod(FunctionDefinitionNode functionDefinitionNode) {
+        return methodHasAttribute(functionDefinitionNode, "protected");
+    }
+
     public static boolean isStaticMethod(FunctionDefinitionNode functionDefinitionNode) {
         return methodHasAttribute(functionDefinitionNode, "static");
     }
@@ -125,6 +137,11 @@ public class TreeNavigator {
 
     private static boolean fieldHasAttribute(VariableBindingNode variableBindingNode, String attrName) {
         AttributeListNode attributeListNode = variableBindingNode.attrs;
+        return hasAttribute(attrName, attributeListNode);
+    }
+
+    private static boolean fieldHasAttribute(VariableDefinitionNode variableDefinitionNode, String attrName) {
+        AttributeListNode attributeListNode = variableDefinitionNode.attrs;
         return hasAttribute(attrName, attributeListNode);
     }
 

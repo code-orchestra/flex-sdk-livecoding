@@ -30,7 +30,7 @@ import macromedia.asc.semantics.*;
  *
  * @author Jeff Dyer
  */
-public class Node implements Serializable // CodeOrchestra: made serializable
+public class Node implements Serializable, Cloneable // CodeOrchestra: made serializable
 {
 	/* HACK -- JAVA ONLY
 	 * Since a lot of code generation uses toString methods,
@@ -374,4 +374,9 @@ public class Node implements Serializable // CodeOrchestra: made serializable
     {
     	return false;
     }
+
+    public Node clone() throws CloneNotSupportedException {
+        return (Node) super.clone();
+    }
+
 }

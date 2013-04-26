@@ -33,6 +33,9 @@ public class LiveCodingUtil {
         if (function == null) {
             return false;
         }
+        if (function.skipLiveCoding) {
+            return false;
+        }
         if (TreeNavigator.isGetter(function) || TreeNavigator.isSetter(function)) {
             if (!LiveCodingCLIParameters.makeGettersSettersLive()) {
                 return false;

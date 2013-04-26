@@ -36,6 +36,20 @@ public class DigestManager {
     private Map<String, IClassDigest> digestsMap = new HashMap<String, IClassDigest>();
     private Map<String, SourceClassDigest> unresolvedDigests = new HashMap<String, SourceClassDigest>();
 
+    public int getInheritanceLevel(String fqName) {
+        int level = 0;
+
+        IClassDigest classDigest = digestsMap.get(fqName);
+        while (classDigest != null) {
+            if (classDigest.getSuperClassFQName() != null) {
+                classDigest = digestsMap.get(classDigest.getSuperClassFQName());
+                level++;
+            }
+        }
+
+        return level > 0 ? level - 1 : 0;
+    }
+
     public boolean isAvailable(String fqName) {
         return availableFqNames.contains(fqName);
     }
@@ -50,8 +64,10 @@ public class DigestManager {
     public String findOwnerOfStaticMember(String classFqName, String memberName) {
         IClassDigest classDigest = digestsMap.get(classFqName);
         while (classDigest != null) {
-            if (classDigest.getStaticMembers().contains(memberName)) {
-                return classDigest.getFqName();
+            for (Member member : classDigest.getStaticMembers()) {
+                if (member.getName().equals(memberName)) {
+                    return classDigest.getFqName();
+                }
             }
 
             if (classDigest.getSuperClassFQName() != null) {
@@ -65,8 +81,10 @@ public class DigestManager {
     public boolean isInstanceMemberVisibleInsideClass(String classFqName, String memberName) {
         IClassDigest classDigest = digestsMap.get(classFqName);
         while (classDigest != null) {
-            if (classDigest.getInstanceMembers().contains(memberName)) {
-                return true;
+            for (Member member : classDigest.getInstanceMembers()) {
+                if (member.getName().equals(memberName)) {
+                    return true;
+                }
             }
 
             if (classDigest.getSuperClassFQName() != null) {

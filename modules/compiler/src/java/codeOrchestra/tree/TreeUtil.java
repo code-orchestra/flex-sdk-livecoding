@@ -2,6 +2,8 @@ package codeOrchestra.tree;
 
 import codeOrchestra.FakeASVirtualFile;
 import codeOrchestra.digest.DigestManager;
+import codeOrchestra.digest.MemberKind;
+import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
 import flex2.compiler.CompilerAPI;
 import flex2.compiler.CompilerContext;
@@ -22,6 +24,28 @@ import java.util.Set;
  * @author Alexander Eliseyev
  */
 public class TreeUtil {
+
+    public static MemberKind getMemberKind(DefinitionNode definitionNode) {
+        if (definitionNode instanceof VariableDefinitionNode) {
+            return MemberKind.FIELD;
+        } else if (definitionNode instanceof FunctionDefinitionNode) {
+            FunctionDefinitionNode functionDefinitionNode = (FunctionDefinitionNode) definitionNode;
+            if (TreeNavigator.isGetter(functionDefinitionNode)) {
+                return MemberKind.GETTER;
+            } else if (TreeNavigator.isSetter(functionDefinitionNode)) {
+                return MemberKind.SETTER;
+            }
+            return MemberKind.METHOD;
+        }
+        return null;
+    }
+
+    public static String getFqName(ClassDefinitionNode classDefinitionNode) {
+        String packageName = classDefinitionNode.pkgdef.name.id.pkg_part;
+        String className = classDefinitionNode.name.name;
+
+        return StringUtils.longNameFromNamespaceAndShortName(packageName, className);
+    }
 
     public static void makePublic(AttributeListNode attributeListNode) {
         for (Node node : attributeListNode.items) {

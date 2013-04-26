@@ -7,9 +7,9 @@ import java.util.Set;
  */
 public interface IClassDigest {
 
-    Set<String> getMembers();
-    Set<String> getInstanceMembers();
-    Set<String> getStaticMembers();
+    Set<Member> getMembers();
+    Set<Member> getInstanceMembers();
+    Set<Member> getStaticMembers();
     String getFqName();
     String getSuperClassFQName();
 

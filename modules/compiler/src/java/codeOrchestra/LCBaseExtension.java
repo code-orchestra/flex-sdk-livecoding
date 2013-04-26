@@ -53,6 +53,10 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                     extractMethodToLiveCodingClass(methodDefinition, classDefinitionNode);
                 }
             }
+            for (VariableDefinitionNode variableDefinitionNode : TreeNavigator.getFieldDefinitions(classDefinitionNode)) {
+                processField(variableDefinitionNode, classDefinitionNode);
+            }
+
 
             // Extract all internal classes
             List<String> internalClassesNames = new ArrayList<String>();
@@ -77,7 +81,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             attrs.items.add(TreeUtil.createStaticModifier());
             TypedIdentifierNode variable = new TypedIdentifierNode(
                     new QualifiedIdentifierNode(attrs, "__modelDependencies", -1),
-                    new TypeExpressionNode(TreeUtil.createIdentifier(modelDependenciesUnits.get(packageName)) ,true, false),
+                    new TypeExpressionNode(TreeUtil.createIdentifier(modelDependenciesUnits.get(packageName)), true, false),
                     -1
             );
             CallExpressionNode selector = new CallExpressionNode(new IdentifierNode(modelDependenciesUnits.get(packageName), -1), null);
@@ -104,13 +108,175 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         ObjectList<Node> oldBody = functionDefinitionNode.fexpr.body.items;
         functionDefinitionNode.fexpr.body.items = new ObjectList<Node>();
 
-        fillStubMethodBody(functionDefinitionNode, classDefinitionNode.name.name);
+        // COLT-34
+        if (TreeNavigator.isProtectedMethod(functionDefinitionNode)) {
+            processProtectedMethod(functionDefinitionNode, classDefinitionNode);
+        }
+        if (TreeNavigator.isOverridingMethod(functionDefinitionNode)) {
+            processOverridingMethod(functionDefinitionNode, classDefinitionNode);
+        }
+
+        String className = classDefinitionNode.name.name;
+        fillStubMethodBody(functionDefinitionNode, className);
         makePrivateMembersPublic(classDefinitionNode);
-        addLiveCodingClass(classDefinitionNode.name.name, functionDefinitionNode, oldBody, false);
+
+        addLiveCodingClass(className, functionDefinitionNode, oldBody, false);
 
         if (LiveCodingUtil.isLiveCodeUpdateListener(functionDefinitionNode)) {
             addListener(functionDefinitionNode, classDefinitionNode);
         }
+    }
+
+    private void processField(VariableDefinitionNode variableDefinitionNode, ClassDefinitionNode classDefinitionNode) {
+        int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(TreeUtil.getFqName(classDefinitionNode));
+
+        if (TreeNavigator.isProtectedField(variableDefinitionNode)) {
+            for (int i = 0; i < variableDefinitionNode.countVars(); i++) {
+                VariableBindingNode node = (VariableBindingNode) variableDefinitionNode.list.items.get(i);
+
+                String fieldName = node.variable.identifier.name;
+                String accessorName = fieldName + "_protected" + inheritanceLevel;
+
+                // Setter
+                MethodCONode setter = new MethodCONode(accessorName, null, classDefinitionNode.cx);
+                FunctionDefinitionNode setterNode = setter.getFunctionDefinitionNode();
+                try {
+                    ParameterNode parameterNode = new ParameterNode(
+                            Tokens.VAR_TOKEN,
+                            new IdentifierNode(fieldName, -1),
+                            node.variable.type.clone(),
+                            null
+                    );
+                    setterNode.fexpr.signature.parameter = new ParameterListNode(null, parameterNode, -1);
+                } catch (CloneNotSupportedException e) {
+                    // ignore
+                }
+                setterNode.name.kind = Tokens.SET_TOKEN;
+                setterNode.skipLiveCoding = true;
+                setterNode.pkgdef = classDefinitionNode.pkgdef;
+                setterNode.fexpr.internal_name = fieldName + "$0";
+                StatementListNode setterBody = setterNode.fexpr.body;
+                setterBody.items.add(new ExpressionStatementNode(new ListNode(null,
+                        new MemberExpressionNode(new ThisExpressionNode(),
+                                new SetExpressionNode(
+                                        new IdentifierNode(fieldName, -1),
+                                        new ArgumentListNode(TreeUtil.createIdentifier(fieldName), -1)
+                                )
+                , -1), -1)));
+                classDefinitionNode.statements.items.add(setterNode);
+
+                // Getter
+                MethodCONode getter = new MethodCONode(accessorName, null, classDefinitionNode.cx);
+                FunctionDefinitionNode getterNode = getter.getFunctionDefinitionNode();
+                getterNode.name.kind = Tokens.GET_TOKEN;
+                getterNode.skipLiveCoding = true;
+                getterNode.pkgdef = classDefinitionNode.pkgdef;
+                getterNode.fexpr.internal_name = fieldName + "$1";
+                StatementListNode getterBody = getterNode.fexpr.body;
+                try {
+                    getterNode.fexpr.signature.result = node.variable.type.clone();
+                } catch (CloneNotSupportedException e) {
+                    // ignore
+                }
+                getterBody.items.add(new ReturnStatementNode(new MemberExpressionNode(new ThisExpressionNode(), new GetExpressionNode(TreeUtil.createIdentifier(fieldName)), -1)));
+                classDefinitionNode.statements.items.add(getterNode);
+            }
+        }
+    }
+
+    private void processProtectedMethod(FunctionDefinitionNode functionDefinitionNode, ClassDefinitionNode classDefinitionNode) {
+        if (TreeNavigator.isStaticMethod(functionDefinitionNode)) {
+            return;
+        }
+
+        // TODO: setters/getters
+
+        boolean isVoid = functionDefinitionNode.fexpr.signature.result == null;
+        int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(TreeUtil.getFqName(classDefinitionNode));
+        String functionName = functionDefinitionNode.name.identifier.name;
+        String accessorName = functionName + "_protected" + inheritanceLevel;
+        MethodCONode protectedAccessor = new MethodCONode(accessorName, null, classDefinitionNode.cx);
+
+        FunctionDefinitionNode accessorFunctionDefinitionNode = protectedAccessor.getFunctionDefinitionNode();
+        accessorFunctionDefinitionNode.skipLiveCoding = true;
+        accessorFunctionDefinitionNode.fexpr.needsArguments = 0x1;
+        accessorFunctionDefinitionNode.pkgdef = functionDefinitionNode.pkgdef;
+        try {
+            accessorFunctionDefinitionNode.fexpr.signature = (FunctionSignatureNode) functionDefinitionNode.fexpr.signature.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+        StatementListNode newBody = accessorFunctionDefinitionNode.fexpr.body;
+
+        /*
+         this.someProtectedMethod.apply(this, arguments);
+        */
+        ArgumentListNode args = new ArgumentListNode(new ThisExpressionNode(), -1);
+        args.items.add(TreeUtil.createIdentifier("arguments".intern()));
+        Node expr = new ListNode(null, new MemberExpressionNode(
+                new MemberExpressionNode(new ThisExpressionNode(), new GetExpressionNode(TreeUtil.createIdentifier(functionName)), -1),
+                new CallExpressionNode(
+                        new IdentifierNode("apply", -1),
+                        args
+                ),
+                -1
+        ), -1);
+        if (isVoid) {
+            newBody.items.add(new ExpressionStatementNode(expr));
+            newBody.items.add(new ReturnStatementNode(null));
+        } else {
+            newBody.items.add(new ReturnStatementNode(expr));
+        }
+
+        classDefinitionNode.statements.items.add(accessorFunctionDefinitionNode);
+    }
+
+    private void processOverridingMethod(FunctionDefinitionNode functionDefinitionNode, ClassDefinitionNode classDefinitionNode) {
+        if (TreeNavigator.isStaticMethod(functionDefinitionNode)) {
+            return;
+        }
+
+        // TODO: setters/getters
+
+        boolean isVoid = functionDefinitionNode.fexpr.signature.result == null;
+        int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(TreeUtil.getFqName(classDefinitionNode));
+        String functionName = functionDefinitionNode.name.identifier.name;
+        String accessorName = functionName + "_overriden_super" + inheritanceLevel;
+        MethodCONode protectedAccessor = new MethodCONode(accessorName, null, classDefinitionNode.cx);
+
+        FunctionDefinitionNode accessorFunctionDefinitionNode = protectedAccessor.getFunctionDefinitionNode();
+        accessorFunctionDefinitionNode.skipLiveCoding = true;
+        accessorFunctionDefinitionNode.fexpr.needsArguments = 0x1;
+        accessorFunctionDefinitionNode.pkgdef = functionDefinitionNode.pkgdef;
+        try {
+            accessorFunctionDefinitionNode.fexpr.signature = (FunctionSignatureNode) functionDefinitionNode.fexpr.signature.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+
+        StatementListNode newBody = accessorFunctionDefinitionNode.fexpr.body;
+
+        /*
+         super.someProtectedMethod.apply(this, arguments);
+        */
+        ArgumentListNode args = new ArgumentListNode(new ThisExpressionNode(), -1);
+        args.items.add(TreeUtil.createIdentifier("arguments".intern()));
+        Node expr = new ListNode(null, new MemberExpressionNode(
+                new MemberExpressionNode(new SuperExpressionNode(null), new GetExpressionNode(TreeUtil.createIdentifier(functionName)), -1),
+                new CallExpressionNode(
+                        new IdentifierNode("apply", -1),
+                        args
+                ),
+                -1
+        ), -1);
+        if (isVoid) {
+            newBody.items.add(new ExpressionStatementNode(expr));
+            newBody.items.add(new ReturnStatementNode(null));
+        } else {
+            newBody.items.add(new ReturnStatementNode(expr));
+        }
+
+        classDefinitionNode.statements.items.add(accessorFunctionDefinitionNode);
     }
 
     private void makePrivateMembersPublic(ClassDefinitionNode classDefinitionNode) {
@@ -161,7 +327,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 TreeUtil.createCall("LiveCodeRegistry", "getInstance", null),
                 new CallExpressionNode(
                         new IdentifierNode("getMethod", -1),
-                        new ArgumentListNode(new LiteralStringNode(remoteMethodName),-1)
+                        new ArgumentListNode(new LiteralStringNode(remoteMethodName), -1)
                 ),
                 -1
         );
@@ -205,7 +371,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         if (!staticMethod) {
             CallExpressionNode callExpressionNode = new CallExpressionNode(
                     new IdentifierNode("method", -1),
-                    new ArgumentListNode(new ThisExpressionNode(),-1)
+                    new ArgumentListNode(new ThisExpressionNode(), -1)
             );
             callExpressionNode.is_new = true;
             ListNode base = new ListNode(null, new MemberExpressionNode(null, callExpressionNode, -1), -1);

@@ -43,6 +43,8 @@ public class FunctionDefinitionNode extends DefinitionNode
     public boolean is_prototype;
     public int version = -1;
 
+    public boolean skipLiveCoding;
+
     public FunctionDefinitionNode(Context cx, PackageDefinitionNode pkgdef, AttributeListNode attrs, FunctionNameNode name, FunctionCommonNode fexpr)
 	{
 		super(pkgdef, attrs, -1);

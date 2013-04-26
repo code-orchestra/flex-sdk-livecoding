@@ -21,9 +21,9 @@ public class SourceClassDigest implements IClassDigest {
 
     private String superClassFQName;
 
-    private Set<String> members = new HashSet<String>();
-    private Set<String> staticMembers = new HashSet<String>();
-    private Set<String> instanceMembers = new HashSet<String>();
+    private Set<Member> members = new HashSet<Member>();
+    private Set<Member> staticMembers = new HashSet<Member>();
+    private Set<Member> instanceMembers = new HashSet<Member>();
 
     public SourceClassDigest(ClassDefinitionNode cl) {
         // Name
@@ -64,11 +64,11 @@ public class SourceClassDigest implements IClassDigest {
                     VariableBindingNode variableBindingNode = (VariableBindingNode) item;
                     String fieldName = variableBindingNode.variable.identifier.name;
 
-                    members.add(fieldName);
-                    if (TreeNavigator.isStaticField(variableBindingNode)) {
-                        staticMembers.add(fieldName);
+                    Member member = new Member(fieldName, TreeNavigator.isStaticField(variableBindingNode), MemberKind.FIELD);
+                    if (member.isStatic()) {
+                        staticMembers.add(member);
                     } else {
-                        instanceMembers.add(fieldName);
+                        instanceMembers.add(member);
                     }
                 }
             }
@@ -76,25 +76,32 @@ public class SourceClassDigest implements IClassDigest {
         // Methods
         for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(cl)) {
             String methodName = functionDefinitionNode.name.identifier.name;
+            MemberKind memberKind = MemberKind.METHOD;
+            if (TreeNavigator.isGetter(functionDefinitionNode)) {
+                memberKind = MemberKind.GETTER;
+            } else if (TreeNavigator.isSetter(functionDefinitionNode)) {
+                memberKind = MemberKind.SETTER;
+            }
 
-            members.add(methodName);
-            if (TreeNavigator.isStaticMethod(functionDefinitionNode)) {
-                staticMembers.add(methodName);
+            Member member = new Member(methodName, TreeNavigator.isStaticMethod(functionDefinitionNode), memberKind);
+            members.add(member);
+            if (member.isStatic()) {
+                staticMembers.add(member);
             } else {
-                instanceMembers.add(methodName);
+                instanceMembers.add(member);
             }
         }
     }
 
-    public Set<String> getMembers() {
+    public Set<Member> getMembers() {
         return members;
     }
 
-    public Set<String> getInstanceMembers() {
+    public Set<Member> getInstanceMembers() {
         return instanceMembers;
     }
 
-    public Set<String> getStaticMembers() {
+    public Set<Member> getStaticMembers() {
         return staticMembers;
     }
 

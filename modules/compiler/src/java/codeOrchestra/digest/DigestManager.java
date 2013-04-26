@@ -51,6 +51,8 @@ public class DigestManager {
 
             if (classDigest.getSuperClassFQName() != null) {
                 classDigest = digestsMap.get(classDigest.getSuperClassFQName());
+            } else {
+                classDigest = null;
             }
         }
 
@@ -93,6 +95,8 @@ public class DigestManager {
 
             if (classDigest.getSuperClassFQName() != null) {
                 classDigest = digestsMap.get(classDigest.getSuperClassFQName());
+            } else {
+                classDigest = null;
             }
         }
 
@@ -110,7 +114,10 @@ public class DigestManager {
 
             if (classDigest.getSuperClassFQName() != null) {
                 classDigest = digestsMap.get(classDigest.getSuperClassFQName());
+            } else {
+                classDigest = null;
             }
+
         }
 
         return null;
@@ -127,6 +134,8 @@ public class DigestManager {
 
             if (classDigest.getSuperClassFQName() != null) {
                 classDigest = digestsMap.get(classDigest.getSuperClassFQName());
+            } else {
+                classDigest = null;
             }
         }
 

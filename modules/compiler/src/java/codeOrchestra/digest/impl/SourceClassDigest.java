@@ -22,9 +22,9 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
 
     private String superClassFQName;
 
-    private Set<IMember> members = new HashSet<IMember>();
-    private Set<IMember> staticMembers = new HashSet<IMember>();
-    private Set<IMember> instanceMembers = new HashSet<IMember>();
+    private List<IMember> members = new ArrayList<IMember>();
+    private List<IMember> staticMembers = new ArrayList<IMember>();
+    private List<IMember> instanceMembers = new ArrayList<IMember>();
 
     public SourceClassDigest(ClassDefinitionNode cl) {
         // Name
@@ -135,11 +135,11 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
         return null;
     }
 
-    public Set<IMember> getInstanceMembers() {
+    public List<IMember> getInstanceMembers() {
         return instanceMembers;
     }
 
-    public Set<IMember> getStaticMembers() {
+    public List<IMember> getStaticMembers() {
         return staticMembers;
     }
 

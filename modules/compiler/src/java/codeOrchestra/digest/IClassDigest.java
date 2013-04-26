@@ -1,6 +1,6 @@
 package codeOrchestra.digest;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * @author Alexander Eliseyev
@@ -8,8 +8,8 @@ import java.util.Set;
 public interface IClassDigest {
 
     IMember getInstanceMember(String name);
-    Set<IMember> getInstanceMembers();
-    Set<IMember> getStaticMembers();
+    List<IMember> getInstanceMembers();
+    List<IMember> getStaticMembers();
     String getFqName();
     String getSuperClassFQName();
 

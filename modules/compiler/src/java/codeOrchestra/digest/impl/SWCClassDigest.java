@@ -7,7 +7,9 @@ import codeOrchestra.digest.Visibility;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,9 +17,9 @@ import java.util.Set;
  */
 public class SWCClassDigest implements IClassDigest {
 
-    private Set<IMember> instanceMembers = new HashSet<IMember>();
-    private Set<IMember> staticMembers = new HashSet<IMember>();
-    private Set<IMember> members = new HashSet<IMember>();
+    private List<IMember> instanceMembers = new ArrayList<IMember>();
+    private List<IMember> staticMembers = new ArrayList<IMember>();
+    private List<IMember> members = new ArrayList<IMember>();
 
     private String fqName;
     private String superClassFqName;
@@ -63,12 +65,12 @@ public class SWCClassDigest implements IClassDigest {
     }
 
     @Override
-    public Set<IMember> getInstanceMembers() {
+    public List<IMember> getInstanceMembers() {
         return instanceMembers;
     }
 
     @Override
-    public Set<IMember> getStaticMembers() {
+    public List<IMember> getStaticMembers() {
         return staticMembers;
     }
 

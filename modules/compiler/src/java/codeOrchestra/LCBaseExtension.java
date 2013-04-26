@@ -522,6 +522,12 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         CallExpressionNode selector = new CallExpressionNode(new IdentifierNode("addEventListener", -1), args);
         MemberExpressionNode item = new MemberExpressionNode(TreeUtil.createCall("LiveCodeRegistry", "getInstance", null), selector, -1);
         ExpressionStatementNode listenerAddExpressionStatement = new ExpressionStatementNode(new ListNode(null, item, -1));
+        if (constructorDefinition == null) {
+            MethodCONode constructorRegularNode = new MethodCONode(classDefinitionNode.name.name, null, classDefinitionNode.cx);
+            constructorDefinition = constructorRegularNode.getFunctionDefinitionNode();
+            constructorDefinition.pkgdef = classDefinitionNode.pkgdef;
+            constructorDefinition.fexpr.body.items.add(new ReturnStatementNode(null));
+        }
         ObjectList<Node> constructorBody = constructorDefinition.fexpr.body.items;
         constructorBody.add(constructorBody.size() - 1, listenerAddExpressionStatement);
     }

@@ -166,6 +166,9 @@ public class TreeNavigator {
     }
 
     private static boolean hasAttribute(String attrName, AttributeListNode attributeListNode) {
+        if (attributeListNode == null) {
+            return false;
+        }
         for (Node item : attributeListNode.items) {
             Node node = null;
             if (item instanceof ListNode) {

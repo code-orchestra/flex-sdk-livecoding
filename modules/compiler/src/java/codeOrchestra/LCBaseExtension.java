@@ -96,7 +96,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
             // COLT-67
             for (String ownLiveMethodClass : projectNavigator.getLiveCodingClassNames(packageName, className)) {
-                classDefinitionNode.statements.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(ownLiveMethodClass, "prototype"), -1)));
+                classDefinitionNode.statements.items.add(0, new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(ownLiveMethodClass, "prototype"), -1)));
             }
             for (String internalClassName : internalClassesNames) {
                 classDefinitionNode.statements.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(internalClassName, "prototype"), -1)));
@@ -189,8 +189,6 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             return;
         }
 
-        // TODO: setters/getters
-
         boolean isVoid = functionDefinitionNode.fexpr.signature.result == null;
         int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(TreeUtil.getFqName(classDefinitionNode));
         String functionName = functionDefinitionNode.name.identifier.name;
@@ -201,6 +199,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         accessorFunctionDefinitionNode.skipLiveCoding = true;
         accessorFunctionDefinitionNode.fexpr.needsArguments = 0x1;
         accessorFunctionDefinitionNode.pkgdef = functionDefinitionNode.pkgdef;
+        accessorFunctionDefinitionNode.name.kind = functionDefinitionNode.name.kind;
         try {
             accessorFunctionDefinitionNode.fexpr.signature = (FunctionSignatureNode) functionDefinitionNode.fexpr.signature.clone();
         } catch (CloneNotSupportedException e) {
@@ -236,8 +235,6 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             return;
         }
 
-        // TODO: setters/getters
-
         boolean isVoid = functionDefinitionNode.fexpr.signature.result == null;
         int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(TreeUtil.getFqName(classDefinitionNode));
         String functionName = functionDefinitionNode.name.identifier.name;
@@ -248,6 +245,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         accessorFunctionDefinitionNode.skipLiveCoding = true;
         accessorFunctionDefinitionNode.fexpr.needsArguments = 0x1;
         accessorFunctionDefinitionNode.pkgdef = functionDefinitionNode.pkgdef;
+        accessorFunctionDefinitionNode.name.kind = functionDefinitionNode.name.kind;
         try {
             accessorFunctionDefinitionNode.fexpr.signature = (FunctionSignatureNode) functionDefinitionNode.fexpr.signature.clone();
         } catch (CloneNotSupportedException e) {
@@ -339,7 +337,6 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         newBody.add(new VariableDefinitionNode(pkgdef, null, Tokens.VAR_TOKEN, listNode, -1));
 
         /*
-            TODO: Test block
             new LiveMethod_com_example_Main_foo();
          */
 //        ArgumentListNode args = null;

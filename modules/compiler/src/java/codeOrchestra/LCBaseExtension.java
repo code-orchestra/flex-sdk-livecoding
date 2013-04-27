@@ -350,7 +350,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 methodType,
                 -1
         );
-        String remoteMethodName = pkgdef.name.id.pkg_part + "." + className + "." + (staticMethod ? "static." : "") + functionDefinitionNode.name.identifier.name;
+        String remoteMethodName = LiveCodingUtil.constructLiveCodingMethodId(functionDefinitionNode, className);
         MemberExpressionNode initializer = new MemberExpressionNode(
                 TreeUtil.createCall("LiveCodeRegistry", "getInstance", null),
                 new CallExpressionNode(

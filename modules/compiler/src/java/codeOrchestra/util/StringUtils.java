@@ -1,9 +1,28 @@
 package codeOrchestra.util;
 
 /**
- * @author: Alexander Eliseyev
+ * @author Alexander Eliseyev
  */
 public class StringUtils {
+
+    public static String concatenate(String str, int number) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < number; i++) {
+            sb.append(str);
+        }
+        return sb.toString();
+    }
+
+    public static String join(String[] array, String separaror) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < array.length; i++) {
+            sb.append(array[i]);
+            if (i < array.length - 1) {
+                sb.append(separaror);
+            }
+        }
+        return sb.toString();
+    }
 
     public static String namespaceFromLongName(String fqName) {
         if (fqName == null) {

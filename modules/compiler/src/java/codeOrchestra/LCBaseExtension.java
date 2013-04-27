@@ -72,6 +72,102 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 }
             }
 
+            // COLT-95 Add asset listeners
+            List<VariableDefinitionNode> embedFields = TreeNavigator.getFieldDefinitionsWithAnnotation(classDefinitionNode, "Embed");
+            if (!embedFields.isEmpty()) {
+                TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "AssetUpdateEvent");
+
+                MethodCONode assetsUpdateListener = new MethodCONode("assetsUpdateListener" + generateId(), null, classDefinitionNode.cx);
+                assetsUpdateListener.addParameter("event", "AssetUpdateEvent");
+                FunctionDefinitionNode assetsBroadcastMethod = assetsUpdateListener.getFunctionDefinitionNode();
+                assetsBroadcastMethod.pkgdef = classDefinitionNode.pkgdef;
+
+                for (VariableDefinitionNode variableDefinitionNode : embedFields) {
+                    MetaDataNode embed = LiveCodingUtil.getAnnotation(variableDefinitionNode, "Embed");
+                    if (embed == null) {
+                        continue;
+                    }
+
+                    String source = embed.getValue("source");
+                    if (StringUtils.isEmpty(source)) {
+                        continue;
+                    }
+
+                    VariableBindingNode var
+                            = (VariableBindingNode) variableDefinitionNode.list.items.get(0);
+
+                    String prefix;
+                    if (!StringUtils.isEmpty(packageName)) {
+                        prefix = StringUtils.concatenate("../", packageName.split("[.]").length);
+                    } else {
+                        prefix = "";
+                    }
+                    ListNode condition = new ListNode(
+                            null,
+                            new BinaryExpressionNode(
+                                    Tokens.EQUALS_TOKEN,
+                                    new BinaryExpressionNode(Tokens.PLUS_TOKEN, new LiteralStringNode(prefix), TreeUtil.createIdentifier("event", "source")),
+                                    new LiteralStringNode(source)
+                            ),
+                            -1
+                    );
+                    String embedFieldName = var.variable.identifier.name;
+                    StatementListNode thenActions = new StatementListNode(new ExpressionStatementNode(new ListNode(
+                            null,
+                            new ExpressionStatementNode(
+                                    new ListNode(null, new MemberExpressionNode(new ThisExpressionNode(), new SetExpressionNode(TreeUtil.createIdentifier(embedFieldName), new ArgumentListNode(TreeUtil.createIdentifier("event", "assetClass"), -1)),
+                            -1), -1
+                    )), -1)));
+
+
+                    // Call listeners
+                    List<FunctionDefinitionNode> liveAssetUpdateListeners = TreeNavigator.getMethodDefinitionsWithAnnotation(classDefinitionNode, "LiveAssetUpdateListener");
+                    for (FunctionDefinitionNode liveAssetUpdateListener : liveAssetUpdateListeners) {
+                        MetaDataNode liveAssetUpdateListenerAnnotation = LiveCodingUtil.getAnnotation(liveAssetUpdateListener, "LiveAssetUpdateListener");
+                        String sourceParam = liveAssetUpdateListenerAnnotation.getValue("source");
+                        String fieldParam = liveAssetUpdateListenerAnnotation.getValue("field");
+
+                        boolean validField = (!StringUtils.isEmpty(embedFieldName)) && fieldParam.equals(embedFieldName);
+                        boolean noParams = liveAssetUpdateListenerAnnotation.getValues() == null || liveAssetUpdateListenerAnnotation.getValues().length == 0;
+                        boolean validSource = source.equals(sourceParam);
+
+                        if (noParams || validField || validSource) {
+                            thenActions.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createCall(null, liveAssetUpdateListener.fexpr.identifier.name, null), -1)));
+                        }
+                    }
+
+                    thenActions.items.add(new ReturnStatementNode(null));
+                    IfStatementNode ifStatementNode = new IfStatementNode(condition, thenActions, null);
+                    assetsBroadcastMethod.fexpr.body.items.add(ifStatementNode);
+                }
+
+                assetsBroadcastMethod.fexpr.body.items.add(new ReturnStatementNode(null));
+                classDefinitionNode.statements.items.add(assetsBroadcastMethod);
+
+                /*
+                    LiveCodeRegistry.getInstance().addEventListener(AssetUpdateEvent.ASSET_UPDATE, this.assetsUpdateListener7055724444913929522, false, 0, true);
+                 */
+
+                FunctionDefinitionNode constructorDefinition = TreeNavigator.getConstructorDefinition(classDefinitionNode);
+                ArgumentListNode args = new ArgumentListNode(TreeUtil.createIdentifier("AssetUpdateEvent", "ASSET_UPDATE"), -1);
+                MemberExpressionNode qListenerName = TreeUtil.createThisIdentifier(assetsUpdateListener.methodName);
+                args.items.add(qListenerName);
+                args.items.add(new LiteralBooleanNode(false));
+                args.items.add(new LiteralNumberNode(String.valueOf("0")));
+                args.items.add(new LiteralBooleanNode(true));
+                CallExpressionNode selector = new CallExpressionNode(new IdentifierNode("addEventListener", -1), args);
+                MemberExpressionNode item = new MemberExpressionNode(TreeUtil.createCall("LiveCodeRegistry", "getInstance", null), selector, -1);
+                ExpressionStatementNode listenerAddExpressionStatement = new ExpressionStatementNode(new ListNode(null, item, -1));
+                if (constructorDefinition == null) {
+                    MethodCONode constructorRegularNode = new MethodCONode(classDefinitionNode.name.name, null, classDefinitionNode.cx);
+                    constructorDefinition = constructorRegularNode.getFunctionDefinitionNode();
+                    constructorDefinition.pkgdef = classDefinitionNode.pkgdef;
+                    constructorDefinition.fexpr.body.items.add(new ReturnStatementNode(null));
+                }
+                ObjectList<Node> constructorBody = constructorDefinition.fexpr.body.items;
+                constructorBody.add(constructorBody.size() - 1, listenerAddExpressionStatement);
+            }
+
             // Extract all internal classes
             List<String> internalClassesNames = new ArrayList<String>();
             ProgramNode syntaxTree = (ProgramNode) unit.getSyntaxTree();
@@ -622,7 +718,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                         TreeUtil.createCall("LiveCodeRegistry", "getInstance", null),
                         new CallExpressionNode(
                                 new IdentifierNode("initSession", -1),
-                                new ArgumentListNode(new LiteralStringNode(generateSessionId()), -1)
+                                new ArgumentListNode(new LiteralStringNode(generateId()), -1)
                         ),
                         -1
                 ),
@@ -634,7 +730,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         classCONode.addToProject();
     }
 
-    private static String generateSessionId() {
+    private static String generateId() {
         return UUID.randomUUID().toString().substring(0, 8);
     }
 

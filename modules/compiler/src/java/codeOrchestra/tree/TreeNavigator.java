@@ -1,5 +1,6 @@
 package codeOrchestra.tree;
 
+import codeOrchestra.LiveCodingUtil;
 import codeOrchestra.digest.Visibility;
 import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
@@ -94,6 +95,26 @@ public class TreeNavigator {
             }
         }
         return variableDefinitionNodes;
+    }
+
+    public static List<VariableDefinitionNode> getFieldDefinitionsWithAnnotation(ClassDefinitionNode classDefinitionNode, String annotation) {
+        List<VariableDefinitionNode> variableDefinitionNodes = new ArrayList<VariableDefinitionNode>();
+        for (Node item : classDefinitionNode.statements.items) {
+            if (item instanceof VariableDefinitionNode && LiveCodingUtil.hasAnnotation((DefinitionNode) item, annotation)) {
+                variableDefinitionNodes.add((VariableDefinitionNode) item);
+            }
+        }
+        return variableDefinitionNodes;
+    }
+
+    public static List<FunctionDefinitionNode> getMethodDefinitionsWithAnnotation(ClassDefinitionNode classDefinitionNode, String annotation) {
+        List<FunctionDefinitionNode> functionDefinitionNodes = new ArrayList<FunctionDefinitionNode>();
+        for (Node item : classDefinitionNode.statements.items) {
+            if (item instanceof FunctionDefinitionNode && LiveCodingUtil.hasAnnotation((DefinitionNode) item, annotation)) {
+                functionDefinitionNodes.add((FunctionDefinitionNode) item);
+            }
+        }
+        return functionDefinitionNodes;
     }
 
     static List<FunctionDefinitionNode> getAllMethodDefinitions(ClassDefinitionNode classDefinitionNode) {

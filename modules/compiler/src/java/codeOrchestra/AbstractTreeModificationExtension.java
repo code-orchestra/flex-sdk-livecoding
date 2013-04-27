@@ -13,6 +13,7 @@ import flex2.tools.Fcsh;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
 import macromedia.asc.util.ObjectList;
+import sun.misc.MessageUtils;
 
 import java.io.*;
 import java.util.List;
@@ -313,7 +314,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                             errorTraceArguments.items.add(new LiteralStringNode(""));
                             errorTraceArguments.items.add(new LiteralStringNode(""));
                             errorTraceArguments.items.add(new LiteralStringNode(originalClassFqName));
-                            errorTraceArguments.items.add(callExpressionNode.args.items.get(0));
+                            errorTraceArguments.items.add(new BinaryExpressionNode(Tokens.PLUS_TOKEN, new LiteralStringNode(""), callExpressionNode.args.items.get(0)));
 
                             callExpressionNode.expr = new IdentifierNode("log", -1);
                             callExpressionNode.args = errorTraceArguments;

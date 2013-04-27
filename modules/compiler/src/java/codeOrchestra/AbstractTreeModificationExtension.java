@@ -390,7 +390,8 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         errorTraceArguments.items.add(new LiteralStringNode(""));
         errorTraceArguments.items.add(new LiteralStringNode(""));
         errorTraceArguments.items.add(new LiteralStringNode(classCONode.getFQName()));
-        errorTraceArguments.items.add(new LiteralStringNode("Base method execute error"));
+        errorTraceArguments.items.add(
+                new BinaryExpressionNode(Tokens.PLUS_TOKEN, new LiteralStringNode("live method " + LiveCodingUtil.constructLiveCodingMethodId(functionDefinitionNode, className) + " execute error: "), TreeUtil.createIdentifier("e")));
         errorTraceArguments.items.add(TreeUtil.createIdentifier("e"));
         StatementListNode catchlist = new StatementListNode(new CatchClauseNode(
                 TreeUtil.createParameterNode("e", "Error"),

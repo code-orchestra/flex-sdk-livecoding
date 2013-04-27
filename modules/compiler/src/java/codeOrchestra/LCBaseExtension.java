@@ -72,6 +72,8 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 }
             }
 
+            makePrivateMembersPublic(classDefinitionNode);
+
             // COLT-95 Add asset listeners
             List<VariableDefinitionNode> embedFields = TreeNavigator.getFieldDefinitionsWithAnnotation(classDefinitionNode, "Embed");
             if (!embedFields.isEmpty()) {
@@ -239,7 +241,6 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
         String className = classDefinitionNode.name.name;
         fillStubMethodBody(functionDefinitionNode, className);
-        makePrivateMembersPublic(classDefinitionNode);
 
         addLiveCodingClass(className, functionDefinitionNode, oldBody, false);
 
@@ -277,6 +278,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                                 new ArgumentListNode(TreeUtil.createIdentifier(fieldName), -1)
                         )
                         , -1), -1)));
+        setterBody.items.add(new ReturnStatementNode(null));
         classDefinitionNode.statements.items.add(setterNode);
 
         // Getter
@@ -406,16 +408,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
     private void makePrivateMembersPublic(ClassDefinitionNode classDefinitionNode) {
         // Fields
         for (VariableDefinitionNode variableDefinitionNode : TreeNavigator.getFieldDefinitions(classDefinitionNode)) {
-            ListNode listNode = variableDefinitionNode.list;
-            if (listNode != null) {
-                for (Node item : listNode.items) {
-                    if (item instanceof VariableBindingNode) {
-                        VariableBindingNode variableBindingNode = (VariableBindingNode) item;
-                        AttributeListNode attributeListNode = variableBindingNode.attrs;
-                        TreeUtil.makePublic(attributeListNode);
-                    }
-                }
-            }
+            TreeUtil.makePublic(variableDefinitionNode.attrs);
         }
 
         // Methods

@@ -2,6 +2,7 @@ package codeOrchestra.tree.visitor;
 
 import codeOrchestra.tree.processor.CollectingProcessor;
 import codeOrchestra.tree.processor.INodeProcessor;
+import macromedia.asc.parser.MetaDataEvaluator;
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.PackageDefinitionNode;
 import macromedia.asc.parser.ProgramNode;
@@ -42,13 +43,16 @@ public abstract class NodeVisitor<N extends Node> {
         }
 
         if (leftLeaves.size() != rightLeaves.size()) {
+            reportDifference(leftLeaves, rightLeaves, 1);
             return false;
         }
         if (leftChildren.size() != rightChildren.size()) {
+            reportDifference(leftChildren, rightChildren, 2);
             return false;
         }
         for (int i = 0; i < leftLeaves.size(); i++) {
             if (!compareObjects(leftLeaves.get(i), rightLeaves.get(i))) {
+                reportDifference(leftLeaves.get(i), rightLeaves.get(i), 3);
                 return false;
             }
         }
@@ -59,9 +63,11 @@ public abstract class NodeVisitor<N extends Node> {
                 continue;
             }
             if (leftChild == null || rightChild == null) {
+                reportDifference(leftChild, rightChild, 4);
                 return false;
             }
             if (leftChild.getClass() != rightChild.getClass()) {
+                reportDifference(leftChild.getClass(), rightChild.getClass(), 5);
                 return false;
             }
             NodeVisitor childVisitor = NodeVisitorFactory.getVisitor(leftChild.getClass());
@@ -75,6 +81,20 @@ public abstract class NodeVisitor<N extends Node> {
         }
 
         return true;
+    }
+
+    private void reportDifference(Object left, Object right, int code) {
+        if (!testMode) {
+            return;
+        }
+        System.out.println("Difference [" + code + "] Left: " + getInfo(left) + ", Right: " + getInfo(right));
+    }
+
+    private String getInfo(Object obj) {
+        if (obj == null) {
+            return "null";
+        }
+        return obj.getClass().getSimpleName() + "->(" + obj.toString() + ")";
     }
 
     public static void applyToTree(Node treeRoot, INodeProcessor nodeProcessor) {
@@ -166,7 +186,14 @@ public abstract class NodeVisitor<N extends Node> {
         if (left instanceof MetaData) {
             return compareMetaDatas(((MetaData) left), (MetaData) right);
         }
+        if (left instanceof MetaDataEvaluator.KeyValuePair) {
+            return compareKeyValuePairs((MetaDataEvaluator.KeyValuePair) left, (MetaDataEvaluator.KeyValuePair) right);
+        }
         return left.equals(right);
+    }
+
+    private boolean compareKeyValuePairs(MetaDataEvaluator.KeyValuePair left, MetaDataEvaluator.KeyValuePair right) {
+        return equals(left.key, right.key) && equals(left.obj, right.obj);
     }
 
     private boolean compareNumberUsages(NumberUsage left, NumberUsage right) {
@@ -231,16 +258,29 @@ public abstract class NodeVisitor<N extends Node> {
             return true;
         }
         if (left.values == null || right.values == null) {
+            reportDifference(left.values, right.values, 6);
             return false;
         }
         if (left.values.length != right.values.length) {
+            reportDifference(left.values, right.values, 7);
             return false;
         }
         for (int i = 0; i < left.values.length; i++) {
             if (!compareObjects(left.values[i], right.values[i])) {
+                reportDifference(left.values[i], right.values[i], 8);
                 return false;
             }
         }
         return true;
+    }
+
+    public static boolean equals(Object object1, Object object2) {
+        if (object1 == object2) {
+            return true;
+        }
+        if ((object1 == null) || (object2 == null)) {
+            return false;
+        }
+        return object1.equals(object2);
     }
 }

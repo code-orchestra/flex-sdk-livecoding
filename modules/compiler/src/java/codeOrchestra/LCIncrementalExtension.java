@@ -100,7 +100,7 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
             }
 
             NodeVisitor visitor = NodeVisitorFactory.getVisitor(FunctionDefinitionNode.class);
-            if (!visitor.compareTrees(oM, mM)) {
+            if (!visitor.compareTrees(oM, mM) && !result.contains(mM)) {
                 result.add(mM);
             }
         }

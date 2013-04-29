@@ -16,6 +16,7 @@ import macromedia.asc.util.ObjectList;
 import sun.misc.MessageUtils;
 
 import java.io.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -286,6 +287,16 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
         methodBody.removeLast(); // Removes last ReturnStatement
 
+        // COLT-104 - memorize the function scope variable definitions
+        Set<String> localVariables = new HashSet<String>();
+        for (Node statement : methodBody) {
+            List<RegularNode> varBindingRegularNodes = new RegularNode(statement).getDescendants(VariableBindingNode.class, FunctionCommonNode.class);
+            for (RegularNode varBindingRegularNode : varBindingRegularNodes) {
+                VariableBindingNode varBindingNode = (VariableBindingNode) varBindingRegularNode.getASTNode();
+                localVariables.add(varBindingNode.variable.identifier.name);
+            }
+        }
+
         // 'This' scope modifications
         for (Node statement : methodBody) {
             RegularNode statementRegularNode = new RegularNode(statement);
@@ -298,7 +309,6 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 }
             }
 
-            // COLT-38 - Transform trace() to LogUtil.log()
             // COLT-25 - Replace all field/method references without 'this.' to 'thisScope.x'
             List<RegularNode> memberExpressionNodes = statementRegularNode.getDescendants(MemberExpressionNode.class);
             for (RegularNode regularMemberExprNode : memberExpressionNodes) {
@@ -306,6 +316,12 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 if (memberExpression.base == null) {
                     SelectorNode selector = memberExpression.selector;
 
+                    // COLT-104 - skip transforming the local variable references
+                    if (selector != null && selector.getIdentifier() != null && localVariables.contains(selector.getIdentifier().name)) {
+                        continue;
+                    }
+
+                    // COLT-38 - Transform trace() to LogUtil.log()
                     if (selector instanceof CallExpressionNode) {
                         if ("trace".equals(selector.getIdentifier().name)) {
                             CallExpressionNode callExpressionNode = (CallExpressionNode) selector;

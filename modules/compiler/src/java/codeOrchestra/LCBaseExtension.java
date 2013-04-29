@@ -73,7 +73,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 }
             }
 
-            makePrivateMembersPublic(classDefinitionNode);
+            makeMembersPublic(classDefinitionNode);
 
             // COLT-95 - Add asset listeners
             List<VariableDefinitionNode> embedFields = TreeNavigator.getFieldDefinitionsWithAnnotation(classDefinitionNode, "Embed");
@@ -243,7 +243,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         String className = classDefinitionNode.name.name;
         fillStubMethodBody(functionDefinitionNode, className);
 
-        addLiveCodingClass(className, functionDefinitionNode, oldBody, false);
+        addLiveCodingClass(className, classDefinitionNode, functionDefinitionNode, oldBody, false);
 
         if (LiveCodingUtil.isLiveCodeUpdateListener(functionDefinitionNode)) {
             addListener(functionDefinitionNode, classDefinitionNode);
@@ -406,7 +406,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         classDefinitionNode.statements.items.add(accessorFunctionDefinitionNode);
     }
 
-    private void makePrivateMembersPublic(ClassDefinitionNode classDefinitionNode) {
+    private void makeMembersPublic(ClassDefinitionNode classDefinitionNode) {
         // Fields
         for (VariableDefinitionNode variableDefinitionNode : TreeNavigator.getFieldDefinitions(classDefinitionNode)) {
             TreeUtil.makePublic(variableDefinitionNode.attrs, false);
@@ -414,7 +414,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
         // Methods
         for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(classDefinitionNode)) {
-            TreeUtil.makePublic(functionDefinitionNode.attrs, true);
+            TreeUtil.makePublic(functionDefinitionNode.attrs, TreeNavigator.isStaticMethod(functionDefinitionNode) ? false : true);
         }
     }
 

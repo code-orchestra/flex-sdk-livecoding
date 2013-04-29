@@ -63,7 +63,7 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
         for(FunctionDefinitionNode changedMethod : changedMethods) {
             ObjectList<Node> oldBody = changedMethod.fexpr.body.items;
             changedMethod.fexpr.body.items = new ObjectList<Node>();
-            String liveCodingClassName = addLiveCodingClass(className, changedMethod, oldBody, true);
+            String liveCodingClassName = addLiveCodingClass(className, classDefinitionNode, changedMethod, oldBody, true);
             functionToClassNames.put(changedMethod, liveCodingClassName);
             liveCodingClassNames.add(liveCodingClassName);
         }

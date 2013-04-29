@@ -165,7 +165,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         traceStep("generate", unit.getSource().getRawLocation());
     }
 
-    protected String addLiveCodingClass(String className, FunctionDefinitionNode functionDefinitionNode, ObjectList<Node> methodBody, boolean incremental) {
+    protected String addLiveCodingClass(String className, ClassDefinitionNode parentClass, FunctionDefinitionNode functionDefinitionNode, ObjectList<Node> methodBody, boolean incremental) {
         boolean staticMethod = TreeNavigator.isStaticMethod(functionDefinitionNode);
         TypeExpressionNode methodResult = (TypeExpressionNode) functionDefinitionNode.fexpr.signature.result;
         String timeStamp = String.valueOf(System.currentTimeMillis());
@@ -456,7 +456,18 @@ public abstract class AbstractTreeModificationExtension implements Extension {
             classCONode.methods.add(getMethodUpdateTime);
         }
 
-        classCONode.addToProject();
+        // COLT-109
+        ClassDefinitionNode liveClassNode = classCONode.addToProject();
+        for (Node pkgStatement : functionDefinitionNode.pkgdef.statements.items) {
+            if (pkgStatement instanceof UseDirectiveNode) {
+                liveClassNode.pkgdef.statements.items.add(pkgStatement);
+            }
+        }
+        for (Node classStatement : parentClass.statements.items) {
+            if (classStatement instanceof UseDirectiveNode) {
+                liveClassNode.statements.items.add(classStatement);
+            }
+        }
 
         return liveCodingClassName;
     }

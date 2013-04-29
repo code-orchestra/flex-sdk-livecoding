@@ -47,13 +47,15 @@ public class ClassCONode extends CONode {
 //        this.standardDefs = standardDefs;
     }
 
-    public void addToProject() {
+    public ClassDefinitionNode addToProject() {
         if (addedToProject) {
             throw new RuntimeException();
         }
         generateTree();
         CompilerAPI.addedSources.add(mySource);
         addedToProject = true;
+
+        return myClass;
     }
 
     public void addImport(String packageName, String className) {

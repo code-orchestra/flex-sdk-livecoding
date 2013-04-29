@@ -15,8 +15,11 @@ import java.util.Map;
 
 /**
  * @author Anton.I.Neverov
+ * @author Alexander Eliseyev
  */
 public class LCIncrementalExtension extends AbstractTreeModificationExtension {
+
+    public static long lastCompilationStartTime;
 
     private final String fqName;
     private final String initialClassName;

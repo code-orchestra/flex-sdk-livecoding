@@ -365,6 +365,7 @@ public class Fcsh extends Tool
 
             if (s.startsWith("lcicompc")) {
                 livecodingIncrementalMode = true;
+                LCIncrementalExtension.lastCompilationStartTime = System.currentTimeMillis();
             } else {
                 livecodingBaseMode = true;
             }

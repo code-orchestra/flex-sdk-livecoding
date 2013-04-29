@@ -52,7 +52,7 @@ public class DeliveryMessageBuilder {
             }
             sb.append(":");
 
-            sb.append(getTimestamp(deliveryClassName));
+            sb.append(LCIncrementalExtension.lastCompilationStartTime);
 
             if (iterator.hasNext()) {
                 sb.append("|");

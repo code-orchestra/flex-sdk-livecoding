@@ -339,21 +339,33 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
          this.someProtectedMethod.apply(this, arguments);
         */
         StatementListNode newBody = accessorFunctionDefinitionNode.fexpr.body;
-        ArgumentListNode args = new ArgumentListNode(new ThisExpressionNode(), -1);
-        args.items.add(TreeUtil.createIdentifier("arguments".intern()));
-        Node expr = new ListNode(null, new MemberExpressionNode(
-                new MemberExpressionNode(new ThisExpressionNode(), new GetExpressionNode(TreeUtil.createIdentifier(functionName)), -1),
-                new CallExpressionNode(
-                        new IdentifierNode("apply", -1),
-                        args
-                ),
-                -1
-        ), -1);
-        if (isVoid) {
-            newBody.items.add(new ExpressionStatementNode(expr));
+
+        if (member.getKind() == MemberKind.METHOD) {
+            ArgumentListNode args = new ArgumentListNode(new ThisExpressionNode(), -1);
+            args.items.add(TreeUtil.createIdentifier("arguments".intern()));
+            Node expr = new ListNode(null, new MemberExpressionNode(
+                    new MemberExpressionNode(new ThisExpressionNode(), new GetExpressionNode(TreeUtil.createIdentifier(functionName)), -1),
+                    new CallExpressionNode(
+                            new IdentifierNode("apply", -1),
+                            args
+                    ),
+                    -1
+            ), -1);
+            if (isVoid) {
+                newBody.items.add(new ExpressionStatementNode(expr));
+                newBody.items.add(new ReturnStatementNode(null));
+            } else {
+                newBody.items.add(new ReturnStatementNode(expr));
+            }
+        } else if (member.getKind() == MemberKind.SETTER) {
+            newBody.items.add(new ExpressionStatementNode(
+                    new ListNode(null, new MemberExpressionNode(new ThisExpressionNode(), new SetExpressionNode(TreeUtil.createIdentifier(functionName), new ArgumentListNode(TreeUtil.createIdentifier(member.getParameters().get(0).getName()), -1)), -1), -1)
+            ));
             newBody.items.add(new ReturnStatementNode(null));
+        } else if (member.getKind() == MemberKind.GETTER) {
+            newBody.items.add(new ReturnStatementNode(TreeUtil.createIdentifier(functionName)));
         } else {
-            newBody.items.add(new ReturnStatementNode(expr));
+            throw new IllegalArgumentException("Unknown function kind: " + member.getKind());
         }
 
         classDefinitionNode.statements.items.add(accessorFunctionDefinitionNode);

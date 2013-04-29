@@ -1,5 +1,6 @@
 package codeOrchestra.digest.impl;
 
+import codeOrchestra.digest.IClassDigest;
 import codeOrchestra.digest.IMember;
 import codeOrchestra.digest.MemberKind;
 import codeOrchestra.digest.Visibility;
@@ -13,12 +14,14 @@ public abstract class AbstractMember implements IMember {
     private boolean isStatic;
     private MemberKind kind;
     private Visibility visibility;
+    private IClassDigest parent;
 
-    public AbstractMember(String name, boolean isStatic, MemberKind kind, Visibility visibility) {
+    public AbstractMember(String name, boolean isStatic, MemberKind kind, Visibility visibility, IClassDigest parent) {
         this.name = name;
         this.isStatic = isStatic;
         this.kind = kind;
         this.visibility = visibility;
+        this.parent = parent;
     }
 
     public Visibility getVisibility() {
@@ -35,6 +38,11 @@ public abstract class AbstractMember implements IMember {
 
     public MemberKind getKind() {
         return kind;
+    }
+
+    @Override
+    public IClassDigest getParent() {
+        return parent;
     }
 
     @Override

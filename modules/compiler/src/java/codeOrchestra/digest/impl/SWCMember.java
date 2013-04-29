@@ -1,9 +1,6 @@
 package codeOrchestra.digest.impl;
 
-import codeOrchestra.digest.IMember;
-import codeOrchestra.digest.IParameter;
-import codeOrchestra.digest.MemberKind;
-import codeOrchestra.digest.Visibility;
+import codeOrchestra.digest.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,8 +15,8 @@ public class SWCMember extends AbstractMember implements IMember {
 
     private String typeFqName;
 
-    public SWCMember(String name, String typeFqName, boolean isStatic, MemberKind kind, Visibility visibility) {
-        super(name, isStatic, kind, visibility);
+    public SWCMember(String name, String typeFqName, boolean isStatic, MemberKind kind, Visibility visibility, IClassDigest parent) {
+        super(name, isStatic, kind, visibility, parent);
         this.typeFqName = typeFqName;
     }
 

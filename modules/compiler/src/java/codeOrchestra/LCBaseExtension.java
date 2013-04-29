@@ -74,7 +74,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
             makePrivateMembersPublic(classDefinitionNode);
 
-            // COLT-95 Add asset listeners
+            // COLT-95 - Add asset listeners
             List<VariableDefinitionNode> embedFields = TreeNavigator.getFieldDefinitionsWithAnnotation(classDefinitionNode, "Embed");
             if (!embedFields.isEmpty()) {
                 TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "AssetUpdateEvent");
@@ -250,7 +250,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
     }
 
     private void processProtectedField(IMember member, ClassDefinitionNode classDefinitionNode) {
-        int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(TreeUtil.getFqName(classDefinitionNode));
+        int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(member.getParent().getFqName());
 
         String fieldName = member.getName();
         String accessorName = fieldName + "_protected" + inheritanceLevel;
@@ -298,7 +298,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
     private void processProtectedMethod(IMember member, ClassDefinitionNode classDefinitionNode) {
         boolean isVoid = "void".equals(member.getType());
 
-        int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(TreeUtil.getFqName(classDefinitionNode));
+        int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(member.getParent().getFqName());
         String functionName = member.getName();
         String accessorName = functionName + "_protected" + inheritanceLevel;
         MethodCONode protectedAccessor = new MethodCONode(accessorName, null, classDefinitionNode.cx);

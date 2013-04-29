@@ -37,7 +37,8 @@ public class SWCClassDigest implements IClassDigest {
                     memberElement.getAttribute("type"),
                     memberElement.hasAttribute("static"),
                     MemberKind.valueOf(memberElement.getAttribute("kind")),
-                    memberElement.hasAttribute("visibility") ? Visibility.valueOf(memberElement.getAttribute("visibility")) : Visibility.UNKNOWN
+                    memberElement.hasAttribute("visibility") ? Visibility.valueOf(memberElement.getAttribute("visibility")) : Visibility.UNKNOWN,
+                    this
             );
             NodeList parameters = memberElement.getElementsByTagName("parameter");
             for (int j = 0; j < parameters.getLength(); j++) {

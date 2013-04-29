@@ -16,8 +16,8 @@ public class SourceMember extends AbstractMember implements IMember {
     private boolean resolved;
     private transient final String shortTypeName;
 
-    public SourceMember(String name, String shortTypeName, boolean isStatic, MemberKind kind, Visibility visibility) {
-        super(name, isStatic, kind, visibility);
+    public SourceMember(String name, String shortTypeName, boolean isStatic, MemberKind kind, Visibility visibility, IClassDigest parent) {
+        super(name, isStatic, kind, visibility, parent);
         this.shortTypeName = shortTypeName;
     }
 

@@ -13,5 +13,6 @@ public interface IMember {
     boolean isStatic();
     public MemberKind getKind();
     List<IParameter> getParameters();
+    IClassDigest getParent();
 
 }

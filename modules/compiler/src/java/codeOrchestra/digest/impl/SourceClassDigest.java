@@ -66,7 +66,7 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
                     String fieldName = variableBindingNode.variable.identifier.name;
 
                     String typeShortName = getShortTypeName(variableBindingNode.variable.type);
-                    SourceMember member = new SourceMember(fieldName, typeShortName, TreeNavigator.isStaticField(variableBindingNode), MemberKind.FIELD, TreeNavigator.getVisibility(fieldDefinition));
+                    SourceMember member = new SourceMember(fieldName, typeShortName, TreeNavigator.isStaticField(variableBindingNode), MemberKind.FIELD, TreeNavigator.getVisibility(fieldDefinition), this);
 
                     members.add(member);
                     if (member.isStatic()) {
@@ -88,7 +88,7 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
             }
             String typeShortName = getShortTypeName(functionDefinitionNode.fexpr.signature.result);
 
-            SourceMember member = new SourceMember(methodName, typeShortName, TreeNavigator.isStaticMethod(functionDefinitionNode), memberKind, TreeNavigator.getVisibility(functionDefinitionNode));
+            SourceMember member = new SourceMember(methodName, typeShortName, TreeNavigator.isStaticMethod(functionDefinitionNode), memberKind, TreeNavigator.getVisibility(functionDefinitionNode), this);
             ParameterListNode parameters = functionDefinitionNode.fexpr.signature.parameter;
             if (parameters != null) {
                 for (ParameterNode parameterNode : parameters.items) {

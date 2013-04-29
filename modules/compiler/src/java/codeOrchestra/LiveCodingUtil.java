@@ -25,6 +25,9 @@ public class LiveCodingUtil {
         if (LiveCodingCLIParameters.getLiveMethods() == LiveMethods.ANNOTATED && !hasAnnotation(cl, LIVE_ANNOTATION)) {
             return false;
         }
+        if (ProvidedPackages.isProvidedPackage(cl.pkgdef.name.id.pkg_part)) {
+            return false;
+        }
 
         return true;
     }

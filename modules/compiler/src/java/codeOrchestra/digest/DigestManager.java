@@ -38,8 +38,8 @@ public class DigestManager {
     private Map<String, IClassDigest> digestsMap = new HashMap<String, IClassDigest>();
     private Map<String, SourceClassDigest> unresolvedDigests = new HashMap<String, SourceClassDigest>();
 
-    public List<IMember> getVisibleInstanceProtectedMembers(String classFqName) {
-        List<IMember> result = new ArrayList<IMember>();
+    public Set<IMember> getVisibleInstanceProtectedMembers(String classFqName) {
+        Set<IMember> result = new HashSet<IMember>();
 
         IClassDigest classDigest = digestsMap.get(classFqName);
         while (classDigest != null) {

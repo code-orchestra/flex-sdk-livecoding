@@ -61,7 +61,7 @@ public class TreeUtil {
         return StringUtils.longNameFromNamespaceAndShortName(packageName, className);
     }
 
-    public static void makePublic(AttributeListNode attributeListNode) {
+    public static void makePublic(AttributeListNode attributeListNode, boolean skipProtected) {
         if (attributeListNode == null) {
             return;
         }
@@ -75,7 +75,7 @@ public class TreeUtil {
                             GetExpressionNode getExpressionNode = (GetExpressionNode) memberExpressionNode.selector;
                             if (getExpressionNode.expr instanceof IdentifierNode) {
                                 IdentifierNode identifierNode =  (IdentifierNode) getExpressionNode.expr;
-                                if ("private".equals(identifierNode.name) || "protected".equals(identifierNode.name)) {
+                                if ("private".equals(identifierNode.name) || (!skipProtected && "protected".equals(identifierNode.name))) {
                                     identifierNode.name = "public";
                                 }
                             }
@@ -84,7 +84,7 @@ public class TreeUtil {
                 }
             } else if (node instanceof IdentifierNode) {
                 IdentifierNode identifierNode =  (IdentifierNode) node;
-                if ("private".equals(identifierNode.name) || "protected".equals(identifierNode.name)) {
+                if ("private".equals(identifierNode.name) || (!skipProtected && "protected".equals(identifierNode.name))) {
                     identifierNode.name = "public";
                 }
             }

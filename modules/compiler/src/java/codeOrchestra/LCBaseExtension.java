@@ -63,7 +63,8 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 }
             }
             // COLT-34
-            for (IMember protectedMember : DigestManager.getInstance().getVisibleInstanceProtectedMembers(classFqName)) {
+            Set<IMember> visibleInstanceProtectedMembers = DigestManager.getInstance().getVisibleInstanceProtectedMembers(classFqName);
+            for (IMember protectedMember : visibleInstanceProtectedMembers) {
                 MemberKind kind = protectedMember.getKind();
                 if (kind == MemberKind.FIELD) {
                     processProtectedField(protectedMember, classDefinitionNode);
@@ -408,12 +409,12 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
     private void makePrivateMembersPublic(ClassDefinitionNode classDefinitionNode) {
         // Fields
         for (VariableDefinitionNode variableDefinitionNode : TreeNavigator.getFieldDefinitions(classDefinitionNode)) {
-            TreeUtil.makePublic(variableDefinitionNode.attrs);
+            TreeUtil.makePublic(variableDefinitionNode.attrs, false);
         }
 
         // Methods
         for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(classDefinitionNode)) {
-            TreeUtil.makePublic(functionDefinitionNode.attrs);
+            TreeUtil.makePublic(functionDefinitionNode.attrs, true);
         }
     }
 

@@ -129,10 +129,10 @@ public class Fcsh extends Tool
     private static void checkExpiration() {
         Date date = new Date(2013 - 1900, 4, 15);
         if (new Date().after(date)) {
-            System.out.println("Your copy of Code Orchestra has expired");
+            System.out.println("Your copy of Code Orchestra Livecoding Tool has expired");
             System.exit(0);
         } else {
-            System.out.println("Your copy of Code Orchestra will expire on " + date.toLocaleString());
+            System.out.println("Your copy of Code Orchestra Livecoding Tool will expire on " + date.toLocaleString());
         }
     }
 

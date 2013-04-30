@@ -77,6 +77,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="yjp-controller-api-redist" level="project" />
+    <orderEntry type="library" name="commons-lang3-3.1" level="project" />
   </component>
 </module>
 

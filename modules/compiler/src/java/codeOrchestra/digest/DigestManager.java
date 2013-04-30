@@ -4,6 +4,7 @@ import codeOrchestra.AbstractTreeModificationExtension;
 import codeOrchestra.LiveCodingCLIParameters;
 import codeOrchestra.digest.impl.SWCClassDigest;
 import codeOrchestra.digest.impl.SourceClassDigest;
+import codeOrchestra.tree.LastASTHolder;
 import codeOrchestra.util.FileUtils;
 import codeOrchestra.util.StringUtils;
 import codeOrchestra.util.XMLUtils;
@@ -150,6 +151,20 @@ public class DigestManager {
         availableFqNames.clear();
 
         // 1 - Init available fq names of source files
+        for (String fqName : LastASTHolder.getInstance().getAvailableFqNames()) {
+            String shortName = StringUtils.shortNameFromLongName(fqName);
+            String packageName = StringUtils.namespaceFromLongName(fqName);
+
+            Set<String> packageShortNames = compiledClasses.get(packageName);
+            if (packageShortNames == null) {
+                packageShortNames = new HashSet<String>();
+                compiledClasses.put(packageName, packageShortNames);
+            }
+            packageShortNames.add(shortName);
+
+            availableFqNames.add(fqName);
+        }
+        /*
         File dir = new File(AbstractTreeModificationExtension.getCachesDir());
         File[] files = dir.listFiles(new FilenameFilter() {
             @Override
@@ -173,6 +188,7 @@ public class DigestManager {
 
             availableFqNames.add(fqName);
         }
+        */
 
         // 2 - Load digests and fq names from SWCs
         File digestsDir = getSWCDigestsFolder();

@@ -21,7 +21,7 @@ package macromedia.asc.util;
 
 import java.io.Serializable;
 
-public final class ByteList implements Serializable // CodeOrchestra: made serializable
+public final class ByteList implements Serializable, Cloneable // CodeOrchestra: made serializable
 {
 	public ByteList(ByteList list)
 	{

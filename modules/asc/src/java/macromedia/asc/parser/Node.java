@@ -20,6 +20,7 @@
 package macromedia.asc.parser;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.TreeMap;
 import macromedia.asc.util.*;

@@ -238,7 +238,7 @@
 			    <attribute name="Implementation-Vendor" value="${manifest.Implementation-Vendor}"/>
                 <attribute name="Implementation-Vendor-Id" value="${manifest.Implementation-Vendor-Id}"/>
                 <attribute name="Main-Class" value="flex2.tools.Fcsh"/>
-                <attribute name="Class-Path" value="mxmlc.jar yjp-controller-api-redist.jar"/>
+                <attribute name="Class-Path" value="mxmlc.jar yjp-controller-api-redist.jar commons-lang3-3.1.jar"/>
             </manifest>
         </jar>
 

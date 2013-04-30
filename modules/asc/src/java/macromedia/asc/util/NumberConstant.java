@@ -21,7 +21,7 @@ package macromedia.asc.util;
 
 import java.io.Serializable;
 
-public abstract class NumberConstant implements Serializable { // CodeOrchestra: made serializable
+public abstract class NumberConstant implements Serializable, Cloneable { // CodeOrchestra: made serializable
 	
 	protected final static double MAXUINT = ((double)Integer.MAX_VALUE) * 2 + 1;
 

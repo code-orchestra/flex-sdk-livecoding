@@ -18,6 +18,7 @@ import sun.misc.MessageUtils;
 import java.io.*;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -30,6 +31,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
     protected ProjectNavigator projectNavigator;
 
+    /*
     public static String getCachesDir() {
         File serializedASTDir = new File(System.getProperty("java.io.tmpdir"), "serializedAST");
 
@@ -39,6 +41,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
         return serializedASTDir.getPath();
     }
+    */
 
     protected void saveSyntaxTree(CompilationUnit unit) {
         ClassDefinitionNode classDefinition = TreeNavigator.getClassDefinition(unit);
@@ -48,12 +51,14 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
         String fqName = StringUtils.longNameFromNamespaceAndShortName(classDefinition.pkgdef.name.id.pkg_part, classDefinition.name.name);
 
-        String serializedPath = getCachesDir() + File.separator + fqName + SERIALIZED_AST;
-
         Object syntaxTree = unit.getSyntaxTree();
         if (!(syntaxTree instanceof ProgramNode)) {
             throw new RuntimeException("Syntax tree of unit " + unit.getSource().getName() + " is not a ProgramNode, it is " + syntaxTree.getClass());
         }
+
+        LastASTHolder.getInstance().add(fqName, (ProgramNode) syntaxTree);
+        /*
+        String serializedPath = getCachesDir() + File.separator + fqName + SERIALIZED_AST;
         try {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(serializedPath));
             oos.writeObject(syntaxTree);
@@ -62,6 +67,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        */
     }
 
     protected void loadSyntaxTrees() {
@@ -71,6 +77,11 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
         projectNavigator = new ProjectNavigator();
 
+        for (Map.Entry<String, ProgramNode> programNodeInfo : LastASTHolder.getInstance().getProgramNodes().entrySet()) {
+            projectNavigator.add(programNodeInfo.getKey(), programNodeInfo.getValue());
+        }
+
+        /*
         File dir = new File(getCachesDir());
         File[] files = dir.listFiles(new FilenameFilter() {
             @Override
@@ -78,7 +89,6 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 return name.endsWith(SERIALIZED_AST);
             }
         });
-
         try {
             for (File file : files) {
                 ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
@@ -91,6 +101,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        */
     }
 
     protected abstract void performModifications(CompilationUnit unit);

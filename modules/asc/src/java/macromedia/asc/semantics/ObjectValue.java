@@ -955,6 +955,14 @@ public class ObjectValue extends Value implements Comparable
     {
         public int compare(ObjectValue o1, ObjectValue o2)
         {
+            // CodeOrchestra
+            if (o1 == null || o2 == null) {
+                return 0;
+            }
+            if (o1.name == null || o2.name == null) {
+                return 0;
+            }
+
             int result = o2.name.compareTo(o1.name);
             // namespaces with the same name, but different types are not equal
             if( result == 0 )

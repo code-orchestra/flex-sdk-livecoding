@@ -23,7 +23,7 @@ import macromedia.asc.util.Context;
 
 import java.io.Serializable;
 
-public class TypeInfo implements Serializable // CodeOrchestra: made serializable
+public class TypeInfo implements Serializable, Cloneable // CodeOrchestra: made serializable
 {
     private boolean is_nullable;
     private boolean is_default;

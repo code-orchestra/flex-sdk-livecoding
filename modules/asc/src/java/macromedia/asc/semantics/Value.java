@@ -27,7 +27,7 @@ import java.io.Serializable;
  *
  * @author Jeff Dyer
  */
-public abstract class Value implements Serializable // CodeOrchestra: made serializable
+public abstract class Value implements Serializable, Cloneable // CodeOrchestra: made serializable
 {
     protected int flags;
 

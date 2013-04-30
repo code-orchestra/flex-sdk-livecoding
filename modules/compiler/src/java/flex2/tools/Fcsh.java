@@ -24,6 +24,7 @@ import codeOrchestra.LCBaseExtension;
 import codeOrchestra.LCIncrementalExtension;
 import codeOrchestra.digest.DigestManager;
 import codeOrchestra.profiling.YourKitController;
+import codeOrchestra.tree.LastASTHolder;
 import codeOrchestra.util.FileUtils;
 import flash.localization.LocalizationManager;
 import flash.localization.ResourceBundleLocalizer;
@@ -270,7 +271,8 @@ public class Fcsh extends Tool {
 
             exit = true;
         } else if (s.equals("livecoding.caches.delete")) {
-            FileUtils.clear(new File(AbstractTreeModificationExtension.getCachesDir()));
+//            FileUtils.clear(new File(AbstractTreeModificationExtension.getCachesDir()));
+            LastASTHolder.getInstance().clearCache();
         } else if (s.equals("profiling.cpu.start")) {
             if (YourKitController.isJVMLaunchedWithAgent()) {
                 System.out.println("Starting CPU profiling");

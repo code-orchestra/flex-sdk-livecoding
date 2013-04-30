@@ -27,7 +27,7 @@ import java.io.Serializable;
  * Class to store metadata info, so that Slots don't have pointers back into the AST
  * @author Erik Tierney
  */
-public class MetaData implements Serializable // CodeOrchestra: made serializable
+public class MetaData implements Serializable, Cloneable // CodeOrchestra: made serializable
 {
     public String id;
     public Value[] values;

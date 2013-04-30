@@ -739,8 +739,4 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         classCONode.addToProject();
     }
 
-    private static String generateId() {
-        return UUID.randomUUID().toString().substring(0, 8);
-    }
-
 }

@@ -25,7 +25,7 @@ import macromedia.asc.semantics.*;
  *
  * @author Jeff Dyer
  */
-public class WhileStatementNode extends Node
+public class WhileStatementNode extends Node implements HasBody
 {
 	public Node expr;
 	public Node statement;
@@ -75,4 +75,9 @@ public class WhileStatementNode extends Node
 	{
 		return "WhileStatement";
 	}
+
+    @Override
+    public Node getBody() {
+        return statement;
+    }
 }

@@ -1,19 +1,14 @@
 package codeOrchestra.tree;
 
-import codeOrchestra.FakeASVirtualFile;
 import codeOrchestra.digest.DigestManager;
 import codeOrchestra.digest.MemberKind;
 import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
-import flex2.compiler.CompilerAPI;
-import flex2.compiler.CompilerContext;
-import flex2.compiler.Source;
 import flex2.compiler.util.MultiName;
 import flex2.compiler.util.Name;
 import flex2.compiler.util.QName;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
-import macromedia.asc.util.ObjectList;
 
 import java.util.Iterator;
 import java.util.List;
@@ -89,6 +84,13 @@ public class TreeUtil {
                 }
             }
         }
+    }
+
+    public static VariableDefinitionNode createLocalVariable(PackageDefinitionNode pkgdef, String name, String type, Node initializer) {
+        return new VariableDefinitionNode(pkgdef, null, -112, new ListNode(null,
+                new VariableBindingNode(null, null, -112, new TypedIdentifierNode(new IdentifierNode(name, -1), new TypeExpressionNode(TreeUtil.createIdentifier(type), true, false), -1), initializer),
+                -1),
+                -1);
     }
 
     public static MemberExpressionNode createPublicModifier() {

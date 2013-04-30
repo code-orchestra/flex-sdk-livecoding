@@ -25,7 +25,7 @@ import macromedia.asc.semantics.*;
  *
  * @author Jeff Dyer
  */
-public class ForStatementNode extends Node
+public class ForStatementNode extends Node implements HasBody
 {
 	public Node initialize;
 	public Node test;
@@ -81,4 +81,9 @@ public class ForStatementNode extends Node
 	{
 		return "ForStatement";
 	}
+
+    @Override
+    public Node getBody() {
+        return statement;
+    }
 }

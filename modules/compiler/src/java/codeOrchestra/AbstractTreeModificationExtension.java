@@ -5,6 +5,7 @@ import codeOrchestra.digest.IClassDigest;
 import codeOrchestra.digest.IMember;
 import codeOrchestra.digest.Visibility;
 import codeOrchestra.tree.*;
+import codeOrchestra.util.Pair;
 import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
 import flex2.compiler.as3.Extension;
@@ -13,13 +14,8 @@ import flex2.tools.Fcsh;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
 import macromedia.asc.util.ObjectList;
-import sun.misc.MessageUtils;
 
-import java.io.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
@@ -307,8 +303,20 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 localVariables.add(varBindingNode.variable.identifier.name);
             }
         }
+        if (functionDefinitionNode.fexpr.signature != null) {
+            if (functionDefinitionNode.fexpr.signature.parameter != null) {
+                for (ParameterNode item : functionDefinitionNode.fexpr.signature.parameter.items) {
+                    if (item.identifier != null) {
+                        localVariables.add(item.identifier.name);
+                    }
+                }
+            }
+        }
 
+        Iterator<Node> iterator = methodBody.iterator();
+        boolean addedGetTimerImport = false;
         // 'This' scope modifications
+        List<Pair<Node>> deferredInsertions = new ArrayList<Pair<Node>>();
         for (Node statement : methodBody) {
             RegularNode statementRegularNode = new RegularNode(statement);
 
@@ -317,6 +325,55 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 List<RegularNode> thisNodes = statementRegularNode.getDescendants(ThisExpressionNode.class, FunctionCommonNode.class);
                 for (RegularNode thisNode : thisNodes) {
                     thisNode.replace(TreeUtil.createIdentifier("thisScope"));
+                }
+            }
+
+            // COLT-62 - Add loop checks
+            List<RegularNode> loopStatements = statementRegularNode.getDescendants(new HashSet<Class>() {{
+                add(ForStatementNode.class);
+                add(WhileStatementNode.class);
+                add(DoStatementNode.class);
+            }});
+            for (RegularNode loopStatementRegularNode : loopStatements) {
+                Node loopASTNode = loopStatementRegularNode.getASTNode();
+                if (loopASTNode instanceof HasBody && ((HasBody) loopASTNode).getBody() instanceof StatementListNode) {
+                    StatementListNode loopBody = (StatementListNode) ((HasBody) loopASTNode).getBody();
+
+                    // Var definition
+                    String id = generateId();
+                    Node initializer = new BinaryExpressionNode(Tokens.PLUS_TOKEN, new LiteralStringNode(id), TreeUtil.createCall(null, "getTimer", null));
+                    String varName = "reqId" + id;
+                    loopBody.items.add(0, TreeUtil.createLocalVariable(parentClass.pkgdef, varName, "String", initializer));
+
+                    // LiveCodingCodeFlowUtil.checkLoop call
+                    loopBody.items.add(1, new ExpressionStatementNode(new ListNode(null,
+                            TreeUtil.createCall(
+                                    "LiveCodingCodeFlowUtil",
+                                    "checkLoop",
+                                    new ArgumentListNode(TreeUtil.createIdentifier(varName), -1)
+                            ),
+                            -1)));
+
+                    if (!addedGetTimerImport) {
+                        classCONode.addImport("flash.utils", "getTimer");
+                        addedGetTimerImport = true;
+                    }
+                }
+
+                ExpressionStatementNode emptyCheckLoopStatement = new ExpressionStatementNode(new ListNode(null,
+                        TreeUtil.createCall(
+                                "LiveCodingCodeFlowUtil",
+                                "checkLoop",
+                                new ArgumentListNode(new LiteralStringNode(""), -1)
+                        ),
+                        -1));
+
+                RegularNode parent = loopStatementRegularNode.getParent();
+                if (parent == null) {
+                    deferredInsertions.add(new Pair<Node>(loopASTNode, emptyCheckLoopStatement));
+                } else if (parent.getASTNode() instanceof StatementListNode) {
+                    StatementListNode parentBody = (StatementListNode) parent.getASTNode();
+                    parentBody.items.add(parentBody.items.indexOf(loopASTNode) + 1, emptyCheckLoopStatement);
                 }
             }
 
@@ -410,6 +467,9 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 }
             }
         }
+        for (Pair<Node> deferredInsertion : deferredInsertions) {
+            methodBody.add(methodBody.indexOf(deferredInsertion.getO1()) + 1, deferredInsertion.getO2());
+        }
 
         // Wrap it in try/catch and log the error in catch
         tryblock.items.addAll(methodBody);
@@ -482,4 +542,9 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
         return liveCodingClassName;
     }
+
+    protected String generateId() {
+        return UUID.randomUUID().toString().substring(0, 8);
+    }
+
 }

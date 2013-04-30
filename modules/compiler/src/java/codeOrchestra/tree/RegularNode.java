@@ -20,8 +20,13 @@ public class RegularNode {
 
     public final Node myNode;
 
+    public RegularNode(Node node, RegularNode parent) {
+        this(node, (String) null);
+        this.myParent = parent;
+    }
+
     public RegularNode(Node node) {
-        this(node, null);
+        this(node, (String) null);
     }
 
     private RegularNode(Node node, String role) {
@@ -41,6 +46,10 @@ public class RegularNode {
             regularChildNode.myParent = this;
             myChildren.add(regularChildNode);
         }
+    }
+
+    public void setParent(RegularNode myParent) {
+        this.myParent = myParent;
     }
 
     public boolean isRoot() {
@@ -252,6 +261,7 @@ public class RegularNode {
             if (filter.isEmpty() || filter.contains(node.getNodeClass())) {
                 result.add(node);
             }
+
             nodes.addAll(node.getChildren());
         }
 

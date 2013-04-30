@@ -23,6 +23,7 @@ import codeOrchestra.AbstractTreeModificationExtension;
 import codeOrchestra.LCBaseExtension;
 import codeOrchestra.LCIncrementalExtension;
 import codeOrchestra.digest.DigestManager;
+import codeOrchestra.profiling.YourKitController;
 import codeOrchestra.util.FileUtils;
 import flash.localization.LocalizationManager;
 import flash.localization.ResourceBundleLocalizer;
@@ -50,6 +51,7 @@ import flex2.linker.LinkerException;
 import flex2.tools.Mxmlc.InitialSetup;
 import flex2.tools.Mxmlc.OutputMessage;
 import macromedia.asc.util.Context;
+import sun.security.pkcs11.wrapper.CK_SSL3_KEY_MAT_OUT;
 
 import java.io.*;
 import java.util.*;
@@ -59,16 +61,14 @@ import java.util.*;
  *
  * @author Clement Wong
  */
-public class Fcsh extends Tool
-{
-     // CodeOrchestra: added fields
+public class Fcsh extends Tool {
+    // CodeOrchestra: added fields
     public static boolean livecodingSession;
     public static boolean livecodingBaseMode;
     public static boolean livecodingIncrementalMode;
     public static boolean livecodingBaseModeSecondPass;
 
-    public static void main(String[] args) throws IOException
-    {
+    public static void main(String[] args) throws IOException {
         exit = false;
         counter = 1;
         targets = new HashMap<String, Target>();
@@ -80,31 +80,25 @@ public class Fcsh extends Tool
         CompilerAPI.useAS3();
 
         LocalizationManager localizationManager = new LocalizationManager();
-        localizationManager.addLocalizer( new ResourceBundleLocalizer() );
-        ThreadLocalToolkit.setLocalizationManager( localizationManager );
+        localizationManager.addLocalizer(new ResourceBundleLocalizer());
+        ThreadLocalToolkit.setLocalizationManager(localizationManager);
 
         checkExpiration(); // CodeOrchestra
         intro();
         prompt();
-        while ((s = r.readLine()) != null)
-        {
+        while ((s = r.readLine()) != null) {
             long started = System.currentTimeMillis();
             CompilerAPI.useConsoleLogger();
 
-            if (s.trim().length() == 0)
-            {
+            if (s.trim().length() == 0) {
                 prompt();
                 continue;
             }
 
-            try
-            {
+            try {
                 process(s);
-            }
-            catch (Throwable t)
-            {
-                if (Trace.error)
-                {
+            } catch (Throwable t) {
+                if (Trace.error) {
                     t.printStackTrace();
                 }
             } finally {
@@ -115,12 +109,9 @@ public class Fcsh extends Tool
                 System.out.println((System.currentTimeMillis() - started) + "ms");
             }
 
-            if (exit)
-            {
+            if (exit) {
                 break;
-            }
-            else
-            {
+            } else {
                 prompt();
             }
         }
@@ -141,237 +132,177 @@ public class Fcsh extends Tool
     private static Map<String, Target> targets;
     private static Map<String, Process> processes;
 
-    private static void process(String s)
-    {
+    private static void process(String s) {
         LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
 
-        if (s.startsWith("mxmlc"))
-        {
+        if (s.startsWith("mxmlc")) {
             StringTokenizer t = new StringTokenizer(s.substring("mxmlc".length()).trim(), " ");
             String[] args = new String[t.countTokens()];
-            for (int i = 0; t.hasMoreTokens(); i++)
-            {
+            for (int i = 0; t.hasMoreTokens(); i++) {
                 args[i] = t.nextToken();
             }
 
-            if (args.length == 1)
-            {
-                try
-                {
+            if (args.length == 1) {
+                try {
                     int id = Integer.parseInt(args[0]);
                     Target target = targets.get("" + id);
-                    if (target == null)
-                    {
+                    if (target == null) {
                         ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new TargetNotFound("" + id)));
-                    }
-                    else
-                    {
+                    } else {
                         mxmlc(target.args, id);
                     }
-                }
-                catch (NumberFormatException ex)
-                {
+                } catch (NumberFormatException ex) {
                     ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new AssignTargetID(counter)));
                     mxmlc(args, counter++);
                 }
-            }
-            else
-            {
+            } else {
                 ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new AssignTargetID(counter)));
                 mxmlc(args, counter++);
             }
-        }
-        else if (s.startsWith("compc"))
-        {
+        } else if (s.startsWith("compc")) {
             StringTokenizer t = new StringTokenizer(s.substring("compc".length()).trim(), " ");
             String[] args = new String[t.countTokens()];
-            for (int i = 0; t.hasMoreTokens(); i++)
-            {
+            for (int i = 0; t.hasMoreTokens(); i++) {
                 args[i] = t.nextToken();
             }
 
-            if (args.length == 1)
-            {
-                try
-                {
+            if (args.length == 1) {
+                try {
                     int id = Integer.parseInt(args[0]);
                     Target target = targets.get("" + id);
-                    if (target == null)
-                    {
+                    if (target == null) {
                         ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new TargetNotFound("" + id)));
-                    }
-                    else
-                    {
+                    } else {
                         compc(target.args, id);
                     }
-                }
-                catch (NumberFormatException ex)
-                {
+                } catch (NumberFormatException ex) {
                     ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new AssignTargetID(counter)));
                     compc(args, counter++);
                 }
-            }
-            else
-            {
+            } else {
                 ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new AssignTargetID(counter)));
                 compc(args, counter++);
             }
-        }
-        else if (s.startsWith("compile"))
-        {
+        } else if (s.startsWith("compile")) {
             String id = s.substring("compile".length()).trim();
-            if (targets.containsKey(id))
-            {
+            if (targets.containsKey(id)) {
                 compile(id);
-                if (ThreadLocalToolkit.errorCount() == 0)
-                {
+                if (ThreadLocalToolkit.errorCount() == 0) {
                     link(id);
                 }
-            }
-            else
-            {
+            } else {
                 ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new TargetNotFound(id)));
             }
-        }
-        else if (s.startsWith("clear"))
-        {
+        } else if (s.startsWith("clear")) {
             String id = s.substring("clear".length()).trim();
-            if (id.length() == 0)
-            {
+            if (id.length() == 0) {
                 HashSet<String> keys = new HashSet<String>(targets.keySet());
-                for (Iterator<String> i = keys.iterator(); i.hasNext();)
-                {
+                for (Iterator<String> i = keys.iterator(); i.hasNext(); ) {
                     clear(i.next());
                 }
-            }
-            else if (targets.containsKey(id))
-            {
+            } else if (targets.containsKey(id)) {
                 clear(id);
-            }
-            else
-            {
+            } else {
                 ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new TargetNotFound(id)));
             }
-        }
-        else if (s.startsWith("info"))
-        {
+        } else if (s.startsWith("info")) {
             String id = s.substring("info".length()).trim();
-            if (id.length() == 0)
-            {
+            if (id.length() == 0) {
                 HashSet<String> keys = new HashSet<String>(targets.keySet());
-                for (Iterator<String> i = keys.iterator(); i.hasNext();)
-                {
+                for (Iterator<String> i = keys.iterator(); i.hasNext(); ) {
                     info(i.next());
                 }
-            }
-            else if (targets.containsKey(id))
-            {
+            } else if (targets.containsKey(id)) {
                 info(id);
-            }
-            else
-            {
+            } else {
                 ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new TargetNotFound(id)));
             }
-        }
-        else if (s.startsWith("touch"))
-        {
+        } else if (s.startsWith("touch")) {
             String args = s.substring("touch".length()).trim();
             StringTokenizer stok = new StringTokenizer(args);
-            while (stok.hasMoreTokens())
-            {
+            while (stok.hasMoreTokens()) {
                 String f = stok.nextToken();
 
-                if (!new File(f).canWrite())
-                {
+                if (!new File(f).canWrite()) {
                     ThreadLocalToolkit.logInfo("touch: cannot write " + f);
-                }
-                else
-                {
+                } else {
                     new File(f).setLastModified(System.currentTimeMillis());
                 }
             }
-        }
-        else if (s.startsWith("cp"))
-        {
+        } else if (s.startsWith("cp")) {
             String args = s.substring("cp".length()).trim();
             StringTokenizer stok = new StringTokenizer(args);
-            if (stok.countTokens() != 2)
-            {
+            if (stok.countTokens() != 2) {
                 ThreadLocalToolkit.logInfo("cp fileFrom fileTo");
-            }
-            else
-            {
+            } else {
                 String copyFrom = stok.nextToken();
                 String copyTo = stok.nextToken();
-                try
-                {
+                try {
                     FileUtil.writeBinaryFile(new File(copyTo), FileUtil.openStream(copyFrom));
-                }
-                catch (IOException e)
-                {
+                } catch (IOException e) {
                     ThreadLocalToolkit.logInfo(e.getMessage());
                 }
             }
-        }
-        else if (s.startsWith("mv"))
-        {
+        } else if (s.startsWith("mv")) {
             String args = s.substring("mv".length()).trim();
             StringTokenizer stok = new StringTokenizer(args);
-            if (stok.countTokens() != 2)
-            {
+            if (stok.countTokens() != 2) {
                 ThreadLocalToolkit.logInfo("mv fileFrom fileTo");
-            }
-            else
-            {
+            } else {
                 String moveFrom = stok.nextToken();
                 String moveTo = stok.nextToken();
                 new File(moveFrom).renameTo(new File(moveTo));
             }
-        }
-        else if (s.startsWith("rm"))
-        {
+        } else if (s.startsWith("rm")) {
             String args = s.substring("rm".length()).trim();
             StringTokenizer stok = new StringTokenizer(args);
-            if (stok.countTokens() != 1)
-            {
+            if (stok.countTokens() != 1) {
                 ThreadLocalToolkit.logInfo("rm file");
-            }
-            else
-            {
-                String rmFile=stok.nextToken();
+            } else {
+                String rmFile = stok.nextToken();
                 new File(rmFile).delete();
             }
-        }
-        else if (s.equals("quit"))
-        {
+        } else if (s.equals("quit")) {
             Set<String> names = new HashSet<String>(targets.keySet());
-            for (Iterator<String> i = names.iterator(); i.hasNext();)
-            {
+            for (Iterator<String> i = names.iterator(); i.hasNext(); ) {
                 process("clear " + i.next());
             }
 
             exit = true;
-        }
-        else if (s.equals("livecoding.caches.delete"))
-        {
+        } else if (s.equals("livecoding.caches.delete")) {
             FileUtils.clear(new File(AbstractTreeModificationExtension.getCachesDir()));
-        }
-        else if (s.equals("livecoding.start"))
-        {
+        } else if (s.equals("profiling.cpu.start")) {
+            if (YourKitController.isJVMLaunchedWithAgent()) {
+                System.out.println("Starting CPU profiling");
+                YourKitController.getInstance().startCPUProfiling();
+            } else {
+                System.out.println("Profiling not available");
+            }
+        } else if (s.equals("profiling.cpu.end")) {
+            if (YourKitController.isJVMLaunchedWithAgent()) {
+                System.out.println("Stopping CPU profiling");
+                try {
+                    String snapshotPath = YourKitController.getInstance().stopCPUProfilingAndSaveSnapshot();
+                    System.out.println("Profiling snapshot saved: " + snapshotPath);
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+
+            } else {
+                System.out.println("Profiling not available");
+            }
+        } else if (s.equals("livecoding.start")) {
             livecodingSession = true;
             Context.livecodingSession = true;
-        }
-        else if (s.equals("livecoding.stop"))
-        {
+        } else if (s.equals("livecoding.stop")) {
             CompilerAPI.clearLivecodingCache();
             ConfigurationBuffer.clearLivecodingCache();
             Swc.clearLivecodingCache();
             livecodingSession = false;
             Context.livecodingSession = false;
         }
-         // CodeOrchestra: added elseif
-        else if (s.startsWith("lccompc") || s.startsWith("lcmxmlc") || s.startsWith("lcicompc"))
-        {
+        // CodeOrchestra: added elseif
+        else if (s.startsWith("lccompc") || s.startsWith("lcmxmlc") || s.startsWith("lcicompc")) {
             boolean isCompc = s.startsWith("lccompc") || s.startsWith("lcicompc");
 
             if (s.startsWith("lcicompc")) {
@@ -392,8 +323,7 @@ public class Fcsh extends Tool
 
             StringTokenizer t = new StringTokenizer(s.substring(l).trim(), " ");
             String[] args = new String[t.countTokens()];
-            for (int i = 0; t.hasMoreTokens(); i++)
-            {
+            for (int i = 0; t.hasMoreTokens(); i++) {
                 args[i] = t.nextToken();
             }
 
@@ -405,27 +335,20 @@ public class Fcsh extends Tool
                     DigestManager.getInstance().resolve();
                 }
 
-                if (args.length == 1)
-                {
-                    try
-                    {
+                if (args.length == 1) {
+                    try {
                         int id = Integer.parseInt(args[0]);
                         Target target = targets.get("" + id);
-                        if (target == null)
-                        {
+                        if (target == null) {
                             ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new TargetNotFound("" + id)));
-                        }
-                        else
-                        {
+                        } else {
                             if (isCompc) {
                                 compc(target.args, id);
                             } else {
                                 mxmlc(target.args, id);
                             }
                         }
-                    }
-                    catch (NumberFormatException ex)
-                    {
+                    } catch (NumberFormatException ex) {
                         ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new AssignTargetID(counter)));
                         if (isCompc) {
                             compc(args, counter++);
@@ -433,9 +356,7 @@ public class Fcsh extends Tool
                             mxmlc(args, counter++);
                         }
                     }
-                }
-                else
-                {
+                } else {
                     ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new AssignTargetID(counter)));
                     if (isCompc) {
                         compc(args, counter++);
@@ -448,77 +369,62 @@ public class Fcsh extends Tool
 
             livecodingBaseMode = false;
             livecodingIncrementalMode = false;
-        }
-        else
-        {
+        } else {
             cmdList();
         }
     }
 
-    private static void clear(String target)
-    {
+    private static void clear(String target) {
         Process p = processes.remove(target);
 
-        if (p != null)
-        {
+        if (p != null) {
             p.destroy();
         }
 
         targets.remove(target);
     }
 
-    private static void info(String target)
-    {
+    private static void info(String target) {
         Target s = targets.get(target);
         ThreadLocalToolkit.logInfo("id: " + s.id);
         StringBuilder b = new StringBuilder();
-        for (int i = 0, size = s.args.length; i < size; i++)
-        {
+        for (int i = 0, size = s.args.length; i < size; i++) {
             b.append(s.args[i]);
             b.append(' ');
         }
         ThreadLocalToolkit.logInfo((s instanceof SwcTarget ? "compc: " : "mxmlc: ") + b);
     }
 
-    private static void compile(String id)
-    {
+    private static void compile(String id) {
         Target s = targets.get(id);
-        if (s instanceof SwcTarget)
-        {
+        if (s instanceof SwcTarget) {
             compile_compc((SwcTarget) s);
-        }
-        else
-        {
+        } else {
             compile_mxmlc(s);
         }
     }
 
-    private static void compile_compc(SwcTarget s)
-    {
+    private static void compile_compc(SwcTarget s) {
         LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
         Benchmark benchmark = null;
 
-        try
-        {
+        try {
             // setup the path resolver
             CompilerAPI.usePathResolver();
 
             // process configuration
             ConfigurationBuffer cfgbuf = new ConfigurationBuffer(CompcConfiguration.class, CompcConfiguration.getAliases());
             cfgbuf.setDefaultVar("include-classes");
-            DefaultsConfigurator.loadCompcDefaults( cfgbuf );
+            DefaultsConfigurator.loadCompcDefaults(cfgbuf);
             CompcConfiguration configuration = (CompcConfiguration) Mxmlc.processConfiguration(
-                ThreadLocalToolkit.getLocalizationManager(), "compc", s.args, cfgbuf, CompcConfiguration.class, "include-classes");
+                    ThreadLocalToolkit.getLocalizationManager(), "compc", s.args, cfgbuf, CompcConfiguration.class, "include-classes");
 
             CompilerAPI.setupHeadless(configuration);
 
-            if (configuration.benchmark())
-            {
+            if (configuration.benchmark()) {
                 benchmark = CompilerAPI.runBenchmark();
                 benchmark.startTime(Benchmark.PRECOMPILE);
-            }
-            else
-            {
+            } else {
                 CompilerAPI.disableBenchmark();
             }
 
@@ -534,11 +440,10 @@ public class Fcsh extends Tool
 
             NameMappings mappings = CompilerAPI.getNameMappings(configuration);
 
-            Transcoder[] transcoders = WebTierAPI.getTranscoders( configuration );
+            Transcoder[] transcoders = WebTierAPI.getTranscoders(configuration);
             SubCompiler[] compilers = WebTierAPI.getCompilers(compilerConfig, mappings, transcoders);
 
-            if (benchmark != null)
-            {
+            if (benchmark != null) {
                 benchmark.benchmark(l10n.getLocalizedTextString(new InitialSetup()));
             }
 
@@ -549,21 +454,20 @@ public class Fcsh extends Tool
             // actually causes issues when the default value is used with external libraries.
             // FIXME: why don't we just get rid of these values from the configurator for compc?  That's a problem
             // for include-libraries at least, since this value appears in flex-config.xml
-            swcContext.load( compilerConfig.getLibraryPath(),
-                             compilerConfig.getExternalLibraryPath(),
-                             null,
-                             null,
-                             mappings,
-                             I18nUtils.getTranslationFormat(compilerConfig),
-                             s.swcCache );
-            configuration.addExterns( swcContext.getExterns() );
+            swcContext.load(compilerConfig.getLibraryPath(),
+                    compilerConfig.getExternalLibraryPath(),
+                    null,
+                    null,
+                    mappings,
+                    I18nUtils.getTranslationFormat(compilerConfig),
+                    s.swcCache);
+            configuration.addExterns(swcContext.getExterns());
 
             // recompile or incrementally compile...
             boolean recompile = false;
             int newChecksum = cfgbuf.checksum_ts() + swcContext.checksum();
 
-            if (newChecksum != s.checksum)
-            {
+            if (newChecksum != s.checksum) {
                 ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new DetectConfigurationChange()));
                 s.checksum = newChecksum;
                 s.resources = new ResourceContainer();
@@ -572,15 +476,14 @@ public class Fcsh extends Tool
 
             // validate CompilationUnits in FileSpec and SourcePath
             if (recompile || CompilerAPI.validateCompilationUnits(s.fileSpec, s.sourceList, s.sourcePath, s.bundlePath, s.resources,
-                                                                  swcContext, s.classes, s.perCompileData, configuration) > 0)
-            {
+                    swcContext, s.classes, s.perCompileData, configuration) > 0) {
                 Map licenseMap = configuration.getLicensesConfiguration().getLicenseMap();
 
                 // create a symbol table
                 SymbolTable symbolTable = new SymbolTable(configuration, s.perCompileData);
                 s.configuration = configuration;
 
-                Map<String, Source> classes = new HashMap<String, Source>(); 
+                Map<String, Source> classes = new HashMap<String, Source>();
                 s.nsComponents = SwcAPI.setupNamespaceComponents(configuration, mappings, s.sourcePath, s.sourceList, classes);
                 SwcAPI.setupClasses(configuration, s.sourcePath, s.sourceList, classes);
                 // Only updated the SwcTarget's classes if
@@ -590,20 +493,18 @@ public class Fcsh extends Tool
 
                 Map<String, VirtualFile> rbFiles = new HashMap<String, VirtualFile>();
 
-                if (benchmark != null)
-                {
+                if (benchmark != null) {
                     benchmark.stopTime(Benchmark.PRECOMPILE, false);
                 }
 
                 List<CompilationUnit> units = CompilerAPI.compile(s.fileSpec, s.sourceList, s.classes.values(),
-                                                                  s.sourcePath, s.resources, s.bundlePath, swcContext,
-                                                                  symbolTable, mappings, configuration, compilers,
-                                                                  new CompcPreLink(rbFiles, configuration.getIncludeResourceBundles(), 
-                                                                		  false),
-                                                                  licenseMap, new ArrayList<Source>());
+                        s.sourcePath, s.resources, s.bundlePath, swcContext,
+                        symbolTable, mappings, configuration, compilers,
+                        new CompcPreLink(rbFiles, configuration.getIncludeResourceBundles(),
+                                false),
+                        licenseMap, new ArrayList<Source>());
 
-                if (benchmark != null)
-                {
+                if (benchmark != null) {
                     benchmark.startTime(Benchmark.POSTCOMPILE);
                 }
 
@@ -612,40 +513,26 @@ public class Fcsh extends Tool
                 s.sourcePath.clearCache();
                 s.bundlePath.clearCache();
                 s.resources.refresh();
-            }
-            else
-            {
+            } else {
                 ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new NoChange()));
             }
-        }
-        catch (ConfigurationException ex)
-        {
+        } catch (ConfigurationException ex) {
             Compc.displayStartMessage();
             Mxmlc.processConfigurationException(ex, "compc");
-        }
-        catch (CompilerException ex)
-        {
+        } catch (CompilerException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (SwcException ex)
-        {
+        } catch (SwcException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (Throwable t) // IOException, Throwable
+        } catch (Throwable t) // IOException, Throwable
         {
             ThreadLocalToolkit.logError(t.getMessage());
-            if (Trace.error)
-            {
+            if (Trace.error) {
                 t.printStackTrace();
             }
-        }
-        finally
-        {
-            if (benchmark != null)
-            {
+        } finally {
+            if (benchmark != null) {
                 if ((ThreadLocalToolkit.errorCount() == 0) &&
-                    benchmark.hasStarted(Benchmark.POSTCOMPILE))
-                {
+                        benchmark.hasStarted(Benchmark.POSTCOMPILE)) {
                     benchmark.stopTime(Benchmark.POSTCOMPILE, false);
                 }
                 benchmark.totalTime();
@@ -656,32 +543,27 @@ public class Fcsh extends Tool
         }
     }
 
-    private static void compile_mxmlc(Target s)
-    {
+    private static void compile_mxmlc(Target s) {
         LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
         Benchmark benchmark = null;
 
-        try
-        {
+        try {
             // setup the path resolver
             CompilerAPI.usePathResolver();
 
             // process configuration
             ConfigurationBuffer cfgbuf = new ConfigurationBuffer(CommandLineConfiguration.class, Configuration.getAliases());
             cfgbuf.setDefaultVar(Mxmlc.FILE_SPECS);
-            DefaultsConfigurator.loadDefaults( cfgbuf );
+            DefaultsConfigurator.loadDefaults(cfgbuf);
             CommandLineConfiguration configuration = (CommandLineConfiguration) Mxmlc.processConfiguration(
-                ThreadLocalToolkit.getLocalizationManager(), "mxmlc", s.args, cfgbuf, CommandLineConfiguration.class, Mxmlc.FILE_SPECS);
+                    ThreadLocalToolkit.getLocalizationManager(), "mxmlc", s.args, cfgbuf, CommandLineConfiguration.class, Mxmlc.FILE_SPECS);
 
             CompilerAPI.setupHeadless(configuration);
 
-            if (configuration.benchmark())
-            {
+            if (configuration.benchmark()) {
                 benchmark = CompilerAPI.runBenchmark();
                 benchmark.startTime(Benchmark.PRECOMPILE);
-            }
-            else
-            {
+            } else {
                 CompilerAPI.disableBenchmark();
             }
 
@@ -693,32 +575,30 @@ public class Fcsh extends Tool
             CompilerConfiguration compilerConfig = configuration.getCompilerConfiguration();
             NameMappings mappings = CompilerAPI.getNameMappings(configuration);
 
-            Transcoder[] transcoders = WebTierAPI.getTranscoders( configuration );
+            Transcoder[] transcoders = WebTierAPI.getTranscoders(configuration);
             SubCompiler[] compilers = WebTierAPI.getCompilers(compilerConfig, mappings, transcoders);
 
-            if (benchmark != null)
-            {
+            if (benchmark != null) {
                 benchmark.benchmark(l10n.getLocalizedTextString(new InitialSetup()));
             }
 
             CompilerSwcContext swcContext = new CompilerSwcContext(true);
-            swcContext.load( compilerConfig.getLibraryPath(),
-                             Configuration.getAllExcludedLibraries(compilerConfig, configuration),
-                             compilerConfig.getThemeFiles(),
-                             compilerConfig.getIncludeLibraries(),
-                             mappings,
-                             I18nUtils.getTranslationFormat(compilerConfig),
-                             s.swcCache );
-            configuration.addExterns( swcContext.getExterns() );
-            configuration.addIncludes( swcContext.getIncludes() );
-            configuration.getCompilerConfiguration().addThemeCssFiles( swcContext.getThemeStyleSheets() );
+            swcContext.load(compilerConfig.getLibraryPath(),
+                    Configuration.getAllExcludedLibraries(compilerConfig, configuration),
+                    compilerConfig.getThemeFiles(),
+                    compilerConfig.getIncludeLibraries(),
+                    mappings,
+                    I18nUtils.getTranslationFormat(compilerConfig),
+                    s.swcCache);
+            configuration.addExterns(swcContext.getExterns());
+            configuration.addIncludes(swcContext.getIncludes());
+            configuration.getCompilerConfiguration().addThemeCssFiles(swcContext.getThemeStyleSheets());
 
             // recompile or incrementally compile...
             boolean recompile = false;
             int newChecksum = cfgbuf.checksum_ts() + swcContext.checksum();
 
-            if (newChecksum != s.checksum)
-            {
+            if (newChecksum != s.checksum) {
                 ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new DetectConfigurationChange()));
                 s.checksum = newChecksum;
                 s.resources = new ResourceContainer();
@@ -727,9 +607,8 @@ public class Fcsh extends Tool
 
             // validate CompilationUnits in FileSpec and SourcePath
             if (recompile || CompilerAPI.validateCompilationUnits(s.fileSpec, s.sourceList, s.sourcePath, s.bundlePath, s.resources,
-                                                                  swcContext, s.perCompileData,
-                                                                  configuration) > 0)
-            {
+                    swcContext, s.perCompileData,
+                    configuration) > 0) {
                 Map licenseMap = configuration.getLicensesConfiguration().getLicenseMap();
 
                 // create a symbol table
@@ -738,65 +617,46 @@ public class Fcsh extends Tool
 
                 VirtualFile projector = configuration.getProjector();
 
-                if (benchmark != null)
-                {
+                if (benchmark != null) {
                     benchmark.stopTime(Benchmark.PRECOMPILE, false);
                 }
 
-                if (projector != null && projector.getName().endsWith("avmplus.exe"))
-                {
+                if (projector != null && projector.getName().endsWith("avmplus.exe")) {
                     s.units = CompilerAPI.compile(s.fileSpec, s.sourceList, null, s.sourcePath, s.resources, s.bundlePath,
-                                                  swcContext, symbolTable, mappings, configuration, compilers,
-                                                  null, licenseMap, new ArrayList<Source>());
-                }
-                else
-                {
+                            swcContext, symbolTable, mappings, configuration, compilers,
+                            null, licenseMap, new ArrayList<Source>());
+                } else {
                     s.units = CompilerAPI.compile(s.fileSpec, s.sourceList, null, s.sourcePath, s.resources, s.bundlePath,
-                                                  swcContext, symbolTable, mappings, configuration, compilers,
-                                                  new PreLink(), licenseMap, new ArrayList<Source>());
+                            swcContext, symbolTable, mappings, configuration, compilers,
+                            new PreLink(), licenseMap, new ArrayList<Source>());
                 }
 
-                if (benchmark != null)
-                {
+                if (benchmark != null) {
                     benchmark.startTime(Benchmark.POSTCOMPILE);
                 }
 
                 s.sourcePath.clearCache();
                 s.bundlePath.clearCache();
                 s.resources.refresh();
-            }
-            else
-            {
+            } else {
                 ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new NoChange()));
             }
-        }
-        catch (ConfigurationException ex)
-        {
+        } catch (ConfigurationException ex) {
             Mxmlc.processConfigurationException(ex, "mxmlc");
-        }
-        catch (CompilerException ex)
-        {
+        } catch (CompilerException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (SwcException ex)
-        {
+        } catch (SwcException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (Throwable t) // IOException, Throwable
+        } catch (Throwable t) // IOException, Throwable
         {
             ThreadLocalToolkit.logError(t.getMessage());
-            if (Trace.error)
-            {
+            if (Trace.error) {
                 t.printStackTrace();
             }
-        }
-        finally
-        {
-            if (benchmark != null)
-            {
+        } finally {
+            if (benchmark != null) {
                 if ((ThreadLocalToolkit.errorCount() == 0) &&
-                    benchmark.hasStarted(Benchmark.POSTCOMPILE))
-                {
+                        benchmark.hasStarted(Benchmark.POSTCOMPILE)) {
                     benchmark.stopTime(Benchmark.POSTCOMPILE, false);
                 }
                 benchmark.totalTime();
@@ -807,58 +667,43 @@ public class Fcsh extends Tool
         }
     }
 
-    private static void link(String target)
-    {
+    private static void link(String target) {
         Target s = targets.get(target);
-        if (s instanceof SwcTarget)
-        {
+        if (s instanceof SwcTarget) {
             link_compc((SwcTarget) s);
-        }
-        else
-        {
+        } else {
             link_mxmlc(s);
         }
     }
 
-    private static void link_compc(SwcTarget s)
-    {
-        try
-        {
+    private static void link_compc(SwcTarget s) {
+        try {
             ThreadLocalToolkit.resetBenchmark();
 
             // setup the path resolver
             CompilerAPI.usePathResolver();
 
-            if (s.units != null)
-            {
+            if (s.units != null) {
                 // export SWC
-                SwcAPI.exportSwc( (CompcConfiguration) s.configuration, s.units, s.nsComponents, s.swcCache, s.rbFiles );
+                SwcAPI.exportSwc((CompcConfiguration) s.configuration, s.units, s.nsComponents, s.swcCache, s.rbFiles);
 
-                if (s.outputName != null && ThreadLocalToolkit.errorCount() == 0)
-                {
+                if (s.outputName != null && ThreadLocalToolkit.errorCount() == 0) {
                     File file = new File(s.outputName);
                     s.outputName = FileUtil.getCanonicalPath(file);
                     ThreadLocalToolkit.log(new OutputMessage(s.outputName, Long.toString(file.length())));
                 }
             }
-        }
-        catch (LinkerException ex)
-        {
+        } catch (LinkerException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (Throwable t) // IOException, Throwable
+        } catch (Throwable t) // IOException, Throwable
         {
             ThreadLocalToolkit.logError(t.getMessage());
-            if (Trace.error)
-            {
+            if (Trace.error) {
                 t.printStackTrace();
             }
-        }
-        finally
-        {
+        } finally {
             Benchmark benchmark = ThreadLocalToolkit.getBenchmark();
-            if (benchmark != null)
-            {
+            if (benchmark != null) {
                 benchmark.totalTime();
                 benchmark.peakMemoryUsage(true);
             }
@@ -867,27 +712,22 @@ public class Fcsh extends Tool
         }
     }
 
-    private static void link_mxmlc(Target s)
-    {
+    private static void link_mxmlc(Target s) {
         OutputStream swfOut = null;
 
-        try
-        {
+        try {
             ThreadLocalToolkit.resetBenchmark();
 
             // link
-            if (s.units != null)
-            {
+            if (s.units != null) {
                 VirtualFile projector = ((CommandLineConfiguration) s.configuration).getProjector();
                 PostLink postLink = null;
 
-                if (s.configuration.optimize() && !s.configuration.debug())
-                {
+                if (s.configuration.optimize() && !s.configuration.debug()) {
                     postLink = new PostLink(s.configuration);
                 }
 
-                if (projector != null && projector.getName().endsWith("avmplus.exe"))
-                {
+                if (projector != null && projector.getName().endsWith("avmplus.exe")) {
                     // link
                     s.app = LinkerAPI.linkConsole(s.units, postLink, s.configuration);
 
@@ -901,9 +741,7 @@ public class Fcsh extends Tool
                     swfOut.close();
 
                     ThreadLocalToolkit.log(new OutputMessage(s.outputName, Long.toString(file.length())));
-                }
-                else
-                {
+                } else {
                     // link
                     s.movie = LinkerAPI.link(s.units, postLink, s.configuration);
 
@@ -911,12 +749,9 @@ public class Fcsh extends Tool
                     File file = FileUtil.openFile(s.outputName, true);
                     swfOut = new BufferedOutputStream(new FileOutputStream(file));
 
-                    if (projector != null)
-                    {
+                    if (projector != null) {
                         Mxmlc.createProjector(s.configuration, projector, s.movie, swfOut);
-                    }
-                    else
-                    {
+                    } else {
                         CompilerAPI.encode(s.configuration, s.movie, swfOut);
                     }
 
@@ -926,62 +761,55 @@ public class Fcsh extends Tool
                     ThreadLocalToolkit.log(new OutputMessage(s.outputName, Long.toString(file.length())));
                 }
             }
-        }
-        catch (LinkerException ex)
-        {
+        } catch (LinkerException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (Throwable t) // IOException, Throwable
+        } catch (Throwable t) // IOException, Throwable
         {
             ThreadLocalToolkit.logError(t.getMessage());
-            if (Trace.error)
-            {
+            if (Trace.error) {
                 t.printStackTrace();
             }
-        }
-        finally
-        {
+        } finally {
             Benchmark benchmark = ThreadLocalToolkit.getBenchmark();
-            if (benchmark != null)
-            {
+            if (benchmark != null) {
                 benchmark.totalTime();
                 benchmark.peakMemoryUsage(true);
             }
 
-            if (swfOut != null) { try { swfOut.close(); } catch (IOException ioe) {} }
+            if (swfOut != null) {
+                try {
+                    swfOut.close();
+                } catch (IOException ioe) {
+                }
+            }
         }
     }
 
-    private static void mxmlc(String[] args, int id)
-    {
+    private static void mxmlc(String[] args, int id) {
         LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
         Benchmark benchmark = null;
         OutputStream swfOut = null;
         Target s = new Target();
         s.id = id;
 
-        try
-        {
+        try {
             // setup the path resolver
             CompilerAPI.usePathResolver();
 
             // process configuration
             ConfigurationBuffer cfgbuf = new ConfigurationBuffer(CommandLineConfiguration.class, Configuration.getAliases());
             cfgbuf.setDefaultVar(Mxmlc.FILE_SPECS);
-            DefaultsConfigurator.loadDefaults( cfgbuf );
+            DefaultsConfigurator.loadDefaults(cfgbuf);
             CommandLineConfiguration configuration = (CommandLineConfiguration) Mxmlc.processConfiguration(
-                ThreadLocalToolkit.getLocalizationManager(), "mxmlc", args, cfgbuf, CommandLineConfiguration.class, Mxmlc.FILE_SPECS);
+                    ThreadLocalToolkit.getLocalizationManager(), "mxmlc", args, cfgbuf, CommandLineConfiguration.class, Mxmlc.FILE_SPECS);
             s.configuration = configuration;
 
             CompilerAPI.setupHeadless(configuration);
 
-            if (configuration.benchmark())
-            {
+            if (configuration.benchmark()) {
                 benchmark = CompilerAPI.runBenchmark();
                 benchmark.startTime(Benchmark.PRECOMPILE);
-            }
-            else
-            {
+            } else {
                 CompilerAPI.disableBenchmark();
             }
 
@@ -997,10 +825,10 @@ public class Fcsh extends Tool
             CompilerConfiguration compilerConfig = configuration.getCompilerConfiguration();
             NameMappings mappings = CompilerAPI.getNameMappings(configuration);
 
-            Transcoder[] transcoders = WebTierAPI.getTranscoders( configuration );
+            Transcoder[] transcoders = WebTierAPI.getTranscoders(configuration);
             SubCompiler[] compilers = WebTierAPI.getCompilers(compilerConfig, mappings, transcoders);
 
-             // CodeOrchestra: added if
+            // CodeOrchestra: added if
             if (livecodingBaseMode) {
                 ((As3Compiler) compilers[0]).addCompilerExtension(new LCBaseExtension());
             }
@@ -1008,29 +836,21 @@ public class Fcsh extends Tool
             // construct the SWF file name...
             VirtualFile projector = configuration.getProjector();
 
-            if (projector != null && projector.getName().endsWith("avmplus.exe"))
-            {
+            if (projector != null && projector.getName().endsWith("avmplus.exe")) {
                 // output .exe
                 s.outputName = configuration.getOutput();
-                if (s.outputName == null)
-                {
+                if (s.outputName == null) {
                     s.outputName = targetFile.getName();
                     s.outputName = s.outputName.substring(0, s.outputName.lastIndexOf('.')) + ".exe";
                 }
-            }
-            else
-            {
+            } else {
                 // output SWF
                 s.outputName = configuration.getOutput();
-                if (s.outputName == null)
-                {
+                if (s.outputName == null) {
                     s.outputName = targetFile.getName();
-                    if (projector != null)
-                    {
+                    if (projector != null) {
                         s.outputName = s.outputName.substring(0, s.outputName.lastIndexOf('.')) + ".exe";
-                    }
-                    else
-                    {
+                    } else {
                         s.outputName = s.outputName.substring(0, s.outputName.lastIndexOf('.')) + ".swf";
                     }
                 }
@@ -1046,7 +866,7 @@ public class Fcsh extends Tool
 
             // create a SourcePath...
             s.sourcePath = new SourcePath(asClasspath, targetFile, WebTierAPI.getSourcePathMimeTypes(),
-                                          compilerConfig.allowSourcePathOverlap());
+                    compilerConfig.allowSourcePathOverlap());
 
             // create a ResourceContainer...
             s.resources = new ResourceContainer();
@@ -1054,27 +874,26 @@ public class Fcsh extends Tool
             // create a ResourceBundlePath...
             s.bundlePath = new ResourceBundlePath(configuration.getCompilerConfiguration(), targetFile);
 
-            if (benchmark != null)
-            {
+            if (benchmark != null) {
                 benchmark.benchmark(l10n.getLocalizedTextString(new InitialSetup()));
             }
 
             // load SWCs
             s.swcCache = new SwcCache();
-            
-            CompilerSwcContext swcContext = new CompilerSwcContext(true);
-            swcContext.load( compilerConfig.getLibraryPath(),
-                             Configuration.getAllExcludedLibraries(compilerConfig, configuration),
-                             compilerConfig.getThemeFiles(),
-                             compilerConfig.getIncludeLibraries(),
-                             mappings,
-                             I18nUtils.getTranslationFormat(compilerConfig),
-                             s.swcCache );
-            configuration.addExterns( swcContext.getExterns() );
-            configuration.addIncludes( swcContext.getIncludes() );
-            configuration.getCompilerConfiguration().addThemeCssFiles( swcContext.getThemeStyleSheets() );
 
-               s.checksum = cfgbuf.checksum_ts() + swcContext.checksum();
+            CompilerSwcContext swcContext = new CompilerSwcContext(true);
+            swcContext.load(compilerConfig.getLibraryPath(),
+                    Configuration.getAllExcludedLibraries(compilerConfig, configuration),
+                    compilerConfig.getThemeFiles(),
+                    compilerConfig.getIncludeLibraries(),
+                    mappings,
+                    I18nUtils.getTranslationFormat(compilerConfig),
+                    s.swcCache);
+            configuration.addExterns(swcContext.getExterns());
+            configuration.addIncludes(swcContext.getIncludes());
+            configuration.getCompilerConfiguration().addThemeCssFiles(swcContext.getThemeStyleSheets());
+
+            s.checksum = cfgbuf.checksum_ts() + swcContext.checksum();
 
             final SymbolTable symbolTable = new SymbolTable(configuration);
             s.perCompileData = symbolTable.perCompileData;
@@ -1082,24 +901,20 @@ public class Fcsh extends Tool
             Map licenseMap = configuration.getLicensesConfiguration().getLicenseMap();
             PostLink postLink = null;
 
-            if (configuration.optimize() && !configuration.debug())
-            {
+            if (configuration.optimize() && !configuration.debug()) {
                 postLink = new PostLink(configuration);
             }
 
-            if (projector != null && projector.getName().endsWith("avmplus.exe"))
-            {
-                if (benchmark != null)
-                {
+            if (projector != null && projector.getName().endsWith("avmplus.exe")) {
+                if (benchmark != null) {
                     benchmark.stopTime(Benchmark.PRECOMPILE, false);
                 }
 
                 List<CompilationUnit> units = CompilerAPI.compile(s.fileSpec, s.sourceList, null, s.sourcePath, s.resources, s.bundlePath,
-                                                        swcContext, symbolTable, mappings, configuration, compilers,
-                                                        null, licenseMap, new ArrayList<Source>());
+                        swcContext, symbolTable, mappings, configuration, compilers,
+                        null, licenseMap, new ArrayList<Source>());
 
-                if (benchmark != null)
-                {
+                if (benchmark != null) {
                     benchmark.startTime(Benchmark.POSTCOMPILE);
                 }
 
@@ -1121,20 +936,16 @@ public class Fcsh extends Tool
                 swfOut.close();
 
                 ThreadLocalToolkit.log(new OutputMessage(s.outputName, Long.toString(file.length())));
-            }
-            else
-            {
-                if (benchmark != null)
-                {
+            } else {
+                if (benchmark != null) {
                     benchmark.stopTime(Benchmark.PRECOMPILE, false);
                 }
 
                 List<CompilationUnit> units = CompilerAPI.compile(s.fileSpec, s.sourceList, null, s.sourcePath, s.resources, s.bundlePath,
-                                                        swcContext, symbolTable, mappings, configuration, compilers,
-                                                        new PreLink(), licenseMap, new ArrayList<Source>());
+                        swcContext, symbolTable, mappings, configuration, compilers,
+                        new PreLink(), licenseMap, new ArrayList<Source>());
 
-                if (benchmark != null)
-                {
+                if (benchmark != null) {
                     benchmark.startTime(Benchmark.POSTCOMPILE);
                 }
 
@@ -1150,12 +961,9 @@ public class Fcsh extends Tool
                 File file = FileUtil.openFile(s.outputName, true);
                 swfOut = new BufferedOutputStream(new FileOutputStream(file));
 
-                if (projector != null)
-                {
+                if (projector != null) {
                     Mxmlc.createProjector(configuration, projector, s.movie, swfOut);
-                }
-                else
-                {
+                } else {
                     CompilerAPI.encode(configuration, s.movie, swfOut);
                 }
 
@@ -1164,38 +972,24 @@ public class Fcsh extends Tool
 
                 ThreadLocalToolkit.log(new OutputMessage(s.outputName, Long.toString(file.length())));
             }
-        }
-        catch (ConfigurationException ex)
-        {
+        } catch (ConfigurationException ex) {
             Mxmlc.processConfigurationException(ex, "mxmlc");
-        }
-        catch (CompilerException ex)
-        {
+        } catch (CompilerException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (LinkerException ex)
-        {
+        } catch (LinkerException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (SwcException ex)
-        {
+        } catch (SwcException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (Throwable thr) // IOException, Throwable
+        } catch (Throwable thr) // IOException, Throwable
         {
             ThreadLocalToolkit.logError(thr.getMessage());
-            if (Trace.error)
-            {
+            if (Trace.error) {
                 thr.printStackTrace();
             }
-        }
-        finally
-        {
-            if (benchmark != null)
-            {
+        } finally {
+            if (benchmark != null) {
                 if ((ThreadLocalToolkit.errorCount() == 0) &&
-                    benchmark.hasStarted(Benchmark.POSTCOMPILE))
-                {
+                        benchmark.hasStarted(Benchmark.POSTCOMPILE)) {
                     benchmark.stopTime(Benchmark.POSTCOMPILE, false);
                 }
                 benchmark.totalTime();
@@ -1204,40 +998,38 @@ public class Fcsh extends Tool
 
             CompilerAPI.removePathResolver();
 
-            if (swfOut != null) try { swfOut.close(); } catch (IOException ioe) {}
+            if (swfOut != null) try {
+                swfOut.close();
+            } catch (IOException ioe) {
+            }
         }
     }
 
-    private static void compc(String[] args, int id)
-    {
+    private static void compc(String[] args, int id) {
         LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
         Benchmark benchmark = null;
 
         SwcTarget s = new SwcTarget();
         s.id = id;
 
-        try
-        {
+        try {
             // setup the path resolver
             CompilerAPI.usePathResolver();
 
             // process configuration
             ConfigurationBuffer cfgbuf = new ConfigurationBuffer(CompcConfiguration.class, CompcConfiguration.getAliases());
             cfgbuf.setDefaultVar("include-classes");
-            DefaultsConfigurator.loadCompcDefaults( cfgbuf );
+            DefaultsConfigurator.loadCompcDefaults(cfgbuf);
             CompcConfiguration configuration = (CompcConfiguration) Mxmlc.processConfiguration(
-                ThreadLocalToolkit.getLocalizationManager(), "compc", args, cfgbuf, CompcConfiguration.class, "include-classes");
+                    ThreadLocalToolkit.getLocalizationManager(), "compc", args, cfgbuf, CompcConfiguration.class, "include-classes");
             s.configuration = configuration;
 
             CompilerAPI.setupHeadless(configuration);
 
-            if (configuration.benchmark())
-            {
+            if (configuration.benchmark()) {
                 benchmark = CompilerAPI.runBenchmark();
                 benchmark.startTime(Benchmark.PRECOMPILE);
-            }
-            else
-            {
+            } else {
                 CompilerAPI.disableBenchmark();
             }
 
@@ -1250,11 +1042,11 @@ public class Fcsh extends Tool
 
             // create a SourcePath...
             s.sourcePath = new SourcePath(sourceMimeTypes, compilerConfig.allowSourcePathOverlap());
-            s.sourcePath.addPathElements( compilerConfig.getSourcePath() );
+            s.sourcePath.addPathElements(compilerConfig.getSourcePath());
 
             List<VirtualFile>[] array
-                = CompilerAPI.getVirtualFileList(configuration.getIncludeSources(), configuration.getStylesheets().values(),
-                                                        new HashSet<String>(Arrays.asList(sourceMimeTypes)), s.sourcePath.getPaths());
+                    = CompilerAPI.getVirtualFileList(configuration.getIncludeSources(), configuration.getStylesheets().values(),
+                    new HashSet<String>(Arrays.asList(sourceMimeTypes)), s.sourcePath.getPaths());
 
             NameMappings mappings = CompilerAPI.getNameMappings(configuration);
 
@@ -1263,10 +1055,10 @@ public class Fcsh extends Tool
             compilerConfig.setMetadataExport(true);
 
             //    get standard bundle of compilers, transcoders
-            Transcoder[] transcoders = WebTierAPI.getTranscoders( configuration );
+            Transcoder[] transcoders = WebTierAPI.getTranscoders(configuration);
             SubCompiler[] compilers = WebTierAPI.getCompilers(compilerConfig, mappings, transcoders);
 
-             // CodeOrchestra: added if
+            // CodeOrchestra: added if
             if (livecodingIncrementalMode) {
                 String fqClassName = configuration.getClasses().get(0); // Assume that only one class is provided in incremental phase
                 ((As3Compiler) compilers[0]).addCompilerExtension(new LCIncrementalExtension(fqClassName));
@@ -1280,7 +1072,7 @@ public class Fcsh extends Tool
 
             // create a SourceList...
             s.sourceList = new SourceList(array[1], compilerConfig.getSourcePath(), null,
-                                                   WebTierAPI.getSourceListMimeTypes(), false);
+                    WebTierAPI.getSourceListMimeTypes(), false);
 
             // create a ResourceContainer...
             s.resources = new ResourceContainer();
@@ -1288,30 +1080,29 @@ public class Fcsh extends Tool
             // create a ResourceBundlePath...
             s.bundlePath = new ResourceBundlePath(configuration.getCompilerConfiguration(), null);
 
-            if (benchmark != null)
-            {
+            if (benchmark != null) {
                 benchmark.benchmark(l10n.getLocalizedTextString(new InitialSetup()));
             }
 
             // load SWCs
             s.swcCache = new SwcCache();
-            
+
             CompilerSwcContext swcContext = new CompilerSwcContext(true);
             // for compc the theme and include-libraries values have been purposely not passed in below.
             // This is done because the theme attribute doesn't make sense and the include-libraries value
             // actually causes issues when the default value is used with external libraries.
             // FIXME: why don't we just get rid of these values from the configurator for compc?  That's a problem
             // for include-libraries at least, since this value appears in flex-config.xml
-            swcContext.load( compilerConfig.getLibraryPath(),
-                             compilerConfig.getExternalLibraryPath(),
-                             null,
-                             null,
-                             mappings,
-                             I18nUtils.getTranslationFormat(compilerConfig),
-                             s.swcCache );
-            configuration.addExterns( swcContext.getExterns() );
+            swcContext.load(compilerConfig.getLibraryPath(),
+                    compilerConfig.getExternalLibraryPath(),
+                    null,
+                    null,
+                    mappings,
+                    I18nUtils.getTranslationFormat(compilerConfig),
+                    s.swcCache);
+            configuration.addExterns(swcContext.getExterns());
 
-               s.checksum = cfgbuf.checksum_ts() + swcContext.checksum();
+            s.checksum = cfgbuf.checksum_ts() + swcContext.checksum();
 
             final SymbolTable symbolTable = new SymbolTable(configuration);
             s.perCompileData = symbolTable.perCompileData;
@@ -1324,20 +1115,18 @@ public class Fcsh extends Tool
 
             Map<String, VirtualFile> rbFiles = new HashMap<String, VirtualFile>();
 
-            if (benchmark != null)
-            {
+            if (benchmark != null) {
                 benchmark.stopTime(Benchmark.PRECOMPILE, false);
             }
 
             List<CompilationUnit> units = CompilerAPI.compile(s.fileSpec, s.sourceList, s.classes.values(), s.sourcePath,
-                                                              s.resources, s.bundlePath, swcContext, symbolTable,
-                                                              mappings, configuration, compilers,
-                                                              new CompcPreLink(rbFiles, configuration.getIncludeResourceBundles(), 
-                                                            		  false),
-                                                              licenseMap, new ArrayList<Source>());
+                    s.resources, s.bundlePath, swcContext, symbolTable,
+                    mappings, configuration, compilers,
+                    new CompcPreLink(rbFiles, configuration.getIncludeResourceBundles(),
+                            false),
+                    licenseMap, new ArrayList<Source>());
 
-            if (benchmark != null)
-            {
+            if (benchmark != null) {
                 benchmark.startTime(Benchmark.POSTCOMPILE);
             }
 
@@ -1348,50 +1137,35 @@ public class Fcsh extends Tool
             s.resources.refresh();
 
             // export SWC
-            SwcAPI.exportSwc( configuration, units, s.nsComponents, s.swcCache, s.rbFiles );
+            SwcAPI.exportSwc(configuration, units, s.nsComponents, s.swcCache, s.rbFiles);
 
-            if (s.outputName != null && ThreadLocalToolkit.errorCount() == 0)
-            {
+            if (s.outputName != null && ThreadLocalToolkit.errorCount() == 0) {
                 File file = FileUtil.openFile(s.outputName);
-                if (file != null && file.exists() && file.isFile())
-                {
+                if (file != null && file.exists() && file.isFile()) {
                     s.outputName = FileUtil.getCanonicalPath(file);
                     ThreadLocalToolkit.log(new OutputMessage(s.outputName, Long.toString(file.length())));
                 }
             }
-        }
-        catch (ConfigurationException ex)
-        {
+        } catch (ConfigurationException ex) {
             Compc.displayStartMessage();
             Mxmlc.processConfigurationException(ex, "compc");
-        }
-        catch (CompilerException ex)
-        {
+        } catch (CompilerException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (LinkerException ex)
-        {
+        } catch (LinkerException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (SwcException ex)
-        {
+        } catch (SwcException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (Throwable t) // IOException, Throwable
+        } catch (Throwable t) // IOException, Throwable
         {
             ThreadLocalToolkit.logError(t.getMessage());
 //            if (Trace.error)
             {
                 t.printStackTrace();
             }
-        }
-        finally
-        {
-            if (benchmark != null)
-            {
+        } finally {
+            if (benchmark != null) {
                 if ((ThreadLocalToolkit.errorCount() == 0) &&
-                    benchmark.hasStarted(Benchmark.POSTCOMPILE))
-                {
+                        benchmark.hasStarted(Benchmark.POSTCOMPILE)) {
                     benchmark.stopTime(Benchmark.POSTCOMPILE, false);
                 }
                 benchmark.totalTime();
@@ -1402,47 +1176,36 @@ public class Fcsh extends Tool
         }
     }
 
-    private static String getPlayer()
-    {
+    private static String getPlayer() {
         String osName = System.getProperty("os.name").toLowerCase();
 
-        if (osName.startsWith("windows"))
-        {
+        if (osName.startsWith("windows")) {
             return "SAFlashPlayer";
-        }
-        else if (osName.startsWith("mac os x"))
-        {
+        } else if (osName.startsWith("mac os x")) {
             return "SAFlashPlayer";
-        }
-        else
-        {
+        } else {
             return "flashplayer";
         }
     }
 
-    private static void intro()
-    {
+    private static void intro() {
         LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
         System.out.println(l10n.getLocalizedTextString(new ShellMessage("fcsh", VersionInfo.buildMessage())));
     }
 
-    private static void prompt()
-    {
+    private static void prompt() {
         System.out.print("(fcsh) ");
     }
 
-    private static void cmdList()
-    {
+    private static void cmdList() {
         LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
         System.out.println(l10n.getLocalizedTextString(new CommandList()));
     }
 
-    public static class TargetNotFound extends CompilerMessage.CompilerInfo
-    {
+    public static class TargetNotFound extends CompilerMessage.CompilerInfo {
         private static final long serialVersionUID = 6927065187698595699L;
 
-        public TargetNotFound(String id)
-        {
+        public TargetNotFound(String id) {
             super();
             this.id = id;
         }
@@ -1450,12 +1213,10 @@ public class Fcsh extends Tool
         public final String id;
     }
 
-    public static class AssignTargetID extends CompilerMessage.CompilerInfo
-    {
+    public static class AssignTargetID extends CompilerMessage.CompilerInfo {
         private static final long serialVersionUID = 1870591829772910578L;
 
-        public AssignTargetID(int counter)
-        {
+        public AssignTargetID(int counter) {
             super();
             this.counter = counter;
         }
@@ -1463,32 +1224,26 @@ public class Fcsh extends Tool
         public final int counter;
     }
 
-    public static class DetectConfigurationChange extends CompilerMessage.CompilerInfo
-    {
+    public static class DetectConfigurationChange extends CompilerMessage.CompilerInfo {
         private static final long serialVersionUID = 1170261585837917433L;
 
-        public DetectConfigurationChange()
-        {
+        public DetectConfigurationChange() {
             super();
         }
     }
 
-    public static class NoChange extends CompilerMessage.CompilerInfo
-    {
+    public static class NoChange extends CompilerMessage.CompilerInfo {
         private static final long serialVersionUID = -8351736794365308893L;
 
-        public NoChange()
-        {
+        public NoChange() {
             super();
         }
     }
 
-    public static class ShellMessage extends CompilerMessage.CompilerInfo
-    {
+    public static class ShellMessage extends CompilerMessage.CompilerInfo {
         private static final long serialVersionUID = 6261274935205405965L;
 
-        public ShellMessage(String program, String buildMessage)
-        {
+        public ShellMessage(String program, String buildMessage) {
             super();
             this.program = program;
             this.buildMessage = buildMessage;
@@ -1497,12 +1252,10 @@ public class Fcsh extends Tool
         public final String program, buildMessage;
     }
 
-    public static class CommandList extends CompilerMessage.CompilerInfo
-    {
+    public static class CommandList extends CompilerMessage.CompilerInfo {
         private static final long serialVersionUID = -84561512138741212L;
 
-        public CommandList()
-        {
+        public CommandList() {
             super();
         }
     }

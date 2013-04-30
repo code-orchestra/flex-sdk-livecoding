@@ -20,7 +20,7 @@ public class YourKitController {
 
     public static final long CPU_PROFILING_MODE = ProfilingModes.CPU_SAMPLING;
 
-    public static YourKitController getInstance() throws Exception {
+    public static YourKitController getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new YourKitController();
         }
@@ -36,30 +36,44 @@ public class YourKitController {
         try {
             this.controller = new Controller();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("Can't instantiate the YourKit controller", e);
         }
     }
 
-    public void startCPUProfiling() throws Exception {
+    public void startCPUProfiling() {
         if (inProgress) {
+            System.out.println("Profiling already in progress");
             return;
         }
 
-        controller.startCPUProfiling(CPU_PROFILING_MODE, Controller.DEFAULT_FILTERS, Controller.DEFAULT_WALLTIME_SPEC);
-        inProgress = true;
+        try {
+            controller.startCPUProfiling(CPU_PROFILING_MODE, Controller.DEFAULT_FILTERS, Controller.DEFAULT_WALLTIME_SPEC);
+            inProgress = true;
+        } catch (Throwable t) {
+            t.printStackTrace();
+            throw new RuntimeException("Error while starting CPU profiling", t);
+        }
     }
 
 
-    public String stopCPUProfilingAndSaveSnapshot() throws Exception {
+    public String stopCPUProfilingAndSaveSnapshot() {
         if (!(inProgress)) {
+            System.out.println("Profiling not in progress");
             return null;
         }
-        controller.stopCPUProfiling();
-        inProgress = false;
 
-        String path = controller.captureSnapshot(ProfilingModes.SNAPSHOT_WITHOUT_HEAP);
+        try {
+            controller.stopCPUProfiling();
+            inProgress = false;
 
-        return copyIt(zipIt(renameIt(path)));
+            String path = controller.captureSnapshot(ProfilingModes.SNAPSHOT_WITHOUT_HEAP);
+
+            return copyIt(zipIt(renameIt(path)));
+        } catch (Throwable t) {
+            t.printStackTrace();
+            throw new RuntimeException("Error while stopping CPU profiling", t);
+        }
     }
 
     private String renameIt(String path) {
@@ -87,6 +101,7 @@ public class YourKitController {
             );
 
         } catch (Throwable t) {
+            t.printStackTrace();
             return path;
         }
     }
@@ -117,6 +132,7 @@ public class YourKitController {
             return zipFilePath;
 
         } catch (Throwable t) {
+            t.printStackTrace();
             return path;
         }
     }
@@ -150,6 +166,7 @@ public class YourKitController {
             }
             return false;
         } catch (Throwable t) {
+            t.printStackTrace();
             return false;
         }
     }

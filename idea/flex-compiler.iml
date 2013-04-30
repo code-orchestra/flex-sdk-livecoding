@@ -76,6 +76,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="yjp-controller-api-redist" level="project" />
   </component>
 </module>
 

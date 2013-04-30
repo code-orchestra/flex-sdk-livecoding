@@ -1,5 +1,7 @@
 package codeOrchestra;
 
+import java.io.File;
+
 /**
  * @author Alexander Eliseyev
  */
@@ -28,6 +30,10 @@ public class LiveCodingCLIParameters {
         } catch (NumberFormatException e) {
             return DEFAULT_TRACE_HOST;
         }
+    }
+
+    public static String getProfilingFolder() {
+        return new File(getDigestsFolder()).getParent();
     }
 
     public static String getDigestsFolder() {

@@ -49,11 +49,15 @@
 		Each of the main targets for the modules will call clean themselves before proceeding.
 	-->
 
-	<target name="main" depends="thirdparty-downloads,modules" description="Full build" />
+	<target name="main" depends="thirdparty-downloads,modules,copy-yourkit" description="Full build" />
 
 	<target name="dev" depends="modules-dev" description="Runs src.depend build for development"/>
 
     <target name="super-clean" depends="thirdparty-clean,clean" description="Cleans everything including thirdparty downloads."/>
+    
+    <target name="copy-yourkit">
+      <copy file="${basedir}/../lib/external/yjp-controller-api-redist.jar" tofile="${FLEX_LIB}/yjp-controller-api-redist.jar"/>
+    </target>
     
     <!-- 
        To clean these you must call thirdparty-clean or super-clean to clean everything.  

@@ -6,10 +6,7 @@ import macromedia.asc.parser.MetaDataEvaluator;
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.PackageDefinitionNode;
 import macromedia.asc.parser.ProgramNode;
-import macromedia.asc.semantics.MetaData;
-import macromedia.asc.semantics.ObjectValue;
-import macromedia.asc.semantics.ReferenceValue;
-import macromedia.asc.semantics.TypeInfo;
+import macromedia.asc.semantics.*;
 import macromedia.asc.util.NumberConstant;
 import macromedia.asc.util.NumberUsage;
 
@@ -180,6 +177,9 @@ public abstract class NodeVisitor<N extends Node> {
         if (left instanceof ObjectValue) {
             return compareObjectValues(((ObjectValue) left), (ObjectValue) right);
         }
+        if (left instanceof QName) {
+            return compareQNames((QName) left, (QName) right);
+        }
         if (left instanceof ReferenceValue) {
             return compareReferenceValues(((ReferenceValue) left), (ReferenceValue) right);
         }
@@ -190,6 +190,18 @@ public abstract class NodeVisitor<N extends Node> {
             return compareKeyValuePairs((MetaDataEvaluator.KeyValuePair) left, (MetaDataEvaluator.KeyValuePair) right);
         }
         return left.equals(right);
+    }
+
+    private boolean compareQNames(QName left, QName right) {
+        if (!compareObjects(left.ns, right.ns)) {
+            reportDifference(left.ns, right.ns, 13);
+            return false;
+        }
+        if (!compareObjects(left.name, right.name)) {
+            reportDifference(left.name, right.name, 14);
+            return false;
+        }
+        return true;
     }
 
     private boolean compareKeyValuePairs(MetaDataEvaluator.KeyValuePair left, MetaDataEvaluator.KeyValuePair right) {
@@ -214,15 +226,19 @@ public abstract class NodeVisitor<N extends Node> {
 
     private boolean compareTypeInfos(TypeInfo left, TypeInfo right) {
         if (left.isNullable() != right.isNullable()) {
+            reportDifference(left.isNullable(), right.isNullable(), 9);
             return false;
         }
         if (!compareObjects(left.getTypeValue(), right.getTypeValue())) {
+            reportDifference(left.getTypeValue(), right.getTypeValue(), 10);
             return false;
         }
         if (!compareObjects(left.getPrototype(), right.getPrototype())) {
+            reportDifference(left.getPrototype(), right.getPrototype(), 11);
             return false;
         }
         if (!compareObjects(left.getName(), right.getName())) {
+            reportDifference(left.getName(), right.getName(), 12);
             return false;
         }
         return true;

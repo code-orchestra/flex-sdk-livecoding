@@ -253,7 +253,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
     }
 
     private void processProtectedField(IMember member, ClassDefinitionNode classDefinitionNode) {
-        int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(member.getParent().getFqName());
+        int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(TreeUtil.getFqName(classDefinitionNode));
 
         String fieldName = member.getName();
         String accessorName = fieldName + "_protected" + inheritanceLevel;
@@ -301,7 +301,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
     private void processProtectedMethod(IMember member, ClassDefinitionNode classDefinitionNode) {
         boolean isVoid = "void".equals(member.getType());
 
-        int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(member.getParent().getFqName());
+        int inheritanceLevel = DigestManager.getInstance().getInheritanceLevel(TreeUtil.getFqName(classDefinitionNode));
         String functionName = member.getName();
         String accessorName = functionName + "_protected" + inheritanceLevel;
         MethodCONode protectedAccessor = new MethodCONode(accessorName, null, classDefinitionNode.cx);

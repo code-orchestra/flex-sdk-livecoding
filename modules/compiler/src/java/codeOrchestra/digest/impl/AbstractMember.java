@@ -61,8 +61,6 @@ public abstract class AbstractMember implements IMember {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
-            return false;
         IMember other = (IMember) obj;
         if (isStatic != other.isStatic())
             return false;
@@ -76,4 +74,14 @@ public abstract class AbstractMember implements IMember {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Member{" +
+                "name='" + name + '\'' +
+                ", isStatic=" + isStatic +
+                ", kind=" + kind +
+                ", visibility=" + visibility +
+                ", parent=" + parent +
+                '}';
+    }
 }

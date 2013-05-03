@@ -47,7 +47,9 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         }
 
         if (LiveCodingUtil.canBeUsedForLiveCoding(classDefinitionNode)) {
-            classDefinitionNode.attrs.items.add(TreeUtil.createDynamicModifier());
+            if (!TreeNavigator.isDynamic(classDefinitionNode)) {
+                classDefinitionNode.attrs.items.add(TreeUtil.createDynamicModifier());
+            }
 
             TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "LiveCodeRegistry");
             TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "MethodUpdateEvent");

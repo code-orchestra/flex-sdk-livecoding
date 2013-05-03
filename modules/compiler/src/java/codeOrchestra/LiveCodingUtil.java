@@ -19,6 +19,9 @@ public class LiveCodingUtil {
         if (cl == null) {
             return false;
         }
+        if (cl.isInterface()) {
+            return false;
+        }
         if (hasAnnotation(cl, LIVE_CODE_DISABLE_ANNOTATION)) {
             return false;
         }

@@ -167,6 +167,10 @@ public class TreeNavigator {
         return methodHasAttribute(functionDefinitionNode, "static");
     }
 
+    public static boolean isDynamic(ClassDefinitionNode classDefinitionNode) {
+        return hasAttribute("dynamic", classDefinitionNode.attrs);
+    }
+
     public static boolean isStaticField(VariableBindingNode variableBindingNode) {
         return fieldHasAttribute(variableBindingNode, "static");
     }

@@ -1,5 +1,6 @@
 package codeOrchestra;
 
+import codeOrchestra.tree.RegularNode;
 import codeOrchestra.tree.TreeNavigator;
 import macromedia.asc.parser.*;
 
@@ -51,6 +52,14 @@ public class LiveCodingUtil {
             return false;
         }
         if (hasAnnotation(function, CODE_UPDATE_METHOD_ANNOTATION)) {
+            return false;
+        }
+        if (!new RegularNode(function.fexpr.body).getDescendants(MetaDataNode.class).isEmpty()) {
+            try {
+                function.cx.localizedWarning(function.pos(), "[COLT] Meta tags not supported within Live methods");
+            } catch (Throwable t) {
+                // ignore
+            }
             return false;
         }
 

@@ -68,6 +68,8 @@ public class DigestManager {
             if (classDigest.getSuperClassFQName() != null) {
                 classDigest = digestsMap.get(classDigest.getSuperClassFQName());
                 level++;
+            } else {
+                classDigest = null;
             }
         }
 

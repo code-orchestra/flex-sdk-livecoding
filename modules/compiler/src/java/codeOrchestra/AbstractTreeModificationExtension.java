@@ -400,6 +400,10 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                     MemberExpressionNode memberExpressionBase = (MemberExpressionNode) base;
 
                     if (memberExpressionBase.base == null && memberExpressionBase.selector.getIdentifier().name.equals("thisScope")) {
+                        // COLT-145
+                        if (memberExpression.selector.getIdentifier() == null) {
+                            continue;
+                        }
                         String accessorName = memberExpression.selector.getIdentifier().name;
                         IClassDigest visibleOwnerInsideClass = DigestManager.getInstance().findVisibleOwnerOfInstanceMember(originalClassFqName, accessorName);
                         if (visibleOwnerInsideClass != null) {

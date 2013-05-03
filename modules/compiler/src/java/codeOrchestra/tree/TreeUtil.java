@@ -197,6 +197,7 @@ public class TreeUtil {
     public static void createUnitFromInternalClass(ClassDefinitionNode internalClass, String packageName, Context cx, List<ImportDirectiveNode> imports, Set<Name> inheritance) {
         String className = internalClass.name.name;
         ClassCONode classCONode = new ClassCONode(packageName, className, cx);
+        classCONode.setInterface(internalClass.isInterface());
 
         for (ImportDirectiveNode importDirectiveNode : imports) {
             PackageIdentifiersNode packageIdentifierNode = importDirectiveNode.name.id;

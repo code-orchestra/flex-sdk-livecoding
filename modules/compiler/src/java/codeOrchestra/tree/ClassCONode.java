@@ -21,6 +21,7 @@ import java.util.List;
 public class ClassCONode extends CONode {
 
     // Set by user
+    public boolean isInterface;
     public String packageName;
     public String className;
     public final List<MethodCONode> methods = new ArrayList<MethodCONode>();
@@ -58,8 +59,16 @@ public class ClassCONode extends CONode {
         return myClass;
     }
 
+    public boolean isInterface() {
+        return isInterface;
+    }
+
+    public void setInterface(boolean anInterface) {
+        isInterface = anInterface;
+    }
+
     public void addImport(String packageName, String className) {
-        imports.add(new String[] {packageName, className});
+        imports.add(new String[]{packageName, className});
     }
 
     public boolean isDynamic() {
@@ -115,7 +124,16 @@ public class ClassCONode extends CONode {
             attrs.items.add(TreeUtil.createDynamicModifier());
         }
         StatementListNode classStatements = new StatementListNode(null);
-        myClass = new ClassDefinitionNode(
+        myClass = isInterface
+                ? new InterfaceDefinitionNode(
+                cx,
+                packageDefinitionNode,
+                attrs,
+                new QualifiedIdentifierNode(attrs, className, -1),
+                null,
+                classStatements)
+
+                : new ClassDefinitionNode(
                 cx,
                 packageDefinitionNode,
                 attrs,

@@ -75,7 +75,7 @@ public class DigestManager {
             }
         }
 
-        return level > 0 ? level - 1 : 0;
+        return level;
     }
 
     public boolean isAvailable(String fqName) {

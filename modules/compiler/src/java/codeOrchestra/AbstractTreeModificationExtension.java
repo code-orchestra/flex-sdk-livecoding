@@ -19,25 +19,13 @@ import java.util.*;
 
 /**
  * @author Anton.I.Neverov
+ * @author Alexander Eliseyev
  */
 public abstract class AbstractTreeModificationExtension implements Extension {
 
     protected static boolean TRACE = false;
-    public static final String SERIALIZED_AST = ".serializedAST";
 
     protected ProjectNavigator projectNavigator;
-
-    /*
-    public static String getCachesDir() {
-        File serializedASTDir = new File(System.getProperty("java.io.tmpdir"), "serializedAST");
-
-        if (!serializedASTDir.exists()) {
-            serializedASTDir.mkdirs();
-        }
-
-        return serializedASTDir.getPath();
-    }
-    */
 
     protected void saveSyntaxTree(CompilationUnit unit) {
         ClassDefinitionNode classDefinition = TreeNavigator.getClassDefinition(unit);
@@ -53,17 +41,6 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         }
 
         LastASTHolder.getInstance().add(fqName, (ProgramNode) syntaxTree);
-        /*
-        String serializedPath = getCachesDir() + File.separator + fqName + SERIALIZED_AST;
-        try {
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(serializedPath));
-            oos.writeObject(syntaxTree);
-            oos.flush();
-            oos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
     }
 
     protected void loadSyntaxTrees() {
@@ -76,28 +53,6 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         for (Map.Entry<String, ProgramNode> programNodeInfo : LastASTHolder.getInstance().getProgramNodes().entrySet()) {
             projectNavigator.add(programNodeInfo.getKey(), programNodeInfo.getValue());
         }
-
-        /*
-        File dir = new File(getCachesDir());
-        File[] files = dir.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(SERIALIZED_AST);
-            }
-        });
-        try {
-            for (File file : files) {
-                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-                Object restoredSyntaxTree = ois.readObject();
-                ois.close();
-                projectNavigator.loadedSyntaxTrees.add((ProgramNode) restoredSyntaxTree); // Safe cast. Type is checked on saving
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        */
     }
 
     protected abstract void performModifications(CompilationUnit unit);

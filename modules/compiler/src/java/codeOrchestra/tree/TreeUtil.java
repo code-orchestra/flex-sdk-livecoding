@@ -105,6 +105,10 @@ public class TreeUtil {
         return createIdentifier("static");
     }
 
+    public static MemberExpressionNode createOverrideModifier() {
+        return createIdentifier("override");
+    }
+
     public static MemberExpressionNode createDynamicModifier() {
         return createIdentifier("dynamic");
     }

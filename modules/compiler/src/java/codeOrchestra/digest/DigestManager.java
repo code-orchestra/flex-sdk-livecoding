@@ -5,11 +5,13 @@ import codeOrchestra.LiveCodingCLIParameters;
 import codeOrchestra.digest.impl.SWCClassDigest;
 import codeOrchestra.digest.impl.SourceClassDigest;
 import codeOrchestra.tree.LastASTHolder;
+import codeOrchestra.tree.TreeNavigator;
 import codeOrchestra.util.FileUtils;
 import codeOrchestra.util.StringUtils;
 import codeOrchestra.util.XMLUtils;
 import flex2.compiler.util.QName;
 import macromedia.asc.parser.ClassDefinitionNode;
+import macromedia.asc.parser.FunctionDefinitionNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -82,6 +84,76 @@ public class DigestManager {
 
     public boolean isAvailable(QName qName) {
         return isAvailable(qName.toString().replace(":", "."));
+    }
+
+    public boolean isOverriden(FunctionDefinitionNode functionDefinitionNode, String fqName) {
+        String functionName = functionDefinitionNode.fexpr.identifier.name;
+        MemberKind memberKind = TreeNavigator.getMemberKind(functionDefinitionNode);
+
+        for (IClassDigest descendant : getDescendants(digestsMap.get(fqName))) {
+            for (IMember member : descendant.getInstanceMembers()) {
+                if (functionName.equals(member.getName()) && member.getKind() == memberKind) {
+                    if (EnumSet.of(Visibility.PROTECTED, Visibility.PUBLIC).contains(member.getVisibility()) || member.getVisibility() == Visibility.PRIVATE && descendant.canBeUsedForLiveCoding()) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public Iterable<IClassDigest> getDescendants(final IClassDigest root) {
+        return new Iterable<IClassDigest>() {
+            @Override
+            public Iterator<IClassDigest> iterator() {
+                return new Iterator<IClassDigest>() {
+                    {
+                        directDescendants = new ArrayList<IClassDigest>();
+                        setRoot(root);
+                    }
+
+                    private ArrayList<IClassDigest> directDescendants;
+                    private Iterator<IClassDigest> directDescendantsIterator;
+
+                    private void setRoot(IClassDigest currentRoot) {
+                        directDescendants.clear();
+                        for (IClassDigest classDigest : digestsMap.values()) {
+                            if (classDigest instanceof SourceClassDigest && currentRoot.getFqName().equals(classDigest.getSuperClassFQName())) {
+                                directDescendants.add(classDigest);
+                            }
+                        }
+
+                        directDescendantsIterator = directDescendants.iterator();
+                    }
+
+                    @Override
+                    public boolean hasNext() {
+                        boolean currentIteratorHasNext = directDescendantsIterator.hasNext();
+
+                        if (!currentIteratorHasNext && !directDescendants.isEmpty()) {
+                            ArrayList<IClassDigest> savedDirectDescendants = new ArrayList<IClassDigest>(directDescendants);
+                            for (IClassDigest newRoot : savedDirectDescendants) {
+                                setRoot(newRoot);
+                                return hasNext();
+                            }
+                        }
+
+                        return currentIteratorHasNext;
+                    }
+
+                    @Override
+                    public IClassDigest next() {
+                        return directDescendantsIterator.next();
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException();
+                    }
+                };
+            }
+        };
     }
 
     /**

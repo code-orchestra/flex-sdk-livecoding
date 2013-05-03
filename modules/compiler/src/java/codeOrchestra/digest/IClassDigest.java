@@ -12,5 +12,6 @@ public interface IClassDigest {
     List<IMember> getStaticMembers();
     String getFqName();
     String getSuperClassFQName();
+    boolean canBeUsedForLiveCoding();
 
 }

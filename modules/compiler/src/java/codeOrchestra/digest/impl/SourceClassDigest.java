@@ -1,5 +1,6 @@
 package codeOrchestra.digest.impl;
 
+import codeOrchestra.LiveCodingUtil;
 import codeOrchestra.digest.*;
 import codeOrchestra.tree.TreeNavigator;
 import codeOrchestra.util.StringUtils;
@@ -25,6 +26,8 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
     private List<IMember> members = new ArrayList<IMember>();
     private List<IMember> staticMembers = new ArrayList<IMember>();
     private List<IMember> instanceMembers = new ArrayList<IMember>();
+
+    private boolean live;
 
     public SourceClassDigest(ClassDefinitionNode cl) {
         // Name
@@ -80,12 +83,7 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
         // Methods
         for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(cl)) {
             String methodName = functionDefinitionNode.name.identifier.name;
-            MemberKind memberKind = MemberKind.METHOD;
-            if (TreeNavigator.isGetter(functionDefinitionNode)) {
-                memberKind = MemberKind.GETTER;
-            } else if (TreeNavigator.isSetter(functionDefinitionNode)) {
-                memberKind = MemberKind.SETTER;
-            }
+            MemberKind memberKind = TreeNavigator.getMemberKind(functionDefinitionNode);
             String typeShortName = getShortTypeName(functionDefinitionNode.fexpr.signature.result);
 
             SourceMember member = new SourceMember(methodName, typeShortName, TreeNavigator.isStaticMethod(functionDefinitionNode), memberKind, TreeNavigator.getVisibility(functionDefinitionNode), this);
@@ -103,6 +101,8 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
                 instanceMembers.add(member);
             }
         }
+
+        this.live = LiveCodingUtil.canBeUsedForLiveCoding(cl);
     }
 
     private String getShortTypeName(Node typeNode) {
@@ -207,4 +207,8 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
         return StringUtils.longNameFromNamespaceAndShortName(packageName, name);
     }
 
+    @Override
+    public boolean canBeUsedForLiveCoding() {
+        return live;
+    }
 }

@@ -1,9 +1,6 @@
 package codeOrchestra;
 
-import codeOrchestra.digest.DigestManager;
-import codeOrchestra.digest.IMember;
-import codeOrchestra.digest.IParameter;
-import codeOrchestra.digest.MemberKind;
+import codeOrchestra.digest.*;
 import codeOrchestra.tree.*;
 import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
@@ -16,6 +13,7 @@ import java.util.*;
 
 /**
  * @author Anton.I.Neverov
+ * @author Alexander Eliseyev
  */
 public class LCBaseExtension extends AbstractTreeModificationExtension {
 
@@ -428,6 +426,11 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
         // Methods
         for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(classDefinitionNode)) {
+            if (TreeNavigator.getVisibility(functionDefinitionNode) == Visibility.PRIVATE && DigestManager.getInstance().isOverriden(functionDefinitionNode, TreeUtil.getFqName(classDefinitionNode))) {
+                classDefinitionNode.cx.localizedWarning(functionDefinitionNode.pos(), "[COLT] Can't make a private function public as it would be overriden otherwise");
+                continue;
+            }
+
             TreeUtil.makePublic(functionDefinitionNode.attrs, TreeNavigator.isStaticMethod(functionDefinitionNode) ? false : true);
         }
     }
@@ -561,7 +564,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         }
 
         boolean staticMethod = TreeNavigator.isStaticMethod(functionDefinitionNode);
-        String id = UUID.randomUUID().toString(); // TODO: Just any unique id?
+        String id = generateId();
         String listenerName = functionDefinitionNode.name.identifier.name + "_codeUpdateListener" + id;
         MethodCONode listener = new MethodCONode(listenerName, null, classDefinitionNode.cx);
         listener.addParameter("e", "MethodUpdateEvent");

@@ -1,6 +1,7 @@
 package codeOrchestra.tree;
 
 import codeOrchestra.LiveCodingUtil;
+import codeOrchestra.digest.MemberKind;
 import codeOrchestra.digest.Visibility;
 import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
@@ -11,8 +12,19 @@ import java.util.List;
 
 /**
  * @author Anton.I.Neverov
+ * @author Alexander Eliseyev
  */
 public class TreeNavigator {
+
+    public static MemberKind getMemberKind(FunctionDefinitionNode functionDefinitionNode) {
+        MemberKind memberKind = MemberKind.METHOD;
+        if (TreeNavigator.isGetter(functionDefinitionNode)) {
+            memberKind = MemberKind.GETTER;
+        } else if (TreeNavigator.isSetter(functionDefinitionNode)) {
+            memberKind = MemberKind.SETTER;
+        }
+        return memberKind;
+    }
 
     public static Visibility getVisibility(DefinitionNode definitionNode) {
         AttributeListNode attrs = definitionNode.attrs;

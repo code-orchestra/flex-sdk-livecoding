@@ -84,4 +84,9 @@ public class SWCClassDigest implements IClassDigest {
     public String getSuperClassFQName() {
         return superClassFqName;
     }
+
+    @Override
+    public boolean canBeUsedForLiveCoding() {
+        return false;
+    }
 }

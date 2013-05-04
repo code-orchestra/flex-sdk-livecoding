@@ -227,6 +227,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 methodResult == null ? null : ((IdentifierNode) ((MemberExpressionNode) methodResult.expr).selector.expr).name, // TODO: rewrite
                 cx
         );
+        runMethod.setNamespaceVisibility(TreeNavigator.getNamespaceVisibility(functionDefinitionNode));
         runMethod.isStatic = staticMethod;
         runMethod.statements.add(new ExpressionStatementNode(new ListNode(null,
                 TreeUtil.createCall(
@@ -487,7 +488,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         }
 
 
-        // Copy namespace declarations to the lice class
+        // Copy namespace declarations to the live class
         Set<String> namespaces = new HashSet<String>();
         ClassDefinitionNode classDefinitionNode = classCONode.addToProject();
         for (Node pkgStatement : parentClass.pkgdef.statements.items) {
@@ -504,6 +505,14 @@ public abstract class AbstractTreeModificationExtension implements Extension {
             String namespaceURI = DigestManager.getInstance().getNamespaceURI(namespace);
             if (namespaceURI != null) {
                 classDefinitionNode.statements.items.add(0, new NamespaceDefinitionNode(classDefinitionNode.pkgdef, null, new IdentifierNode(namespace, -1), new LiteralStringNode(namespaceURI)));
+            }
+        }
+        for (Node classStatement : parentClass.statements.items) {
+            if (classStatement instanceof NamespaceDefinitionNode) {
+                NamespaceDefinitionNode namespaceDefinitionNode = (NamespaceDefinitionNode) SerializationUtils.clone(classStatement);
+                namespaceDefinitionNode.pkgdef = classDefinitionNode.pkgdef;
+                classDefinitionNode.statements.items.add(namespaceDefinitionNode);
+                namespaces.add(namespaceDefinitionNode.name.name);
             }
         }
         // Insert use namespace directives in the run methods

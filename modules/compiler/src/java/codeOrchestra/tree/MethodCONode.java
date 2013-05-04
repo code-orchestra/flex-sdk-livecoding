@@ -26,10 +26,16 @@ public class MethodCONode extends CONode {
     FunctionDefinitionNode functionDefinitionNode;
     private StatementListNode functionBody;
 
+    private String namespaceVisibility;
+
     public MethodCONode(String methodName, String returnType, Context cx) {
         this.methodName = methodName;
         this.returnType = returnType;
         this.cx = cx;
+    }
+
+    public void setNamespaceVisibility(String namespaceVisibility) {
+        this.namespaceVisibility = namespaceVisibility;
     }
 
     public void addParameter(String paramName, String paramType) {
@@ -48,7 +54,7 @@ public class MethodCONode extends CONode {
     }
 
     private void generateSelf() {
-        AttributeListNode attrs = new AttributeListNode(TreeUtil.createPublicModifier(), -1);
+        AttributeListNode attrs = new AttributeListNode(namespaceVisibility != null ? TreeUtil.createIdentifier(namespaceVisibility) : TreeUtil.createPublicModifier(), -1);
         if (isStatic) {
             attrs.items.add(TreeUtil.createStaticModifier());
         }

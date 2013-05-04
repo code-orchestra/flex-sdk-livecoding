@@ -15,8 +15,25 @@ import java.util.*;
  */
 public class TreeNavigator {
 
+    private static final Set<String> predefinedAttributes = new HashSet<String>() {{
+        add("intrinsic");
+        add("static");
+        add("final");
+        add("virtual");
+        add("override");
+        add("dynamic");
+        add("native");
+        add("private");
+        add("protected");
+        add("public");
+        add("internal");
+        add("const");
+        add("false");
+        add("prototype");
+    }};
+
     public static String getNamespaceName(UseDirectiveNode pkgStatement) {
-        return ((MemberExpressionNode) ((UseDirectiveNode) pkgStatement).expr).selector.getIdentifier().name;
+        return ((MemberExpressionNode) (pkgStatement).expr).selector.getIdentifier().name;
     }
 
     public static MemberKind getMemberKind(FunctionDefinitionNode functionDefinitionNode) {
@@ -27,6 +44,51 @@ public class TreeNavigator {
             memberKind = MemberKind.SETTER;
         }
         return memberKind;
+    }
+
+    public static String getNamespaceVisibility(DefinitionNode definitionNode) {
+        List<String> attributes = getAttributes(definitionNode.attrs);
+        for (String attribute : attributes) {
+            if (!predefinedAttributes.contains(attribute)) {
+                return attribute;
+            }
+        }
+        return null;
+    }
+
+    private static List<String> getAttributes(AttributeListNode attributeListNode) {
+        if (attributeListNode == null) {
+            return Collections.EMPTY_LIST;
+        }
+
+        List<String> result = new ArrayList<String>();
+
+        for (Node item : attributeListNode.items) {
+            Node node = null;
+            if (item instanceof ListNode) {
+                node = ((ListNode) item).items.at(0);
+            } else if (item instanceof MemberExpressionNode) {
+                node = item;
+            } else if (item instanceof IdentifierNode) {
+                result.add(((IdentifierNode) item).name);
+            } else {
+                continue;
+            }
+            if (!(node instanceof MemberExpressionNode)) {
+                continue;
+            }
+            SelectorNode selector = ((MemberExpressionNode) node).selector;
+            if (!(selector instanceof GetExpressionNode)) {
+                continue;
+            }
+            Node expr = selector.expr;
+            if (!(expr instanceof IdentifierNode)) {
+                continue;
+            }
+            result.add(((IdentifierNode) expr).name);
+        }
+
+       return result;
     }
 
     public static Visibility getVisibility(DefinitionNode definitionNode) {

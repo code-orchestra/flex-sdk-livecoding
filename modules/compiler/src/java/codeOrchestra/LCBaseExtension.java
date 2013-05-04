@@ -24,6 +24,23 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
     protected void performModifications(CompilationUnit unit) {
         ClassDefinitionNode classDefinitionNode = TreeNavigator.getClassDefinition(unit);
         if (classDefinitionNode == null) {
+            Object syntaxTree = unit.getSyntaxTree();
+            if (syntaxTree != null && syntaxTree instanceof ProgramNode) {
+                ProgramNode programNode = (ProgramNode) syntaxTree;
+                for (Node item : programNode.statements.items) {
+                    if (item instanceof PackageDefinitionNode) {
+                        PackageDefinitionNode packageDefinitionNode = (PackageDefinitionNode) item;
+                        for (Node pkgItem : packageDefinitionNode.statements.items) {
+                            if (pkgItem instanceof NamespaceDefinitionNode) {
+                                NamespaceDefinitionNode namespaceDefinitionNode = (NamespaceDefinitionNode) pkgItem;
+                                if (namespaceDefinitionNode.value != null && namespaceDefinitionNode.value instanceof LiteralStringNode) {
+                                    DigestManager.getInstance().addNamespace(namespaceDefinitionNode.name.name, ((LiteralStringNode) namespaceDefinitionNode.value).value);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             return;
         }
 

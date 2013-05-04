@@ -14,6 +14,7 @@ import flex2.tools.Fcsh;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
 import macromedia.asc.util.ObjectList;
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.*;
 
@@ -268,7 +269,6 @@ public abstract class AbstractTreeModificationExtension implements Extension {
             }
         }
 
-        Iterator<Node> iterator = methodBody.iterator();
         boolean addedGetTimerImport = false;
         // 'This' scope modifications
         List<Pair<Node>> deferredInsertions = new ArrayList<Pair<Node>>();
@@ -486,16 +486,34 @@ public abstract class AbstractTreeModificationExtension implements Extension {
             classCONode.methods.add(getMethodUpdateTime);
         }
 
-        // COLT-109
-        ClassDefinitionNode liveClassNode = classCONode.addToProject();
-        for (Node pkgStatement : functionDefinitionNode.pkgdef.statements.items) {
+
+        // Copy namespace declarations to the lice class
+        Set<String> namespaces = new HashSet<String>();
+        ClassDefinitionNode classDefinitionNode = classCONode.addToProject();
+        for (Node pkgStatement : parentClass.pkgdef.statements.items) {
             if (pkgStatement instanceof UseDirectiveNode) {
-                liveClassNode.pkgdef.statements.items.add(pkgStatement);
+                namespaces.add(TreeNavigator.getNamespaceName((UseDirectiveNode) pkgStatement));
             }
         }
         for (Node classStatement : parentClass.statements.items) {
             if (classStatement instanceof UseDirectiveNode) {
-                liveClassNode.statements.items.add(classStatement);
+                namespaces.add(TreeNavigator.getNamespaceName((UseDirectiveNode) classStatement));
+            }
+        }
+        for (String namespace : namespaces) {
+            String namespaceURI = DigestManager.getInstance().getNamespaceURI(namespace);
+            if (namespaceURI != null) {
+                classDefinitionNode.statements.items.add(0, new NamespaceDefinitionNode(classDefinitionNode.pkgdef, null, new IdentifierNode(namespace, -1), new LiteralStringNode(namespaceURI)));
+            }
+        }
+        // Insert use namespace directives in the run methods
+        for (Node item : classDefinitionNode.statements.items) {
+            if (item instanceof FunctionDefinitionNode) {
+                if (((FunctionDefinitionNode) item).fexpr.identifier.name.equals("run")) {
+                    for (String namespace : namespaces) {
+                        (((FunctionDefinitionNode) item)).fexpr.body.items.add(0, new UseDirectiveNode(classDefinitionNode.pkgdef, null, TreeUtil.createIdentifier(namespace)));
+                    }
+                }
             }
         }
 

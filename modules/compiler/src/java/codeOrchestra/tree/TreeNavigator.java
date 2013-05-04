@@ -3,18 +3,21 @@ package codeOrchestra.tree;
 import codeOrchestra.LiveCodingUtil;
 import codeOrchestra.digest.MemberKind;
 import codeOrchestra.digest.Visibility;
+import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
  * @author Alexander Eliseyev
  */
 public class TreeNavigator {
+
+    public static String getNamespaceName(UseDirectiveNode pkgStatement) {
+        return ((MemberExpressionNode) ((UseDirectiveNode) pkgStatement).expr).selector.getIdentifier().name;
+    }
 
     public static MemberKind getMemberKind(FunctionDefinitionNode functionDefinitionNode) {
         MemberKind memberKind = MemberKind.METHOD;

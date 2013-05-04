@@ -99,6 +99,10 @@ public class ClassCONode extends CONode {
             methodCONode.generateTree();
             myClass.statements.items.add(methodCONode.functionDefinitionNode);
         }
+
+        // TODO: delete
+        UseDirectiveNode alternativa3d = new UseDirectiveNode(myClass.pkgdef, null, TreeUtil.createIdentifier("alternativa3d"));
+        myClass.pkgdef.statements.items.add(alternativa3d);
     }
 
     private CompilationUnit generateSelf() {

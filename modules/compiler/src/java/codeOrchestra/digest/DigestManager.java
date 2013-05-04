@@ -38,6 +38,9 @@ public class DigestManager {
 
     private Set<String> availableFqNames = new HashSet<String>();
 
+    // namespace name -> URI  map
+    private Map<String, String> namespaceToURI = new HashMap<String, String>();
+
     private Map<String, IClassDigest> digestsMap = new HashMap<String, IClassDigest>();
     private Map<String, SourceClassDigest> unresolvedDigests = new HashMap<String, SourceClassDigest>();
 
@@ -60,6 +63,10 @@ public class DigestManager {
         }
 
         return result;
+    }
+
+    public void addNamespace(String name, String uri) {
+        namespaceToURI.put(name, uri);
     }
 
     public int getInheritanceLevel(String fqName) {
@@ -238,31 +245,6 @@ public class DigestManager {
 
             availableFqNames.add(fqName);
         }
-        /*
-        File dir = new File(AbstractTreeModificationExtension.getCachesDir());
-        File[] files = dir.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(AbstractTreeModificationExtension.SERIALIZED_AST);
-            }
-        });
-        for (File file : files) {
-            String fileName = file.getName();
-            String fqName = fileName.substring(0, fileName.length() - AbstractTreeModificationExtension.SERIALIZED_AST.length());
-
-            String shortName = StringUtils.shortNameFromLongName(fqName);
-            String packageName = StringUtils.namespaceFromLongName(fqName);
-
-            Set<String> packageShortNames = compiledClasses.get(packageName);
-            if (packageShortNames == null) {
-                packageShortNames = new HashSet<String>();
-                compiledClasses.put(packageName, packageShortNames);
-            }
-            packageShortNames.add(shortName);
-
-            availableFqNames.add(fqName);
-        }
-        */
 
         // 2 - Load digests and fq names from SWCs
         File digestsDir = getSWCDigestsFolder();
@@ -284,7 +266,18 @@ public class DigestManager {
                 digestsMap.put(fqName, classDigest);
                 availableFqNames.add(fqName);
             }
+
+            NodeList namespacesList = document.getDocumentElement().getElementsByTagName("namespace");
+            for (int i = 0; i < namespacesList.getLength(); i++) {
+                Element namespaceElement = (Element) namespacesList.item(i);
+
+                namespaceToURI.put(namespaceElement.getAttribute("name"), namespaceElement.getAttribute("uri"));
+            }
         }
+    }
+
+    public String getNamespaceURI(String namespace) {
+        return namespaceToURI.get(namespace);
     }
 
     private File getSWCDigestsFolder() {

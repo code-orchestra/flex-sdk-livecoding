@@ -61,6 +61,7 @@
       <copy file="${basedir}/../lib/external/xercesPatch.jar" tofile="${FLEX_LIB}/xercesPatch.jar"/>
       <copy file="${basedir}/../lib/external/commons-collections.jar" tofile="${FLEX_LIB}/commons-collections.jar"/>      
       <copy file="${basedir}/../lib/external/xml-apis-ext.jar" tofile="${FLEX_LIB}/xml-apis-ext.jar"/>            
+      <copy file="${basedir}/../lib/external/xercesImpl.jar" tofile="${FLEX_LIB}/xercesImpl.jar"/>                  
     </target>
     
     <!-- 

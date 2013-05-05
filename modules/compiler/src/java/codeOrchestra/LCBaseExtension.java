@@ -609,15 +609,41 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         }
 
         if (!StringUtils.isEmpty(methodNameToFilter)) {
-            ListNode condition = new ListNode(
-                    null,
-                    new BinaryExpressionNode(
+            ListNode condition;
+            if (methodNameToFilter.contains(",")) {
+                String[] split = methodNameToFilter.split(",");
+
+                BinaryExpressionNode orExpression = new BinaryExpressionNode(
+                        Tokens.EQUALS_TOKEN,
+                        TreeUtil.createIdentifier("e", "methodName"),
+                        new LiteralStringNode(split[0].trim())
+                );
+
+                for (int i = 1; i < split.length; i++) {
+                    String methodName = split[i].trim();
+                    orExpression = new BinaryExpressionNode(Tokens.LOGICALOR_TOKEN, orExpression, new BinaryExpressionNode(
                             Tokens.EQUALS_TOKEN,
                             TreeUtil.createIdentifier("e", "methodName"),
-                            new LiteralStringNode(methodNameToFilter)
-                    ),
-                    -1
-            );
+                            new LiteralStringNode(methodName)
+                    ));
+                }
+
+                condition = new ListNode(
+                        null,
+                        orExpression,
+                        -1
+                );
+            } else {
+                condition = new ListNode(
+                        null,
+                        new BinaryExpressionNode(
+                                Tokens.EQUALS_TOKEN,
+                                TreeUtil.createIdentifier("e", "methodName"),
+                                new LiteralStringNode(methodNameToFilter)
+                        ),
+                        -1
+                );
+            }
             StatementListNode thenactions = new StatementListNode(new ExpressionStatementNode(new ListNode(
                     null,
                     firstStatement,

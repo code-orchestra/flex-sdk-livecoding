@@ -58,6 +58,9 @@
     <target name="copy-libs">
       <copy file="${basedir}/../lib/external/yjp-controller-api-redist.jar" tofile="${FLEX_LIB}/yjp-controller-api-redist.jar"/>
       <copy file="${basedir}/../lib/external/commons-lang3-3.1.jar" tofile="${FLEX_LIB}/commons-lang3-3.1.jar"/>      
+      <copy file="${basedir}/../lib/external/xercesPatch.jar" tofile="${FLEX_LIB}/xercesPatch.jar"/>
+      <copy file="${basedir}/../lib/external/commons-collections.jar" tofile="${FLEX_LIB}/commons-collections.jar"/>      
+      <copy file="${basedir}/../lib/external/xml-apis-ext.jar" tofile="${FLEX_LIB}/xml-apis-ext.jar"/>            
     </target>
     
     <!-- 

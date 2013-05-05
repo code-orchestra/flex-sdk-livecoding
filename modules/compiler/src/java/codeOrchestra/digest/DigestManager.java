@@ -301,4 +301,7 @@ public class DigestManager {
         unresolvedDigests.clear();
     }
 
+    public IClassDigest getClassDigest(String fqName) {
+        return digestsMap.get(fqName);
+    }
 }

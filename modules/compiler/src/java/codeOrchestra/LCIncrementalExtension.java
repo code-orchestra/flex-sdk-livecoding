@@ -1,9 +1,17 @@
 package codeOrchestra;
 
+import codeOrchestra.digest.DigestManager;
+import codeOrchestra.digest.IClassDigest;
+import codeOrchestra.digest.IMember;
+import codeOrchestra.digest.ITypeResolver;
+import codeOrchestra.digest.impl.SWCMember;
+import codeOrchestra.digest.impl.SourceClassDigest;
+import codeOrchestra.digest.impl.SourceMember;
 import codeOrchestra.tree.TreeNavigator;
 import codeOrchestra.tree.TreeUtil;
 import codeOrchestra.tree.visitor.NodeVisitor;
 import codeOrchestra.tree.visitor.NodeVisitorFactory;
+import codeOrchestra.util.ObjectUtils;
 import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.ObjectList;
@@ -60,7 +68,7 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
 
         ArrayList<String> liveCodingClassNames = new ArrayList<String>();
         Map<FunctionDefinitionNode, String> functionToClassNames = new HashMap<FunctionDefinitionNode, String>();
-        for(FunctionDefinitionNode changedMethod : changedMethods) {
+        for (FunctionDefinitionNode changedMethod : changedMethods) {
             ObjectList<Node> oldBody = changedMethod.fexpr.body.items;
             changedMethod.fexpr.body.items = new ObjectList<Node>();
             String liveCodingClassName = addLiveCodingClass(className, classDefinitionNode, changedMethod, oldBody, true);
@@ -78,30 +86,66 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
 
     /**
      * Returns first changed method
-     *
+     * <p/>
      * We hope that method order remains unchanged
      */
     private List<FunctionDefinitionNode> findChangedMethods(ClassDefinitionNode originalClass, ClassDefinitionNode modifiedClass) {
         List<FunctionDefinitionNode> originalMethodDefinitions = TreeNavigator.getMethodDefinitions(originalClass);
         List<FunctionDefinitionNode> modifiedMethodDefinitions = TreeNavigator.getMethodDefinitions(modifiedClass);
 
-        if (originalMethodDefinitions.size() != modifiedMethodDefinitions.size()) {
-            throw new RuntimeException("Number of methods has changed");
-        }
-
         ArrayList<FunctionDefinitionNode> result = new ArrayList<FunctionDefinitionNode>();
-        for (int i = 0; i < originalMethodDefinitions.size(); i++) {
-            FunctionDefinitionNode oM = originalMethodDefinitions.get(i);
-            FunctionDefinitionNode mM = modifiedMethodDefinitions.get(i);
-
+        for (FunctionDefinitionNode modifiedMethod : modifiedMethodDefinitions) {
             // COLT-77
-            if (LiveCodingUtil.hasAnnotation(oM, LiveCodingUtil.LIVE_CODE_DISABLE_ANNOTATION) || LiveCodingUtil.hasAnnotation(mM, LiveCodingUtil.LIVE_CODE_DISABLE_ANNOTATION)) {
+            if (LiveCodingUtil.hasAnnotation(modifiedMethod, LiveCodingUtil.LIVE_CODE_DISABLE_ANNOTATION)) {
                 continue;
             }
 
-            NodeVisitor visitor = NodeVisitorFactory.getVisitor(FunctionDefinitionNode.class);
-            if (!visitor.compareTrees(oM, mM) && !result.contains(mM)) {
-                result.add(mM);
+            FunctionDefinitionNode matchingOriginalMethod = null;
+            for (FunctionDefinitionNode originalMethodCandidate : originalMethodDefinitions) {
+                if (ObjectUtils.equals(originalMethodCandidate.fexpr.identifier.name, modifiedMethod.fexpr.identifier.name)
+                        && originalMethodCandidate.name.kind == modifiedMethod.name.kind) {
+                    matchingOriginalMethod = originalMethodCandidate;
+                    break;
+                }
+            }
+
+            if (matchingOriginalMethod != null) {
+                // COLT-77
+                if (LiveCodingUtil.hasAnnotation(matchingOriginalMethod, LiveCodingUtil.LIVE_CODE_DISABLE_ANNOTATION)) {
+                    continue;
+                }
+
+                NodeVisitor<FunctionDefinitionNode> visitor = NodeVisitorFactory.getVisitor(FunctionDefinitionNode.class);
+                if (!visitor.compareTrees(matchingOriginalMethod, modifiedMethod) && !result.contains(modifiedMethod)) {
+                    result.add(modifiedMethod);
+                }
+            } else {
+                // Seems like we've added a new method
+                result.add(modifiedMethod);
+
+                IClassDigest classDigest = DigestManager.getInstance().getClassDigest(TreeUtil.getFqName(originalClass));
+                if (classDigest != null && classDigest instanceof SourceClassDigest) {
+                    boolean isStatic = TreeNavigator.isStaticMethod(modifiedMethod);
+                    SourceMember newMember = new SourceMember(
+                            modifiedMethod.fexpr.identifier.name,
+                            TreeNavigator.getShortTypeName(modifiedMethod.fexpr.signature.result),
+                            isStatic,
+                            TreeNavigator.getMemberKind(modifiedMethod),
+                            TreeNavigator.getVisibility(modifiedMethod),
+                            classDigest);
+
+                    List<IMember> membersList;
+                    if (isStatic) {
+                        membersList = classDigest.getStaticMembers();
+                    } else {
+                        membersList = classDigest.getInstanceMembers();
+                    }
+
+                    if (!membersList.contains(newMember)) {
+                        membersList.add(newMember);
+                        newMember.resolve((ITypeResolver) classDigest);
+                    }
+                }
             }
         }
 

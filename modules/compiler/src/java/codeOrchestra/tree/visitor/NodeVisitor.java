@@ -2,6 +2,7 @@ package codeOrchestra.tree.visitor;
 
 import codeOrchestra.tree.processor.CollectingProcessor;
 import codeOrchestra.tree.processor.INodeProcessor;
+import codeOrchestra.util.ObjectUtils;
 import macromedia.asc.parser.MetaDataEvaluator;
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.PackageDefinitionNode;
@@ -205,7 +206,7 @@ public abstract class NodeVisitor<N extends Node> {
     }
 
     private boolean compareKeyValuePairs(MetaDataEvaluator.KeyValuePair left, MetaDataEvaluator.KeyValuePair right) {
-        return equals(left.key, right.key) && equals(left.obj, right.obj);
+        return ObjectUtils.equals(left.key, right.key) && ObjectUtils.equals(left.obj, right.obj);
     }
 
     private boolean compareNumberUsages(NumberUsage left, NumberUsage right) {
@@ -288,15 +289,5 @@ public abstract class NodeVisitor<N extends Node> {
             }
         }
         return true;
-    }
-
-    public static boolean equals(Object object1, Object object2) {
-        if (object1 == object2) {
-            return true;
-        }
-        if ((object1 == null) || (object2 == null)) {
-            return false;
-        }
-        return object1.equals(object2);
     }
 }

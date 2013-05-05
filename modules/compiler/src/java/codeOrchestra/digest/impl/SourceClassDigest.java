@@ -68,7 +68,7 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
                     VariableBindingNode variableBindingNode = (VariableBindingNode) item;
                     String fieldName = variableBindingNode.variable.identifier.name;
 
-                    String typeShortName = getShortTypeName(variableBindingNode.variable.type);
+                    String typeShortName = TreeNavigator.getShortTypeName(variableBindingNode.variable.type);
                     SourceMember member = new SourceMember(fieldName, typeShortName, TreeNavigator.isStaticField(variableBindingNode), MemberKind.FIELD, TreeNavigator.getVisibility(fieldDefinition), this);
 
                     members.add(member);
@@ -84,13 +84,13 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
         for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(cl)) {
             String methodName = functionDefinitionNode.name.identifier.name;
             MemberKind memberKind = TreeNavigator.getMemberKind(functionDefinitionNode);
-            String typeShortName = getShortTypeName(functionDefinitionNode.fexpr.signature.result);
+            String typeShortName = TreeNavigator.getShortTypeName(functionDefinitionNode.fexpr.signature.result);
 
             SourceMember member = new SourceMember(methodName, typeShortName, TreeNavigator.isStaticMethod(functionDefinitionNode), memberKind, TreeNavigator.getVisibility(functionDefinitionNode), this);
             ParameterListNode parameters = functionDefinitionNode.fexpr.signature.parameter;
             if (parameters != null) {
                 for (ParameterNode parameterNode : parameters.items) {
-                    member.addParameter(parameterNode.identifier.name, getShortTypeName(parameterNode.type));
+                    member.addParameter(parameterNode.identifier.name, TreeNavigator.getShortTypeName(parameterNode.type));
                 }
             }
 
@@ -103,26 +103,6 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
         }
 
         this.live = LiveCodingUtil.canBeUsedForLiveCoding(cl);
-    }
-
-    private String getShortTypeName(Node typeNode) {
-        if (typeNode == null) {
-            return "void";
-        }
-        if (typeNode instanceof TypeExpressionNode) {
-            TypeExpressionNode typeExpressionNode = (TypeExpressionNode) typeNode;
-            Node typeNodeExpression = typeExpressionNode.expr;
-            if (typeNodeExpression instanceof IdentifierNode) {
-                return ((IdentifierNode) typeNodeExpression).name;
-            } else if (typeNodeExpression instanceof MemberExpressionNode) {
-                return ((MemberExpressionNode) typeNodeExpression).selector.getIdentifier().name;
-            } else {
-                System.err.println("*** Warning: Unsupported type expression node: " + typeNodeExpression.getClass().getSimpleName());
-            }
-        } else {
-            System.err.println("*** Warning: Unsupported type node: " + typeNode.getClass().getSimpleName());
-        }
-        return null;
     }
 
     @Override

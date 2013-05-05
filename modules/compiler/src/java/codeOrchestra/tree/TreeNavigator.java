@@ -32,6 +32,26 @@ public class TreeNavigator {
         add("prototype");
     }};
 
+    public static String getShortTypeName(Node typeNode) {
+        if (typeNode == null) {
+            return "void";
+        }
+        if (typeNode instanceof TypeExpressionNode) {
+            TypeExpressionNode typeExpressionNode = (TypeExpressionNode) typeNode;
+            Node typeNodeExpression = typeExpressionNode.expr;
+            if (typeNodeExpression instanceof IdentifierNode) {
+                return ((IdentifierNode) typeNodeExpression).name;
+            } else if (typeNodeExpression instanceof MemberExpressionNode) {
+                return ((MemberExpressionNode) typeNodeExpression).selector.getIdentifier().name;
+            } else {
+                System.err.println("*** Warning: Unsupported type expression node: " + typeNodeExpression.getClass().getSimpleName());
+            }
+        } else {
+            System.err.println("*** Warning: Unsupported type node: " + typeNode.getClass().getSimpleName());
+        }
+        return null;
+    }
+
     public static String getNamespaceName(UseDirectiveNode pkgStatement) {
         return ((MemberExpressionNode) (pkgStatement).expr).selector.getIdentifier().name;
     }

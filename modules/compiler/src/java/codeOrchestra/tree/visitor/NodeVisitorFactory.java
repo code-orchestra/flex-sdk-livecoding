@@ -117,7 +117,7 @@ public class NodeVisitorFactory {
         visitors.put(WithStatementNode.class, new WithStatementNodeVisitor());
     }
 
-    public static NodeVisitor getVisitor(Class nodeClass) {
+    public static <T extends Node> NodeVisitor<T> getVisitor(Class<T> nodeClass) {
         NodeVisitor nodeVisitor = visitors.get(nodeClass);
         if (nodeVisitor == null) {
             throw new RuntimeException();

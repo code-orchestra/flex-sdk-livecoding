@@ -20,6 +20,23 @@ import java.util.Set;
  */
 public class TreeUtil {
 
+    public static boolean isEqualToIdentifier(String identifier, Node node) {
+        if (node == null) {
+            return false;
+        }
+        if (node instanceof MemberExpressionNode) {
+            MemberExpressionNode memberExpressionNode = (MemberExpressionNode) node;
+            if (memberExpressionNode.base != null) {
+                return false;
+            }
+
+            if (memberExpressionNode.selector != null && memberExpressionNode.selector.getIdentifier() != null) {
+                return identifier.equals(memberExpressionNode.selector.getIdentifier().name);
+            }
+        }
+        return false;
+    }
+
     public static Node getType(String fqName) {
         if ("void".equals(fqName)) {
             return null;

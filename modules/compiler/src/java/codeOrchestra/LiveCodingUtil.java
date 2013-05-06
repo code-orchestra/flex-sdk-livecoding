@@ -2,6 +2,7 @@ package codeOrchestra;
 
 import codeOrchestra.tree.RegularNode;
 import codeOrchestra.tree.TreeNavigator;
+import codeOrchestra.tree.TreeUtil;
 import macromedia.asc.parser.*;
 
 /**
@@ -62,6 +63,20 @@ public class LiveCodingUtil {
             }
             return false;
         }
+        for (RegularNode regularNode : new RegularNode(function.fexpr.body).getDescendants(MemberExpressionNode.class)) {
+            MemberExpressionNode memberExpressionNode = (MemberExpressionNode) regularNode.getASTNode();
+            if (memberExpressionNode.base != null && TreeUtil.isEqualToIdentifier("arguments", memberExpressionNode.base)) {
+                if (memberExpressionNode.selector != null && memberExpressionNode.selector.getIdentifier() != null && "callee".equals(memberExpressionNode.selector.getIdentifier().name)) {
+                    try {
+                        function.cx.localizedWarning(function.pos(), "[COLT] arguments.callee not supported within Live methods");
+                    } catch (Throwable t) {
+                        // ignore
+                    }
+                    return false;
+                }
+            }
+        }
+
 
         return true;
     }

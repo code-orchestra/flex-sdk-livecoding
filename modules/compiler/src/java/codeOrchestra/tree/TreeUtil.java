@@ -41,6 +41,9 @@ public class TreeUtil {
         if ("void".equals(fqName)) {
             return null;
         }
+        if ("*".equals(fqName)) {
+            return null;
+        }
 
         if (fqName.contains(".")) {
             String packageName = StringUtils.namespaceFromLongName(fqName);

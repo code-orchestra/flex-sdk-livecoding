@@ -186,6 +186,9 @@ public class TreeNavigator {
 
     public static List<VariableDefinitionNode> getFieldDefinitions(ClassDefinitionNode classDefinitionNode) {
         List<VariableDefinitionNode> variableDefinitionNodes = new ArrayList<VariableDefinitionNode>();
+        if (classDefinitionNode.statements == null) {
+            return variableDefinitionNodes;
+        }
         for (Node item : classDefinitionNode.statements.items) {
             if (item instanceof VariableDefinitionNode) {
                 variableDefinitionNodes.add((VariableDefinitionNode) item);
@@ -196,6 +199,9 @@ public class TreeNavigator {
 
     public static List<VariableDefinitionNode> getFieldDefinitionsWithAnnotation(ClassDefinitionNode classDefinitionNode, String annotation) {
         List<VariableDefinitionNode> variableDefinitionNodes = new ArrayList<VariableDefinitionNode>();
+        if (classDefinitionNode.statements == null) {
+            return variableDefinitionNodes;
+        }
         for (Node item : classDefinitionNode.statements.items) {
             if (item instanceof VariableDefinitionNode && LiveCodingUtil.hasAnnotation((DefinitionNode) item, annotation)) {
                 variableDefinitionNodes.add((VariableDefinitionNode) item);
@@ -206,6 +212,9 @@ public class TreeNavigator {
 
     public static List<FunctionDefinitionNode> getMethodDefinitionsWithAnnotation(ClassDefinitionNode classDefinitionNode, String annotation) {
         List<FunctionDefinitionNode> functionDefinitionNodes = new ArrayList<FunctionDefinitionNode>();
+        if (classDefinitionNode.statements == null) {
+            return functionDefinitionNodes;
+        }
         for (Node item : classDefinitionNode.statements.items) {
             if (item instanceof FunctionDefinitionNode && LiveCodingUtil.hasAnnotation((DefinitionNode) item, annotation)) {
                 functionDefinitionNodes.add((FunctionDefinitionNode) item);
@@ -216,6 +225,9 @@ public class TreeNavigator {
 
     static List<FunctionDefinitionNode> getAllMethodDefinitions(ClassDefinitionNode classDefinitionNode) {
         List<FunctionDefinitionNode> functionDefinitionNodes = new ArrayList<FunctionDefinitionNode>();
+        if (classDefinitionNode.statements == null) {
+            return functionDefinitionNodes;
+        }
         for (Node item : classDefinitionNode.statements.items) {
             if (item instanceof FunctionDefinitionNode) {
                 functionDefinitionNodes.add((FunctionDefinitionNode) item);

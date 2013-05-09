@@ -65,11 +65,7 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
         for (VariableDefinitionNode fieldDefinition : TreeNavigator.getFieldDefinitions(cl)) {
             for (Node item : fieldDefinition.list.items) {
                 if (item instanceof VariableBindingNode) {
-                    VariableBindingNode variableBindingNode = (VariableBindingNode) item;
-                    String fieldName = variableBindingNode.variable.identifier.name;
-
-                    String typeShortName = TreeNavigator.getShortTypeName(variableBindingNode.variable.type);
-                    SourceMember member = new SourceMember(fieldName, typeShortName, TreeNavigator.isStaticField(variableBindingNode), MemberKind.FIELD, TreeNavigator.getVisibility(fieldDefinition), this);
+                    IMember member = SourceMember.fromVariableBinding((VariableBindingNode) item, fieldDefinition, this);
 
                     members.add(member);
                     if (member.isStatic()) {
@@ -82,17 +78,7 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
         }
         // Methods
         for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(cl)) {
-            String methodName = functionDefinitionNode.name.identifier.name;
-            MemberKind memberKind = TreeNavigator.getMemberKind(functionDefinitionNode);
-            String typeShortName = TreeNavigator.getShortTypeName(functionDefinitionNode.fexpr.signature.result);
-
-            SourceMember member = new SourceMember(methodName, typeShortName, TreeNavigator.isStaticMethod(functionDefinitionNode), memberKind, TreeNavigator.getVisibility(functionDefinitionNode), this);
-            ParameterListNode parameters = functionDefinitionNode.fexpr.signature.parameter;
-            if (parameters != null) {
-                for (ParameterNode parameterNode : parameters.items) {
-                    member.addParameter(parameterNode.identifier.name, TreeNavigator.getShortTypeName(parameterNode.type));
-                }
-            }
+            IMember member = SourceMember.fromFunctionDefinition(functionDefinitionNode, this);
 
             members.add(member);
             if (member.isStatic()) {

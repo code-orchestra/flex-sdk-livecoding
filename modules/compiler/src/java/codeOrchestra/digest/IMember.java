@@ -14,5 +14,6 @@ public interface IMember {
     public MemberKind getKind();
     List<IParameter> getParameters();
     IClassDigest getParent();
+    boolean isAddedDuringProcessing();
 
 }

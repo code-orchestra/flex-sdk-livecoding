@@ -33,6 +33,11 @@ public class SWCMember extends AbstractMember implements IMember {
         return parameters;
     }
 
+    @Override
+    public boolean isAddedDuringProcessing() {
+        return false;
+    }
+
     public void addParameter(String name, String type) {
         if (parameters == null) {
             parameters = new ArrayList<IParameter>();

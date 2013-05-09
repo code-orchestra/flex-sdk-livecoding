@@ -125,17 +125,11 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
 
                 IClassDigest classDigest = DigestManager.getInstance().getClassDigest(TreeUtil.getFqName(originalClass));
                 if (classDigest != null && classDigest instanceof SourceClassDigest) {
-                    boolean isStatic = TreeNavigator.isStaticMethod(modifiedMethod);
-                    SourceMember newMember = new SourceMember(
-                            modifiedMethod.fexpr.identifier.name,
-                            TreeNavigator.getShortTypeName(modifiedMethod.fexpr.signature.result),
-                            isStatic,
-                            TreeNavigator.getMemberKind(modifiedMethod),
-                            TreeNavigator.getVisibility(modifiedMethod),
-                            classDigest);
+                    SourceMember newMember = SourceMember.fromFunctionDefinition(modifiedMethod, classDigest);
+                    newMember.setAddedDuringProcessing(true);
 
                     List<IMember> membersList;
-                    if (isStatic) {
+                    if (newMember.isStatic()) {
                         membersList = classDigest.getStaticMembers();
                     } else {
                         membersList = classDigest.getInstanceMembers();

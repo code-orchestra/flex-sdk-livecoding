@@ -409,7 +409,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                         IClassDigest visibleOwnerInsideClass = DigestManager.getInstance().findVisibleOwnerOfInstanceMember(originalClassFqName, accessorName);
                         if (visibleOwnerInsideClass != null) {
                             IMember instanceMember = visibleOwnerInsideClass.getInstanceMember(accessorName);
-                            if (instanceMember.getVisibility() == Visibility.PROTECTED) {
+                            if (instanceMember.getVisibility() == Visibility.PROTECTED && !instanceMember.isAddedDuringProcessing()) {
                                 String newAccessorName = accessorName + "_protected" + DigestManager.getInstance().getInheritanceLevel(visibleOwnerInsideClass.getFqName());
                                 memberExpression.selector.getIdentifier().name = newAccessorName;
                             }

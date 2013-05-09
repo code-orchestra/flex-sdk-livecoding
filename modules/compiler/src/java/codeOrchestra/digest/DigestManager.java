@@ -186,10 +186,14 @@ public class DigestManager {
     }
 
     public IClassDigest findVisibleOwnerOfInstanceMember(String classFqName, String memberName) {
+        return findVisibleOwnerOfInstanceMember(classFqName, memberName, false);
+    }
+
+    public IClassDigest findVisibleOwnerOfInstanceMember(String classFqName, String memberName, boolean avoidGeneratedMembers) {
         IClassDigest classDigest = digestsMap.get(classFqName);
         while (classDigest != null) {
             for (IMember member : classDigest.getInstanceMembers()) {
-                if (member.getName().equals(memberName)) {
+                if (member.getName().equals(memberName) && !(avoidGeneratedMembers && member.isAddedDuringProcessing())) {
                     return classDigest;
                 }
             }

@@ -20,6 +20,18 @@ import java.util.Set;
  */
 public class TreeUtil {
 
+    public static FunctionDefinitionNode getOrCreateConstructor(ClassDefinitionNode classDefinitionNode) {
+        FunctionDefinitionNode constructorDefinition = TreeNavigator.getConstructorDefinition(classDefinitionNode);
+        if (constructorDefinition == null) {
+            MethodCONode constructorRegularNode = new MethodCONode(classDefinitionNode.name.name, null, classDefinitionNode.cx);
+            constructorDefinition = constructorRegularNode.getFunctionDefinitionNode();
+            constructorDefinition.pkgdef = classDefinitionNode.pkgdef;
+            constructorDefinition.fexpr.body.items.add(new ReturnStatementNode(null));
+            classDefinitionNode.statements.items.add(0, constructorDefinition);
+        }
+        return constructorDefinition;
+    }
+
     public static boolean isEqualToIdentifier(String identifier, Node node) {
         if (node == null) {
             return false;
@@ -216,6 +228,19 @@ public class TreeUtil {
             classDefinitionNode.statements.items.add(constructor);
         }
         return constructor;
+    }
+
+    public static ExpressionStatementNode createExpressionStatement(Node expression) {
+        return new ExpressionStatementNode(new ListNode(null, expression, -1));
+    }
+
+    public static MemberExpressionNode createAssignmentExpression(Node base, IdentifierNode expr, ArgumentListNode args) {
+        return new MemberExpressionNode(base,
+                new SetExpressionNode(
+                        expr,
+                        args
+                )
+                , -1);
     }
 
     public static void createUnitFromInternalClass(ClassDefinitionNode internalClass, String packageName, Context cx, List<ImportDirectiveNode> imports, Set<Name> inheritance) {

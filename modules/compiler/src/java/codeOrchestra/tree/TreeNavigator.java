@@ -3,6 +3,7 @@ package codeOrchestra.tree;
 import codeOrchestra.LiveCodingUtil;
 import codeOrchestra.digest.MemberKind;
 import codeOrchestra.digest.Visibility;
+import codeOrchestra.util.Pair;
 import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
@@ -184,6 +185,38 @@ public class TreeNavigator {
         return null;
     }
 
+    public static VariableBindingNode getFieldDefinition(String name, ClassDefinitionNode classDefinitionNode) {
+        for (Pair<VariableDefinitionNode, VariableBindingNode> pair : getFieldDefinitionsVars(classDefinitionNode)) {
+            if (name.equals(pair.getO2().variable.identifier.name)) {
+                return pair.getO2();
+            }
+        }
+        return null;
+    }
+
+
+    public static List<Pair<VariableDefinitionNode, VariableBindingNode>> getFieldDefinitionsVars(ClassDefinitionNode classDefinitionNode) {
+        List<Pair<VariableDefinitionNode, VariableBindingNode>> variableBindingNodes = new ArrayList<Pair<VariableDefinitionNode, VariableBindingNode>>();
+
+        if (classDefinitionNode.statements == null) {
+            return variableBindingNodes;
+        }
+        for (Node item : classDefinitionNode.statements.items) {
+            if (item instanceof VariableDefinitionNode) {
+                VariableDefinitionNode variableDefinitionNode = (VariableDefinitionNode) item;
+                if (variableDefinitionNode.list != null && variableDefinitionNode.list.items != null) {
+                    for (Node node : variableDefinitionNode.list.items) {
+                        if (node instanceof VariableBindingNode) {
+                            variableBindingNodes.add(new Pair<VariableDefinitionNode, VariableBindingNode>(variableDefinitionNode, (VariableBindingNode) node));
+                        }
+                    }
+                }
+            }
+        }
+
+        return variableBindingNodes;
+    }
+
     public static List<VariableDefinitionNode> getFieldDefinitions(ClassDefinitionNode classDefinitionNode) {
         List<VariableDefinitionNode> variableDefinitionNodes = new ArrayList<VariableDefinitionNode>();
         if (classDefinitionNode.statements == null) {
@@ -340,6 +373,18 @@ public class TreeNavigator {
 
     public static boolean isSetter(FunctionDefinitionNode functionDefinitionNode) {
         return functionDefinitionNode.name.kind == Tokens.SET_TOKEN;
+    }
+
+    public static FunctionDefinitionNode getLiveCodingInitializerMethod(ClassDefinitionNode modifiedClass) {
+        String initializerName = "live_initialize_" + modifiedClass.name.name;
+
+        for (FunctionDefinitionNode functionDefinitionNode : getMethodDefinitions(modifiedClass)) {
+            if (initializerName.equals(functionDefinitionNode.fexpr.identifier.name)) {
+                return functionDefinitionNode;
+            }
+        }
+
+        return null;
     }
 
 }

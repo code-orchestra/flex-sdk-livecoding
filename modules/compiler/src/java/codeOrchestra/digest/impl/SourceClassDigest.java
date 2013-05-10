@@ -101,6 +101,14 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
         return null;
     }
 
+    @Override
+    public List<IMember> getAllMembers() {
+        List<IMember> allMembers = new ArrayList<IMember>();
+        allMembers.addAll(getInstanceMembers());
+        allMembers.addAll(getStaticMembers());
+        return allMembers;
+    }
+
     public List<IMember> getInstanceMembers() {
         return instanceMembers;
     }

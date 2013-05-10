@@ -66,6 +66,14 @@ public class SWCClassDigest implements IClassDigest {
     }
 
     @Override
+    public List<IMember> getAllMembers() {
+        List<IMember> allMembers = new ArrayList<IMember>();
+        allMembers.addAll(getInstanceMembers());
+        allMembers.addAll(getStaticMembers());
+        return allMembers;
+    }
+
+    @Override
     public List<IMember> getInstanceMembers() {
         return instanceMembers;
     }

@@ -3,12 +3,12 @@ package codeOrchestra.util;
 /**
  * @author Alexander Eliseyev
  */
-public class Pair<T extends Object> {
+public class Pair<T,S extends Object> {
 
     private T o1;
-    private T o2;
+    private S o2;
 
-    public Pair(T o1, T o2) {
+    public Pair(T o1, S o2) {
         this.o1 = o1;
         this.o2 = o2;
     }
@@ -17,7 +17,7 @@ public class Pair<T extends Object> {
         return o1;
     }
 
-    public T getO2() {
+    public S getO2() {
         return o2;
     }
 }

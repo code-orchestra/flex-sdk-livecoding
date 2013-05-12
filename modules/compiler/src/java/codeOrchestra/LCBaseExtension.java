@@ -24,23 +24,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
     protected void performModifications(CompilationUnit unit) {
         ClassDefinitionNode classDefinitionNode = TreeNavigator.getClassDefinition(unit);
         if (classDefinitionNode == null) {
-            Object syntaxTree = unit.getSyntaxTree();
-            if (syntaxTree != null && syntaxTree instanceof ProgramNode) {
-                ProgramNode programNode = (ProgramNode) syntaxTree;
-                for (Node item : programNode.statements.items) {
-                    if (item instanceof PackageDefinitionNode) {
-                        PackageDefinitionNode packageDefinitionNode = (PackageDefinitionNode) item;
-                        for (Node pkgItem : packageDefinitionNode.statements.items) {
-                            if (pkgItem instanceof NamespaceDefinitionNode) {
-                                NamespaceDefinitionNode namespaceDefinitionNode = (NamespaceDefinitionNode) pkgItem;
-                                if (namespaceDefinitionNode.value != null && namespaceDefinitionNode.value instanceof LiteralStringNode) {
-                                    DigestManager.getInstance().addNamespace(namespaceDefinitionNode.name.name, ((LiteralStringNode) namespaceDefinitionNode.value).value);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            Transformations.processToplevelNamespace(unit);
             return;
         }
 
@@ -101,7 +85,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             if (!embedFields.isEmpty()) {
                 TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "AssetUpdateEvent");
 
-                MethodCONode assetsUpdateListener = new MethodCONode("assetsUpdateListener" + generateId(), null, classDefinitionNode.cx);
+                MethodCONode assetsUpdateListener = new MethodCONode("assetsUpdateListener" + StringUtils.generateId(), null, classDefinitionNode.cx);
                 assetsUpdateListener.addParameter("event", "AssetUpdateEvent");
                 FunctionDefinitionNode assetsBroadcastMethod = assetsUpdateListener.getFunctionDefinitionNode();
                 assetsBroadcastMethod.pkgdef = classDefinitionNode.pkgdef;
@@ -484,31 +468,11 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         for (String name : projectNavigator.getClassNames(packageName)) {
             constructor.statements.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(name), -1)));
         }
-        // We now do it in the live classes constructor
-        /*
-        for (String name : projectNavigator.getLiveCodingClassNames(packageName)) {
-            constructor.statements.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(name, "prototype"), -1)));
-        }
-        */
         for (String name : ProvidedPackages.getClassNames()) {
             CallExpressionNode node = new CallExpressionNode(new IdentifierNode(name, -1), null);
             node.is_new = true;
             constructor.statements.add(new ExpressionStatementNode(new ListNode(null, new MemberExpressionNode(null, node, -1), -1)));
         }
-        /* TODO: These imports does not help to resolve ModelDependencies classes, IDUNNO why. But we can skip it:
-
-           If model A depends on model B, then there exists at least one class in A that refers to a class in B.
-           Also that class in B refers to ModelDependencies_B. So ModelDependencies_B will surely get into project,
-           even without direct reference in ModelDependencies_A
-
-        for (String depName : projectNavigator.getModelDependencies(packageName)) {
-            String depClassName = "ModelDependencies_" + depName.replaceAll("\\.", "_");
-            CallExpressionNode node = new CallExpressionNode(new IdentifierNode(depClassName, -1), null);
-            node.is_new = true;
-            constructor.statements.add(new ExpressionStatementNode(new ListNode(null, new MemberExpressionNode(null, node, -1), -1)));
-            classCONode.addImport(depName, depClassName);
-        }
-        */
         constructor.statements.add(new ReturnStatementNode(null));
         classCONode.methods.add(constructor);
 
@@ -565,7 +529,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                         TreeUtil.createCall("LiveCodeRegistry", "getInstance", null),
                         new CallExpressionNode(
                                 new IdentifierNode("initSession", -1),
-                                new ArgumentListNode(new LiteralStringNode(generateId()), -1)
+                                new ArgumentListNode(new LiteralStringNode(StringUtils.generateId()), -1)
                         ),
                         -1
                 ),

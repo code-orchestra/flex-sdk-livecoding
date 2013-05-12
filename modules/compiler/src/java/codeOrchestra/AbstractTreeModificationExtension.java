@@ -271,7 +271,6 @@ public abstract class AbstractTreeModificationExtension implements Extension {
             }
         }
 
-        boolean addedGetTimerImport = false;
         // 'This' scope modifications
         List<Pair<Node, Node>> deferredInsertions = new ArrayList<Pair<Node, Node>>();
         for (Node statement : methodBody) {
@@ -292,140 +291,21 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 add(DoStatementNode.class);
             }});
             for (RegularNode loopStatementRegularNode : loopStatements) {
-                Node loopASTNode = loopStatementRegularNode.getASTNode();
-                if (loopASTNode instanceof HasBody && ((HasBody) loopASTNode).getBody() instanceof StatementListNode) {
-                    StatementListNode loopBody = (StatementListNode) ((HasBody) loopASTNode).getBody();
-
-                    // Var definition
-                    String id = generateId();
-                    Node initializer = new BinaryExpressionNode(Tokens.PLUS_TOKEN, new LiteralStringNode(id), TreeUtil.createCall(null, "getTimer", null));
-                    String varName = "reqId" + id;
-                    loopBody.items.add(0, TreeUtil.createLocalVariable(parentClass.pkgdef, varName, "String", initializer));
-
-                    // LiveCodingCodeFlowUtil.checkLoop call
-                    loopBody.items.add(1, new ExpressionStatementNode(new ListNode(null,
-                            TreeUtil.createCall(
-                                    "LiveCodingCodeFlowUtil",
-                                    "checkLoop",
-                                    new ArgumentListNode(TreeUtil.createIdentifier(varName), -1)
-                            ),
-                            -1)));
-
-                    if (!addedGetTimerImport) {
-                        classCONode.addImport("flash.utils", "getTimer");
-                        addedGetTimerImport = true;
-                    }
-                }
-
-                ExpressionStatementNode emptyCheckLoopStatement = new ExpressionStatementNode(new ListNode(null,
-                        TreeUtil.createCall(
-                                "LiveCodingCodeFlowUtil",
-                                "checkLoop",
-                                new ArgumentListNode(new LiteralStringNode(""), -1)
-                        ),
-                        -1));
-
-                RegularNode parent = loopStatementRegularNode.getParent();
-                if (parent == null) {
-                    deferredInsertions.add(new Pair<Node, Node>(loopASTNode, emptyCheckLoopStatement));
-                } else if (parent.getASTNode() instanceof StatementListNode) {
-                    StatementListNode parentBody = (StatementListNode) parent.getASTNode();
-                    parentBody.items.add(parentBody.items.indexOf(loopASTNode) + 1, emptyCheckLoopStatement);
-                }
+                LoopStatement loopASTNode = (LoopStatement) loopStatementRegularNode.getASTNode();
+                Transformations.transformLoopStatement(parentClass, classCONode, deferredInsertions, loopStatementRegularNode, loopASTNode);
             }
 
             // COLT-25 - Replace all field/method references without 'this.' to 'thisScope.x'
             List<RegularNode> memberExpressionNodes = statementRegularNode.getDescendants(MemberExpressionNode.class);
             for (RegularNode regularMemberExprNode : memberExpressionNodes) {
                 MemberExpressionNode memberExpression = (MemberExpressionNode) regularMemberExprNode.getASTNode();
-                if (memberExpression.base == null) {
-                    SelectorNode selector = memberExpression.selector;
-
-                    // COLT-104 - skip transforming the local variable references
-                    if (selector != null && selector.getIdentifier() != null && localVariables.contains(selector.getIdentifier().name)) {
-                        continue;
-                    }
-
-                    // COLT-38 - Transform trace() to LogUtil.log()
-                    if (selector instanceof CallExpressionNode) {
-                        if ("trace".equals(selector.getIdentifier().name)) {
-                            CallExpressionNode callExpressionNode = (CallExpressionNode) selector;
-
-                            ArgumentListNode errorTraceArguments = new ArgumentListNode(new LiteralStringNode("trace"), -1);
-                            errorTraceArguments.items.add(new LiteralStringNode(""));
-                            errorTraceArguments.items.add(new LiteralStringNode(""));
-                            errorTraceArguments.items.add(new LiteralStringNode(originalClassFqName));
-                            errorTraceArguments.items.add(new BinaryExpressionNode(Tokens.PLUS_TOKEN, new LiteralStringNode(""), callExpressionNode.args.items.get(0)));
-
-                            callExpressionNode.expr = new IdentifierNode("log", -1);
-                            callExpressionNode.args = errorTraceArguments;
-
-                            memberExpression.base = TreeUtil.createIdentifier("LogUtil");
-                            continue;
-                        }
-                    }
-
-                    IdentifierNode identifier = selector.getIdentifier();
-                    if (identifier != null) {
-                        if (!staticMethod && DigestManager.getInstance().isInstanceMemberVisibleInsideClass(originalClassFqName, identifier.name)) {
-                            memberExpression.base = TreeUtil.createIdentifier("thisScope");
-                        } else if (DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name) != null) {
-                            String ownerOfStaticMemberFqName = DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name);
-                            String shortName = StringUtils.shortNameFromLongName(ownerOfStaticMemberFqName);
-                            memberExpression.base = TreeUtil.createIdentifier(shortName);
-                            // TODO: add import!
-                        } else {
-                            String possibleClassName = identifier.name;
-                            if (className.equals(possibleClassName)) {
-                                continue;
-                            }
-
-                            Set<String> shortNamesFromPackage = DigestManager.getInstance().getShortNamesFromPackage(originalPackageName);
-                            if (shortNamesFromPackage != null && shortNamesFromPackage.contains(possibleClassName)) {
-                                selector.expr = new QualifiedIdentifierNode(new LiteralStringNode(originalPackageName), possibleClassName, -1);
-                            }
-                        }
-                    }
-                }
+                Transformations.transformMemberReferences(className, staticMethod, originalPackageName, originalClassFqName, localVariables, memberExpression);
             }
 
             // COLT-34 redirect protected/super references
             for (RegularNode regularMemberExprNode : memberExpressionNodes) {
                 MemberExpressionNode memberExpression = (MemberExpressionNode) regularMemberExprNode.getASTNode();
-                Node base = memberExpression.base;
-                if (base == null) {
-                    continue;
-                }
-
-                if (base instanceof MemberExpressionNode) {
-                    // thisScope.protectedMember
-                    MemberExpressionNode memberExpressionBase = (MemberExpressionNode) base;
-
-                    if (memberExpressionBase.base == null && memberExpressionBase.selector.getIdentifier().name.equals("thisScope")) {
-                        // COLT-145
-                        if (memberExpression.selector.getIdentifier() == null) {
-                            continue;
-                        }
-                        String accessorName = memberExpression.selector.getIdentifier().name;
-                        IClassDigest visibleOwnerInsideClass = DigestManager.getInstance().findVisibleOwnerOfInstanceMember(originalClassFqName, accessorName);
-                        if (visibleOwnerInsideClass != null) {
-                            IMember instanceMember = visibleOwnerInsideClass.getInstanceMember(accessorName);
-                            if (instanceMember.getVisibility() == Visibility.PROTECTED && !instanceMember.isAddedDuringProcessing()) {
-                                String newAccessorName = accessorName + "_protected" + DigestManager.getInstance().getInheritanceLevel(visibleOwnerInsideClass.getFqName());
-                                memberExpression.selector.getIdentifier().name = newAccessorName;
-                            }
-                        }
-                    }
-                } else if (base instanceof SuperExpressionNode) {
-                    // super.someMember
-                    String accessorName = memberExpression.selector.getIdentifier().name;
-                    IClassDigest visibleOwnerInsideClass = DigestManager.getInstance().findVisibleOwnerOfInstanceMember(originalClassFqName, accessorName);
-                    if (visibleOwnerInsideClass != null) {
-                        String newAccessorName = accessorName + "_overriden_super" + DigestManager.getInstance().getInheritanceLevel(visibleOwnerInsideClass.getFqName());
-                        memberExpression.selector.getIdentifier().name = newAccessorName;
-                        memberExpression.base = TreeUtil.createIdentifier("thisScope");
-                    }
-                }
+                Transformations.transformProtectedAndSuperReferences(originalClassFqName, memberExpression);
             }
         }
         for (Pair<Node, Node> deferredInsertion : deferredInsertions) {
@@ -709,7 +589,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         }
 
         boolean staticMethod = TreeNavigator.isStaticMethod(functionDefinitionNode);
-        String id = generateId();
+        String id = StringUtils.generateId();
         String listenerName = functionDefinitionNode.name.identifier.name + "_codeUpdateListener" + id;
         MethodCONode listener = new MethodCONode(listenerName, null, classDefinitionNode.cx);
         listener.addParameter("e", "MethodUpdateEvent");
@@ -805,10 +685,6 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
         ObjectList<Node> constructorBody = constructorDefinition.fexpr.body.items;
         constructorBody.add(constructorBody.size() - 1, listenerAddExpressionStatement);
-    }
-
-    protected String generateId() {
-        return UUID.randomUUID().toString().substring(0, 8);
     }
 
 }

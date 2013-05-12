@@ -1,9 +1,15 @@
 package codeOrchestra.util;
 
+import java.util.UUID;
+
 /**
  * @author Alexander Eliseyev
  */
 public class StringUtils {
+
+    public static String generateId() {
+        return UUID.randomUUID().toString().substring(0, 8);
+    }
 
     public static String concatenate(String str, int number) {
         StringBuilder sb = new StringBuilder();

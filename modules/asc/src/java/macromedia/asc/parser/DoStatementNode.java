@@ -25,7 +25,7 @@ import macromedia.asc.semantics.*;
  *
  * @author Jeff Dyer
  */
-public class DoStatementNode extends Node implements HasBody
+public class DoStatementNode extends Node implements HasBody, LoopStatement
 {
 	public Node statements;
 	public Node expr;

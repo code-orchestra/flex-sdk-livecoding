@@ -2,6 +2,7 @@ package codeOrchestra.tree;
 
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +41,18 @@ public class MethodCONode extends CONode {
     }
 
     public void addParameter(String paramName, String paramType) {
+        addParameter(paramName, paramType != null ? new TypeExpressionNode(
+                TreeUtil.createIdentifier(paramType),
+                true,
+                false
+        ) : null);
+    }
+
+    public void addParameter(String paramName, TypeExpressionNode paramType) {
         addParameter(paramName, paramType, null);
     }
 
-    public void addParameter(String paramName, String paramType, Node initializer) {
+    public void addParameter(String paramName, TypeExpressionNode paramType, Node initializer) {
         Parameter parameter = new Parameter(paramName, paramType, initializer);
         if (!parameters.contains(parameter)) {
             parameters.add(parameter);
@@ -73,23 +82,27 @@ public class MethodCONode extends CONode {
             Parameter firstParameter = parameters.get(0);
             parameterListNode = new ParameterListNode(
                     null,
-                    TreeUtil.createParameterNode(firstParameter.paramName, firstParameter.paramType, firstParameter.initializer),
+                    firstParameter.isVector ? TreeUtil.createParameterNode(firstParameter.paramName, (String) null, firstParameter.initializer) : TreeUtil.createParameterNode(firstParameter.paramName, firstParameter.paramTypeString, firstParameter.initializer),
                     -1
             );
             parameterListNode.decl_styles.add((byte) 0);
             for (int i = 1; i < parameters.size(); i++) {
                 Parameter parameter = parameters.get(i);
-                parameterListNode.items.add(TreeUtil.createParameterNode(parameter.paramName, parameter.paramType, parameter.initializer));
+                parameterListNode.items.add(parameter.isVector ? TreeUtil.createParameterNode(parameter.paramName, (String) null, parameter.initializer) : TreeUtil.createParameterNode(parameter.paramName, parameter.paramTypeString, parameter.initializer));
                 parameterListNode.decl_styles.add((byte) 0);
             }
         }
         TypeExpressionNode result = null;
         if (returnType != null) {
-            result = new TypeExpressionNode(
-                    TreeUtil.createIdentifier(returnType),
-                    true,
-                    false
-            );
+            if ("Vector".equals(returnType)) {
+                result = null;
+            } else {
+                result = new TypeExpressionNode(
+                        TreeUtil.createIdentifier(returnType),
+                        true,
+                        false
+                );
+            }
         }
         FunctionCommonNode fexpr = new FunctionCommonNode(
                 cx,
@@ -111,12 +124,24 @@ public class MethodCONode extends CONode {
 
     private static class Parameter {
         public String paramName;
-        public String paramType;
-        public Node initializer;
+        public String paramTypeString;
 
-        private Parameter(String paramName, String paramType, Node initializer) {
+        public Node initializer;
+        public TypeExpressionNode paramTypeNode;
+
+        public boolean isVector;
+
+        private Parameter(String paramName, TypeExpressionNode paramTypeNode, Node initializer) {
             this.paramName = paramName;
-            this.paramType = paramType;
+
+            if (paramTypeNode != null) {
+                this.paramTypeString = ((IdentifierNode) ((MemberExpressionNode) (paramTypeNode.expr)).selector.expr).name;
+                if ("Vector".equals(paramTypeString)) {
+                    isVector = true;
+                }
+            }
+
+            this.paramTypeNode = SerializationUtils.clone(paramTypeNode);
             this.initializer = initializer;
         }
 
@@ -128,7 +153,8 @@ public class MethodCONode extends CONode {
             Parameter parameter = (Parameter) o;
 
             if (paramName != null ? !paramName.equals(parameter.paramName) : parameter.paramName != null) return false;
-            if (paramType != null ? !paramType.equals(parameter.paramType) : parameter.paramType != null) return false;
+            if (paramTypeString != null ? !paramTypeString.equals(parameter.paramTypeString) : parameter.paramTypeString != null)
+                return false;
 
             return true;
         }
@@ -136,7 +162,7 @@ public class MethodCONode extends CONode {
         @Override
         public int hashCode() {
             int result = paramName != null ? paramName.hashCode() : 0;
-            result = 31 * result + (paramType != null ? paramType.hashCode() : 0);
+            result = 31 * result + (paramTypeString != null ? paramTypeString.hashCode() : 0);
             return result;
         }
     }

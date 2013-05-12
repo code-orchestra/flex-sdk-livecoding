@@ -191,7 +191,20 @@ public class TreeUtil {
         return new ParameterNode(
                 Tokens.VAR_TOKEN,
                 new IdentifierNode(paramName, -1),
-                paramType != null ? new TypeExpressionNode(createIdentifier(paramType), true, false) : null,
+                paramType != null ? new TypeExpressionNode(
+                        TreeUtil.createIdentifier(paramType),
+                        true,
+                        false
+                ) : null,
+                initializer
+        );
+    }
+
+    public static ParameterNode createParameterNode(String paramName, TypeExpressionNode paramType, Node initializer) {
+        return new ParameterNode(
+                Tokens.VAR_TOKEN,
+                new IdentifierNode(paramName, -1),
+                paramType,
                 initializer
         );
     }

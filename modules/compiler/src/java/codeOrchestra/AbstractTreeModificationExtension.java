@@ -241,13 +241,16 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
         ParameterListNode parameters = functionDefinitionNode.fexpr.signature.parameter;
         if (parameters != null) {
+            ParameterListNode parametersClone = SerializationUtils.clone(parameters);
+
+
             for (ParameterNode parameterNode : parameters.items) {
-//                Node initializer = parameterNode.init == null ? null : SerializationUtils.clone(parameterNode.init);
+//              Node initializer = parameterNode.init == null ? null : SerializationUtils.clone(parameterNode.init);
                 Node initializer = null;
                 if (parameterNode.type == null) {
                     runMethod.addParameter(parameterNode.identifier.name, null, initializer);
                 } else {
-                    runMethod.addParameter(parameterNode.identifier.name, ((IdentifierNode) ((MemberExpressionNode) ((TypeExpressionNode) parameterNode.type).expr).selector.expr).name, initializer);
+                    runMethod.addParameter(parameterNode.identifier.name, (TypeExpressionNode) parameterNode.type, initializer);
                 }
             }
         }

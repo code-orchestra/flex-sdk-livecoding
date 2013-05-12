@@ -446,6 +446,21 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         // Fields
         for (VariableDefinitionNode variableDefinitionNode : TreeNavigator.getFieldDefinitions(classDefinitionNode)) {
             TreeUtil.makePublic(variableDefinitionNode.attrs, false);
+
+            // Make vars out of constants
+            if (variableDefinitionNode.kind == Tokens.CONST_TOKEN) {
+                variableDefinitionNode.kind = Tokens.VAR_TOKEN;
+            }
+            if (variableDefinitionNode.list != null && variableDefinitionNode.list.items != null) {
+                for (Node node : variableDefinitionNode.list.items) {
+                    if (node instanceof VariableBindingNode) {
+                        VariableBindingNode variableBindingNode = (VariableBindingNode) node;
+                        if (variableBindingNode.kind == Tokens.CONST_TOKEN) {
+                            variableBindingNode.kind = Tokens.VAR_TOKEN;
+                        }
+                    }
+                }
+            }
         }
 
         // Methods

@@ -120,18 +120,36 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                     VariableBindingNode var
                             = (VariableBindingNode) variableDefinitionNode.list.items.get(0);
 
-                    String prefix;
+                    String sourcePrefixedByPackage;
                     if (!StringUtils.isEmpty(packageName)) {
-                        prefix = StringUtils.concatenate("../", packageName.split("[.]").length);
+                        // Handle ".." in source
+                        if (source.contains("../")) {
+                            try {
+                                StringBuilder pathBuilder = new StringBuilder();
+                                int goUpCount = org.apache.commons.lang3.StringUtils.countMatches(source, "../");
+                                String[] packageSplit = packageName.split("\\.");
+                                for (int i = 0; i < packageSplit.length - goUpCount; i++) {
+                                    pathBuilder.append(packageSplit[i]).append("/");
+                                }
+                                pathBuilder.append(source.replace("../", ""));
+
+                                sourcePrefixedByPackage = pathBuilder.toString();
+                            } catch (Throwable t) {
+                                sourcePrefixedByPackage = packageName.replace(".", "/") + "/" + source;
+                            }
+                        } else {
+                            sourcePrefixedByPackage = packageName.replace(".", "/") + "/" + source;
+                        }
                     } else {
-                        prefix = "";
+                        sourcePrefixedByPackage = source;
                     }
+
                     ListNode condition = new ListNode(
                             null,
                             new BinaryExpressionNode(
                                     Tokens.EQUALS_TOKEN,
-                                    new BinaryExpressionNode(Tokens.PLUS_TOKEN, new LiteralStringNode(prefix), TreeUtil.createIdentifier("event", "source")),
-                                    new LiteralStringNode(source)
+                                    TreeUtil.createIdentifier("event", "source"),
+                                    new LiteralStringNode(sourcePrefixedByPackage)
                             ),
                             -1
                     );
@@ -142,7 +160,6 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                                     new ListNode(null, new MemberExpressionNode(new ThisExpressionNode(), new SetExpressionNode(TreeUtil.createIdentifier(embedFieldName), new ArgumentListNode(TreeUtil.createIdentifier("event", "assetClass"), -1)),
                             -1), -1
                     )), -1)));
-
 
                     // Call listeners
                     List<FunctionDefinitionNode> liveAssetUpdateListeners = TreeNavigator.getMethodDefinitionsWithAnnotation(classDefinitionNode, "LiveAssetUpdateListener");

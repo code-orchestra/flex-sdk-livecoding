@@ -4,13 +4,12 @@ import codeOrchestra.digest.DigestManager;
 import codeOrchestra.digest.IClassDigest;
 import codeOrchestra.digest.IMember;
 import codeOrchestra.digest.Visibility;
-import codeOrchestra.tree.ClassCONode;
-import codeOrchestra.tree.RegularNode;
-import codeOrchestra.tree.TreeUtil;
+import codeOrchestra.tree.*;
 import codeOrchestra.util.Pair;
 import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
+import macromedia.asc.util.ObjectList;
 
 import java.util.List;
 import java.util.Set;
@@ -19,6 +18,130 @@ import java.util.Set;
  * @author Alexander Eliseyev
  */
 public class Transformations {
+
+    public static void extractInternalClass(CompilationUnit unit, ClassDefinitionNode classDefinitionNode, String packageName, List<String> internalClassesNames, ProgramNode syntaxTree, ClassDefinitionNode internalClass) {
+        internalClassesNames.add(internalClass.name.name);
+
+        // Detach
+        syntaxTree.statements.items.remove(internalClass);
+
+        // Make public
+        internalClass.attrs = new AttributeListNode(TreeUtil.createPublicModifier(), -1);
+
+        // Add as a separate unit
+        TreeUtil.createUnitFromInternalClass(internalClass, packageName, classDefinitionNode.cx, TreeNavigator.getImports(syntaxTree), unit.inheritance);
+    }
+
+    public static void addAssetListeners(CompilationUnit unit, ClassDefinitionNode classDefinitionNode, String packageName, List<VariableDefinitionNode> embedFields) {
+        TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "AssetUpdateEvent");
+
+        MethodCONode assetsUpdateListener = new MethodCONode("assetsUpdateListener" + StringUtils.generateId(), null, classDefinitionNode.cx);
+        assetsUpdateListener.addParameter("event", "AssetUpdateEvent");
+        FunctionDefinitionNode assetsBroadcastMethod = assetsUpdateListener.getFunctionDefinitionNode();
+        assetsBroadcastMethod.pkgdef = classDefinitionNode.pkgdef;
+
+        for (VariableDefinitionNode variableDefinitionNode : embedFields) {
+            MetaDataNode embed = LiveCodingUtil.getAnnotation(variableDefinitionNode, "Embed");
+            if (embed == null) {
+                continue;
+            }
+
+            String source = embed.getValue("source");
+            if (StringUtils.isEmpty(source)) {
+                continue;
+            }
+
+            VariableBindingNode var
+                    = (VariableBindingNode) variableDefinitionNode.list.items.get(0);
+
+            String sourcePrefixedByPackage;
+            if (!StringUtils.isEmpty(packageName)) {
+                // Handle ".." in source
+                if (source.contains("../")) {
+                    try {
+                        StringBuilder pathBuilder = new StringBuilder();
+                        int goUpCount = org.apache.commons.lang3.StringUtils.countMatches(source, "../");
+                        String[] packageSplit = packageName.split("\\.");
+                        for (int i = 0; i < packageSplit.length - goUpCount; i++) {
+                            pathBuilder.append(packageSplit[i]).append("/");
+                        }
+                        pathBuilder.append(source.replace("../", ""));
+
+                        sourcePrefixedByPackage = pathBuilder.toString();
+                    } catch (Throwable t) {
+                        sourcePrefixedByPackage = packageName.replace(".", "/") + "/" + source;
+                    }
+                } else {
+                    sourcePrefixedByPackage = packageName.replace(".", "/") + "/" + source;
+                }
+            } else {
+                sourcePrefixedByPackage = source;
+            }
+
+            ListNode condition = new ListNode(
+                    null,
+                    new BinaryExpressionNode(
+                            Tokens.EQUALS_TOKEN,
+                            TreeUtil.createIdentifier("event", "source"),
+                            new LiteralStringNode(sourcePrefixedByPackage)
+                    ),
+                    -1
+            );
+            String embedFieldName = var.variable.identifier.name;
+            StatementListNode thenActions = new StatementListNode(new ExpressionStatementNode(new ListNode(
+                    null,
+                    new ExpressionStatementNode(
+                            new ListNode(null, new MemberExpressionNode(new ThisExpressionNode(), new SetExpressionNode(TreeUtil.createIdentifier(embedFieldName), new ArgumentListNode(TreeUtil.createIdentifier("event", "assetClass"), -1)),
+                                    -1), -1
+                            )), -1)));
+
+            // Call listeners
+            List<FunctionDefinitionNode> liveAssetUpdateListeners = TreeNavigator.getMethodDefinitionsWithAnnotation(classDefinitionNode, "LiveAssetUpdateListener");
+            for (FunctionDefinitionNode liveAssetUpdateListener : liveAssetUpdateListeners) {
+                MetaDataNode liveAssetUpdateListenerAnnotation = LiveCodingUtil.getAnnotation(liveAssetUpdateListener, "LiveAssetUpdateListener");
+                String sourceParam = liveAssetUpdateListenerAnnotation.getValue("source");
+                String fieldParam = liveAssetUpdateListenerAnnotation.getValue("field");
+
+                boolean validField = (!StringUtils.isEmpty(embedFieldName)) && (fieldParam != null && fieldParam.equals(embedFieldName));
+                boolean noParams = liveAssetUpdateListenerAnnotation.getValues() == null || liveAssetUpdateListenerAnnotation.getValues().length == 0;
+                boolean validSource = source.equals(sourceParam);
+
+                if (noParams || validField || validSource) {
+                    thenActions.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createCall(null, liveAssetUpdateListener.fexpr.identifier.name, null), -1)));
+                }
+            }
+
+            thenActions.items.add(new ReturnStatementNode(null));
+            IfStatementNode ifStatementNode = new IfStatementNode(condition, thenActions, null);
+            assetsBroadcastMethod.fexpr.body.items.add(ifStatementNode);
+        }
+
+        assetsBroadcastMethod.fexpr.body.items.add(new ReturnStatementNode(null));
+        classDefinitionNode.statements.items.add(assetsBroadcastMethod);
+
+                /*
+                    LiveCodeRegistry.getInstance().addEventListener(AssetUpdateEvent.ASSET_UPDATE, this.assetsUpdateListener7055724444913929522, false, 0, true);
+                 */
+
+        FunctionDefinitionNode constructorDefinition = TreeNavigator.getConstructorDefinition(classDefinitionNode);
+        ArgumentListNode args = new ArgumentListNode(TreeUtil.createIdentifier("AssetUpdateEvent", "ASSET_UPDATE"), -1);
+        MemberExpressionNode qListenerName = TreeUtil.createThisIdentifier(assetsUpdateListener.methodName);
+        args.items.add(qListenerName);
+        args.items.add(new LiteralBooleanNode(false));
+        args.items.add(new LiteralNumberNode(String.valueOf("0")));
+        args.items.add(new LiteralBooleanNode(true));
+        CallExpressionNode selector = new CallExpressionNode(new IdentifierNode("addEventListener", -1), args);
+        MemberExpressionNode item = new MemberExpressionNode(TreeUtil.createCall("LiveCodeRegistry", "getInstance", null), selector, -1);
+        ExpressionStatementNode listenerAddExpressionStatement = new ExpressionStatementNode(new ListNode(null, item, -1));
+        if (constructorDefinition == null) {
+            MethodCONode constructorRegularNode = new MethodCONode(classDefinitionNode.name.name, null, classDefinitionNode.cx);
+            constructorDefinition = constructorRegularNode.getFunctionDefinitionNode();
+            constructorDefinition.pkgdef = classDefinitionNode.pkgdef;
+            constructorDefinition.fexpr.body.items.add(new ReturnStatementNode(null));
+        }
+        ObjectList<Node> constructorBody = constructorDefinition.fexpr.body.items;
+        constructorBody.add(constructorBody.size() - 1, listenerAddExpressionStatement);
+    }
 
     public static void processToplevelNamespace(CompilationUnit unit) {
         Object syntaxTree = unit.getSyntaxTree();

@@ -242,10 +242,12 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         ParameterListNode parameters = functionDefinitionNode.fexpr.signature.parameter;
         if (parameters != null) {
             for (ParameterNode parameterNode : parameters.items) {
+//                Node initializer = parameterNode.init == null ? null : SerializationUtils.clone(parameterNode.init);
+                Node initializer = null;
                 if (parameterNode.type == null) {
-                    runMethod.addParameter(parameterNode.identifier.name, null);
+                    runMethod.addParameter(parameterNode.identifier.name, null, initializer);
                 } else {
-                    runMethod.addParameter(parameterNode.identifier.name, ((IdentifierNode) ((MemberExpressionNode) ((TypeExpressionNode) parameterNode.type).expr).selector.expr).name);
+                    runMethod.addParameter(parameterNode.identifier.name, ((IdentifierNode) ((MemberExpressionNode) ((TypeExpressionNode) parameterNode.type).expr).selector.expr).name, initializer);
                 }
             }
         }
@@ -322,7 +324,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 new BinaryExpressionNode(Tokens.PLUS_TOKEN, new LiteralStringNode("live method " + LiveCodingUtil.constructLiveCodingMethodId(functionDefinitionNode, className) + " execute error: "), TreeUtil.createIdentifier("e")));
         errorTraceArguments.items.add(TreeUtil.createIdentifier("e"));
         StatementListNode catchlist = new StatementListNode(new CatchClauseNode(
-                TreeUtil.createParameterNode("e", "Error"),
+                TreeUtil.createParameterNode("e", "Error", null),
                 new StatementListNode(new ExpressionStatementNode(new ListNode(null,
                         TreeUtil.createCall(
                                 "LogUtil",

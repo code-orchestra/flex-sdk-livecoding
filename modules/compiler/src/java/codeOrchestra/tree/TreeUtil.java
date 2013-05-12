@@ -187,12 +187,12 @@ public class TreeUtil {
         return new PackageNameNode(packageIdentifiersNode, -1);
     }
 
-    public static ParameterNode createParameterNode(String paramName, String paramType) {
+    public static ParameterNode createParameterNode(String paramName, String paramType, Node initializer) {
         return new ParameterNode(
                 Tokens.VAR_TOKEN,
                 new IdentifierNode(paramName, -1),
                 paramType != null ? new TypeExpressionNode(createIdentifier(paramType), true, false) : null,
-                null // Place initializer here if needed
+                initializer
         );
     }
 

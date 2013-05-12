@@ -316,15 +316,18 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             TreeUtil.makePublic(variableDefinitionNode.attrs, false);
 
             // Make vars out of constants
-            if (variableDefinitionNode.kind == Tokens.CONST_TOKEN) {
-                variableDefinitionNode.kind = Tokens.VAR_TOKEN;
-            }
-            if (variableDefinitionNode.list != null && variableDefinitionNode.list.items != null) {
-                for (Node node : variableDefinitionNode.list.items) {
-                    if (node instanceof VariableBindingNode) {
-                        VariableBindingNode variableBindingNode = (VariableBindingNode) node;
-                        if (variableBindingNode.kind == Tokens.CONST_TOKEN) {
-                            variableBindingNode.kind = Tokens.VAR_TOKEN;
+            boolean hasEmbed = LiveCodingUtil.getAnnotation(variableDefinitionNode, "Embed") != null;
+            if (hasEmbed) {
+                if (variableDefinitionNode.kind == Tokens.CONST_TOKEN) {
+                    variableDefinitionNode.kind = Tokens.VAR_TOKEN;
+                }
+                if (variableDefinitionNode.list != null && variableDefinitionNode.list.items != null) {
+                    for (Node node : variableDefinitionNode.list.items) {
+                        if (node instanceof VariableBindingNode) {
+                            VariableBindingNode variableBindingNode = (VariableBindingNode) node;
+                            if (variableBindingNode.kind == Tokens.CONST_TOKEN) {
+                                variableBindingNode.kind = Tokens.VAR_TOKEN;
+                            }
                         }
                     }
                 }

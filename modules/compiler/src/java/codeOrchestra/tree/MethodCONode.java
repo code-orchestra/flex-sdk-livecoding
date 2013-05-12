@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * @author Anton.I.Neverov
+ * @author Alexander Eliseyev
  */
 public class MethodCONode extends CONode {
 
@@ -16,7 +17,7 @@ public class MethodCONode extends CONode {
     public String returnType;
     public boolean isStatic;
     public final List<Node> statements = new ArrayList<Node>();
-    private final List<String[]> parameters = new ArrayList<String[]>();
+    private final List<Parameter> parameters = new ArrayList<Parameter>();
     private Context cx;
 
     // Set by parent node generator
@@ -39,7 +40,14 @@ public class MethodCONode extends CONode {
     }
 
     public void addParameter(String paramName, String paramType) {
-        parameters.add(new String[] {paramName, paramType});
+        addParameter(paramName, paramType, null);
+    }
+
+    public void addParameter(String paramName, String paramType, Node initializer) {
+        Parameter parameter = new Parameter(paramName, paramType, initializer);
+        if (!parameters.contains(parameter)) {
+            parameters.add(parameter);
+        }
     }
 
     public FunctionDefinitionNode getFunctionDefinitionNode() {
@@ -62,14 +70,16 @@ public class MethodCONode extends CONode {
         functionBody = new StatementListNode(null);
         ParameterListNode parameterListNode = null;
         if (!parameters.isEmpty()) {
+            Parameter firstParameter = parameters.get(0);
             parameterListNode = new ParameterListNode(
                     null,
-                    TreeUtil.createParameterNode(parameters.get(0)[0], parameters.get(0)[1]),
+                    TreeUtil.createParameterNode(firstParameter.paramName, firstParameter.paramType, firstParameter.initializer),
                     -1
             );
             parameterListNode.decl_styles.add((byte) 0);
             for (int i = 1; i < parameters.size(); i++) {
-                parameterListNode.items.add(TreeUtil.createParameterNode(parameters.get(i)[0], parameters.get(i)[1]));
+                Parameter parameter = parameters.get(i);
+                parameterListNode.items.add(TreeUtil.createParameterNode(parameter.paramName, parameter.paramType, parameter.initializer));
                 parameterListNode.decl_styles.add((byte) 0);
             }
         }
@@ -97,6 +107,38 @@ public class MethodCONode extends CONode {
                 new FunctionNameNode(Tokens.EMPTY_TOKEN, qualifiedIdentifierNode),
                 fexpr
         );
+    }
+
+    private static class Parameter {
+        public String paramName;
+        public String paramType;
+        public Node initializer;
+
+        private Parameter(String paramName, String paramType, Node initializer) {
+            this.paramName = paramName;
+            this.paramType = paramType;
+            this.initializer = initializer;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Parameter parameter = (Parameter) o;
+
+            if (paramName != null ? !paramName.equals(parameter.paramName) : parameter.paramName != null) return false;
+            if (paramType != null ? !paramType.equals(parameter.paramType) : parameter.paramType != null) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = paramName != null ? paramName.hashCode() : 0;
+            result = 31 * result + (paramType != null ? paramType.hashCode() : 0);
+            return result;
+        }
     }
 
 }

@@ -279,6 +279,8 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         accessorFunctionDefinitionNode.fexpr.needsArguments = 0x1;
         accessorFunctionDefinitionNode.pkgdef = functionDefinitionNode.pkgdef;
         accessorFunctionDefinitionNode.name.kind = functionDefinitionNode.name.kind;
+        accessorFunctionDefinitionNode.fexpr.internal_name = accessorName + "$" + accessorFunctionDefinitionNode.name.kind;
+
         try {
             accessorFunctionDefinitionNode.fexpr.signature = (FunctionSignatureNode) functionDefinitionNode.fexpr.signature.clone();
         } catch (CloneNotSupportedException e) {

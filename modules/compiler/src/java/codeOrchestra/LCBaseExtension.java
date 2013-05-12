@@ -151,7 +151,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                         String sourceParam = liveAssetUpdateListenerAnnotation.getValue("source");
                         String fieldParam = liveAssetUpdateListenerAnnotation.getValue("field");
 
-                        boolean validField = (!StringUtils.isEmpty(embedFieldName)) && fieldParam.equals(embedFieldName);
+                        boolean validField = (!StringUtils.isEmpty(embedFieldName)) && (fieldParam != null && fieldParam.equals(embedFieldName));
                         boolean noParams = liveAssetUpdateListenerAnnotation.getValues() == null || liveAssetUpdateListenerAnnotation.getValues().length == 0;
                         boolean validSource = source.equals(sourceParam);
 

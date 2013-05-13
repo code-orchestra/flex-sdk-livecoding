@@ -269,7 +269,7 @@ public class Transformations {
             if (identifier != null) {
                 IClassDigest classDigest = DigestManager.getInstance().getClassDigest(originalClassFqName);
                 for (IMember member : classDigest.getAllMembers()) {
-                    if (identifier.name.equals(member.getName()) && member.isAddedDuringProcessing() && EnumSet.of(MemberKind.GETTER, MemberKind.GETTER, MemberKind.METHOD).contains(member.getKind())) {
+                    if (!(memberExpression.selector instanceof CallExpressionNode) && identifier.name.equals(member.getName()) && member.isAddedDuringProcessing() && EnumSet.of(MemberKind.GETTER, MemberKind.GETTER, MemberKind.METHOD).contains(member.getKind())) {
                         memberExpression.base = TreeUtil.createIdentifier("LiveCodeRegistry");
                         ArgumentListNode args = new ArgumentListNode(TreeUtil.createIdentifier("thisScope"), -1);
                         args.items.add(TreeUtil.createIdentifier("thisScope", member.getName()));

@@ -1,9 +1,6 @@
 package codeOrchestra;
 
-import codeOrchestra.digest.DigestManager;
-import codeOrchestra.digest.IClassDigest;
-import codeOrchestra.digest.IMember;
-import codeOrchestra.digest.Visibility;
+import codeOrchestra.digest.*;
 import codeOrchestra.tree.*;
 import codeOrchestra.util.Pair;
 import codeOrchestra.util.StringUtils;
@@ -11,6 +8,7 @@ import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.ObjectList;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -269,6 +267,17 @@ public class Transformations {
 
             IdentifierNode identifier = selector.getIdentifier();
             if (identifier != null) {
+                IClassDigest classDigest = DigestManager.getInstance().getClassDigest(originalClassFqName);
+                for (IMember member : classDigest.getAllMembers()) {
+                    if (identifier.name.equals(member.getName()) && member.isAddedDuringProcessing() && EnumSet.of(MemberKind.GETTER, MemberKind.GETTER, MemberKind.METHOD).contains(member.getKind())) {
+                        memberExpression.base = TreeUtil.createIdentifier("LiveCodeRegistry");
+                        ArgumentListNode args = new ArgumentListNode(TreeUtil.createIdentifier("thisScope"), -1);
+                        args.items.add(TreeUtil.createIdentifier("thisScope", member.getName()));
+                        memberExpression.selector = new CallExpressionNode(new IdentifierNode("delegete", -1), args);
+                        return;
+                    }
+                }
+
                 if (!staticMethod && DigestManager.getInstance().isInstanceMemberVisibleInsideClass(originalClassFqName, identifier.name)) {
                     memberExpression.base = TreeUtil.createIdentifier("thisScope");
                 } else if (DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name) != null) {

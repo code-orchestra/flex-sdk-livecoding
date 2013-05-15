@@ -206,6 +206,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         } else if (member.getKind() == MemberKind.SETTER) {
             accessorFunctionDefinitionNode.name.kind = Tokens.SET_TOKEN;
         }
+        accessorFunctionDefinitionNode.fexpr.internal_name = accessorName + "$" + accessorFunctionDefinitionNode.name.kind;
 
         accessorFunctionDefinitionNode.fexpr.signature.result = TreeUtil.getType(member.getType());
         if (!member.getParameters().isEmpty()) {

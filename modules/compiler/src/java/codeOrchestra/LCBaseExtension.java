@@ -339,8 +339,8 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
         // Methods
         for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(classDefinitionNode)) {
-            if (TreeNavigator.getVisibility(functionDefinitionNode) == Visibility.PRIVATE && DigestManager.getInstance().isOverriden(functionDefinitionNode, TreeUtil.getFqName(classDefinitionNode))) {
-                classDefinitionNode.cx.localizedWarning(functionDefinitionNode.pos(), "[COLT] Can't make a private function public as it would be overriden otherwise");
+            if (EnumSet.of(Visibility.PRIVATE, Visibility.INTERNAL).contains(TreeNavigator.getVisibility(functionDefinitionNode)) && DigestManager.getInstance().isOverriden(functionDefinitionNode, TreeUtil.getFqName(classDefinitionNode))) {
+                classDefinitionNode.cx.localizedWarning(functionDefinitionNode.pos(), "[COLT] Can't make a private or internal function public as it would be overriden otherwise");
                 continue;
             }
 

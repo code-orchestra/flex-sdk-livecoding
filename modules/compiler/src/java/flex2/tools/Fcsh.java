@@ -324,6 +324,7 @@ public class Fcsh extends Tool {
                 if (livecodingBaseModeSecondPass) {
                     DigestManager.getInstance().init();
                     DigestManager.getInstance().resolve();
+                    DigestManager.getInstance().dumpEmbedDigestsReport();
                 }
 
                 if (args.length == 1) {

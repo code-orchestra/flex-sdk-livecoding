@@ -7,7 +7,6 @@ import flex2.compiler.CompilationUnit;
 import flex2.tools.Fcsh;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
-import macromedia.asc.util.ObjectList;
 
 import java.util.*;
 
@@ -319,7 +318,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             TreeUtil.makePublic(variableDefinitionNode.attrs, false);
 
             // Make vars out of constants
-            boolean hasEmbed = LiveCodingUtil.getAnnotation(variableDefinitionNode, "Embed") != null;
+            boolean hasEmbed = TreeNavigator.getAnnotation(variableDefinitionNode, "Embed") != null;
             if (hasEmbed) {
                 if (variableDefinitionNode.kind == Tokens.CONST_TOKEN) {
                     variableDefinitionNode.kind = Tokens.VAR_TOKEN;

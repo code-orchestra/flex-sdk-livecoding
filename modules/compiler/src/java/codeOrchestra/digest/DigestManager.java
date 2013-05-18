@@ -6,16 +6,20 @@ import codeOrchestra.digest.impl.SWCClassDigest;
 import codeOrchestra.digest.impl.SourceClassDigest;
 import codeOrchestra.tree.LastASTHolder;
 import codeOrchestra.tree.TreeNavigator;
+import codeOrchestra.tree.TreeUtil;
 import codeOrchestra.util.FileUtils;
 import codeOrchestra.util.StringUtils;
 import codeOrchestra.util.XMLUtils;
 import flex2.compiler.util.QName;
 import macromedia.asc.parser.ClassDefinitionNode;
 import macromedia.asc.parser.FunctionDefinitionNode;
+import macromedia.asc.parser.MetaDataNode;
+import macromedia.asc.parser.VariableDefinitionNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
@@ -43,6 +47,9 @@ public class DigestManager {
 
     private Map<String, IClassDigest> digestsMap = new HashMap<String, IClassDigest>();
     private Map<String, SourceClassDigest> unresolvedDigests = new HashMap<String, SourceClassDigest>();
+
+    // full path -> list of embeds
+    private Map<String, List<EmbedDigest>> embedDigests = new HashMap<String, List<EmbedDigest>>();
 
     public Set<IMember> getVisibleInstanceProtectedMembers(String classFqName) {
         Set<IMember> result = new HashSet<IMember>();
@@ -295,6 +302,68 @@ public class DigestManager {
 
         SourceClassDigest classDigest = new SourceClassDigest(classDefinitionNode);
         unresolvedDigests.put(classDigest.getFqName(), classDigest);
+
+        for (VariableDefinitionNode fieldDefinition : TreeNavigator.getFieldDefinitions(classDefinitionNode)) {
+            MetaDataNode embed = TreeNavigator.getAnnotation(fieldDefinition, "Embed");
+            if (embed != null) {
+                EmbedDigest embedDigest = new EmbedDigest(embed, classDefinitionNode.cx);
+                String fullPath = embedDigest.getFullPath();
+
+                List<EmbedDigest> embeds = getEmbedDigests(fullPath);
+                if (embeds == null) {
+                    embeds = new ArrayList<EmbedDigest>();
+                    embedDigests.put(fullPath, embeds);
+                }
+
+                if (!embeds.contains(embed)) {
+                    embeds.add(embedDigest);
+                }
+            }
+        }
+    }
+
+    private List<EmbedDigest> getEmbedDigests(String fullPath) {
+        return embedDigests.get(fullPath);
+    }
+
+    private List<EmbedDigest> getAllEmbedDigests() {
+        List<EmbedDigest> result = new ArrayList<EmbedDigest>();
+
+        for (List<EmbedDigest> digests : embedDigests.values()) {
+            for (EmbedDigest digest : digests) {
+                result.add(digest);
+            }
+        }
+
+        return result;
+    }
+
+    public void dumpEmbedDigestsReport() {
+        Document document = XMLUtils.createDocument();
+
+        Element rootElement = document.createElement("embedsDigest");
+        document.appendChild(rootElement);
+
+        for (EmbedDigest embedDigest : getAllEmbedDigests()) {
+            Element embedElement = document.createElement("embed");
+            embedElement.setAttribute("source", embedDigest.getSource());
+            embedElement.setAttribute("fullPath", embedDigest.getFullPath());
+            if (embedDigest.getMimeType() != null) {
+                embedElement.setAttribute("mimeType", embedDigest.getMimeType());
+            }
+
+            rootElement.appendChild(embedElement);
+        }
+
+        try {
+            File digestsFile = new File(getSWCDigestsFolder(), "embedDigests.xml");
+            if (!digestsFile.exists()) {
+                digestsFile.createNewFile();
+            }
+            XMLUtils.saveToFile(digestsFile, document);
+        } catch (Throwable e) {
+            throw new RuntimeException("Error while dumping embedded assets report", e);
+        }
     }
 
     public void resolve() {

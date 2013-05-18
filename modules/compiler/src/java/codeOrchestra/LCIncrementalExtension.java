@@ -1,7 +1,6 @@
 package codeOrchestra;
 
 import codeOrchestra.digest.*;
-import codeOrchestra.digest.impl.SWCMember;
 import codeOrchestra.digest.impl.SourceClassDigest;
 import codeOrchestra.digest.impl.SourceMember;
 import codeOrchestra.tree.TreeNavigator;
@@ -151,7 +150,7 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
         ArrayList<FunctionDefinitionNode> result = new ArrayList<FunctionDefinitionNode>();
         for (FunctionDefinitionNode modifiedMethod : modifiedMethodDefinitions) {
             // COLT-77
-            if (LiveCodingUtil.hasAnnotation(modifiedMethod, LiveCodingUtil.LIVE_CODE_DISABLE_ANNOTATION)) {
+            if (TreeNavigator.hasAnnotation(modifiedMethod, LiveCodingUtil.LIVE_CODE_DISABLE_ANNOTATION)) {
                 continue;
             }
 
@@ -166,7 +165,7 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
 
             if (matchingOriginalMethod != null) {
                 // COLT-77
-                if (LiveCodingUtil.hasAnnotation(matchingOriginalMethod, LiveCodingUtil.LIVE_CODE_DISABLE_ANNOTATION)) {
+                if (TreeNavigator.hasAnnotation(matchingOriginalMethod, LiveCodingUtil.LIVE_CODE_DISABLE_ANNOTATION)) {
                     continue;
                 }
 

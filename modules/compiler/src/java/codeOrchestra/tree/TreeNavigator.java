@@ -1,10 +1,8 @@
 package codeOrchestra.tree;
 
-import codeOrchestra.LiveCodingUtil;
 import codeOrchestra.digest.MemberKind;
 import codeOrchestra.digest.Visibility;
 import codeOrchestra.util.Pair;
-import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
 
@@ -236,7 +234,7 @@ public class TreeNavigator {
             return variableDefinitionNodes;
         }
         for (Node item : classDefinitionNode.statements.items) {
-            if (item instanceof VariableDefinitionNode && LiveCodingUtil.hasAnnotation((DefinitionNode) item, annotation)) {
+            if (item instanceof VariableDefinitionNode && hasAnnotation((DefinitionNode) item, annotation)) {
                 variableDefinitionNodes.add((VariableDefinitionNode) item);
             }
         }
@@ -249,7 +247,7 @@ public class TreeNavigator {
             return functionDefinitionNodes;
         }
         for (Node item : classDefinitionNode.statements.items) {
-            if (item instanceof FunctionDefinitionNode && LiveCodingUtil.hasAnnotation((DefinitionNode) item, annotation)) {
+            if (item instanceof FunctionDefinitionNode && hasAnnotation((DefinitionNode) item, annotation)) {
                 functionDefinitionNodes.add((FunctionDefinitionNode) item);
             }
         }
@@ -387,4 +385,31 @@ public class TreeNavigator {
         return null;
     }
 
+    public static boolean hasAnnotation(DefinitionNode definitionNode, String annotation) {
+        if (definitionNode.metaData == null) { return false; }
+
+        for (Node item : definitionNode.metaData.items) {
+            if (item instanceof MetaDataNode) {
+                if (annotation.equals(((MetaDataNode) item).getId())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static MetaDataNode getAnnotation(DefinitionNode definitionNode, String annotation) {
+        if (definitionNode.metaData == null) { return null; }
+
+        for (Node item : definitionNode.metaData.items) {
+            if (item instanceof MetaDataNode) {
+                if (annotation.equals(((MetaDataNode) item).getId())) {
+                    return (MetaDataNode) item;
+                }
+            }
+        }
+
+        return null;
+    }
 }

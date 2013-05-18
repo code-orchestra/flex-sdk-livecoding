@@ -1,9 +1,6 @@
 package codeOrchestra;
 
 import codeOrchestra.digest.DigestManager;
-import codeOrchestra.digest.IClassDigest;
-import codeOrchestra.digest.IMember;
-import codeOrchestra.digest.Visibility;
 import codeOrchestra.tree.*;
 import codeOrchestra.util.Pair;
 import codeOrchestra.util.StringUtils;
@@ -570,7 +567,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         boolean weak = true;
         int priority = 0;
 
-        MetaDataNode annotation = LiveCodingUtil.getAnnotation(functionDefinitionNode, "LiveCodeUpdateListener");
+        MetaDataNode annotation = TreeNavigator.getAnnotation(functionDefinitionNode, "LiveCodeUpdateListener");
         if (annotation != null) {
             String annotationClassFqn = annotation.getValue("classFqn");
             if (!StringUtils.isEmpty(annotationClassFqn)) {

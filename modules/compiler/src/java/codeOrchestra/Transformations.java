@@ -39,7 +39,7 @@ public class Transformations {
         assetsBroadcastMethod.pkgdef = classDefinitionNode.pkgdef;
 
         for (VariableDefinitionNode variableDefinitionNode : embedFields) {
-            MetaDataNode embed = LiveCodingUtil.getAnnotation(variableDefinitionNode, "Embed");
+            MetaDataNode embed = TreeNavigator.getAnnotation(variableDefinitionNode, "Embed");
             if (embed == null) {
                 continue;
             }
@@ -96,7 +96,7 @@ public class Transformations {
             // Call listeners
             List<FunctionDefinitionNode> liveAssetUpdateListeners = TreeNavigator.getMethodDefinitionsWithAnnotation(classDefinitionNode, "LiveAssetUpdateListener");
             for (FunctionDefinitionNode liveAssetUpdateListener : liveAssetUpdateListeners) {
-                MetaDataNode liveAssetUpdateListenerAnnotation = LiveCodingUtil.getAnnotation(liveAssetUpdateListener, "LiveAssetUpdateListener");
+                MetaDataNode liveAssetUpdateListenerAnnotation = TreeNavigator.getAnnotation(liveAssetUpdateListener, "LiveAssetUpdateListener");
                 String sourceParam = liveAssetUpdateListenerAnnotation.getValue("source");
                 String fieldParam = liveAssetUpdateListenerAnnotation.getValue("field");
 

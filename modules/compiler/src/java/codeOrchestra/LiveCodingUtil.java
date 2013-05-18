@@ -24,10 +24,10 @@ public class LiveCodingUtil {
         if (cl.isInterface()) {
             return false;
         }
-        if (hasAnnotation(cl, LIVE_CODE_DISABLE_ANNOTATION)) {
+        if (TreeNavigator.hasAnnotation(cl, LIVE_CODE_DISABLE_ANNOTATION)) {
             return false;
         }
-        if (LiveCodingCLIParameters.getLiveMethods() == LiveMethods.ANNOTATED && !hasAnnotation(cl, LIVE_ANNOTATION)) {
+        if (LiveCodingCLIParameters.getLiveMethods() == LiveMethods.ANNOTATED && !TreeNavigator.hasAnnotation(cl, LIVE_ANNOTATION)) {
             return false;
         }
         if (ProvidedPackages.isProvidedPackage(cl.pkgdef.name.id.pkg_part)) {
@@ -49,10 +49,10 @@ public class LiveCodingUtil {
                 return false;
             }
         }
-        if (hasAnnotation(function, LIVE_CODE_DISABLE_ANNOTATION)) {
+        if (TreeNavigator.hasAnnotation(function, LIVE_CODE_DISABLE_ANNOTATION)) {
             return false;
         }
-        if (hasAnnotation(function, CODE_UPDATE_METHOD_ANNOTATION)) {
+        if (TreeNavigator.hasAnnotation(function, CODE_UPDATE_METHOD_ANNOTATION)) {
             return false;
         }
         if (!new RegularNode(function.fexpr.body).getDescendants(MetaDataNode.class).isEmpty()) {
@@ -82,7 +82,7 @@ public class LiveCodingUtil {
     }
 
     public static boolean isLiveCodeUpdateListener(FunctionDefinitionNode function) {
-        return hasAnnotation(function, LIVE_CODE_UPDATE_LISTENER_ANNOTATION) || hasAnnotation(function, LIVE_CONSOLE_ANNOTATION);
+        return TreeNavigator.hasAnnotation(function, LIVE_CODE_UPDATE_LISTENER_ANNOTATION) || TreeNavigator.hasAnnotation(function, LIVE_CONSOLE_ANNOTATION);
     }
 
     public static String constructLiveCodingClassName(FunctionDefinitionNode functionDefinitionNode, String className) {
@@ -104,34 +104,6 @@ public class LiveCodingUtil {
         }
         builder.append(functionDefinitionNode.name.identifier.name);
         return builder.toString();
-    }
-
-    public static MetaDataNode getAnnotation(DefinitionNode definitionNode, String annotation) {
-        if (definitionNode.metaData == null) { return null; }
-
-        for (Node item : definitionNode.metaData.items) {
-            if (item instanceof MetaDataNode) {
-                if (annotation.equals(((MetaDataNode) item).getId())) {
-                    return (MetaDataNode) item;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public static boolean hasAnnotation(DefinitionNode definitionNode, String annotation) {
-        if (definitionNode.metaData == null) { return false; }
-
-        for (Node item : definitionNode.metaData.items) {
-            if (item instanceof MetaDataNode) {
-                if (annotation.equals(((MetaDataNode) item).getId())) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
 }

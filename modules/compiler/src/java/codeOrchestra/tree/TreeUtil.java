@@ -50,6 +50,11 @@ public class TreeUtil {
     }
 
     public static Node getType(String fqName) {
+        // * type
+        if (fqName == null) {
+            return null;
+        }
+
         if ("void".equals(fqName)) {
             return null;
         }

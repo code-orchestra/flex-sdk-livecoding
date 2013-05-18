@@ -22,6 +22,9 @@ public class SWCMember extends AbstractMember implements IMember {
 
     @Override
     public String getType() {
+        if ("__AS3__.vec.Vector".equals(typeFqName) || "Vector".equals(typeFqName)) {
+            return null;
+        }
         return typeFqName;
     }
 

@@ -55,6 +55,9 @@ public class SourceMember extends AbstractMember implements IMember {
         if (!resolved) {
             throw new IllegalStateException("Unresolved");
         }
+        if ("__AS3__.vec.Vector".equals(typeFqName)) {
+            return null;
+        }
         return typeFqName;
     }
 

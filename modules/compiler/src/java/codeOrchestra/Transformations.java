@@ -48,41 +48,24 @@ public class Transformations {
             if (StringUtils.isEmpty(source)) {
                 continue;
             }
+            String mimeType = embed.getValue("mimeType");
 
             VariableBindingNode var
                     = (VariableBindingNode) variableDefinitionNode.list.items.get(0);
 
-            String sourcePrefixedByPackage;
-            if (!StringUtils.isEmpty(packageName)) {
-                // Handle ".." in source
-                if (source.contains("../")) {
-                    try {
-                        StringBuilder pathBuilder = new StringBuilder();
-                        int goUpCount = org.apache.commons.lang3.StringUtils.countMatches(source, "../");
-                        String[] packageSplit = packageName.split("\\.");
-                        for (int i = 0; i < packageSplit.length - goUpCount; i++) {
-                            pathBuilder.append(packageSplit[i]).append("/");
-                        }
-                        pathBuilder.append(source.replace("../", ""));
-
-                        sourcePrefixedByPackage = pathBuilder.toString();
-                    } catch (Throwable t) {
-                        sourcePrefixedByPackage = packageName.replace(".", "/") + "/" + source;
-                    }
-                } else {
-                    sourcePrefixedByPackage = packageName.replace(".", "/") + "/" + source;
-                }
-            } else {
-                sourcePrefixedByPackage = source;
-            }
-
+            BinaryExpressionNode eventCondition = new BinaryExpressionNode(
+                    Tokens.EQUALS_TOKEN,
+                    TreeUtil.createIdentifier("event", "source"),
+                    new LiteralStringNode(source)
+            );
             ListNode condition = new ListNode(
                     null,
-                    new BinaryExpressionNode(
-                            Tokens.EQUALS_TOKEN,
-                            TreeUtil.createIdentifier("event", "source"),
-                            new LiteralStringNode(sourcePrefixedByPackage)
-                    ),
+                    mimeType == null ? eventCondition : new BinaryExpressionNode(Tokens.LOGICALAND_TOKEN, eventCondition,
+                            new BinaryExpressionNode(
+                                    Tokens.EQUALS_TOKEN,
+                                    TreeUtil.createIdentifier("event", "mimeType"),
+                                    new LiteralStringNode(mimeType)
+                            )),
                     -1
             );
             String embedFieldName = var.variable.identifier.name;

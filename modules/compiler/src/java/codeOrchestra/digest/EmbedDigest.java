@@ -73,13 +73,15 @@ public class EmbedDigest {
 
         if (fullPath != null ? !fullPath.equals(that.fullPath) : that.fullPath != null) return false;
         if (mimeType != null ? !mimeType.equals(that.mimeType) : that.mimeType != null) return false;
+        if (source != null ? !source.equals(that.source) : that.source != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = mimeType != null ? mimeType.hashCode() : 0;
+        int result = source != null ? source.hashCode() : 0;
+        result = 31 * result + (mimeType != null ? mimeType.hashCode() : 0);
         result = 31 * result + (fullPath != null ? fullPath.hashCode() : 0);
         return result;
     }

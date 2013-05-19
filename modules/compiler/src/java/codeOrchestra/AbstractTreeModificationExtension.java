@@ -152,6 +152,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         for (ImportDirectiveNode anImport : imports) {
             classCONode.addImport(anImport.name.id.pkg_part, anImport.name.id.def_part);
         }
+        classCONode.addImport(originalPackageName,"");
         classCONode.addImport("codeOrchestra.actionScript.liveCoding.util", "LiveCodingCodeFlowUtil");
         classCONode.addImport("codeOrchestra.actionScript.liveCoding.util", "LiveCodeRegistry");
         if (incremental) {

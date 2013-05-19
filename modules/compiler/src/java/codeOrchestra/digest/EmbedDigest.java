@@ -16,7 +16,7 @@ public class EmbedDigest {
     private String packageName;
 
     public EmbedDigest(MetaDataNode embed, Context cx) {
-        this.source = embed.getValue("source");
+        this.source = embed.getValue("source") != null ? embed.getValue("source") : embed.getValue(0);
         this.mimeType = embed.getValue("mimeType");
         this.packageName = embed.def.pkgdef.name.id.pkg_part;
         this.fullPath = calculateAssetPath(cx);

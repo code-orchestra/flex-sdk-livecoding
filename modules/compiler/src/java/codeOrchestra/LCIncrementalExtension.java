@@ -27,13 +27,10 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
 
     public static long lastCompilationStartTime;
 
-    private final String fqName;
     private final String initialClassName;
     private final String initialPackageName;
 
     public LCIncrementalExtension(String fqClassName) {
-        fqName = fqClassName;
-
         if (fqClassName.contains(":")) {
             String[] parts = fqClassName.split(":");
             initialPackageName = parts[0];
@@ -56,7 +53,16 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
         loadSyntaxTrees();
         saveSyntaxTree(unit);
         ProgramNode syntaxTree = projectNavigator.getSyntaxTree(modifiedClass.pkgdef.name.id.pkg_part, className);
-        ClassDefinitionNode originalClass = TreeNavigator.getPackageClassDefinition(syntaxTree);
+
+        ClassDefinitionNode originalClass = syntaxTree != null ? TreeNavigator.getPackageClassDefinition(syntaxTree) : null;
+
+        // COLT-171
+        if (originalClass == null) {
+            // New class is added
+            SourceClassDigest classDigest = DigestManager.getInstance().addToDigestUnresolved(modifiedClass);
+            classDigest.resolve();
+            return;
+        }
 
         ArrayList<String> liveCodingClassNames = new ArrayList<String>();
         Map<FunctionDefinitionNode, String> functionToClassNames = new HashMap<FunctionDefinitionNode, String>();

@@ -29,6 +29,8 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
 
     private boolean live;
 
+    private boolean addedDuringProcessing;
+
     public SourceClassDigest(ClassDefinitionNode cl) {
         // Name
         packageName = cl.pkgdef.name.id.pkg_part;
@@ -184,5 +186,14 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
     @Override
     public boolean canBeUsedForLiveCoding() {
         return live;
+    }
+
+    @Override
+    public boolean isAddedDuringProcessing() {
+        return addedDuringProcessing;
+    }
+
+    public void setAddedDuringProcessing(boolean addedDuringProcessing) {
+        this.addedDuringProcessing = addedDuringProcessing;
     }
 }

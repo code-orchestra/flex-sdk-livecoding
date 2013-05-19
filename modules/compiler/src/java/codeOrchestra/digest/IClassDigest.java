@@ -14,5 +14,6 @@ public interface IClassDigest {
     String getFqName();
     String getSuperClassFQName();
     boolean canBeUsedForLiveCoding();
+    boolean isAddedDuringProcessing();
 
 }

@@ -295,9 +295,9 @@ public class DigestManager {
         return new File(LiveCodingCLIParameters.getDigestsFolder());
     }
 
-    public void addToDigestUnresolved(ClassDefinitionNode classDefinitionNode) {
+    public SourceClassDigest addToDigestUnresolved(ClassDefinitionNode classDefinitionNode) {
         if (classDefinitionNode == null) {
-            return;
+            return null;
         }
 
         SourceClassDigest classDigest = new SourceClassDigest(classDefinitionNode);
@@ -320,6 +320,8 @@ public class DigestManager {
                 }
             }
         }
+
+        return classDigest;
     }
 
     private List<EmbedDigest> getEmbedDigests(String fullPath) {

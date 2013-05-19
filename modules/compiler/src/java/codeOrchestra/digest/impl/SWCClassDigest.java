@@ -97,4 +97,9 @@ public class SWCClassDigest implements IClassDigest {
     public boolean canBeUsedForLiveCoding() {
         return false;
     }
+
+    @Override
+    public boolean isAddedDuringProcessing() {
+        return false;
+    }
 }

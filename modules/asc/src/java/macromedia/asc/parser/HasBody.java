@@ -7,4 +7,6 @@ public interface HasBody {
 
     Node getBody();
 
+    void setBody(Node body);
+
 }

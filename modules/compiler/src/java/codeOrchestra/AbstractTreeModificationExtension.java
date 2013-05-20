@@ -2,8 +2,10 @@ package codeOrchestra;
 
 import codeOrchestra.digest.DigestManager;
 import codeOrchestra.tree.*;
+import codeOrchestra.util.InsertPosition;
 import codeOrchestra.util.Pair;
 import codeOrchestra.util.StringUtils;
+import codeOrchestra.util.Triple;
 import flex2.compiler.CompilationUnit;
 import flex2.compiler.as3.Extension;
 import flex2.compiler.as3.reflect.TypeTable;
@@ -275,7 +277,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         }
 
         // 'This' scope modifications
-        List<Pair<Node, Node>> deferredInsertions = new ArrayList<Pair<Node, Node>>();
+        List<Triple<Node, Node, InsertPosition>> deferredInsertions = new ArrayList<Triple<Node, Node, InsertPosition>>();
         for (Node statement : methodBody) {
             RegularNode statementRegularNode = new RegularNode(statement);
 
@@ -311,8 +313,20 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 Transformations.transformProtectedAndSuperReferences(originalClassFqName, memberExpression);
             }
         }
-        for (Pair<Node, Node> deferredInsertion : deferredInsertions) {
-            methodBody.add(methodBody.indexOf(deferredInsertion.getO1()) + 1, deferredInsertion.getO2());
+        for (Triple<Node, Node, InsertPosition> deferredInsertion : deferredInsertions) {
+            InsertPosition insertPosition = deferredInsertion.getO3();
+            int positionChange = 0;
+            switch (insertPosition) {
+                case AFTER:
+                    positionChange = 1;
+                    break;
+                case BEFORE:
+                    positionChange = 0;
+                    break;
+                default:
+                    break;
+            }
+            methodBody.add(methodBody.indexOf(deferredInsertion.getO1()) + positionChange, deferredInsertion.getO2());
         }
 
         // Wrap it in try/catch and log the error in catch

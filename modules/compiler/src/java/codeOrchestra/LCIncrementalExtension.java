@@ -159,6 +159,10 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
             if (TreeNavigator.hasAnnotation(modifiedMethod, LiveCodingUtil.LIVE_CODE_DISABLE_ANNOTATION)) {
                 continue;
             }
+            // COLT-189
+            if (!LiveCodingCLIParameters.makeGettersSettersLive() && (TreeNavigator.isGetter(modifiedMethod) || TreeNavigator.isSetter(modifiedMethod))) {
+                continue;
+            }
 
             FunctionDefinitionNode matchingOriginalMethod = null;
             for (FunctionDefinitionNode originalMethodCandidate : originalMethodDefinitions) {

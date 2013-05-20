@@ -80,4 +80,9 @@ public class WhileStatementNode extends Node implements HasBody, LoopStatement
     public Node getBody() {
         return statement;
     }
+
+    @Override
+    public void setBody(Node body) {
+        this.statement = body;
+    }
 }

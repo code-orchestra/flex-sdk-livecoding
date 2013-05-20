@@ -70,4 +70,9 @@ public class DoStatementNode extends Node implements HasBody, LoopStatement
     public Node getBody() {
         return statements;
     }
+
+    @Override
+    public void setBody(Node body) {
+        this.statements = body;
+    }
 }

@@ -2,8 +2,10 @@ package codeOrchestra;
 
 import codeOrchestra.digest.*;
 import codeOrchestra.tree.*;
+import codeOrchestra.util.InsertPosition;
 import codeOrchestra.util.Pair;
 import codeOrchestra.util.StringUtils;
+import codeOrchestra.util.Triple;
 import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.ObjectList;
@@ -144,26 +146,41 @@ public class Transformations {
         }
     }
 
-    public static void transformLoopStatement(ClassDefinitionNode parentClass, ClassCONode classCONode, List<Pair<Node, Node>> deferredInsertions, RegularNode loopStatementRegularNode, LoopStatement loopASTNode) {
-        if (loopASTNode instanceof HasBody && ((HasBody) loopASTNode).getBody() instanceof StatementListNode) {
-            StatementListNode loopBody = (StatementListNode) ((HasBody) loopASTNode).getBody();
+    public static void transformLoopStatement(ClassDefinitionNode parentClass, ClassCONode classCONode, List<Triple<Node, Node, InsertPosition>> deferredInsertions, RegularNode loopStatementRegularNode, LoopStatement loopASTNode) {
+        RegularNode parent = loopStatementRegularNode.getParent();
 
-            // Var definition
-            String id = StringUtils.generateId();
-            Node initializer = new BinaryExpressionNode(Tokens.PLUS_TOKEN, new LiteralStringNode(id), TreeUtil.createCall(null, "getTimer", null));
-            String varName = "reqId" + id;
-            loopBody.items.add(0, TreeUtil.createLocalVariable(parentClass.pkgdef, varName, "String", initializer));
+        if (loopASTNode instanceof HasBody) {
+            HasBody hasBody = (HasBody) loopASTNode;
+            if (hasBody.getBody() == null) {
+                hasBody.setBody(new StatementListNode(null));
+            }
 
-            // LiveCodingCodeFlowUtil.checkLoop call
-            loopBody.items.add(1, new ExpressionStatementNode(new ListNode(null,
-                    TreeUtil.createCall(
-                            "LiveCodingCodeFlowUtil",
-                            "checkLoop",
-                            new ArgumentListNode(TreeUtil.createIdentifier(varName), -1)
-                    ),
-                    -1)));
+            if (hasBody.getBody() instanceof StatementListNode) {
+                StatementListNode loopBody = (StatementListNode) hasBody.getBody();
 
-            classCONode.addImport("flash.utils", "getTimer");
+                // Var definition
+                String id = StringUtils.generateId();
+                Node initializer = new BinaryExpressionNode(Tokens.PLUS_TOKEN, new LiteralStringNode(id), TreeUtil.createCall(null, "getTimer", null));
+                String varName = "reqId" + id;
+                VariableDefinitionNode localVariableStatement = TreeUtil.createLocalVariable(parentClass.pkgdef, varName, "String", initializer);
+                if (parent == null) {
+                    deferredInsertions.add(new Triple<Node, Node, InsertPosition>((Node) loopASTNode, localVariableStatement, InsertPosition.BEFORE));
+                } else if (parent.getASTNode() instanceof StatementListNode) {
+                    StatementListNode parentBody = (StatementListNode) parent.getASTNode();
+                    parentBody.items.add(parentBody.items.indexOf(loopASTNode), localVariableStatement);
+                }
+
+                // LiveCodingCodeFlowUtil.checkLoop call
+                loopBody.items.add(0, new ExpressionStatementNode(new ListNode(null,
+                        TreeUtil.createCall(
+                                "LiveCodingCodeFlowUtil",
+                                "checkLoop",
+                                new ArgumentListNode(TreeUtil.createIdentifier(varName), -1)
+                        ),
+                        -1)));
+
+                classCONode.addImport("flash.utils", "getTimer");
+            }
         }
 
         ExpressionStatementNode emptyCheckLoopStatement = new ExpressionStatementNode(new ListNode(null,
@@ -173,10 +190,8 @@ public class Transformations {
                         new ArgumentListNode(new LiteralStringNode(""), -1)
                 ),
                 -1));
-
-        RegularNode parent = loopStatementRegularNode.getParent();
         if (parent == null) {
-            deferredInsertions.add(new Pair<Node, Node>((Node) loopASTNode, emptyCheckLoopStatement));
+            deferredInsertions.add(new Triple<Node, Node, InsertPosition>((Node) loopASTNode, emptyCheckLoopStatement, InsertPosition.AFTER));
         } else if (parent.getASTNode() instanceof StatementListNode) {
             StatementListNode parentBody = (StatementListNode) parent.getASTNode();
             parentBody.items.add(parentBody.items.indexOf(loopASTNode) + 1, emptyCheckLoopStatement);

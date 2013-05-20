@@ -44,7 +44,7 @@ public class Transformations {
                 continue;
             }
 
-            String source = embed.getValue("source");
+            String source = embed.getValue("source") != null ? embed.getValue("source") : embed.getValue(0);
             if (StringUtils.isEmpty(source)) {
                 continue;
             }
@@ -72,7 +72,7 @@ public class Transformations {
             StatementListNode thenActions = new StatementListNode(new ExpressionStatementNode(new ListNode(
                     null,
                     new ExpressionStatementNode(
-                            new ListNode(null, new MemberExpressionNode(new ThisExpressionNode(), new SetExpressionNode(TreeUtil.createIdentifier(embedFieldName), new ArgumentListNode(TreeUtil.createIdentifier("event", "assetClass"), -1)),
+                            new ListNode(null, new MemberExpressionNode(TreeNavigator.isStaticField(var) ? TreeUtil.createIdentifier(classDefinitionNode.name.name) : new ThisExpressionNode(), new SetExpressionNode(TreeUtil.createIdentifier(embedFieldName), new ArgumentListNode(TreeUtil.createIdentifier("event", "assetClass"), -1)),
                                     -1), -1
                             )), -1)));
 

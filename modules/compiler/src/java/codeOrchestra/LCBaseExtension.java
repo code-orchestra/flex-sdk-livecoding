@@ -289,24 +289,34 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
         StatementListNode newBody = accessorFunctionDefinitionNode.fexpr.body;
 
-        /*
-         super.someProtectedMethod.apply(this, arguments);
-        */
-        ArgumentListNode args = new ArgumentListNode(new ThisExpressionNode(), -1);
-        args.items.add(TreeUtil.createIdentifier("arguments".intern()));
-        Node expr = new ListNode(null, new MemberExpressionNode(
-                new MemberExpressionNode(new SuperExpressionNode(null), new GetExpressionNode(TreeUtil.createIdentifier(functionName)), -1),
-                new CallExpressionNode(
-                        new IdentifierNode("apply", -1),
-                        args
-                ),
-                -1
-        ), -1);
-        if (isVoid) {
-            newBody.items.add(new ExpressionStatementNode(expr));
+        if (accessorFunctionDefinitionNode.name.kind == Tokens.GET_TOKEN) {
+            newBody.items.add(new ReturnStatementNode(new MemberExpressionNode(new SuperExpressionNode(null), new GetExpressionNode(new IdentifierNode(functionName, -1)), -1)));
+        } else if (accessorFunctionDefinitionNode.name.kind == Tokens.SET_TOKEN) {
+            String parameterName = accessorFunctionDefinitionNode.fexpr.signature.parameter.items.get(0).identifier.name;
+            newBody.items.add(new ExpressionStatementNode(
+                    new ListNode(null, new MemberExpressionNode(new SuperExpressionNode(null), new SetExpressionNode(TreeUtil.createIdentifier(functionName), new ArgumentListNode(TreeUtil.createIdentifier(parameterName), -1)), -1), -1)
+            ));
             newBody.items.add(new ReturnStatementNode(null));
         } else {
-            newBody.items.add(new ReturnStatementNode(expr));
+            /*
+            super.someProtectedMethod.apply(this, arguments);
+            */
+            ArgumentListNode args = new ArgumentListNode(new ThisExpressionNode(), -1);
+            args.items.add(TreeUtil.createIdentifier("arguments".intern()));
+            Node expr = new ListNode(null, new MemberExpressionNode(
+                    new MemberExpressionNode(new SuperExpressionNode(null), new GetExpressionNode(TreeUtil.createIdentifier(functionName)), -1),
+                    new CallExpressionNode(
+                            new IdentifierNode("apply", -1),
+                            args
+                    ),
+                    -1
+            ), -1);
+            if (isVoid) {
+                newBody.items.add(new ExpressionStatementNode(expr));
+                newBody.items.add(new ReturnStatementNode(null));
+            } else {
+                newBody.items.add(new ReturnStatementNode(expr));
+            }
         }
 
         classDefinitionNode.statements.items.add(accessorFunctionDefinitionNode);

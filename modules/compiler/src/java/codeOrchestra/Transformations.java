@@ -11,6 +11,7 @@ import macromedia.asc.parser.*;
 import macromedia.asc.util.ObjectList;
 
 import java.util.EnumSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -253,7 +254,20 @@ public class Transformations {
                     errorTraceArguments.items.add(new LiteralStringNode(""));
                     errorTraceArguments.items.add(new LiteralStringNode(""));
                     errorTraceArguments.items.add(new LiteralStringNode(originalClassFqName));
-                    errorTraceArguments.items.add(new BinaryExpressionNode(Tokens.PLUS_TOKEN, new LiteralStringNode(""), callExpressionNode.args.items.get(0)));
+
+                    // CFB-15
+                    Node logUtilArg = new LiteralStringNode("");
+                    Iterator<Node> traceArgsIterator = callExpressionNode.args.items.iterator();
+                    while (traceArgsIterator.hasNext()) {
+                        Node traceArg = traceArgsIterator.next();
+                        logUtilArg = new BinaryExpressionNode(Tokens.PLUS_TOKEN, logUtilArg, traceArg);
+
+                        if (traceArgsIterator.hasNext()) {
+                            logUtilArg = new BinaryExpressionNode(Tokens.PLUS_TOKEN, logUtilArg, new LiteralStringNode(", "));
+                        }
+                    }
+
+                    errorTraceArguments.items.add(logUtilArg);
 
                     callExpressionNode.expr = new IdentifierNode("log", -1);
                     callExpressionNode.args = errorTraceArguments;

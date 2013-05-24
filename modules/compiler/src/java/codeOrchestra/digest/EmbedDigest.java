@@ -1,5 +1,6 @@
 package codeOrchestra.digest;
 
+import codeOrchestra.util.StringUtils;
 import macromedia.asc.parser.MetaDataNode;
 import macromedia.asc.util.Context;
 
@@ -49,7 +50,7 @@ public class EmbedDigest {
                 }
             }
         } else {
-            if (packageName.contains(".")) {
+            if (!StringUtils.isEmpty(packageName)) {
                 String[] packageNameSplit = packageName.split("\\.");
                 for (int i = packageNameSplit.length - 1; i >= 0; i--) {
                     if (file.getName().equals(packageNameSplit[i])) {

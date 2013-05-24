@@ -241,11 +241,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
         ParameterListNode parameters = functionDefinitionNode.fexpr.signature.parameter;
         if (parameters != null) {
-            ParameterListNode parametersClone = SerializationUtils.clone(parameters);
-
-
             for (ParameterNode parameterNode : parameters.items) {
-//              Node initializer = parameterNode.init == null ? null : SerializationUtils.clone(parameterNode.init);
                 Node initializer = null;
                 if (parameterNode.type == null) {
                     runMethod.addParameter(parameterNode.identifier.name, null, initializer);
@@ -479,7 +475,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
     private void fillStubMethodBody(FunctionDefinitionNode functionDefinitionNode, String className) {
         boolean staticMethod = TreeNavigator.isStaticMethod(functionDefinitionNode);
-        boolean isVoid = functionDefinitionNode.fexpr.signature.result == null;
+        boolean isVoid = functionDefinitionNode.fexpr.signature.result == null && functionDefinitionNode.fexpr.signature.void_anno;
         ObjectList<Node> newBody = functionDefinitionNode.fexpr.body.items;
         PackageDefinitionNode pkgdef = functionDefinitionNode.pkgdef;
 

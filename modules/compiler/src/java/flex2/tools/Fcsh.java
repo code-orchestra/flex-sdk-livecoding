@@ -98,9 +98,7 @@ public class Fcsh extends Tool {
             try {
                 process(s);
             } catch (Throwable t) {
-                if (Trace.error) {
-                    t.printStackTrace();
-                }
+                t.printStackTrace();
             } finally {
 //                if (livecodingSession) {
 //                    targets.clear();

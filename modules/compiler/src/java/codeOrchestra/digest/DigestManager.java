@@ -322,7 +322,7 @@ public class DigestManager {
                     embedDigests.put(fullPath, embeds);
                 }
 
-                if (!embeds.contains(embed)) {
+                if (!embeds.contains(embedDigest)) {
                     embeds.add(embedDigest);
                 }
             }

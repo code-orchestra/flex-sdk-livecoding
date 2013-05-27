@@ -9,6 +9,7 @@ import flex2.compiler.util.Name;
 import flex2.compiler.util.QName;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
+import macromedia.asc.util.ObjectList;
 
 import java.util.Iterator;
 import java.util.List;
@@ -68,6 +69,24 @@ public class TreeUtil {
             return new TypeExpressionNode(new MemberExpressionNode(null, new GetExpressionNode(new QualifiedIdentifierNode(new LiteralStringNode(packageName), className, -1)), -1), true, false);
         } else {
             return new TypeExpressionNode(TreeUtil.createIdentifier(fqName), true, false);
+        }
+    }
+
+    public static void removeAnnotation(DefinitionNode definitionNode, String annotation) {
+        if (definitionNode.metaData == null) {
+            return;
+        }
+
+        ObjectList<Node> items = definitionNode.metaData.items;
+        if (items != null) {
+            Iterator<Node> iterator = items.iterator();
+            while (iterator.hasNext()) {
+                Node item = iterator.next();
+                if (item instanceof MetaDataNode && annotation.equals(((MetaDataNode) item).getId())) {
+                    iterator.remove();
+                    System.out.println("Removed annotation " + annotation); // TODO: delete
+                }
+            }
         }
     }
 

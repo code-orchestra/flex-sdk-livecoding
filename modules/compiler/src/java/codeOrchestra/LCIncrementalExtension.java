@@ -44,6 +44,10 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
     @Override
     protected void performModifications(CompilationUnit unit) {
         ClassDefinitionNode modifiedClass = TreeNavigator.getClassDefinition(unit);
+        if (modifiedClass == null) {
+            return;
+        }
+
         String className = modifiedClass.name.name;
         String fqName = TreeUtil.getFqName(modifiedClass);
         if (!(initialPackageName.equals(modifiedClass.pkgdef.name.id.pkg_part) && initialClassName.equals(className))) {
@@ -55,6 +59,11 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
         ProgramNode syntaxTree = projectNavigator.getSyntaxTree(modifiedClass.pkgdef.name.id.pkg_part, className);
 
         ClassDefinitionNode originalClass = syntaxTree != null ? TreeNavigator.getPackageClassDefinition(syntaxTree) : null;
+
+        // COLT-213
+        for (VariableDefinitionNode variableDefinitionNode : TreeNavigator.getFieldDefinitions(modifiedClass)) {
+            TreeUtil.removeAnnotation(variableDefinitionNode, "Embed");
+        }
 
         // COLT-171
         if (originalClass == null) {

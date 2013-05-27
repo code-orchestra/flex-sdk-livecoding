@@ -15,6 +15,7 @@ import macromedia.asc.parser.ClassDefinitionNode;
 import macromedia.asc.parser.FunctionDefinitionNode;
 import macromedia.asc.parser.MetaDataNode;
 import macromedia.asc.parser.VariableDefinitionNode;
+import macromedia.asc.util.Context;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -306,7 +307,13 @@ public class DigestManager {
         for (VariableDefinitionNode fieldDefinition : TreeNavigator.getFieldDefinitions(classDefinitionNode)) {
             MetaDataNode embed = TreeNavigator.getAnnotation(fieldDefinition, "Embed");
             if (embed != null) {
-                EmbedDigest embedDigest = new EmbedDigest(embed, classDefinitionNode.cx);
+                // COLT-214
+                Context context = classDefinitionNode.cx;
+                if (context.path() == null) {
+                    continue;
+                }
+
+                EmbedDigest embedDigest = new EmbedDigest(embed, context);
                 String fullPath = embedDigest.getFullPath();
 
                 List<EmbedDigest> embeds = getEmbedDigests(fullPath);

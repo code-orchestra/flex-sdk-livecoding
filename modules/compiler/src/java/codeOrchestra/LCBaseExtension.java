@@ -5,7 +5,6 @@ import codeOrchestra.tree.*;
 import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
 import flex2.compiler.common.CompilerConfiguration;
-import flex2.tools.CommandLineConfiguration;
 import flex2.tools.Fcsh;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
@@ -59,9 +58,10 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "LiveCodeRegistry");
             TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "MethodUpdateEvent");
 
+            List<Node> staticListenerAddStatements = new ArrayList<Node>();
             for (FunctionDefinitionNode methodDefinition : TreeNavigator.getMethodDefinitions(classDefinitionNode)) {
                 if (LiveCodingUtil.canBeUsedForLiveCoding(methodDefinition)) {
-                    extractMethodToLiveCodingClass(methodDefinition, classDefinitionNode);
+                    extractMethodToLiveCodingClass(methodDefinition, classDefinitionNode, staticListenerAddStatements);
                 }
 
                 // COLT-34
@@ -71,7 +71,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             }
 
             // Add live initializer method
-            addLiveInitializerMethod(classDefinitionNode, false);
+            addLiveInitializerMethod(classDefinitionNode, false, staticListenerAddStatements);
 
             // COLT-34
             Set<IMember> visibleInstanceProtectedMembers = DigestManager.getInstance().getVisibleInstanceProtectedMembers(classFqName);
@@ -131,6 +131,9 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 initMethodNode.fexpr.body.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(internalClassName, "prototype"), -1)));
             }
             // COLT-220
+            for (Node staticListenerAddStatement : staticListenerAddStatements) {
+                initMethodNode.fexpr.body.items.add(staticListenerAddStatement);
+            }
             Node assetListenerAddStatement = Transformations.addAssetListeners(unit, classDefinitionNode, embedFields, true);
             if (assetListenerAddStatement != null) {
                 initMethodNode.fexpr.body.items.add(assetListenerAddStatement);

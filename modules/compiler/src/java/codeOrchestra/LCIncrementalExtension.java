@@ -79,7 +79,7 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
         List<FunctionDefinitionNode> changedMethods = findChangedMethods(originalClass, modifiedClass);
         List<VariableBindingNode> newFields = findNewFields(originalClass, modifiedClass);
         if (!newFields.isEmpty()) {
-            FunctionDefinitionNode liveCodingInitializerMethod = addLiveInitializerMethod(modifiedClass, true);
+            FunctionDefinitionNode liveCodingInitializerMethod = addLiveInitializerMethod(modifiedClass, true, null);
             liveCodingInitializerMethod.fexpr.body.items = new ObjectList<Node>();
 
             ObjectList<Node> liveInitBody = liveCodingInitializerMethod.fexpr.body.items;

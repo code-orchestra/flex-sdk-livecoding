@@ -820,7 +820,7 @@ public class Fcsh extends Tool {
 
             // CodeOrchestra: added if
             if (livecodingBaseMode) {
-                ((As3Compiler) compilers[0]).addCompilerExtension(new LCBaseExtension());
+                ((As3Compiler) compilers[0]).addCompilerExtension(new LCBaseExtension(compilerConfig));
             }
 
             // construct the SWF file name...

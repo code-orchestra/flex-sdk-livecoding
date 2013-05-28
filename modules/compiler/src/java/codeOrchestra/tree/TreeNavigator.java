@@ -315,6 +315,10 @@ public class TreeNavigator {
         return fieldHasAttribute(variableBindingNode, "static");
     }
 
+    public static boolean isStaticField(VariableDefinitionNode variableDefinitionNode) {
+        return fieldHasAttribute(variableDefinitionNode, "static");
+    }
+
     private static boolean methodHasAttribute(FunctionDefinitionNode functionDefinitionNode, String attrName) {
         AttributeListNode attributeListNode = functionDefinitionNode.attrs;
         return hasAttribute(attrName, attributeListNode);

@@ -33,15 +33,27 @@ public class Transformations {
         TreeUtil.createUnitFromInternalClass(internalClass, packageName, classDefinitionNode.cx, TreeNavigator.getImports(syntaxTree), unit.inheritance);
     }
 
-    public static void addAssetListeners(CompilationUnit unit, ClassDefinitionNode classDefinitionNode, String packageName, List<VariableDefinitionNode> embedFields) {
+    /**
+     * @return listener add statement
+     */
+    public static Node addAssetListeners(CompilationUnit unit, ClassDefinitionNode classDefinitionNode, List<VariableDefinitionNode> embedFields, boolean isStatic) {
+        if (embedFields.isEmpty()) {
+            return null;
+        }
+
         TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "AssetUpdateEvent");
 
         MethodCONode assetsUpdateListener = new MethodCONode("assetsUpdateListener" + StringUtils.generateId(), null, classDefinitionNode.cx);
+        assetsUpdateListener.isStatic = isStatic;
         assetsUpdateListener.addParameter("event", "AssetUpdateEvent");
         FunctionDefinitionNode assetsBroadcastMethod = assetsUpdateListener.getFunctionDefinitionNode();
         assetsBroadcastMethod.pkgdef = classDefinitionNode.pkgdef;
 
         for (VariableDefinitionNode variableDefinitionNode : embedFields) {
+            if (isStatic != TreeNavigator.isStaticField(variableDefinitionNode)) {
+                continue;
+            }
+
             MetaDataNode embed = TreeNavigator.getAnnotation(variableDefinitionNode, "Embed");
             if (embed == null) {
                 continue;
@@ -103,11 +115,9 @@ public class Transformations {
         assetsBroadcastMethod.fexpr.body.items.add(new ReturnStatementNode(null));
         classDefinitionNode.statements.items.add(assetsBroadcastMethod);
 
-                /*
-                    LiveCodeRegistry.getInstance().addEventListener(AssetUpdateEvent.ASSET_UPDATE, this.assetsUpdateListener7055724444913929522, false, 0, true);
-                 */
-
-        FunctionDefinitionNode constructorDefinition = TreeNavigator.getConstructorDefinition(classDefinitionNode);
+        /*
+           LiveCodeRegistry.getInstance().addEventListener(AssetUpdateEvent.ASSET_UPDATE, this.assetsUpdateListener7055724444913929522, false, 0, true);
+        */
         ArgumentListNode args = new ArgumentListNode(TreeUtil.createIdentifier("AssetUpdateEvent", "ASSET_UPDATE"), -1);
         MemberExpressionNode qListenerName = TreeUtil.createThisIdentifier(assetsUpdateListener.methodName);
         args.items.add(qListenerName);
@@ -117,14 +127,20 @@ public class Transformations {
         CallExpressionNode selector = new CallExpressionNode(new IdentifierNode("addEventListener", -1), args);
         MemberExpressionNode item = new MemberExpressionNode(TreeUtil.createCall("LiveCodeRegistry", "getInstance", null), selector, -1);
         ExpressionStatementNode listenerAddExpressionStatement = new ExpressionStatementNode(new ListNode(null, item, -1));
-        if (constructorDefinition == null) {
-            MethodCONode constructorRegularNode = new MethodCONode(classDefinitionNode.name.name, null, classDefinitionNode.cx);
-            constructorDefinition = constructorRegularNode.getFunctionDefinitionNode();
-            constructorDefinition.pkgdef = classDefinitionNode.pkgdef;
-            constructorDefinition.fexpr.body.items.add(new ReturnStatementNode(null));
+
+        if (!isStatic) {
+            FunctionDefinitionNode constructorDefinition = TreeNavigator.getConstructorDefinition(classDefinitionNode);
+            if (constructorDefinition == null) {
+                MethodCONode constructorRegularNode = new MethodCONode(classDefinitionNode.name.name, null, classDefinitionNode.cx);
+                constructorDefinition = constructorRegularNode.getFunctionDefinitionNode();
+                constructorDefinition.pkgdef = classDefinitionNode.pkgdef;
+                constructorDefinition.fexpr.body.items.add(new ReturnStatementNode(null));
+            }
+            ObjectList<Node> constructorBody = constructorDefinition.fexpr.body.items;
+            constructorBody.add(constructorBody.size() - 1, listenerAddExpressionStatement);
         }
-        ObjectList<Node> constructorBody = constructorDefinition.fexpr.body.items;
-        constructorBody.add(constructorBody.size() - 1, listenerAddExpressionStatement);
+
+        return listenerAddExpressionStatement;
     }
 
     public static void processToplevelNamespace(CompilationUnit unit) {

@@ -4,6 +4,8 @@ import codeOrchestra.digest.*;
 import codeOrchestra.tree.*;
 import codeOrchestra.util.StringUtils;
 import flex2.compiler.CompilationUnit;
+import flex2.compiler.common.CompilerConfiguration;
+import flex2.tools.CommandLineConfiguration;
 import flex2.tools.Fcsh;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
@@ -16,8 +18,13 @@ import java.util.*;
  */
 public class LCBaseExtension extends AbstractTreeModificationExtension {
 
+    private final CompilerConfiguration compilerConfig;
     private Map<String, String> modelDependenciesUnits = new HashMap<String, String>();
     private boolean liveCodingStarterAdded;
+
+    public LCBaseExtension(CompilerConfiguration compilerConfig) {
+        this.compilerConfig = compilerConfig;
+    }
 
     @Override
     protected void performModifications(CompilationUnit unit) {
@@ -79,11 +86,9 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
             makeMembersPublic(classDefinitionNode);
 
-            // COLT-95 - Add asset listeners
+            // COLT-220 - Add instance assets listeners
             List<VariableDefinitionNode> embedFields = TreeNavigator.getFieldDefinitionsWithAnnotation(classDefinitionNode, "Embed");
-            if (!embedFields.isEmpty()) {
-                Transformations.addAssetListeners(unit, classDefinitionNode, packageName, embedFields);
-            }
+            Transformations.addAssetListeners(unit, classDefinitionNode, embedFields, false);
 
             // Extract all internal classes
             List<String> internalClassesNames = new ArrayList<String>();
@@ -124,6 +129,11 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             }
             for (String internalClassName : internalClassesNames) {
                 initMethodNode.fexpr.body.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(internalClassName, "prototype"), -1)));
+            }
+            // COLT-220
+            Node assetListenerAddStatement = Transformations.addAssetListeners(unit, classDefinitionNode, embedFields, true);
+            if (assetListenerAddStatement != null) {
+                initMethodNode.fexpr.body.items.add(assetListenerAddStatement);
             }
             if (!liveCodingStarterAdded) {
                 initMethodNode.fexpr.body.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier("LiveCodingSessionStarter", "prototype"), -1)));

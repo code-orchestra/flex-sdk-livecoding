@@ -14,10 +14,7 @@ import macromedia.asc.parser.*;
 import macromedia.asc.util.ObjectList;
 import org.apache.commons.lang3.SerializationUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Anton.I.Neverov
@@ -159,6 +156,11 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
     }
 
     private List<FunctionDefinitionNode> findChangedMethods(ClassDefinitionNode originalClass, ClassDefinitionNode modifiedClass) {
+        LiveCodingPolicy liveCodingPolicy = LiveCodingUtil.getLiveCodingPolicy(originalClass);
+        if (!liveCodingPolicy.isEnabled()) {
+            return Collections.emptyList();
+        }
+
         List<FunctionDefinitionNode> originalMethodDefinitions = TreeNavigator.getMethodDefinitions(originalClass);
         List<FunctionDefinitionNode> modifiedMethodDefinitions = TreeNavigator.getMethodDefinitions(modifiedClass);
 
@@ -170,6 +172,9 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
             }
             // COLT-189
             if (!LiveCodingCLIParameters.makeGettersSettersLive() && (TreeNavigator.isGetter(modifiedMethod) || TreeNavigator.isSetter(modifiedMethod))) {
+                continue;
+            }
+            if (liveCodingPolicy == LiveCodingPolicy.SELECTED_METHODS && !TreeNavigator.hasAnnotation(modifiedMethod, LiveCodingUtil.LIVE_ANNOTATION)) {
                 continue;
             }
 

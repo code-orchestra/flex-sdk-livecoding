@@ -50,7 +50,8 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             modelDependenciesUnits.put(packageName, mdClassName);
         }
 
-        if (LiveCodingUtil.canBeUsedForLiveCoding(classDefinitionNode)) {
+        LiveCodingPolicy liveCodingPolicy = LiveCodingUtil.getLiveCodingPolicy(classDefinitionNode);
+        if (liveCodingPolicy.isEnabled()) {
             if (!TreeNavigator.isDynamic(classDefinitionNode)) {
                 classDefinitionNode.attrs.items.add(TreeUtil.createDynamicModifier());
             }
@@ -60,7 +61,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
             List<Node> staticListenerAddStatements = new ArrayList<Node>();
             for (FunctionDefinitionNode methodDefinition : TreeNavigator.getMethodDefinitions(classDefinitionNode)) {
-                if (LiveCodingUtil.canBeUsedForLiveCoding(methodDefinition)) {
+                if (LiveCodingUtil.canBeUsedForLiveCoding(methodDefinition, liveCodingPolicy)) {
                     extractMethodToLiveCodingClass(methodDefinition, classDefinitionNode, staticListenerAddStatements);
                 }
 

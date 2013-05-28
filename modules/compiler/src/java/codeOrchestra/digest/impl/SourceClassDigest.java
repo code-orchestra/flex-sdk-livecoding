@@ -90,7 +90,7 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
             }
         }
 
-        this.live = LiveCodingUtil.canBeUsedForLiveCoding(cl);
+        this.live = LiveCodingUtil.getLiveCodingPolicy(cl).isEnabled();
     }
 
     @Override

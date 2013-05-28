@@ -1,5 +1,6 @@
 package codeOrchestra.tree;
 
+import codeOrchestra.LiveCodingPolicy;
 import codeOrchestra.LiveCodingUtil;
 import codeOrchestra.util.Pair;
 import macromedia.asc.parser.*;
@@ -52,11 +53,12 @@ public class ProjectNavigator {
             if (!classDefinition.pkgdef.name.id.pkg_part.equals(packageName)) {
                 continue;
             }
-            if (!LiveCodingUtil.canBeUsedForLiveCoding(classDefinition)) {
+            LiveCodingPolicy liveCodingPolicy = LiveCodingUtil.getLiveCodingPolicy(classDefinition);
+            if (!liveCodingPolicy.isEnabled()) {
                 continue;
             }
             for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(classDefinition)) {
-                if (!LiveCodingUtil.canBeUsedForLiveCoding(functionDefinitionNode)) {
+                if (!LiveCodingUtil.canBeUsedForLiveCoding(functionDefinitionNode, liveCodingPolicy)) {
                     continue;
                 }
                 result.add(LiveCodingUtil.constructLiveCodingClassName(functionDefinitionNode, classDefinition.name.name));
@@ -81,11 +83,12 @@ public class ProjectNavigator {
             if (!classDefinition.name.name.equals(className)) {
                 continue;
             }
-            if (!LiveCodingUtil.canBeUsedForLiveCoding(classDefinition)) {
+            LiveCodingPolicy liveCodingPolicy = LiveCodingUtil.getLiveCodingPolicy(classDefinition);
+            if (!liveCodingPolicy.isEnabled()) {
                 continue;
             }
             for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(classDefinition)) {
-                if (!LiveCodingUtil.canBeUsedForLiveCoding(functionDefinitionNode)) {
+                if (!LiveCodingUtil.canBeUsedForLiveCoding(functionDefinitionNode, liveCodingPolicy)) {
                     continue;
                 }
                 result.add(LiveCodingUtil.constructLiveCodingClassName(functionDefinitionNode, classDefinition.name.name));

@@ -5,6 +5,8 @@ import codeOrchestra.tree.TreeNavigator;
 import codeOrchestra.tree.TreeUtil;
 import macromedia.asc.parser.*;
 
+import java.util.List;
+
 /**
  * @author Anton.I.Neverov
  * @author Alexander Eliseyev
@@ -17,27 +19,36 @@ public class LiveCodingUtil {
     public static final String LIVE_CODE_UPDATE_LISTENER_ANNOTATION = "LiveCodeUpdateListener";
     public static final String LIVE_CONSOLE_ANNOTATION = "LiveConsole";
 
-    public static boolean canBeUsedForLiveCoding(ClassDefinitionNode cl) {
+    public static LiveCodingPolicy getLiveCodingPolicy(ClassDefinitionNode cl) {
         if (cl == null) {
-            return false;
+            return LiveCodingPolicy.DISABLED;
         }
         if (cl.isInterface()) {
-            return false;
+            return LiveCodingPolicy.DISABLED;
         }
         if (TreeNavigator.hasAnnotation(cl, LIVE_CODE_DISABLE_ANNOTATION)) {
-            return false;
+            return LiveCodingPolicy.DISABLED;
         }
-        if (LiveCodingCLIParameters.getLiveMethods() == LiveMethods.ANNOTATED && !TreeNavigator.hasAnnotation(cl, LIVE_ANNOTATION)) {
-            return false;
+        if (LiveCodingCLIParameters.getLiveMethods() == LiveMethods.ANNOTATED) {
+            if (TreeNavigator.hasAnnotation(cl, LIVE_ANNOTATION)) {
+                return LiveCodingPolicy.LIVE_CLASS;
+            }
+
+            for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(cl)) {
+                if (canBeUsedForLiveCoding(functionDefinitionNode, LiveCodingPolicy.SELECTED_METHODS)) {
+                    return LiveCodingPolicy.SELECTED_METHODS;
+                }
+            }
+            return LiveCodingPolicy.DISABLED;
         }
         if (ProvidedPackages.isProvidedPackage(cl.pkgdef.name.id.pkg_part)) {
-            return false;
+            return LiveCodingPolicy.DISABLED;
         }
 
-        return true;
+        return LiveCodingPolicy.LIVE_CLASS;
     }
 
-    public static boolean canBeUsedForLiveCoding(FunctionDefinitionNode function) {
+    public static boolean canBeUsedForLiveCoding(FunctionDefinitionNode function, LiveCodingPolicy parentLiveCodingPolicy) {
         if (function == null) {
             return false;
         }
@@ -76,7 +87,9 @@ public class LiveCodingUtil {
                 }
             }
         }
-
+        if (parentLiveCodingPolicy == LiveCodingPolicy.SELECTED_METHODS && !TreeNavigator.hasAnnotation(function, LIVE_ANNOTATION)) {
+            return false;
+        }
 
         return true;
     }

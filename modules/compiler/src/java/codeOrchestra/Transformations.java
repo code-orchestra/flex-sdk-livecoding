@@ -10,10 +10,7 @@ import flex2.compiler.CompilationUnit;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.ObjectList;
 
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Alexander Eliseyev
@@ -36,7 +33,13 @@ public class Transformations {
     /**
      * @return listener add statement
      */
-    public static Node addAssetListeners(CompilationUnit unit, ClassDefinitionNode classDefinitionNode, List<VariableDefinitionNode> embedFields, boolean isStatic) {
+    public static Node addAssetListeners(CompilationUnit unit, ClassDefinitionNode classDefinitionNode, List<VariableDefinitionNode> allEmbedFields, boolean isStatic) {
+        List<VariableDefinitionNode> embedFields = new ArrayList<VariableDefinitionNode>();
+        for (VariableDefinitionNode variableDefinitionNode : allEmbedFields) {
+            if (isStatic == TreeNavigator.isStaticField(variableDefinitionNode)) {
+                embedFields.add(variableDefinitionNode);
+            }
+        }
         if (embedFields.isEmpty()) {
             return null;
         }

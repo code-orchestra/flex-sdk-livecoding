@@ -140,11 +140,11 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 initMethodNode.fexpr.body.items.add(assetListenerAddStatement);
             }
             if (!liveCodingStarterAdded) {
-                initMethodNode.fexpr.body.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier("LiveCodingSessionStarter", "prototype"), -1)));
+                initMethodNode.fexpr.body.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createCall("LiveCodingSessionStarter", "start", null), -1)));
                 addLiveCodingStarterUnit(packageName, classDefinitionNode.cx);
                 liveCodingStarterAdded = true;
             }
-            initMethodNode.fexpr.body.items.add(new ReturnStatementNode(new LiteralNumberNode("0")));
+            initMethodNode.fexpr.body.items.add(new ReturnStatementNode(new LiteralNumberNode("1")));
             classDefinitionNode.statements.items.add(initMethodNode);
             FieldCONode initField = new FieldCONode("initLiveField_" + className, "int");
             initField.isStatic = true;
@@ -403,10 +403,14 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
     private void addLiveCodingStarterUnit(String packageName, Context cx) {
         ClassCONode classCONode = new ClassCONode(packageName, "LiveCodingSessionStarter", cx);
 
+        MethodCONode methodCONode = new MethodCONode("start", "void", cx);
+        classCONode.methods.add(methodCONode);
+        methodCONode.isStatic = true;
+
         // COLT-41
         ArgumentListNode setSocketArgs = new ArgumentListNode(new LiteralStringNode(LiveCodingCLIParameters.getTraceHost()), -1);
         setSocketArgs.items.add(new LiteralNumberNode(String.valueOf(LiveCodingCLIParameters.getTracePort())));
-        classCONode.staticInitializer.add(new ExpressionStatementNode(new ListNode(
+        methodCONode.statements.add(new ExpressionStatementNode(new ListNode(
                 null,
                 TreeUtil.createCall(
                         "LogUtil",
@@ -415,8 +419,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 ),
                 -1
         )));
-
-        classCONode.staticInitializer.add(new ExpressionStatementNode(new ListNode(
+        methodCONode.statements.add(new ExpressionStatementNode(new ListNode(
                 null,
                 TreeUtil.createCall(
                         "LiveCodingCodeFlowUtil",
@@ -425,8 +428,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 ),
                 -1
         )));
-
-        classCONode.staticInitializer.add(new ExpressionStatementNode(new ListNode(
+        methodCONode.statements.add(new ExpressionStatementNode(new ListNode(
                 null,
                 TreeUtil.createCall(
                         "LiveCodingCodeFlowUtil",
@@ -435,8 +437,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 ),
                 -1
         )));
-
-        classCONode.staticInitializer.add(new ExpressionStatementNode(new ListNode(
+        methodCONode.statements.add(new ExpressionStatementNode(new ListNode(
                 null,
                 new MemberExpressionNode(
                         TreeUtil.createCall("LiveCodeRegistry", "getInstance", null),
@@ -448,9 +449,12 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 ),
                 -1
         )));
+        methodCONode.statements.add(new ReturnStatementNode(null));
+
         classCONode.addImport("codeOrchestra.actionScript.logging.logUtil", "LogUtil");
         classCONode.addImport("codeOrchestra.actionScript.liveCoding.util", "LiveCodingCodeFlowUtil");
         classCONode.addImport("codeOrchestra.actionScript.liveCoding.util", "LiveCodeRegistry");
+
         classCONode.addToProject();
     }
 

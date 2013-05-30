@@ -7,6 +7,7 @@ import java.util.List;
  */
 public interface IClassDigest {
 
+    boolean isMainClass();
     IMember getInstanceMember(String name);
     List<IMember> getAllMembers();
     List<IMember> getInstanceMembers();

@@ -30,8 +30,11 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
     private boolean live;
 
     private boolean addedDuringProcessing;
+    private boolean isMainClass;
 
-    public SourceClassDigest(ClassDefinitionNode cl) {
+    public SourceClassDigest(ClassDefinitionNode cl, boolean isMainClass) {
+        this.isMainClass = isMainClass;
+
         // Name
         packageName = cl.pkgdef.name.id.pkg_part;
         name = cl.name.name;
@@ -91,6 +94,11 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
         }
 
         this.live = LiveCodingUtil.getLiveCodingPolicy(cl).isEnabled();
+    }
+
+    @Override
+    public boolean isMainClass() {
+        return isMainClass;
     }
 
     @Override

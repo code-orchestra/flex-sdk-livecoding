@@ -297,11 +297,15 @@ public class DigestManager {
     }
 
     public SourceClassDigest addToDigestUnresolved(ClassDefinitionNode classDefinitionNode) {
+        return addToDigestUnresolved(classDefinitionNode, false);
+    }
+
+    public SourceClassDigest addToDigestUnresolved(ClassDefinitionNode classDefinitionNode, boolean isMain) {
         if (classDefinitionNode == null) {
             return null;
         }
 
-        SourceClassDigest classDigest = new SourceClassDigest(classDefinitionNode);
+        SourceClassDigest classDigest = new SourceClassDigest(classDefinitionNode, isMain);
         unresolvedDigests.put(classDigest.getFqName(), classDigest);
 
         for (VariableDefinitionNode fieldDefinition : TreeNavigator.getFieldDefinitions(classDefinitionNode)) {

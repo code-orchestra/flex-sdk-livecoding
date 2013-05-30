@@ -17,6 +17,8 @@ import java.util.*;
  */
 public class LCBaseExtension extends AbstractTreeModificationExtension {
 
+    private boolean mainClassPicked;
+
     private final CompilerConfiguration compilerConfig;
     private Map<String, String> modelDependenciesUnits = new HashMap<String, String>();
     private boolean liveCodingStarterAdded;
@@ -36,8 +38,11 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         if (Fcsh.livecodingBaseModeSecondPass) {
             loadSyntaxTrees();
         } else {
-            DigestManager.getInstance().addToDigestUnresolved(classDefinitionNode);
+            DigestManager.getInstance().addToDigestUnresolved(classDefinitionNode, !mainClassPicked);
             saveSyntaxTree(unit);
+
+            mainClassPicked = true;
+
             return;
         }
 
@@ -50,6 +55,15 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             modelDependenciesUnits.put(packageName, mdClassName);
         }
 
+        // COLT-215 - create the initLiveMethod anyway (even if the class is not live)
+        // COLT-73
+        String initMethodName = "initLiveMethod_" + className;
+        MethodCONode initMethod = new MethodCONode(initMethodName, "int", classDefinitionNode.cx);
+        initMethod.isStatic = true;
+        FunctionDefinitionNode initMethodNode = initMethod.getFunctionDefinitionNode();
+        initMethodNode.pkgdef = classDefinitionNode.pkgdef;
+
+        // Do the Harlem shake
         LiveCodingPolicy liveCodingPolicy = LiveCodingUtil.getLiveCodingPolicy(classDefinitionNode);
         if (liveCodingPolicy.isEnabled()) {
             if (!TreeNavigator.isDynamic(classDefinitionNode)) {
@@ -118,12 +132,6 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             );
             classDefinitionNode.statements.items.add(new VariableDefinitionNode(classDefinitionNode.pkgdef, attrs, Tokens.VAR_TOKEN, listNode, -1));
 
-            // COLT-73
-            String initMethodName = "initLiveMethod_" + className;
-            MethodCONode initMethod = new MethodCONode(initMethodName, "int", classDefinitionNode.cx);
-            initMethod.isStatic = true;
-            FunctionDefinitionNode initMethodNode = initMethod.getFunctionDefinitionNode();
-            initMethodNode.pkgdef = classDefinitionNode.pkgdef;
             // COLT-67
             for (String ownLiveMethodClass : projectNavigator.getLiveCodingClassNames(packageName, className)) {
                 initMethodNode.fexpr.body.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createIdentifier(ownLiveMethodClass, "prototype"), -1)));
@@ -139,20 +147,21 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             if (assetListenerAddStatement != null) {
                 initMethodNode.fexpr.body.items.add(assetListenerAddStatement);
             }
-            if (!liveCodingStarterAdded) {
-                initMethodNode.fexpr.body.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createCall("LiveCodingSessionStarter", "start", null), -1)));
-                addLiveCodingStarterUnit(packageName, classDefinitionNode.cx);
-                liveCodingStarterAdded = true;
-            }
-            initMethodNode.fexpr.body.items.add(new ReturnStatementNode(new LiteralNumberNode("1")));
-            classDefinitionNode.statements.items.add(initMethodNode);
-            FieldCONode initField = new FieldCONode("initLiveField_" + className, "int");
-            initField.isStatic = true;
-            initField.initializer = TreeUtil.createCall(null, initMethodName, null);
-            VariableDefinitionNode variableDefinitionNode = initField.getVariableDefinitionNode();
-            variableDefinitionNode.pkgdef = classDefinitionNode.pkgdef;
-            classDefinitionNode.statements.items.add(0, variableDefinitionNode);
         }
+
+        if (!liveCodingStarterAdded) {
+            initMethodNode.fexpr.body.items.add(new ExpressionStatementNode(new ListNode(null, TreeUtil.createCall("LiveCodingSessionStarter", "start", null), -1)));
+            addLiveCodingStarterUnit(packageName, classDefinitionNode.cx);
+            liveCodingStarterAdded = true;
+        }
+        initMethodNode.fexpr.body.items.add(new ReturnStatementNode(new LiteralNumberNode("1")));
+        classDefinitionNode.statements.items.add(initMethodNode);
+        FieldCONode initField = new FieldCONode("initLiveField_" + className, "int");
+        initField.isStatic = true;
+        initField.initializer = TreeUtil.createCall(null, initMethodName, null);
+        VariableDefinitionNode variableDefinitionNode = initField.getVariableDefinitionNode();
+        variableDefinitionNode.pkgdef = classDefinitionNode.pkgdef;
+        classDefinitionNode.statements.items.add(0, variableDefinitionNode);
     }
 
     private void processProtectedField(IMember member, ClassDefinitionNode classDefinitionNode) {

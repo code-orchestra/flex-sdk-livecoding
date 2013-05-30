@@ -56,6 +56,11 @@ public class SWCClassDigest implements IClassDigest {
     }
 
     @Override
+    public boolean isMainClass() {
+        return false;
+    }
+
+    @Override
     public IMember getInstanceMember(String name) {
         for (IMember instanceMember : instanceMembers) {
             if (name.equals(instanceMember.getName())) {

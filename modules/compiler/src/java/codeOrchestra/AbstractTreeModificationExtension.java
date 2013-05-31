@@ -427,7 +427,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
         // Create the method
         String initializerName = "live_initialize_" + className;
-        MethodCONode liveInitializer = new MethodCONode(initializerName, null, classDefinitionNode.cx);
+        MethodCONode liveInitializer = new MethodCONode(initializerName, null, classDefinitionNode.cx.makeCopyOf());
         FunctionDefinitionNode liveInitializerNode = liveInitializer.getFunctionDefinitionNode();
         liveInitializerNode.pkgdef = classDefinitionNode.pkgdef;
         classDefinitionNode.statements.items.add(liveInitializerNode);

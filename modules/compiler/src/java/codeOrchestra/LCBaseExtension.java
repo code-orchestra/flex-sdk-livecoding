@@ -410,7 +410,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
     }
 
     private void addLiveCodingStarterUnit(String packageName, Context cx) {
-        ClassCONode classCONode = new ClassCONode(packageName, "LiveCodingSessionStarter", cx);
+        ClassCONode classCONode = new ClassCONode(packageName, "LiveCodingSessionStarter", cx.makeCopyOf());
 
         MethodCONode methodCONode = new MethodCONode("start", "void", cx);
         classCONode.methods.add(methodCONode);

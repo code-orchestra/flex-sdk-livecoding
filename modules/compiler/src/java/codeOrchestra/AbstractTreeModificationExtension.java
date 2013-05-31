@@ -137,7 +137,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         } else {
             liveCodingClassName = LiveCodingUtil.constructLiveCodingClassName(functionDefinitionNode, className);
         }
-        Context cx = functionDefinitionNode.cx;
+        Context cx = functionDefinitionNode.cx.makeCopyOf();
         String packageName;
         if (incremental) {
             packageName = "codeOrchestra.liveCoding.load";
@@ -514,17 +514,6 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         newBody.add(new VariableDefinitionNode(pkgdef, null, Tokens.VAR_TOKEN, listNode, -1));
 
         /*
-            new LiveMethod_com_example_Main_foo();
-         */
-//        ArgumentListNode args = null;
-//        if (!staticMethod) {
-//            args = new ArgumentListNode(new ThisExpressionNode(),-1);
-//        }
-//        CallExpressionNode testCall = new CallExpressionNode(new IdentifierNode(LiveCodingUtil.constructLiveCodingClassName(functionDefinitionNode, className), -1), args);
-//        testCall.is_new = true;
-//        newBody.add(new ExpressionStatementNode(new ListNode(null, new MemberExpressionNode(null, testCall, -1), -1)));
-
-        /*
             [return] (new method(this)).run();
             or
             [return] method.run();
@@ -549,7 +538,17 @@ public abstract class AbstractTreeModificationExtension implements Extension {
             );
             callExpressionNode.is_new = true;
             ListNode base = new ListNode(null, new MemberExpressionNode(null, callExpressionNode, -1), -1);
-            CallExpressionNode selector = new CallExpressionNode(new IdentifierNode("run", -1), argumentListNode);
+
+            // COLT-122
+            IdentifierNode runMethodIdentifier;
+            String namespaceVisibility = TreeNavigator.getNamespaceVisibility(functionDefinitionNode);
+            if (namespaceVisibility != null) {
+                runMethodIdentifier = new QualifiedIdentifierNode(TreeUtil.createIdentifier(namespaceVisibility), "run", -1);
+            } else {
+                runMethodIdentifier = new IdentifierNode("run", -1);
+            }
+
+            CallExpressionNode selector = new CallExpressionNode(runMethodIdentifier, argumentListNode);
             expr = new ListNode(null, new MemberExpressionNode(base, selector, -1), -1);
         } else {
             expr = new ListNode(null, TreeUtil.createCall("method", "run", argumentListNode), -1);

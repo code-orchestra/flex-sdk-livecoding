@@ -46,6 +46,11 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             return;
         }
 
+        // Skip interfaces
+        if (classDefinitionNode.isInterface()) {
+            return;
+        }
+
         String packageName = classDefinitionNode.pkgdef.name.id.pkg_part;
         String className = classDefinitionNode.name.name;
         String classFqName = StringUtils.longNameFromNamespaceAndShortName(packageName, className);

@@ -261,13 +261,13 @@ public class Transformations {
         classDefinitionNode.statements.items.add(assetsBroadcastMethod);
 
         /*
-           LiveCodeRegistry.getInstance().addEventListener(AssetUpdateEvent.ASSET_UPDATE, this.assetsUpdateListener7055724444913929522, false, 0, true);
+           LiveCodeRegistry.getInstance().addEventListener(AssetUpdateEvent.ASSET_UPDATE, this.assetsUpdateListener7055724444913929522, false, 10, true);
         */
         ArgumentListNode args = new ArgumentListNode(TreeUtil.createIdentifier("AssetUpdateEvent", "ASSET_UPDATE"), -1);
         MemberExpressionNode qListenerName = TreeUtil.createThisIdentifier(assetsUpdateListener.methodName);
         args.items.add(qListenerName);
         args.items.add(new LiteralBooleanNode(false));
-        args.items.add(new LiteralNumberNode(String.valueOf("0")));
+        args.items.add(new LiteralNumberNode(String.valueOf("10")));
         args.items.add(new LiteralBooleanNode(true));
         CallExpressionNode selector = new CallExpressionNode(new IdentifierNode("addEventListener", -1), args);
         MemberExpressionNode item = new MemberExpressionNode(TreeUtil.createCall("LiveCodeRegistry", "getInstance", null), selector, -1);

@@ -1,5 +1,7 @@
 package codeOrchestra.util;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.UUID;
 
 /**
@@ -19,12 +21,24 @@ public class StringUtils {
         return sb.toString();
     }
 
-    public static String join(String[] array, String separaror) {
+    public static String join(String[] array, String separator) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < array.length; i++) {
             sb.append(array[i]);
             if (i < array.length - 1) {
-                sb.append(separaror);
+                sb.append(separator);
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String joinCollection(Collection array, String separator) {
+        StringBuilder sb = new StringBuilder();
+        Iterator iterator = array.iterator();
+        while (iterator.hasNext()) {
+            sb.append(iterator.next());
+            if (iterator.hasNext()) {
+                sb.append(separator);
             }
         }
         return sb.toString();

@@ -26,6 +26,7 @@ import codeOrchestra.digest.DigestManager;
 import codeOrchestra.profiling.YourKitController;
 import codeOrchestra.tree.LastASTHolder;
 import codeOrchestra.util.FileUtils;
+import codeOrchestra.util.StringUtils;
 import flash.localization.LocalizationManager;
 import flash.localization.ResourceBundleLocalizer;
 import flash.util.Trace;
@@ -316,8 +317,13 @@ public class Fcsh extends Tool {
                 args[i] = t.nextToken();
             }
 
+            Set<Integer> targetsInvolved = new HashSet<Integer>();
             for (int i = 0; i < (livecodingIncrementalMode ? 1 : 2); i++) {
                 livecodingBaseModeSecondPass = i == 1;
+
+                if (isCompc && livecodingBaseModeSecondPass) {
+                    break;
+                }
 
                 if (livecodingBaseModeSecondPass) {
                     DigestManager.getInstance().init();
@@ -337,24 +343,40 @@ public class Fcsh extends Tool {
                             } else {
                                 mxmlc(target.args, id);
                             }
+
+                            targetsInvolved.add(id);
                         }
                     } catch (NumberFormatException ex) {
                         ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new AssignTargetID(counter)));
+                        int id = counter++;
                         if (isCompc) {
-                            compc(args, counter++);
+                            compc(args, id);
                         } else {
-                            mxmlc(args, counter++);
+                            mxmlc(args, id);
                         }
+
+                        targetsInvolved.add(id);
                     }
                 } else {
                     ThreadLocalToolkit.logInfo(l10n.getLocalizedTextString(new AssignTargetID(counter)));
+                    int id = counter++;
                     if (isCompc) {
-                        compc(args, counter++);
+                        compc(args, id);
                     } else {
-                        mxmlc(args, counter++);
+                        mxmlc(args, id);
                     }
+
+                    targetsInvolved.add(id);
                 }
                 livecodingBaseModeSecondPass = false;
+            }
+
+            // COLT-244
+            if (livecodingIncrementalMode) {
+                System.out.println("Clearing incremental compiler target(s) " + StringUtils.joinCollection(targetsInvolved, ", "));
+                for (Integer targetId : targetsInvolved) {
+                    clear(targetId.toString());
+                }
             }
 
             livecodingBaseMode = false;

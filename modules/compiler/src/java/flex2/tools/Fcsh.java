@@ -23,6 +23,7 @@ import codeOrchestra.AbstractTreeModificationExtension;
 import codeOrchestra.LCBaseExtension;
 import codeOrchestra.LCIncrementalExtension;
 import codeOrchestra.digest.DigestManager;
+import codeOrchestra.lcs.license.ExternalValidationServiceProvider;
 import codeOrchestra.profiling.YourKitController;
 import codeOrchestra.tree.LastASTHolder;
 import codeOrchestra.util.FileUtils;
@@ -84,6 +85,11 @@ public class Fcsh extends Tool {
         LocalizationManager localizationManager = new LocalizationManager();
         localizationManager.addLocalizer(new ResourceBundleLocalizer());
         ThreadLocalToolkit.setLocalizationManager(localizationManager);
+
+        if (!new ExternalValidationServiceProvider().areYouAlright()) {
+            System.out.println("No running COLT instance found");
+            System.exit(1);
+        }
 
         intro();
         prompt();

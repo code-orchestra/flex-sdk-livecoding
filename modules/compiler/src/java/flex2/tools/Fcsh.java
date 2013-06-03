@@ -19,14 +19,12 @@
 
 package flex2.tools;
 
-import codeOrchestra.AbstractTreeModificationExtension;
 import codeOrchestra.LCBaseExtension;
 import codeOrchestra.LCIncrementalExtension;
 import codeOrchestra.digest.DigestManager;
-import codeOrchestra.lcs.license.ExternalValidationServiceProvider;
+import codeOrchestra.lcs.license.COLTRunningKey;
 import codeOrchestra.profiling.YourKitController;
 import codeOrchestra.tree.LastASTHolder;
-import codeOrchestra.util.FileUtils;
 import codeOrchestra.util.StringUtils;
 import flash.localization.LocalizationManager;
 import flash.localization.ResourceBundleLocalizer;
@@ -54,7 +52,6 @@ import flex2.linker.LinkerException;
 import flex2.tools.Mxmlc.InitialSetup;
 import flex2.tools.Mxmlc.OutputMessage;
 import macromedia.asc.util.Context;
-import sun.security.pkcs11.wrapper.CK_SSL3_KEY_MAT_OUT;
 
 import java.io.*;
 import java.util.*;
@@ -86,7 +83,7 @@ public class Fcsh extends Tool {
         localizationManager.addLocalizer(new ResourceBundleLocalizer());
         ThreadLocalToolkit.setLocalizationManager(localizationManager);
 
-        if (!new ExternalValidationServiceProvider().areYouAlright()) {
+        if (!COLTRunningKey.isRunning()) {
             System.out.println("No running COLT instance found");
             System.exit(1);
         }

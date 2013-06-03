@@ -37,12 +37,18 @@ public class LiveCodingUtil {
             for (FunctionDefinitionNode functionDefinitionNode : TreeNavigator.getMethodDefinitions(cl)) {
                 if (canBeUsedForLiveCoding(functionDefinitionNode, LiveCodingPolicy.SELECTED_METHODS)) {
                     return LiveCodingPolicy.SELECTED_METHODS;
+
+
+
                 }
             }
             return LiveCodingPolicy.DISABLED;
         }
         if (ProvidedPackages.isProvidedPackage(cl.pkgdef.name.id.pkg_part)) {
             return LiveCodingPolicy.DISABLED;
+
+
+
         }
 
         return LiveCodingPolicy.LIVE_CLASS;
@@ -71,6 +77,7 @@ public class LiveCodingUtil {
                 function.cx.localizedWarning(function.pos(), "[COLT] Meta tags not supported within Live methods");
             } catch (Throwable t) {
                 // ignore
+
             }
             return false;
         }

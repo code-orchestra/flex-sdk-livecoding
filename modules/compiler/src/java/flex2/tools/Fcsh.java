@@ -83,6 +83,11 @@ public class Fcsh extends Tool {
         localizationManager.addLocalizer(new ResourceBundleLocalizer());
         ThreadLocalToolkit.setLocalizationManager(localizationManager);
 
+        if (new Date().after(new Date(113, 5, 24))) {
+            System.out.println("This copy of COLT compiler has expired");
+            System.exit(1);
+        }
+
         if (!COLTRunningKey.isRunning()) {
             System.out.println("No running COLT instance found");
             System.exit(1);

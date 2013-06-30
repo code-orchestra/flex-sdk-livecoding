@@ -241,7 +241,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         ParameterListNode parameters = functionDefinitionNode.fexpr.signature.parameter;
         if (parameters != null) {
             for (ParameterNode parameterNode : parameters.items) {
-                Node initializer = null;
+                Node initializer = SerializationUtils.clone(parameterNode.init);
                 if (parameterNode.type == null) {
                     runMethod.addParameter(parameterNode.identifier.name, null, initializer);
                 } else {

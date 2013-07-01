@@ -141,4 +141,14 @@ public class ListNode extends Node
 	{
 		return items.size() == 1 && items.at(0).isConfigurationName();
 	}
+
+    public ListNode clone() throws CloneNotSupportedException
+    {
+        ListNode result = (ListNode) super.clone();
+
+        for (Node item: items) result.items.add(item.clone());
+        for (Value value: values) result.values.add(value.clone());
+
+        return result;
+    }
 }

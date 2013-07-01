@@ -50,4 +50,13 @@ public class PragmaNode extends Node
 	{
 		return "Pragma";
 	}
+
+    public PragmaNode clone() throws CloneNotSupportedException
+    {
+        PragmaNode result = (PragmaNode) super.clone();
+
+        result.list = list.clone();
+
+        return result;
+    }
 }

@@ -22,7 +22,7 @@ package macromedia.asc.util;
 /**
  * @author Jeff Dyer
  */
-public class Block
+public class Block implements Cloneable
 {
 	public Block() { is_terminal = false; }
 	
@@ -40,4 +40,19 @@ public class Block
 	public IntList succs = new IntList(1);
 	//public Blocks preds_blk = new Blocks();
 	//public Blocks succs_blk = new Blocks();
+
+    public Block clone() throws CloneNotSupportedException {
+        Block result = (Block) super.clone();
+
+        result.def_bits = BitSet.copy(def_bits);
+        result.gen_bits = BitSet.copy(gen_bits);
+        result.kill_bits = BitSet.copy(kill_bits);
+        result.in_bits = BitSet.copy(in_bits);
+        result.out_bits = BitSet.copy(out_bits);
+
+        result.preds = new IntList(preds);
+        result.succs = new IntList(succs);
+
+        return result;
+    }
 }

@@ -71,4 +71,13 @@ public class QName implements Serializable, Cloneable // CodeOrchestra: made ser
 		}
 		return fullname;
 	}
+
+    public QName clone() throws CloneNotSupportedException
+    {
+        QName result = (QName) super.clone();
+
+        result.ns = new ObjectValue(ns);
+
+        return result;
+    }
 }

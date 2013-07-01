@@ -138,5 +138,16 @@ public class TypeInfo implements Serializable, Cloneable // CodeOrchestra: made 
     {
         this.prototype = proto;
     }
+
+    public TypeInfo clone() throws CloneNotSupportedException
+    {
+        TypeInfo result = (TypeInfo) super.clone();
+
+        result.type = type.copyType();
+        result.prototype = new ObjectValue(prototype);
+        result.name = name.clone();
+
+        return result;
+    }
 }
 

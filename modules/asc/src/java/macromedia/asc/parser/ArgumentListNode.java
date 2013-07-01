@@ -103,4 +103,16 @@ public class ArgumentListNode extends Node
         }
         return false;
     }
+
+    public ArgumentListNode clone() throws CloneNotSupportedException
+    {
+        ArgumentListNode result = (ArgumentListNode) super.clone();
+
+        for (Node item: items) result.items.add(item.clone());
+        for (TypeInfo info: expected_types) result.expected_types.add(info.clone());
+
+        result.decl_styles = new ByteList(decl_styles);
+
+        return result;
+    }
 }

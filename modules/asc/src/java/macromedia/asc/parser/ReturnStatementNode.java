@@ -67,4 +67,13 @@ public class ReturnStatementNode extends Node
 	{
 		return "ReturnStatement";
 	}
+
+    public ReturnStatementNode clone() throws CloneNotSupportedException
+    {
+        ReturnStatementNode result = (ReturnStatementNode) super.clone();
+
+        result.expr = expr.clone();
+
+        return result;
+    }
 }

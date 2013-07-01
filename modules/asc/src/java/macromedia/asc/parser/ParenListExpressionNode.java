@@ -60,4 +60,13 @@ public class ParenListExpressionNode extends Node
 	{
 		return "ParenListExpression";
 	}
+
+    public ParenListExpressionNode clone() throws CloneNotSupportedException
+    {
+        ParenListExpressionNode result = (ParenListExpressionNode) super.clone();
+
+        result.expr = expr.clone();
+
+        return result;
+    }
 }

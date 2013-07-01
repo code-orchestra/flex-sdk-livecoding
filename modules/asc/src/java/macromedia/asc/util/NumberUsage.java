@@ -21,7 +21,7 @@ package macromedia.asc.util;
 
 import java.math.RoundingMode;
 
-public class NumberUsage {
+public class NumberUsage implements Cloneable {
 
 	public static final int use_Number = 0;
 	public static final int use_decimal = 1;
@@ -149,4 +149,11 @@ public class NumberUsage {
 		}
 		return ret;
 	}
+
+    public NumberUsage clone() throws CloneNotSupportedException
+    {
+        NumberUsage result = (NumberUsage) super.clone();
+
+        return result;
+    }
 }

@@ -95,4 +95,15 @@ public class LiteralNumberNode extends Node
 	{
 		return "LiteralNumber";
 	}
+
+    public LiteralNumberNode clone() throws CloneNotSupportedException
+    {
+        LiteralNumberNode result = (LiteralNumberNode) super.clone();
+
+        result.type = type.copyType();
+        result.numericValue = numericValue;
+        result.numberUsage = numberUsage.clone();
+
+        return result;
+    }
 }

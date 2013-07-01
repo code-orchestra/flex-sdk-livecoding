@@ -3,6 +3,9 @@ package macromedia.asc.parser.tests;
 import junit.framework.*;
 import macromedia.asc.parser.Node;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
 /**
  * Created with IntelliJ IDEA.
  * User: dimakruk
@@ -24,6 +27,19 @@ public class CloneTest extends TestCase{
         assertFalse(node == clonedNode);
         assertEquals(node, clonedNode);
 
-
+        Class c = node.getClass();
+        Field[] fields = c.getDeclaredFields();
+        for (Field field : fields)
+        {
+            if(!Modifier.isStatic(field.getModifiers()))
+            {
+                field.setAccessible(true);
+                assertEquals(field.get(node), field.get(clonedNode));
+                if (field.get(node) != null)
+                {
+                    assertFalse(field.get(node) == field.get(clonedNode));
+                }
+            };
+        }
     }
 }

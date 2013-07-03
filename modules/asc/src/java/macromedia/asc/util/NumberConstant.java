@@ -37,5 +37,10 @@ public abstract class NumberConstant implements Serializable, Cloneable { // Cod
 	
 	public abstract String toString();
 
+    public NumberConstant clone() throws CloneNotSupportedException
+    {
+        NumberConstant result = (NumberConstant) super.clone();
 
+        return result;
+    }
 }

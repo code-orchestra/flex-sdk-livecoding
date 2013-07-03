@@ -59,5 +59,28 @@ public class DecimalNumberConstant extends NumberConstant {
 		return val.toString();
 	}
 
+    @Override
+    public DecimalNumberConstant clone() throws CloneNotSupportedException
+    {
+        DecimalNumberConstant result = (DecimalNumberConstant) super.clone();
+        result.val = val.clone();
+        return result;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DecimalNumberConstant that = (DecimalNumberConstant) o;
+
+        if (val != null ? !val.equals(that.val) : that.val != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return val != null ? val.hashCode() : 0;
+    }
 }

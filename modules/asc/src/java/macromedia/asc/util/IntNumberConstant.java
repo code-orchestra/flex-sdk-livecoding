@@ -58,4 +58,27 @@ public class IntNumberConstant extends NumberConstant {
 		return String.valueOf(ival);
 	}
 
+    public IntNumberConstant clone() throws CloneNotSupportedException
+    {
+        IntNumberConstant result = (IntNumberConstant) super.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IntNumberConstant that = (IntNumberConstant) o;
+
+        if (ival != that.ival) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return ival;
+    }
 }

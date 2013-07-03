@@ -61,4 +61,27 @@ public class UintNumberConstant extends NumberConstant {
 		return String.valueOf(val);
 	}
 
+    public UintNumberConstant clone() throws CloneNotSupportedException
+    {
+        UintNumberConstant result = (UintNumberConstant) super.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UintNumberConstant that = (UintNumberConstant) o;
+
+        if (val != that.val) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (val ^ (val >>> 32));
+    }
 }

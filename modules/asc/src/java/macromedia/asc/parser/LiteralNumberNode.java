@@ -100,10 +100,40 @@ public class LiteralNumberNode extends Node
     {
         LiteralNumberNode result = (LiteralNumberNode) super.clone();
 
-        result.type = type.copyType();
-        result.numericValue = numericValue;
-        result.numberUsage = numberUsage.clone();
+        if(type != null) result.type = type.copyType();
 
+        if (numberUsage != null) result.numberUsage = numberUsage.clone();
+
+        if (numericValue != null) result.numericValue = numericValue.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        LiteralNumberNode that = (LiteralNumberNode) o;
+
+        if (void_result != that.void_result) return false;
+        if (numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) return false;
+        if (numericValue != null ? !numericValue.equals(that.numericValue) : that.numericValue != null) return false;
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (numericValue != null ? numericValue.hashCode() : 0);
+        result = 31 * result + (numberUsage != null ? numberUsage.hashCode() : 0);
+        result = 31 * result + (void_result ? 1 : 0);
         return result;
     }
 }

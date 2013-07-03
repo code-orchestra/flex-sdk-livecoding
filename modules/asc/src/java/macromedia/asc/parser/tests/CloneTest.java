@@ -2,6 +2,7 @@ package macromedia.asc.parser.tests;
 
 import junit.framework.*;
 import macromedia.asc.parser.*;
+import macromedia.asc.util.DoubleNumberConstant;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -38,6 +39,11 @@ public class CloneTest extends TestCase{
         testCloneNode(alNode);
         alNode.addDeclStyle(PARAM_Required);
         testCloneNode(alNode);
+
+        LiteralNumberNode lnNode = new LiteralNumberNode("1");
+        testCloneNode(lnNode);
+        lnNode.numericValue = new DoubleNumberConstant(1000);
+        testCloneNode(lnNode);
     }
 
     public void testCloneNode(Node node) throws Exception {
@@ -54,7 +60,7 @@ public class CloneTest extends TestCase{
             {
                 field.setAccessible(true);
                 assertEquals(field.get(node), field.get(clonedNode));
-                if (field.get(node) != null)
+                if (field.get(node) != null && field.getType().getName() != "java.lang.String")
                 {
                     assertFalse(field.get(node) == field.get(clonedNode));
                 }

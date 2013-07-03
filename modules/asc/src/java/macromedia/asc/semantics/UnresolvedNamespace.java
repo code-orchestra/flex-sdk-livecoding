@@ -41,4 +41,30 @@ public class UnresolvedNamespace extends NamespaceValue
 	public ReferenceValue ref;
 	public boolean resolved;
     public Context cx;              // We must report errors relative to this context.  node could come from an included file.
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        UnresolvedNamespace that = (UnresolvedNamespace) o;
+
+        if (resolved != that.resolved) return false;
+        if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+        if (node != null ? !node.equals(that.node) : that.node != null) return false;
+        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (node != null ? node.hashCode() : 0);
+        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+        result = 31 * result + (resolved ? 1 : 0);
+        result = 31 * result + (cx != null ? cx.hashCode() : 0);
+        return result;
+    }
 }

@@ -837,4 +837,46 @@ public final class ReferenceValue extends Value implements ErrorConstants
     	else
     		return type_params.at(0).getDiagnosticTypeName();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ReferenceValue that = (ReferenceValue) o;
+
+        if (get_slot_index != that.get_slot_index) return false;
+        if (has_nullable_anno != that.has_nullable_anno) return false;
+        if (is_nullable != that.is_nullable) return false;
+        if (set_method_slot_index != that.set_method_slot_index) return false;
+        if (src_position != that.src_position) return false;
+        if (base != null ? !base.equals(that.base) : that.base != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (namespaces != null ? !namespaces.equals(that.namespaces) : that.namespaces != null) return false;
+        if (slot != null ? !slot.equals(that.slot) : that.slot != null) return false;
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        if (type_params != null ? !type_params.equals(that.type_params) : that.type_params != null) return false;
+        if (ud_bits != null ? !ud_bits.equals(that.ud_bits) : that.ud_bits != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (base != null ? base.hashCode() : 0);
+        result = 31 * result + get_slot_index;
+        result = 31 * result + set_method_slot_index;
+        result = 31 * result + (ud_bits != null ? ud_bits.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + src_position;
+        result = 31 * result + (slot != null ? slot.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (namespaces != null ? namespaces.hashCode() : 0);
+        result = 31 * result + (type_params != null ? type_params.hashCode() : 0);
+        result = 31 * result + (is_nullable ? 1 : 0);
+        result = 31 * result + (has_nullable_anno ? 1 : 0);
+        return result;
+    }
 }

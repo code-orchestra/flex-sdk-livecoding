@@ -432,4 +432,52 @@ public final class TypeValue extends ObjectValue
 
         return super.hasNames(cx, kind, name, namespaces, search_base_objs);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        //TODO: change if super.equals will change
+        //if (!super.equals(o)) return false;
+
+        TypeValue typeValue = (TypeValue) o;
+
+        if (is_nullable != typeValue.is_nullable) return false;
+        if (is_parameterized != typeValue.is_parameterized) return false;
+        if (resolved != typeValue.resolved) return false;
+        if (type_id != typeValue.type_id) return false;
+        if (baseclass != null ? !baseclass.equals(typeValue.baseclass) : typeValue.baseclass != null) return false;
+        if (default_typeinfo != null ? !default_typeinfo.equals(typeValue.default_typeinfo) : typeValue.default_typeinfo != null)
+            return false;
+        if (explicit_nonnullable_typeinfo != null ? !explicit_nonnullable_typeinfo.equals(typeValue.explicit_nonnullable_typeinfo) : typeValue.explicit_nonnullable_typeinfo != null)
+            return false;
+        if (explicit_nullable_typeinfo != null ? !explicit_nullable_typeinfo.equals(typeValue.explicit_nullable_typeinfo) : typeValue.explicit_nullable_typeinfo != null)
+            return false;
+        if (indexed_type != null ? !indexed_type.equals(typeValue.indexed_type) : typeValue.indexed_type != null)
+            return false;
+        if (name != null ? !name.equals(typeValue.name) : typeValue.name != null) return false;
+        if (parameterizedTypes != null ? !parameterizedTypes.equals(typeValue.parameterizedTypes) : typeValue.parameterizedTypes != null)
+            return false;
+        if (prototype != null ? !prototype.equals(typeValue.prototype) : typeValue.prototype != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (prototype != null ? prototype.hashCode() : 0);
+        result = 31 * result + (baseclass != null ? baseclass.hashCode() : 0);
+        result = 31 * result + (is_parameterized ? 1 : 0);
+        result = 31 * result + (indexed_type != null ? indexed_type.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + type_id;
+        result = 31 * result + (resolved ? 1 : 0);
+        result = 31 * result + (default_typeinfo != null ? default_typeinfo.hashCode() : 0);
+        result = 31 * result + (explicit_nullable_typeinfo != null ? explicit_nullable_typeinfo.hashCode() : 0);
+        result = 31 * result + (explicit_nonnullable_typeinfo != null ? explicit_nonnullable_typeinfo.hashCode() : 0);
+        result = 31 * result + (is_nullable ? 1 : 0);
+        result = 31 * result + (parameterizedTypes != null ? parameterizedTypes.hashCode() : 0);
+        return result;
+    }
 }

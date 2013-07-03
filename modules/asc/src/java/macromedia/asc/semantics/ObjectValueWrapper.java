@@ -285,4 +285,24 @@ public class ObjectValueWrapper extends ObjectValue
     }
  */
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        //TODO: change if super.equals will change
+        //if (!super.equals(o)) return false;
+
+        ObjectValueWrapper that = (ObjectValueWrapper) o;
+
+        if (wrapped != null ? !wrapped.equals(that.wrapped) : that.wrapped != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (wrapped != null ? wrapped.hashCode() : 0);
+        return result;
+    }
 }

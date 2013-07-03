@@ -23,6 +23,7 @@ import macromedia.asc.parser.MetaDataNode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -648,5 +649,43 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
     public byte getVersion()
     {
         return this.version;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Slot slot = (Slot) o;
+
+        if (flags != slot.flags) return false;
+        if (id != slot.id) return false;
+        if (version != slot.version) return false;
+        /*
+        //TODO: need correct equals
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        if (!Arrays.equals(auxDataItems, slot.auxDataItems)) return false;
+        */
+        if (declaredBy != null ? !declaredBy.equals(slot.declaredBy) : slot.declaredBy != null) return false;
+        if (def_bits != null ? !def_bits.equals(slot.def_bits) : slot.def_bits != null) return false;
+        if (type != null ? !type.equals(slot.type) : slot.type != null) return false;
+        if (types != null ? !types.equals(slot.types) : slot.types != null) return false;
+        if (value != null ? !value.equals(slot.value) : slot.value != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = flags;
+        result = 31 * result + (auxDataItems != null ? Arrays.hashCode(auxDataItems) : 0);
+        result = 31 * result + id;
+        result = 31 * result + (declaredBy != null ? declaredBy.hashCode() : 0);
+        result = 31 * result + (def_bits != null ? def_bits.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (types != null ? types.hashCode() : 0);
+        result = 31 * result + (int) version;
+        return result;
     }
 }

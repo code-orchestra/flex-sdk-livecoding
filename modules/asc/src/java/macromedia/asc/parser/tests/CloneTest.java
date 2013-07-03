@@ -61,6 +61,9 @@ public class CloneTest extends TestCase{
 
         ToObjectNode toNode = new ToObjectNode(node);
         testCloneNode(toNode);
+
+        LiteralFieldNode lfNode = new LiteralFieldNode(node, toNode);
+        testCloneNode(lfNode);
     }
 
     public void testCloneNode(Node node) throws Exception {

@@ -108,11 +108,24 @@ public class ArgumentListNode extends Node
     {
         ArgumentListNode result = (ArgumentListNode) super.clone();
 
-        for (Node item: items) result.items.add(item.clone());
-        for (TypeInfo info: expected_types) result.expected_types.add(info.clone());
+        ObjectList<Node> items_cloned = new ObjectList<Node>(items.size());
+        for (Node item: items) items_cloned.add(item.clone());
+        result.items = items_cloned;
 
-        result.decl_styles = new ByteList(decl_styles);
+        if (expected_types != null)
+        {
+            ObjectList<TypeInfo> expected_types_cloned = new ObjectList<TypeInfo>(expected_types.size());
+            for (TypeInfo info: expected_types) expected_types_cloned.add(info.clone());
+            result.expected_types = expected_types_cloned;
+        }
+
+        if (decl_styles != null)
+        {
+            result.decl_styles = new ByteList(decl_styles);
+        }
 
         return result;
     }
+
+
 }

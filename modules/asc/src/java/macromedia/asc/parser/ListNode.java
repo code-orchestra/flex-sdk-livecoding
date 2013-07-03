@@ -146,9 +146,37 @@ public class ListNode extends Node
     {
         ListNode result = (ListNode) super.clone();
 
-        for (Node item: items) result.items.add(item.clone());
-        for (Value value: values) result.values.add(value.clone());
+        ObjectList<Node> items_cloned = new ObjectList<Node>(items.size());
+        ObjectList<Value> values_cloned = new ObjectList<Value>(values.size());
 
+        for (Node item: items) items_cloned.add(item.clone());
+        for (Value value: values) values_cloned.add(value.clone());
+
+        result.items = items_cloned;
+        result.values = values_cloned;
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ListNode listNode = (ListNode) o;
+
+        if (items != null ? !items.equals(listNode.items) : listNode.items != null) return false;
+        if (values != null ? !values.equals(listNode.values) : listNode.values != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (items != null ? items.hashCode() : 0);
+        result = 31 * result + (values != null ? values.hashCode() : 0);
         return result;
     }
 }

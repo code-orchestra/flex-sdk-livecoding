@@ -1,10 +1,12 @@
 package macromedia.asc.parser.tests;
 
 import junit.framework.*;
-import macromedia.asc.parser.Node;
+import macromedia.asc.parser.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+
+import static macromedia.asc.semantics.Slot.PARAM_Required;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +21,23 @@ public class CloneTest extends TestCase{
     public void testNode() throws Exception {
         Node node = new Node();
         testCloneNode(node);
+
+        ParenListExpressionNode pleNode = new ParenListExpressionNode(node);
+        testCloneNode(pleNode);
+
+        ReturnStatementNode rsNode = new ReturnStatementNode(node);
+        testCloneNode(rsNode);
+
+        ListNode lNode = new ListNode(null, node, 0);
+        testCloneNode(lNode);
+
+        PragmaNode pNode = new PragmaNode(lNode);
+        testCloneNode(pNode);
+
+        ArgumentListNode alNode = new ArgumentListNode(node, 0);
+        testCloneNode(alNode);
+        alNode.addDeclStyle(PARAM_Required);
+        testCloneNode(alNode);
     }
 
     public void testCloneNode(Node node) throws Exception {

@@ -58,6 +58,9 @@ public class CloneTest extends TestCase{
 
         UsePrecisionNode upsNode = new UsePrecisionNode(iNode, lnNode);
         testCloneNode(upsNode);
+
+        ToObjectNode toNode = new ToObjectNode(node);
+        testCloneNode(toNode);
     }
 
     public void testCloneNode(Node node) throws Exception {

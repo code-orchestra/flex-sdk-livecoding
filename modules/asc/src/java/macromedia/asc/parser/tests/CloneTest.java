@@ -44,6 +44,20 @@ public class CloneTest extends TestCase{
         testCloneNode(lnNode);
         lnNode.numericValue = new DoubleNumberConstant(1000);
         testCloneNode(lnNode);
+
+        IdentifierNode iNode = new IdentifierNode("DOWN", 1);
+
+        UsePragmaNode upNode = new UsePragmaNode(iNode, pleNode);
+        testCloneNode(upNode);
+
+        UseRoundingNode urNode = new UseRoundingNode(iNode, pleNode);
+        testCloneNode(urNode);
+
+        UseNumericNode unNode = new UseNumericNode(iNode, pleNode, 1);
+        testCloneNode(unNode);
+
+        UsePrecisionNode upsNode = new UsePrecisionNode(iNode, lnNode);
+        testCloneNode(upsNode);
     }
 
     public void testCloneNode(Node node) throws Exception {

@@ -57,4 +57,36 @@ public class UsePragmaNode extends Node {
 	{
 		return "UsePragma";
 	}
+
+    public UsePragmaNode clone() throws CloneNotSupportedException
+    {
+        UsePragmaNode result = (UsePragmaNode) super.clone();
+
+        result.identifier = identifier.clone();
+        result.argument = argument.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        UsePragmaNode that = (UsePragmaNode) o;
+
+        if (argument != null ? !argument.equals(that.argument) : that.argument != null) return false;
+        if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (identifier != null ? identifier.hashCode() : 0);
+        result = 31 * result + (argument != null ? argument.hashCode() : 0);
+        return result;
+    }
 }

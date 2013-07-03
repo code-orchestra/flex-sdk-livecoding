@@ -17,6 +17,7 @@
 
 package macromedia.asc.semantics;
 
+import macromedia.asc.embedding.LintEvaluator;
 import macromedia.asc.util.*;
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.MetaDataNode;
@@ -466,6 +467,14 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
 
 	final class Overload extends HashMap<TypeValue, Integer>
 	{
+        public Overload clone()
+        {
+            Overload result = new Overload();
+            for (final Map.Entry<TypeValue, Integer> entry : entrySet()) {
+                 result.put(entry.getKey().copyType(), entry.getValue());
+            }
+            return result;
+        }
 	}
 	
 	// for packages
@@ -651,6 +660,25 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
         return this.version;
     }
 
+    private ArrayList<MetaData> cloneMetaData (ArrayList<MetaData> src) throws CloneNotSupportedException
+    {
+        int n = src.size();
+        ArrayList<MetaData> dst = new ArrayList<MetaData>(n);
+        for (int i = 0; i < n; i++) {
+            dst.set(i, src.get(i).clone());
+        }
+        return dst;
+    }
+
+    private HashMap<TypeValue, Overload> cloneOverloads (HashMap<TypeValue, Overload> src)
+    {
+        HashMap<TypeValue, Overload> dst = new HashMap<TypeValue, Overload>();
+        for (Map.Entry<TypeValue, Overload> entry : src.entrySet()) {
+             dst.put(entry.getKey().copyType(), entry.getValue().clone());
+        }
+        return dst;
+    }
+
     public Slot clone() throws CloneNotSupportedException
     {
         Slot result = (Slot) super.clone();
@@ -658,8 +686,50 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
         if (auxDataItems != null)
         {
             Object[] auxDataItems_cloned = new Object[auxDataItems.length];
-            for (int i = 0; i < auxDataItems.length; i++) {
+            for (int i = 1; i < auxDataItems.length; i += 2) {
 
+                // Integer type
+                auxDataItems_cloned[i - 1] = auxDataItems[i - 1];
+
+                switch (((Integer)auxDataItems[i - 1]).intValue()) {
+                    case AUX_OverriddenSlot:
+                        // value is Slot
+                        auxDataItems_cloned[i] = ((Slot)auxDataItems[i]).clone();
+                        break;
+                    case AUX_EmbeddedData:
+                        // value is Object (either null or LintDataRecord)
+                        auxDataItems_cloned[i] = null;
+                        if (auxDataItems[i] instanceof LintEvaluator.LintDataRecord) {
+                            auxDataItems_cloned[i] = ((LintEvaluator.LintDataRecord)auxDataItems[i]).clone();
+                        }
+                        break;
+                    case AUX_MetaData:
+                        // value is ArrayList<MetaData>
+                        auxDataItems_cloned[i] = cloneMetaData((ArrayList<MetaData>)auxDataItems[i]);
+                        break;
+                    case AUX_BaseNode:
+                    case AUX_ImplNode:
+                        // value is Node
+                        auxDataItems_cloned[i] = ((Node)auxDataItems[i]).clone();
+                        break;
+                    case AUX_UnaryOverloads:
+                        // value is Overload
+                        auxDataItems_cloned[i] = ((Overload)auxDataItems[i]).clone();
+                        break;
+                    case AUX_BinaryOverloads:
+                        // value is Map<TypeValue, Overload> (actually always HashMap)
+                        auxDataItems_cloned[i] = cloneOverloads((HashMap<TypeValue, Overload>)auxDataItems[i]);
+                        break;
+                    case AUX_DebugName:
+                    case AUX_MethodName:
+                    case AUX_ImplicitCall:
+                    case AUX_ImplicitConstruct:
+                        // value is String or Integer
+                        auxDataItems_cloned[i] = auxDataItems[i];
+                        break;
+                    default:
+                        throw new CloneNotSupportedException("Unexpected auxDataItems type: " + auxDataItems[i - 1]);
+                }
             }
         }
 

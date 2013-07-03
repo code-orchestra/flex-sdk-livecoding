@@ -1,7 +1,11 @@
 package macromedia.asc.parser.tests;
 
 import junit.framework.*;
+import macromedia.asc.embedding.LintEvaluator;
 import macromedia.asc.parser.*;
+import macromedia.asc.semantics.MethodSlot;
+import macromedia.asc.semantics.Slot;
+import macromedia.asc.semantics.TypeValue;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -40,6 +44,23 @@ public class CloneTest extends TestCase{
         testCloneNode(alNode);
     }
 
+    public void testSlot() throws Exception {
+        LintEvaluator.LintDataRecord rec = new LintEvaluator.LintDataRecord();
+        rec.has_been_declared = true;
+
+        Slot slot = new MethodSlot((TypeValue)null, 0);
+
+        // set various aux data
+        slot.setEmbeddedData(rec);
+
+        Slot clonedSlot = slot.clone();
+
+        assertFalse(slot == clonedSlot);
+        assertEquals(slot, clonedSlot);
+
+        assertTrue(((LintEvaluator.LintDataRecord)clonedSlot.getEmbeddedData()).has_been_declared);
+    }
+
     public void testCloneNode(Node node) throws Exception {
         Node clonedNode = node.clone();
 
@@ -58,7 +79,7 @@ public class CloneTest extends TestCase{
                 {
                     assertFalse(field.get(node) == field.get(clonedNode));
                 }
-            };
+            }
         }
     }
 }

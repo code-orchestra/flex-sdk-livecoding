@@ -119,6 +119,14 @@ public class VariableSlot extends Slot
 	private int var_index;
 	private ReferenceValue typeref;
 
+    public VariableSlot clone() throws CloneNotSupportedException {
+        VariableSlot result = (VariableSlot)super.clone();
+
+        result.setTypeRef((ReferenceValue)getTypeRef().clone());
+
+        return result;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

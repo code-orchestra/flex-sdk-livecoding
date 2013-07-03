@@ -731,6 +731,7 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
                         throw new CloneNotSupportedException("Unexpected auxDataItems type: " + auxDataItems[i - 1]);
                 }
             }
+            result.auxDataItems = auxDataItems_cloned;
         }
 
         return result;

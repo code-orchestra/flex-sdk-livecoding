@@ -94,6 +94,19 @@ public class MethodSlot extends Slot
 	private int method_id = -1;
     private ByteList decl_styles; // for functions, vector of PARAM_REQUIRED, PARAM_Optional, or PARAM_Rest
 
+    public MethodSlot clone() throws CloneNotSupportedException {
+        MethodSlot result = (MethodSlot)super.clone();
+
+        int n = decl_styles.size();
+        ByteList styles = new ByteList(n);
+        for(int i = 0; i < n; i++) {
+            styles.add((byte)decl_styles.at(i));
+        }
+        result.decl_styles = styles;
+
+        return result;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -3,9 +3,10 @@ package macromedia.asc.parser.tests;
 import junit.framework.*;
 import macromedia.asc.embedding.LintEvaluator;
 import macromedia.asc.parser.*;
-import macromedia.asc.semantics.MethodSlot;
-import macromedia.asc.semantics.Slot;
-import macromedia.asc.semantics.TypeValue;
+import macromedia.asc.semantics.*;
+import macromedia.asc.util.ByteList;
+import macromedia.asc.util.Context;
+import macromedia.asc.util.ContextStatics;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -50,7 +51,9 @@ public class CloneTest extends TestCase{
 
         Slot slot = new MethodSlot((TypeValue)null, 0);
 
-        // set various aux data
+        slot.addDeclStyle(42);
+
+        // set various aux data (todo: other data too)
         slot.setEmbeddedData(rec);
 
         Slot clonedSlot = slot.clone();
@@ -58,7 +61,31 @@ public class CloneTest extends TestCase{
         assertFalse(slot == clonedSlot);
         assertEquals(slot, clonedSlot);
 
-        assertTrue(((LintEvaluator.LintDataRecord)clonedSlot.getEmbeddedData()).has_been_declared);
+        // are DeclStyles properly cloned ?
+        slot.getDeclStyles().set(0, (byte) 2);
+        assertTrue(clonedSlot.getDeclStyles().at(0)==42);
+
+        // are aux data properly cloned ?
+        rec.has_been_declared = false;
+        assertTrue(((LintEvaluator.LintDataRecord) clonedSlot.getEmbeddedData()).has_been_declared);
+
+        // test VariableSlot
+        slot = new VariableSlot((TypeValue)null, 1, 2);
+        slot.setTypeRef(new ReferenceValue(new Context(new ContextStatics()), null, "name", (ObjectValue)null));
+        slot.getTypeRef().setPosition(42);
+
+        clonedSlot = slot.clone();
+
+        assertFalse(slot == clonedSlot);
+        assertEquals(slot, clonedSlot);
+
+        assertTrue(clonedSlot.getTypeRef().getPosition() == 42);
+
+        // is ReferenceValue properly cloned?
+        // todo: test more ReferenceValue stuff here
+        slot.getTypeRef().setPosition(69);
+        assertFalse(clonedSlot.getTypeRef().getPosition() == 69);
+
     }
 
     public void testCloneNode(Node node) throws Exception {

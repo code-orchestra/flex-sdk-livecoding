@@ -651,6 +651,21 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
         return this.version;
     }
 
+    public Slot clone() throws CloneNotSupportedException
+    {
+        Slot result = (Slot) super.clone();
+
+        if (auxDataItems != null)
+        {
+            Object[] auxDataItems_cloned = new Object[auxDataItems.length];
+            for (int i = 0; i < auxDataItems.length; i++) {
+
+            }
+        }
+
+        return result;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

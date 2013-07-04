@@ -71,6 +71,9 @@ public class CloneTest extends TestCase{
 
         LiteralFieldNode lfNode = new LiteralFieldNode(node, toNode);
         testCloneNode(lfNode);
+        Context cx = new Context(new ContextStatics());
+        lfNode.ref = new ReferenceValue(cx, null, "name", cx.anyNamespace());
+        testCloneNode(lfNode);
 
         CallExpressionNode ceNode = new CallExpressionNode(node, alNode);
         testCloneNode(ceNode);

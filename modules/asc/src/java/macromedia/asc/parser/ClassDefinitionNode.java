@@ -139,4 +139,11 @@ public class ClassDefinitionNode extends DefinitionNode
       else
          return "ClassDefinition";
 	}
+
+    public ClassDefinitionNode clone() throws CloneNotSupportedException
+    {
+        ClassDefinitionNode result = (ClassDefinitionNode) super.clone();
+
+        return result;
+    }
 }

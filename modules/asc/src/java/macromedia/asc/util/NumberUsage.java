@@ -156,4 +156,28 @@ public class NumberUsage implements Cloneable {
 
         return result;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        NumberUsage that = (NumberUsage) o;
+
+        if (floating_usage != that.floating_usage) return false;
+        if (precision != that.precision) return false;
+        if (rounding != that.rounding) return false;
+        if (usage != that.usage) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = usage;
+        result = 31 * result + rounding;
+        result = 31 * result + precision;
+        result = 31 * result + floating_usage;
+        return result;
+    }
 }

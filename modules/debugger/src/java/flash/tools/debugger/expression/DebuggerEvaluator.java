@@ -63,6 +63,13 @@ class DebuggerEvaluator implements Evaluator
 			debuggerValue = v;
 		}
 
+        public DebuggerValue clone() throws CloneNotSupportedException
+        {
+            DebuggerValue result = (DebuggerValue) super.clone();
+
+            return result;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;

@@ -64,6 +64,13 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 			obj = v;
 		}
 
+        public KeylessValue clone() throws CloneNotSupportedException
+        {
+            KeylessValue result = (KeylessValue) super.clone();
+
+            return result;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -97,6 +104,13 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 			this.key = Context.livecodingSession ? key : key.intern();
 			this.obj = Context.livecodingSession ? value : value.intern();
 		}
+
+        public KeyValuePair clone() throws CloneNotSupportedException
+        {
+            KeyValuePair result = (KeyValuePair) super.clone();
+
+            return result;
+        }
 
         @Override
         public boolean equals(Object o) {

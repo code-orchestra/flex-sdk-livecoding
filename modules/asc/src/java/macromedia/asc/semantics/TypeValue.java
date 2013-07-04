@@ -19,6 +19,7 @@ package macromedia.asc.semantics;
 
 import macromedia.asc.embedding.avmplus.ClassBuilder;
 import macromedia.asc.embedding.avmplus.InstanceBuilder;
+import macromedia.asc.parser.util.CloneUtil;
 import macromedia.asc.util.*;
 
 import java.util.HashMap;
@@ -433,12 +434,27 @@ public final class TypeValue extends ObjectValue
         return super.hasNames(cx, kind, name, namespaces, search_base_objs);
     }
 
+    public TypeValue clone() throws CloneNotSupportedException
+    {
+        TypeValue result = (TypeValue) super.clone();
+
+        if (baseclass != null) result.baseclass = baseclass.clone();
+        if (default_typeinfo != null) result.default_typeinfo = default_typeinfo.clone();
+        if (explicit_nonnullable_typeinfo != null) result.explicit_nonnullable_typeinfo = explicit_nonnullable_typeinfo.clone();
+        if (explicit_nullable_typeinfo != null) result.explicit_nullable_typeinfo = explicit_nullable_typeinfo.clone();
+        if (indexed_type != null) result.indexed_type = indexed_type.clone();
+        if (name != null) result.name = name.clone();
+        if (parameterizedTypes != null) result.parameterizedTypes = CloneUtil.cloneMapS_TV(parameterizedTypes);
+        if (prototype != null) result.prototype = prototype.clone();
+
+        return result;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        //TODO: change if super.equals will change
-        //if (!super.equals(o)) return false;
+        if (!super.equals(o)) return false;
 
         TypeValue typeValue = (TypeValue) o;
 

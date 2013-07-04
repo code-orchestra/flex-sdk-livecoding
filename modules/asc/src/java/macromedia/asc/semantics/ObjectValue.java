@@ -17,6 +17,7 @@
 
 package macromedia.asc.semantics;
 
+import macromedia.asc.parser.util.CloneUtil;
 import macromedia.asc.util.Context;
 import macromedia.asc.util.IntList;
 import macromedia.asc.util.Names;
@@ -794,9 +795,90 @@ public class ObjectValue extends Value implements Comparable
     public boolean isDynamic() { return (builder != null ? builder.is_dynamic : false); }
     public boolean isFinal() { return (builder != null ? builder.is_final : false); }
 
+    /*
+     * Old version
+
     public boolean equals(Object o)
     {
         return this == o;
+    }
+    */
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ObjectValue that = (ObjectValue) o;
+
+        if (init_only_view != that.init_only_view) return false;
+        if (method_info != that.method_info) return false;
+        if (var_count != that.var_count) return false;
+        if (_proto_ != null ? !_proto_.equals(that._proto_) : that._proto_ != null) return false;
+        if (activation != null ? !activation.equals(that.activation) : that.activation != null) return false;
+        if (base_objs != null ? !base_objs.equals(that.base_objs) : that.base_objs != null) return false;
+        if (base_protected_ns != null ? !base_protected_ns.equals(that.base_protected_ns) : that.base_protected_ns != null)
+            return false;
+        //if (builder != null ? !builder.equals(that.builder) : that.builder != null) return false;
+        if (deferredClassMap != null ? !deferredClassMap.equals(that.deferredClassMap) : that.deferredClassMap != null)
+            return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (names != null ? !names.equals(that.names) : that.names != null) return false;
+        if (numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) return false;
+        if (protected_ns != null ? !protected_ns.equals(that.protected_ns) : that.protected_ns != null) return false;
+        if (slot_ids != null ? !slot_ids.equals(that.slot_ids) : that.slot_ids != null) return false;
+        if (slots != null ? !slots.equals(that.slots) : that.slots != null) return false;
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (builder != null ? builder.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (numberUsage != null ? numberUsage.hashCode() : 0);
+        result = 31 * result + (names != null ? names.hashCode() : 0);
+        result = 31 * result + (slots != null ? slots.hashCode() : 0);
+        result = 31 * result + (_proto_ != null ? _proto_.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (base_objs != null ? base_objs.hashCode() : 0);
+        result = 31 * result + (protected_ns != null ? protected_ns.hashCode() : 0);
+        result = 31 * result + (base_protected_ns != null ? base_protected_ns.hashCode() : 0);
+        result = 31 * result + (slot_ids != null ? slot_ids.hashCode() : 0);
+        result = 31 * result + method_info;
+        result = 31 * result + var_count;
+        result = 31 * result + (activation != null ? activation.hashCode() : 0);
+        result = 31 * result + (deferredClassMap != null ? deferredClassMap.hashCode() : 0);
+        result = 31 * result + (init_only_view ? 1 : 0);
+        return result;
+    }
+
+    public ObjectValue clone() throws CloneNotSupportedException
+    {
+        ObjectValue result = (ObjectValue) super.clone();
+
+        //builder
+        if (_proto_ != null) result._proto_ = _proto_.clone();
+        if (numberUsage != null) result.numberUsage = numberUsage.clone();
+        if (activation != null) result.activation = activation.clone();
+        if (type != null) result.type = type.clone();
+
+        if (names != null) result.names = names.clone();
+        if (slots != null) result.slots = CloneUtil.cloneSlotList(slots);
+
+        if (base_objs != null) result.base_objs = CloneUtil.cloneObjectListList(base_objs);
+        if (protected_ns != null) result.protected_ns = protected_ns.clone();
+        if (base_protected_ns != null) result.base_protected_ns = base_protected_ns.clone();
+
+        if (deferredClassMap != null) result.deferredClassMap = CloneUtil.cloneHashMap(deferredClassMap);
+        if (slot_ids != null) result.slot_ids = slot_ids.clone();
+
+        return result;
     }
 
     public int compareTo(Object o)
@@ -1055,7 +1137,37 @@ public class ObjectValue extends Value implements Comparable
     		
     		return slot_id;
     	}
+
+        public SlotIDCache clone() throws CloneNotSupportedException
+        {
+            SlotIDCache result = (SlotIDCache) super.clone();
+
+            if (slot_id_boundaries != null) result.slot_id_boundaries = new IntList(slot_id_boundaries);
+
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            SlotIDCache that = (SlotIDCache) o;
+
+            if (cur_range_index != that.cur_range_index) return false;
+            if (cur_slot_id != that.cur_slot_id) return false;
+            if (slot_id_boundaries != null ? !slot_id_boundaries.equals(that.slot_id_boundaries) : that.slot_id_boundaries != null)
+                return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = slot_id_boundaries != null ? slot_id_boundaries.hashCode() : 0;
+            result = 31 * result + cur_range_index;
+            result = 31 * result + cur_slot_id;
+            return result;
+        }
     }
-
-
 }

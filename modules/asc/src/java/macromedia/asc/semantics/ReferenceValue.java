@@ -19,6 +19,7 @@ package macromedia.asc.semantics;
 
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.Tokens;
+import macromedia.asc.parser.util.CloneUtil;
 import macromedia.asc.util.BitSet;
 import macromedia.asc.util.Context;
 import macromedia.asc.util.Namespaces;
@@ -836,6 +837,20 @@ public final class ReferenceValue extends Value implements ErrorConstants
     		return name;
     	else
     		return type_params.at(0).getDiagnosticTypeName();
+    }
+
+    public ReferenceValue clone() throws CloneNotSupportedException
+    {
+        ReferenceValue result = (ReferenceValue) super.clone();
+
+        if (base != null) result.base = base.clone();
+        if (namespaces != null) result.namespaces = CloneUtil.cloneList(namespaces);
+        if (slot != null) result.slot = slot.clone();
+        if (type != null) result.type = type.clone();
+        if (type_params != null) result.type_params = CloneUtil.cloneReferenceValueList(type_params);
+        if (ud_bits != null) result.ud_bits = BitSet.copy(ud_bits);
+
+        return result;
     }
 
     @Override

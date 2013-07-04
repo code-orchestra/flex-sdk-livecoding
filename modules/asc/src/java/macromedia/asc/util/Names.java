@@ -20,6 +20,7 @@
 package macromedia.asc.util;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.Map;
 import java.util.TreeMap;
@@ -442,5 +443,77 @@ public final class Names implements Serializable, Cloneable // CodeOrchestra: ma
             return index;
         
         return -1;
+    }
+
+    public Names clone() throws CloneNotSupportedException
+    {
+        Names result = (Names) super.clone();
+
+        if (hashTable != null)
+        {
+            result.hashTable = new int[hashTable.length];
+            System.arraycopy(hashTable, 0, result.hashTable, 0, hashTable.length);
+        }
+        if (name != null)
+        {
+            result.name = new String[name.length];
+            System.arraycopy(name, 0, result.name, 0, name.length);
+        }
+        if (namespace != null)
+        {
+            result.namespace = new ObjectValue[namespace.length];
+            for (int i = 0; i < namespace.length; i++) {
+                result.namespace[i] = namespace[i].clone();
+            }
+        }
+        if (next != null)
+        {
+            result.next = new int[next.length];
+            System.arraycopy(next, 0, result.next, 0, next.length);
+        }
+        if (slot != null)
+        {
+            result.slot = new int[slot.length];
+            System.arraycopy(slot, 0, result.slot, 0, slot.length);
+        }
+        if (type != null)
+        {
+            result.type = new byte[type.length];
+            System.arraycopy(type, 0, result.type, 0, type.length);
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Names names = (Names) o;
+
+        if (hashTableMask != names.hashTableMask) return false;
+        if (namesUsed != names.namesUsed) return false;
+        if (!Arrays.equals(hashTable, names.hashTable)) return false;
+        if (!Arrays.equals(name, names.name)) return false;
+        if (!Arrays.equals(namespace, names.namespace)) return false;
+        if (!Arrays.equals(next, names.next)) return false;
+        if (!Arrays.equals(slot, names.slot)) return false;
+        if (!Arrays.equals(type, names.type)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? Arrays.hashCode(name) : 0;
+        result = 31 * result + (namespace != null ? Arrays.hashCode(namespace) : 0);
+        result = 31 * result + (slot != null ? Arrays.hashCode(slot) : 0);
+        result = 31 * result + (type != null ? Arrays.hashCode(type) : 0);
+        result = 31 * result + (next != null ? Arrays.hashCode(next) : 0);
+        result = 31 * result + namesUsed;
+        result = 31 * result + (hashTable != null ? Arrays.hashCode(hashTable) : 0);
+        result = 31 * result + hashTableMask;
+        return result;
     }
 }

@@ -284,13 +284,20 @@ public class ObjectValueWrapper extends ObjectValue
         return Context.NS_PUBLIC;
     }
  */
+    public ObjectValueWrapper clone() throws CloneNotSupportedException
+    {
+        ObjectValueWrapper result = (ObjectValueWrapper) super.clone();
+
+        result.wrapped = wrapped.clone();
+
+        return result;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        //TODO: change if super.equals will change
-        //if (!super.equals(o)) return false;
+        if (!super.equals(o)) return false;
 
         ObjectValueWrapper that = (ObjectValueWrapper) o;
 

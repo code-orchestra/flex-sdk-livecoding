@@ -66,12 +66,18 @@ public class NamespaceValue extends ObjectValue
         return ns_kind;
     }
 
+    public NamespaceValue clone() throws CloneNotSupportedException
+    {
+        NamespaceValue result = (NamespaceValue) super.clone();
+
+        return result;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        //TODO: change if super.equals will change
-        //if (!super.equals(o)) return false;
+        if (!super.equals(o)) return false;
 
         NamespaceValue that = (NamespaceValue) o;
 

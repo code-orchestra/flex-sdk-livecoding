@@ -42,6 +42,17 @@ public class UnresolvedNamespace extends NamespaceValue
 	public boolean resolved;
     public Context cx;              // We must report errors relative to this context.  node could come from an included file.
 
+    public UnresolvedNamespace clone() throws CloneNotSupportedException
+    {
+        UnresolvedNamespace result = (UnresolvedNamespace) super.clone();
+
+        if (cx != null);// FIXME: need clone
+        if (node != null) result.node = node.clone();
+        if (ref != null) result.ref = ref.clone();
+
+        return result;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

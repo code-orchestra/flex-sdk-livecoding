@@ -92,4 +92,37 @@ public class CallExpressionNode extends SelectorNode
       else
          return "CallExpression";
 	}
+
+    public CallExpressionNode clone() throws CloneNotSupportedException
+    {
+        CallExpressionNode result = (CallExpressionNode) super.clone();
+
+        if (args != null) result.args = args.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        CallExpressionNode that = (CallExpressionNode) o;
+
+        if (is_new != that.is_new) return false;
+        if (void_result != that.void_result) return false;
+        if (args != null ? !args.equals(that.args) : that.args != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (args != null ? args.hashCode() : 0);
+        result = 31 * result + (is_new ? 1 : 0);
+        result = 31 * result + (void_result ? 1 : 0);
+        return result;
+    }
 }

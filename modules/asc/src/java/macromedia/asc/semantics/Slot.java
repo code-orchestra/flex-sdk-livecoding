@@ -471,7 +471,13 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
         {
             Overload result = new Overload();
             for (final Map.Entry<TypeValue, Integer> entry : entrySet()) {
-                 result.put(entry.getKey().copyType(), entry.getValue());
+                try {
+                    result.put(entry.getKey().clone(), entry.getValue());
+                }catch (CloneNotSupportedException ex)
+                {
+                    System.out.println("[Overload] CloneNotSupportedException");
+                }
+
             }
             return result;
         }
@@ -670,11 +676,11 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
         return dst;
     }
 
-    private HashMap<TypeValue, Overload> cloneOverloads (HashMap<TypeValue, Overload> src)
+    private HashMap<TypeValue, Overload> cloneOverloads (HashMap<TypeValue, Overload> src) throws CloneNotSupportedException
     {
         HashMap<TypeValue, Overload> dst = new HashMap<TypeValue, Overload>();
         for (Map.Entry<TypeValue, Overload> entry : src.entrySet()) {
-             dst.put(entry.getKey().copyType(), entry.getValue().clone());
+             dst.put(entry.getKey().clone(), entry.getValue().clone());
         }
         return dst;
     }

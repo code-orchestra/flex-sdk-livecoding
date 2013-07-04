@@ -64,10 +64,9 @@ public class LiteralFieldNode extends Node
     {
         LiteralFieldNode result = (LiteralFieldNode) super.clone();
 
-        result.name = name.clone();
-        result.value = value.clone();
-        //TODO: remove after realise method clone and make test
-        //result.ref = ref.clone();
+        if (name != null) result.name = name.clone();
+        if (value != null) result.value = value.clone();
+        if (ref != null) result.ref = ref.clone();
 
         return result;
     }

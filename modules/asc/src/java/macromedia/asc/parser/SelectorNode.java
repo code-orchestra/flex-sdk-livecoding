@@ -144,7 +144,7 @@ public abstract class SelectorNode extends Node
     {
         SelectorNode result = (SelectorNode) super.clone();
 
-        if (base != null) result.base = base.copyObject();
+        if (base != null) result.base = base.clone();
         if (expr != null) result.expr = expr.clone();
         if (ref != null) result.ref = ref.clone();
 

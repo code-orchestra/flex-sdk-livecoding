@@ -135,17 +135,25 @@ public class CloneTest extends TestCase{
         t.prototype = new ObjectValue();
         t.addParameterizedType("test", TypeValue.getTypeValue(cx, new QName(cx.anyNamespace(), "type456")));
 
-        TypeValue t2 = t.clone();
-
-        assertFalse(t == t2);
-        assertEquals(t, t2);
+        TypeValue t2 = (TypeValue)testCloneValue(t);
 
         t.addParameterizedType("test", null);
         assertNotNull(t2.getParameterizedType("test"));
     }
 
-    public void testObjectValue() {
+    public void testObjectValue() throws Exception {
+        Context cx = new Context(new ContextStatics());
+        TypeValue t = new TypeValue(cx, new FunctionBuilder(), new QName(cx.anyNamespace(), "type123"), 123);
+        ObjectValue value = new ObjectValue();
+        value.addSlot(new MethodSlot(t, 456));
+        value.addMethodSlot(cx, t);
+        value.addBaseObj(new ObjectValue());
+        value.getDeferredClassMap().put(
+            TypeValue.getTypeValue(cx, new QName(cx.anyNamespace(), "type456")),
+            new ClassDefinitionNode(cx,null,null,null,null,null,null)
+        );
 
+        testCloneValue(value);
     }
 
     public void testCloneNode(Node node) throws Exception {
@@ -166,7 +174,31 @@ public class CloneTest extends TestCase{
                 {
                     assertFalse(field.get(node) == field.get(clonedNode));
                 }
-            };
+            }
         }
+    }
+
+    public Value testCloneValue(Value value) throws Exception {
+        Value clonedValue = value.clone();
+
+        assertFalse(value == clonedValue);
+        assertEquals(value, clonedValue);
+
+        Class c = value.getClass();
+        Field[] fields = c.getDeclaredFields();
+        for (Field field : fields)
+        {
+            if(!Modifier.isStatic(field.getModifiers()))
+            {
+                field.setAccessible(true);
+                assertEquals(field.get(value), field.get(clonedValue));
+                if (field.get(value) != null && field.getType().getName() != "java.lang.String")
+                {
+                    assertFalse(field.get(value) == field.get(clonedValue));
+                }
+            }
+        }
+
+        return clonedValue;
     }
 }

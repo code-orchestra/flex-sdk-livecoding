@@ -142,4 +142,37 @@ public class IdentifierNode extends Node
 	{
 		return true;
 	}
+
+    public IdentifierNode clone() throws CloneNotSupportedException
+    {
+        IdentifierNode result = (IdentifierNode) super.clone();
+
+        if (ref != null) result.ref = ref.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        IdentifierNode that = (IdentifierNode) o;
+
+        if (authOrigTypeToken != that.authOrigTypeToken) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+        result = 31 * result + authOrigTypeToken;
+        return result;
+    }
 }

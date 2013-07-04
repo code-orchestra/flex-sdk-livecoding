@@ -112,7 +112,7 @@ public class CloneTest extends TestCase{
 
         // test VariableSlot
         slot = new VariableSlot((TypeValue)null, 1, 2);
-        slot.setTypeRef(new ReferenceValue(cx, null, "name", (ObjectValue)null));
+        slot.setTypeRef(new ReferenceValue(cx, null, "name", cx.anyNamespace()));
         slot.getTypeRef().setPosition(42);
 
         clonedSlot = slot.clone();

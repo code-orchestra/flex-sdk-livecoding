@@ -1,8 +1,13 @@
 package macromedia.asc.parser.tests;
 
 import junit.framework.*;
+import macromedia.asc.embedding.LintEvaluator;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.DoubleNumberConstant;
+import macromedia.asc.semantics.*;
+import macromedia.asc.util.ByteList;
+import macromedia.asc.util.Context;
+import macromedia.asc.util.ContextStatics;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -39,7 +44,7 @@ public class CloneTest extends TestCase{
         testCloneNode(alNode);
         alNode.addDeclStyle(PARAM_Required);
         testCloneNode(alNode);
-
+        
         LiteralNumberNode lnNode = new LiteralNumberNode("1");
         testCloneNode(lnNode);
         lnNode.numericValue = new DoubleNumberConstant(1000);
@@ -64,6 +69,49 @@ public class CloneTest extends TestCase{
 
         LiteralFieldNode lfNode = new LiteralFieldNode(node, toNode);
         testCloneNode(lfNode);
+    }
+
+    public void testSlot() throws Exception {
+        LintEvaluator.LintDataRecord rec = new LintEvaluator.LintDataRecord();
+        rec.has_been_declared = true;
+
+        Slot slot = new MethodSlot((TypeValue)null, 0);
+
+        slot.addDeclStyle(42);
+
+        // set various aux data (todo: other data too)
+        slot.setEmbeddedData(rec);
+
+        Slot clonedSlot = slot.clone();
+
+        assertFalse(slot == clonedSlot);
+        assertEquals(slot, clonedSlot);
+
+        // are DeclStyles properly cloned ?
+        slot.getDeclStyles().set(0, (byte) 2);
+        assertTrue(clonedSlot.getDeclStyles().at(0)==42);
+
+        // are aux data properly cloned ?
+        rec.has_been_declared = false;
+        assertTrue(((LintEvaluator.LintDataRecord) clonedSlot.getEmbeddedData()).has_been_declared);
+
+        // test VariableSlot
+        slot = new VariableSlot((TypeValue)null, 1, 2);
+        slot.setTypeRef(new ReferenceValue(new Context(new ContextStatics()), null, "name", (ObjectValue)null));
+        slot.getTypeRef().setPosition(42);
+
+        clonedSlot = slot.clone();
+
+        assertFalse(slot == clonedSlot);
+        assertEquals(slot, clonedSlot);
+
+        assertTrue(clonedSlot.getTypeRef().getPosition() == 42);
+
+        // is ReferenceValue properly cloned?
+        // todo: test more ReferenceValue stuff here
+        slot.getTypeRef().setPosition(69);
+        assertFalse(clonedSlot.getTypeRef().getPosition() == 69);
+
     }
 
     public void testCloneNode(Node node) throws Exception {

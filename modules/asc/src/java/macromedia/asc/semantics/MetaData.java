@@ -78,4 +78,15 @@ public class MetaData implements Serializable, Cloneable // CodeOrchestra: made 
         return values != null ? values.length : 0;
     }
 
+    public MetaData clone() throws CloneNotSupportedException {
+        MetaData result = (MetaData)super.clone();
+
+        int n = values.length;
+        result.values = new Value[n];
+        for (int i = 0; i < n; i++) {
+            result.values[i] = values[i].clone();
+        }
+
+        return result;
+    }
 }

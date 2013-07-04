@@ -2,6 +2,7 @@ package macromedia.asc.parser.tests;
 
 import junit.framework.*;
 import macromedia.asc.embedding.LintEvaluator;
+import macromedia.asc.embedding.avmplus.FunctionBuilder;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.DoubleNumberConstant;
 import macromedia.asc.semantics.*;
@@ -11,6 +12,7 @@ import macromedia.asc.util.ContextStatics;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 
 import static macromedia.asc.semantics.Slot.PARAM_Required;
 
@@ -75,12 +77,22 @@ public class CloneTest extends TestCase{
         LintEvaluator.LintDataRecord rec = new LintEvaluator.LintDataRecord();
         rec.has_been_declared = true;
 
+        ArrayList<MetaData> md = new ArrayList<MetaData>(1);
+        md.add(new MetaData());
+        md.get(0).values = new Value[] { new MetaDataEvaluator.KeylessValue("hi") };
+
+        Context cx = new Context(new ContextStatics());
+        TypeValue t = new TypeValue(cx, new FunctionBuilder(), new QName(cx.anyNamespace(), "type123"), 123);
+        t.prototype = new ObjectValue();
+
         Slot slot = new MethodSlot((TypeValue)null, 0);
 
         slot.addDeclStyle(42);
 
         // set various aux data (todo: other data too)
         slot.setEmbeddedData(rec);
+        slot.setMetadata(md);
+        slot.overload(t, 42);
 
         Slot clonedSlot = slot.clone();
 
@@ -95,9 +107,12 @@ public class CloneTest extends TestCase{
         rec.has_been_declared = false;
         assertTrue(((LintEvaluator.LintDataRecord) clonedSlot.getEmbeddedData()).has_been_declared);
 
+        ((MetaDataEvaluator.KeylessValue)md.get(0).values[0]).obj = "hello";
+        assertTrue(((ArrayList<MetaData>) clonedSlot.getMetadata()).get(0).getValue(0) == "hi");
+
         // test VariableSlot
         slot = new VariableSlot((TypeValue)null, 1, 2);
-        slot.setTypeRef(new ReferenceValue(new Context(new ContextStatics()), null, "name", (ObjectValue)null));
+        slot.setTypeRef(new ReferenceValue(cx, null, "name", (ObjectValue)null));
         slot.getTypeRef().setPosition(42);
 
         clonedSlot = slot.clone();

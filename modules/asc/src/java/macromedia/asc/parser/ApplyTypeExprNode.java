@@ -59,4 +59,33 @@ public class ApplyTypeExprNode extends SelectorNode
     {
         return true;
     }
+
+    public ApplyTypeExprNode clone() throws CloneNotSupportedException
+    {
+        ApplyTypeExprNode result = (ApplyTypeExprNode) super.clone();
+
+        if (typeArgs != null) result.typeArgs = typeArgs.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ApplyTypeExprNode that = (ApplyTypeExprNode) o;
+
+        if (typeArgs != null ? !typeArgs.equals(that.typeArgs) : that.typeArgs != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (typeArgs != null ? typeArgs.hashCode() : 0);
+        return result;
+    }
 }

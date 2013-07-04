@@ -113,4 +113,11 @@ public class GetExpressionNode extends SelectorNode
 	{
 		return this.expr.isConfigurationName();
 	}
+
+    public GetExpressionNode clone() throws CloneNotSupportedException
+    {
+        GetExpressionNode result = (GetExpressionNode) super.clone();
+
+        return result;
+    }
 }

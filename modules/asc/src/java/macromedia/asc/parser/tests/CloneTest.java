@@ -52,7 +52,12 @@ public class CloneTest extends TestCase{
         lnNode.numericValue = new DoubleNumberConstant(1000);
         testCloneNode(lnNode);
 
+        Context cx = new Context(new ContextStatics());
+
         IdentifierNode iNode = new IdentifierNode("DOWN", 1);
+        testCloneNode(iNode);
+        iNode.ref = new ReferenceValue(cx, null, "name", cx.anyNamespace());
+        testCloneNode(iNode);
 
         UsePragmaNode upNode = new UsePragmaNode(iNode, pleNode);
         testCloneNode(upNode);
@@ -71,7 +76,6 @@ public class CloneTest extends TestCase{
 
         LiteralFieldNode lfNode = new LiteralFieldNode(node, toNode);
         testCloneNode(lfNode);
-        Context cx = new Context(new ContextStatics());
         lfNode.ref = new ReferenceValue(cx, null, "name", cx.anyNamespace());
         testCloneNode(lfNode);
 
@@ -82,6 +86,8 @@ public class CloneTest extends TestCase{
         testCloneNode(ssNode);
         ssNode.baseobj = new ObjectValue();
         testCloneNode(ssNode);
+
+        IncrementNode incrementNode = new IncrementNode(Tokens.PLUSPLUS_TOKEN, iNode, true);
     }
 
     public void testSlot() throws Exception {

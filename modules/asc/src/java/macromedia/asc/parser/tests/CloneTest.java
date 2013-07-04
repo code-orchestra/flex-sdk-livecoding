@@ -71,6 +71,14 @@ public class CloneTest extends TestCase{
 
         LiteralFieldNode lfNode = new LiteralFieldNode(node, toNode);
         testCloneNode(lfNode);
+
+        CallExpressionNode ceNode = new CallExpressionNode(node, alNode);
+        testCloneNode(ceNode);
+
+        SuperStatementNode ssNode = new SuperStatementNode(ceNode);
+        testCloneNode(ssNode);
+        ssNode.baseobj = new ObjectValue();
+        testCloneNode(ssNode);
     }
 
     public void testSlot() throws Exception {

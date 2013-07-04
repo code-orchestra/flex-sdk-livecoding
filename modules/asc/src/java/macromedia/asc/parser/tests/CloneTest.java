@@ -129,6 +129,25 @@ public class CloneTest extends TestCase{
 
     }
 
+    public void testTypeValue() throws Exception {
+        Context cx = new Context(new ContextStatics());
+        TypeValue t = new TypeValue(cx, new FunctionBuilder(), new QName(cx.anyNamespace(), "type123"), 123);
+        t.prototype = new ObjectValue();
+        t.addParameterizedType("test", TypeValue.getTypeValue(cx, new QName(cx.anyNamespace(), "type456")));
+
+        TypeValue t2 = t.clone();
+
+        assertFalse(t == t2);
+        assertEquals(t, t2);
+
+        t.addParameterizedType("test", null);
+        assertNotNull(t2.getParameterizedType("test"));
+    }
+
+    public void testObjectValue() {
+
+    }
+
     public void testCloneNode(Node node) throws Exception {
         Node clonedNode = node.clone();
 

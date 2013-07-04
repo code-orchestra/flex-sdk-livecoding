@@ -76,7 +76,7 @@ public class QName implements Serializable, Cloneable // CodeOrchestra: made ser
     {
         QName result = (QName) super.clone();
 
-        result.ns = new ObjectValue(ns);
+        if (ns != null) result.ns = ns.clone();
 
         return result;
     }

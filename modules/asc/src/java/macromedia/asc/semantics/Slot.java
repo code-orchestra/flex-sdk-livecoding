@@ -665,7 +665,7 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
         int n = src.size();
         ArrayList<MetaData> dst = new ArrayList<MetaData>(n);
         for (int i = 0; i < n; i++) {
-            dst.set(i, src.get(i).clone());
+            dst.add(src.get(i).clone());
         }
         return dst;
     }

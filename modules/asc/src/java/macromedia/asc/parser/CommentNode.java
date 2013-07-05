@@ -41,4 +41,33 @@ public class CommentNode extends Node
 	public int getType(){
 		return type;
 	}
+
+    public CommentNode clone() throws CloneNotSupportedException
+    {
+        CommentNode result = (CommentNode) super.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        CommentNode that = (CommentNode) o;
+
+        if (type != that.type) return false;
+        if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + type;
+        result = 31 * result + (comment != null ? comment.hashCode() : 0);
+        return result;
+    }
 }

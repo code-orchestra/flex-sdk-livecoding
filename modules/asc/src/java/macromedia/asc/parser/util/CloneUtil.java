@@ -1,9 +1,6 @@
 package macromedia.asc.parser.util;
 
-import macromedia.asc.parser.ClassDefinitionNode;
-import macromedia.asc.parser.FunctionCommonNode;
-import macromedia.asc.parser.Node;
-import macromedia.asc.parser.ParameterNode;
+import macromedia.asc.parser.*;
 import macromedia.asc.semantics.*;
 import macromedia.asc.util.*;
 
@@ -78,6 +75,13 @@ public class CloneUtil {
     {
         ObjectList<Node> dst = new ObjectList<Node>(src.size());
         for (Node item: src) dst.add(item.clone());
+        return dst;
+    }
+
+    public static ObjectList<IdentifierNode> cloneListINode(ObjectList<IdentifierNode> src) throws CloneNotSupportedException
+    {
+        ObjectList<IdentifierNode> dst = new ObjectList<IdentifierNode>(src.size());
+        for (IdentifierNode item: src) dst.add(item.clone());
         return dst;
     }
 

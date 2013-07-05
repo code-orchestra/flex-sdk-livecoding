@@ -73,7 +73,7 @@ public class CatchClauseNode extends Node
         if (default_namespace != null) result.default_namespace = default_namespace.clone();
         if (parameter != null) result.parameter = parameter.clone();
         if (statements != null) result.statements = statements.clone();
-        if (typeref != null) result.typeref = typeref;
+        if (typeref != null) result.typeref = typeref.clone();
 
         return result;
     }

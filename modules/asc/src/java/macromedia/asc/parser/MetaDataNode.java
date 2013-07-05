@@ -105,4 +105,39 @@ public class MetaDataNode extends Node
     {
         return md;
     }
+
+    public MetaDataNode clone() throws CloneNotSupportedException
+    {
+        MetaDataNode result = (MetaDataNode) super.clone();
+
+        if (data != null) result.data = data.clone();
+        if (def != null) result.def = def.clone();
+        if (md != null) result.md = md.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        MetaDataNode that = (MetaDataNode) o;
+
+        if (data != null ? !data.equals(that.data) : that.data != null) return false;
+        if (def != null ? !def.equals(that.def) : that.def != null) return false;
+        if (md != null ? !md.equals(that.md) : that.md != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (data != null ? data.hashCode() : 0);
+        result = 31 * result + (md != null ? md.hashCode() : 0);
+        result = 31 * result + (def != null ? def.hashCode() : 0);
+        return result;
+    }
 }

@@ -17,6 +17,7 @@
 
 package macromedia.asc.parser;
 
+import macromedia.asc.parser.util.CloneUtil;
 import macromedia.asc.util.*;
 import macromedia.asc.semantics.*;
 
@@ -101,4 +102,83 @@ public class PackageDefinitionNode extends DefinitionNode
       else
          return "PackageDefinition";
 	}
+
+    public PackageDefinitionNode clone() throws CloneNotSupportedException
+    {
+        PackageDefinitionNode result = (PackageDefinitionNode) super.clone();
+
+        if (clsdefs != null) result.clsdefs = CloneUtil.cloneListCDNode(clsdefs);
+        if (defaultNamespace != null) result.defaultNamespace = defaultNamespace.clone();
+        if (fexprs != null) result.fexprs = CloneUtil.cloneListFCNode(fexprs);
+        if (imported_names != null) result.imported_names = CloneUtil.cloneMultinames(imported_names);
+        if (internalNamespace != null) result.internalNamespace = internalNamespace;
+        if (name != null) result.name = name.clone();
+        if (publicNamespace != null) result.publicNamespace = publicNamespace.clone();
+        if (ref != null) result.ref = ref.clone();
+        if (statements != null) result.statements = statements.clone();
+        if (used_def_namespaces != null) result.used_def_namespaces = CloneUtil.cloneList(used_def_namespaces);
+        if (used_namespaces != null) result.used_namespaces = CloneUtil.cloneList(used_namespaces);
+
+        // cx is transient
+        //if (cx != null);
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        PackageDefinitionNode that = (PackageDefinitionNode) o;
+
+        if (in_this_pkg != that.in_this_pkg) return false;
+        if (package_retrieved != that.package_retrieved) return false;
+        if (temp_count != that.temp_count) return false;
+        if (var_count != that.var_count) return false;
+        if (clsdefs != null ? !clsdefs.equals(that.clsdefs) : that.clsdefs != null) return false;
+        // cx is transient
+        if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+        if (defaultNamespace != null ? !defaultNamespace.equals(that.defaultNamespace) : that.defaultNamespace != null)
+            return false;
+        if (fexprs != null ? !fexprs.equals(that.fexprs) : that.fexprs != null) return false;
+        if (imported_names != null ? !imported_names.equals(that.imported_names) : that.imported_names != null)
+            return false;
+        if (internalNamespace != null ? !internalNamespace.equals(that.internalNamespace) : that.internalNamespace != null)
+            return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (publicNamespace != null ? !publicNamespace.equals(that.publicNamespace) : that.publicNamespace != null)
+            return false;
+        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+        if (statements != null ? !statements.equals(that.statements) : that.statements != null) return false;
+        if (used_def_namespaces != null ? !used_def_namespaces.equals(that.used_def_namespaces) : that.used_def_namespaces != null)
+            return false;
+        if (used_namespaces != null ? !used_namespaces.equals(that.used_namespaces) : that.used_namespaces != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (statements != null ? statements.hashCode() : 0);
+        result = 31 * result + (fexprs != null ? fexprs.hashCode() : 0);
+        result = 31 * result + (clsdefs != null ? clsdefs.hashCode() : 0);
+        result = 31 * result + (defaultNamespace != null ? defaultNamespace.hashCode() : 0);
+        result = 31 * result + (publicNamespace != null ? publicNamespace.hashCode() : 0);
+        result = 31 * result + (internalNamespace != null ? internalNamespace.hashCode() : 0);
+        result = 31 * result + (used_namespaces != null ? used_namespaces.hashCode() : 0);
+        result = 31 * result + (used_def_namespaces != null ? used_def_namespaces.hashCode() : 0);
+        result = 31 * result + (imported_names != null ? imported_names.hashCode() : 0);
+        result = 31 * result + var_count;
+        result = 31 * result + temp_count;
+        result = 31 * result + (cx != null ? cx.hashCode() : 0);
+        result = 31 * result + (package_retrieved ? 1 : 0);
+        result = 31 * result + (in_this_pkg ? 1 : 0);
+        return result;
+    }
 }

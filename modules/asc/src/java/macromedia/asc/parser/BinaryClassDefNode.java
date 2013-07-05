@@ -51,4 +51,11 @@ public class BinaryClassDefNode extends ClassDefinitionNode
         return "BinaryClassDef";
     }
 
+    public BinaryClassDefNode clone() throws CloneNotSupportedException
+    {
+        BinaryClassDefNode result = (BinaryClassDefNode) super.clone();
+
+        return result;
+    }
+
 }

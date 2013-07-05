@@ -71,4 +71,48 @@ public class ImportDirectiveNode extends DefinitionNode
 	{
 		return "importdirective";
 	}
+
+    public ImportDirectiveNode clone() throws CloneNotSupportedException
+    {
+        ImportDirectiveNode result = (ImportDirectiveNode) super.clone();
+
+        if (attrs != null) result.attrs = attrs.clone();
+        // cx is transient
+        //if (cx != null);
+        if (name != null) result.name = name.clone();
+        if (pkg_node != null) result.pkg_node = pkg_node.clone();
+        if (ref != null) result.ref = ref.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ImportDirectiveNode that = (ImportDirectiveNode) o;
+
+        if (package_retrieved != that.package_retrieved) return false;
+        if (attrs != null ? !attrs.equals(that.attrs) : that.attrs != null) return false;
+        if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (pkg_node != null ? !pkg_node.equals(that.pkg_node) : that.pkg_node != null) return false;
+        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (attrs != null ? attrs.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (pkg_node != null ? pkg_node.hashCode() : 0);
+        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+        result = 31 * result + (package_retrieved ? 1 : 0);
+        result = 31 * result + (cx != null ? cx.hashCode() : 0);
+        return result;
+    }
 }

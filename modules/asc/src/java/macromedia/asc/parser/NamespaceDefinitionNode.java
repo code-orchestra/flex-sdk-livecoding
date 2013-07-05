@@ -102,4 +102,51 @@ public class NamespaceDefinitionNode extends DefinitionNode
 	{
 		return "NamespaceDefinition";
 	}
+
+    public NamespaceDefinitionNode clone() throws CloneNotSupportedException
+    {
+        NamespaceDefinitionNode result = (NamespaceDefinitionNode) super.clone();
+        // debug_name is String
+        //if (debug_name != null);
+        if (gen_bits != null) result.gen_bits = BitSet.copy(gen_bits);
+        if (name != null) result.name = name.clone();
+        if (qualifiedname != null) result.qualifiedname = qualifiedname.clone();
+        if (ref != null) result.ref = ref.clone();
+        if (value != null) result.value = value.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        NamespaceDefinitionNode that = (NamespaceDefinitionNode) o;
+
+        if (needs_init != that.needs_init) return false;
+        if (debug_name != null ? !debug_name.equals(that.debug_name) : that.debug_name != null) return false;
+        if (gen_bits != null ? !gen_bits.equals(that.gen_bits) : that.gen_bits != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (qualifiedname != null ? !qualifiedname.equals(that.qualifiedname) : that.qualifiedname != null)
+            return false;
+        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+        result = 31 * result + (debug_name != null ? debug_name.hashCode() : 0);
+        result = 31 * result + (qualifiedname != null ? qualifiedname.hashCode() : 0);
+        result = 31 * result + (needs_init ? 1 : 0);
+        result = 31 * result + (gen_bits != null ? gen_bits.hashCode() : 0);
+        return result;
+    }
 }

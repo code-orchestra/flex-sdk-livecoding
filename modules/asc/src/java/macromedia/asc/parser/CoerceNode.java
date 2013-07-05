@@ -59,4 +59,43 @@ public class CoerceNode extends Node
 		void_result = true;
 		expr.voidResult();
 	}
+
+    public CoerceNode clone() throws CloneNotSupportedException
+    {
+        CoerceNode result = (CoerceNode) super.clone();
+
+        if (actual != null) result.actual = actual.clone();
+        if (expected != null) result.expected = expected.clone();
+        if (expr != null) result.expr = expr.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        CoerceNode that = (CoerceNode) o;
+
+        if (is_explicit != that.is_explicit) return false;
+        if (void_result != that.void_result) return false;
+        if (actual != null ? !actual.equals(that.actual) : that.actual != null) return false;
+        if (expected != null ? !expected.equals(that.expected) : that.expected != null) return false;
+        if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (expr != null ? expr.hashCode() : 0);
+        result = 31 * result + (actual != null ? actual.hashCode() : 0);
+        result = 31 * result + (expected != null ? expected.hashCode() : 0);
+        result = 31 * result + (void_result ? 1 : 0);
+        result = 31 * result + (is_explicit ? 1 : 0);
+        return result;
+    }
 }

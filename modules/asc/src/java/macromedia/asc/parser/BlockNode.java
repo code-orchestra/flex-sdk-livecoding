@@ -52,4 +52,36 @@ public class BlockNode extends Node
 	{
 		return "Block";
 	}
+
+    public BlockNode clone() throws CloneNotSupportedException
+    {
+        BlockNode result = (BlockNode) super.clone();
+
+        if (attributes != null) result.attributes = attributes.clone();
+        if (statements != null) result.statements = statements.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        BlockNode blockNode = (BlockNode) o;
+
+        if (attributes != null ? !attributes.equals(blockNode.attributes) : blockNode.attributes != null) return false;
+        if (statements != null ? !statements.equals(blockNode.statements) : blockNode.statements != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
+        result = 31 * result + (statements != null ? statements.hashCode() : 0);
+        return result;
+    }
 }

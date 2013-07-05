@@ -64,4 +64,48 @@ public class CatchClauseNode extends Node
 	{
 		return "CatchClause";
 	}
+
+    public CatchClauseNode clone() throws CloneNotSupportedException
+    {
+        CatchClauseNode result = (CatchClauseNode) super.clone();
+
+        if (activation != null) result.activation = activation.clone();
+        if (default_namespace != null) result.default_namespace = default_namespace.clone();
+        if (parameter != null) result.parameter = parameter.clone();
+        if (statements != null) result.statements = statements.clone();
+        if (typeref != null) result.typeref = typeref;
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        CatchClauseNode that = (CatchClauseNode) o;
+
+        if (finallyInserted != that.finallyInserted) return false;
+        if (activation != null ? !activation.equals(that.activation) : that.activation != null) return false;
+        if (default_namespace != null ? !default_namespace.equals(that.default_namespace) : that.default_namespace != null)
+            return false;
+        if (parameter != null ? !parameter.equals(that.parameter) : that.parameter != null) return false;
+        if (statements != null ? !statements.equals(that.statements) : that.statements != null) return false;
+        if (typeref != null ? !typeref.equals(that.typeref) : that.typeref != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (parameter != null ? parameter.hashCode() : 0);
+        result = 31 * result + (statements != null ? statements.hashCode() : 0);
+        result = 31 * result + (typeref != null ? typeref.hashCode() : 0);
+        result = 31 * result + (finallyInserted ? 1 : 0);
+        result = 31 * result + (default_namespace != null ? default_namespace.hashCode() : 0);
+        result = 31 * result + (activation != null ? activation.hashCode() : 0);
+        return result;
+    }
 }

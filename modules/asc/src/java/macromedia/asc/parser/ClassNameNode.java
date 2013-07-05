@@ -55,4 +55,38 @@ public class ClassNameNode extends Node
 	{
 		return "ClassName";
 	}
+
+    public ClassNameNode clone() throws CloneNotSupportedException
+    {
+        ClassNameNode result = (ClassNameNode) super.clone();
+
+        if (ident != null) result.ident = ident.clone();
+        if (pkgname != null) result.pkgname = pkgname.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ClassNameNode that = (ClassNameNode) o;
+
+        if (non_nullable != that.non_nullable) return false;
+        if (ident != null ? !ident.equals(that.ident) : that.ident != null) return false;
+        if (pkgname != null ? !pkgname.equals(that.pkgname) : that.pkgname != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (pkgname != null ? pkgname.hashCode() : 0);
+        result = 31 * result + (ident != null ? ident.hashCode() : 0);
+        result = 31 * result + (non_nullable ? 1 : 0);
+        return result;
+    }
 }

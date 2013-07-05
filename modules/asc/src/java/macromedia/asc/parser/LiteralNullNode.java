@@ -60,4 +60,31 @@ public class LiteralNullNode extends Node
 	{
 		return "LiteralNull";
 	}
+
+    public LiteralNullNode clone() throws CloneNotSupportedException
+    {
+        LiteralNullNode result = (LiteralNullNode) super.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        LiteralNullNode that = (LiteralNullNode) o;
+
+        if (void_result != that.void_result) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (void_result ? 1 : 0);
+        return result;
+    }
 }

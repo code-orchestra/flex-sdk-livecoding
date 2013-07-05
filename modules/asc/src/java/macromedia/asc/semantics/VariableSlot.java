@@ -122,7 +122,7 @@ public class VariableSlot extends Slot
     public VariableSlot clone() throws CloneNotSupportedException {
         VariableSlot result = (VariableSlot)super.clone();
 
-        result.setTypeRef((ReferenceValue)getTypeRef().clone());
+        if (typeref != null) result.setTypeRef(typeref.clone());
 
         return result;
     }

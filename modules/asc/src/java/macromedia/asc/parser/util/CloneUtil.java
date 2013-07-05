@@ -5,10 +5,7 @@ import macromedia.asc.parser.FunctionCommonNode;
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.ParameterNode;
 import macromedia.asc.semantics.*;
-import macromedia.asc.util.Block;
-import macromedia.asc.util.Namespaces;
-import macromedia.asc.util.ObjectList;
-import macromedia.asc.util.Slots;
+import macromedia.asc.util.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,6 +61,15 @@ public class CloneUtil {
         Map<String, TypeValue> dst = new HashMap<String, TypeValue> ();
         for (Map.Entry<String, TypeValue> entry : src.entrySet()) {
             dst.put(new String(entry.getKey()), entry.getValue().clone());
+        }
+        return dst;
+    }
+
+    public static Multinames cloneMultinames(Multinames src) throws CloneNotSupportedException
+    {
+        Multinames dst = new Multinames();
+        for (Map.Entry<String, Namespaces> entry : src.entrySet()) {
+            dst.put(entry.getKey(), cloneList(entry.getValue()));
         }
         return dst;
     }

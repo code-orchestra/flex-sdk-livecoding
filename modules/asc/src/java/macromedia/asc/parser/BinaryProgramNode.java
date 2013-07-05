@@ -17,6 +17,7 @@
 
 package macromedia.asc.parser;
 
+import macromedia.asc.parser.util.CloneUtil;
 import macromedia.asc.util.Context;
 import macromedia.asc.semantics.Value;
 import macromedia.asc.semantics.QName;
@@ -58,4 +59,34 @@ public class BinaryProgramNode extends ProgramNode
 	{
 		return "BinaryProgram";
 	}
+
+    public BinaryProgramNode clone() throws CloneNotSupportedException
+    {
+        BinaryProgramNode result = (BinaryProgramNode) super.clone();
+
+        if (toplevelDefinitions != null) result.toplevelDefinitions = CloneUtil.cloneListQName(toplevelDefinitions);
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        BinaryProgramNode that = (BinaryProgramNode) o;
+
+        if (toplevelDefinitions != null ? !toplevelDefinitions.equals(that.toplevelDefinitions) : that.toplevelDefinitions != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (toplevelDefinitions != null ? toplevelDefinitions.hashCode() : 0);
+        return result;
+    }
 }

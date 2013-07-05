@@ -4,8 +4,7 @@ import macromedia.asc.parser.*;
 import macromedia.asc.semantics.*;
 import macromedia.asc.util.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -124,6 +123,36 @@ public class CloneUtil {
     {
         ObjectList<TypeInfo> dst = new ObjectList<TypeInfo>(src.size());
         for (TypeInfo item: src) dst.add(item.clone());
+        return dst;
+    }
+
+    public static Set<ReferenceValue> cloneSet(Set<ReferenceValue> src) throws CloneNotSupportedException
+    {
+        HashSet<ReferenceValue> dst = new HashSet<ReferenceValue>(src.size());
+        for (ReferenceValue item: src) {
+            dst.add(item.clone());
+        }
+        return dst;
+    }
+
+    public static ObjectList<ImportNode> cloneListImNode(ObjectList<ImportNode> src) throws CloneNotSupportedException
+    {
+        ObjectList<ImportNode> dst = new ObjectList<ImportNode>(src.size());
+        for (ImportNode item: src) dst.add(item.clone());
+        return dst;
+    }
+
+    public static ObjectList<PackageDefinitionNode> cloneListPDNode(ObjectList<PackageDefinitionNode> src) throws CloneNotSupportedException
+    {
+        ObjectList<PackageDefinitionNode> dst = new ObjectList<PackageDefinitionNode>(src.size());
+        for (PackageDefinitionNode item: src) dst.add(item.clone());
+        return dst;
+    }
+
+    public static List<QName> cloneListQName(List<QName> src) throws CloneNotSupportedException
+    {
+        List<QName> dst = new ArrayList<QName>(src.size());
+        for (QName item: src) dst.add(item.clone());
         return dst;
     }
 }

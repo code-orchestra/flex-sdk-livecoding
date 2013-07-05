@@ -92,6 +92,9 @@ public class CloneTest extends TestCase{
 
         AttributeListNode attributeListNode = new AttributeListNode(node, 1);
         testCloneNode(attributeListNode);
+
+        StatementListNode statementListNode = new StatementListNode(node);
+        testCloneNode(statementListNode);
     }
 
     public void testSlot() throws Exception {

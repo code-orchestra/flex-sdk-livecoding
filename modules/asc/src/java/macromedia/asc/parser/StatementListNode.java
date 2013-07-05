@@ -17,6 +17,7 @@
 
 package macromedia.asc.parser;
 
+import macromedia.asc.parser.util.CloneUtil;
 import macromedia.asc.util.*;
 import macromedia.asc.semantics.*;
 import static macromedia.asc.util.BitSet.*;
@@ -162,5 +163,54 @@ public class StatementListNode extends Node
             // we really want the LoadRegisterNode to have a void result so it won't screw up the stack.
             ((LoadRegisterNode)items.last()).void_result = true;
         }
+    }
+
+    public StatementListNode clone() throws CloneNotSupportedException
+    {
+        StatementListNode result = (StatementListNode) super.clone();
+
+        if (config_attrs != null) result.config_attrs = config_attrs.clone();
+        if (default_namespace != null) result.default_namespace = default_namespace.clone();
+        if (items != null) result.items = CloneUtil.cloneListNode(items);
+        if (numberUsage != null) result.numberUsage = numberUsage.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        StatementListNode that = (StatementListNode) o;
+
+        if (dominates_program_endpoint != that.dominates_program_endpoint) return false;
+        if (has_pragma != that.has_pragma) return false;
+        if (is_block != that.is_block) return false;
+        if (is_loop != that.is_loop) return false;
+        if (was_empty != that.was_empty) return false;
+        if (config_attrs != null ? !config_attrs.equals(that.config_attrs) : that.config_attrs != null) return false;
+        if (default_namespace != null ? !default_namespace.equals(that.default_namespace) : that.default_namespace != null)
+            return false;
+        if (items != null ? !items.equals(that.items) : that.items != null) return false;
+        if (numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (items != null ? items.hashCode() : 0);
+        result = 31 * result + (dominates_program_endpoint ? 1 : 0);
+        result = 31 * result + (was_empty ? 1 : 0);
+        result = 31 * result + (is_loop ? 1 : 0);
+        result = 31 * result + (is_block ? 1 : 0);
+        result = 31 * result + (has_pragma ? 1 : 0);
+        result = 31 * result + (numberUsage != null ? numberUsage.hashCode() : 0);
+        result = 31 * result + (default_namespace != null ? default_namespace.hashCode() : 0);
+        result = 31 * result + (config_attrs != null ? config_attrs.hashCode() : 0);
+        return result;
     }
 }

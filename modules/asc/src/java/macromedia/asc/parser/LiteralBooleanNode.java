@@ -67,4 +67,33 @@ public class LiteralBooleanNode extends Node
 	{
 		return "LiteralBoolean";
 	}
+
+    public LiteralBooleanNode clone() throws CloneNotSupportedException
+    {
+        LiteralBooleanNode result = (LiteralBooleanNode) super.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        LiteralBooleanNode that = (LiteralBooleanNode) o;
+
+        if (value != that.value) return false;
+        if (void_result != that.void_result) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (value ? 1 : 0);
+        result = 31 * result + (void_result ? 1 : 0);
+        return result;
+    }
 }

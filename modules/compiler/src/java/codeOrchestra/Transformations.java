@@ -418,13 +418,15 @@ public class Transformations {
 
                     // CFB-15
                     Node logUtilArg = new LiteralStringNode("");
-                    Iterator<Node> traceArgsIterator = callExpressionNode.args.items.iterator();
-                    while (traceArgsIterator.hasNext()) {
-                        Node traceArg = traceArgsIterator.next();
-                        logUtilArg = new BinaryExpressionNode(Tokens.PLUS_TOKEN, logUtilArg, traceArg);
+                    if (callExpressionNode.args != null) {
+                        Iterator<Node> traceArgsIterator = callExpressionNode.args.items.iterator();
+                        while (traceArgsIterator.hasNext()) {
+                            Node traceArg = traceArgsIterator.next();
+                            logUtilArg = new BinaryExpressionNode(Tokens.PLUS_TOKEN, logUtilArg, traceArg);
 
-                        if (traceArgsIterator.hasNext()) {
-                            logUtilArg = new BinaryExpressionNode(Tokens.PLUS_TOKEN, logUtilArg, new LiteralStringNode(", "));
+                            if (traceArgsIterator.hasNext()) {
+                                logUtilArg = new BinaryExpressionNode(Tokens.PLUS_TOKEN, logUtilArg, new LiteralStringNode(", "));
+                            }
                         }
                     }
 

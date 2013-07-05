@@ -77,6 +77,13 @@ public class CloneUtil {
         return dst;
     }
 
+    public static ObjectList<Value> cloneListValue(ObjectList<Value> src) throws CloneNotSupportedException
+    {
+        ObjectList<Value> dst = new ObjectList<Value>(src.size());
+        for (Value item: src) dst.add(item.clone());
+        return dst;
+    }
+
     public static ObjectList<IdentifierNode> cloneListINode(ObjectList<IdentifierNode> src) throws CloneNotSupportedException
     {
         ObjectList<IdentifierNode> dst = new ObjectList<IdentifierNode>(src.size());

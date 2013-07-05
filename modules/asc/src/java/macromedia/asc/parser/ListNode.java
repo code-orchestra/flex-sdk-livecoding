@@ -17,6 +17,7 @@
 
 package macromedia.asc.parser;
 
+import macromedia.asc.parser.util.CloneUtil;
 import macromedia.asc.util.*;
 import macromedia.asc.semantics.*;
 import static macromedia.asc.util.BitSet.*;
@@ -146,14 +147,8 @@ public class ListNode extends Node
     {
         ListNode result = (ListNode) super.clone();
 
-        ObjectList<Node> items_cloned = new ObjectList<Node>(items.size());
-        ObjectList<Value> values_cloned = new ObjectList<Value>(values.size());
-
-        for (Node item: items) items_cloned.add(item.clone());
-        for (Value value: values) values_cloned.add(value.clone());
-
-        result.items = items_cloned;
-        result.values = values_cloned;
+        if(items != null) result.items = CloneUtil.cloneListNode(items);
+        if(values != null) result.values = CloneUtil.cloneListValue(values);
 
         return result;
     }

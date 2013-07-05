@@ -88,6 +88,10 @@ public class CloneTest extends TestCase{
         testCloneNode(ssNode);
 
         IncrementNode incrementNode = new IncrementNode(Tokens.PLUSPLUS_TOKEN, iNode, true);
+        testCloneNode(incrementNode);
+
+        AttributeListNode attributeListNode = new AttributeListNode(node, 1);
+        testCloneNode(attributeListNode);
     }
 
     public void testSlot() throws Exception {

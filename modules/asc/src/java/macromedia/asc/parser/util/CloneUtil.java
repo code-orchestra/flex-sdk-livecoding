@@ -1,6 +1,7 @@
 package macromedia.asc.parser.util;
 
 import macromedia.asc.parser.ClassDefinitionNode;
+import macromedia.asc.parser.Node;
 import macromedia.asc.semantics.ObjectValue;
 import macromedia.asc.semantics.ReferenceValue;
 import macromedia.asc.semantics.Slot;
@@ -64,6 +65,20 @@ public class CloneUtil {
         for (Map.Entry<String, TypeValue> entry : src.entrySet()) {
             dst.put(new String(entry.getKey()), entry.getValue().clone());
         }
+        return dst;
+    }
+
+    public static ObjectList<Node> cloneListNode(ObjectList<Node> src) throws CloneNotSupportedException
+    {
+        ObjectList<Node> dst = new ObjectList<Node>(src.size());
+        for (Node item: src) dst.add(item.clone());
+        return dst;
+    }
+
+    public static ObjectList<String> cloneListString(ObjectList<String> src) throws CloneNotSupportedException
+    {
+        ObjectList<String> dst = new ObjectList<String>(src.size());
+        for (String item: src) dst.add(new String(item));
         return dst;
     }
 }

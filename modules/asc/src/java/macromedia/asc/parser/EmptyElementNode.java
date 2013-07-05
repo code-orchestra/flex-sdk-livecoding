@@ -43,4 +43,11 @@ public class EmptyElementNode extends Node
 	{
 		return "EmptyElement";
 	}
+
+    public EmptyElementNode clone() throws CloneNotSupportedException
+    {
+        EmptyElementNode result = (EmptyElementNode) super.clone();
+
+        return result;
+    }
 }

@@ -95,6 +95,14 @@ public class CloneTest extends TestCase{
 
         StatementListNode statementListNode = new StatementListNode(node);
         testCloneNode(statementListNode);
+
+        ParameterNode parameterNode = new ParameterNode(1, iNode, alNode, node);
+        testCloneNode(parameterNode);
+        ParameterListNode parameterListNode = new ParameterListNode(null, parameterNode, 1);
+        testCloneNode(parameterListNode);
+
+        FunctionSignatureNode functionSignatureNode = new FunctionSignatureNode(parameterListNode, node);
+        testCloneNode(functionSignatureNode);
     }
 
     public void testSlot() throws Exception {

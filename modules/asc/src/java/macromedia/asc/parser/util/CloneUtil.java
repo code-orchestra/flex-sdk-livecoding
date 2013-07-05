@@ -1,11 +1,11 @@
 package macromedia.asc.parser.util;
 
 import macromedia.asc.parser.ClassDefinitionNode;
+import macromedia.asc.parser.FunctionCommonNode;
 import macromedia.asc.parser.Node;
-import macromedia.asc.semantics.ObjectValue;
-import macromedia.asc.semantics.ReferenceValue;
-import macromedia.asc.semantics.Slot;
-import macromedia.asc.semantics.TypeValue;
+import macromedia.asc.parser.ParameterNode;
+import macromedia.asc.semantics.*;
+import macromedia.asc.util.Block;
 import macromedia.asc.util.Namespaces;
 import macromedia.asc.util.ObjectList;
 import macromedia.asc.util.Slots;
@@ -79,6 +79,41 @@ public class CloneUtil {
     {
         ObjectList<String> dst = new ObjectList<String>(src.size());
         for (String item: src) dst.add(new String(item));
+        return dst;
+    }
+
+    public static ObjectList<ClassDefinitionNode> cloneListCDNode(ObjectList<ClassDefinitionNode> src) throws CloneNotSupportedException
+    {
+        ObjectList<ClassDefinitionNode> dst = new ObjectList<ClassDefinitionNode>(src.size());
+        for (ClassDefinitionNode item: src) dst.add(item.clone());
+        return dst;
+    }
+
+    public static ObjectList<Block> cloneListBlock(ObjectList<Block> src) throws CloneNotSupportedException
+    {
+        ObjectList<Block> dst = new ObjectList<Block>(src.size());
+        for (Block item: src) dst.add(item.clone());
+        return dst;
+    }
+
+    public static ObjectList<FunctionCommonNode> cloneListFCNode(ObjectList<FunctionCommonNode> src) throws CloneNotSupportedException
+    {
+        ObjectList<FunctionCommonNode> dst = new ObjectList<FunctionCommonNode>(src.size());
+        for (FunctionCommonNode item: src) dst.add(item.clone());
+        return dst;
+    }
+
+    public static ObjectList<ParameterNode> cloneListPNode(ObjectList<ParameterNode> src) throws CloneNotSupportedException
+    {
+        ObjectList<ParameterNode> dst = new ObjectList<ParameterNode>(src.size());
+        for (ParameterNode item: src) dst.add(item.clone());
+        return dst;
+    }
+
+    public static ObjectList<TypeInfo> cloneListTypeInfo(ObjectList<TypeInfo> src) throws CloneNotSupportedException
+    {
+        ObjectList<TypeInfo> dst = new ObjectList<TypeInfo>(src.size());
+        for (TypeInfo item: src) dst.add(item.clone());
         return dst;
     }
 }

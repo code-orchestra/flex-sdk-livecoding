@@ -71,4 +71,40 @@ public class LabeledStatementNode extends Node
     {
         return "LabeledStatement";
     }
+
+    public LabeledStatementNode clone() throws CloneNotSupportedException
+    {
+        LabeledStatementNode result = (LabeledStatementNode) super.clone();
+
+        if (label != null) result.label = label.clone();
+        if (statement != null) result.statement = statement.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        LabeledStatementNode that = (LabeledStatementNode) o;
+
+        if (is_loop_label != that.is_loop_label) return false;
+        if (loop_index != that.loop_index) return false;
+        if (label != null ? !label.equals(that.label) : that.label != null) return false;
+        if (statement != null ? !statement.equals(that.statement) : that.statement != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (label != null ? label.hashCode() : 0);
+        result = 31 * result + (statement != null ? statement.hashCode() : 0);
+        result = 31 * result + loop_index;
+        result = 31 * result + (is_loop_label ? 1 : 0);
+        return result;
+    }
 }

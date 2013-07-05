@@ -69,4 +69,43 @@ public class IfStatementNode extends Node
 	{
 		return true;
 	}
+
+    public IfStatementNode clone() throws CloneNotSupportedException
+    {
+        IfStatementNode result = (IfStatementNode) super.clone();
+
+        if (condition != null) result.condition = condition.clone();
+        if (elseactions != null) result.elseactions = elseactions.clone();
+        if (thenactions != null) result.thenactions = thenactions.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        IfStatementNode that = (IfStatementNode) o;
+
+        if (is_false != that.is_false) return false;
+        if (is_true != that.is_true) return false;
+        if (condition != null ? !condition.equals(that.condition) : that.condition != null) return false;
+        if (elseactions != null ? !elseactions.equals(that.elseactions) : that.elseactions != null) return false;
+        if (thenactions != null ? !thenactions.equals(that.thenactions) : that.thenactions != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (condition != null ? condition.hashCode() : 0);
+        result = 31 * result + (thenactions != null ? thenactions.hashCode() : 0);
+        result = 31 * result + (elseactions != null ? elseactions.hashCode() : 0);
+        result = 31 * result + (is_true ? 1 : 0);
+        result = 31 * result + (is_false ? 1 : 0);
+        return result;
+    }
 }

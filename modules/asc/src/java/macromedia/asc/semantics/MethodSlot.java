@@ -97,14 +97,7 @@ public class MethodSlot extends Slot
     public MethodSlot clone() throws CloneNotSupportedException {
         MethodSlot result = (MethodSlot)super.clone();
 
-        if (decl_styles != null) {
-            int n = decl_styles.size();
-            ByteList styles = new ByteList(n);
-            for(int i = 0; i < n; i++) {
-                styles.add((byte)decl_styles.at(i));
-            }
-            result.decl_styles = styles;
-        }
+        if (decl_styles != null) result.decl_styles = new ByteList(decl_styles);
 
         return result;
     }

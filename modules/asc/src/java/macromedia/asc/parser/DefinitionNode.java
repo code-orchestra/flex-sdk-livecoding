@@ -69,4 +69,41 @@ public abstract class DefinitionNode extends Node
             metaData.items.push_back(node);
         }
     }
+
+    public DefinitionNode clone() throws CloneNotSupportedException
+    {
+        DefinitionNode result = (DefinitionNode) super.clone();
+
+        if (attrs != null) result.attrs = attrs.clone();
+        if (metaData != null) result.metaData = metaData.clone();
+        if (pkgdef != null) result.pkgdef = pkgdef.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        DefinitionNode that = (DefinitionNode) o;
+
+        if (skip != that.skip) return false;
+        if (attrs != null ? !attrs.equals(that.attrs) : that.attrs != null) return false;
+        if (metaData != null ? !metaData.equals(that.metaData) : that.metaData != null) return false;
+        if (pkgdef != null ? !pkgdef.equals(that.pkgdef) : that.pkgdef != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (attrs != null ? attrs.hashCode() : 0);
+        result = 31 * result + (metaData != null ? metaData.hashCode() : 0);
+        result = 31 * result + (pkgdef != null ? pkgdef.hashCode() : 0);
+        result = 31 * result + (skip ? 1 : 0);
+        return result;
+    }
 }

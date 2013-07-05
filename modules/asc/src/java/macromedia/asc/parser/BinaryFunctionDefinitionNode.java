@@ -48,4 +48,11 @@ public class BinaryFunctionDefinitionNode extends FunctionDefinitionNode
     {
         return "BinaryFunctionDefinition";
     }
+
+    public BinaryFunctionDefinitionNode clone() throws CloneNotSupportedException
+    {
+        BinaryFunctionDefinitionNode result = (BinaryFunctionDefinitionNode) super.clone();
+
+        return result;
+    }
 }

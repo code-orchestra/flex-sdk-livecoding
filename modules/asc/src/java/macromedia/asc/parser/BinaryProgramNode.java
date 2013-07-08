@@ -83,10 +83,10 @@ public class BinaryProgramNode extends ProgramNode
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (toplevelDefinitions != null ? toplevelDefinitions.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (toplevelDefinitions != null ? toplevelDefinitions.hashCode() : 0);
+//        return result;
+//    }
 }

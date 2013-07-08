@@ -111,12 +111,12 @@ public class WhileStatementNode extends Node implements HasBody, LoopStatement
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (expr != null ? expr.hashCode() : 0);
-        result = 31 * result + (statement != null ? statement.hashCode() : 0);
-        result = 31 * result + loop_index;
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (expr != null ? expr.hashCode() : 0);
+//        result = 31 * result + (statement != null ? statement.hashCode() : 0);
+//        result = 31 * result + loop_index;
+//        return result;
+//    }
 }

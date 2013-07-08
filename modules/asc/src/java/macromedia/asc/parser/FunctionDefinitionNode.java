@@ -164,20 +164,20 @@ public class FunctionDefinitionNode extends DefinitionNode
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (fexpr != null ? fexpr.hashCode() : 0);
-        result = 31 * result + fixedCount;
-        result = 31 * result + (fun != null ? fun.hashCode() : 0);
-        result = 31 * result + (ref != null ? ref.hashCode() : 0);
-        result = 31 * result + (cx != null ? cx.hashCode() : 0);
-        result = 31 * result + (init != null ? init.hashCode() : 0);
-        result = 31 * result + (needs_init ? 1 : 0);
-        result = 31 * result + (is_prototype ? 1 : 0);
-        result = 31 * result + version;
-        result = 31 * result + (skipLiveCoding ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (name != null ? name.hashCode() : 0);
+//        result = 31 * result + (fexpr != null ? fexpr.hashCode() : 0);
+//        result = 31 * result + fixedCount;
+//        result = 31 * result + (fun != null ? fun.hashCode() : 0);
+//        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+//        result = 31 * result + (cx != null ? cx.hashCode() : 0);
+//        result = 31 * result + (init != null ? init.hashCode() : 0);
+//        result = 31 * result + (needs_init ? 1 : 0);
+//        result = 31 * result + (is_prototype ? 1 : 0);
+//        result = 31 * result + version;
+//        result = 31 * result + (skipLiveCoding ? 1 : 0);
+//        return result;
+//    }
 }

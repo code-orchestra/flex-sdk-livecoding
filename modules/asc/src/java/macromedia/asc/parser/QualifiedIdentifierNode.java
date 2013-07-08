@@ -89,11 +89,11 @@ public class QualifiedIdentifierNode extends IdentifierNode
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (qualifier != null ? qualifier.hashCode() : 0);
-        result = 31 * result + (is_config_name ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (qualifier != null ? qualifier.hashCode() : 0);
+//        result = 31 * result + (is_config_name ? 1 : 0);
+//        return result;
+//    }
 }

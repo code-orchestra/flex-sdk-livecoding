@@ -90,12 +90,12 @@ public class SwitchStatementNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (expr != null ? expr.hashCode() : 0);
-        result = 31 * result + (statements != null ? statements.hashCode() : 0);
-        result = 31 * result + loop_index;
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (expr != null ? expr.hashCode() : 0);
+//        result = 31 * result + (statements != null ? statements.hashCode() : 0);
+//        result = 31 * result + loop_index;
+//        return result;
+//    }
 }

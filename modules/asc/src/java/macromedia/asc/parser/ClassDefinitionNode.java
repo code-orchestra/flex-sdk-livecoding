@@ -235,44 +235,44 @@ public class ClassDefinitionNode extends DefinitionNode
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (statements != null ? statements.hashCode() : 0);
-        result = 31 * result + (baseclass != null ? baseclass.hashCode() : 0);
-        result = 31 * result + (baseref != null ? baseref.hashCode() : 0);
-        result = 31 * result + (interfaces != null ? interfaces.hashCode() : 0);
-        result = 31 * result + (ref != null ? ref.hashCode() : 0);
-        result = 31 * result + (fexprs != null ? fexprs.hashCode() : 0);
-        result = 31 * result + (clsdefs != null ? clsdefs.hashCode() : 0);
-        result = 31 * result + (instanceinits != null ? instanceinits.hashCode() : 0);
-        result = 31 * result + (staticfexprs != null ? staticfexprs.hashCode() : 0);
-        result = 31 * result + var_count;
-        result = 31 * result + temp_count;
-        result = 31 * result + (cframe != null ? cframe.hashCode() : 0);
-        result = 31 * result + (iframe != null ? iframe.hashCode() : 0);
-        result = 31 * result + is_dynamic;
-        result = 31 * result + (cx != null ? cx.hashCode() : 0);
-        result = 31 * result + (debug_name != null ? debug_name.hashCode() : 0);
-        result = 31 * result + (package_name != null ? package_name.hashCode() : 0);
-        result = 31 * result + (owns_cframe ? 1 : 0);
-        result = 31 * result + (needs_init ? 1 : 0);
-        result = 31 * result + (deferred_subclasses != null ? deferred_subclasses.hashCode() : 0);
-        result = 31 * result + (init != null ? init.hashCode() : 0);
-        result = 31 * result + (needs_prototype_ns ? 1 : 0);
-        result = 31 * result + version;
-        result = 31 * result + (imported_names != null ? imported_names.hashCode() : 0);
-        result = 31 * result + (used_namespaces != null ? used_namespaces.hashCode() : 0);
-        result = 31 * result + (used_def_namespaces != null ? used_def_namespaces.hashCode() : 0);
-        result = 31 * result + (private_namespace != null ? private_namespace.hashCode() : 0);
-        result = 31 * result + (default_namespace != null ? default_namespace.hashCode() : 0);
-        result = 31 * result + (public_namespace != null ? public_namespace.hashCode() : 0);
-        result = 31 * result + (protected_namespace != null ? protected_namespace.hashCode() : 0);
-        result = 31 * result + (static_protected_namespace != null ? static_protected_namespace.hashCode() : 0);
-        result = 31 * result + (is_default_nullable ? 1 : 0);
-        result = 31 * result + state;
-        result = 31 * result + (namespaces != null ? namespaces.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (name != null ? name.hashCode() : 0);
+//        result = 31 * result + (statements != null ? statements.hashCode() : 0);
+//        result = 31 * result + (baseclass != null ? baseclass.hashCode() : 0);
+//        result = 31 * result + (baseref != null ? baseref.hashCode() : 0);
+//        result = 31 * result + (interfaces != null ? interfaces.hashCode() : 0);
+//        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+//        result = 31 * result + (fexprs != null ? fexprs.hashCode() : 0);
+//        result = 31 * result + (clsdefs != null ? clsdefs.hashCode() : 0);
+//        result = 31 * result + (instanceinits != null ? instanceinits.hashCode() : 0);
+//        result = 31 * result + (staticfexprs != null ? staticfexprs.hashCode() : 0);
+//        result = 31 * result + var_count;
+//        result = 31 * result + temp_count;
+//        result = 31 * result + (cframe != null ? cframe.hashCode() : 0);
+//        result = 31 * result + (iframe != null ? iframe.hashCode() : 0);
+//        result = 31 * result + is_dynamic;
+//        result = 31 * result + (cx != null ? cx.hashCode() : 0);
+//        result = 31 * result + (debug_name != null ? debug_name.hashCode() : 0);
+//        result = 31 * result + (package_name != null ? package_name.hashCode() : 0);
+//        result = 31 * result + (owns_cframe ? 1 : 0);
+//        result = 31 * result + (needs_init ? 1 : 0);
+//        result = 31 * result + (deferred_subclasses != null ? deferred_subclasses.hashCode() : 0);
+//        result = 31 * result + (init != null ? init.hashCode() : 0);
+//        result = 31 * result + (needs_prototype_ns ? 1 : 0);
+//        result = 31 * result + version;
+//        result = 31 * result + (imported_names != null ? imported_names.hashCode() : 0);
+//        result = 31 * result + (used_namespaces != null ? used_namespaces.hashCode() : 0);
+//        result = 31 * result + (used_def_namespaces != null ? used_def_namespaces.hashCode() : 0);
+//        result = 31 * result + (private_namespace != null ? private_namespace.hashCode() : 0);
+//        result = 31 * result + (default_namespace != null ? default_namespace.hashCode() : 0);
+//        result = 31 * result + (public_namespace != null ? public_namespace.hashCode() : 0);
+//        result = 31 * result + (protected_namespace != null ? protected_namespace.hashCode() : 0);
+//        result = 31 * result + (static_protected_namespace != null ? static_protected_namespace.hashCode() : 0);
+//        result = 31 * result + (is_default_nullable ? 1 : 0);
+//        result = 31 * result + state;
+//        result = 31 * result + (namespaces != null ? namespaces.hashCode() : 0);
+//        return result;
+//    }
 }

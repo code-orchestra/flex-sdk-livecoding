@@ -97,15 +97,15 @@ public class CatchClauseNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (parameter != null ? parameter.hashCode() : 0);
-        result = 31 * result + (statements != null ? statements.hashCode() : 0);
-        result = 31 * result + (typeref != null ? typeref.hashCode() : 0);
-        result = 31 * result + (finallyInserted ? 1 : 0);
-        result = 31 * result + (default_namespace != null ? default_namespace.hashCode() : 0);
-        result = 31 * result + (activation != null ? activation.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (parameter != null ? parameter.hashCode() : 0);
+//        result = 31 * result + (statements != null ? statements.hashCode() : 0);
+//        result = 31 * result + (typeref != null ? typeref.hashCode() : 0);
+//        result = 31 * result + (finallyInserted ? 1 : 0);
+//        result = 31 * result + (default_namespace != null ? default_namespace.hashCode() : 0);
+//        result = 31 * result + (activation != null ? activation.hashCode() : 0);
+//        return result;
+//    }
 }

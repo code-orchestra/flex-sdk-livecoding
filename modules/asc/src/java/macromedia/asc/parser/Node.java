@@ -389,12 +389,12 @@ public class Node implements Serializable, Cloneable // CodeOrchestra: made seri
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = flags;
-        result = 31 * result + (block != null ? block.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = flags;
+//        result = 31 * result + (block != null ? block.hashCode() : 0);
+//        return result;
+//    }
 
     public Node clone() throws CloneNotSupportedException {
         Node result = (Node) super.clone();

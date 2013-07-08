@@ -97,13 +97,13 @@ public abstract class DefinitionNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (attrs != null ? attrs.hashCode() : 0);
-        result = 31 * result + (metaData != null ? metaData.hashCode() : 0);
-        result = 31 * result + (pkgdef != null ? pkgdef.hashCode() : 0);
-        result = 31 * result + (skip ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (attrs != null ? attrs.hashCode() : 0);
+//        result = 31 * result + (metaData != null ? metaData.hashCode() : 0);
+//        result = 31 * result + (pkgdef != null ? pkgdef.hashCode() : 0);
+//        result = 31 * result + (skip ? 1 : 0);
+//        return result;
+//    }
 }

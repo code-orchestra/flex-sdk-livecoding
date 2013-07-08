@@ -91,11 +91,11 @@ public class ReturnStatementNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (expr != null ? expr.hashCode() : 0);
-        result = 31 * result + (finallyInserted ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (expr != null ? expr.hashCode() : 0);
+//        result = 31 * result + (finallyInserted ? 1 : 0);
+//        return result;
+//    }
 }

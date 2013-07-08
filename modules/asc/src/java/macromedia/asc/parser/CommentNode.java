@@ -63,11 +63,11 @@ public class CommentNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + type;
-        result = 31 * result + (comment != null ? comment.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + type;
+//        result = 31 * result + (comment != null ? comment.hashCode() : 0);
+//        return result;
+//    }
 }

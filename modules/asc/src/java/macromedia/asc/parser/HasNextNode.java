@@ -80,11 +80,11 @@ public class HasNextNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (objectRegister != null ? objectRegister.hashCode() : 0);
-        result = 31 * result + (indexRegister != null ? indexRegister.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (objectRegister != null ? objectRegister.hashCode() : 0);
+//        result = 31 * result + (indexRegister != null ? indexRegister.hashCode() : 0);
+//        return result;
+//    }
 }

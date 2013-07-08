@@ -164,32 +164,32 @@ public class ProgramNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (statements != null ? statements.hashCode() : 0);
-        result = 31 * result + (fexprs != null ? fexprs.hashCode() : 0);
-        result = 31 * result + (clsdefs != null ? clsdefs.hashCode() : 0);
-        result = 31 * result + (pkgdefs != null ? pkgdefs.hashCode() : 0);
-        result = 31 * result + (imports != null ? imports.hashCode() : 0);
-        result = 31 * result + temp_count;
-        result = 31 * result + var_count;
-        result = 31 * result + (blocks != null ? blocks.hashCode() : 0);
-        result = 31 * result + (cx != null ? cx.hashCode() : 0);
-        result = 31 * result + (has_unnamed_package ? 1 : 0);
-        result = 31 * result + (frame != null ? frame.hashCode() : 0);
-        result = 31 * result + (importFrame != null ? importFrame.hashCode() : 0);
-        result = 31 * result + (default_namespace != null ? default_namespace.hashCode() : 0);
-        result = 31 * result + (public_namespace != null ? public_namespace.hashCode() : 0);
-        result = 31 * result + state;
-        result = 31 * result + (used_def_namespaces != null ? used_def_namespaces.hashCode() : 0);
-        result = 31 * result + (import_def_unresolved != null ? import_def_unresolved.hashCode() : 0);
-        result = 31 * result + (package_unresolved != null ? package_unresolved.hashCode() : 0);
-        result = 31 * result + (ns_unresolved != null ? ns_unresolved.hashCode() : 0);
-        result = 31 * result + (fa_unresolved != null ? fa_unresolved.hashCode() : 0);
-        result = 31 * result + (ce_unresolved != null ? ce_unresolved.hashCode() : 0);
-        result = 31 * result + (body_unresolved != null ? body_unresolved.hashCode() : 0);
-        result = 31 * result + (rt_unresolved != null ? rt_unresolved.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (statements != null ? statements.hashCode() : 0);
+//        result = 31 * result + (fexprs != null ? fexprs.hashCode() : 0);
+//        result = 31 * result + (clsdefs != null ? clsdefs.hashCode() : 0);
+//        result = 31 * result + (pkgdefs != null ? pkgdefs.hashCode() : 0);
+//        result = 31 * result + (imports != null ? imports.hashCode() : 0);
+//        result = 31 * result + temp_count;
+//        result = 31 * result + var_count;
+//        result = 31 * result + (blocks != null ? blocks.hashCode() : 0);
+//        result = 31 * result + (cx != null ? cx.hashCode() : 0);
+//        result = 31 * result + (has_unnamed_package ? 1 : 0);
+//        result = 31 * result + (frame != null ? frame.hashCode() : 0);
+//        result = 31 * result + (importFrame != null ? importFrame.hashCode() : 0);
+//        result = 31 * result + (default_namespace != null ? default_namespace.hashCode() : 0);
+//        result = 31 * result + (public_namespace != null ? public_namespace.hashCode() : 0);
+//        result = 31 * result + state;
+//        result = 31 * result + (used_def_namespaces != null ? used_def_namespaces.hashCode() : 0);
+//        result = 31 * result + (import_def_unresolved != null ? import_def_unresolved.hashCode() : 0);
+//        result = 31 * result + (package_unresolved != null ? package_unresolved.hashCode() : 0);
+//        result = 31 * result + (ns_unresolved != null ? ns_unresolved.hashCode() : 0);
+//        result = 31 * result + (fa_unresolved != null ? fa_unresolved.hashCode() : 0);
+//        result = 31 * result + (ce_unresolved != null ? ce_unresolved.hashCode() : 0);
+//        result = 31 * result + (body_unresolved != null ? body_unresolved.hashCode() : 0);
+//        result = 31 * result + (rt_unresolved != null ? rt_unresolved.hashCode() : 0);
+//        return result;
+//    }
 }

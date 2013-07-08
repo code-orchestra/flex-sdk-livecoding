@@ -126,16 +126,16 @@ public class FunctionSignatureNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result1 = super.hashCode();
-        result1 = 31 * result1 + (parameter != null ? parameter.hashCode() : 0);
-        result1 = 31 * result1 + (result != null ? result.hashCode() : 0);
-        result1 = 31 * result1 + (type != null ? type.hashCode() : 0);
-        result1 = 31 * result1 + (typeref != null ? typeref.hashCode() : 0);
-        result1 = 31 * result1 + (inits != null ? inits.hashCode() : 0);
-        result1 = 31 * result1 + (no_anno ? 1 : 0);
-        result1 = 31 * result1 + (void_anno ? 1 : 0);
-        return result1;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result1 = super.hashCode();
+//        result1 = 31 * result1 + (parameter != null ? parameter.hashCode() : 0);
+//        result1 = 31 * result1 + (result != null ? result.hashCode() : 0);
+//        result1 = 31 * result1 + (type != null ? type.hashCode() : 0);
+//        result1 = 31 * result1 + (typeref != null ? typeref.hashCode() : 0);
+//        result1 = 31 * result1 + (inits != null ? inits.hashCode() : 0);
+//        result1 = 31 * result1 + (no_anno ? 1 : 0);
+//        result1 = 31 * result1 + (void_anno ? 1 : 0);
+//        return result1;
+//    }
 }

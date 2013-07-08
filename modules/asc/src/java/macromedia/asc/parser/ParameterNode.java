@@ -104,17 +104,17 @@ public class ParameterNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + kind;
-        result = 31 * result + (identifier != null ? identifier.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (init != null ? init.hashCode() : 0);
-        result = 31 * result + (ref != null ? ref.hashCode() : 0);
-        result = 31 * result + (typeref != null ? typeref.hashCode() : 0);
-        result = 31 * result + (attrs != null ? attrs.hashCode() : 0);
-        result = 31 * result + (no_anno ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + kind;
+//        result = 31 * result + (identifier != null ? identifier.hashCode() : 0);
+//        result = 31 * result + (type != null ? type.hashCode() : 0);
+//        result = 31 * result + (init != null ? init.hashCode() : 0);
+//        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+//        result = 31 * result + (typeref != null ? typeref.hashCode() : 0);
+//        result = 31 * result + (attrs != null ? attrs.hashCode() : 0);
+//        result = 31 * result + (no_anno ? 1 : 0);
+//        return result;
+//    }
 }

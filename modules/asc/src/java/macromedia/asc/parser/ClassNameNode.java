@@ -81,12 +81,12 @@ public class ClassNameNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (pkgname != null ? pkgname.hashCode() : 0);
-        result = 31 * result + (ident != null ? ident.hashCode() : 0);
-        result = 31 * result + (non_nullable ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (pkgname != null ? pkgname.hashCode() : 0);
+//        result = 31 * result + (ident != null ? ident.hashCode() : 0);
+//        result = 31 * result + (non_nullable ? 1 : 0);
+//        return result;
+//    }
 }

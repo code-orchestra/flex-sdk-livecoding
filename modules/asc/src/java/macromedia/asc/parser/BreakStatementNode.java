@@ -81,11 +81,11 @@ public class BreakStatementNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (id != null ? id.hashCode() : 0);
-        result = 31 * result + loop_index;
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (id != null ? id.hashCode() : 0);
+//        result = 31 * result + loop_index;
+//        return result;
+//    }
 }

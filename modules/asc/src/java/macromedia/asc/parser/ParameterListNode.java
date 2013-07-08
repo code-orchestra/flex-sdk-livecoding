@@ -174,13 +174,13 @@ public class ParameterListNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (items != null ? items.hashCode() : 0);
-        result = 31 * result + (types != null ? types.hashCode() : 0);
-        result = 31 * result + (decl_styles != null ? decl_styles.hashCode() : 0);
-        result = 31 * result + count;
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (items != null ? items.hashCode() : 0);
+//        result = 31 * result + (types != null ? types.hashCode() : 0);
+//        result = 31 * result + (decl_styles != null ? decl_styles.hashCode() : 0);
+//        result = 31 * result + count;
+//        return result;
+//    }
 };

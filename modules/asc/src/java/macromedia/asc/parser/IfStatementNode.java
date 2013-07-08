@@ -98,14 +98,14 @@ public class IfStatementNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (condition != null ? condition.hashCode() : 0);
-        result = 31 * result + (thenactions != null ? thenactions.hashCode() : 0);
-        result = 31 * result + (elseactions != null ? elseactions.hashCode() : 0);
-        result = 31 * result + (is_true ? 1 : 0);
-        result = 31 * result + (is_false ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (condition != null ? condition.hashCode() : 0);
+//        result = 31 * result + (thenactions != null ? thenactions.hashCode() : 0);
+//        result = 31 * result + (elseactions != null ? elseactions.hashCode() : 0);
+//        result = 31 * result + (is_true ? 1 : 0);
+//        result = 31 * result + (is_false ? 1 : 0);
+//        return result;
+//    }
 }

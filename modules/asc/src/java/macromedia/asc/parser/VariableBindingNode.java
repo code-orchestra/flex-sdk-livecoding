@@ -113,16 +113,16 @@ public class VariableBindingNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (variable != null ? variable.hashCode() : 0);
-        result = 31 * result + (initializer != null ? initializer.hashCode() : 0);
-        result = 31 * result + (ref != null ? ref.hashCode() : 0);
-        result = 31 * result + (typeref != null ? typeref.hashCode() : 0);
-        result = 31 * result + (attrs != null ? attrs.hashCode() : 0);
-        result = 31 * result + (debug_name != null ? debug_name.hashCode() : 0);
-        result = 31 * result + kind;
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (variable != null ? variable.hashCode() : 0);
+//        result = 31 * result + (initializer != null ? initializer.hashCode() : 0);
+//        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+//        result = 31 * result + (typeref != null ? typeref.hashCode() : 0);
+//        result = 31 * result + (attrs != null ? attrs.hashCode() : 0);
+//        result = 31 * result + (debug_name != null ? debug_name.hashCode() : 0);
+//        result = 31 * result + kind;
+//        return result;
+//    }
 }

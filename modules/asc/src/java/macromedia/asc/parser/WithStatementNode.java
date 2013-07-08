@@ -85,12 +85,12 @@ public class WithStatementNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (expr != null ? expr.hashCode() : 0);
-        result = 31 * result + (statement != null ? statement.hashCode() : 0);
-        result = 31 * result + (activation != null ? activation.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (expr != null ? expr.hashCode() : 0);
+//        result = 31 * result + (statement != null ? statement.hashCode() : 0);
+//        result = 31 * result + (activation != null ? activation.hashCode() : 0);
+//        return result;
+//    }
 }

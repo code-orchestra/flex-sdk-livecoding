@@ -151,12 +151,12 @@ public class PackageIdentifiersNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (list != null ? list.hashCode() : 0);
-        result = 31 * result + (pkg_part != null ? pkg_part.hashCode() : 0);
-        result = 31 * result + (def_part != null ? def_part.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (list != null ? list.hashCode() : 0);
+//        result = 31 * result + (pkg_part != null ? pkg_part.hashCode() : 0);
+//        result = 31 * result + (def_part != null ? def_part.hashCode() : 0);
+//        return result;
+//    }
 }

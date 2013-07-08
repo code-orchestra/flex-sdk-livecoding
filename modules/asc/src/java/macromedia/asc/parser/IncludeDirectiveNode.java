@@ -91,14 +91,14 @@ public class IncludeDirectiveNode extends DefinitionNode
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (filespec != null ? filespec.hashCode() : 0);
-        result = 31 * result + (program != null ? program.hashCode() : 0);
-        result = 31 * result + (cx != null ? cx.hashCode() : 0);
-        result = 31 * result + (in_this_include ? 1 : 0);
-        result = 31 * result + (prev_cx != null ? prev_cx.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (filespec != null ? filespec.hashCode() : 0);
+//        result = 31 * result + (program != null ? program.hashCode() : 0);
+//        result = 31 * result + (cx != null ? cx.hashCode() : 0);
+//        result = 31 * result + (in_this_include ? 1 : 0);
+//        result = 31 * result + (prev_cx != null ? prev_cx.hashCode() : 0);
+//        return result;
+//    }
 }

@@ -175,13 +175,13 @@ public class MemberExpressionNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (base != null ? base.hashCode() : 0);
-        result = 31 * result + (selector != null ? selector.hashCode() : 0);
-        result = 31 * result + (ref != null ? ref.hashCode() : 0);
-        result = 31 * result + authOrigToken;
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (base != null ? base.hashCode() : 0);
+//        result = 31 * result + (selector != null ? selector.hashCode() : 0);
+//        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+//        result = 31 * result + authOrigToken;
+//        return result;
+//    }
 }

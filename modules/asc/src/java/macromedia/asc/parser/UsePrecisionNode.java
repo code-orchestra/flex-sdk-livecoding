@@ -79,10 +79,10 @@ public class UsePrecisionNode extends UsePragmaNode {
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + precision;
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + precision;
+//        return result;
+//    }
 }

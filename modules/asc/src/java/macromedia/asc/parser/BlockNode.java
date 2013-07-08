@@ -77,11 +77,11 @@ public class BlockNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
-        result = 31 * result + (statements != null ? statements.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
+//        result = 31 * result + (statements != null ? statements.hashCode() : 0);
+//        return result;
+//    }
 }

@@ -84,11 +84,11 @@ public class FinallyClauseNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (statements != null ? statements.hashCode() : 0);
-        result = 31 * result + (default_catch != null ? default_catch.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (statements != null ? statements.hashCode() : 0);
+//        result = 31 * result + (default_catch != null ? default_catch.hashCode() : 0);
+//        return result;
+//    }
 }

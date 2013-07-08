@@ -81,11 +81,11 @@ public class TypeIdentifierNode extends IdentifierNode {
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (base != null ? base.hashCode() : 0);
-        result = 31 * result + (typeArgs != null ? typeArgs.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (base != null ? base.hashCode() : 0);
+//        result = 31 * result + (typeArgs != null ? typeArgs.hashCode() : 0);
+//        return result;
+//    }
 }

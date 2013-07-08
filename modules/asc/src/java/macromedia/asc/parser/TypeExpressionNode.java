@@ -117,12 +117,12 @@ public class TypeExpressionNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (nullable_annotation ? 1 : 0);
-        result = 31 * result + (is_nullable ? 1 : 0);
-        result = 31 * result + (expr != null ? expr.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (nullable_annotation ? 1 : 0);
+//        result = 31 * result + (is_nullable ? 1 : 0);
+//        result = 31 * result + (expr != null ? expr.hashCode() : 0);
+//        return result;
+//    }
 }

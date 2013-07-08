@@ -133,13 +133,13 @@ public class ArgumentListNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (items != null ? items.hashCode() : 0);
-        result = 31 * result + (expected_types != null ? expected_types.hashCode() : 0);
-        result = 31 * result + (decl_styles != null ? decl_styles.hashCode() : 0);
-        result = 31 * result + (is_bracket_selector ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (items != null ? items.hashCode() : 0);
+//        result = 31 * result + (expected_types != null ? expected_types.hashCode() : 0);
+//        result = 31 * result + (decl_styles != null ? decl_styles.hashCode() : 0);
+//        result = 31 * result + (is_bracket_selector ? 1 : 0);
+//        return result;
+//    }
 }

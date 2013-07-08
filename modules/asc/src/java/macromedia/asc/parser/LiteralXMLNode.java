@@ -90,12 +90,12 @@ public class LiteralXMLNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (list != null ? list.hashCode() : 0);
-        result = 31 * result + (is_xmllist ? 1 : 0);
-        result = 31 * result + (void_result ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (list != null ? list.hashCode() : 0);
+//        result = 31 * result + (is_xmllist ? 1 : 0);
+//        result = 31 * result + (void_result ? 1 : 0);
+//        return result;
+//    }
 }

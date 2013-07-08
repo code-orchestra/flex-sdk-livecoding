@@ -77,11 +77,11 @@ public class InheritanceNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (baseclass != null ? baseclass.hashCode() : 0);
-        result = 31 * result + (interfaces != null ? interfaces.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (baseclass != null ? baseclass.hashCode() : 0);
+//        result = 31 * result + (interfaces != null ? interfaces.hashCode() : 0);
+//        return result;
+//    }
 }

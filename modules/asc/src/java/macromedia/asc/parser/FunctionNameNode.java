@@ -76,11 +76,11 @@ public class FunctionNameNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (identifier != null ? identifier.hashCode() : 0);
-        result = 31 * result + kind;
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (identifier != null ? identifier.hashCode() : 0);
+//        result = 31 * result + kind;
+//        return result;
+//    }
 }

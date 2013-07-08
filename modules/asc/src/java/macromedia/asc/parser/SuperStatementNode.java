@@ -77,11 +77,11 @@ public class SuperStatementNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (call != null ? call.hashCode() : 0);
-        result = 31 * result + (baseobj != null ? baseobj.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (call != null ? call.hashCode() : 0);
+//        result = 31 * result + (baseobj != null ? baseobj.hashCode() : 0);
+//        return result;
+//    }
 }

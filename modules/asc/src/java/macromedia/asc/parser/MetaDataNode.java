@@ -132,12 +132,12 @@ public class MetaDataNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (data != null ? data.hashCode() : 0);
-        result = 31 * result + (md != null ? md.hashCode() : 0);
-        result = 31 * result + (def != null ? def.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (data != null ? data.hashCode() : 0);
+//        result = 31 * result + (md != null ? md.hashCode() : 0);
+//        result = 31 * result + (def != null ? def.hashCode() : 0);
+//        return result;
+//    }
 }

@@ -160,25 +160,25 @@ public class PackageDefinitionNode extends DefinitionNode
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (ref != null ? ref.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (statements != null ? statements.hashCode() : 0);
-        result = 31 * result + (fexprs != null ? fexprs.hashCode() : 0);
-        result = 31 * result + (clsdefs != null ? clsdefs.hashCode() : 0);
-        result = 31 * result + (defaultNamespace != null ? defaultNamespace.hashCode() : 0);
-        result = 31 * result + (publicNamespace != null ? publicNamespace.hashCode() : 0);
-        result = 31 * result + (internalNamespace != null ? internalNamespace.hashCode() : 0);
-        result = 31 * result + (used_namespaces != null ? used_namespaces.hashCode() : 0);
-        result = 31 * result + (used_def_namespaces != null ? used_def_namespaces.hashCode() : 0);
-        result = 31 * result + (imported_names != null ? imported_names.hashCode() : 0);
-        result = 31 * result + var_count;
-        result = 31 * result + temp_count;
-        result = 31 * result + (cx != null ? cx.hashCode() : 0);
-        result = 31 * result + (package_retrieved ? 1 : 0);
-        result = 31 * result + (in_this_pkg ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+//        result = 31 * result + (name != null ? name.hashCode() : 0);
+//        result = 31 * result + (statements != null ? statements.hashCode() : 0);
+//        result = 31 * result + (fexprs != null ? fexprs.hashCode() : 0);
+//        result = 31 * result + (clsdefs != null ? clsdefs.hashCode() : 0);
+//        result = 31 * result + (defaultNamespace != null ? defaultNamespace.hashCode() : 0);
+//        result = 31 * result + (publicNamespace != null ? publicNamespace.hashCode() : 0);
+//        result = 31 * result + (internalNamespace != null ? internalNamespace.hashCode() : 0);
+//        result = 31 * result + (used_namespaces != null ? used_namespaces.hashCode() : 0);
+//        result = 31 * result + (used_def_namespaces != null ? used_def_namespaces.hashCode() : 0);
+//        result = 31 * result + (imported_names != null ? imported_names.hashCode() : 0);
+//        result = 31 * result + var_count;
+//        result = 31 * result + temp_count;
+//        result = 31 * result + (cx != null ? cx.hashCode() : 0);
+//        result = 31 * result + (package_retrieved ? 1 : 0);
+//        result = 31 * result + (in_this_pkg ? 1 : 0);
+//        return result;
+//    }
 }

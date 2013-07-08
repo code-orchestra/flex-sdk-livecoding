@@ -104,15 +104,15 @@ public class ImportDirectiveNode extends DefinitionNode
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (attrs != null ? attrs.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (pkg_node != null ? pkg_node.hashCode() : 0);
-        result = 31 * result + (ref != null ? ref.hashCode() : 0);
-        result = 31 * result + (package_retrieved ? 1 : 0);
-        result = 31 * result + (cx != null ? cx.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (attrs != null ? attrs.hashCode() : 0);
+//        result = 31 * result + (name != null ? name.hashCode() : 0);
+//        result = 31 * result + (pkg_node != null ? pkg_node.hashCode() : 0);
+//        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+//        result = 31 * result + (package_retrieved ? 1 : 0);
+//        result = 31 * result + (cx != null ? cx.hashCode() : 0);
+//        return result;
+//    }
 }

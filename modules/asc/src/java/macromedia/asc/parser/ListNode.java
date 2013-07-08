@@ -167,11 +167,11 @@ public class ListNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (items != null ? items.hashCode() : 0);
-        result = 31 * result + (values != null ? values.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (items != null ? items.hashCode() : 0);
+//        result = 31 * result + (values != null ? values.hashCode() : 0);
+//        return result;
+//    }
 }

@@ -85,11 +85,11 @@ public class PackageNameNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (url != null ? url.hashCode() : 0);
-        result = 31 * result + (id != null ? id.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (url != null ? url.hashCode() : 0);
+//        result = 31 * result + (id != null ? id.hashCode() : 0);
+//        return result;
+//    }
 }

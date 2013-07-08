@@ -194,29 +194,29 @@ public class AttributeListNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (items != null ? items.hashCode() : 0);
-        result = 31 * result + (hasIntrinsic ? 1 : 0);
-        result = 31 * result + (hasStatic ? 1 : 0);
-        result = 31 * result + (hasFinal ? 1 : 0);
-        result = 31 * result + (hasVirtual ? 1 : 0);
-        result = 31 * result + (hasOverride ? 1 : 0);
-        result = 31 * result + (hasDynamic ? 1 : 0);
-        result = 31 * result + (hasNative ? 1 : 0);
-        result = 31 * result + (hasPrivate ? 1 : 0);
-        result = 31 * result + (hasProtected ? 1 : 0);
-        result = 31 * result + (hasPublic ? 1 : 0);
-        result = 31 * result + (hasInternal ? 1 : 0);
-        result = 31 * result + (hasConst ? 1 : 0);
-        result = 31 * result + (hasFalse ? 1 : 0);
-        result = 31 * result + (hasPrototype ? 1 : 0);
-        result = 31 * result + (compileDefinition ? 1 : 0);
-        result = 31 * result + (namespaces != null ? namespaces.hashCode() : 0);
-        result = 31 * result + (namespace_ids != null ? namespace_ids.hashCode() : 0);
-        result = 31 * result + (userNamespace != null ? userNamespace.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (items != null ? items.hashCode() : 0);
+//        result = 31 * result + (hasIntrinsic ? 1 : 0);
+//        result = 31 * result + (hasStatic ? 1 : 0);
+//        result = 31 * result + (hasFinal ? 1 : 0);
+//        result = 31 * result + (hasVirtual ? 1 : 0);
+//        result = 31 * result + (hasOverride ? 1 : 0);
+//        result = 31 * result + (hasDynamic ? 1 : 0);
+//        result = 31 * result + (hasNative ? 1 : 0);
+//        result = 31 * result + (hasPrivate ? 1 : 0);
+//        result = 31 * result + (hasProtected ? 1 : 0);
+//        result = 31 * result + (hasPublic ? 1 : 0);
+//        result = 31 * result + (hasInternal ? 1 : 0);
+//        result = 31 * result + (hasConst ? 1 : 0);
+//        result = 31 * result + (hasFalse ? 1 : 0);
+//        result = 31 * result + (hasPrototype ? 1 : 0);
+//        result = 31 * result + (compileDefinition ? 1 : 0);
+//        result = 31 * result + (namespaces != null ? namespaces.hashCode() : 0);
+//        result = 31 * result + (namespace_ids != null ? namespace_ids.hashCode() : 0);
+//        result = 31 * result + (userNamespace != null ? userNamespace.hashCode() : 0);
+//        return result;
+//    }
 }
 

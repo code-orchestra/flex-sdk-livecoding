@@ -199,18 +199,18 @@ public class StatementListNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (items != null ? items.hashCode() : 0);
-        result = 31 * result + (dominates_program_endpoint ? 1 : 0);
-        result = 31 * result + (was_empty ? 1 : 0);
-        result = 31 * result + (is_loop ? 1 : 0);
-        result = 31 * result + (is_block ? 1 : 0);
-        result = 31 * result + (has_pragma ? 1 : 0);
-        result = 31 * result + (numberUsage != null ? numberUsage.hashCode() : 0);
-        result = 31 * result + (default_namespace != null ? default_namespace.hashCode() : 0);
-        result = 31 * result + (config_attrs != null ? config_attrs.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (items != null ? items.hashCode() : 0);
+//        result = 31 * result + (dominates_program_endpoint ? 1 : 0);
+//        result = 31 * result + (was_empty ? 1 : 0);
+//        result = 31 * result + (is_loop ? 1 : 0);
+//        result = 31 * result + (is_block ? 1 : 0);
+//        result = 31 * result + (has_pragma ? 1 : 0);
+//        result = 31 * result + (numberUsage != null ? numberUsage.hashCode() : 0);
+//        result = 31 * result + (default_namespace != null ? default_namespace.hashCode() : 0);
+//        result = 31 * result + (config_attrs != null ? config_attrs.hashCode() : 0);
+//        return result;
+//    }
 }

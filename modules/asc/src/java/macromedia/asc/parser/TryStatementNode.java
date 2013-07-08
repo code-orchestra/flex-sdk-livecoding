@@ -109,15 +109,15 @@ public class TryStatementNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (tryblock != null ? tryblock.hashCode() : 0);
-        result = 31 * result + (catchlist != null ? catchlist.hashCode() : 0);
-        result = 31 * result + (finallyblock != null ? finallyblock.hashCode() : 0);
-        result = 31 * result + (finallyInserted ? 1 : 0);
-        result = 31 * result + loop_index;
-        result = 31 * result + (skip ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (tryblock != null ? tryblock.hashCode() : 0);
+//        result = 31 * result + (catchlist != null ? catchlist.hashCode() : 0);
+//        result = 31 * result + (finallyblock != null ? finallyblock.hashCode() : 0);
+//        result = 31 * result + (finallyInserted ? 1 : 0);
+//        result = 31 * result + loop_index;
+//        result = 31 * result + (skip ? 1 : 0);
+//        return result;
+//    }
 }

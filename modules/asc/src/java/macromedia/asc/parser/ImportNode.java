@@ -77,11 +77,11 @@ public class ImportNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (filespec != null ? filespec.hashCode() : 0);
-        result = 31 * result + (program != null ? program.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (filespec != null ? filespec.hashCode() : 0);
+//        result = 31 * result + (program != null ? program.hashCode() : 0);
+//        return result;
+//    }
 }

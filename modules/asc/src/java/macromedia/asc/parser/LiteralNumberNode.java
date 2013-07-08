@@ -126,14 +126,14 @@ public class LiteralNumberNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (value != null ? value.hashCode() : 0);
-        result = 31 * result + (numericValue != null ? numericValue.hashCode() : 0);
-        result = 31 * result + (numberUsage != null ? numberUsage.hashCode() : 0);
-        result = 31 * result + (void_result ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (type != null ? type.hashCode() : 0);
+//        result = 31 * result + (value != null ? value.hashCode() : 0);
+//        result = 31 * result + (numericValue != null ? numericValue.hashCode() : 0);
+//        result = 31 * result + (numberUsage != null ? numberUsage.hashCode() : 0);
+//        result = 31 * result + (void_result ? 1 : 0);
+//        return result;
+//    }
 }

@@ -83,11 +83,11 @@ public class UseDirectiveNode extends DefinitionNode
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (expr != null ? expr.hashCode() : 0);
-        result = 31 * result + (ref != null ? ref.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (expr != null ? expr.hashCode() : 0);
+//        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+//        return result;
+//    }
 }

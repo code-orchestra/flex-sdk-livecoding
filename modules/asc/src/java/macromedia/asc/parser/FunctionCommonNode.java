@@ -273,37 +273,37 @@ public class FunctionCommonNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (def != null ? def.hashCode() : 0);
-        result = 31 * result + (identifier != null ? identifier.hashCode() : 0);
-        result = 31 * result + (signature != null ? signature.hashCode() : 0);
-        result = 31 * result + (body != null ? body.hashCode() : 0);
-        result = 31 * result + fixedCount;
-        result = 31 * result + (fun != null ? fun.hashCode() : 0);
-        result = 31 * result + (ref != null ? ref.hashCode() : 0);
-        result = 31 * result + (fexprs != null ? fexprs.hashCode() : 0);
-        result = 31 * result + var_count;
-        result = 31 * result + temp_count;
-        result = 31 * result + (internal_name != null ? internal_name.hashCode() : 0);
-        result = 31 * result + (blocks != null ? blocks.hashCode() : 0);
-        result = 31 * result + with_depth;
-        result = 31 * result + (scope_chain != null ? scope_chain.hashCode() : 0);
-        result = 31 * result + (debug_name != null ? debug_name.hashCode() : 0);
-        result = 31 * result + needsArguments;
-        result = 31 * result + (cx != null ? cx.hashCode() : 0);
-        result = 31 * result + kind;
-        result = 31 * result + (namespace_ids != null ? namespace_ids.hashCode() : 0);
-        result = 31 * result + (use_stmts != null ? use_stmts.hashCode() : 0);
-        result = 31 * result + (default_dxns != null ? default_dxns.hashCode() : 0);
-        result = 31 * result + (imported_names != null ? imported_names.hashCode() : 0);
-        result = 31 * result + (used_namespaces != null ? used_namespaces.hashCode() : 0);
-        result = 31 * result + (private_namespace != null ? private_namespace.hashCode() : 0);
-        result = 31 * result + (default_namespace != null ? default_namespace.hashCode() : 0);
-        result = 31 * result + (public_namespace != null ? public_namespace.hashCode() : 0);
-        result = 31 * result + flags;
-        result = 31 * result + (void_result ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (def != null ? def.hashCode() : 0);
+//        result = 31 * result + (identifier != null ? identifier.hashCode() : 0);
+//        result = 31 * result + (signature != null ? signature.hashCode() : 0);
+//        result = 31 * result + (body != null ? body.hashCode() : 0);
+//        result = 31 * result + fixedCount;
+//        result = 31 * result + (fun != null ? fun.hashCode() : 0);
+//        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+//        result = 31 * result + (fexprs != null ? fexprs.hashCode() : 0);
+//        result = 31 * result + var_count;
+//        result = 31 * result + temp_count;
+//        result = 31 * result + (internal_name != null ? internal_name.hashCode() : 0);
+//        result = 31 * result + (blocks != null ? blocks.hashCode() : 0);
+//        result = 31 * result + with_depth;
+//        result = 31 * result + (scope_chain != null ? scope_chain.hashCode() : 0);
+//        result = 31 * result + (debug_name != null ? debug_name.hashCode() : 0);
+//        result = 31 * result + needsArguments;
+//        result = 31 * result + (cx != null ? cx.hashCode() : 0);
+//        result = 31 * result + kind;
+//        result = 31 * result + (namespace_ids != null ? namespace_ids.hashCode() : 0);
+//        result = 31 * result + (use_stmts != null ? use_stmts.hashCode() : 0);
+//        result = 31 * result + (default_dxns != null ? default_dxns.hashCode() : 0);
+//        result = 31 * result + (imported_names != null ? imported_names.hashCode() : 0);
+//        result = 31 * result + (used_namespaces != null ? used_namespaces.hashCode() : 0);
+//        result = 31 * result + (private_namespace != null ? private_namespace.hashCode() : 0);
+//        result = 31 * result + (default_namespace != null ? default_namespace.hashCode() : 0);
+//        result = 31 * result + (public_namespace != null ? public_namespace.hashCode() : 0);
+//        result = 31 * result + flags;
+//        result = 31 * result + (void_result ? 1 : 0);
+//        return result;
+//    }
 }

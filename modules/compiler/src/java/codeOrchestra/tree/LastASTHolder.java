@@ -28,14 +28,14 @@ public class LastASTHolder {
     public void add(String fqName, ProgramNode programNode) {
         long timeStarted = System.currentTimeMillis();
 
-        ProgramNode clone = null;
-        try{
-            clone = programNode.clone();
-        }catch (CloneNotSupportedException ex)
-        {
-            System.out.println("[LastASTHolder#add] : " + ex.toString());
-        }
-//        ProgramNode clone = SerializationUtils.clone(programNode);
+//        ProgramNode clone = null;
+//        try{
+//            clone = programNode.clone();
+//        }catch (CloneNotSupportedException ex)
+//        {
+//            System.out.println("[LastASTHolder#add] : " + ex.toString());
+//        }
+        ProgramNode clone = SerializationUtils.clone(programNode);
 
         if (TRACE) {
             System.out.println("Cloning of " + fqName + " AST took " + (System.currentTimeMillis() - timeStarted) + "ms");

@@ -179,15 +179,15 @@ public class ExpressionStatementNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (expr != null ? expr.hashCode() : 0);
-        result = 31 * result + (gen_bits != null ? gen_bits.hashCode() : 0);
-        result = 31 * result + (ref != null ? ref.hashCode() : 0);
-        result = 31 * result + (expected_type != null ? expected_type.hashCode() : 0);
-        result = 31 * result + (is_var_stmt ? 1 : 0);
-        result = 31 * result + (skip ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (expr != null ? expr.hashCode() : 0);
+//        result = 31 * result + (gen_bits != null ? gen_bits.hashCode() : 0);
+//        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+//        result = 31 * result + (expected_type != null ? expected_type.hashCode() : 0);
+//        result = 31 * result + (is_var_stmt ? 1 : 0);
+//        result = 31 * result + (skip ? 1 : 0);
+//        return result;
+//    }
 }

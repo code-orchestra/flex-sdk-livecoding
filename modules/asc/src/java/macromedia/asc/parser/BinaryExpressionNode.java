@@ -124,17 +124,17 @@ public class BinaryExpressionNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (lhs != null ? lhs.hashCode() : 0);
-        result = 31 * result + (rhs != null ? rhs.hashCode() : 0);
-        result = 31 * result + op;
-        result = 31 * result + (slot != null ? slot.hashCode() : 0);
-        result = 31 * result + (lhstype != null ? lhstype.hashCode() : 0);
-        result = 31 * result + (rhstype != null ? rhstype.hashCode() : 0);
-        result = 31 * result + (numberUsage != null ? numberUsage.hashCode() : 0);
-        result = 31 * result + (void_result ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (lhs != null ? lhs.hashCode() : 0);
+//        result = 31 * result + (rhs != null ? rhs.hashCode() : 0);
+//        result = 31 * result + op;
+//        result = 31 * result + (slot != null ? slot.hashCode() : 0);
+//        result = 31 * result + (lhstype != null ? lhstype.hashCode() : 0);
+//        result = 31 * result + (rhstype != null ? rhstype.hashCode() : 0);
+//        result = 31 * result + (numberUsage != null ? numberUsage.hashCode() : 0);
+//        result = 31 * result + (void_result ? 1 : 0);
+//        return result;
+//    }
 }

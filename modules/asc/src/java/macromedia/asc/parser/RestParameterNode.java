@@ -79,10 +79,10 @@ public class RestParameterNode extends ParameterNode
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (parameter != null ? parameter.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (parameter != null ? parameter.hashCode() : 0);
+//        return result;
+//    }
 }

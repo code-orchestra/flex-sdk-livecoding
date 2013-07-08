@@ -102,10 +102,10 @@ public class UseRoundingNode extends UsePragmaNode {
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + mode;
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + mode;
+//        return result;
+//    }
 }

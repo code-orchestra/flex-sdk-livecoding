@@ -94,14 +94,14 @@ public class ConditionalExpressionNode extends Node
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (condition != null ? condition.hashCode() : 0);
-        result = 31 * result + (thenexpr != null ? thenexpr.hashCode() : 0);
-        result = 31 * result + (elseexpr != null ? elseexpr.hashCode() : 0);
-        result = 31 * result + (thenvalue != null ? thenvalue.hashCode() : 0);
-        result = 31 * result + (elsevalue != null ? elsevalue.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (condition != null ? condition.hashCode() : 0);
+//        result = 31 * result + (thenexpr != null ? thenexpr.hashCode() : 0);
+//        result = 31 * result + (elseexpr != null ? elseexpr.hashCode() : 0);
+//        result = 31 * result + (thenvalue != null ? thenvalue.hashCode() : 0);
+//        result = 31 * result + (elsevalue != null ? elsevalue.hashCode() : 0);
+//        return result;
+//    }
 }

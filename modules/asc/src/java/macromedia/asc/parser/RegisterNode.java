@@ -63,7 +63,7 @@ public class RegisterNode extends Node
     {
         RegisterNode result = (RegisterNode) super.clone();
 
-        if (type != null) result.type = type.clone();
+        //if (type != null) result.type = type.clone();
 
         return result;
     }

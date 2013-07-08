@@ -147,7 +147,7 @@ public class ClassDefinitionNode extends DefinitionNode
 
         if (baseclass != null) result.baseclass = baseclass.clone();
         if (baseref != null) result.baseref = baseref.clone();
-        if (cframe != null) result.cframe = cframe.clone();
+        //if (cframe != null) result.cframe = cframe.clone();
         if (clsdefs != null) result.clsdefs = CloneUtil.cloneListCDNode(clsdefs);
         // cx is transient
         //if (cx != null);
@@ -181,6 +181,7 @@ public class ClassDefinitionNode extends DefinitionNode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 

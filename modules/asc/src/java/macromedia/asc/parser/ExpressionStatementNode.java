@@ -152,7 +152,7 @@ public class ExpressionStatementNode extends Node
     {
         ExpressionStatementNode result = (ExpressionStatementNode) super.clone();
 
-        if (expected_type != null) result.expected_type = expected_type.clone();
+        //if (expected_type != null) result.expected_type = expected_type.clone();
         if (expr != null) result.expr = expr.clone();
         if (gen_bits != null) result.gen_bits = BitSet.copy(gen_bits);
         if (ref != null) result.ref = ref.clone();

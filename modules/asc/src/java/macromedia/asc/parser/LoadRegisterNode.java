@@ -64,7 +64,7 @@ public class LoadRegisterNode extends Node
         LoadRegisterNode result = (LoadRegisterNode) super.clone();
 
         if (reg != null) result.reg = reg.clone();
-        if (type != null) result.type = type.clone();
+        //if (type != null) result.type = type.clone();
 
         return result;
     }

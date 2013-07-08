@@ -73,7 +73,7 @@ public class StoreRegisterNode extends Node
 
         if (expr != null) result.expr = expr.clone();
         if (reg != null) result.reg = reg.clone();
-        if (type != null) result.type = type.clone();
+        //if (type != null) result.type = type.clone();
 
         return result;
     }

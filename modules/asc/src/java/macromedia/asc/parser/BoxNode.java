@@ -67,7 +67,7 @@ public class BoxNode extends Node
     {
         BoxNode result = (BoxNode) super.clone();
 
-        if (actual != null) result.actual = actual.clone();
+        //if (actual != null) result.actual = actual.clone();
         if (expr != null) result.expr = expr.clone();
 
         return result;

@@ -100,7 +100,7 @@ public class LiteralNumberNode extends Node
     {
         LiteralNumberNode result = (LiteralNumberNode) super.clone();
 
-        if(type != null) result.type = type.clone();
+        //if(type != null) result.type = type.clone();
 
         if (numberUsage != null) result.numberUsage = numberUsage.clone();
 

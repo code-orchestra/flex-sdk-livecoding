@@ -398,10 +398,10 @@ public class Node implements Serializable, Cloneable // CodeOrchestra: made seri
 
     public Node clone() throws CloneNotSupportedException {
         Node result = (Node) super.clone();
-        if (block != null)
-        {
-            result.block = block.clone();
-        }
+//        if (block != null)
+//        {
+//            result.block = block.clone();
+//        }
         return result;
     }
 

@@ -84,12 +84,12 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
             return true;
         }
 
-        @Override
-        public int hashCode() {
-            int result = super.hashCode();
-            result = 31 * result + (obj != null ? obj.hashCode() : 0);
-            return result;
-        }
+//        @Override
+//        public int hashCode() {
+//            int result = super.hashCode();
+//            result = 31 * result + (obj != null ? obj.hashCode() : 0);
+//            return result;
+//        }
     }
 
 	static public class KeyValuePair extends Value
@@ -126,13 +126,13 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
             return true;
         }
 
-        @Override
-        public int hashCode() {
-            int result = super.hashCode();
-            result = 31 * result + (key != null ? key.hashCode() : 0);
-            result = 31 * result + (obj != null ? obj.hashCode() : 0);
-            return result;
-        }
+//        @Override
+//        public int hashCode() {
+//            int result = super.hashCode();
+//            result = 31 * result + (key != null ? key.hashCode() : 0);
+//            result = 31 * result + (obj != null ? obj.hashCode() : 0);
+//            return result;
+//        }
     }
 
 	private MetaDataNode current;

@@ -69,13 +69,13 @@ public class UnresolvedNamespace extends NamespaceValue
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (node != null ? node.hashCode() : 0);
-        result = 31 * result + (ref != null ? ref.hashCode() : 0);
-        result = 31 * result + (resolved ? 1 : 0);
-        result = 31 * result + (cx != null ? cx.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (node != null ? node.hashCode() : 0);
+//        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+//        result = 31 * result + (resolved ? 1 : 0);
+//        result = 31 * result + (cx != null ? cx.hashCode() : 0);
+//        return result;
+//    }
 }

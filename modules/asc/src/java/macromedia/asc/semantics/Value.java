@@ -106,8 +106,8 @@ public abstract class Value implements Serializable, Cloneable // CodeOrchestra:
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        return flags;
-    }
+//    @Override
+//    public int hashCode() {
+//        return flags;
+//    }
 }

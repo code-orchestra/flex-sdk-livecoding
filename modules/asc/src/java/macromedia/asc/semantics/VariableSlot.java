@@ -141,11 +141,11 @@ public class VariableSlot extends Slot
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + var_index;
-        result = 31 * result + (typeref != null ? typeref.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + var_index;
+//        result = 31 * result + (typeref != null ? typeref.hashCode() : 0);
+//        return result;
+//    }
 }

@@ -167,15 +167,15 @@ public class TypeInfo implements Serializable, Cloneable // CodeOrchestra: made 
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = (is_nullable ? 1 : 0);
-        result = 31 * result + (is_default ? 1 : 0);
-        result = 31 * result + (annotate_names ? 1 : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (prototype != null ? prototype.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = (is_nullable ? 1 : 0);
+//        result = 31 * result + (is_default ? 1 : 0);
+//        result = 31 * result + (annotate_names ? 1 : 0);
+//        result = 31 * result + (type != null ? type.hashCode() : 0);
+//        result = 31 * result + (prototype != null ? prototype.hashCode() : 0);
+//        result = 31 * result + (name != null ? name.hashCode() : 0);
+//        return result;
+//    }
 }
 

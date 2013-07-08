@@ -479,21 +479,21 @@ public final class TypeValue extends ObjectValue
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (prototype != null ? prototype.hashCode() : 0);
-        result = 31 * result + (baseclass != null ? baseclass.hashCode() : 0);
-        result = 31 * result + (is_parameterized ? 1 : 0);
-        result = 31 * result + (indexed_type != null ? indexed_type.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + type_id;
-        result = 31 * result + (resolved ? 1 : 0);
-        result = 31 * result + (default_typeinfo != null ? default_typeinfo.hashCode() : 0);
-        result = 31 * result + (explicit_nullable_typeinfo != null ? explicit_nullable_typeinfo.hashCode() : 0);
-        result = 31 * result + (explicit_nonnullable_typeinfo != null ? explicit_nonnullable_typeinfo.hashCode() : 0);
-        result = 31 * result + (is_nullable ? 1 : 0);
-        result = 31 * result + (parameterizedTypes != null ? parameterizedTypes.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (prototype != null ? prototype.hashCode() : 0);
+//        result = 31 * result + (baseclass != null ? baseclass.hashCode() : 0);
+//        result = 31 * result + (is_parameterized ? 1 : 0);
+//        result = 31 * result + (indexed_type != null ? indexed_type.hashCode() : 0);
+//        result = 31 * result + (name != null ? name.hashCode() : 0);
+//        result = 31 * result + type_id;
+//        result = 31 * result + (resolved ? 1 : 0);
+//        result = 31 * result + (default_typeinfo != null ? default_typeinfo.hashCode() : 0);
+//        result = 31 * result + (explicit_nullable_typeinfo != null ? explicit_nullable_typeinfo.hashCode() : 0);
+//        result = 31 * result + (explicit_nonnullable_typeinfo != null ? explicit_nonnullable_typeinfo.hashCode() : 0);
+//        result = 31 * result + (is_nullable ? 1 : 0);
+//        result = 31 * result + (parameterizedTypes != null ? parameterizedTypes.hashCode() : 0);
+//        return result;
+//    }
 }

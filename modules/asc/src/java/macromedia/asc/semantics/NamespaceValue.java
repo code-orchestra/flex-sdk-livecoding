@@ -87,11 +87,11 @@ public class NamespaceValue extends ObjectValue
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (int) ns_kind;
-        result = 31 * result + (config_ns ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (int) ns_kind;
+//        result = 31 * result + (config_ns ? 1 : 0);
+//        return result;
+//    }
 }

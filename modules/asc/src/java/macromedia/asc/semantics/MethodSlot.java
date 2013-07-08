@@ -117,12 +117,12 @@ public class MethodSlot extends Slot
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (method_name != null ? method_name.hashCode() : 0);
-        result = 31 * result + method_id;
-        result = 31 * result + (decl_styles != null ? decl_styles.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (method_name != null ? method_name.hashCode() : 0);
+//        result = 31 * result + method_id;
+//        result = 31 * result + (decl_styles != null ? decl_styles.hashCode() : 0);
+//        return result;
+//    }
 }

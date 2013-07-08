@@ -306,10 +306,10 @@ public class ObjectValueWrapper extends ObjectValue
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (wrapped != null ? wrapped.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (wrapped != null ? wrapped.hashCode() : 0);
+//        return result;
+//    }
 }

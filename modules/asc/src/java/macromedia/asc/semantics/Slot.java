@@ -767,17 +767,17 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = flags;
-        result = 31 * result + (auxDataItems != null ? Arrays.hashCode(auxDataItems) : 0);
-        result = 31 * result + id;
-        result = 31 * result + (declaredBy != null ? declaredBy.hashCode() : 0);
-        result = 31 * result + (def_bits != null ? def_bits.hashCode() : 0);
-        result = 31 * result + (value != null ? value.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (types != null ? types.hashCode() : 0);
-        result = 31 * result + (int) version;
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = flags;
+//        result = 31 * result + (auxDataItems != null ? Arrays.hashCode(auxDataItems) : 0);
+//        result = 31 * result + id;
+//        result = 31 * result + (declaredBy != null ? declaredBy.hashCode() : 0);
+//        result = 31 * result + (def_bits != null ? def_bits.hashCode() : 0);
+//        result = 31 * result + (value != null ? value.hashCode() : 0);
+//        result = 31 * result + (type != null ? type.hashCode() : 0);
+//        result = 31 * result + (types != null ? types.hashCode() : 0);
+//        result = 31 * result + (int) version;
+//        return result;
+//    }
 }

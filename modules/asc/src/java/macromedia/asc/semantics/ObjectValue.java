@@ -835,28 +835,28 @@ public class ObjectValue extends Value implements Comparable
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (builder != null ? builder.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (value != null ? value.hashCode() : 0);
-        result = 31 * result + (numberUsage != null ? numberUsage.hashCode() : 0);
-        result = 31 * result + (names != null ? names.hashCode() : 0);
-        result = 31 * result + (slots != null ? slots.hashCode() : 0);
-        result = 31 * result + (_proto_ != null ? _proto_.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (base_objs != null ? base_objs.hashCode() : 0);
-        result = 31 * result + (protected_ns != null ? protected_ns.hashCode() : 0);
-        result = 31 * result + (base_protected_ns != null ? base_protected_ns.hashCode() : 0);
-        result = 31 * result + (slot_ids != null ? slot_ids.hashCode() : 0);
-        result = 31 * result + method_info;
-        result = 31 * result + var_count;
-        result = 31 * result + (activation != null ? activation.hashCode() : 0);
-        result = 31 * result + (deferredClassMap != null ? deferredClassMap.hashCode() : 0);
-        result = 31 * result + (init_only_view ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (builder != null ? builder.hashCode() : 0);
+//        result = 31 * result + (type != null ? type.hashCode() : 0);
+//        result = 31 * result + (value != null ? value.hashCode() : 0);
+//        result = 31 * result + (numberUsage != null ? numberUsage.hashCode() : 0);
+//        result = 31 * result + (names != null ? names.hashCode() : 0);
+//        result = 31 * result + (slots != null ? slots.hashCode() : 0);
+//        result = 31 * result + (_proto_ != null ? _proto_.hashCode() : 0);
+//        result = 31 * result + (name != null ? name.hashCode() : 0);
+//        result = 31 * result + (base_objs != null ? base_objs.hashCode() : 0);
+//        result = 31 * result + (protected_ns != null ? protected_ns.hashCode() : 0);
+//        result = 31 * result + (base_protected_ns != null ? base_protected_ns.hashCode() : 0);
+//        result = 31 * result + (slot_ids != null ? slot_ids.hashCode() : 0);
+//        result = 31 * result + method_info;
+//        result = 31 * result + var_count;
+//        result = 31 * result + (activation != null ? activation.hashCode() : 0);
+//        result = 31 * result + (deferredClassMap != null ? deferredClassMap.hashCode() : 0);
+//        result = 31 * result + (init_only_view ? 1 : 0);
+//        return result;
+//    }
 
     public ObjectValue clone() throws CloneNotSupportedException
     {
@@ -1162,12 +1162,12 @@ public class ObjectValue extends Value implements Comparable
             return true;
         }
 
-        @Override
-        public int hashCode() {
-            int result = slot_id_boundaries != null ? slot_id_boundaries.hashCode() : 0;
-            result = 31 * result + cur_range_index;
-            result = 31 * result + cur_slot_id;
-            return result;
-        }
+//        @Override
+//        public int hashCode() {
+//            int result = slot_id_boundaries != null ? slot_id_boundaries.hashCode() : 0;
+//            result = 31 * result + cur_range_index;
+//            result = 31 * result + cur_slot_id;
+//            return result;
+//        }
     }
 }

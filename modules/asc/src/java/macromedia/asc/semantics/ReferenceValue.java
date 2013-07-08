@@ -877,21 +877,21 @@ public final class ReferenceValue extends Value implements ErrorConstants
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (base != null ? base.hashCode() : 0);
-        result = 31 * result + get_slot_index;
-        result = 31 * result + set_method_slot_index;
-        result = 31 * result + (ud_bits != null ? ud_bits.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + src_position;
-        result = 31 * result + (slot != null ? slot.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (namespaces != null ? namespaces.hashCode() : 0);
-        result = 31 * result + (type_params != null ? type_params.hashCode() : 0);
-        result = 31 * result + (is_nullable ? 1 : 0);
-        result = 31 * result + (has_nullable_anno ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (base != null ? base.hashCode() : 0);
+//        result = 31 * result + get_slot_index;
+//        result = 31 * result + set_method_slot_index;
+//        result = 31 * result + (ud_bits != null ? ud_bits.hashCode() : 0);
+//        result = 31 * result + (type != null ? type.hashCode() : 0);
+//        result = 31 * result + src_position;
+//        result = 31 * result + (slot != null ? slot.hashCode() : 0);
+//        result = 31 * result + (name != null ? name.hashCode() : 0);
+//        result = 31 * result + (namespaces != null ? namespaces.hashCode() : 0);
+//        result = 31 * result + (type_params != null ? type_params.hashCode() : 0);
+//        result = 31 * result + (is_nullable ? 1 : 0);
+//        result = 31 * result + (has_nullable_anno ? 1 : 0);
+//        return result;
+//    }
 }

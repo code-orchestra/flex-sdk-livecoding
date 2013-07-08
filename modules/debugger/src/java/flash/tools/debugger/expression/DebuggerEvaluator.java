@@ -84,12 +84,12 @@ class DebuggerEvaluator implements Evaluator
             return true;
         }
 
-        @Override
-        public int hashCode() {
-            int result = super.hashCode();
-            result = 31 * result + (debuggerValue != null ? debuggerValue.hashCode() : 0);
-            return result;
-        }
+//        @Override
+//        public int hashCode() {
+//            int result = super.hashCode();
+//            result = 31 * result + (debuggerValue != null ? debuggerValue.hashCode() : 0);
+//            return result;
+//        }
     }
 
 	/**

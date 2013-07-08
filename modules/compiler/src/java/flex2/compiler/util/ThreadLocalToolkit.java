@@ -288,7 +288,7 @@ public final class ThreadLocalToolkit
         Logger l = logger.get();
         if (l != null)
         {
-            l.logWarning(warning);
+            //l.logWarning(warning);
         }
         else
         {
@@ -340,7 +340,7 @@ public final class ThreadLocalToolkit
         Logger l = logger.get();
         if (l != null)
         {
-            l.logWarning(path, warning);
+            //l.logWarning(path, warning);
         }
         else
         {
@@ -357,7 +357,7 @@ public final class ThreadLocalToolkit
         }
         else
         {
-            System.err.println(path + ":" + warning);
+            //System.err.println(path + ":" + warning);
         }
     }
 
@@ -418,7 +418,7 @@ public final class ThreadLocalToolkit
         Logger l = logger.get();
         if (l != null)
         {
-            l.logWarning(path, line, warning);
+            //l.logWarning(path, line, warning);
         }
         else
         {
@@ -470,7 +470,7 @@ public final class ThreadLocalToolkit
         Logger l = logger.get();
         if (l != null)
         {
-            l.logWarning(path, line, col, warning);
+            //l.logWarning(path, line, col, warning);
         }
         else
         {
@@ -496,12 +496,12 @@ public final class ThreadLocalToolkit
         Logger l = logger.get();
         if (l != null)
         {
-            l.logWarning(path, line, col, warning, source);
+            //l.logWarning(path, line, col, warning, source);
         }
         else
         {
-            System.err.println(path + ": line " + line + ", col " + col + " - " + warning);
-            System.err.println(source);
+            //System.err.println(path + ": line " + line + ", col " + col + " - " + warning);
+            //System.err.println(source);
         }
     }
 
@@ -510,12 +510,12 @@ public final class ThreadLocalToolkit
         Logger l = logger.get();
         if (l != null)
         {
-            l.logWarning(path, line, col, warning, source, errorCode);
+            //l.logWarning(path, line, col, warning, source, errorCode);
         }
         else
         {
-            System.err.println(path + ": line " + line + ", col " + col + " - " + warning);
-            System.err.println(source);
+            //System.err.println(path + ": line " + line + ", col " + col + " - " + warning);
+            //System.err.println(source);
         }
     }
 
@@ -528,8 +528,8 @@ public final class ThreadLocalToolkit
         }
         else
         {
-            System.err.println(path + ": line " + line + ", col " + col + " - " + error);
-            System.err.println(source);
+            //System.err.println(path + ": line " + line + ", col " + col + " - " + error);
+            //System.err.println(source);
         }
     }
 
@@ -542,8 +542,8 @@ public final class ThreadLocalToolkit
         }
         else
         {
-            System.err.println(path + ": line " + line + ", col " + col + " - " + error);
-            System.err.println(source);
+            //System.err.println(path + ": line " + line + ", col " + col + " - " + error);
+            //System.err.println(source);
         }
     }
 

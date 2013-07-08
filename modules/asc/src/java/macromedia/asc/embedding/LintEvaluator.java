@@ -2944,11 +2944,11 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 			StringBuilder        out = new StringBuilder();
 			out.append(newline).append("Warning Report:").append(newline);
 			out.append("---------------").append(newline).append(newline);
-	
+
 			for (Integer code : pWarnings.keySet())
 			{
 				ObjectList<WarningRecord> warnings = pWarnings.get(code);
-	
+
 				out.append("[Coach] Warning #").append(code).append(": ").append(warningConstantsMap.get(code)).append(newline);
 				out.append("-------------------------------------------------------------------------").append(newline);
 				for( WarningRecord pRec : warnings)	{
@@ -2957,16 +2957,16 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 				}
 				out.append("-------------------------------------------------------------------------").append(newline).append(newline);
 			}
-			
+
 			if (pWarnings.keySet().size() > 0)
 			{
 				// print the message
 				if(cx.getHandler() != null) {
 					cx.getHandler().warning("",-1,-1,out.toString(),"");
-				} else {			
+				} else {
 					System.err.println(out.toString());
 				}
-				
+
 				// Output to a log file
 				if(output_to_file) {
 					BufferedOutputStream warningOut = null;

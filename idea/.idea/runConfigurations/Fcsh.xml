@@ -1,8 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Fcsh" type="Application" factoryName="Application">
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="MAIN_CLASS_NAME" value="flex2.tools.Fcsh" />
-    <option name="VM_PARAMETERS" value="-Xms1000m -Xmx1000m -Dsun.io.useCanonCaches=false -Dapplication.home=&quot;/Applications/COLT/flex_sdk&quot; -Duser.language=en -Duser.country=US -Djava.awt.headless=true -DcodeOrchestra.trace.host=127.0.0.1 -DcodeOrchestra.trace.port=6126 -DcodeOrchestra.live.liveMethods=annotated -DcodeOrchestra.live.gettersSetters=false -DcodeOrchestra.live.maxLoops=10000 -DcodeOrchestra.digestsDir=&quot;$USER_HOME$/Desktop/KingsRoad2/out/digests&quot;" />
-    <option name="PROGRAM_PARAMETERS" value="lcmxmlc -load-config+=$USER_HOME$/Desktop/KingsRoad2/kr2_lcmxmlc_flex_config.xml" />
+    <option name="VM_PARAMETERS" value="-Xms1000m -Xmx1000m -Dsun.io.useCanonCaches=false -Dapplication.home=&quot;/Applications/COLT/flex_sdk&quot; -Duser.language=en -Duser.country=US -Djava.awt.headless=true -DcodeOrchestra.trace.host=127.0.0.1 -DcodeOrchestra.trace.port=6126 -DcodeOrchestra.live.liveMethods=annotated -DcodeOrchestra.live.gettersSetters=false -DcodeOrchestra.live.maxLoops=10000 -DcodeOrchestra.digestsDir=&quot;$USER_HOME$/Documents/KingsRoad2/out/digests&quot;" />
+    <option name="PROGRAM_PARAMETERS" value="mxmlc -load-config+=$USER_HOME$/Documents/KingsRoad2/kr2_lcmxmlc_flex_config.xml" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />

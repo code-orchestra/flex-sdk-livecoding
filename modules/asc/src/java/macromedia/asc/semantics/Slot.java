@@ -471,15 +471,17 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
         public Overload clone()
         {
             Overload result = new Overload();
-            for (final Map.Entry<TypeValue, Integer> entry : entrySet()) {
-                try {
-                    result.put(entry.getKey().clone(), entry.getValue());
-                }catch (CloneNotSupportedException ex)
-                {
-                    System.out.println("[Overload] CloneNotSupportedException");
-                }
-
-            }
+            result.putAll(this);
+//            for (final Map.Entry<TypeValue, Integer> entry : entrySet()) {
+//                try {
+//                    //result.put(entry.getKey().clone(), entry.getValue());
+//                    result.put(entry.getKey().clone(), entry.getValue());
+//                }catch (CloneNotSupportedException ex)
+//                {
+//                    System.out.println("[Overload] CloneNotSupportedException");
+//                }
+//
+//            }
             return result;
         }
 	}
@@ -681,7 +683,8 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
     {
         HashMap<TypeValue, Overload> dst = new HashMap<TypeValue, Overload>();
         for (Map.Entry<TypeValue, Overload> entry : src.entrySet()) {
-             dst.put(entry.getKey().clone(), entry.getValue().clone());
+             //dst.put(entry.getKey().clone(), entry.getValue().clone());
+            dst.put(entry.getKey(), entry.getValue().clone());
         }
         return dst;
     }
@@ -721,11 +724,13 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
                         break;
                     case AUX_UnaryOverloads:
                         // value is Overload
-                        auxDataItems_cloned[i] = ((Overload)auxDataItems[i]).clone();
+                        //auxDataItems_cloned[i] = ((Overload)auxDataItems[i]).clone();
+                        auxDataItems_cloned[i] = ((Overload)auxDataItems[i]);
                         break;
                     case AUX_BinaryOverloads:
                         // value is Map<TypeValue, Overload> (actually always HashMap)
-                        auxDataItems_cloned[i] = cloneOverloads((HashMap<TypeValue, Overload>)auxDataItems[i]);
+                        //auxDataItems_cloned[i] = cloneOverloads((HashMap<TypeValue, Overload>)auxDataItems[i]);
+                        auxDataItems_cloned[i] = (HashMap<TypeValue, Overload>)auxDataItems[i];
                         break;
                     case AUX_DebugName:
                     case AUX_MethodName:
@@ -741,7 +746,7 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
             result.auxDataItems = auxDataItems_cloned;
         }
 
-        if (declaredBy != null) result.declaredBy = declaredBy.clone();
+        //if (declaredBy != null) result.declaredBy = declaredBy.clone();
         if (def_bits != null) result.def_bits = BitSet.copy(def_bits);
         if (type != null) result.type = type.clone();
         if (types != null) result.types = CloneUtil.cloneListTypeInfo(types);

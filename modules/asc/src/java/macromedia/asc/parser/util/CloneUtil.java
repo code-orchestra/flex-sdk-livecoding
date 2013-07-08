@@ -29,13 +29,6 @@ public class CloneUtil {
         return clone;
     }
 
-    public static Slots cloneSlotList(Slots list) throws CloneNotSupportedException
-    {
-        Slots clone = new Slots();
-        for (Slot item: list) clone.put(item.clone());
-        return clone;
-    }
-
     public static ObjectList<ObjectValue> cloneObjectListList(ObjectList<ObjectValue> list) throws CloneNotSupportedException
     {
         ObjectList<ObjectValue> clone = new ObjectList<ObjectValue>(list.size());
@@ -47,7 +40,7 @@ public class CloneUtil {
     {
         HashMap<TypeValue, ClassDefinitionNode> dst = new HashMap<TypeValue, ClassDefinitionNode>();
         for (Map.Entry<TypeValue, ClassDefinitionNode> entry : src.entrySet()) {
-            dst.put(entry.getKey().clone(), entry.getValue().clone());
+            dst.put(entry.getKey(), entry.getValue().clone());
         }
         return dst;
     }
@@ -56,7 +49,8 @@ public class CloneUtil {
     {
         Map<String, TypeValue> dst = new HashMap<String, TypeValue> ();
         for (Map.Entry<String, TypeValue> entry : src.entrySet()) {
-            dst.put(new String(entry.getKey()), entry.getValue().clone());
+            //dst.put(new String(entry.getKey()), entry.getValue().clone());
+            dst.put(new String(entry.getKey()), entry.getValue());
         }
         return dst;
     }

@@ -869,7 +869,14 @@ public class ObjectValue extends Value
         if (type != null) result.type = type.clone();
 
         if (names != null) result.names = names.clone();
-        if (slots != null) result.slots = CloneUtil.cloneSlotList(slots);
+        if (slots != null) {
+            Slots clone = new Slots();
+            for (Slot item: slots) clone.put(item.clone());
+            for (Slot item: clone) {
+                if (item.declaredBy == this) item.declaredBy = result;
+            }
+
+        }
 
         if (base_objs != null) result.base_objs = CloneUtil.cloneObjectListList(base_objs);
         if (protected_ns != null) result.protected_ns = protected_ns.clone();

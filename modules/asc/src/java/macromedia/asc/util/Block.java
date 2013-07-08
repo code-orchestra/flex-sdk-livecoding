@@ -76,17 +76,17 @@ public class Block implements Cloneable
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = def_bits != null ? def_bits.hashCode() : 0;
-        result = 31 * result + (gen_bits != null ? gen_bits.hashCode() : 0);
-        result = 31 * result + (kill_bits != null ? kill_bits.hashCode() : 0);
-        result = 31 * result + (in_bits != null ? in_bits.hashCode() : 0);
-        result = 31 * result + (out_bits != null ? out_bits.hashCode() : 0);
-        result = 31 * result + (stmts != null ? stmts.hashCode() : 0);
-        result = 31 * result + (is_terminal ? 1 : 0);
-        result = 31 * result + (preds != null ? preds.hashCode() : 0);
-        result = 31 * result + (succs != null ? succs.hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = def_bits != null ? def_bits.hashCode() : 0;
+//        result = 31 * result + (gen_bits != null ? gen_bits.hashCode() : 0);
+//        result = 31 * result + (kill_bits != null ? kill_bits.hashCode() : 0);
+//        result = 31 * result + (in_bits != null ? in_bits.hashCode() : 0);
+//        result = 31 * result + (out_bits != null ? out_bits.hashCode() : 0);
+//        result = 31 * result + (stmts != null ? stmts.hashCode() : 0);
+//        result = 31 * result + (is_terminal ? 1 : 0);
+//        result = 31 * result + (preds != null ? preds.hashCode() : 0);
+//        result = 31 * result + (succs != null ? succs.hashCode() : 0);
+//        return result;
+//    }
 }

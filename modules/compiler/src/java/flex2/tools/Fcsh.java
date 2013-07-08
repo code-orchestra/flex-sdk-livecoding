@@ -77,6 +77,10 @@ public class Fcsh extends Tool {
         String s;
         BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 
+        if (args.length > 0) {
+            r = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(StringUtils.join(args, " ").getBytes())));
+        }
+
         CompilerAPI.useAS3();
 
         LocalizationManager localizationManager = new LocalizationManager();

@@ -18,6 +18,7 @@
 package macromedia.asc.semantics;
 
 import macromedia.asc.embedding.LintEvaluator;
+import macromedia.asc.parser.util.CloneUtil;
 import macromedia.asc.util.*;
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.MetaDataNode;
@@ -739,6 +740,12 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
             }
             result.auxDataItems = auxDataItems_cloned;
         }
+
+        if (declaredBy != null) result.declaredBy = declaredBy.clone();
+        if (def_bits != null) result.def_bits = BitSet.copy(def_bits);
+        if (type != null) result.type = type.clone();
+        if (types != null) result.types = CloneUtil.cloneListTypeInfo(types);
+        if (value != null) result.value = value.clone();
 
         return result;
     }

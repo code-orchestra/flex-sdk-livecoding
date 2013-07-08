@@ -72,7 +72,7 @@ public class ReturnStatementNode extends Node
     {
         ReturnStatementNode result = (ReturnStatementNode) super.clone();
 
-        result.expr = expr.clone();
+        if (expr != null) result.expr = expr.clone();
 
         return result;
     }

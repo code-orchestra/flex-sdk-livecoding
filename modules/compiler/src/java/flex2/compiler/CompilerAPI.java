@@ -2877,7 +2877,8 @@ public final class CompilerAPI
             });
         }
 
-        CompillerThreadPoolUtil.flush();
+        CompillerThreadPoolUtil.logCommands("parce1");
+        CompillerThreadPoolUtil.flush(false);
 
         return result[0];
     }
@@ -2948,7 +2949,8 @@ public final class CompilerAPI
             });
         }
 
-        CompillerThreadPoolUtil.flush();
+        CompillerThreadPoolUtil.logCommands("parce2");
+        CompillerThreadPoolUtil.flush(false);
 
         return result[0];
     }
@@ -3036,7 +3038,8 @@ public final class CompilerAPI
             });
         }
 
-        CompillerThreadPoolUtil.flush();
+        CompillerThreadPoolUtil.logCommands("analize");
+        CompillerThreadPoolUtil.flush(false);
 
         return result[0];
     }

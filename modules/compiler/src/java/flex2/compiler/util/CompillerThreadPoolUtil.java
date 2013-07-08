@@ -1,9 +1,6 @@
 package flex2.compiler.util;
 
 import flex2.compiler.CompilerAPI;
-import flex2.compiler.Source;
-import flex2.compiler.SubCompiler;
-import flex2.compiler.SymbolTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +10,13 @@ import java.util.concurrent.Executors;
 
 
 public class CompillerThreadPoolUtil {
-    public static final ExecutorService threadPull = Executors.newFixedThreadPool(1);
+    public static final ExecutorService threadPull = Executors.newFixedThreadPool(100);
     private static List commands = new ArrayList<Callable>();
-    private static boolean isBrocken = false;
+    private static boolean isBroken = false;
 
 
     public static boolean flush() {
-        isBrocken = false;
+        isBroken = false;
         try {
             threadPull.invokeAll(commands);
         } catch (InterruptedException e) {
@@ -27,12 +24,12 @@ public class CompillerThreadPoolUtil {
         }
 
         commands.clear();
-        return isBrocken;
+        return isBroken;
     }
 
-    public static boolean flush(Boolean noThreads) {
-        if (noThreads) {
-            isBrocken = false;
+    public static boolean flush(Boolean pool) {
+        if (!pool) {
+            isBroken = false;
             try {
                 for (Object command : commands) {
                     ((Callable) command).call();
@@ -42,7 +39,7 @@ public class CompillerThreadPoolUtil {
             }
 
             commands.clear();
-            return isBrocken;
+            return isBroken;
 
         } else {
             return flush();
@@ -53,14 +50,14 @@ public class CompillerThreadPoolUtil {
         commands.add(new Callable() {
             @Override
             public Object call() throws Exception {
-                if (!isBrocken) {
+                if (!isBroken) {
                     command.run();
                     if (tooManyErrors()) {
                         ThreadLocalToolkit.log(new CompilerAPI.TooManyErrors());
-                        isBrocken = true;
+                        isBroken = true;
                     } else if (forcedToStop()) {
                         ThreadLocalToolkit.log(new CompilerAPI.ForcedToStop());
-                        isBrocken = true;
+                        isBroken = true;
                     }
 
                 }
@@ -69,12 +66,16 @@ public class CompillerThreadPoolUtil {
         });
     }
 
+    public static void logCommands(String message){
+        System.out.println(message + ": "+ commands.size());
+    }
+
 
     private synchronized static boolean tooManyErrors() {
         return ThreadLocalToolkit.errorCount() > 100;
     }
 
-    public synchronized static boolean forcedToStop() {
+    private synchronized static boolean forcedToStop() {
         CompilerControl cc = ThreadLocalToolkit.getCompilerControl();
         return (cc != null && cc.getStatus() == CompilerControl.STOP);
     }

@@ -43,7 +43,7 @@ public class ForStatementNode extends Node implements HasBody, LoopStatement
         this.is_forin = is_forin;
     }
 
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		if (evaluator.checkFeature(cx, this))
 		{

@@ -246,7 +246,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return addedChangeEvent;
     }
 
-    public Value evaluate(Context context, ArgumentListNode node)
+    public synchronized Value evaluate(Context context, ArgumentListNode node)
     {
         if (insideBindingsSetupFunction)
         {
@@ -279,7 +279,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, BinaryExpressionNode node)
+    public synchronized Value evaluate(Context context, BinaryExpressionNode node)
     {
         if (node.lhs != null)
         {
@@ -304,7 +304,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, CallExpressionNode node)
+    public synchronized Value evaluate(Context context, CallExpressionNode node)
     {
         if (insideBindingsSetupFunction && (node.expr != null))
         {
@@ -359,7 +359,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, ClassDefinitionNode node)
+    public synchronized Value evaluate(Context context, ClassDefinitionNode node)
     {
         if (!evaluatedClasses.contains(node))
         {
@@ -395,7 +395,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, ConditionalExpressionNode node)
+    public synchronized Value evaluate(Context context, ConditionalExpressionNode node)
     {
         if (node.condition != null)
         {
@@ -430,7 +430,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, FunctionCommonNode functionCommon)
+    public synchronized Value evaluate(Context context, FunctionCommonNode functionCommon)
     {
         if (functionCommon.identifier != null)
         {
@@ -531,7 +531,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, GetExpressionNode node)
+    public synchronized Value evaluate(Context context, GetExpressionNode node)
     {
         if (node.expr != null)
         {
@@ -569,7 +569,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, IdentifierNode node)
+    public synchronized Value evaluate(Context context, IdentifierNode node)
     {
         if (insideBindingsSetupFunction && !node.name.equals("instanceIndices"))
         {
@@ -579,7 +579,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, InvokeNode node)
+    public synchronized Value evaluate(Context context, InvokeNode node)
     {
         if (insideBindingsSetupFunction && insideXMLExpression)
         {
@@ -599,7 +599,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, LiteralNumberNode node)
+    public synchronized Value evaluate(Context context, LiteralNumberNode node)
     {
         if (insideBindingsSetupFunction && insideGetExpression)
         {
@@ -609,7 +609,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, WithStatementNode node)
+    public synchronized Value evaluate(Context context, WithStatementNode node)
     {
         if (node.expr != null)
         {
@@ -651,7 +651,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, MemberExpressionNode node)
+    public synchronized Value evaluate(Context context, MemberExpressionNode node)
     {
         if (insideBindingsSetupFunction && !insideRepeaterExpression && isRepeaterBase(node.base))
         {
@@ -728,12 +728,12 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, MetaDataNode node)
+    public synchronized Value evaluate(Context context, MetaDataNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context context, QualifiedIdentifierNode node)
+    public synchronized Value evaluate(Context context, QualifiedIdentifierNode node)
     {
         if (insideBindingsSetupFunction)
         {

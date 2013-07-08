@@ -412,7 +412,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
         }
     }
 
-    public Value evaluate(Context context, BinaryInterfaceDefinitionNode binaryInterfaceDefinition)
+    public synchronized Value evaluate(Context context, BinaryInterfaceDefinitionNode binaryInterfaceDefinition)
     {
         if ((binaryInterfaceDefinition.cframe != null) &&
             (binaryInterfaceDefinition.cframe.name != null) &&
@@ -428,7 +428,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
         return result;
     }
 
-    public Value evaluate(Context context, BinaryClassDefNode binaryClassDefinition)
+    public synchronized Value evaluate(Context context, BinaryClassDefNode binaryClassDefinition)
     {
         if ((binaryClassDefinition.cframe != null) &&
             (binaryClassDefinition.cframe.name != null) &&
@@ -444,7 +444,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
         return result;
     }
 
-    public Value evaluate(Context context, ClassDefinitionNode classDefinition)
+    public synchronized Value evaluate(Context context, ClassDefinitionNode classDefinition)
     {
         String className = NodeMagic.getClassName(classDefinition);
 
@@ -515,7 +515,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
     }
 
     /*
-    public Value evaluate(Context context, ImportDirectiveNode importDirective)
+    public synchronized Value evaluate(Context context, ImportDirectiveNode importDirective)
     {
         if (importDirective.name.id.def_part.length() == 0)
         {
@@ -531,7 +531,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
     }
     */
 
-    public Value evaluate(Context context, InterfaceDefinitionNode interfaceDefinition)
+    public synchronized Value evaluate(Context context, InterfaceDefinitionNode interfaceDefinition)
     {
         return evaluateInterface(context, interfaceDefinition);
     }
@@ -592,12 +592,12 @@ public class TypeAnalyzer extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, FunctionCommonNode functionCommon)
+    public synchronized Value evaluate(Context context, FunctionCommonNode functionCommon)
     {
         return null;
     }
 
-    public Value evaluate(Context context, FunctionDefinitionNode functionDefinition)
+    public synchronized Value evaluate(Context context, FunctionDefinitionNode functionDefinition)
     {
         if ((functionDefinition.name != null) &&
             (functionDefinition.name.identifier != null) &&
@@ -632,7 +632,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context cx, PackageDefinitionNode packageDefinition)
+    public synchronized Value evaluate(Context cx, PackageDefinitionNode packageDefinition)
     {
         PackageNameNode packageName = packageDefinition.name;
 
@@ -652,7 +652,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, VariableDefinitionNode variableDefinition)
+    public synchronized Value evaluate(Context context, VariableDefinitionNode variableDefinition)
     {
         if ((variableDefinition.list != null) &&
             (variableDefinition.list.items != null) &&
@@ -687,7 +687,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
      * @param cx  The current context
      * @param node The current metadata node
      */
-    public Value evaluate(Context cx, MetaDataNode node)
+    public synchronized Value evaluate(Context cx, MetaDataNode node)
     {
         //SkinParts
         if((node.getId() != null) && node.getId().equals(SKINPART))

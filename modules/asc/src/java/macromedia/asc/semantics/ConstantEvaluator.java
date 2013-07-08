@@ -430,7 +430,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
 
     // Base node
 
-    public Value evaluate(Context cx, Node node)
+    public synchronized Value evaluate(Context cx, Node node)
     {
         return cx.noType().prototype;
     }
@@ -448,7 +448,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
      * get_property method call on the global object.
      */
 
-    public Value evaluate(Context cx, IdentifierNode node)
+    public synchronized Value evaluate(Context cx, IdentifierNode node)
     {
         if (node.ref != null)
         {
@@ -458,7 +458,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return node.ref;
     }
 
-    public Value evaluate(Context cx, QualifiedIdentifierNode node)
+    public synchronized Value evaluate(Context cx, QualifiedIdentifierNode node)
     {
         if (node.qualifier != null)
         {
@@ -467,7 +467,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return null;
     }
 
-    public Value evaluate(Context cx, QualifiedExpressionNode node)
+    public synchronized Value evaluate(Context cx, QualifiedExpressionNode node)
     {
         if (node.qualifier != null)
         {
@@ -480,7 +480,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return null;
     }
 
-    public Value evaluate(Context cx, ApplyTypeExprNode node)
+    public synchronized Value evaluate(Context cx, ApplyTypeExprNode node)
     {
         TypeInfo type = cx.noType().getDefaultTypeInfo();
         Slot slot;
@@ -507,7 +507,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
     /*
      * CallExpression
      */
-    public Value evaluate(Context cx, CallExpressionNode node)
+    public synchronized Value evaluate(Context cx, CallExpressionNode node)
     {
 
         Slot slot = null;
@@ -670,7 +670,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return type.getPrototype();
     }
 
-    public Value evaluate(Context cx, InvokeNode node)
+    public synchronized Value evaluate(Context cx, InvokeNode node)
     {
         Slot slot = null;
         TypeValue type;
@@ -729,7 +729,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return type.prototype;
     }
 
-    public Value evaluate(Context cx, DeleteExpressionNode node)
+    public synchronized Value evaluate(Context cx, DeleteExpressionNode node)
     {
         if (node.ref != null)
         {
@@ -784,7 +784,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return slot.getType().getPrototype();
     }
 
-    public Value evaluate(Context cx, GetExpressionNode node)
+    public synchronized Value evaluate(Context cx, GetExpressionNode node)
     {
         Value val;
         if (node.ref != null)
@@ -840,7 +840,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return val;
     }
 
-    public Value evaluate(Context cx, SetExpressionNode node)
+    public synchronized Value evaluate(Context cx, SetExpressionNode node)
     {
         // Without a type annotation, the expected type of the definition
         // is the union of types of all uses of this definition, except if
@@ -1034,7 +1034,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return val;
     }
 
-    public Value evaluate(Context cx, ThisExpressionNode node)
+    public synchronized Value evaluate(Context cx, ThisExpressionNode node)
     {
         // What 'this' is, depends on where it is:
         // + instance method or accessor - this is the second from end of scope chain
@@ -1061,12 +1061,12 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return this_value;
     }
 
-    public Value evaluate(Context cx, LiteralBooleanNode node)
+    public synchronized Value evaluate(Context cx, LiteralBooleanNode node)
     {
         return node.value ? cx.booleanTrue() : cx.booleanFalse();
     }
 
-    public Value evaluate(Context cx, LiteralNumberNode node)
+    public synchronized Value evaluate(Context cx, LiteralNumberNode node)
     {
         // getValueOfNumberLiteral sets node.type as side effect.  In order to determine the type,
         //  the emitter has to first convert the string into a number to see if it fits
@@ -1079,34 +1079,34 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return ret;
     }
 
-    public Value evaluate(Context cx, LiteralStringNode node)
+    public synchronized Value evaluate(Context cx, LiteralStringNode node)
     {
         return new ObjectValue(node.value, cx.stringType().getTypeInfo(false));  // literal strings can't result in null
     }
 
-    public Value evaluate(Context cx, LiteralNullNode node)
+    public synchronized Value evaluate(Context cx, LiteralNullNode node)
     {
         return cx.nullType().prototype;
     }
 
-    public Value evaluate(Context cx, LiteralRegExpNode node)
+    public synchronized Value evaluate(Context cx, LiteralRegExpNode node)
     {
         return cx.regExpType().prototype;
     }
 
-    public Value evaluate(Context cx, ParenExpressionNode node)
+    public synchronized Value evaluate(Context cx, ParenExpressionNode node)
     {
         assert(false); // throw;
         return null;
     }
 
-    public Value evaluate(Context cx, ParenListExpressionNode node)
+    public synchronized Value evaluate(Context cx, ParenListExpressionNode node)
     {
         assert(false); // throw;
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralObjectNode node)
+    public synchronized Value evaluate(Context cx, LiteralObjectNode node)
     {
 
         if (node.fieldlist != null)
@@ -1117,7 +1117,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.objectType().prototype;
     }
 
-    public Value evaluate(Context cx, LiteralFieldNode node)
+    public synchronized Value evaluate(Context cx, LiteralFieldNode node)
     {
 
         {
@@ -1142,7 +1142,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, LiteralArrayNode node)
+    public synchronized Value evaluate(Context cx, LiteralArrayNode node)
     {
         if (node.elementlist != null)
         {
@@ -1151,7 +1151,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.arrayType().prototype;
     }
     
-    public Value evaluate(Context cx, LiteralVectorNode node)
+    public synchronized Value evaluate(Context cx, LiteralVectorNode node)
     {
     	Value initializer_typeref = node.type.evaluate(cx, this);
     	Value intializer_typevalue = initializer_typeref.getValue(cx);
@@ -1195,7 +1195,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
     }
 
 
-    public Value evaluate(Context cx, MemberExpressionNode node)
+    public synchronized Value evaluate(Context cx, MemberExpressionNode node)
     {
         Value val;
 
@@ -1352,7 +1352,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return val;
     }
 
-    public Value evaluate(Context cx, UnaryExpressionNode node)
+    public synchronized Value evaluate(Context cx, UnaryExpressionNode node)
     {
         int slot_index = 0;
         Value val = node.expr.evaluate(cx, this);
@@ -1462,7 +1462,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return val;
     }
 
-    public Value evaluate(Context cx, IncrementNode node)
+    public synchronized Value evaluate(Context cx, IncrementNode node)
     {
         Value val = node.expr.evaluate(cx, this);
         int mode = node.getMode();
@@ -1559,7 +1559,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return type != null ? type.getPrototype() : null;
     }
 
-    public Value evaluate(Context cx, BinaryExpressionNode node)
+    public synchronized Value evaluate(Context cx, BinaryExpressionNode node)
     {
         Value val = null;
         Value lhsval = null;
@@ -2105,7 +2105,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return val;
     }
 
-    public Value evaluate(Context cx, ConditionalExpressionNode node)
+    public synchronized Value evaluate(Context cx, ConditionalExpressionNode node)
     {
 
         if (node.condition != null)
@@ -2134,7 +2134,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
     }
 
 
-    public Value evaluate(Context cx, ArgumentListNode node)
+    public synchronized Value evaluate(Context cx, ArgumentListNode node)
     {
         Value       result = null;
         TypeInfo[] actual = new TypeInfo[1];
@@ -2232,7 +2232,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return result;
     }
 
-    public Value evaluate(Context cx, ListNode node)
+    public synchronized Value evaluate(Context cx, ListNode node)
     {
         Value val = null;
 
@@ -2252,7 +2252,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
 
     // Statements
 
-    public Value evaluate(Context cx, StatementListNode node)
+    public synchronized Value evaluate(Context cx, StatementListNode node)
     {
 
         for ( int n = 0; n < node.items.size() ; ++n )
@@ -2325,12 +2325,12 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
        return ObjectValue.undefinedValue;
     }
 
-    public Value evaluate(Context cx, EmptyStatementNode node)
+    public synchronized Value evaluate(Context cx, EmptyStatementNode node)
     {
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, ExpressionStatementNode node)
+    public synchronized Value evaluate(Context cx, ExpressionStatementNode node)
     {
         Value result = null;
         if (node.expr != null)
@@ -2350,7 +2350,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return result;
     }
 
-    public Value evaluate(Context cx, LabeledStatementNode node)
+    public synchronized Value evaluate(Context cx, LabeledStatementNode node)
     {
         if (node.statement != null)
         {
@@ -2360,7 +2360,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, IfStatementNode node)
+    public synchronized Value evaluate(Context cx, IfStatementNode node)
     {
         Value val = null;
 
@@ -2399,7 +2399,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, SwitchStatementNode node)
+    public synchronized Value evaluate(Context cx, SwitchStatementNode node)
     {
 
         if (node.expr != null)
@@ -2416,7 +2416,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, CaseLabelNode node)
+    public synchronized Value evaluate(Context cx, CaseLabelNode node)
     {
 
         if (node.label != null)
@@ -2428,7 +2428,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, DoStatementNode node)
+    public synchronized Value evaluate(Context cx, DoStatementNode node)
     {
         if (node.expr != null)
         {
@@ -2443,7 +2443,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, WhileStatementNode node)
+    public synchronized Value evaluate(Context cx, WhileStatementNode node)
     {
         if (node.statement != null)
         {
@@ -2461,7 +2461,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, ForStatementNode node)
+    public synchronized Value evaluate(Context cx, ForStatementNode node)
     {
         if (node.initialize != null)
         {
@@ -2493,7 +2493,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, WithStatementNode node)
+    public synchronized Value evaluate(Context cx, WithStatementNode node)
     {
         if (node.expr != null)
         {
@@ -2522,17 +2522,17 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, ContinueStatementNode node)
+    public synchronized Value evaluate(Context cx, ContinueStatementNode node)
     {
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, BreakStatementNode node)
+    public synchronized Value evaluate(Context cx, BreakStatementNode node)
     {
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, ReturnStatementNode node)
+    public synchronized Value evaluate(Context cx, ReturnStatementNode node)
     {
         if( node.expr != null )
         {
@@ -2579,7 +2579,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
 
     // Definitions
 
-    public Value evaluate(Context cx, VariableDefinitionNode node)
+    public synchronized Value evaluate(Context cx, VariableDefinitionNode node)
     {
 		if(node.cx != null) {
 			cx = node.cx;
@@ -2588,7 +2588,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
 		return node.list.evaluate(cx, this);
     }
 
-    public Value evaluate(Context cx, VariableBindingNode node)
+    public synchronized Value evaluate(Context cx, VariableBindingNode node)
     {
         TypeInfo type = null;
         Slot slot = node.ref.getSlot(cx);
@@ -2656,13 +2656,13 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return type.getPrototype();
     }
 
-    public Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
+    public synchronized Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
     {
         // Nothing to do - all type info should have been set up by AbcParser
         return null;
     }
 
-    public Value evaluate(Context unused_cx, FunctionDefinitionNode node)
+    public synchronized Value evaluate(Context unused_cx, FunctionDefinitionNode node)
     {
         Context cx = node.cx; // switch context to the one used to parse this node, for error reporting
 
@@ -2773,7 +2773,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
     }
 
 
-    public Value evaluate(Context unused_cx, FunctionCommonNode node)
+    public synchronized Value evaluate(Context unused_cx, FunctionCommonNode node)
     {
         Context cx = node.cx; // switch to original context
 
@@ -2952,13 +2952,13 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return true;
     }
 
-    public Value evaluate(Context cx, FunctionNameNode node)
+    public synchronized Value evaluate(Context cx, FunctionNameNode node)
     {
         assert(false); // throw "Should never get here.";
         return null;
     }
 
-    public Value evaluate(Context cx, FunctionSignatureNode node)
+    public synchronized Value evaluate(Context cx, FunctionSignatureNode node)
     {
         if (node.parameter != null)
         {
@@ -3181,7 +3181,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return null;
     }
 
-    public Value evaluate(Context cx, ParameterNode node)
+    public synchronized Value evaluate(Context cx, ParameterNode node)
     {
         TypeInfo type = null;
         Slot slot = node.ref.getSlot(cx);
@@ -3278,7 +3278,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return type.getPrototype();
     }
 
-    public Value evaluate( Context cx, ParameterListNode node )
+    public synchronized Value evaluate( Context cx, ParameterListNode node )
     {
         Value val;
         ObjectValue obj;
@@ -3340,7 +3340,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return null;
     }
 
-    public Value evaluate(Context cx, ProgramNode node)
+    public synchronized Value evaluate(Context cx, ProgramNode node)
     {
         super_context.add(super_error);
 
@@ -3407,7 +3407,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return null;
     }
 
-    public Value evaluate(Context unused_cx, PackageDefinitionNode node)
+    public synchronized Value evaluate(Context unused_cx, PackageDefinitionNode node)
     {
         if( !node.in_this_pkg )
         {
@@ -3417,25 +3417,25 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return null;
     }
 
-    public Value evaluate(Context cx, ErrorNode node)
+    public synchronized Value evaluate(Context cx, ErrorNode node)
     {
         cx.error(node.pos(), node.errorCode, node.errorArg);
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, ToObjectNode node)
+    public synchronized Value evaluate(Context cx, ToObjectNode node)
     {
         TypeInfo[] actual = new TypeInfo[]{node.expr.evaluate(cx, this).getType(cx)};
         node.expr = cx.coerce(node.expr, actual, cx.noType());
         return actual[0].getPrototype();
     }
 
-    public Value evaluate(Context cx, LoadRegisterNode node)
+    public synchronized Value evaluate(Context cx, LoadRegisterNode node)
     {
         return node.type.prototype;
     }
 
-    public Value evaluate(Context cx, StoreRegisterNode node)
+    public synchronized Value evaluate(Context cx, StoreRegisterNode node)
     {
         Value val = node.expr.evaluate(cx, this);
         TypeInfo[] type = new TypeInfo[]{val != null ? val.getType(cx) : null};
@@ -3443,17 +3443,17 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return node.type.prototype;
     }
 
-    public Value evaluate(Context cx, RegisterNode node)
+    public synchronized Value evaluate(Context cx, RegisterNode node)
     {
         return cx.voidType().prototype;
     }
 
-    public Value evaluate(Context cx, HasNextNode node)
+    public synchronized Value evaluate(Context cx, HasNextNode node)
     {
         return cx.booleanType().prototype;
     }
     
-    public Value evaluate(Context cx, ThrowStatementNode node)
+    public synchronized Value evaluate(Context cx, ThrowStatementNode node)
     {
         if( node.expr != null )
         {
@@ -3462,7 +3462,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, TryStatementNode node)
+    public synchronized Value evaluate(Context cx, TryStatementNode node)
     {
         if (node.tryblock != null)
         {
@@ -3479,7 +3479,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, CatchClauseNode node)
+    public synchronized Value evaluate(Context cx, CatchClauseNode node)
     {
         cx.pushScope(node.activation);
 
@@ -3498,7 +3498,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, FinallyClauseNode node)
+    public synchronized Value evaluate(Context cx, FinallyClauseNode node)
     {
         node.default_catch.evaluate(cx,this);
         if( node.statements != null )
@@ -3509,19 +3509,19 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, BoxNode node)
+    public synchronized Value evaluate(Context cx, BoxNode node)
     {
         node.expr.evaluate(cx, this);
         return cx.noType().prototype;
     }
 
-    public Value evaluate(Context cx, CoerceNode node)
+    public synchronized Value evaluate(Context cx, CoerceNode node)
     {
         node.expr.evaluate(cx, this);
         return node.expected.getPrototype();
     }
 
-    public Value evaluate(Context unused_cx, ClassDefinitionNode node)
+    public synchronized Value evaluate(Context unused_cx, ClassDefinitionNode node)
     {
         Context cx = node.cx;  // switch to original context
 
@@ -3670,12 +3670,12 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return node.cframe;
     }
 
-    public Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
     {
         return evaluate(cx, (BinaryClassDefNode)node);
     }
 
-    public Value evaluate(Context cx, InterfaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, InterfaceDefinitionNode node)
     {
         return evaluate(cx, (ClassDefinitionNode)node);
     }
@@ -3849,7 +3849,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         }
     }
 
-    public Value evaluate(Context cx, ClassNameNode node)
+    public synchronized Value evaluate(Context cx, ClassNameNode node)
     {
         if (node.pkgname != null)
         {
@@ -3862,7 +3862,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return ObjectValue.undefinedValue;
     }
 
-    public Value evaluate(Context cx, InheritanceNode node)
+    public synchronized Value evaluate(Context cx, InheritanceNode node)
     {
         if (node.baseclass != null)
         {
@@ -3875,7 +3875,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return ObjectValue.undefinedValue;
     }
 
-    public Value evaluate(Context cx, AttributeListNode node)
+    public synchronized Value evaluate(Context cx, AttributeListNode node)
     {
         for (Node n : node.items)
         {
@@ -3888,7 +3888,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return ObjectValue.undefinedValue;
     }
 
-    public Value evaluate(Context cx, IncludeDirectiveNode node)
+    public synchronized Value evaluate(Context cx, IncludeDirectiveNode node)
     {
         if( !node.in_this_include )
         {
@@ -3910,7 +3910,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return null;
     }
 
-    public Value evaluate(Context unused_cx, ImportDirectiveNode node)
+    public synchronized Value evaluate(Context unused_cx, ImportDirectiveNode node)
     {
 	   Context cx = node.cx;
 
@@ -3961,7 +3961,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return ObjectValue.undefinedValue;
     }
 
-    public Value evaluate(Context cx, SuperExpressionNode node)
+    public synchronized Value evaluate(Context cx, SuperExpressionNode node)
     {
         Value super_value = ObjectValue.objectPrototype;
         TypeValue this_value = null;
@@ -3989,7 +3989,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
 
     }
 
-    public Value evaluate(Context cx, SuperStatementNode node)
+    public synchronized Value evaluate(Context cx, SuperStatementNode node)
     {
         Slot slot = null;
 
@@ -4033,13 +4033,13 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return ObjectValue.undefinedValue;
     }
 
-    public Value evaluate(Context cx, RestExpressionNode node)
+    public synchronized Value evaluate(Context cx, RestExpressionNode node)
     {
         cx.internalError(node.pos(), "RestExpressionNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, RestParameterNode node)
+    public synchronized Value evaluate(Context cx, RestParameterNode node)
     {
         ParameterNode pnode = node;
         Value result = evaluate(cx,pnode);
@@ -4048,11 +4048,11 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
 
     }
 
-    public Value evaluate(Context cx, ConfigNamespaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, ConfigNamespaceDefinitionNode node)
     {
     	return null;
     }
-    public Value evaluate(Context cx, NamespaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, NamespaceDefinitionNode node)
     {
         rch_bits = reset_set(rch_bits, node.getKillBits(), node.getGenBits());
 
@@ -4063,7 +4063,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return null;
     }
 
-    public Value evaluate(Context cx, PragmaNode node)
+    public synchronized Value evaluate(Context cx, PragmaNode node)
     {
         if (node.list != null)
         {
@@ -4072,51 +4072,51 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return null;
     }
 
-    public Value evaluate(Context cx, UsePrecisionNode node)
+    public synchronized Value evaluate(Context cx, UsePrecisionNode node)
     {
         // nothing to do in this pass.  
     	// FlowAnalyzer already set params in BinaryExpression and UnaryExpression nodes
         return null;
     }
 
-    public Value evaluate(Context cx, UseNumericNode node)
+    public synchronized Value evaluate(Context cx, UseNumericNode node)
     {
         // nothing to do in this pass.  
     	// FlowAnalyzer already set params in StatementList nodes
         return null;
     }
 
-    public Value evaluate(Context cx, UseRoundingNode node)
+    public synchronized Value evaluate(Context cx, UseRoundingNode node)
     {
         // nothing to do in this pass.  
     	// FlowAnalyzer already set params in BinaryExpression and UnaryExpression nodes
         return null;
     }
 
-    public Value evaluate(Context cx, PragmaExpressionNode node)
+    public synchronized Value evaluate(Context cx, PragmaExpressionNode node)
     {
         cx.internalError(node.pos(), "PragmaExpressionNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, TypedIdentifierNode node)
+    public synchronized Value evaluate(Context cx, TypedIdentifierNode node)
     {
         cx.internalError(node.pos(), "TypedIdentifierNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, UntypedVariableBindingNode node)
+    public synchronized Value evaluate(Context cx, UntypedVariableBindingNode node)
     {
         cx.internalError(node.pos(), "UntypedVariableBindingNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, UseDirectiveNode node)
+    public synchronized Value evaluate(Context cx, UseDirectiveNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralXMLNode node)
+    public synchronized Value evaluate(Context cx, LiteralXMLNode node)
     {
         if (node.list != null)
         {
@@ -4125,34 +4125,34 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return (node.is_xmllist ? cx.xmlListType().prototype : cx.xmlType().prototype);
     }
 
-    public Value evaluate(Context cx, PackageNameNode node)
+    public synchronized Value evaluate(Context cx, PackageNameNode node)
     {
         cx.internalError(node.pos(), "PackageNameNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, PackageIdentifiersNode node)
+    public synchronized Value evaluate(Context cx, PackageIdentifiersNode node)
     {
         cx.internalError(node.pos(), "PackageIdentifiersNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, MetaDataNode node)
+    public synchronized Value evaluate(Context cx, MetaDataNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, DocCommentNode node)
+    public synchronized Value evaluate(Context cx, DocCommentNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, ImportNode node)
+    public synchronized Value evaluate(Context cx, ImportNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryProgramNode node)
+    public synchronized Value evaluate(Context cx, BinaryProgramNode node)
     {
 		cx.pushScope(node.frame);
 		node.statements.evaluate(cx, this);
@@ -4161,17 +4161,17 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryClassDefNode node)
+    public synchronized Value evaluate(Context cx, BinaryClassDefNode node)
     {
         // Nothing to do - all type info should have been set up by AbcParser
         return null;
     }
 
-    public Value evaluate(Context cx, EmptyElementNode node)
+    public synchronized Value evaluate(Context cx, EmptyElementNode node)
     {
         return null;
     }
-    public Value evaluate(Context cx, DefaultXMLNamespaceNode node)
+    public synchronized Value evaluate(Context cx, DefaultXMLNamespaceNode node)
     {
         if( node.expr != null )
         {
@@ -4192,7 +4192,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         return false;
     }
 
-    public Value evaluate(Context cx, TypeExpressionNode node)
+    public synchronized Value evaluate(Context cx, TypeExpressionNode node)
     {
         return node.expr.evaluate(cx, this);
     }

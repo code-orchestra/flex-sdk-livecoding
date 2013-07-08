@@ -93,7 +93,7 @@ public class InheritanceEvaluator extends EvaluatorAdapter
         qualifiedImports.put(localPart, namespace);
     }
 
-    public Value evaluate(Context context, BinaryInterfaceDefinitionNode binaryInterfaceDefinition)
+    public synchronized Value evaluate(Context context, BinaryInterfaceDefinitionNode binaryInterfaceDefinition)
     {
         if ((binaryInterfaceDefinition.cframe != null) &&
             (binaryInterfaceDefinition.cframe.name != null) &&
@@ -106,7 +106,7 @@ public class InheritanceEvaluator extends EvaluatorAdapter
         return evaluateInterface(binaryInterfaceDefinition);
     }
 
-    public Value evaluate(Context context, BinaryClassDefNode binaryClassDefinition)
+    public synchronized Value evaluate(Context context, BinaryClassDefNode binaryClassDefinition)
     {
         if ((binaryClassDefinition.cframe != null) &&
             (binaryClassDefinition.cframe.name != null) &&
@@ -119,7 +119,7 @@ public class InheritanceEvaluator extends EvaluatorAdapter
         return evaluate(context, (ClassDefinitionNode) binaryClassDefinition);
     }
 
-    public Value evaluate(Context context, ClassDefinitionNode classDefinition)
+    public synchronized Value evaluate(Context context, ClassDefinitionNode classDefinition)
     {
         if (classDefinition.pkgdef != null)
         {
@@ -209,7 +209,7 @@ public class InheritanceEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, ImportDirectiveNode importDirective)
+    public synchronized Value evaluate(Context context, ImportDirectiveNode importDirective)
     {
         if (importDirective.name.id.def_part.length() == 0)
         {
@@ -224,12 +224,12 @@ public class InheritanceEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context context, InterfaceDefinitionNode interfaceDefinition)
+    public synchronized Value evaluate(Context context, InterfaceDefinitionNode interfaceDefinition)
     {
         return evaluateInterface(interfaceDefinition);
     }
 
-    public Value evaluate(Context cx, PackageDefinitionNode packageDefinition)
+    public synchronized Value evaluate(Context cx, PackageDefinitionNode packageDefinition)
     {
         PackageNameNode packageName = packageDefinition.name;
 

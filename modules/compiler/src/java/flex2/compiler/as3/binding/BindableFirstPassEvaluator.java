@@ -71,7 +71,7 @@ public class BindableFirstPassEvaluator extends GenerativeFirstPassEvaluator
 	 * is <strong>out of order</strong>, so we often see a class's MetaDataNode only *after* seeing the class it
 	 * annotates.
 	 */
-	public Value evaluate(Context context, ProgramNode programNode)
+	public synchronized Value evaluate(Context context, ProgramNode programNode)
 	{
         //  first, note any [Managed] classes - need to have these in hand for check below
         for (Iterator iter = metaData.iterator(); iter.hasNext(); )
@@ -113,7 +113,7 @@ public class BindableFirstPassEvaluator extends GenerativeFirstPassEvaluator
 	/**
 	 * Check property-level [Bindable] annotations here
 	 */
-	public Value evaluate(Context context, MetaDataNode metaDataNode)
+	public synchronized Value evaluate(Context context, MetaDataNode metaDataNode)
 	{
 		if (StandardDefs.MD_BINDABLE.equals(metaDataNode.getId()))
 		{
@@ -215,7 +215,7 @@ public class BindableFirstPassEvaluator extends GenerativeFirstPassEvaluator
 	/**
 	 *
 	 */
-	public Value evaluate(Context context, ClassDefinitionNode node)
+	public synchronized Value evaluate(Context context, ClassDefinitionNode node)
 	{
 		if (!evaluatedClasses.contains(node))
 		{
@@ -267,7 +267,7 @@ public class BindableFirstPassEvaluator extends GenerativeFirstPassEvaluator
      * 1. In [Bindable] classes, sweep getter/setters.
      * 2. Set in-function sentinel and visit function subtree.
      */
-    public Value evaluate(Context context, FunctionDefinitionNode node)
+    public synchronized Value evaluate(Context context, FunctionDefinitionNode node)
     {
         String name = NodeMagic.getFunctionName(node);
 
@@ -298,7 +298,7 @@ public class BindableFirstPassEvaluator extends GenerativeFirstPassEvaluator
      * [Bindable]; b) not function locals; c) not overriden by explicit [Bindable(..)] metadata; d) ok according to
      * checkBindableVariable().
 	 */
-	public Value evaluate(Context context, VariableDefinitionNode node)
+	public synchronized Value evaluate(Context context, VariableDefinitionNode node)
 	{
 		QName qname = new QName(NodeMagic.getUserNamespace(node), NodeMagic.getVariableName(node));
 		if (inBindableClass() &&

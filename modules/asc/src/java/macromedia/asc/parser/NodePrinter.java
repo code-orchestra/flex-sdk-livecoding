@@ -109,7 +109,7 @@ public class NodePrinter implements Evaluator
 
     // Base node
 
-    public Value evaluate(Context cx, Node node)
+    public synchronized Value evaluate(Context cx, Node node)
     {
         indent();
         out.print("error:undefined printer method");
@@ -118,7 +118,7 @@ public class NodePrinter implements Evaluator
 
     // Expression evaluators
 
-    public Value evaluate(Context cx, IdentifierNode node)
+    public synchronized Value evaluate(Context cx, IdentifierNode node)
     {
         indent();
 
@@ -147,7 +147,7 @@ public class NodePrinter implements Evaluator
 
     // Expression evaluators
 
-    public Value evaluate(Context cx, IncrementNode node)
+    public synchronized Value evaluate(Context cx, IncrementNode node)
     {
         indent();
         out.print("increment");
@@ -169,14 +169,14 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ThisExpressionNode node)
+    public synchronized Value evaluate(Context cx, ThisExpressionNode node)
     {
         indent();
         out.print("this");
         return null;
     }
 
-    public Value evaluate(Context cx, QualifiedIdentifierNode node)
+    public synchronized Value evaluate(Context cx, QualifiedIdentifierNode node)
     {
         indent();
         if (node.isAttr())
@@ -201,7 +201,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, QualifiedExpressionNode node)
+    public synchronized Value evaluate(Context cx, QualifiedExpressionNode node)
     {
         indent();
         if (node.isAttr())
@@ -236,7 +236,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralBooleanNode node)
+    public synchronized Value evaluate(Context cx, LiteralBooleanNode node)
     {
         indent();
         out.print("literalboolean ");
@@ -244,7 +244,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralNumberNode node)
+    public synchronized Value evaluate(Context cx, LiteralNumberNode node)
     {
         indent();
         out.print("literalnumber:");
@@ -252,7 +252,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralStringNode node)
+    public synchronized Value evaluate(Context cx, LiteralStringNode node)
     {
         indent();
         out.print("literalstring:");
@@ -260,14 +260,14 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralNullNode node)
+    public synchronized Value evaluate(Context cx, LiteralNullNode node)
     {
         indent();
         out.print("literalnull");
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralRegExpNode node)
+    public synchronized Value evaluate(Context cx, LiteralRegExpNode node)
     {
         indent();
         out.print("literalregexp:");
@@ -275,7 +275,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralXMLNode node)
+    public synchronized Value evaluate(Context cx, LiteralXMLNode node)
     {
         indent();
         out.print("literalxml");
@@ -288,7 +288,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, FunctionCommonNode node)
+    public synchronized Value evaluate(Context cx, FunctionCommonNode node)
     {
         indent();
         out.print("functioncommon");
@@ -306,14 +306,14 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ParenExpressionNode node)
+    public synchronized Value evaluate(Context cx, ParenExpressionNode node)
     {
         indent();
         out.print("paren");
         return null;
     }
 
-    public Value evaluate(Context cx, ParenListExpressionNode node)
+    public synchronized Value evaluate(Context cx, ParenListExpressionNode node)
     {
         indent();
         out.print("parenlist");
@@ -324,7 +324,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralObjectNode node)
+    public synchronized Value evaluate(Context cx, LiteralObjectNode node)
     {
         indent();
         out.print("literalobject");
@@ -337,7 +337,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralFieldNode node)
+    public synchronized Value evaluate(Context cx, LiteralFieldNode node)
     {
         indent();
         out.print("literalfield");
@@ -355,7 +355,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralArrayNode node)
+    public synchronized Value evaluate(Context cx, LiteralArrayNode node)
     {
         indent();
         out.print("literalarray");
@@ -368,7 +368,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
     
-    public Value evaluate(Context cx, LiteralVectorNode node)
+    public synchronized Value evaluate(Context cx, LiteralVectorNode node)
     {
         indent();
         out.print("new<");
@@ -384,7 +384,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, SuperExpressionNode node)
+    public synchronized Value evaluate(Context cx, SuperExpressionNode node)
     {
         indent();
         out.print("superexpression");
@@ -397,7 +397,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, MemberExpressionNode node)
+    public synchronized Value evaluate(Context cx, MemberExpressionNode node)
     {
         indent();
         out.print("member");
@@ -416,7 +416,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, InvokeNode node)
+    public synchronized Value evaluate(Context cx, InvokeNode node)
     {
         indent();
         out.print("invoke");
@@ -435,7 +435,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, CallExpressionNode node)
+    public synchronized Value evaluate(Context cx, CallExpressionNode node)
     {
         indent();
         out.print((node.is_new ? "construct" : "call"));
@@ -458,7 +458,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, DeleteExpressionNode node)
+    public synchronized Value evaluate(Context cx, DeleteExpressionNode node)
     {
         indent();
         out.print("delete");
@@ -475,7 +475,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ApplyTypeExprNode node)
+    public synchronized Value evaluate(Context cx, ApplyTypeExprNode node)
     {
         indent();
         out.print("applytype");
@@ -485,7 +485,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, GetExpressionNode node)
+    public synchronized Value evaluate(Context cx, GetExpressionNode node)
     {
         indent();
         out.print("get");
@@ -502,7 +502,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, SetExpressionNode node)
+    public synchronized Value evaluate(Context cx, SetExpressionNode node)
     {
         indent();
         out.print("set");
@@ -524,7 +524,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, UnaryExpressionNode node)
+    public synchronized Value evaluate(Context cx, UnaryExpressionNode node)
     {
         indent();
         out.print("unary");
@@ -541,7 +541,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryExpressionNode node)
+    public synchronized Value evaluate(Context cx, BinaryExpressionNode node)
     {
         indent();
         out.print("binary");
@@ -563,7 +563,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ConditionalExpressionNode node)
+    public synchronized Value evaluate(Context cx, ConditionalExpressionNode node)
     {
         indent();
         out.print("cond");
@@ -588,7 +588,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ArgumentListNode node)
+    public synchronized Value evaluate(Context cx, ArgumentListNode node)
     {
         indent();
         out.print("argumentlist");
@@ -606,7 +606,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ListNode node)
+    public synchronized Value evaluate(Context cx, ListNode node)
     {
         indent();
         out.print("list");
@@ -626,7 +626,7 @@ public class NodePrinter implements Evaluator
 
     // Statements
 
-    public Value evaluate(Context cx, StatementListNode node)
+    public synchronized Value evaluate(Context cx, StatementListNode node)
     {
         indent();
         out.print("statementlist");
@@ -645,21 +645,21 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, EmptyElementNode node)
+    public synchronized Value evaluate(Context cx, EmptyElementNode node)
     {
         indent();
         out.print("empty");
         return null;
     }
 
-    public Value evaluate(Context cx, EmptyStatementNode node)
+    public synchronized Value evaluate(Context cx, EmptyStatementNode node)
     {
         indent();
         out.print("empty");
         return null;
     }
 
-    public Value evaluate(Context cx, ExpressionStatementNode node)
+    public synchronized Value evaluate(Context cx, ExpressionStatementNode node)
     {
         indent();
         out.print("expression");
@@ -672,7 +672,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, SuperStatementNode node)
+    public synchronized Value evaluate(Context cx, SuperStatementNode node)
     {
         indent();
         out.print("super");
@@ -685,7 +685,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LabeledStatementNode node)
+    public synchronized Value evaluate(Context cx, LabeledStatementNode node)
     {
         indent();
         out.print("labeled");
@@ -705,7 +705,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, IfStatementNode node)
+    public synchronized Value evaluate(Context cx, IfStatementNode node)
     {
         indent();
         out.print("if");
@@ -732,7 +732,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, SwitchStatementNode node)
+    public synchronized Value evaluate(Context cx, SwitchStatementNode node)
     {
         indent();
         out.print("switch");
@@ -752,7 +752,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, CaseLabelNode node)
+    public synchronized Value evaluate(Context cx, CaseLabelNode node)
     {
         indent();
         out.print("case");
@@ -769,7 +769,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, DoStatementNode node)
+    public synchronized Value evaluate(Context cx, DoStatementNode node)
     {
         indent();
         out.print("do");
@@ -789,7 +789,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, WhileStatementNode node)
+    public synchronized Value evaluate(Context cx, WhileStatementNode node)
     {
         indent();
         out.print("while");
@@ -809,7 +809,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ForStatementNode node)
+    public synchronized Value evaluate(Context cx, ForStatementNode node)
     {
         indent();
         out.print("for");
@@ -843,7 +843,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, WithStatementNode node)
+    public synchronized Value evaluate(Context cx, WithStatementNode node)
     {
         indent();
         out.print("with");
@@ -863,7 +863,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ContinueStatementNode node)
+    public synchronized Value evaluate(Context cx, ContinueStatementNode node)
     {
         indent();
         out.print("continue");
@@ -876,7 +876,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, BreakStatementNode node)
+    public synchronized Value evaluate(Context cx, BreakStatementNode node)
     {
         indent();
         out.print("break");
@@ -889,7 +889,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ReturnStatementNode node)
+    public synchronized Value evaluate(Context cx, ReturnStatementNode node)
     {
         indent();
         out.print("return");
@@ -902,7 +902,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ThrowStatementNode node)
+    public synchronized Value evaluate(Context cx, ThrowStatementNode node)
     {
         indent();
         out.print("throw");
@@ -915,7 +915,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, TryStatementNode node)
+    public synchronized Value evaluate(Context cx, TryStatementNode node)
     {
         indent();
         out.print("try");
@@ -942,7 +942,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, CatchClauseNode node)
+    public synchronized Value evaluate(Context cx, CatchClauseNode node)
     {
         indent();
         out.print("catch");
@@ -962,7 +962,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, FinallyClauseNode node)
+    public synchronized Value evaluate(Context cx, FinallyClauseNode node)
     {
         indent();
         out.print("finally");
@@ -975,7 +975,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, UseDirectiveNode node)
+    public synchronized Value evaluate(Context cx, UseDirectiveNode node)
     {
         indent();
         out.print("use");
@@ -986,7 +986,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, IncludeDirectiveNode node)
+    public synchronized Value evaluate(Context cx, IncludeDirectiveNode node)
     {
         indent();
         out.print("include");
@@ -1007,7 +1007,7 @@ public class NodePrinter implements Evaluator
 
     // Definitions
 
-    public Value evaluate(Context cx, ImportDirectiveNode node)
+    public synchronized Value evaluate(Context cx, ImportDirectiveNode node)
     {
         indent();
         out.print("import");
@@ -1028,7 +1028,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, AttributeListNode node)
+    public synchronized Value evaluate(Context cx, AttributeListNode node)
     {
         indent();
         out.print("attributelist");
@@ -1046,7 +1046,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, VariableDefinitionNode node)
+    public synchronized Value evaluate(Context cx, VariableDefinitionNode node)
     {
         indent();
         if (node.kind == CONST_TOKEN)
@@ -1073,7 +1073,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, VariableBindingNode node)
+    public synchronized Value evaluate(Context cx, VariableBindingNode node)
     {
         indent();
         out.print("variablebinding");
@@ -1091,7 +1091,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, UntypedVariableBindingNode node)
+    public synchronized Value evaluate(Context cx, UntypedVariableBindingNode node)
     {
         indent();
         out.print("untypedvariablebinding");
@@ -1109,7 +1109,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, TypedIdentifierNode node)
+    public synchronized Value evaluate(Context cx, TypedIdentifierNode node)
     {
         indent();
         out.print("typedidentifier");
@@ -1127,12 +1127,12 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
+    public synchronized Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, FunctionDefinitionNode node)
+    public synchronized Value evaluate(Context cx, FunctionDefinitionNode node)
     {
         indent();
         out.print("function");
@@ -1155,7 +1155,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, FunctionNameNode node)
+    public synchronized Value evaluate(Context cx, FunctionNameNode node)
     {
         indent();
         out.print("functionname");
@@ -1171,7 +1171,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, FunctionSignatureNode node)
+    public synchronized Value evaluate(Context cx, FunctionSignatureNode node)
     {
         indent();
         out.print(node.inits != null ? "constructorsignature" : "functionsignature" );
@@ -1193,7 +1193,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ParameterNode node)
+    public synchronized Value evaluate(Context cx, ParameterNode node)
     {
         indent();
         out.print("parameter");
@@ -1220,7 +1220,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, RestExpressionNode node)
+    public synchronized Value evaluate(Context cx, RestExpressionNode node)
     {
         indent();
         out.print("restexpression");
@@ -1233,7 +1233,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, RestParameterNode node)
+    public synchronized Value evaluate(Context cx, RestParameterNode node)
     {
         indent();
         out.print("restparameter");
@@ -1246,7 +1246,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ClassDefinitionNode node)
+    public synchronized Value evaluate(Context cx, ClassDefinitionNode node)
     {
         indent();
         out.print("class");
@@ -1279,7 +1279,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, InterfaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, InterfaceDefinitionNode node)
     {
         indent();
         out.print("interface");
@@ -1307,7 +1307,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ClassNameNode node)
+    public synchronized Value evaluate(Context cx, ClassNameNode node)
     {
         indent();
         out.print("classname");
@@ -1327,7 +1327,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, InheritanceNode node)
+    public synchronized Value evaluate(Context cx, InheritanceNode node)
     {
         if (node.baseclass != null)
         {
@@ -1349,7 +1349,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, NamespaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, NamespaceDefinitionNode node)
     {
         indent();
         out.print("namespace");
@@ -1375,7 +1375,7 @@ public class NodePrinter implements Evaluator
         pop_out();
         return null;
     }
-    public Value evaluate(Context cx, ConfigNamespaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, ConfigNamespaceDefinitionNode node)
     {
         indent();
         out.print("config namespace");
@@ -1402,7 +1402,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, PackageDefinitionNode node)
+    public synchronized Value evaluate(Context cx, PackageDefinitionNode node)
     {
         indent();
         out.print("package");
@@ -1415,7 +1415,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, PackageIdentifiersNode node)
+    public synchronized Value evaluate(Context cx, PackageIdentifiersNode node)
     {
         indent();
         out.print("packageidentifiers");
@@ -1431,7 +1431,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, PackageNameNode node)
+    public synchronized Value evaluate(Context cx, PackageNameNode node)
     {
         indent();
         out.print("packagename");
@@ -1444,7 +1444,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ProgramNode node)
+    public synchronized Value evaluate(Context cx, ProgramNode node)
     {
         indent();
         out.print("program");
@@ -1458,7 +1458,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ErrorNode node)
+    public synchronized Value evaluate(Context cx, ErrorNode node)
     {
         indent();
         out.print("error");
@@ -1466,7 +1466,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ToObjectNode node)
+    public synchronized Value evaluate(Context cx, ToObjectNode node)
     {
         indent();
         out.print("toobject");
@@ -1480,7 +1480,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LoadRegisterNode node)
+    public synchronized Value evaluate(Context cx, LoadRegisterNode node)
     {
         indent();
         out.print("loadregister");
@@ -1493,7 +1493,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, StoreRegisterNode node)
+    public synchronized Value evaluate(Context cx, StoreRegisterNode node)
     {
         indent();
         out.print("storeregister");
@@ -1513,7 +1513,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, RegisterNode node)
+    public synchronized Value evaluate(Context cx, RegisterNode node)
     {
         indent();
         out.print("register");
@@ -1523,7 +1523,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, HasNextNode node)
+    public synchronized Value evaluate(Context cx, HasNextNode node)
     {
         indent();
         out.print("hasNext");
@@ -1544,7 +1544,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
     
-    public Value evaluate(Context cx, BoxNode node)
+    public synchronized Value evaluate(Context cx, BoxNode node)
     {
         indent();
         out.print("box");
@@ -1558,7 +1558,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, CoerceNode node)
+    public synchronized Value evaluate(Context cx, CoerceNode node)
     {
         indent();
         out.print("coerce");
@@ -1571,7 +1571,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, PragmaNode node)
+    public synchronized Value evaluate(Context cx, PragmaNode node)
     {
         indent();
         out.print("pragma");
@@ -1584,7 +1584,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, UsePrecisionNode node)
+    public synchronized Value evaluate(Context cx, UsePrecisionNode node)
     {
         indent();
         out.print("usePrecision(" + node.precision + ")");
@@ -1592,21 +1592,21 @@ public class NodePrinter implements Evaluator
     }
 
     private static String[] usageName = {"Number", "decimal", "double", "int", "uint"};
-    public Value evaluate(Context cx, UseNumericNode node)
+    public synchronized Value evaluate(Context cx, UseNumericNode node)
     {
         indent();
         out.print("useNumeric(" + usageName[node.numeric_mode] + ")");
         return null;
     }
 
-    public Value evaluate(Context cx, UseRoundingNode node)
+    public synchronized Value evaluate(Context cx, UseRoundingNode node)
     {
         indent();
         out.print("useRounding(" + NumberUsage.roundingModeName[node.mode] + ")");
         return null;
     }
 
-    public Value evaluate(Context cx, PragmaExpressionNode node)
+    public synchronized Value evaluate(Context cx, PragmaExpressionNode node)
     {
         indent();
         out.print("pragmaitem");
@@ -1619,7 +1619,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate( Context cx, ParameterListNode node )
+    public synchronized Value evaluate( Context cx, ParameterListNode node )
     {
         indent();
         out.print("parameterlist");
@@ -1646,7 +1646,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, MetaDataNode node)
+    public synchronized Value evaluate(Context cx, MetaDataNode node)
     {
         if (node.data != null)
         {
@@ -1676,7 +1676,7 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, DefaultXMLNamespaceNode node)
+    public synchronized Value evaluate(Context cx, DefaultXMLNamespaceNode node)
     {
         indent();
         out.print("dxns");
@@ -1689,33 +1689,33 @@ public class NodePrinter implements Evaluator
         return null;
     }
 
-    public Value evaluate( Context cx, DocCommentNode node )   
+    public synchronized Value evaluate( Context cx, DocCommentNode node )   
     { 
         evaluate(cx,(MetaDataNode)node);
         return null;
     }
 
-    public Value evaluate( Context cx, ImportNode node )
+    public synchronized Value evaluate( Context cx, ImportNode node )
     {
         return null;
     }
 
-    public Value evaluate( Context cx, BinaryProgramNode node )
+    public synchronized Value evaluate( Context cx, BinaryProgramNode node )
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryClassDefNode node)
+    public synchronized Value evaluate(Context cx, BinaryClassDefNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, TypeExpressionNode node)
+    public synchronized Value evaluate(Context cx, TypeExpressionNode node)
     {
         indent();
         out.print("typeexpr");

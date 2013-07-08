@@ -78,7 +78,7 @@ public class ManagedFirstPassEvaluator extends GenerativeFirstPassEvaluator
 	 * Note: the standard depth-first traversal is *not* performed. We do everything here,
      * to force a predictable evaluation order (all annotated classes, then all annotated members).
 	 */
-	public Value evaluate(Context context, ProgramNode programNode)
+	public synchronized Value evaluate(Context context, ProgramNode programNode)
 	{
         //  class metadata first...
         for (Iterator iter = metaData.iterator(); iter.hasNext(); )
@@ -183,7 +183,7 @@ public class ManagedFirstPassEvaluator extends GenerativeFirstPassEvaluator
      * Note that only [Managed] classdef nodes and their descendants are visited, via metadata loop in
      * evaluate(ProgramNode)
      */
-    public Value evaluate(Context context, ClassDefinitionNode node)
+    public synchronized Value evaluate(Context context, ClassDefinitionNode node)
     {
         registerManagedClass(currentInfo);
 
@@ -213,7 +213,7 @@ public class ManagedFirstPassEvaluator extends GenerativeFirstPassEvaluator
 	/**
 	 * Note that only function defs in [Managed] classes are visited
 	 */
-	public Value evaluate(Context context, FunctionDefinitionNode node)
+	public synchronized Value evaluate(Context context, FunctionDefinitionNode node)
 	{
 		boolean isGetter = NodeMagic.functionIsGetter(node);
         boolean isSetter = NodeMagic.functionIsSetter(node);
@@ -241,7 +241,7 @@ public class ManagedFirstPassEvaluator extends GenerativeFirstPassEvaluator
 	/**
 	 * Note that only variable defs in [Managed] classes are visited
 	 */
-	public Value evaluate(Context context, VariableDefinitionNode node)
+	public synchronized Value evaluate(Context context, VariableDefinitionNode node)
 	{
 		if (canManage(node))
 		{

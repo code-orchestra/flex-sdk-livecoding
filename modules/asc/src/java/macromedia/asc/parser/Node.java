@@ -121,7 +121,7 @@ public class Node implements Serializable, Cloneable // CodeOrchestra: made seri
 		tally(this);
 	}
 
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		return null;
 	}

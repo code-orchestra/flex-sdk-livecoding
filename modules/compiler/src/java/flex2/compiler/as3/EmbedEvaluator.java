@@ -80,7 +80,7 @@ class EmbedEvaluator extends EvaluatorAdapter
         return embedData;
     }
 
-    public Value evaluate(Context context, ClassDefinitionNode node)
+    public synchronized Value evaluate(Context context, ClassDefinitionNode node)
     {
 		if (!evaluatedClasses.contains(node))
 		{
@@ -118,7 +118,7 @@ class EmbedEvaluator extends EvaluatorAdapter
 		return null;
    }
 
-    public Value evaluate(Context context, MetaDataNode node)
+    public synchronized Value evaluate(Context context, MetaDataNode node)
     {
         Node def = node.def;
         if ( "Embed".equals(node.getId()) )
@@ -333,7 +333,7 @@ class EmbedEvaluator extends EvaluatorAdapter
         return values;
     }
 
-    public Value evaluate(Context context, ProgramNode node)
+    public synchronized Value evaluate(Context context, ProgramNode node)
     {
         embedDataStack = new Stack<EmbedData>();
 

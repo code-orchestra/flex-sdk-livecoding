@@ -77,7 +77,7 @@ class SkinPartEvaluator extends EvaluatorAdapter
      * Evaluates the ClassDefinitionNode instance. The SkinPart metadata
      * is evaluated on a per class basis.
      */
-    public Value evaluate(Context context, ClassDefinitionNode node)
+    public synchronized Value evaluate(Context context, ClassDefinitionNode node)
     {
         super.evaluate(context, node);
         

@@ -37,7 +37,7 @@ public class WithStatementNode extends Node
 		this.statement = statement;
 	}
 
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		if (evaluator.checkFeature(cx, this))
 		{

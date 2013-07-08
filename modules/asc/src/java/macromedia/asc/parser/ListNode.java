@@ -37,7 +37,7 @@ public class ListNode extends Node
 		items.add(item);
 	}
 
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		if (evaluator.checkFeature(cx, this))
 		{

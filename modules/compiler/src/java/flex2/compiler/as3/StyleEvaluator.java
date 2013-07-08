@@ -45,7 +45,7 @@ class StyleEvaluator extends EvaluatorAdapter
 		this.unit = unit;
 	}
 
-	public Value evaluate(Context context, MetaDataNode node)
+	public synchronized Value evaluate(Context context, MetaDataNode node)
 	{
 		if ("Style".equals(node.getId()))
 		{

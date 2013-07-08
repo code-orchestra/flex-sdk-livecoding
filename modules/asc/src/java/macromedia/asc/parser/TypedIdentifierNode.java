@@ -43,7 +43,7 @@ public class TypedIdentifierNode extends Node
         no_anno = false;
 	}
 
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		if (evaluator.checkFeature(cx, this))
 		{

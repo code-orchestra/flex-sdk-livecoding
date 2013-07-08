@@ -61,35 +61,35 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return true;
 	}
 
-	public Value evaluate(Context cx, Node node) {
+	public synchronized Value evaluate(Context cx, Node node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, IncrementNode node) {
+	public synchronized Value evaluate(Context cx, IncrementNode node) {
 		node.expr = evalAndFold(cx, node.expr);
 		return null;
 	}
 
-	public Value evaluate(Context cx, DeleteExpressionNode node) {
+	public synchronized Value evaluate(Context cx, DeleteExpressionNode node) {
 		node.expr = evalAndFold(cx, node.expr);
 		return null;
 	}
 
-	public Value evaluate(Context cx, IdentifierNode node) {
+	public synchronized Value evaluate(Context cx, IdentifierNode node) {
 		return new ReferenceValue(cx, null, node.name, cx.publicNamespace());
 	}
 
-	public Value evaluate(Context cx, InvokeNode node) {
+	public synchronized Value evaluate(Context cx, InvokeNode node) {
 		node.args.evaluate(cx, this);
 		node.expr = evalAndFold(cx, node.expr);
 		return null;
 	}
 
-	public Value evaluate(Context cx, ThisExpressionNode node) {
+	public synchronized Value evaluate(Context cx, ThisExpressionNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, QualifiedIdentifierNode node) {
+	public synchronized Value evaluate(Context cx, QualifiedIdentifierNode node) {
 		Value result = null;
 
 		Value val = node.qualifier != null ? node.qualifier.evaluate(cx, this) : null;
@@ -125,38 +125,38 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return result;
 	}
 
-	public Value evaluate(Context cx, QualifiedExpressionNode node) {
+	public synchronized Value evaluate(Context cx, QualifiedExpressionNode node) {
 		return null;  // Should this do anything?
 	}
 
-	public Value evaluate(Context cx, LiteralBooleanNode node) {
+	public synchronized Value evaluate(Context cx, LiteralBooleanNode node) {
         return getBooleanObjectValue(cx, node.value);
 	}
 
-	public Value evaluate(Context cx, LiteralNumberNode node) {
+	public synchronized Value evaluate(Context cx, LiteralNumberNode node) {
         TypeValue[] type = new TypeValue[1];
         node.numericValue = cx.getEmitter().getValueOfNumberLiteral( node.value, type, node.numberUsage);
         node.type = type[0];
         return new ObjectValue(node.value, node.type);
 	}
 
-	public Value evaluate(Context cx, LiteralStringNode node) {
+	public synchronized Value evaluate(Context cx, LiteralStringNode node) {
 		return new ObjectValue(node.value, cx.stringType());
 	}
 
-	public Value evaluate(Context cx, LiteralNullNode node) {
+	public synchronized Value evaluate(Context cx, LiteralNullNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralRegExpNode node) {
+	public synchronized Value evaluate(Context cx, LiteralRegExpNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralXMLNode node) {
+	public synchronized Value evaluate(Context cx, LiteralXMLNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, FunctionCommonNode node) {
+	public synchronized Value evaluate(Context cx, FunctionCommonNode node) {
 		node.signature.evaluate(cx, this);
 		
 		ConfigurationBuilder config_bui = new ConfigurationBuilder();
@@ -170,12 +170,12 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return null;
 	}
 
-	public Value evaluate(Context cx, ParenExpressionNode node) {
+	public synchronized Value evaluate(Context cx, ParenExpressionNode node) {
 		node.expr = evalAndFold(cx, node.expr);
 		return null;
 	}
 
-	public Value evaluate(Context cx, ParenListExpressionNode node) {
+	public synchronized Value evaluate(Context cx, ParenListExpressionNode node) {
 		node.expr = evalAndFold(cx, node.expr);
 		return null;
 	}
@@ -217,7 +217,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 			}
 		}
 	}
-	public Value evaluate(Context cx, LiteralObjectNode node) {
+	public synchronized Value evaluate(Context cx, LiteralObjectNode node) {
 		if( node.fieldlist!= null )
 		{
 			evalArrayOrObjectArgList(cx, node.fieldlist);
@@ -226,13 +226,13 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralFieldNode node) {
+	public synchronized Value evaluate(Context cx, LiteralFieldNode node) {
         node.name = evalAndFold(cx, node.name);
         node.value = evalAndFold(cx, node.value);
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralArrayNode node) {
+	public synchronized Value evaluate(Context cx, LiteralArrayNode node) {
 		if( node.elementlist != null )
 		{
 			evalArrayOrObjectArgList(cx, node.elementlist);
@@ -241,7 +241,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return null;
 	}
 	
-	public Value evaluate(Context cx, LiteralVectorNode node) {
+	public synchronized Value evaluate(Context cx, LiteralVectorNode node) {
 		node.type.evaluate(cx, this);
 		if( node.elementlist != null )
 		{
@@ -251,17 +251,17 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return null;
 	}
 
-	public Value evaluate(Context cx, SuperExpressionNode node) {
+	public synchronized Value evaluate(Context cx, SuperExpressionNode node) {
 		node.expr = evalAndFold(cx, node.expr);
 		return null;
 	}
 
-	public Value evaluate(Context cx, SuperStatementNode node) {
+	public synchronized Value evaluate(Context cx, SuperStatementNode node) {
 		node.call.evaluate(cx, this);
 		return null;
 	}
 
-	public Value evaluate(Context cx, MemberExpressionNode node) {
+	public synchronized Value evaluate(Context cx, MemberExpressionNode node) {
 		if( node.base != null )
 		{
 			node.base = evalAndFold(cx, node.base);
@@ -270,22 +270,22 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return val;
 	}
 
-	public Value evaluate(Context cx, CallExpressionNode node) {
+	public synchronized Value evaluate(Context cx, CallExpressionNode node) {
 		if( node.args != null ) node.args.evaluate(cx, this);
 		return null;
 	}
 
-	public Value evaluate(Context cx, GetExpressionNode node) {
+	public synchronized Value evaluate(Context cx, GetExpressionNode node) {
         Value val = node.expr.evaluate(cx,this);
 		return val;
 	}
 
-    public Value evaluate(Context cx, ApplyTypeExprNode node)
+    public synchronized Value evaluate(Context cx, ApplyTypeExprNode node)
     {
         return null;
     }
     
-    public Value evaluate(Context cx, SetExpressionNode node) {
+    public synchronized Value evaluate(Context cx, SetExpressionNode node) {
 		node.args.evaluate(cx, this);
 		return null;
 	}
@@ -402,7 +402,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return l;
 	}
 	
-	public Value evaluate(Context cx, UnaryExpressionNode node) {
+	public synchronized Value evaluate(Context cx, UnaryExpressionNode node) {
 		Value val = null;
 		if( fold_expressions )
 		{
@@ -436,7 +436,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return val;
 	}
 
-	public Value evaluate(Context cx, BinaryExpressionNode node) {
+	public synchronized Value evaluate(Context cx, BinaryExpressionNode node) {
 		Value val = null;
 		if( fold_expressions )
 		{
@@ -758,14 +758,14 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 	{
 		return (typeval == cx.numberType() || typeval == cx.intType() || typeval == cx.uintType());
 	}
-	public Value evaluate(Context cx, ConditionalExpressionNode node) {
+	public synchronized Value evaluate(Context cx, ConditionalExpressionNode node) {
 		node.condition = evalAndFold(cx, node.condition);
 		node.thenexpr = evalAndFold(cx, node.thenexpr);
 		node.elseexpr = evalAndFold(cx, node.elseexpr);
 		return null;
 	}
 
-	public Value evaluate(Context cx, ArgumentListNode node) {
+	public synchronized Value evaluate(Context cx, ArgumentListNode node) {
 	    for (int i = 0, size = node.items.size(); i < size; i++)
         {
 	        Node n = node.items.get(i);
@@ -780,7 +780,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 	    return null;
 	}
 
-	public Value evaluate(Context cx, ListNode node) {
+	public synchronized Value evaluate(Context cx, ListNode node) {
 		Value val = null;
 		for( int i = 0, size = node.items.size(); i < size; ++i)
 		{
@@ -796,7 +796,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return val;
 	}
 
-	public Value evaluate(Context cx, StatementListNode node) {
+	public synchronized Value evaluate(Context cx, StatementListNode node) {
         NodeFactory nodeFactory = cx.getNodeFactory();
 
         if( node.config_attrs != null )
@@ -1053,15 +1053,15 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
         return ret;
     }
     
-	public Value evaluate(Context cx, EmptyElementNode node) {
+	public synchronized Value evaluate(Context cx, EmptyElementNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, EmptyStatementNode node) {
+	public synchronized Value evaluate(Context cx, EmptyStatementNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, ExpressionStatementNode node) {
+	public synchronized Value evaluate(Context cx, ExpressionStatementNode node) {
 		Value val;
 		val = node.expr.evaluate(cx, this);
 		Node temp = foldRefValue(cx, val);
@@ -1073,44 +1073,44 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return val;
 	}
 
-	public Value evaluate(Context cx, LabeledStatementNode node) {
+	public synchronized Value evaluate(Context cx, LabeledStatementNode node) {
 		node.label = evalAndFold(cx, node.label);
 		node.statement = evalAndFold(cx, node.statement);
 		return null;
 	}
 
-	public Value evaluate(Context cx, IfStatementNode node) {
+	public synchronized Value evaluate(Context cx, IfStatementNode node) {
 		node.condition = evalAndFold(cx, node.condition);
 		node.thenactions = evalAndFold(cx, node.thenactions);
 		node.elseactions = evalAndFold(cx, node.elseactions);
 		return null;
 	}
 
-	public Value evaluate(Context cx, SwitchStatementNode node) {
+	public synchronized Value evaluate(Context cx, SwitchStatementNode node) {
 		node.expr = evalAndFold(cx, node.expr);
         if( node.statements != null)
             node.statements.evaluate(cx, this);
 		return null;
 	}
 
-	public Value evaluate(Context cx, CaseLabelNode node) {
+	public synchronized Value evaluate(Context cx, CaseLabelNode node) {
 		node.label = evalAndFold(cx, node.label);
 		return null;
 	}
 
-	public Value evaluate(Context cx, DoStatementNode node) {
+	public synchronized Value evaluate(Context cx, DoStatementNode node) {
 		node.expr = evalAndFold(cx, node.expr);
 		node.statements = evalAndFold(cx, node.statements);
 		return null;
 	}
 
-	public Value evaluate(Context cx, WhileStatementNode node) {
+	public synchronized Value evaluate(Context cx, WhileStatementNode node) {
 		node.expr = evalAndFold(cx, node.expr);
 		node.statement = evalAndFold(cx, node.statement);
 		return null;
 	}
 
-	public Value evaluate(Context cx, ForStatementNode node) {
+	public synchronized Value evaluate(Context cx, ForStatementNode node) {
 		node.initialize = evalAndFold(cx, node.initialize);
 		node.test = evalAndFold(cx, node.test);
 		node.increment = evalAndFold(cx, node.increment);
@@ -1118,31 +1118,31 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return null;
 	}
 
-	public Value evaluate(Context cx, WithStatementNode node) {
+	public synchronized Value evaluate(Context cx, WithStatementNode node) {
 		node.expr = evalAndFold(cx, node.expr);
 		node.statement = evalAndFold(cx, node.statement);
 		return null;
 	}
 
-	public Value evaluate(Context cx, ContinueStatementNode node) {
+	public synchronized Value evaluate(Context cx, ContinueStatementNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, BreakStatementNode node) {
+	public synchronized Value evaluate(Context cx, BreakStatementNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, ReturnStatementNode node) {
+	public synchronized Value evaluate(Context cx, ReturnStatementNode node) {
 		node.expr = evalAndFold(cx, node.expr);
 		return null;
 	}
 
-	public Value evaluate(Context cx, ThrowStatementNode node) {
+	public synchronized Value evaluate(Context cx, ThrowStatementNode node) {
 		node.expr = evalAndFold(cx, node.expr);
 		return null;
 	}
 
-	public Value evaluate(Context cx, TryStatementNode node) {
+	public synchronized Value evaluate(Context cx, TryStatementNode node) {
 		if( node.tryblock != null )
 			node.tryblock.evaluate(cx, this);
 		if(node.catchlist != null)
@@ -1152,7 +1152,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return null;
 	}
 
-	public Value evaluate(Context cx, CatchClauseNode node) {
+	public synchronized Value evaluate(Context cx, CatchClauseNode node) {
 		if( node.parameter != null )
 			node.parameter = evalAndFold(cx, node.parameter);
 		if( node.statements != null )
@@ -1160,7 +1160,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return null;
 	}
 
-	public Value evaluate(Context cx, FinallyClauseNode node) {
+	public synchronized Value evaluate(Context cx, FinallyClauseNode node) {
 		if( node.default_catch != null )
 			node.default_catch.evaluate(cx, this);
 		if( node.statements != null )
@@ -1168,33 +1168,33 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return null;
 	}
 
-	public Value evaluate(Context cx, UseDirectiveNode node) {
+	public synchronized Value evaluate(Context cx, UseDirectiveNode node) {
 		// TODO use number pragmas
 		return null;
 	}
 
-	public Value evaluate(Context cx, IncludeDirectiveNode node) {
+	public synchronized Value evaluate(Context cx, IncludeDirectiveNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, ImportNode node) {
+	public synchronized Value evaluate(Context cx, ImportNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, MetaDataNode node) {
+	public synchronized Value evaluate(Context cx, MetaDataNode node) {
         this.evaluate(cx, node.data);
         return null;
 	}
 
-	public Value evaluate(Context cx, DocCommentNode node) {
+	public synchronized Value evaluate(Context cx, DocCommentNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, ImportDirectiveNode node) {
+	public synchronized Value evaluate(Context cx, ImportDirectiveNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, AttributeListNode node) {
+	public synchronized Value evaluate(Context cx, AttributeListNode node) {
 		ObjectValue obj = null;
 		for( int i = 0, size = node.items.size(); i < size; ++i )
 		{
@@ -1215,7 +1215,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return null;
 	}
 
-	public Value evaluate(Context cx, VariableDefinitionNode node) {
+	public synchronized Value evaluate(Context cx, VariableDefinitionNode node) {
 		node.list.evaluate(cx, this);
 		for( int i = node.list.items.size()-1 ; i >= 0; --i )
 		{
@@ -1232,7 +1232,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return null;
 	}
 
-	public Value evaluate(Context cx, VariableBindingNode node) {
+	public synchronized Value evaluate(Context cx, VariableBindingNode node) {
         Value val = node.variable.identifier.evaluate(cx,this);
         ReferenceValue ref = ((val instanceof ReferenceValue) ? (ReferenceValue)val : null);
         
@@ -1290,44 +1290,44 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return null;
 	}
 
-	public Value evaluate(Context cx, UntypedVariableBindingNode node) {
+	public synchronized Value evaluate(Context cx, UntypedVariableBindingNode node) {
 		// not used
 		return null;
 	}
 
-	public Value evaluate(Context cx, TypedIdentifierNode node) {
+	public synchronized Value evaluate(Context cx, TypedIdentifierNode node) {
 		return node.identifier.evaluate(cx, this);
 	}
 
-	public Value evaluate(Context cx, TypeExpressionNode node) {
+	public synchronized Value evaluate(Context cx, TypeExpressionNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, FunctionDefinitionNode node) {
+	public synchronized Value evaluate(Context cx, FunctionDefinitionNode node) {
 		node.fexpr.evaluate(cx, this);
 		return null;
 	}
 
-	public Value evaluate(Context cx, BinaryFunctionDefinitionNode node) {
+	public synchronized Value evaluate(Context cx, BinaryFunctionDefinitionNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, FunctionNameNode node) {
+	public synchronized Value evaluate(Context cx, FunctionNameNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, FunctionSignatureNode node) {
+	public synchronized Value evaluate(Context cx, FunctionSignatureNode node) {
 		if( node.parameter != null ) node.parameter.evaluate(cx, this);
 		if( node.result != null ) node.result.evaluate(cx, this);
 		return null;
 	}
 
-	public Value evaluate(Context cx, ParameterNode node) {
+	public synchronized Value evaluate(Context cx, ParameterNode node) {
 		node.init = evalAndFold(cx, node.init);
 		return null;
 	}
 
-	public Value evaluate(Context cx, ParameterListNode node) {
+	public synchronized Value evaluate(Context cx, ParameterListNode node) {
 		for( int i = 0, size = node.items.size(); i < size; ++i )
 		{
 			ParameterNode n = node.items.at(i);
@@ -1337,19 +1337,19 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return null;
 	}
 
-	public Value evaluate(Context cx, RestExpressionNode node) {
+	public synchronized Value evaluate(Context cx, RestExpressionNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, RestParameterNode node) {
+	public synchronized Value evaluate(Context cx, RestParameterNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, InterfaceDefinitionNode node) {
+	public synchronized Value evaluate(Context cx, InterfaceDefinitionNode node) {
 		return this.evaluate(cx, (ClassDefinitionNode)node);
 	}
 
-	public Value evaluate(Context cx, ClassDefinitionNode node) {
+	public synchronized Value evaluate(Context cx, ClassDefinitionNode node) {
 		ConfigurationBuilder config_bui = new ConfigurationBuilder();
 		ObjectValue scope = new ObjectValue(cx, config_bui, null);
 		cx.pushScope(scope);
@@ -1361,19 +1361,19 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return null;
 	}
 
-	public Value evaluate(Context cx, BinaryClassDefNode node) {
+	public synchronized Value evaluate(Context cx, BinaryClassDefNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, BinaryInterfaceDefinitionNode node) {
+	public synchronized Value evaluate(Context cx, BinaryInterfaceDefinitionNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, ClassNameNode node) {
+	public synchronized Value evaluate(Context cx, ClassNameNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, InheritanceNode node) {
+	public synchronized Value evaluate(Context cx, InheritanceNode node) {
 		return null;
 	}
 
@@ -1382,7 +1382,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
         return top_level;
     }
     
-	public Value evaluate(Context cx, ConfigNamespaceDefinitionNode node) {
+	public synchronized Value evaluate(Context cx, ConfigNamespaceDefinitionNode node) {
         
         if( !isTopLevel() )
         {
@@ -1425,25 +1425,25 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 
         return null;
 	}
-	public Value evaluate(Context cx, NamespaceDefinitionNode node) {
+	public synchronized Value evaluate(Context cx, NamespaceDefinitionNode node) {
         if( config_namespaces.contains(node.name.name) )
             cx.error(node.pos(), kError_ShadowedConfigNamespace, node.name.name);
         return null;
 	}
 
-	public Value evaluate(Context cx, PackageDefinitionNode node) {
+	public synchronized Value evaluate(Context cx, PackageDefinitionNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, PackageIdentifiersNode node) {
+	public synchronized Value evaluate(Context cx, PackageIdentifiersNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, PackageNameNode node) {
+	public synchronized Value evaluate(Context cx, PackageNameNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, ProgramNode node) {
+	public synchronized Value evaluate(Context cx, ProgramNode node) {
 		// Create a config builder and scope
 		ConfigurationBuilder config_bui = new ConfigurationBuilder();
 		ObjectValue scope = new ObjectValue(cx, config_bui, null);
@@ -1460,68 +1460,68 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		return null;
 	}
 
-	public Value evaluate(Context cx, BinaryProgramNode node) {
+	public synchronized Value evaluate(Context cx, BinaryProgramNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, ErrorNode node) {
+	public synchronized Value evaluate(Context cx, ErrorNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, ToObjectNode node) {
+	public synchronized Value evaluate(Context cx, ToObjectNode node) {
 		node.expr = evalAndFold(cx, node.expr);
 		return null;
 	}
 
-	public Value evaluate(Context cx, LoadRegisterNode node) {
+	public synchronized Value evaluate(Context cx, LoadRegisterNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, StoreRegisterNode node) {
+	public synchronized Value evaluate(Context cx, StoreRegisterNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, RegisterNode node) {
+	public synchronized Value evaluate(Context cx, RegisterNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, HasNextNode node) {
+	public synchronized Value evaluate(Context cx, HasNextNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, BoxNode node) {
+	public synchronized Value evaluate(Context cx, BoxNode node) {
 		node.expr = evalAndFold(cx, node.expr);
 		return null;
 	}
 
-	public Value evaluate(Context cx, CoerceNode node) {
+	public synchronized Value evaluate(Context cx, CoerceNode node) {
 		node.expr = evalAndFold(cx, node.expr);
 		return null;
 	}
 
-	public Value evaluate(Context cx, PragmaNode node) {
+	public synchronized Value evaluate(Context cx, PragmaNode node) {
 		node.list.evaluate(cx, this);
 		return null;
 	}
 
-	public Value evaluate(Context cx, PragmaExpressionNode node) {
+	public synchronized Value evaluate(Context cx, PragmaExpressionNode node) {
 		return null;
 	}
 
-	public Value evaluate(Context cx, DefaultXMLNamespaceNode node) {
+	public synchronized Value evaluate(Context cx, DefaultXMLNamespaceNode node) {
 		return null;
 	}
-    public Value evaluate(Context cx, UsePrecisionNode node)
+    public synchronized Value evaluate(Context cx, UsePrecisionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, UseNumericNode node)
+    public synchronized Value evaluate(Context cx, UseNumericNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, UseRoundingNode node)
+    public synchronized Value evaluate(Context cx, UseRoundingNode node)
     {
         return null;
     }

@@ -40,7 +40,7 @@ public class LabeledStatementNode extends Node
         this.is_loop_label = is_loop_label;
     }
 
-    public Value evaluate(Context cx, Evaluator evaluator)
+    public synchronized Value evaluate(Context cx, Evaluator evaluator)
     {
         if (evaluator.checkFeature(cx, this))
         {

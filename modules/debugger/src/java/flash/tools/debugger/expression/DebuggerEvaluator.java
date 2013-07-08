@@ -87,12 +87,12 @@ class DebuggerEvaluator implements Evaluator
 		return true;
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, Node node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, Node node)
 	{
 		return null;
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, IncrementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, IncrementNode node)
 	{
 		try
 		{
@@ -140,12 +140,12 @@ class DebuggerEvaluator implements Evaluator
 		}
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, DeleteExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, DeleteExpressionNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("delete")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, IdentifierNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, IdentifierNode node)
 	{
 		String name;
 		if (node.isAttr())
@@ -156,12 +156,12 @@ class DebuggerEvaluator implements Evaluator
 	}
 
 	// InvokeNode is used with E4X and for...in.
-	public Value evaluate(macromedia.asc.util.Context cx, InvokeNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, InvokeNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("expressionNotSupported")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ThisExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ThisExpressionNode node)
 	{
 		try
 		{
@@ -177,22 +177,22 @@ class DebuggerEvaluator implements Evaluator
 		}
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, QualifiedIdentifierNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, QualifiedIdentifierNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, QualifiedExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, QualifiedExpressionNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, LiteralBooleanNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, LiteralBooleanNode node)
 	{
 		return new DebuggerValue(new Boolean(node.value));
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, LiteralNumberNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, LiteralNumberNode node)
 	{
 		//anirudhs - Fix for FB-25692. Append p0 so that Double(s) works for hex.
 		//p stands for binary exponent.
@@ -204,17 +204,17 @@ class DebuggerEvaluator implements Evaluator
 		return new DebuggerValue(new Double(numberStr));
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, LiteralStringNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, LiteralStringNode node)
 	{
 		return new DebuggerValue(node.value);
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, LiteralNullNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, LiteralNullNode node)
 	{
 		return new DebuggerValue(null);
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, LiteralRegExpNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, LiteralRegExpNode node)
 	{
 		String re, flags;
 		if (node.value.length() > 0 && node.value.charAt(0) == '/')
@@ -239,38 +239,38 @@ class DebuggerEvaluator implements Evaluator
 		}
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, LiteralXMLNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, LiteralXMLNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("xmlLiteralsNotSupported")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, FunctionCommonNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, FunctionCommonNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("functionDefinitionNotAllowed")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ParenExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ParenExpressionNode node)
 	{
 		return node.expr.evaluate(cx, this);
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ParenListExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ParenListExpressionNode node)
 	{
 		return node.expr.evaluate(cx, this);
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, LiteralObjectNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, LiteralObjectNode node)
 	{
 		// e.g. "var v = { foo:3 }"
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("literalObjectsNotSupported")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, LiteralFieldNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, LiteralFieldNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("literalObjectsNotSupported")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, LiteralArrayNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, LiteralArrayNode node)
 	{
 		List<Object> arrayElements = new ArrayList<Object>();
 		if (node.elementlist != null && node.elementlist.items != null)
@@ -295,7 +295,7 @@ class DebuggerEvaluator implements Evaluator
 		}
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, LiteralVectorNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, LiteralVectorNode node)
 	{
 		/*
 		List<Object> arrayElements = new ArrayList<Object>();
@@ -324,17 +324,17 @@ class DebuggerEvaluator implements Evaluator
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, SuperExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, SuperExpressionNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("super")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, SuperStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, SuperStatementNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("super")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, MemberExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, MemberExpressionNode node)
 	{
 		DebuggerValue lhs = (node.base != null) ? (DebuggerValue) node.base.evaluate(cx, this) : null;
 		Context context = eeContext(cx);
@@ -361,7 +361,7 @@ class DebuggerEvaluator implements Evaluator
 		}
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, CallExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, CallExpressionNode node)
 	{
 		assert (node.getMode() == Tokens.LEFTBRACKET_TOKEN || // base[expr]
 				node.getMode() == Tokens.LEFTPAREN_TOKEN || // base.(expr)
@@ -506,7 +506,7 @@ class DebuggerEvaluator implements Evaluator
 		}
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, GetExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, GetExpressionNode node)
 	{
 		DebuggerValue rhs = (DebuggerValue) getOrSet(cx, node);
 		Context context = eeContext(cx);
@@ -599,7 +599,7 @@ class DebuggerEvaluator implements Evaluator
 		}
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, SetExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, SetExpressionNode node)
 	{
 		Context eeContext = eeContext(cx);
 		DebuggerValue rhs = (DebuggerValue) getOrSet(cx, node);
@@ -639,7 +639,7 @@ class DebuggerEvaluator implements Evaluator
 		return newValue;
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, UnaryExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, UnaryExpressionNode node)
 	{
 		DebuggerValue arg = (DebuggerValue) node.expr.evaluate(cx, this);
 		switch (node.op)
@@ -706,7 +706,7 @@ class DebuggerEvaluator implements Evaluator
 		}
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, BinaryExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, BinaryExpressionNode node)
 	{
 		DebuggerValue lhs = (DebuggerValue) node.lhs.evaluate(cx, this);
 		DebuggerValue rhs = null;
@@ -1002,7 +1002,7 @@ class DebuggerEvaluator implements Evaluator
 		}
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ConditionalExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ConditionalExpressionNode node)
 	{
 		DebuggerValue condition = (DebuggerValue) node.condition.evaluate(cx, this);
 		boolean b = ECMA.toBoolean(eeContext(cx).toValue(condition.debuggerValue));
@@ -1018,7 +1018,7 @@ class DebuggerEvaluator implements Evaluator
 		return nodeToEval.evaluate(cx, this);
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ArgumentListNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ArgumentListNode node)
 	{
 		// e.g. for "foo(3,4)", ArgumentListNode.items would contain a
 		// LiteralNumberNode for 3, followed by a LiteralNumberNode for 4.
@@ -1029,7 +1029,7 @@ class DebuggerEvaluator implements Evaluator
 		return retval;
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ListNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ListNode node)
 	{
 		Value retval = null;
 		for (Node item : node.items)
@@ -1039,7 +1039,7 @@ class DebuggerEvaluator implements Evaluator
 		return retval;
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, StatementListNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, StatementListNode node)
 	{
 		switch (node.items.size())
 		{
@@ -1056,147 +1056,147 @@ class DebuggerEvaluator implements Evaluator
 	 * Not sure what an EmptyElementNode really is, but you can get one with
 	 * this odd line: "var x = [,3]"
 	 */
-	public Value evaluate(macromedia.asc.util.Context cx, EmptyElementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, EmptyElementNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, EmptyStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, EmptyStatementNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ExpressionStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ExpressionStatementNode node)
 	{
 		return node.expr.evaluate(cx, this);
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, LabeledStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, LabeledStatementNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("labelsNotAllowed")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, IfStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, IfStatementNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("if")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, SwitchStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, SwitchStatementNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("switch")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, CaseLabelNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, CaseLabelNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("case")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, DoStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, DoStatementNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("do")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, WhileStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, WhileStatementNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("while")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ForStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ForStatementNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("for")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, WithStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, WithStatementNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("with")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ContinueStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ContinueStatementNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("continue")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, BreakStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, BreakStatementNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("break")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ReturnStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ReturnStatementNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("return")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ThrowStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ThrowStatementNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("throw")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, TryStatementNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, TryStatementNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("try")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, CatchClauseNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, CatchClauseNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("catch")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, FinallyClauseNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, FinallyClauseNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("finally")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, UseDirectiveNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, UseDirectiveNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("use")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, IncludeDirectiveNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, IncludeDirectiveNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("include")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ImportNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ImportNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("import")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, MetaDataNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, MetaDataNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("whatIsMetaDataNode")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, DocCommentNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, DocCommentNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("whatIsDocCommentNode")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ImportDirectiveNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ImportDirectiveNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("import")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, AttributeListNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, AttributeListNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, VariableDefinitionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, VariableDefinitionNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("var")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, VariableBindingNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, VariableBindingNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("var")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, UntypedVariableBindingNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, UntypedVariableBindingNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("var")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, TypedIdentifierNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, TypedIdentifierNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("var")); //$NON-NLS-1$
 	}
@@ -1204,107 +1204,107 @@ class DebuggerEvaluator implements Evaluator
 	/**
 	 * A type, like "int" or "int!" or "int?"
 	 */
-	public Value evaluate(macromedia.asc.util.Context cx, TypeExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, TypeExpressionNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("typeNotExpected")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, FunctionDefinitionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, FunctionDefinitionNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("functionDefinitionNotAllowed")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, BinaryFunctionDefinitionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, BinaryFunctionDefinitionNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("functionDefinitionNotAllowed")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, FunctionNameNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, FunctionNameNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("functionDefinitionNotAllowed")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, FunctionSignatureNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, FunctionSignatureNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("functionDefinitionNotAllowed")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ParameterNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ParameterNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ParameterListNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ParameterListNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, RestExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, RestExpressionNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("functionDefinitionNotAllowed")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, RestParameterNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, RestParameterNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("functionDefinitionNotAllowed")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, InterfaceDefinitionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, InterfaceDefinitionNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("interfaceDefinitionNotAllowed")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ClassDefinitionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ClassDefinitionNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("classDefinitionNotAllowed")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, BinaryClassDefNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, BinaryClassDefNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("classDefinitionNotAllowed")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, BinaryInterfaceDefinitionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, BinaryInterfaceDefinitionNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("interfaceDefinitionNotAllowed")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ClassNameNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ClassNameNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, InheritanceNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, InheritanceNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("classDefinitionNotAllowed")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, NamespaceDefinitionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, NamespaceDefinitionNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ConfigNamespaceDefinitionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ConfigNamespaceDefinitionNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, PackageDefinitionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, PackageDefinitionNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, PackageIdentifiersNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, PackageIdentifiersNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, PackageNameNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, PackageNameNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ProgramNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ProgramNode node)
 	{
 		// Parser adds several special nodes. The last node is the one that
 		// contains the expression that was actually parsed.
@@ -1312,85 +1312,85 @@ class DebuggerEvaluator implements Evaluator
 		return st.evaluate(cx, this);
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, BinaryProgramNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, BinaryProgramNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("binaryProgramNodeUnexpected")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ErrorNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ErrorNode node)
 	{
 		throw new ExpressionEvaluatorException(node.errorArg);
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ToObjectNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ToObjectNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, LoadRegisterNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, LoadRegisterNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, StoreRegisterNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, StoreRegisterNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, RegisterNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, RegisterNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, HasNextNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, HasNextNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, BoxNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, BoxNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, CoerceNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, CoerceNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, PragmaNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, PragmaNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, PragmaExpressionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, PragmaExpressionNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, DefaultXMLNamespaceNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, DefaultXMLNamespaceNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("default xml namespace")); //$NON-NLS-1$
 	}
 
 	// "use precision"
-	public Value evaluate(macromedia.asc.util.Context cx, UsePrecisionNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, UsePrecisionNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("use")); //$NON-NLS-1$
 	}
 
 	// "use decimal", "use double", "use int", "use uint", "use Number"
-	public Value evaluate(macromedia.asc.util.Context cx, UseNumericNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, UseNumericNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("use")); //$NON-NLS-1$
 	}
 
 	// "use rounding"
-	public Value evaluate(macromedia.asc.util.Context cx, UseRoundingNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, UseRoundingNode node)
 	{
 		throw new ExpressionEvaluatorException(keywordNotAllowed("use")); //$NON-NLS-1$
 	}
 
-	public Value evaluate(macromedia.asc.util.Context cx, ApplyTypeExprNode node)
+	public synchronized Value evaluate(macromedia.asc.util.Context cx, ApplyTypeExprNode node)
 	{
 		throw new ExpressionEvaluatorException(ASTBuilder.getLocalizationManager().getLocalizedTextString("unsupportedExpression")); //$NON-NLS-1$
 	}

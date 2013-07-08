@@ -202,7 +202,7 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
 	/**
 	 *
 	 */
-	public Value evaluate(Context context, ClassDefinitionNode node)
+	public synchronized Value evaluate(Context context, ClassDefinitionNode node)
 	{
 		if (!evaluatedClasses.contains(node))
 		{
@@ -1184,7 +1184,7 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
 	 * [Bindable] metadata we found there. Here we avoid FunctionDefinitionNodes because the VariableDefinitionNodes
 	 * within them might otherwise be spuriously renamed.
 	 */
-	public Value evaluate(Context context, FunctionDefinitionNode node)
+	public synchronized Value evaluate(Context context, FunctionDefinitionNode node)
 	{
 		if (inClass)
 		{
@@ -1218,7 +1218,7 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
 	 * visits all variable definitions that occur inside class definitions, outside function definitions, and mangles
 	 * their names if they've been marked for [Bindable] codegen.
 	 */
-	public Value evaluate(Context context, VariableDefinitionNode node)
+	public synchronized Value evaluate(Context context, VariableDefinitionNode node)
 	{
 		if (inClass)
 		{

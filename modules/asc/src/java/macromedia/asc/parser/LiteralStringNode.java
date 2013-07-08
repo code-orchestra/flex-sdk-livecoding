@@ -83,7 +83,7 @@ public class LiteralStringNode extends Node
 		delimiterType = singleQuoted ? SINGLE_QUOTE_DELIMITER : DOUBLE_QUOTE_DELIMITER;
 	}
 
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		if (evaluator.checkFeature(cx, this))
 		{

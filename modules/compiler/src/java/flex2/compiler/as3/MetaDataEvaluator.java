@@ -30,7 +30,7 @@ import macromedia.asc.util.Context;
  */
 public class MetaDataEvaluator extends EvaluatorAdapter
 {
-	public Value evaluate(Context context, MetaDataNode metaDataNode)
+	public synchronized Value evaluate(Context context, MetaDataNode metaDataNode)
 	{
         if (metaDataNode.def == null)
         {

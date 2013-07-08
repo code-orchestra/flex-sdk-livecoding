@@ -32,7 +32,7 @@ public class BinaryFunctionDefinitionNode extends FunctionDefinitionNode
         super(cx, pkgdef, attrs,name,fexpr);
     }
 
-    public Value evaluate(Context cx, Evaluator evaluator)
+    public synchronized Value evaluate(Context cx, Evaluator evaluator)
     {
         if (evaluator.checkFeature(cx, this))
         {

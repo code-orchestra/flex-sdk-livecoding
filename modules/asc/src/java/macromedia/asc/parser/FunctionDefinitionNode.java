@@ -58,7 +58,7 @@ public class FunctionDefinitionNode extends DefinitionNode
         is_prototype = false;
     }
 
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		if (evaluator.checkFeature(cx, this))
 		{

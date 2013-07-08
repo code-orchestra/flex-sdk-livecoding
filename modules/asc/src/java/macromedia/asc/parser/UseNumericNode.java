@@ -32,7 +32,7 @@ public class UseNumericNode extends UsePragmaNode {
 		numeric_mode = n_mode;
 	}
 
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		if (evaluator.checkFeature(cx, this))
 		{

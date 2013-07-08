@@ -42,7 +42,7 @@ public class BinaryProgramNode extends ProgramNode
     // This is used by Flash Authoring - don't remove without checking with them
 	public List<QName> toplevelDefinitions = new ArrayList<QName>();
 	
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		if (evaluator.checkFeature(cx, this))
 		{

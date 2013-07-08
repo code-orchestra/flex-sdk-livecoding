@@ -65,7 +65,7 @@ public class ManagedSecondPassEvaluator extends GenerativeSecondPassEvaluator
 	/**
 	 *
 	 */
-	public Value evaluate(Context context, ClassDefinitionNode node)
+	public synchronized Value evaluate(Context context, ClassDefinitionNode node)
 	{
 		if (!evaluatedClasses.contains(node))
 		{
@@ -146,7 +146,7 @@ public class ManagedSecondPassEvaluator extends GenerativeSecondPassEvaluator
     /**
      *
      */
-    public Value evaluate(Context context, FunctionDefinitionNode node)
+    public synchronized Value evaluate(Context context, FunctionDefinitionNode node)
     {
 		if (inClass)
 		{
@@ -166,7 +166,7 @@ public class ManagedSecondPassEvaluator extends GenerativeSecondPassEvaluator
      * visits all variable definitions that occur inside class definitions (and outside function definitions) and mangles
      * their names
      */
-    public Value evaluate(Context context, VariableDefinitionNode node)
+    public synchronized Value evaluate(Context context, VariableDefinitionNode node)
     {
         if (inClass)
         {

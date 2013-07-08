@@ -40,7 +40,7 @@ public class LiteralNumberNode extends Node
 		numberUsage = null;
 	}
 
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		if (evaluator.checkFeature(cx, this))
 		{

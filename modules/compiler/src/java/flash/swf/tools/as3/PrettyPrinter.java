@@ -49,7 +49,7 @@ public class PrettyPrinter extends EvaluatorAdapter
         this.indent = indent;
     }
 
-	public Value evaluate(Context cx, AttributeListNode node)
+	public synchronized Value evaluate(Context cx, AttributeListNode node)
 	{
 		for (int i = 0, size = node.items.size(); i < size; i++)
 		{
@@ -60,7 +60,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, ArgumentListNode node)
+	public synchronized Value evaluate(Context cx, ArgumentListNode node)
 	{
 		for (int i = 0, size = node.items.size(); i < size; i++)
 		{
@@ -74,7 +74,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, BinaryExpressionNode node)
+	public synchronized Value evaluate(Context cx, BinaryExpressionNode node)
 	{
 		if (node.lhs != null)
 		{
@@ -90,7 +90,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, CallExpressionNode node)
+	public synchronized Value evaluate(Context cx, CallExpressionNode node)
 	{
 		if (node.expr != null)
 		{
@@ -105,7 +105,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, ClassDefinitionNode node)
+	public synchronized Value evaluate(Context cx, ClassDefinitionNode node)
 	{
 		if (node.attrs != null)
 		{
@@ -150,7 +150,7 @@ public class PrettyPrinter extends EvaluatorAdapter
         return null;
     }
 
-	public Value evaluate(Context cx, ForStatementNode node)
+	public synchronized Value evaluate(Context cx, ForStatementNode node)
 	{
         indent();
         out.print("for (");
@@ -182,7 +182,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, FunctionCommonNode node)
+	public synchronized Value evaluate(Context cx, FunctionCommonNode node)
 	{
         out.print("(");
 		if (node.signature != null)
@@ -204,7 +204,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, FunctionDefinitionNode node)
+	public synchronized Value evaluate(Context cx, FunctionDefinitionNode node)
 	{
         indent();
 		if (node.attrs != null)
@@ -223,7 +223,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, GetExpressionNode node)
+	public synchronized Value evaluate(Context cx, GetExpressionNode node)
 	{
         if (node.expr != null)
         {
@@ -242,13 +242,13 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, IdentifierNode node)
+	public synchronized Value evaluate(Context cx, IdentifierNode node)
 	{
 		out.print(node.name);
         return null;
 	}
 
-	public Value evaluate(Context cx, IfStatementNode node)
+	public synchronized Value evaluate(Context cx, IfStatementNode node)
 	{
         indent();
         out.print("if (");
@@ -282,7 +282,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, InterfaceDefinitionNode node)
+	public synchronized Value evaluate(Context cx, InterfaceDefinitionNode node)
 	{
         indent();
         out.print("interface ");
@@ -319,7 +319,7 @@ public class PrettyPrinter extends EvaluatorAdapter
         return null;
     }
 
-	public Value evaluate(Context cx, ListNode node)
+	public synchronized Value evaluate(Context cx, ListNode node)
 	{
 		for (int i = 0, size = node.items.size(); i < size; i++)
 		{
@@ -333,7 +333,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralArrayNode node)
+	public synchronized Value evaluate(Context cx, LiteralArrayNode node)
 	{
         out.print("[");
         super.evaluate(cx, node);
@@ -341,7 +341,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralVectorNode node)
+	public synchronized Value evaluate(Context cx, LiteralVectorNode node)
 	{
 		out.print("new<");
 		
@@ -354,13 +354,13 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralBooleanNode node)
+	public synchronized Value evaluate(Context cx, LiteralBooleanNode node)
 	{
         out.print(node.value);
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralFieldNode node)
+	public synchronized Value evaluate(Context cx, LiteralFieldNode node)
 	{
 		if (node.name != null)
 		{
@@ -377,13 +377,13 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralNumberNode node)
+	public synchronized Value evaluate(Context cx, LiteralNumberNode node)
 	{
         out.print(node.value);
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralObjectNode node)
+	public synchronized Value evaluate(Context cx, LiteralObjectNode node)
 	{
         out.print("{");
         super.evaluate(cx, node);
@@ -391,31 +391,31 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralStringNode node)
+	public synchronized Value evaluate(Context cx, LiteralStringNode node)
 	{
         out.print("\"" + node.value + "\"");
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralNullNode node)
+	public synchronized Value evaluate(Context cx, LiteralNullNode node)
 	{
         out.print("null");
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralRegExpNode node)
+	public synchronized Value evaluate(Context cx, LiteralRegExpNode node)
 	{
         out.print(node.value);
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralXMLNode node)
+	public synchronized Value evaluate(Context cx, LiteralXMLNode node)
 	{
         assert false : "Not implemented yet.";
 		return null;
 	}
 
-	public Value evaluate(Context cx, MemberExpressionNode node)
+	public synchronized Value evaluate(Context cx, MemberExpressionNode node)
 	{
 		if (node.base != null)
 		{
@@ -435,7 +435,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, ProgramNode node)
+	public synchronized Value evaluate(Context cx, ProgramNode node)
 	{
         for (int i = 0; i < node.imports.size(); i++)
         {
@@ -447,7 +447,7 @@ public class PrettyPrinter extends EvaluatorAdapter
         return super.evaluate(cx, node);
 	}
 
-	public Value evaluate(Context cx, QualifiedIdentifierNode node)
+	public synchronized Value evaluate(Context cx, QualifiedIdentifierNode node)
 	{
 		if (node.qualifier != null)
 		{
@@ -457,7 +457,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, ReturnStatementNode node)
+	public synchronized Value evaluate(Context cx, ReturnStatementNode node)
 	{
         indent();
         out.print("return ");
@@ -469,13 +469,13 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, ThisExpressionNode node)
+	public synchronized Value evaluate(Context cx, ThisExpressionNode node)
     {
         out.print("this");
         return null;
     }
 
-	public Value evaluate(Context cx, TypedIdentifierNode node)
+	public synchronized Value evaluate(Context cx, TypedIdentifierNode node)
 	{
 		if (node.identifier != null)
 		{
@@ -489,7 +489,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, VariableDefinitionNode node)
+	public synchronized Value evaluate(Context cx, VariableDefinitionNode node)
 	{
         indent();
 		if (node.attrs != null)
@@ -505,7 +505,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, WhileStatementNode node)
+	public synchronized Value evaluate(Context cx, WhileStatementNode node)
 	{
         indent();
         out.print("while (");
@@ -527,7 +527,7 @@ public class PrettyPrinter extends EvaluatorAdapter
 		return null;
 	}
 
-	public Value evaluate(Context cx, WithStatementNode node)
+	public synchronized Value evaluate(Context cx, WithStatementNode node)
 	{
         indent();
         out.print("with (");

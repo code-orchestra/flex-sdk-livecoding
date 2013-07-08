@@ -192,7 +192,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
 
     // Expression evaluators
 
-    public Value evaluate(Context cx, IdentifierNode node)
+    public synchronized Value evaluate(Context cx, IdentifierNode node)
     {
         // IDENTIFIER_EVAL_PROLOG
 
@@ -224,7 +224,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return node.ref;
     }
 
-    public Value evaluate( Context cx, QualifiedIdentifierNode node )
+    public synchronized Value evaluate( Context cx, QualifiedIdentifierNode node )
     {
         // IDENTIFIER_EVAL_PROLOG
 
@@ -384,7 +384,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return node.ref;
     }
 
-    public Value evaluate( Context cx, QualifiedExpressionNode node )
+    public synchronized Value evaluate( Context cx, QualifiedExpressionNode node )
     {
         // IDENTIFIER_EVAL_PROLOG
 
@@ -398,7 +398,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return node.ref;
     }
 
-    public Value evaluate(Context cx, ThisExpressionNode node)
+    public synchronized Value evaluate(Context cx, ThisExpressionNode node)
     {
         if (debug)
         {
@@ -430,7 +430,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralBooleanNode node)
+    public synchronized Value evaluate(Context cx, LiteralBooleanNode node)
     {
         if (debug)
         {
@@ -448,7 +448,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return val;
     }
 
-    public Value evaluate(Context cx, LiteralNullNode node)
+    public synchronized Value evaluate(Context cx, LiteralNullNode node)
     {
         if (debug)
         {
@@ -464,7 +464,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralNumberNode node)
+    public synchronized Value evaluate(Context cx, LiteralNumberNode node)
     {
         if (debug)
         {
@@ -481,7 +481,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralStringNode node)
+    public synchronized Value evaluate(Context cx, LiteralStringNode node)
     {
         if (debug)
         {
@@ -497,7 +497,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralRegExpNode node)
+    public synchronized Value evaluate(Context cx, LiteralRegExpNode node)
     {
         if (debug)
         {
@@ -513,7 +513,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralObjectNode node)
+    public synchronized Value evaluate(Context cx, LiteralObjectNode node)
     {
         if (debug)
         {
@@ -534,7 +534,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralFieldNode node)
+    public synchronized Value evaluate(Context cx, LiteralFieldNode node)
     {
         if (debug)
         {
@@ -577,7 +577,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
 
     }
 
-    public Value evaluate(Context cx, LiteralArrayNode node)
+    public synchronized Value evaluate(Context cx, LiteralArrayNode node)
     {
         if (debug)
         {
@@ -598,7 +598,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
     
-    public Value evaluate(Context cx, LiteralVectorNode node)
+    public synchronized Value evaluate(Context cx, LiteralVectorNode node)
     {
         if (debug)
         {
@@ -620,7 +620,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, MemberExpressionNode node)
+    public synchronized Value evaluate(Context cx, MemberExpressionNode node)
     {
         if (debug)
         {
@@ -717,7 +717,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return val;
     }
 
-    public Value evaluate(Context cx, ApplyTypeExprNode node)
+    public synchronized Value evaluate(Context cx, ApplyTypeExprNode node)
     {
         if( node.ref != null )
         {
@@ -767,7 +767,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return node.ref;
     }
 
-    public Value evaluate(Context cx, CallExpressionNode node)
+    public synchronized Value evaluate(Context cx, CallExpressionNode node)
     {
         if( node.ref != null )
         {
@@ -831,7 +831,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return node.ref;
     }
 
-    public Value evaluate(Context cx, InvokeNode node)
+    public synchronized Value evaluate(Context cx, InvokeNode node)
     {
 
         if (debug)
@@ -859,7 +859,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, SetExpressionNode node)
+    public synchronized Value evaluate(Context cx, SetExpressionNode node)
     {
         getEmitter().AddStmtToBlock(node.toString());
         int t = allocateTemp();
@@ -907,7 +907,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return node.ref;
     }
 
-    public Value evaluate(Context cx, DeleteExpressionNode node)
+    public synchronized Value evaluate(Context cx, DeleteExpressionNode node)
     {
         if (debug)
         {
@@ -928,7 +928,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return node.ref;
     }
 
-    public Value evaluate(Context cx, GetExpressionNode node)
+    public synchronized Value evaluate(Context cx, GetExpressionNode node)
     {
         if (debug)
         {
@@ -953,7 +953,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return node.ref;
     }
 
-    public Value evaluate(Context cx, IncrementNode node)
+    public synchronized Value evaluate(Context cx, IncrementNode node)
     {
         if (debug)
         {
@@ -995,7 +995,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
      * are implemented as methods of the global object.
      */
 
-    public Value evaluate(Context cx, UnaryExpressionNode node)
+    public synchronized Value evaluate(Context cx, UnaryExpressionNode node)
     {
 
         if (debug)
@@ -1016,7 +1016,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryExpressionNode node)
+    public synchronized Value evaluate(Context cx, BinaryExpressionNode node)
     {
 
         if (debug)
@@ -1038,7 +1038,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, ConditionalExpressionNode node)
+    public synchronized Value evaluate(Context cx, ConditionalExpressionNode node)
     {
         if (debug)
         {
@@ -1060,7 +1060,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, ArgumentListNode node)
+    public synchronized Value evaluate(Context cx, ArgumentListNode node)
     {
 
         if (debug)
@@ -1086,7 +1086,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, ListNode node)
+    public synchronized Value evaluate(Context cx, ListNode node)
     {
 
         if (debug)
@@ -1114,7 +1114,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
      * Statements
      */
 
-    public Value evaluate(Context cx, StatementListNode node)
+    public synchronized Value evaluate(Context cx, StatementListNode node)
     {
         if (debug)
         {
@@ -1395,7 +1395,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, EmptyStatementNode node)
+    public synchronized Value evaluate(Context cx, EmptyStatementNode node)
     {
         if (debug)
         {
@@ -1409,7 +1409,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, ExpressionStatementNode node)
+    public synchronized Value evaluate(Context cx, ExpressionStatementNode node)
     {
         if (debug)
         {
@@ -1440,7 +1440,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, LabeledStatementNode node)
+    public synchronized Value evaluate(Context cx, LabeledStatementNode node)
     {
         if (debug)
         {
@@ -1521,7 +1521,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, IfStatementNode node)
+    public synchronized Value evaluate(Context cx, IfStatementNode node)
     {
         if (debug)
         {
@@ -1578,7 +1578,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
 
     int inside_switch = 0;
 
-    public Value evaluate(Context cx, SwitchStatementNode node)
+    public synchronized Value evaluate(Context cx, SwitchStatementNode node)
     {
         if (debug)
         {
@@ -1672,7 +1672,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, CaseLabelNode node)
+    public synchronized Value evaluate(Context cx, CaseLabelNode node)
     {
         if (debug)
         {
@@ -1710,7 +1710,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
 
     int inside_loop = 0;
 
-    public Value evaluate(Context cx, DoStatementNode node)
+    public synchronized Value evaluate(Context cx, DoStatementNode node)
     {
         if (debug)
         {
@@ -1746,7 +1746,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
     }
 
 
-    public Value evaluate(Context cx, WhileStatementNode node)
+    public synchronized Value evaluate(Context cx, WhileStatementNode node)
     {
         if (debug)
         {
@@ -1783,7 +1783,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, ForStatementNode node)
+    public synchronized Value evaluate(Context cx, ForStatementNode node)
     {
         if (debug)
         {
@@ -1834,7 +1834,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, WithStatementNode node)
+    public synchronized Value evaluate(Context cx, WithStatementNode node)
     {
         if (debug)
         {
@@ -1878,7 +1878,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, ContinueStatementNode node)
+    public synchronized Value evaluate(Context cx, ContinueStatementNode node)
     {
         if (debug)
         {
@@ -1932,7 +1932,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, BreakStatementNode node)
+    public synchronized Value evaluate(Context cx, BreakStatementNode node)
     {
         if (debug)
         {
@@ -1979,7 +1979,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, ReturnStatementNode node)
+    public synchronized Value evaluate(Context cx, ReturnStatementNode node)
     {
         if (debug)
         {
@@ -2021,7 +2021,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
     }
 
 
-    public Value evaluate(Context cx, ThrowStatementNode node)
+    public synchronized Value evaluate(Context cx, ThrowStatementNode node)
     {
         if (debug)
         {
@@ -2052,7 +2052,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, TryStatementNode node)
+    public synchronized Value evaluate(Context cx, TryStatementNode node)
     {
         if (debug)
         {
@@ -2087,7 +2087,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, CatchClauseNode node)
+    public synchronized Value evaluate(Context cx, CatchClauseNode node)
     {
         if (debug)
         {
@@ -2160,7 +2160,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context cx, FinallyClauseNode node)
+    public synchronized Value evaluate(Context cx, FinallyClauseNode node)
     {
         if (debug)
         {
@@ -2181,7 +2181,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         return null;
     }
 
-    public Value evaluate(Context unused_cx, FunctionCommonNode node)
+    public synchronized Value evaluate(Context unused_cx, FunctionCommonNode node)
     {
         if (debug)
         {
@@ -2515,7 +2515,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
 
     }
 
-    public Value evaluate(Context unused_cx, BinaryProgramNode node)
+    public synchronized Value evaluate(Context unused_cx, BinaryProgramNode node)
     {
         if( node.frame != null )
         {
@@ -2584,7 +2584,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         }
     }
 
-    public Value evaluate(Context unused_cx, ProgramNode node)
+    public synchronized Value evaluate(Context unused_cx, ProgramNode node)
     {
         if (debug)
         {
@@ -2894,7 +2894,7 @@ else
     chain to inherit the built-in properties
 
     */
-    public Value evaluate(Context unused_cx, PackageDefinitionNode node)
+    public synchronized Value evaluate(Context unused_cx, PackageDefinitionNode node)
     {
         if (debug)
         {
@@ -2973,12 +2973,12 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, PackageNameNode node)
+    public synchronized Value evaluate(Context cx, PackageNameNode node)
     {
         return node.id.evaluate(cx, this);
     }
 
-    public Value evaluate(Context cx, PackageIdentifiersNode node)
+    public synchronized Value evaluate(Context cx, PackageIdentifiersNode node)
     {
         ReferenceValue ref = new ReferenceValue(cx, null, "", cx.publicNamespace()); // caller deletes
 
@@ -2988,13 +2988,13 @@ else
         return ref;
     }
 
-    public Value evaluate(Context cx, Node node)
+    public synchronized Value evaluate(Context cx, Node node)
     {
         cx.internalError( node.pos(), "Feature not supported: " + node.toString());
         return null;
     }
 
-    public Value evaluate(Context cx, VariableDefinitionNode node)
+    public synchronized Value evaluate(Context cx, VariableDefinitionNode node)
     {
         if(node.cx != null) {
             cx = node.cx;
@@ -3179,7 +3179,7 @@ else
         }
     }
 
-    public Value evaluate(Context cx, VariableBindingNode node)
+    public synchronized Value evaluate(Context cx, VariableBindingNode node)
     {
 
         boolean is_intrinsic = false;
@@ -3496,7 +3496,7 @@ else
 
     */
 
-    public Value evaluate(Context unused_cx, FunctionDefinitionNode node)
+    public synchronized Value evaluate(Context unused_cx, FunctionDefinitionNode node)
     {
         Context cx = node.cx; // switch context to the one used to parse this node, for error reporting
 
@@ -4056,19 +4056,19 @@ else
         return null;
     }
 
-    public Value evaluate(Context unused_cx, BinaryFunctionDefinitionNode node)
+    public synchronized Value evaluate(Context unused_cx, BinaryFunctionDefinitionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, FunctionNameNode node)
+    public synchronized Value evaluate(Context cx, FunctionNameNode node)
     {
         Value val = node.identifier.evaluate(cx, this);
         ReferenceValue ref = ((val instanceof ReferenceValue) ? (ReferenceValue)val : null);
         return ref;
     }
 
-    public Value evaluate(Context cx, FunctionSignatureNode node)
+    public synchronized Value evaluate(Context cx, FunctionSignatureNode node)
     {
         if (node.parameter != null)
         {
@@ -4091,7 +4091,7 @@ else
     }
 
 
-    public Value evaluate( Context cx, RestParameterNode node )
+    public synchronized Value evaluate( Context cx, RestParameterNode node )
     {
         ObjectValue obj = cx.scope();
         Builder     bui = obj.builder;
@@ -4126,7 +4126,7 @@ else
         return node.ref;
     }
 
-    public Value evaluate( Context cx, ParameterNode node )
+    public synchronized Value evaluate( Context cx, ParameterNode node )
     {
 
         ObjectValue obj = cx.scope();
@@ -4181,7 +4181,7 @@ else
         return node.ref;
     }
 
-    public Value evaluate( Context cx, ParameterListNode node )
+    public synchronized Value evaluate( Context cx, ParameterListNode node )
     {
         if( debug )
         {
@@ -4201,13 +4201,13 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, ToObjectNode node)
+    public synchronized Value evaluate(Context cx, ToObjectNode node)
     {
         node.expr.evaluate(cx, this);
         return null;
     }
 
-    public Value evaluate(Context cx, LoadRegisterNode node)
+    public synchronized Value evaluate(Context cx, LoadRegisterNode node)
     {
         if( node.reg != null )
         {
@@ -4216,7 +4216,7 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, StoreRegisterNode node)
+    public synchronized Value evaluate(Context cx, StoreRegisterNode node)
     {
         if( node.reg != null )
         {
@@ -4226,22 +4226,22 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, RegisterNode node)
+    public synchronized Value evaluate(Context cx, RegisterNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, HasNextNode node)
+    public synchronized Value evaluate(Context cx, HasNextNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BoxNode node)
+    public synchronized Value evaluate(Context cx, BoxNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, CoerceNode node)
+    public synchronized Value evaluate(Context cx, CoerceNode node)
     {
     	if (node.expr != null)
     	{
@@ -4260,7 +4260,7 @@ else
      */
 
 
-    public Value evaluate(Context unused_cx, ClassDefinitionNode node)
+    public synchronized Value evaluate(Context unused_cx, ClassDefinitionNode node)
     {
         // If we are doing a class, then defer this class definition until we
         // are done. Put it in the current set of the clsdefs_sets for now.
@@ -5007,7 +5007,7 @@ else
         return node.ref;
     }
 
-    public Value evaluate(Context cx, BinaryClassDefNode node)
+    public synchronized Value evaluate(Context cx, BinaryClassDefNode node)
     {
         if( resolveInheritance )
         {
@@ -5109,7 +5109,7 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
     {
         return this.evaluate(cx, (BinaryClassDefNode)node);
     }
@@ -5246,7 +5246,7 @@ else
 */
     }
 
-    public Value evaluate(Context cx, InterfaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, InterfaceDefinitionNode node)
     {
         Value val = this.evaluate(cx, (ClassDefinitionNode) node);
         ReferenceValue ref = ((val instanceof ReferenceValue) ? (ReferenceValue)val : null);
@@ -5287,7 +5287,7 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, ClassNameNode node)
+    public synchronized Value evaluate(Context cx, ClassNameNode node)
     {
         Value val = null;
         if (node.pkgname != null)
@@ -5301,7 +5301,7 @@ else
         return val;
     }
 
-    public Value evaluate(Context cx, InheritanceNode node)
+    public synchronized Value evaluate(Context cx, InheritanceNode node)
     {
         if (node.baseclass != null)
         {
@@ -5314,7 +5314,7 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, AttributeListNode node)
+    public synchronized Value evaluate(Context cx, AttributeListNode node)
     {
         if( node.namespace_ids.size() != 0 || node.namespaces.size() != 0 )
         {
@@ -5546,7 +5546,7 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, IncludeDirectiveNode node)
+    public synchronized Value evaluate(Context cx, IncludeDirectiveNode node)
     {
         if( !node.in_this_include )
         {
@@ -5568,7 +5568,7 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, ImportNode node)
+    public synchronized Value evaluate(Context cx, ImportNode node)
     {
         ObjectValue   baseobj = node.program.frame;
 
@@ -5721,7 +5721,7 @@ else
         }
     }
 
-    public Value evaluate( Context unused_cx, ImportDirectiveNode node )
+    public synchronized Value evaluate( Context unused_cx, ImportDirectiveNode node )
     {
         Context cx = node.cx;
         if( node.name != null )
@@ -5790,7 +5790,7 @@ else
     }
 
 
-    public Value evaluate(Context cx, SuperExpressionNode node)
+    public synchronized Value evaluate(Context cx, SuperExpressionNode node)
     {
         switch( this_contexts.last() )
         {
@@ -5815,7 +5815,7 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, SuperStatementNode node)
+    public synchronized Value evaluate(Context cx, SuperStatementNode node)
     {
         switch( super_context.last() )
         {
@@ -5857,13 +5857,13 @@ else
         return null;
     }
 
-    public Value evaluate( Context cx, ConfigNamespaceDefinitionNode node )
+    public synchronized Value evaluate( Context cx, ConfigNamespaceDefinitionNode node )
     {
     	// TODO: something to ensure that other definitions don't shadow the 
     	// TODO: config namespace.
     	return null;
     }
-    public Value evaluate( Context cx, NamespaceDefinitionNode node )
+    public synchronized Value evaluate( Context cx, NamespaceDefinitionNode node )
     {
 
         // first time we are evaluated, we create a var for the namespace var and possibly mark it as const.
@@ -6003,7 +6003,7 @@ else
         return null;
     }
 
-    public Value evaluate( Context  cx, UseDirectiveNode node )
+    public synchronized Value evaluate( Context  cx, UseDirectiveNode node )
     {
         if (node.ref != null) { return null; }
 
@@ -6065,13 +6065,13 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, RestExpressionNode node)
+    public synchronized Value evaluate(Context cx, RestExpressionNode node)
     {
         cx.internalError(node.pos(), "RestExpressionNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, ErrorNode node)
+    public synchronized Value evaluate(Context cx, ErrorNode node)
     {
     	if (!errorNodeSeen)
     	{
@@ -6081,7 +6081,7 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, PragmaNode node)
+    public synchronized Value evaluate(Context cx, PragmaNode node)
     {
         if (debug)
         {
@@ -6097,7 +6097,7 @@ else
         return null;
      }
 
-    public Value evaluate(Context cx, UsePrecisionNode node)
+    public synchronized Value evaluate(Context cx, UsePrecisionNode node)
     {
         if (debug)
         {
@@ -6117,7 +6117,7 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, UseNumericNode node)
+    public synchronized Value evaluate(Context cx, UseNumericNode node)
     {
         if (debug)
         {
@@ -6132,7 +6132,7 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, UseRoundingNode node)
+    public synchronized Value evaluate(Context cx, UseRoundingNode node)
     {
         if (debug)
         {
@@ -6148,37 +6148,37 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, PragmaExpressionNode node)
+    public synchronized Value evaluate(Context cx, PragmaExpressionNode node)
     {
         cx.internalError(node.pos(), "PragmaExpressionNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, TypedIdentifierNode node)
+    public synchronized Value evaluate(Context cx, TypedIdentifierNode node)
     {
         cx.internalError(node.pos(), "TypedIdentifierNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, UntypedVariableBindingNode node)
+    public synchronized Value evaluate(Context cx, UntypedVariableBindingNode node)
     {
         cx.internalError(node.pos(), "UntypedVariableBindingNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, ParenListExpressionNode node)
+    public synchronized Value evaluate(Context cx, ParenListExpressionNode node)
     {
         cx.internalError(node.pos(), "ParenListExpressionNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, ParenExpressionNode node)
+    public synchronized Value evaluate(Context cx, ParenExpressionNode node)
     {
         cx.internalError(node.pos(), "ParenExpressionNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralXMLNode node)
+    public synchronized Value evaluate(Context cx, LiteralXMLNode node)
     {
         if (debug)
         {
@@ -6198,17 +6198,17 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, MetaDataNode node)
+    public synchronized Value evaluate(Context cx, MetaDataNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, EmptyElementNode node)
+    public synchronized Value evaluate(Context cx, EmptyElementNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, DefaultXMLNamespaceNode node)
+    public synchronized Value evaluate(Context cx, DefaultXMLNamespaceNode node)
     {
         if( node.expr != null )
         {
@@ -6217,7 +6217,7 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, DocCommentNode node)
+    public synchronized Value evaluate(Context cx, DocCommentNode node)
     {
         // do nothing
         return null;
@@ -6483,7 +6483,7 @@ else
         return null;
     }
 
-    public Value evaluate(Context cx, TypeExpressionNode node)
+    public synchronized Value evaluate(Context cx, TypeExpressionNode node)
     {
         Value v = node.expr.evaluate(cx, this);
         if( v instanceof ReferenceValue )

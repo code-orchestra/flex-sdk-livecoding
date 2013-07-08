@@ -51,7 +51,7 @@ public class SetExpressionNode extends SelectorNode
         is_initializer = false;
     }
 
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		if (evaluator.checkFeature(cx, this))
 		{

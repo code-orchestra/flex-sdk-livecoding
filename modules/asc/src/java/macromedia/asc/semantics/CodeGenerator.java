@@ -134,7 +134,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
 
     // Expression evaluators
 
-    public Value evaluate(Context cx, QualifiedIdentifierNode node)
+    public synchronized Value evaluate(Context cx, QualifiedIdentifierNode node)
     {
         if (debug)
         {
@@ -154,7 +154,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, QualifiedExpressionNode node)
+    public synchronized Value evaluate(Context cx, QualifiedExpressionNode node)
     {
         if (debug)
         {
@@ -174,7 +174,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, ThisExpressionNode node)
+    public synchronized Value evaluate(Context cx, ThisExpressionNode node)
     {
         if (debug)
         {
@@ -197,7 +197,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralBooleanNode node)
+    public synchronized Value evaluate(Context cx, LiteralBooleanNode node)
     {
         if (debug)
         {
@@ -216,7 +216,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralNullNode node)
+    public synchronized Value evaluate(Context cx, LiteralNullNode node)
     {
         if (debug)
         {
@@ -235,7 +235,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralNumberNode node)
+    public synchronized Value evaluate(Context cx, LiteralNumberNode node)
     {
         if (debug)
         {
@@ -254,7 +254,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralStringNode node)
+    public synchronized Value evaluate(Context cx, LiteralStringNode node)
     {
         if (debug)
         {
@@ -273,7 +273,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralRegExpNode node)
+    public synchronized Value evaluate(Context cx, LiteralRegExpNode node)
     {
         if (debug)
         {
@@ -311,7 +311,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralObjectNode node)
+    public synchronized Value evaluate(Context cx, LiteralObjectNode node)
     {
         if (debug)
         {
@@ -337,7 +337,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralFieldNode node)
+    public synchronized Value evaluate(Context cx, LiteralFieldNode node)
     {
         if (debug)
         {
@@ -364,7 +364,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
 
     }
 
-    public Value evaluate(Context cx, LiteralArrayNode node)
+    public synchronized Value evaluate(Context cx, LiteralArrayNode node)
     {
         if (debug)
         {
@@ -401,7 +401,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
     
-    public Value evaluate(Context cx, LiteralVectorNode node)
+    public synchronized Value evaluate(Context cx, LiteralVectorNode node)
     {
         if (debug)
         {
@@ -450,7 +450,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, EmptyElementNode node)
+    public synchronized Value evaluate(Context cx, EmptyElementNode node)
     {
         if (debug)
         {
@@ -469,7 +469,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return index >= 0 && index >= frame.firstInnerScope && cx.scope(index).builder instanceof ActivationBuilder;
     }
 
-    public Value evaluate(Context cx, MemberExpressionNode node)
+    public synchronized Value evaluate(Context cx, MemberExpressionNode node)
     {
         if (debug)
         {
@@ -761,7 +761,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
 
      */
 
-    public Value evaluate( Context cx, CallExpressionNode node )
+    public synchronized Value evaluate( Context cx, CallExpressionNode node )
     {
         if( debug ) System.out.print("\n// +CallExpression");
 
@@ -1112,7 +1112,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, InvokeNode node)
+    public synchronized Value evaluate(Context cx, InvokeNode node)
     {
 
         if (debug)
@@ -1146,7 +1146,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, SetExpressionNode node)
+    public synchronized Value evaluate(Context cx, SetExpressionNode node)
     {
         if (debug)
         {
@@ -1455,7 +1455,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, DeleteExpressionNode node)
+    public synchronized Value evaluate(Context cx, DeleteExpressionNode node)
     {
         if (debug)
         {
@@ -1605,7 +1605,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, ApplyTypeExprNode node)
+    public synchronized Value evaluate(Context cx, ApplyTypeExprNode node)
     {
         if (debug)
         {
@@ -1684,7 +1684,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, GetExpressionNode node)
+    public synchronized Value evaluate(Context cx, GetExpressionNode node)
     {
         if (debug)
         {
@@ -1955,7 +1955,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         private int index = -1;
     }
 
-    public Value evaluate(Context cx, IncrementNode node)
+    public synchronized Value evaluate(Context cx, IncrementNode node)
     {
         if (debug)
         {
@@ -2198,7 +2198,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
      * are implemented as methods of the global object.
      */
 
-    public Value evaluate(Context cx, UnaryExpressionNode node)
+    public synchronized Value evaluate(Context cx, UnaryExpressionNode node)
     {
 
         if (debug)
@@ -2255,7 +2255,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryExpressionNode node)
+    public synchronized Value evaluate(Context cx, BinaryExpressionNode node)
     {
         if (debug)
         {
@@ -2340,7 +2340,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, ConditionalExpressionNode node)
+    public synchronized Value evaluate(Context cx, ConditionalExpressionNode node)
     {
         if (debug)
         {
@@ -2379,7 +2379,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
      * these two kinds of lists.
      */
 
-    public Value evaluate(Context cx, ArgumentListNode node)
+    public synchronized Value evaluate(Context cx, ArgumentListNode node)
     {
 
         if (debug)
@@ -2411,7 +2411,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, ListNode node)
+    public synchronized Value evaluate(Context cx, ListNode node)
     {
 
         if (debug)
@@ -2435,7 +2435,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
     /* Statements
      */
 
-    public Value evaluate(Context cx, StatementListNode node)
+    public synchronized Value evaluate(Context cx, StatementListNode node)
     {
         if (debug)
         {
@@ -2475,7 +2475,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, EmptyStatementNode node)
+    public synchronized Value evaluate(Context cx, EmptyStatementNode node)
     {
         if (debug)
         {
@@ -2491,7 +2491,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, ExpressionStatementNode node)
+    public synchronized Value evaluate(Context cx, ExpressionStatementNode node)
     {
         if (debug)
         {
@@ -2529,7 +2529,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, LabeledStatementNode node)
+    public synchronized Value evaluate(Context cx, LabeledStatementNode node)
     {
         if (debug)
         {
@@ -2665,7 +2665,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         }
     }
 
-    public Value evaluate(Context cx, IfStatementNode node)
+    public synchronized Value evaluate(Context cx, IfStatementNode node)
     {
         if (debug)
         {
@@ -2723,7 +2723,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, SwitchStatementNode node)
+    public synchronized Value evaluate(Context cx, SwitchStatementNode node)
     {
         if (debug)
         {
@@ -2837,7 +2837,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, CaseLabelNode node)
+    public synchronized Value evaluate(Context cx, CaseLabelNode node)
     {
         if (debug)
         {
@@ -2854,7 +2854,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, DoStatementNode node)
+    public synchronized Value evaluate(Context cx, DoStatementNode node)
     {
         if (debug)
         {
@@ -2996,7 +2996,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         }
     }
 
-    public Value evaluate(Context cx, WhileStatementNode node)
+    public synchronized Value evaluate(Context cx, WhileStatementNode node)
     {
         if (debug)
         {
@@ -3020,7 +3020,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, ForStatementNode node)
+    public synchronized Value evaluate(Context cx, ForStatementNode node)
     {
         if (debug)
         {
@@ -3062,7 +3062,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, WithStatementNode node)
+    public synchronized Value evaluate(Context cx, WithStatementNode node)
     {
         if (debug)
         {
@@ -3117,7 +3117,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, ContinueStatementNode node)
+    public synchronized Value evaluate(Context cx, ContinueStatementNode node)
     {
         if (debug)
         {
@@ -3133,7 +3133,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, BreakStatementNode node)
+    public synchronized Value evaluate(Context cx, BreakStatementNode node)
     {
         if (debug)
         {
@@ -3149,7 +3149,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, ReturnStatementNode node)
+    public synchronized Value evaluate(Context cx, ReturnStatementNode node)
     {
         if (debug)
         {
@@ -3211,7 +3211,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, ThrowStatementNode node)
+    public synchronized Value evaluate(Context cx, ThrowStatementNode node)
     {
         if (debug)
         {
@@ -3260,7 +3260,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, TryStatementNode node)
+    public synchronized Value evaluate(Context cx, TryStatementNode node)
     {
         if (debug)
         {
@@ -3360,7 +3360,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, CatchClauseNode node)
+    public synchronized Value evaluate(Context cx, CatchClauseNode node)
     {
         if (debug)
         {
@@ -3472,7 +3472,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null; // throw;
     }
 
-    public Value evaluate(Context cx, FinallyClauseNode node)
+    public synchronized Value evaluate(Context cx, FinallyClauseNode node)
     {
         if (debug)
         {
@@ -3488,7 +3488,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, VariableDefinitionNode node)
+    public synchronized Value evaluate(Context cx, VariableDefinitionNode node)
     {
         if (debug)
         {
@@ -3559,12 +3559,12 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null; // Do nothing
     }
 
-    public Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
+    public synchronized Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
     {
         return null; // Do nothing
     }
 
-    public Value evaluate(Context cx, FunctionDefinitionNode node)
+    public synchronized Value evaluate(Context cx, FunctionDefinitionNode node)
     {
         if (debug)
         {
@@ -3598,7 +3598,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null; // Do nothing
     }
 
-    public Value evaluate(Context unused_cx, FunctionCommonNode node)
+    public synchronized Value evaluate(Context unused_cx, FunctionCommonNode node)
     {
         if (debug)
         {
@@ -3974,7 +3974,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
 		}
 	}
 
-    public Value evaluate(Context cx, ProgramNode node)
+    public synchronized Value evaluate(Context cx, ProgramNode node)
     {
         if (debug)
         {
@@ -4080,7 +4080,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context unused_cx, PackageDefinitionNode node)
+    public synchronized Value evaluate(Context unused_cx, PackageDefinitionNode node)
     {
         if (debug)
         {
@@ -4096,55 +4096,55 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
 
     // Un-used nodes
 
-    public Value evaluate(Context cx, Node node)
+    public synchronized Value evaluate(Context cx, Node node)
     {
         assert(false);
         return null; // throw "Should never get here!";
     }
 
-    public Value evaluate(Context cx, IdentifierNode node)
+    public synchronized Value evaluate(Context cx, IdentifierNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, VariableBindingNode node)
+    public synchronized Value evaluate(Context cx, VariableBindingNode node)
     {
         //throw "Should never get here!";
         return null;
     }
 
-    public Value evaluate(Context cx, FunctionNameNode node)
+    public synchronized Value evaluate(Context cx, FunctionNameNode node)
     {
         assert(false);
         return null; // throw "Should never get here!";
     }
 
-    public Value evaluate(Context cx, FunctionSignatureNode node)
+    public synchronized Value evaluate(Context cx, FunctionSignatureNode node)
     {
         assert(false);
         return null; // throw "Should never get here!";
     }
 
-    public Value evaluate(Context cx, ParameterNode node)
+    public synchronized Value evaluate(Context cx, ParameterNode node)
     {
         assert(false);
         return null; // throw "Should never get here!";
     }
 
-    public Value evaluate(Context cx, ParameterListNode node)
+    public synchronized Value evaluate(Context cx, ParameterListNode node)
     {
         assert(false);
         return null; // throw "Should never get here!";
     }
 
-    public Value evaluate(Context cx, ToObjectNode node)
+    public synchronized Value evaluate(Context cx, ToObjectNode node)
     {
         node.expr.evaluate(cx, this);
         ToObject();
         return null;
     }
 
-    public Value evaluate(Context cx, LoadRegisterNode node)
+    public synchronized Value evaluate(Context cx, LoadRegisterNode node)
     {
         node.reg.evaluate(cx,this);
         int reg_offset = getRegisterOffset(cx);
@@ -4155,7 +4155,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, StoreRegisterNode node)
+    public synchronized Value evaluate(Context cx, StoreRegisterNode node)
     {
         node.reg.evaluate(cx,this);
         int reg_offset = getRegisterOffset(cx);
@@ -4168,7 +4168,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, RegisterNode node)
+    public synchronized Value evaluate(Context cx, RegisterNode node)
     {
         if ( node.index < 0 )
         {
@@ -4177,7 +4177,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, HasNextNode node)
+    public synchronized Value evaluate(Context cx, HasNextNode node)
     {
         node.objectRegister.evaluate(cx,this);
         node.indexRegister.evaluate(cx,this);
@@ -4187,7 +4187,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
     
-    public Value evaluate(Context cx, BoxNode node)
+    public synchronized Value evaluate(Context cx, BoxNode node)
     {
         node.expr.evaluate(cx, this);
 
@@ -4207,7 +4207,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, CoerceNode node)
+    public synchronized Value evaluate(Context cx, CoerceNode node)
     {
         node.expr.evaluate(cx, this);
 
@@ -4310,7 +4310,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return count+1;
     }
 
-    public Value evaluate(Context unused_cx, ClassDefinitionNode node)
+    public synchronized Value evaluate(Context unused_cx, ClassDefinitionNode node)
     {
         if (node.attrs != null && node.attrs.hasIntrinsic)
         {
@@ -4550,7 +4550,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, InterfaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, InterfaceDefinitionNode node)
     {
         if (debug)
         {
@@ -4647,7 +4647,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, ClassNameNode node)
+    public synchronized Value evaluate(Context cx, ClassNameNode node)
     {
         if (node.pkgname != null)
         {
@@ -4660,7 +4660,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, InheritanceNode node)
+    public synchronized Value evaluate(Context cx, InheritanceNode node)
     {
         if (node.baseclass != null)
         {
@@ -4673,7 +4673,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, AttributeListNode node)
+    public synchronized Value evaluate(Context cx, AttributeListNode node)
     {
         for (Node item : node.items)
         {
@@ -4683,7 +4683,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, IncludeDirectiveNode node)
+    public synchronized Value evaluate(Context cx, IncludeDirectiveNode node)
     {
         if( !node.in_this_include )
         {
@@ -4707,12 +4707,12 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, ImportDirectiveNode node)
+    public synchronized Value evaluate(Context cx, ImportDirectiveNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, SuperExpressionNode node)
+    public synchronized Value evaluate(Context cx, SuperExpressionNode node)
     {
         if( node.expr != null )
         {
@@ -4725,7 +4725,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, SuperStatementNode node)
+    public synchronized Value evaluate(Context cx, SuperStatementNode node)
     {
         int scope_depth = cx.getScopes().size();
         ObjectValue iframe = cx.scope(scope_depth-2);
@@ -4747,23 +4747,23 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate( Context cx, NamespaceDefinitionNode node )
+    public synchronized Value evaluate( Context cx, NamespaceDefinitionNode node )
     {
         // cn:  no longer needed. NewNamespace(node.value.value); // doesn't actually push ns value right now
         return null;
     }
 
-    public Value evaluate( Context cx, ConfigNamespaceDefinitionNode node )
+    public synchronized Value evaluate( Context cx, ConfigNamespaceDefinitionNode node )
     {
         return null;
     }
 
-    public Value evaluate( Context cx, UseDirectiveNode node )
+    public synchronized Value evaluate( Context cx, UseDirectiveNode node )
     {
         return null;
     }
 
-    public Value evaluate(Context cx, PragmaNode node)
+    public synchronized Value evaluate(Context cx, PragmaNode node)
     {
     	if (node.list != null)
     	{
@@ -4773,43 +4773,43 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, UsePrecisionNode node)
+    public synchronized Value evaluate(Context cx, UsePrecisionNode node)
     {
         // nothing to do in this pass
         return null;
     }
 
-    public Value evaluate(Context cx, UseNumericNode node)
+    public synchronized Value evaluate(Context cx, UseNumericNode node)
     {
         // nothing to do in this pass
         return null;
     }
 
-    public Value evaluate(Context cx, UseRoundingNode node)
+    public synchronized Value evaluate(Context cx, UseRoundingNode node)
     {
         // nothing to do in this pass
         return null;
     }
 
-    public Value evaluate(Context cx, PragmaExpressionNode node)
+    public synchronized Value evaluate(Context cx, PragmaExpressionNode node)
     {
         cx.internalError(node.pos(), "PragmaExpressionNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, TypedIdentifierNode node)
+    public synchronized Value evaluate(Context cx, TypedIdentifierNode node)
     {
         cx.internalError(node.pos(), "TypedIdentifierNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, UntypedVariableBindingNode node)
+    public synchronized Value evaluate(Context cx, UntypedVariableBindingNode node)
     {
         cx.internalError(node.pos(), "UntypedVariableBindingNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralXMLNode node)
+    public synchronized Value evaluate(Context cx, LiteralXMLNode node)
     {
         if (debug)
         {
@@ -4845,78 +4845,78 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return null;
     }
 
-    public Value evaluate(Context cx, PackageNameNode node)
+    public synchronized Value evaluate(Context cx, PackageNameNode node)
     {
         cx.internalError(node.pos(), "PackageNameNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, PackageIdentifiersNode node)
+    public synchronized Value evaluate(Context cx, PackageIdentifiersNode node)
     {
         cx.internalError(node.pos(), "PackageIdentifiersNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, ErrorNode node)
+    public synchronized Value evaluate(Context cx, ErrorNode node)
     {
         cx.internalError(node.pos(), "ErrorNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, RestExpressionNode node)
+    public synchronized Value evaluate(Context cx, RestExpressionNode node)
     {
         cx.internalError(node.pos(), "RestExpressionNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, RestParameterNode node)
+    public synchronized Value evaluate(Context cx, RestParameterNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, ParenListExpressionNode node)
+    public synchronized Value evaluate(Context cx, ParenListExpressionNode node)
     {
         cx.internalError(node.pos(), "ParenListExpressionNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, ParenExpressionNode node)
+    public synchronized Value evaluate(Context cx, ParenExpressionNode node)
     {
         cx.internalError(node.pos(), "ParenExpressionNode not yet implemented");
         return null;
     }
 
-    public Value evaluate(Context cx, MetaDataNode node)
+    public synchronized Value evaluate(Context cx, MetaDataNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, DocCommentNode node)
+    public synchronized Value evaluate(Context cx, DocCommentNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, ImportNode node)
+    public synchronized Value evaluate(Context cx, ImportNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryProgramNode node)
+    public synchronized Value evaluate(Context cx, BinaryProgramNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryClassDefNode node)
+    public synchronized Value evaluate(Context cx, BinaryClassDefNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, DefaultXMLNamespaceNode node)
+    public synchronized Value evaluate(Context cx, DefaultXMLNamespaceNode node)
     {
         if( node.ref == null )
         {
@@ -5123,7 +5123,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         return exceptionState != null && exceptionState.insideFinally;
     }
 
-    public Value evaluate(Context cx, TypeExpressionNode node)
+    public synchronized Value evaluate(Context cx, TypeExpressionNode node)
     {
         return node.expr.evaluate(cx, this);
     }

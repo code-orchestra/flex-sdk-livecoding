@@ -73,7 +73,7 @@ public class SyntaxTreeEvaluator extends EvaluatorAdapter
     private boolean seenConstructor = false;
     private Map<String, FunctionDefinitionNode> functionMap;
 
-    public Value evaluate(Context cx, PackageDefinitionNode node)
+    public synchronized Value evaluate(Context cx, PackageDefinitionNode node)
     {
         if (lastPackageNode == node)
             lastPackageNode = null;
@@ -85,7 +85,7 @@ public class SyntaxTreeEvaluator extends EvaluatorAdapter
     /**
      * init current classname and seen-constructor state, for multiple-constructor test
      */
-    public Value evaluate(Context cx, ClassDefinitionNode node)
+    public synchronized Value evaluate(Context cx, ClassDefinitionNode node)
     {
         ClassDefinitionNode prev = currentClassNode;
         try
@@ -117,7 +117,7 @@ public class SyntaxTreeEvaluator extends EvaluatorAdapter
      * script is assumed to *follow* generated code (or at least, the generated constructor). If that ordering
      * changes, <strong>this must be modified accordingly (save early location, etc.)</strong>.
      */
-    public Value evaluate(Context cx, FunctionDefinitionNode node)
+    public synchronized Value evaluate(Context cx, FunctionDefinitionNode node)
     {
         FunctionDefinitionNode old = cur_func;
         cur_func = node;
@@ -177,7 +177,7 @@ public class SyntaxTreeEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context cx, IncludeDirectiveNode node)
+    public synchronized Value evaluate(Context cx, IncludeDirectiveNode node)
     {
         super.evaluate(cx, node);
 
@@ -186,7 +186,7 @@ public class SyntaxTreeEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Value evaluate(Context cx, MetaDataNode node)
+    public synchronized Value evaluate(Context cx, MetaDataNode node)
     {
         if (node.data != null)
         {

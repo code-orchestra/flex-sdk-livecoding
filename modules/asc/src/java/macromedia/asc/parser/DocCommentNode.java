@@ -39,7 +39,7 @@ public class DocCommentNode extends MetaDataNode
         is_default = false;
     }
      
-	public Value evaluate( Context cx, Evaluator evaluator )
+	public synchronized Value evaluate( Context cx, Evaluator evaluator )
 	{
 		if( evaluator.checkFeature(cx,this) )
 			return evaluator.evaluate( cx, this );

@@ -89,7 +89,7 @@ public class SyntaxTreeDumper implements Evaluator
         }
     }
 
-    public Value evaluate(Context cx, ApplyTypeExprNode node)
+    public synchronized Value evaluate(Context cx, ApplyTypeExprNode node)
     {
         output("<ApplyTypeExprNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -117,7 +117,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, BlockNode node)
+    public synchronized Value evaluate(Context cx, BlockNode node)
     {
         output("<BlockNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
 
@@ -136,26 +136,26 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, CommentNode node)
+    public synchronized Value evaluate(Context cx, CommentNode node)
     {
         output("<CommentNode type=\"" + node.getType() + "\" comment=\"" + node + "\"" +
                (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;
     }
 
-    public Value evaluate(Context cx, Node node)
+    public synchronized Value evaluate(Context cx, Node node)
     {
         output("<Node" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;
     }
 
-    public Value evaluate(Context cx, IdentifierNode node)
+    public synchronized Value evaluate(Context cx, IdentifierNode node)
     {
         output("<IdentifierNode name=\"" + node.name + "\"/>");
         return null;
     }
 
-    public Value evaluate(Context cx, IncrementNode node)
+    public synchronized Value evaluate(Context cx, IncrementNode node)
     {
         output("<IncrementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") +
                " mode=\"" + modeToString(node.getMode()) + "\">");
@@ -171,13 +171,13 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ThisExpressionNode node)
+    public synchronized Value evaluate(Context cx, ThisExpressionNode node)
     {
         output("<ThisExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;
     }
 
-    public Value evaluate(Context cx, QualifiedIdentifierNode node)
+    public synchronized Value evaluate(Context cx, QualifiedIdentifierNode node)
     {
         if (node.qualifier != null)
         {
@@ -194,7 +194,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, QualifiedExpressionNode node)
+    public synchronized Value evaluate(Context cx, QualifiedExpressionNode node)
     {
         if( node.ref == null)
         {
@@ -204,19 +204,19 @@ public class SyntaxTreeDumper implements Evaluator
         return node.ref;
     }
 
-    public Value evaluate(Context cx, LiteralBooleanNode node)
+    public synchronized Value evaluate(Context cx, LiteralBooleanNode node)
     {
         output("<LiteralBooleanNode value=\"" + node.value + "\"/>");
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralNumberNode node)
+    public synchronized Value evaluate(Context cx, LiteralNumberNode node)
     {
         output("<LiteralNumberNode value=\"" + node.value + "\"/>");
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralStringNode node)
+    public synchronized Value evaluate(Context cx, LiteralStringNode node)
     {
         if (node.value.length() > 0)
         {
@@ -225,20 +225,20 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralNullNode node)
+    public synchronized Value evaluate(Context cx, LiteralNullNode node)
     {
         output("<LiteralNullNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralRegExpNode node)
+    public synchronized Value evaluate(Context cx, LiteralRegExpNode node)
     {
         output("<LiteralRegExpNode value=\"" + node.value + "\"" +
                (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralXMLNode node)
+    public synchronized Value evaluate(Context cx, LiteralXMLNode node)
     {
         output("<LiteralXMLNode is_xmllist=\"" + node.is_xmllist + "\"" +
                (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
@@ -252,7 +252,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, FunctionCommonNode node)
+    public synchronized Value evaluate(Context cx, FunctionCommonNode node)
     {
         output("<FunctionCommonNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -282,13 +282,13 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ParenExpressionNode node)
+    public synchronized Value evaluate(Context cx, ParenExpressionNode node)
     {
         output("<ParenExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;
     }
 
-    public Value evaluate(Context cx, ParenListExpressionNode node)
+    public synchronized Value evaluate(Context cx, ParenListExpressionNode node)
     {
         output("<ParenListExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -301,7 +301,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralObjectNode node)
+    public synchronized Value evaluate(Context cx, LiteralObjectNode node)
     {
         output("<LiteralObjectNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -314,7 +314,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralFieldNode node)
+    public synchronized Value evaluate(Context cx, LiteralFieldNode node)
     {
         output("<LiteralFieldNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -331,7 +331,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LiteralArrayNode node)
+    public synchronized Value evaluate(Context cx, LiteralArrayNode node)
     {
         output("<LiteralArrayNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -344,7 +344,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-	public Value evaluate(Context cx, LiteralVectorNode node)
+	public synchronized Value evaluate(Context cx, LiteralVectorNode node)
     {
         output("<LiteralVectorNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -361,7 +361,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, SuperExpressionNode node)
+    public synchronized Value evaluate(Context cx, SuperExpressionNode node)
     {
         output("<SuperExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
 
@@ -376,7 +376,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, MemberExpressionNode node)
+    public synchronized Value evaluate(Context cx, MemberExpressionNode node)
     {
         output("<MemberExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -404,7 +404,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, InvokeNode node)
+    public synchronized Value evaluate(Context cx, InvokeNode node)
     {
         output("<InvokeNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") +
                " mode=\"" + modeToString(node.getMode()) + "\">");
@@ -420,7 +420,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, CallExpressionNode node)
+    public synchronized Value evaluate(Context cx, CallExpressionNode node)
     {
         output("<CallExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") +
                " is_new=\"" + node.is_new +
@@ -446,7 +446,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, DeleteExpressionNode node)
+    public synchronized Value evaluate(Context cx, DeleteExpressionNode node)
     {
         output("<DeleteExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") +
                " mode=\"" + modeToString(node.getMode()) + "\">");
@@ -462,7 +462,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, GetExpressionNode node)
+    public synchronized Value evaluate(Context cx, GetExpressionNode node)
     {
         output("<GetExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") +
                " is_package=\"" + node.is_package +
@@ -484,7 +484,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, SetExpressionNode node)
+    public synchronized Value evaluate(Context cx, SetExpressionNode node)
     {
         output("<SetExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") +
                " is_constinit=\"" + node.is_constinit +
@@ -514,7 +514,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, UnaryExpressionNode node)
+    public synchronized Value evaluate(Context cx, UnaryExpressionNode node)
     {
         output("<UnaryExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -527,7 +527,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryExpressionNode node)
+    public synchronized Value evaluate(Context cx, BinaryExpressionNode node)
     {
         output("<BinaryExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -544,7 +544,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ConditionalExpressionNode node)
+    public synchronized Value evaluate(Context cx, ConditionalExpressionNode node)
     {
         output("<ConditionalExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -565,7 +565,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ArgumentListNode node)
+    public synchronized Value evaluate(Context cx, ArgumentListNode node)
     {
         output("<ArgumentListNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -580,7 +580,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ListNode node)
+    public synchronized Value evaluate(Context cx, ListNode node)
     {
         output("<ListNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -597,7 +597,7 @@ public class SyntaxTreeDumper implements Evaluator
 
     // Statements
 
-    public Value evaluate(Context cx, StatementListNode node)
+    public synchronized Value evaluate(Context cx, StatementListNode node)
     {
         output("<StatementListNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -628,19 +628,19 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, EmptyElementNode node)
+    public synchronized Value evaluate(Context cx, EmptyElementNode node)
     {
         output("<EmptyElementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;
     }
 
-    public Value evaluate(Context cx, EmptyStatementNode node)
+    public synchronized Value evaluate(Context cx, EmptyStatementNode node)
     {
         output("<EmptyStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;
     }
 
-    public Value evaluate(Context cx, ExpressionStatementNode node)
+    public synchronized Value evaluate(Context cx, ExpressionStatementNode node)
     {
         output("<ExpressionStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
 
@@ -655,7 +655,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, SuperStatementNode node)
+    public synchronized Value evaluate(Context cx, SuperStatementNode node)
     {
         output("<SuperStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
 
@@ -670,7 +670,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, LabeledStatementNode node)
+    public synchronized Value evaluate(Context cx, LabeledStatementNode node)
     {
         output("<LabeledStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -687,7 +687,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, IfStatementNode node)
+    public synchronized Value evaluate(Context cx, IfStatementNode node)
     {
         output("<IfStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -708,7 +708,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, SwitchStatementNode node)
+    public synchronized Value evaluate(Context cx, SwitchStatementNode node)
     {
         output("<SwitchStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -725,7 +725,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, CaseLabelNode node)
+    public synchronized Value evaluate(Context cx, CaseLabelNode node)
     {
         output("<CaseLabelNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -738,7 +738,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, DoStatementNode node)
+    public synchronized Value evaluate(Context cx, DoStatementNode node)
     {
         output("<DoStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -755,7 +755,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, WhileStatementNode node)
+    public synchronized Value evaluate(Context cx, WhileStatementNode node)
     {
         output("<WhileStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -772,7 +772,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ForStatementNode node)
+    public synchronized Value evaluate(Context cx, ForStatementNode node)
     {
         output("<ForStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -797,7 +797,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, WithStatementNode node)
+    public synchronized Value evaluate(Context cx, WithStatementNode node)
     {
         output("<WithStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -814,7 +814,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ContinueStatementNode node)
+    public synchronized Value evaluate(Context cx, ContinueStatementNode node)
     {
         output("<ContinueStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
 
@@ -829,7 +829,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, BreakStatementNode node)
+    public synchronized Value evaluate(Context cx, BreakStatementNode node)
     {
         output("<BreakStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
 
@@ -844,7 +844,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ReturnStatementNode node)
+    public synchronized Value evaluate(Context cx, ReturnStatementNode node)
     {
         output("<ReturnStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         if (node.expr != null)
@@ -859,7 +859,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ThrowStatementNode node)
+    public synchronized Value evaluate(Context cx, ThrowStatementNode node)
     {
         output("<ThrowStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
 
@@ -874,7 +874,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, TryStatementNode node)
+    public synchronized Value evaluate(Context cx, TryStatementNode node)
     {
         output("<TryStatementNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -897,7 +897,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, CatchClauseNode node)
+    public synchronized Value evaluate(Context cx, CatchClauseNode node)
     {
         output("<CatchClauseNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -914,7 +914,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, FinallyClauseNode node)
+    public synchronized Value evaluate(Context cx, FinallyClauseNode node)
     {
         output("<FinallyClauseNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
 
@@ -929,7 +929,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, UseDirectiveNode node)
+    public synchronized Value evaluate(Context cx, UseDirectiveNode node)
     {
         output("<UseDirectiveNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
 
@@ -960,7 +960,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, IncludeDirectiveNode node)
+    public synchronized Value evaluate(Context cx, IncludeDirectiveNode node)
     {
         output("<IncludeDirectiveNode in_this_include=\"" + node.in_this_include + "\"" +
                (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
@@ -982,7 +982,7 @@ public class SyntaxTreeDumper implements Evaluator
 
     // Definitions
 
-    public Value evaluate(Context cx, ImportDirectiveNode node)
+    public synchronized Value evaluate(Context cx, ImportDirectiveNode node)
     {
         output("<ImportDirectiveNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1010,7 +1010,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, AttributeListNode node)
+    public synchronized Value evaluate(Context cx, AttributeListNode node)
     {
         StringBuilder buffer = new StringBuilder("<AttributeListNode");
         if (node.hasIntrinsic)
@@ -1083,7 +1083,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, VariableDefinitionNode node)
+    public synchronized Value evaluate(Context cx, VariableDefinitionNode node)
     {
         output("<VariableDefinitionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1120,7 +1120,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, VariableBindingNode node)
+    public synchronized Value evaluate(Context cx, VariableBindingNode node)
     {
         output("<VariableBindingNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1137,7 +1137,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, UntypedVariableBindingNode node)
+    public synchronized Value evaluate(Context cx, UntypedVariableBindingNode node)
     {
         output("<UntypedVariableBindingNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1154,7 +1154,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, TypeIdentifierNode node)
+    public synchronized Value evaluate(Context cx, TypeIdentifierNode node)
     {
         output("<TypeIdentifierNode name=\"" + node.name + "\"" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
 
@@ -1169,7 +1169,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, TypedIdentifierNode node)
+    public synchronized Value evaluate(Context cx, TypedIdentifierNode node)
     {
         output("<TypedIdentifierNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1186,12 +1186,12 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
+    public synchronized Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
     {
         return evaluate(node, cx, "BinaryFunctionDefinitionNode");
     }
 
-    public Value evaluate(Context cx, FunctionDefinitionNode node)
+    public synchronized Value evaluate(Context cx, FunctionDefinitionNode node)
     {
         return evaluate(node, cx, "FunctionDefinitionNode");
     }
@@ -1245,7 +1245,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, FunctionNameNode node)
+    public synchronized Value evaluate(Context cx, FunctionNameNode node)
     {
         output("<FunctionNameNode kind=\"" + node.kind + "\"" +
                (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
@@ -1259,7 +1259,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, FunctionSignatureNode node)
+    public synchronized Value evaluate(Context cx, FunctionSignatureNode node)
     {
         output("<FunctionSignatureNode no_anno=\"" + node.no_anno +
                "\" void_anno=\"" + node.void_anno + "\"" +
@@ -1286,7 +1286,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ParameterNode node)
+    public synchronized Value evaluate(Context cx, ParameterNode node)
     {
         if ((0 <= node.kind) && (node.kind < Tokens.tokenClassNames.length))
         {
@@ -1326,7 +1326,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, RestExpressionNode node)
+    public synchronized Value evaluate(Context cx, RestExpressionNode node)
     {
         output("<RestExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1339,7 +1339,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, RestParameterNode node)
+    public synchronized Value evaluate(Context cx, RestParameterNode node)
     {
         output("<RestParameterNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1352,17 +1352,17 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryClassDefNode node)
+    public synchronized Value evaluate(Context cx, BinaryClassDefNode node)
     {
         return evaluate(node, cx, "BinaryClassDefNode");
     }
 
-    public Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
     {
         return evaluate(node, cx, "BinaryInterfaceDefinitionNode");
     }
 
-    public Value evaluate(Context cx, ClassDefinitionNode node)
+    public synchronized Value evaluate(Context cx, ClassDefinitionNode node)
     {
         return evaluate(node, cx, "ClassDefinitionNode");
     }
@@ -1508,7 +1508,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, InterfaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, InterfaceDefinitionNode node)
     {
         if ((node.name != null) && (node.name.name != null))
         {
@@ -1571,7 +1571,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ClassNameNode node)
+    public synchronized Value evaluate(Context cx, ClassNameNode node)
     {
         output("<ClassNameNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1588,7 +1588,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, InheritanceNode node)
+    public synchronized Value evaluate(Context cx, InheritanceNode node)
     {
         output("<InheritanceNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1605,7 +1605,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, NamespaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, NamespaceDefinitionNode node)
     {
         output("<NamespaceDefinitionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1651,7 +1651,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ConfigNamespaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, ConfigNamespaceDefinitionNode node)
     {
         output("<ConfigNamespaceDefinitionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1697,7 +1697,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, PackageDefinitionNode node)
+    public synchronized Value evaluate(Context cx, PackageDefinitionNode node)
     {
         output("<PackageDefinitionNode>");
         indent++;
@@ -1731,7 +1731,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, PackageIdentifiersNode node)
+    public synchronized Value evaluate(Context cx, PackageIdentifiersNode node)
     {
         output("<PackageIdentifiersNode pkg_part=\"" + node.pkg_part +
                "\" def_part=\"" + node.def_part +
@@ -1752,7 +1752,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, PackageNameNode node)
+    public synchronized Value evaluate(Context cx, PackageNameNode node)
     {
         output("<PackageNameNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1783,7 +1783,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ProgramNode node)
+    public synchronized Value evaluate(Context cx, ProgramNode node)
     {
         output("<ProgramNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1846,25 +1846,25 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ErrorNode node)
+    public synchronized Value evaluate(Context cx, ErrorNode node)
     {
         output("<ErrorNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;
     }
 
-    public Value evaluate(Context cx, ToObjectNode node)
+    public synchronized Value evaluate(Context cx, ToObjectNode node)
     {
         output("<ToObjectNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;
     }
 
-    public Value evaluate(Context cx, LoadRegisterNode node)
+    public synchronized Value evaluate(Context cx, LoadRegisterNode node)
     {
         output("<LoadRegisterNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;
     }
 
-    public Value evaluate(Context cx, StoreRegisterNode node)
+    public synchronized Value evaluate(Context cx, StoreRegisterNode node)
     {
         output("<StoreRegisterNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1877,7 +1877,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, BoxNode node)
+    public synchronized Value evaluate(Context cx, BoxNode node)
     {
         output("<BoxNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1890,7 +1890,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, CoerceNode node)
+    public synchronized Value evaluate(Context cx, CoerceNode node)
     {
         output("<CoerceNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1903,7 +1903,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, PragmaNode node)
+    public synchronized Value evaluate(Context cx, PragmaNode node)
     {
         output("<PragmaNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1916,7 +1916,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, PragmaExpressionNode node)
+    public synchronized Value evaluate(Context cx, PragmaExpressionNode node)
     {
         output("<PragmaExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1929,7 +1929,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ParameterListNode node)
+    public synchronized Value evaluate(Context cx, ParameterListNode node)
     {
         output("<ParameterListNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1947,7 +1947,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, MetaDataNode node)
+    public synchronized Value evaluate(Context cx, MetaDataNode node)
     {
         output("<MetaDataNode id=\"" + node.getId() + "\">");
 
@@ -1962,7 +1962,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context context, DefaultXMLNamespaceNode node)
+    public synchronized Value evaluate(Context context, DefaultXMLNamespaceNode node)
     {
         output("<DefaultXMLNamespaceNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -1977,7 +1977,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, DocCommentNode node)
+    public synchronized Value evaluate(Context cx, DocCommentNode node)
     {
         if ((node.data != null) && 
             (node.data.elementlist != null) &&
@@ -1998,7 +1998,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, ImportNode node)
+    public synchronized Value evaluate(Context cx, ImportNode node)
     {
         String id = node.filespec.value;
         QName qname = new QName(cx.publicNamespace(), id);
@@ -2006,7 +2006,7 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryProgramNode node)
+    public synchronized Value evaluate(Context cx, BinaryProgramNode node)
     {
         output("<BinaryProgramNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -2050,18 +2050,18 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, RegisterNode node)
+    public synchronized Value evaluate(Context cx, RegisterNode node)
     {
         output("<RegisterNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;
     }
 
-    public Value evaluate(Context cx, HasNextNode node)
+    public synchronized Value evaluate(Context cx, HasNextNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, TypeExpressionNode node)
+    public synchronized Value evaluate(Context cx, TypeExpressionNode node)
     {
         output("<TypeExpressionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") +
                " is_nullable=\"" + node.is_nullable +
@@ -2074,13 +2074,13 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
     
-    public Value evaluate(Context cx, UseNumericNode node)
+    public synchronized Value evaluate(Context cx, UseNumericNode node)
     {
         output("<UseNumericNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;
     }
 
-    public Value evaluate(Context cx, UsePragmaNode node)
+    public synchronized Value evaluate(Context cx, UsePragmaNode node)
     {
         output("<UsePragmaNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + ">");
         indent++;
@@ -2100,13 +2100,13 @@ public class SyntaxTreeDumper implements Evaluator
         return null;
     }
 
-    public Value evaluate(Context cx, UsePrecisionNode node)
+    public synchronized Value evaluate(Context cx, UsePrecisionNode node)
     {
         output("<UsePrecisionNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;
     }
 
-    public Value evaluate(Context cx, UseRoundingNode node)
+    public synchronized Value evaluate(Context cx, UseRoundingNode node)
     {
         output("<UseRoundingNode" + (showPositions ? " position=\"" + node.pos() + "\"" : "") + "/>");
         return null;

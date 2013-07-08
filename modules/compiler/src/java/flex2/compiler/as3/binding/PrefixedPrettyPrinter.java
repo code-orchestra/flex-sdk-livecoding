@@ -49,7 +49,7 @@ public class PrefixedPrettyPrinter extends PrettyPrinter
         this.prefix = prefix;
     }
 
-    public Value evaluate(Context cx, CallExpressionNode node)
+    public synchronized Value evaluate(Context cx, CallExpressionNode node)
     {
         if (!node.is_new)
         {
@@ -61,7 +61,7 @@ public class PrefixedPrettyPrinter extends PrettyPrinter
         return null;
     }
 
-	public Value evaluate(Context cx, GetExpressionNode node)
+	public synchronized Value evaluate(Context cx, GetExpressionNode node)
 	{
         if ((node.base == null) && !isStatic(cx, node))
         {
@@ -73,7 +73,7 @@ public class PrefixedPrettyPrinter extends PrettyPrinter
 		return null;
 	}
 
-	public Value evaluate(Context cx, SetExpressionNode node)
+	public synchronized Value evaluate(Context cx, SetExpressionNode node)
 	{
         if ((node.base == null) && !isStatic(cx, node))
         {
@@ -102,7 +102,7 @@ public class PrefixedPrettyPrinter extends PrettyPrinter
         return result;
     }
 
-	public Value evaluate(Context cx, ThisExpressionNode node)
+	public synchronized Value evaluate(Context cx, ThisExpressionNode node)
     {
         out.print(prefix);
         return null;

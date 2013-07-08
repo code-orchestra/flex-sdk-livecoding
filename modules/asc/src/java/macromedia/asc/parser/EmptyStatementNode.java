@@ -37,7 +37,7 @@ public class EmptyStatementNode extends Node
 		return singleton;
 	}
 	
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		return null;
 	}

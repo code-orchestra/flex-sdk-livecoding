@@ -77,7 +77,7 @@ public class IdentifierNode extends Node
 		return authOrigTypeToken;
 	}
 	
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		if (evaluator.checkFeature(cx, this))
 		{

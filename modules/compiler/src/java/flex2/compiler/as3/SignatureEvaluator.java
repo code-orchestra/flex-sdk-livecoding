@@ -302,7 +302,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return result;
     }
 
-    public Value evaluate(Context unused_cx, ProgramNode node)
+    public synchronized Value evaluate(Context unused_cx, ProgramNode node)
     {
         final Context cx = node.cx;
 
@@ -332,7 +332,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 //    | |/ /  __/ | | | | | | | |_| | (_) | | | | |\  | (_) | (_| |  __/\__ \
 //    |___/ \___|_| |_|_| |_|_|\__|_|\___/|_| |_\_| \_/\___/ \__,_|\___||___/
 
-    public Value evaluate(Context unused_cx, ClassDefinitionNode node)
+    public synchronized Value evaluate(Context unused_cx, ClassDefinitionNode node)
     {
         final Context cx = node.cx;
 
@@ -414,7 +414,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public Value evaluate(Context cx, InterfaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, InterfaceDefinitionNode node)
     {
         if (humanReadable)
         {
@@ -479,7 +479,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public Value evaluate(Context unused_cx, FunctionDefinitionNode node)
+    public synchronized Value evaluate(Context unused_cx, FunctionDefinitionNode node)
     {
         final Context cx = node.cx;
 
@@ -699,7 +699,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public Value evaluate(Context cx, VariableDefinitionNode node)
+    public synchronized Value evaluate(Context cx, VariableDefinitionNode node)
     {
         // ATTRIBUTES and USER NAMESPACE
         // if (node.attrs != null)
@@ -812,7 +812,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public Value evaluate(Context cx, ImportDirectiveNode node)
+    public synchronized Value evaluate(Context cx, ImportDirectiveNode node)
     {
         assert node.attrs == null : "Sanity Failed";
 
@@ -840,7 +840,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public Value evaluate(Context cx, NamespaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, NamespaceDefinitionNode node)
     {
         if (humanReadable)
         {
@@ -879,7 +879,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     }
 
     // e.g. "config namespace FOO"
-    public Value evaluate(Context cx, ConfigNamespaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, ConfigNamespaceDefinitionNode node)
     {
         // they are for conditional compilation, unusable, and only part
         // of the syntax tree for error checking (prevent namespace shadowing)
@@ -889,7 +889,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
     private PackageDefinitionNode currentPackage;
 
-    public Value evaluate(Context cx, PackageDefinitionNode node)
+    public synchronized Value evaluate(Context cx, PackageDefinitionNode node)
     {
         assert node.attrs == null : "Sanity Failed";
 
@@ -938,7 +938,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     // * the parser will accept "use namespace (true ? AS3 : AS3);" (UGHHHHH)
     //
     //TODO add use directives into a list and emit later? is that how they work? (are they scoped?)
-    public Value evaluate(Context cx, UseDirectiveNode node)
+    public synchronized Value evaluate(Context cx, UseDirectiveNode node)
     {
         assert node.attrs == null : "Sanity Failed";
 
@@ -970,7 +970,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public Value evaluate(Context cx, MetaDataNode node)
+    public synchronized Value evaluate(Context cx, MetaDataNode node)
     {
         // this fills out node.id and node.values
         if (node.data != null)
@@ -1011,7 +1011,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
      *    ...
      * }
      */
-    public Value evaluate(Context cx, ExpressionStatementNode node)
+    public synchronized Value evaluate(Context cx, ExpressionStatementNode node)
     {
         return null;
     }
@@ -1019,7 +1019,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     /**
      * default xml namespace = new Namespace(...);
      */
-    public Value evaluate(Context cx, DefaultXMLNamespaceNode node)
+    public synchronized Value evaluate(Context cx, DefaultXMLNamespaceNode node)
     {
         // I am pretty sure that the existence or value of this directive
         // cannot affect the signature of the current class (when used outside
@@ -1028,7 +1028,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public Value evaluate(Context cx, TryStatementNode node)
+    public synchronized Value evaluate(Context cx, TryStatementNode node)
     {
         // these can show up as top-level statements in classes, and do not affect signature
         // ideally I'd like to check that the statement is either top level and return null,
@@ -1038,7 +1038,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public Value evaluate(Context cx, CatchClauseNode node)
+    public synchronized Value evaluate(Context cx, CatchClauseNode node)
     {
         // see the comments above for TryStatementNode... same reasoning
         //assert false : "Should be an unreachable codepath";
@@ -1052,7 +1052,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 //    \ \_/ / |_| | | |  __/ |    | |\  | (_) | (_| |  __/\__ \
 //     \___/ \__|_| |_|\___|_|    \_| \_/\___/ \__,_|\___||___/
 
-    public Value evaluate(Context cx, ArgumentListNode node)
+    public synchronized Value evaluate(Context cx, ArgumentListNode node)
     {
         for(Iterator<Node> iter = node.items.iterator(); iter.hasNext(); )
         {
@@ -1076,7 +1076,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     }
 
 
-    public Value evaluate(Context cx, ListNode node)
+    public synchronized Value evaluate(Context cx, ListNode node)
     {
         for (Iterator<Node> iter = node.items.iterator(); iter.hasNext(); )
         {
@@ -1135,7 +1135,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public Value evaluate(Context cx, GetExpressionNode node)
+    public synchronized Value evaluate(Context cx, GetExpressionNode node)
     {
         if (node.expr != null)
         {
@@ -1154,7 +1154,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
 
     // e.g., mx_internal::bar.Baz
-    public Value evaluate(Context cx, QualifiedIdentifierNode node)
+    public synchronized Value evaluate(Context cx, QualifiedIdentifierNode node)
     {
         if (node.qualifier != null)
         {
@@ -1180,7 +1180,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     //        xmldata.@foo::["id"]
     //        xmldata.@*[1]
     //        xdata.@id
-    public Value evaluate(Context cx, QualifiedExpressionNode node)
+    public synchronized Value evaluate(Context cx, QualifiedExpressionNode node)
     {
         out.append("@");
         evaluate(cx, (QualifiedIdentifierNode)node);
@@ -1197,7 +1197,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
 
     // e.g., interface foo extends bar.baz ("bar." is the base)
-    public Value evaluate(Context cx, MemberExpressionNode node)
+    public synchronized Value evaluate(Context cx, MemberExpressionNode node)
     {
         if (node.base != null)
         {
@@ -1218,7 +1218,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     /**
      * Basically the same as MemberExpressionNodes, but only for type expressions.
      */
-    public Value evaluate(Context cx, TypeExpressionNode node)
+    public synchronized Value evaluate(Context cx, TypeExpressionNode node)
     {
         return super.evaluate(cx, node);
     }
@@ -1227,7 +1227,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     /**
      * Attributes are printed in (alphabetical) order.
      */
-    public Value evaluate(Context cx, AttributeListNode node)
+    public synchronized Value evaluate(Context cx, AttributeListNode node)
     {
         final String attrs = NodeMagic.getSortedAttributeString(node, " ");
         if(attrs.length() > 0)
@@ -1239,7 +1239,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     }
 
     // Vector.<int>
-    public Value evaluate(Context cx, ApplyTypeExprNode node)
+    public synchronized Value evaluate(Context cx, ApplyTypeExprNode node)
     {
         // e.g. Vector
         if (node.expr != null)
@@ -1270,14 +1270,14 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 //  if a variable id typed to int and changes to String, it will diff; if it is typed to */Object,
 //  then it may not matter that it changed type.
 
-    public Value evaluate(Context cx, IdentifierNode node)
+    public synchronized Value evaluate(Context cx, IdentifierNode node)
     {
         out.append(node.name);
         return null;
     }
 
 
-    public Value evaluate(Context cx, LiteralArrayNode node)
+    public synchronized Value evaluate(Context cx, LiteralArrayNode node)
     {
         out.append("[");
         {
@@ -1289,7 +1289,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     }
 
 
-    public Value evaluate(Context cx, LiteralBooleanNode node)
+    public synchronized Value evaluate(Context cx, LiteralBooleanNode node)
     {
         out.append(node.value);
         return null;
@@ -1297,7 +1297,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
 
     // these are the key:value pairs in a LiteralObjectNode
-    public Value evaluate(Context cx, LiteralFieldNode node)
+    public synchronized Value evaluate(Context cx, LiteralFieldNode node)
     {
         if (node.name != null)
             node.name.evaluate(cx, this);
@@ -1312,21 +1312,21 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     }
 
 
-    public Value evaluate(Context cx, LiteralNullNode node)
+    public synchronized Value evaluate(Context cx, LiteralNullNode node)
     {
         out.append("null");
         return null;
     }
 
 
-    public Value evaluate(Context cx, LiteralNumberNode node)
+    public synchronized Value evaluate(Context cx, LiteralNumberNode node)
     {
         out.append(node.value);
         return null;
     }
 
 
-    public Value evaluate(Context cx, LiteralObjectNode node)
+    public synchronized Value evaluate(Context cx, LiteralObjectNode node)
     {
         out.append('{');
         {
@@ -1338,14 +1338,14 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     }
 
 
-    public Value evaluate(Context cx, LiteralRegExpNode node)
+    public synchronized Value evaluate(Context cx, LiteralRegExpNode node)
     {
         out.append(node.value);
         return null;
     }
 
 
-    public Value evaluate(Context cx, LiteralStringNode node)
+    public synchronized Value evaluate(Context cx, LiteralStringNode node)
     {
         // TODO I'd like to be able to print quotes someday... meaning checking for LSNs in places
         //      like InterfaceDefNodes and ClassDefNodes, and MemberExprNodes, and overriding
@@ -1362,257 +1362,257 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public Value evaluate(Context cx, Node node)
+    public synchronized Value evaluate(Context cx, Node node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, VariableBindingNode node)
+    public synchronized Value evaluate(Context cx, VariableBindingNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, UntypedVariableBindingNode node)
+    public synchronized Value evaluate(Context cx, UntypedVariableBindingNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, TypedIdentifierNode node)
+    public synchronized Value evaluate(Context cx, TypedIdentifierNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, ParenExpressionNode node)
+    public synchronized Value evaluate(Context cx, ParenExpressionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, ParenListExpressionNode node)
+    public synchronized Value evaluate(Context cx, ParenListExpressionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, FunctionSignatureNode node)
+    public synchronized Value evaluate(Context cx, FunctionSignatureNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, FunctionCommonNode node)
+    public synchronized Value evaluate(Context cx, FunctionCommonNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, PackageIdentifiersNode node)
+    public synchronized Value evaluate(Context cx, PackageIdentifiersNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, PackageNameNode node)
+    public synchronized Value evaluate(Context cx, PackageNameNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, ClassNameNode node)
+    public synchronized Value evaluate(Context cx, ClassNameNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, FunctionNameNode node)
+    public synchronized Value evaluate(Context cx, FunctionNameNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, ImportNode node)
+    public synchronized Value evaluate(Context cx, ImportNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, ReturnStatementNode node)
+    public synchronized Value evaluate(Context cx, ReturnStatementNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, SuperExpressionNode node)
+    public synchronized Value evaluate(Context cx, SuperExpressionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, SuperStatementNode node)
+    public synchronized Value evaluate(Context cx, SuperStatementNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, SwitchStatementNode node)
+    public synchronized Value evaluate(Context cx, SwitchStatementNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, ThisExpressionNode node)
+    public synchronized Value evaluate(Context cx, ThisExpressionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, ThrowStatementNode node)
+    public synchronized Value evaluate(Context cx, ThrowStatementNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, UnaryExpressionNode node)
+    public synchronized Value evaluate(Context cx, UnaryExpressionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, WhileStatementNode node)
+    public synchronized Value evaluate(Context cx, WhileStatementNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, WithStatementNode node)
+    public synchronized Value evaluate(Context cx, WithStatementNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, DeleteExpressionNode node)
+    public synchronized Value evaluate(Context cx, DeleteExpressionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, DoStatementNode node)
+    public synchronized Value evaluate(Context cx, DoStatementNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, FinallyClauseNode node)
+    public synchronized Value evaluate(Context cx, FinallyClauseNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, ForStatementNode node)
+    public synchronized Value evaluate(Context cx, ForStatementNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, IfStatementNode node)
+    public synchronized Value evaluate(Context cx, IfStatementNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, IncrementNode node)
+    public synchronized Value evaluate(Context cx, IncrementNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, RestParameterNode node)
+    public synchronized Value evaluate(Context cx, RestParameterNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BreakStatementNode node)
+    public synchronized Value evaluate(Context cx, BreakStatementNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, CallExpressionNode node)
+    public synchronized Value evaluate(Context cx, CallExpressionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, CaseLabelNode node)
+    public synchronized Value evaluate(Context cx, CaseLabelNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, ConditionalExpressionNode node)
+    public synchronized Value evaluate(Context cx, ConditionalExpressionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, ContinueStatementNode node)
+    public synchronized Value evaluate(Context cx, ContinueStatementNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryClassDefNode node)
+    public synchronized Value evaluate(Context cx, BinaryClassDefNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryExpressionNode node)
+    public synchronized Value evaluate(Context cx, BinaryExpressionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
+    public synchronized Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryProgramNode node)
-    {
-        return null;
-    }
-
-    // used in for..in loops
-    public Value evaluate(Context cx, HasNextNode node)
+    public synchronized Value evaluate(Context cx, BinaryProgramNode node)
     {
         return null;
     }
 
     // used in for..in loops
-    public Value evaluate(Context cx, LoadRegisterNode node)
+    public synchronized Value evaluate(Context cx, HasNextNode node)
     {
         return null;
     }
 
     // used in for..in loops
-    public Value evaluate(Context cx, StoreRegisterNode node)
+    public synchronized Value evaluate(Context cx, LoadRegisterNode node)
     {
         return null;
     }
 
     // used in for..in loops
-    public Value evaluate(Context cx, RegisterNode node)
+    public synchronized Value evaluate(Context cx, StoreRegisterNode node)
+    {
+        return null;
+    }
+
+    // used in for..in loops
+    public synchronized Value evaluate(Context cx, RegisterNode node)
     {
         return null;
     }
 
     // seems like these are unused in syntax trees, just used during parsing/generation of classes
-    public Value evaluate(Context cx, InheritanceNode node)
+    public synchronized Value evaluate(Context cx, InheritanceNode node)
     {
         return null;
     }
 
     // see DataBindingFirtPassEvaluator.java::evaluate(Context context, InvokeNode node)
-    public Value evaluate(Context cx, InvokeNode node)
+    public synchronized Value evaluate(Context cx, InvokeNode node)
     {
         return null;
     }
 
     // evaluated implicitly FunctionDefinitionNode
-    public Value evaluate(Context cx, ParameterListNode node)
+    public synchronized Value evaluate(Context cx, ParameterListNode node)
     {
         return null;
     }
 
     // evaluated implicitly FunctionDefinitionNode
-    public Value evaluate(Context cx, ParameterNode node)
+    public synchronized Value evaluate(Context cx, ParameterNode node)
     {
         return null;
     }
 
     // evaluated implicitly FunctionDefinitionNode
-    public Value evaluate(Context cx, RestExpressionNode node)
+    public synchronized Value evaluate(Context cx, RestExpressionNode node)
     {
         return null;
     }
 
     // abusive old-school labels for break and continue statements
-    public Value evaluate(Context cx, LabeledStatementNode node)
+    public synchronized Value evaluate(Context cx, LabeledStatementNode node)
     {
         return null;
     }
@@ -1621,13 +1621,13 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     // TODO BoxNodes do not seem to be created ANYWHERE in ASC or MXMLC
     //      Remove from Evaluator?
     // not part of AS3 syntax
-    public Value evaluate(Context cx, BoxNode node)
+    public synchronized Value evaluate(Context cx, BoxNode node)
     {
         return null;
     }
 
     // not part of AS3 syntax
-    public Value evaluate(Context cx, CoerceNode node)
+    public synchronized Value evaluate(Context cx, CoerceNode node)
     {
         return null;
     }
@@ -1635,29 +1635,29 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     // TODO ToObjectNodes do not seem to be created ANYWHERE in ASC or MXMLC
     //      Remove from Evaluator?
     // not part of AS3 syntax
-    public Value evaluate(Context cx, ToObjectNode node)
+    public synchronized Value evaluate(Context cx, ToObjectNode node)
     {
         return null;
     }
 
     // unimplemented in AS3 syntax: "use pragmaDirective"
-    public Value evaluate(Context cx, PragmaNode node)
+    public synchronized Value evaluate(Context cx, PragmaNode node)
     {
         return null;
     }
 
     // unimplemented in AS3 syntax: "use pragmaDirective"
-    public Value evaluate(Context cx, PragmaExpressionNode node)
+    public synchronized Value evaluate(Context cx, PragmaExpressionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, SetExpressionNode node)
+    public synchronized Value evaluate(Context cx, SetExpressionNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, StatementListNode statementList)
+    public synchronized Value evaluate(Context cx, StatementListNode statementList)
     {
         StringBuilder originalOut = out;
 
@@ -1854,35 +1854,35 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         super.setLocalizationManager(l10n);
     }
 
-    public Value evaluate(Context cx, DocCommentNode node)
+    public synchronized Value evaluate(Context cx, DocCommentNode node)
     {
         return super.evaluate(cx, node);
     }
 
-    public Value evaluate(Context cx, EmptyStatementNode node)
+    public synchronized Value evaluate(Context cx, EmptyStatementNode node)
     {
         return super.evaluate(cx, node);
     }
 
     // [1, 2, , 4] -- where 3 is an EmptyElementNode
-    public Value evaluate(Context cx, EmptyElementNode node)
+    public synchronized Value evaluate(Context cx, EmptyElementNode node)
     {
         return super.evaluate(cx, node);
     }
 
-    public Value evaluate(Context cx, IncludeDirectiveNode node)
+    public synchronized Value evaluate(Context cx, IncludeDirectiveNode node)
     {
         return super.evaluate(cx, node);
     }
 
-    public Value evaluate(Context cx, LiteralXMLNode node)
+    public synchronized Value evaluate(Context cx, LiteralXMLNode node)
     {
         return super.evaluate(cx, node);
     }
 
     // TODO I'd like to find a way to generate one of these...
     //      should I catch this node and assume that the signature is not valid?
-    public Value evaluate(Context cx, ErrorNode node)
+    public synchronized Value evaluate(Context cx, ErrorNode node)
     {
         return super.evaluate(cx, node);
     }

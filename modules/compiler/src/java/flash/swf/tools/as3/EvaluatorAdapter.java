@@ -51,21 +51,21 @@ public abstract class EvaluatorAdapter implements Evaluator
 
 	// Base node
 
-	public Value evaluate(Context cx, Node node)
+	public synchronized Value evaluate(Context cx, Node node)
 	{
 		return null;
 	}
 
 	// Expression evaluators
 
-	public Value evaluate(Context cx, IdentifierNode node)
+	public synchronized Value evaluate(Context cx, IdentifierNode node)
 	{
 		return null;
 	}
 
 	// Expression evaluators
 
-	public Value evaluate(Context cx, IncrementNode node)
+	public synchronized Value evaluate(Context cx, IncrementNode node)
 	{
 		if (node.expr != null)
 		{
@@ -74,12 +74,12 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, ThisExpressionNode node)
+	public synchronized Value evaluate(Context cx, ThisExpressionNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, QualifiedIdentifierNode node)
+	public synchronized Value evaluate(Context cx, QualifiedIdentifierNode node)
 	{
 		if (node.qualifier != null)
 		{
@@ -88,7 +88,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-    public Value evaluate(Context cx, QualifiedExpressionNode node)
+    public synchronized Value evaluate(Context cx, QualifiedExpressionNode node)
     {
         if( node.ref == null)
         {
@@ -98,32 +98,32 @@ public abstract class EvaluatorAdapter implements Evaluator
         return node.ref;
     }
 
-	public Value evaluate(Context cx, LiteralBooleanNode node)
+	public synchronized Value evaluate(Context cx, LiteralBooleanNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralNumberNode node)
+	public synchronized Value evaluate(Context cx, LiteralNumberNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralStringNode node)
+	public synchronized Value evaluate(Context cx, LiteralStringNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralNullNode node)
+	public synchronized Value evaluate(Context cx, LiteralNullNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralRegExpNode node)
+	public synchronized Value evaluate(Context cx, LiteralRegExpNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralXMLNode node)
+	public synchronized Value evaluate(Context cx, LiteralXMLNode node)
 	{
 		if (node.list != null)
 		{
@@ -132,7 +132,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context unused_cx, FunctionCommonNode node)
+	public synchronized Value evaluate(Context unused_cx, FunctionCommonNode node)
 	{
 		Context cx = node.cx;
 
@@ -147,12 +147,12 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, ParenExpressionNode node)
+	public synchronized Value evaluate(Context cx, ParenExpressionNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, ParenListExpressionNode node)
+	public synchronized Value evaluate(Context cx, ParenListExpressionNode node)
 	{
 		if (node.expr != null)
 		{
@@ -161,7 +161,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralObjectNode node)
+	public synchronized Value evaluate(Context cx, LiteralObjectNode node)
 	{
 		if (node.fieldlist != null)
 		{
@@ -170,7 +170,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralFieldNode node)
+	public synchronized Value evaluate(Context cx, LiteralFieldNode node)
 	{
 		if (node.name != null)
 		{
@@ -183,7 +183,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralArrayNode node)
+	public synchronized Value evaluate(Context cx, LiteralArrayNode node)
 	{
 		if (node.elementlist != null)
 		{
@@ -192,7 +192,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, LiteralVectorNode node)
+	public synchronized Value evaluate(Context cx, LiteralVectorNode node)
 	{
 		node.type.evaluate(cx,this);
 
@@ -203,7 +203,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, SuperExpressionNode node)
+	public synchronized Value evaluate(Context cx, SuperExpressionNode node)
 	{
 		if (node.expr != null)
 		{
@@ -212,7 +212,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, MemberExpressionNode node)
+	public synchronized Value evaluate(Context cx, MemberExpressionNode node)
 	{
 		if (node.base != null)
 		{
@@ -225,7 +225,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, InvokeNode node)
+	public synchronized Value evaluate(Context cx, InvokeNode node)
 	{
 		if (node.args != null)
 		{
@@ -234,38 +234,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, CallExpressionNode node)
-	{
-		if (node.expr != null)
-		{
-			node.expr.evaluate(cx, this);
-		}
-		if (node.args != null)
-		{
-			node.args.evaluate(cx, this);
-		}
-		return null;
-	}
-
-	public Value evaluate(Context cx, DeleteExpressionNode node)
-	{
-		if (node.expr != null)
-		{
-			node.expr.evaluate(cx, this);
-		}
-		return null;
-	}
-
-	public Value evaluate(Context cx, GetExpressionNode node)
-	{
-		if (node.expr != null)
-		{
-			node.expr.evaluate(cx, this);
-		}
-		return null;
-	}
-
-	public Value evaluate(Context cx, SetExpressionNode node)
+	public synchronized Value evaluate(Context cx, CallExpressionNode node)
 	{
 		if (node.expr != null)
 		{
@@ -278,7 +247,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, UnaryExpressionNode node)
+	public synchronized Value evaluate(Context cx, DeleteExpressionNode node)
 	{
 		if (node.expr != null)
 		{
@@ -287,7 +256,38 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, BinaryExpressionNode node)
+	public synchronized Value evaluate(Context cx, GetExpressionNode node)
+	{
+		if (node.expr != null)
+		{
+			node.expr.evaluate(cx, this);
+		}
+		return null;
+	}
+
+	public synchronized Value evaluate(Context cx, SetExpressionNode node)
+	{
+		if (node.expr != null)
+		{
+			node.expr.evaluate(cx, this);
+		}
+		if (node.args != null)
+		{
+			node.args.evaluate(cx, this);
+		}
+		return null;
+	}
+
+	public synchronized Value evaluate(Context cx, UnaryExpressionNode node)
+	{
+		if (node.expr != null)
+		{
+			node.expr.evaluate(cx, this);
+		}
+		return null;
+	}
+
+	public synchronized Value evaluate(Context cx, BinaryExpressionNode node)
 	{
 		if (node.lhs != null)
 		{
@@ -300,7 +300,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, ConditionalExpressionNode node)
+	public synchronized Value evaluate(Context cx, ConditionalExpressionNode node)
 	{
 		if (node.condition != null)
 		{
@@ -317,7 +317,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, ArgumentListNode node)
+	public synchronized Value evaluate(Context cx, ArgumentListNode node)
 	{
 		// for (Node n : node.items)
 		for (int i = 0, size = node.items.size(); i < size; i++)
@@ -328,7 +328,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, ListNode node)
+	public synchronized Value evaluate(Context cx, ListNode node)
 	{
 		// for (Node n : node.items)
 		for (int i = 0, size = node.items.size(); i < size; i++)
@@ -341,7 +341,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 
 	// Statements
 
-	public Value evaluate(Context cx, StatementListNode node)
+	public synchronized Value evaluate(Context cx, StatementListNode node)
 	{
 		// Reevaluate the size for each iteration, because Nodes can
 		// be added to "items" (See the NodeMagic.addImport() call in
@@ -363,17 +363,17 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-    public Value evaluate(Context cx, EmptyElementNode node)
+    public synchronized Value evaluate(Context cx, EmptyElementNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, EmptyStatementNode node)
+	public synchronized Value evaluate(Context cx, EmptyStatementNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, ExpressionStatementNode node)
+	public synchronized Value evaluate(Context cx, ExpressionStatementNode node)
 	{
 		if (node.expr != null)
 		{
@@ -382,7 +382,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, SuperStatementNode node)
+	public synchronized Value evaluate(Context cx, SuperStatementNode node)
 	{
 		if (node.call.args != null)
 		{
@@ -391,7 +391,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, LabeledStatementNode node)
+	public synchronized Value evaluate(Context cx, LabeledStatementNode node)
 	{
 		if (node.label != null)
 		{
@@ -404,7 +404,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, IfStatementNode node)
+	public synchronized Value evaluate(Context cx, IfStatementNode node)
 	{
 		if (node.condition != null)
 		{
@@ -421,7 +421,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, SwitchStatementNode node)
+	public synchronized Value evaluate(Context cx, SwitchStatementNode node)
 	{
 		if (node.expr != null)
 		{
@@ -434,7 +434,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, CaseLabelNode node)
+	public synchronized Value evaluate(Context cx, CaseLabelNode node)
 	{
 		if (node.label != null)
 		{
@@ -443,7 +443,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, DoStatementNode node)
+	public synchronized Value evaluate(Context cx, DoStatementNode node)
 	{
 		if (node.expr != null)
 		{
@@ -456,7 +456,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, WhileStatementNode node)
+	public synchronized Value evaluate(Context cx, WhileStatementNode node)
 	{
 		if (node.expr != null)
 		{
@@ -469,7 +469,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, ForStatementNode node)
+	public synchronized Value evaluate(Context cx, ForStatementNode node)
 	{
 		if (node.initialize != null)
 		{
@@ -490,7 +490,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, WithStatementNode node)
+	public synchronized Value evaluate(Context cx, WithStatementNode node)
 	{
 		if (node.expr != null)
 		{
@@ -503,7 +503,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, ContinueStatementNode node)
+	public synchronized Value evaluate(Context cx, ContinueStatementNode node)
 	{
 		if (node.id != null)
 		{
@@ -512,7 +512,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, BreakStatementNode node)
+	public synchronized Value evaluate(Context cx, BreakStatementNode node)
 	{
 		if (node.id != null)
 		{
@@ -521,7 +521,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, ReturnStatementNode node)
+	public synchronized Value evaluate(Context cx, ReturnStatementNode node)
 	{
 		if (node.expr != null)
 		{
@@ -530,7 +530,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, ThrowStatementNode node)
+	public synchronized Value evaluate(Context cx, ThrowStatementNode node)
 	{
 		if (node.expr != null)
 		{
@@ -539,7 +539,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, TryStatementNode node)
+	public synchronized Value evaluate(Context cx, TryStatementNode node)
 	{
 		if (node.tryblock != null)
 		{
@@ -556,7 +556,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, CatchClauseNode node)
+	public synchronized Value evaluate(Context cx, CatchClauseNode node)
 	{
 		if (node.parameter != null)
 		{
@@ -569,7 +569,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, FinallyClauseNode node)
+	public synchronized Value evaluate(Context cx, FinallyClauseNode node)
 	{
 		if (node.statements != null)
 		{
@@ -578,12 +578,12 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, UseDirectiveNode node)
+	public synchronized Value evaluate(Context cx, UseDirectiveNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, IncludeDirectiveNode node)
+	public synchronized Value evaluate(Context cx, IncludeDirectiveNode node)
 	{
 		if( !node.in_this_include )
         {
@@ -607,7 +607,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 
 	// Definitions
 
-	public Value evaluate(Context unused_cx, ImportDirectiveNode node)
+	public synchronized Value evaluate(Context unused_cx, ImportDirectiveNode node)
 	{
 		Context cx = node.cx;
 
@@ -623,7 +623,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, AttributeListNode node)
+	public synchronized Value evaluate(Context cx, AttributeListNode node)
 	{
 		// for (Node n : node.items)
 		for (int i = 0, size = node.items.size(); i < size; i++)
@@ -634,7 +634,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, VariableDefinitionNode node)
+	public synchronized Value evaluate(Context cx, VariableDefinitionNode node)
 	{
 		if (node.attrs != null)
 		{
@@ -647,7 +647,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, VariableBindingNode node)
+	public synchronized Value evaluate(Context cx, VariableBindingNode node)
 	{
 		if (node.variable != null)
 		{
@@ -660,7 +660,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, UntypedVariableBindingNode node)
+	public synchronized Value evaluate(Context cx, UntypedVariableBindingNode node)
 	{
 		if (node.identifier != null)
 		{
@@ -673,7 +673,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, TypedIdentifierNode node)
+	public synchronized Value evaluate(Context cx, TypedIdentifierNode node)
 	{
 		if (node.identifier != null)
 		{
@@ -686,12 +686,12 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
+	public synchronized Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
 	{
 		return evaluate(cx, (FunctionDefinitionNode) node);
 	}
 
-	public Value evaluate(Context unused_cx, FunctionDefinitionNode node)
+	public synchronized Value evaluate(Context unused_cx, FunctionDefinitionNode node)
 	{
 		Context cx = node.cx;
 
@@ -710,7 +710,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, FunctionNameNode node)
+	public synchronized Value evaluate(Context cx, FunctionNameNode node)
 	{
 		if (node.identifier != null)
 		{
@@ -719,7 +719,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, FunctionSignatureNode node)
+	public synchronized Value evaluate(Context cx, FunctionSignatureNode node)
 	{
 		if (node.parameter != null)
 		{
@@ -732,7 +732,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, ParameterNode node)
+	public synchronized Value evaluate(Context cx, ParameterNode node)
 	{
 		if (node.identifier != null)
 		{
@@ -745,7 +745,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, RestExpressionNode node)
+	public synchronized Value evaluate(Context cx, RestExpressionNode node)
 	{
 		if (node.expr != null)
 		{
@@ -754,7 +754,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, RestParameterNode node)
+	public synchronized Value evaluate(Context cx, RestParameterNode node)
 	{
 		if (node.parameter != null)
 		{
@@ -763,17 +763,17 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-    public Value evaluate(Context cx, BinaryClassDefNode node)
+    public synchronized Value evaluate(Context cx, BinaryClassDefNode node)
     {
         return evaluate(cx, (ClassDefinitionNode)node);
     }
 
-	public Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
+	public synchronized Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
 	{
 		return evaluate(cx, (BinaryClassDefNode) node);
 	}
 
-	public Value evaluate(Context unused_cx, ClassDefinitionNode node)
+	public synchronized Value evaluate(Context unused_cx, ClassDefinitionNode node)
 	{
 		Context cx = node.cx;
 
@@ -831,7 +831,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, InterfaceDefinitionNode node)
+	public synchronized Value evaluate(Context cx, InterfaceDefinitionNode node)
 	{
 		if (node.attrs != null)
 		{
@@ -852,7 +852,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, ClassNameNode node)
+	public synchronized Value evaluate(Context cx, ClassNameNode node)
 	{
 		if (node.pkgname != null)
 		{
@@ -865,7 +865,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, InheritanceNode node)
+	public synchronized Value evaluate(Context cx, InheritanceNode node)
 	{
 		if (node.baseclass != null)
 		{
@@ -878,7 +878,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, NamespaceDefinitionNode node)
+	public synchronized Value evaluate(Context cx, NamespaceDefinitionNode node)
 	{
 		if (node.attrs != null)
 		{
@@ -895,17 +895,17 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
     
-    public Value evaluate(Context cx, ConfigNamespaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, ConfigNamespaceDefinitionNode node)
     {
         return null;
     }
 
-	public Value evaluate(Context cx, PackageDefinitionNode node)
+	public synchronized Value evaluate(Context cx, PackageDefinitionNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, PackageIdentifiersNode node)
+	public synchronized Value evaluate(Context cx, PackageIdentifiersNode node)
 	{
 		// for (IdentifierNode n : node.list)
 		for (int i = 0, size = node.list.size(); i < size; i++)
@@ -916,7 +916,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, PackageNameNode node)
+	public synchronized Value evaluate(Context cx, PackageNameNode node)
 	{
 		if (node.id != null)
 		{
@@ -925,7 +925,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context unused_cx, ProgramNode node)
+	public synchronized Value evaluate(Context unused_cx, ProgramNode node)
 	{
 		Context cx = node.cx;
 
@@ -967,31 +967,22 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, ErrorNode node)
+	public synchronized Value evaluate(Context cx, ErrorNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, ToObjectNode node)
+	public synchronized Value evaluate(Context cx, ToObjectNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, LoadRegisterNode node)
+	public synchronized Value evaluate(Context cx, LoadRegisterNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, StoreRegisterNode node)
-	{
-		if (node.expr != null)
-		{
-			node.expr.evaluate(cx, this);
-		}
-		return null;
-	}
-
-	public Value evaluate(Context cx, BoxNode node)
+	public synchronized Value evaluate(Context cx, StoreRegisterNode node)
 	{
 		if (node.expr != null)
 		{
@@ -1000,7 +991,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, CoerceNode node)
+	public synchronized Value evaluate(Context cx, BoxNode node)
 	{
 		if (node.expr != null)
 		{
@@ -1009,7 +1000,16 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, PragmaNode node)
+	public synchronized Value evaluate(Context cx, CoerceNode node)
+	{
+		if (node.expr != null)
+		{
+			node.expr.evaluate(cx, this);
+		}
+		return null;
+	}
+
+	public synchronized Value evaluate(Context cx, PragmaNode node)
 	{
 		if (node.list != null)
 		{
@@ -1018,7 +1018,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, PragmaExpressionNode node)
+	public synchronized Value evaluate(Context cx, PragmaExpressionNode node)
 	{
 		if (node.identifier != null)
 		{
@@ -1027,7 +1027,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, ParameterListNode node)
+	public synchronized Value evaluate(Context cx, ParameterListNode node)
 	{
 		for (int i = 0, size = node.items.size(); i < size; i++)
 		{
@@ -1041,7 +1041,7 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context cx, MetaDataNode node)
+	public synchronized Value evaluate(Context cx, MetaDataNode node)
 	{
 		if (node.data != null)
 		{
@@ -1052,42 +1052,42 @@ public abstract class EvaluatorAdapter implements Evaluator
 		return null;
 	}
 
-	public Value evaluate(Context context, DefaultXMLNamespaceNode defaultXMLNamespaceNode)
+	public synchronized Value evaluate(Context context, DefaultXMLNamespaceNode defaultXMLNamespaceNode)
 	{
 		return null;
 	}
 
-    public Value evaluate(Context cx, BinaryProgramNode node)
+    public synchronized Value evaluate(Context cx, BinaryProgramNode node)
     {
         return evaluate(cx, (ProgramNode)node);
     }
 
-	public Value evaluate(Context cx, DocCommentNode node)
+	public synchronized Value evaluate(Context cx, DocCommentNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, ImportNode node)
+	public synchronized Value evaluate(Context cx, ImportNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, RegisterNode node)
+	public synchronized Value evaluate(Context cx, RegisterNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, HasNextNode node)
+	public synchronized Value evaluate(Context cx, HasNextNode node)
 	{
 		return null;
 	}
 	
-    public Value evaluate(Context cx, TypeExpressionNode node)
+    public synchronized Value evaluate(Context cx, TypeExpressionNode node)
     {
         return node.expr.evaluate(cx, this);
     }
     
-    public Value evaluate(Context cx, ApplyTypeExprNode node)
+    public synchronized Value evaluate(Context cx, ApplyTypeExprNode node)
     {
         if (node.expr != null)
         {
@@ -1102,17 +1102,17 @@ public abstract class EvaluatorAdapter implements Evaluator
         return null;
     }
        
-    public Value evaluate(Context cx, UseNumericNode node)
+    public synchronized Value evaluate(Context cx, UseNumericNode node)
     {
     	return null;
     }
 
-    public Value evaluate(Context cx, UsePrecisionNode node)
+    public synchronized Value evaluate(Context cx, UsePrecisionNode node)
     {
     	return null;
     }
     
-    public Value evaluate(Context cx, UseRoundingNode node)
+    public synchronized Value evaluate(Context cx, UseRoundingNode node)
     {
     	return null;
     }

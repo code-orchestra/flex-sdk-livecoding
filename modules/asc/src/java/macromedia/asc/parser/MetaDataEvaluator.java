@@ -83,7 +83,7 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 
 	// Base node
 
-	public Value evaluate(Context cx, Node node)
+	public synchronized Value evaluate(Context cx, Node node)
 	{
 		cx.internalError("error: undefined meta data method");
 		return null;
@@ -91,12 +91,12 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 
 	// Expression evaluators
 
-	public Value evaluate(Context cx, IdentifierNode node)
+	public synchronized Value evaluate(Context cx, IdentifierNode node)
 	{
 		return new KeylessValue(node.name);
 	}
 
-	public Value evaluate(Context cx, MetaDataNode node)
+	public synchronized Value evaluate(Context cx, MetaDataNode node)
 	{
 		current = node;
 
@@ -177,7 +177,7 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 
 	public ObjectList<DocCommentNode> doccomments = new ObjectList<DocCommentNode>();
 
-    public Value evaluate(Context cx, DocCommentNode node)
+    public synchronized Value evaluate(Context cx, DocCommentNode node)
 	{
 		this.evaluate(cx, (MetaDataNode)node);
 
@@ -206,17 +206,17 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
         return null;
 	}
 
-	public Value evaluate(Context cx, LiteralArrayNode node)
+	public synchronized Value evaluate(Context cx, LiteralArrayNode node)
 	{
 		return null;
 	}
 	
-	public Value evaluate(Context cx, LiteralVectorNode node)
+	public synchronized Value evaluate(Context cx, LiteralVectorNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, MemberExpressionNode node)
+	public synchronized Value evaluate(Context cx, MemberExpressionNode node)
 	{
 		Value val = null;
 		if (node.base != null)
@@ -232,12 +232,12 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 	}
 
 
-    public Value evaluate(Context cx, ApplyTypeExprNode node)
+    public synchronized Value evaluate(Context cx, ApplyTypeExprNode node)
     {
         return null;
     }
 
-	public Value evaluate(Context cx, GetExpressionNode node)
+	public synchronized Value evaluate(Context cx, GetExpressionNode node)
 	{
 		if (node.expr != null)
 		{
@@ -246,7 +246,7 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 		return null;
 	}
 
-	public Value evaluate(Context cx, SetExpressionNode node)
+	public synchronized Value evaluate(Context cx, SetExpressionNode node)
 	{
 		String name = null;
 		String value = null;
@@ -270,12 +270,12 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 		return null;
 	}
 
-	public Value evaluate(Context cx, CallExpressionNode node)
+	public synchronized Value evaluate(Context cx, CallExpressionNode node)
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, ArgumentListNode node)
+	public synchronized Value evaluate(Context cx, ArgumentListNode node)
 	{
 		Value val = null;
 		for (Node n : node.items)
@@ -288,7 +288,7 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 		return val;
 	}
 
-	public Value evaluate(Context cx, LiteralBooleanNode node)
+	public synchronized Value evaluate(Context cx, LiteralBooleanNode node)
 	{
 		KeylessValue val;
 		if (node.value)
@@ -302,59 +302,59 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 		return val;
 	}
 
-	public Value evaluate(Context cx, LiteralNumberNode node)
+	public synchronized Value evaluate(Context cx, LiteralNumberNode node)
 	{
 		return new KeylessValue(node.value);
 	}
 
-	public Value evaluate(Context cx, LiteralStringNode node)
+	public synchronized Value evaluate(Context cx, LiteralStringNode node)
 	{
 		return new KeylessValue(node.value);
 	}
 
-	public Value evaluate(Context cx, LiteralNullNode node)
+	public synchronized Value evaluate(Context cx, LiteralNullNode node)
 	{
 		return new KeylessValue("null");
 	}
 
-	public Value evaluate(Context cx, LiteralRegExpNode node)
+	public synchronized Value evaluate(Context cx, LiteralRegExpNode node)
 	{
 		return new KeylessValue(node.value);
 	}
 
 	// Expression evaluators
 
-	public Value evaluate(Context cx, IncrementNode node)
+	public synchronized Value evaluate(Context cx, IncrementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, DeleteExpressionNode node)
+	public synchronized Value evaluate(Context cx, DeleteExpressionNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, InvokeNode node)
+	public synchronized Value evaluate(Context cx, InvokeNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ThisExpressionNode node)
+	public synchronized Value evaluate(Context cx, ThisExpressionNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, QualifiedIdentifierNode node)
+	public synchronized Value evaluate(Context cx, QualifiedIdentifierNode node)
 	{
 		return new KeylessValue(node.name);  // just return the simple name
 	};
 
-    public Value evaluate(Context cx, QualifiedExpressionNode node)
+    public synchronized Value evaluate(Context cx, QualifiedExpressionNode node)
     {
         return null;
     };
 
-	public Value evaluate(Context cx, LiteralXMLNode node)
+	public synchronized Value evaluate(Context cx, LiteralXMLNode node)
 	{
 		//cx.error(node.pos(), kError_MetaDataContainsXmlLiteral);
 		Value v = null;
@@ -365,59 +365,59 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 		return v;
 	};
 
-	public Value evaluate(Context cx, FunctionCommonNode node)
+	public synchronized Value evaluate(Context cx, FunctionCommonNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ParenExpressionNode node)
+	public synchronized Value evaluate(Context cx, ParenExpressionNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ParenListExpressionNode node)
+	public synchronized Value evaluate(Context cx, ParenListExpressionNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, LiteralObjectNode node)
+	public synchronized Value evaluate(Context cx, LiteralObjectNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, LiteralFieldNode node)
+	public synchronized Value evaluate(Context cx, LiteralFieldNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, SuperExpressionNode node)
+	public synchronized Value evaluate(Context cx, SuperExpressionNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, SuperStatementNode node)
+	public synchronized Value evaluate(Context cx, SuperStatementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, UnaryExpressionNode node)
+	public synchronized Value evaluate(Context cx, UnaryExpressionNode node)
 	{
 		if (node.expr != null)
 			node.expr.evaluate(cx,this);
 		return null;
 	};
 
-	public Value evaluate(Context cx, BinaryExpressionNode node)
+	public synchronized Value evaluate(Context cx, BinaryExpressionNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ConditionalExpressionNode node)
+	public synchronized Value evaluate(Context cx, ConditionalExpressionNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ListNode node)
+	public synchronized Value evaluate(Context cx, ListNode node)
 	{
 		Value v = null;
 		for (Node n : node.items)
@@ -432,7 +432,7 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 
 	// Statements
 
-	public Value evaluate(Context cx, StatementListNode node)
+	public synchronized Value evaluate(Context cx, StatementListNode node)
 	{
 		for (Node n : node.items)
 		{
@@ -444,104 +444,104 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 		return null;
 	};
 
-	public Value evaluate(Context cx, EmptyElementNode node)
+	public synchronized Value evaluate(Context cx, EmptyElementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, EmptyStatementNode node)
+	public synchronized Value evaluate(Context cx, EmptyStatementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ExpressionStatementNode node)
+	public synchronized Value evaluate(Context cx, ExpressionStatementNode node)
 	{
 		if (node.expr != null)
 			node.expr.evaluate(cx,this);
 		return null;
 	};
 
-	public Value evaluate(Context cx, LabeledStatementNode node)
+	public synchronized Value evaluate(Context cx, LabeledStatementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, IfStatementNode node)
+	public synchronized Value evaluate(Context cx, IfStatementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, SwitchStatementNode node)
+	public synchronized Value evaluate(Context cx, SwitchStatementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, CaseLabelNode node)
+	public synchronized Value evaluate(Context cx, CaseLabelNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, DoStatementNode node)
+	public synchronized Value evaluate(Context cx, DoStatementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, WhileStatementNode node)
+	public synchronized Value evaluate(Context cx, WhileStatementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ForStatementNode node)
+	public synchronized Value evaluate(Context cx, ForStatementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, WithStatementNode node)
+	public synchronized Value evaluate(Context cx, WithStatementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ContinueStatementNode node)
+	public synchronized Value evaluate(Context cx, ContinueStatementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, BreakStatementNode node)
+	public synchronized Value evaluate(Context cx, BreakStatementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ReturnStatementNode node)
+	public synchronized Value evaluate(Context cx, ReturnStatementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ThrowStatementNode node)
+	public synchronized Value evaluate(Context cx, ThrowStatementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, TryStatementNode node)
+	public synchronized Value evaluate(Context cx, TryStatementNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, CatchClauseNode node)
+	public synchronized Value evaluate(Context cx, CatchClauseNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, FinallyClauseNode node)
+	public synchronized Value evaluate(Context cx, FinallyClauseNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, UseDirectiveNode node)
+	public synchronized Value evaluate(Context cx, UseDirectiveNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, IncludeDirectiveNode node)
+	public synchronized Value evaluate(Context cx, IncludeDirectiveNode node)
 	{
         if( !node.in_this_include )
         {
@@ -562,39 +562,39 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
         return null;
 	};
 
-    public Value evaluate(Context cx, ImportNode node)
+    public synchronized Value evaluate(Context cx, ImportNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryProgramNode node)
+    public synchronized Value evaluate(Context cx, BinaryProgramNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryClassDefNode node)
+    public synchronized Value evaluate(Context cx, BinaryClassDefNode node)
     {
         return null;
     }
 
-    public Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
+    public synchronized Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
     {
         return null;
     }
 
 	// Definitions
 
-	public Value evaluate(Context cx, ImportDirectiveNode node)
+	public synchronized Value evaluate(Context cx, ImportDirectiveNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, AttributeListNode node)
+	public synchronized Value evaluate(Context cx, AttributeListNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, VariableDefinitionNode node)
+	public synchronized Value evaluate(Context cx, VariableDefinitionNode node)
 	{
 		if (node.attrs != null)
 			node.attrs.evaluate(cx, this);
@@ -632,7 +632,7 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 		return null;
 	};
 
-	public Value evaluate(Context cx, VariableBindingNode node)
+	public synchronized Value evaluate(Context cx, VariableBindingNode node)
 	{
 		if (node.variable != null)
 			node.variable.evaluate(cx,this);
@@ -653,12 +653,12 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 		return null;
 	};
 
-	public Value evaluate(Context cx, UntypedVariableBindingNode node)
+	public synchronized Value evaluate(Context cx, UntypedVariableBindingNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, TypedIdentifierNode node)
+	public synchronized Value evaluate(Context cx, TypedIdentifierNode node)
 	{
 		if (node.identifier != null)
 			node.identifier.evaluate(cx,this);
@@ -667,12 +667,12 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 		return null;
 	};
 
-    public Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
+    public synchronized Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
     {
         return null;
     };
 
-	public Value evaluate(Context cx, FunctionDefinitionNode node)
+	public synchronized Value evaluate(Context cx, FunctionDefinitionNode node)
 	{
          FunctionDefinitionNode fdn = node;
         int kind = fdn.fexpr.kind;
@@ -742,42 +742,42 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
         return -1;
     }
 
-    public Value evaluate(Context cx, FunctionNameNode node)
+    public synchronized Value evaluate(Context cx, FunctionNameNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, FunctionSignatureNode node)
+	public synchronized Value evaluate(Context cx, FunctionSignatureNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ParameterNode node)
+	public synchronized Value evaluate(Context cx, ParameterNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ParameterListNode node)
+	public synchronized Value evaluate(Context cx, ParameterListNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, RestExpressionNode node)
+	public synchronized Value evaluate(Context cx, RestExpressionNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, RestParameterNode node)
+	public synchronized Value evaluate(Context cx, RestParameterNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, InterfaceDefinitionNode node)
+	public synchronized Value evaluate(Context cx, InterfaceDefinitionNode node)
 	{
         return evaluate(cx, (ClassDefinitionNode)node);
 	};
 
-	public Value evaluate(Context cx, ClassDefinitionNode node)
+	public synchronized Value evaluate(Context cx, ClassDefinitionNode node)
 	{
 		if (doing_class)
 			return null;
@@ -883,42 +883,42 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
         def.addMetaDataNode(makePositionMetadata(cx, def, false));
     }
 
-	public Value evaluate(Context cx, ClassNameNode node)
+	public synchronized Value evaluate(Context cx, ClassNameNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, InheritanceNode node)
+	public synchronized Value evaluate(Context cx, InheritanceNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, NamespaceDefinitionNode node)
+	public synchronized Value evaluate(Context cx, NamespaceDefinitionNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ConfigNamespaceDefinitionNode node)
+	public synchronized Value evaluate(Context cx, ConfigNamespaceDefinitionNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, PackageDefinitionNode node)
+	public synchronized Value evaluate(Context cx, PackageDefinitionNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, PackageIdentifiersNode node)
+	public synchronized Value evaluate(Context cx, PackageIdentifiersNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, PackageNameNode node)
+	public synchronized Value evaluate(Context cx, PackageNameNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ProgramNode node)
+	public synchronized Value evaluate(Context cx, ProgramNode node)
 	{
 		for (Node n : node.pkgdefs)
 		{
@@ -933,77 +933,77 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 		return null;
 	};
 
-	public Value evaluate(Context cx, ErrorNode node)
+	public synchronized Value evaluate(Context cx, ErrorNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, ToObjectNode node)
+	public synchronized Value evaluate(Context cx, ToObjectNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, LoadRegisterNode node)
+	public synchronized Value evaluate(Context cx, LoadRegisterNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, StoreRegisterNode node)
+	public synchronized Value evaluate(Context cx, StoreRegisterNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate( Context cx, HasNextNode node )
+	public synchronized Value evaluate( Context cx, HasNextNode node )
 	{
 		return null;
 	}
 
-	public Value evaluate(Context cx, BoxNode node)
+	public synchronized Value evaluate(Context cx, BoxNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, CoerceNode node)
+	public synchronized Value evaluate(Context cx, CoerceNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, PragmaNode node)
+	public synchronized Value evaluate(Context cx, PragmaNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, UsePrecisionNode node)
+	public synchronized Value evaluate(Context cx, UsePrecisionNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, UseNumericNode node)
+	public synchronized Value evaluate(Context cx, UseNumericNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, UseRoundingNode node)
+	public synchronized Value evaluate(Context cx, UseRoundingNode node)
 	{
 		return null;
 	};
 
-	public Value evaluate(Context cx, PragmaExpressionNode node)
+	public synchronized Value evaluate(Context cx, PragmaExpressionNode node)
 	{
 		return null;
 	};
 
-    public Value evaluate(Context cx, DefaultXMLNamespaceNode node)
+    public synchronized Value evaluate(Context cx, DefaultXMLNamespaceNode node)
     {
         return null;
     };
 
-    public Value evaluate(Context cx, RegisterNode node)
+    public synchronized Value evaluate(Context cx, RegisterNode node)
     {
         return null;
     };
 
-    public Value evaluate(Context cx, TypeExpressionNode node)
+    public synchronized Value evaluate(Context cx, TypeExpressionNode node)
     {
         return node.expr.evaluate(cx, this);
     }

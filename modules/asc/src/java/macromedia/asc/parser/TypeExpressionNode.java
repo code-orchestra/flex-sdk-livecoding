@@ -44,7 +44,7 @@ public class TypeExpressionNode extends Node
         this.nullable_annotation = is_explicit;
     }
 
-    public Value evaluate(Context cx, Evaluator evaluator)
+    public synchronized Value evaluate(Context cx, Evaluator evaluator)
     {
         if (evaluator.checkFeature(cx, this))
         {

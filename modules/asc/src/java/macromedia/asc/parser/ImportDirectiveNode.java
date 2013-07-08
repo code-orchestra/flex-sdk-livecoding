@@ -45,7 +45,7 @@ public class ImportDirectiveNode extends DefinitionNode
 		this.cx = cx;
 	}
 
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		if (evaluator.checkFeature(cx, this))
 		{

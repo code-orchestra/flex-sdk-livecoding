@@ -37,7 +37,7 @@ public class WhileStatementNode extends Node implements HasBody, LoopStatement
 		this.statement = statement;
 	}
 
-	public Value evaluate(Context cx, Evaluator evaluator)
+	public synchronized Value evaluate(Context cx, Evaluator evaluator)
 	{
 		if (evaluator.checkFeature(cx, this))
 		{

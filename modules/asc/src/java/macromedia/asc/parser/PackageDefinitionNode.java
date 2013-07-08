@@ -115,7 +115,11 @@ public class PackageDefinitionNode extends DefinitionNode
         if (name != null) result.name = name.clone();
         if (publicNamespace != null) result.publicNamespace = publicNamespace.clone();
         if (ref != null) result.ref = ref.clone();
-        if (statements != null) result.statements = statements.clone();
+        if (statements != null) {
+            result.statements = statements;
+            ObjectList<Node> list = result.statements.items;
+            list.add(list.indexOf(this), result);
+        }
         if (used_def_namespaces != null) result.used_def_namespaces = CloneUtil.cloneList(used_def_namespaces);
         if (used_namespaces != null) result.used_namespaces = CloneUtil.cloneList(used_namespaces);
 

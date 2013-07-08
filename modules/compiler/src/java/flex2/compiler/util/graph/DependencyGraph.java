@@ -36,51 +36,63 @@ public class DependencyGraph<EdgeWeight> extends Graph<String, EdgeWeight>
 {
 	public DependencyGraph()
 	{
-		map = new HashMap<String, EdgeWeight>(300);
-		vertices = new HashMap<String, Vertex<String,EdgeWeight>>(300);
 	}
 
-	private Map<String, EdgeWeight> map;
-	private Map<String, Vertex<String,EdgeWeight>> vertices;
+	private final Map<String, EdgeWeight> map = new HashMap<String, EdgeWeight>(300);
+	private final Map<String, Vertex<String,EdgeWeight>> vertices = new HashMap<String, Vertex<String,EdgeWeight>>(300);
 
 	// put(), get(), remove() are methods for 'map'
 
 	public void put(String key, EdgeWeight value)
 	{
-		map.put(key, value);
-	}
+        synchronized (map) {
+            map.put(key, value);
+        }
+    }
 
-	public EdgeWeight get(String key)
+	public synchronized EdgeWeight get(String key)
 	{
-		return map.get(key);
-	}
+        synchronized (map) {
+            return map.get(key);
+        }
+    }
 
-	public void remove(String key)
+	public synchronized void remove(String key)
 	{
-		map.remove(key);
-	}
+        synchronized (map) {
+            map.remove(key);
+        }
+    }
 
 	public Set<String> keySet()
 	{
-		return map.keySet();
-	}
+        synchronized (map) {
+            return map.keySet();
+        }
+    }
 
 	public int size()
 	{
-		return map.size();
-	}
+        synchronized (map) {
+            return map.size();
+        }
+    }
 
 	public boolean containsKey(String key)
 	{
-		return map.containsKey(key);
-	}
+        synchronized (map) {
+            return map.containsKey(key);
+        }
+    }
 
 	public boolean containsVertex(String key)
 	{
-		return vertices.containsKey(key);
-	}
+        synchronized (vertices) {
+            return vertices.containsKey(key);
+        }
+    }
 
-	public void clear()
+	public synchronized void clear()
 	{
 		super.clear();
 		map.clear();
@@ -91,68 +103,78 @@ public class DependencyGraph<EdgeWeight> extends Graph<String, EdgeWeight>
 
 	public void addVertex(Vertex<String,EdgeWeight> v)
 	{
-		super.addVertex(v);
-		vertices.put(v.getWeight(), v);
-	}
+        synchronized (vertices) {
+            super.addVertex(v);
+            vertices.put(v.getWeight(), v);
+        }
+    }
 
 	public Vertex<String,EdgeWeight> getVertex(String weight)
 	{
-		return vertices.get(weight);
-	}
+        synchronized (vertices) {
+            return vertices.get(weight);
+        }
+    }
 	
 	public void removeVertex(String weight)
 	{
-		Vertex<String,EdgeWeight> v = vertices.remove(weight);
-		if (v != null)
-		{
-			super.removeVertex(v);
-		}
-	}
+        synchronized (vertices) {
+            Vertex<String,EdgeWeight> v = vertices.remove(weight);
+            if (v != null)
+            {
+                super.removeVertex(v);
+            }
+        }
+    }
 
 	public void addDependency(String name, String dep)
 	{
-		Vertex<String,EdgeWeight> tail = null, head = null;
+        synchronized (vertices) {
+            Vertex<String,EdgeWeight> tail = null, head = null;
 
-		if ((head = vertices.get(name)) == null)
-		{
-			head = new Vertex<String,EdgeWeight>(name);
-			addVertex(head);
-		}
+            if ((head = vertices.get(name)) == null)
+            {
+                head = new Vertex<String,EdgeWeight>(name);
+                addVertex(head);
+            }
 
-		if ((tail = vertices.get(dep)) == null)
-		{
-			tail = new Vertex<String,EdgeWeight>(dep);
-			addVertex(tail);
-		}
+            if ((tail = vertices.get(dep)) == null)
+            {
+                tail = new Vertex<String,EdgeWeight>(dep);
+                addVertex(tail);
+            }
 
-		addEdge(new Edge<String,EdgeWeight>(tail, head, null));
-	}
+            addEdge(new Edge<String,EdgeWeight>(tail, head, null));
+        }
+    }
 
 	public boolean dependencyExists(String name, String dep)
 	{
-		Vertex<String,EdgeWeight> tail = null, head = null;
+        synchronized (vertices) {
+            Vertex<String,EdgeWeight> tail = null, head = null;
 
-		if ((head = vertices.get(name)) == null)
-		{
-			return false;
-		}
+            if ((head = vertices.get(name)) == null)
+            {
+                return false;
+            }
 
-		if ((tail = vertices.get(dep)) == null)
-		{
-			return false;
-		}
+            if ((tail = vertices.get(dep)) == null)
+            {
+                return false;
+            }
 
-		Set<Vertex<String,EdgeWeight>> predecessors = head.getPredecessors();
+            Set<Vertex<String,EdgeWeight>> predecessors = head.getPredecessors();
 
-		if (predecessors != null)
-		{
-			return predecessors.contains(tail);
-		}
-		else
-		{
-			return false;
-		}
-	}
+            if (predecessors != null)
+            {
+                return predecessors.contains(tail);
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
 	
 	/**
 	 * Get the dependencies of a given node.
@@ -162,25 +184,27 @@ public class DependencyGraph<EdgeWeight> extends Graph<String, EdgeWeight>
 	 */
 	public Set<String> getDependencies(String name)
 	{
-        Vertex<String,EdgeWeight> head = null;
+        synchronized (vertices) {
+            Vertex<String,EdgeWeight> head = null;
 
-        if ((head = vertices.get(name)) == null)
-        {
-            return Collections.emptySet();
-        }
-	    
-        Set<String> dependencies = new LinkedHashSet<String>();
-        Set<Vertex<String,EdgeWeight>> predecessors = head.getPredecessors();
-
-        if (predecessors != null)
-        {
-            for (Vertex<String,EdgeWeight> pred : predecessors)
+            if ((head = vertices.get(name)) == null)
             {
-                dependencies.add(pred.getWeight());
+                return Collections.emptySet();
             }
+
+            Set<String> dependencies = new LinkedHashSet<String>();
+            Set<Vertex<String,EdgeWeight>> predecessors = head.getPredecessors();
+
+            if (predecessors != null)
+            {
+                for (Vertex<String,EdgeWeight> pred : predecessors)
+                {
+                    dependencies.add(pred.getWeight());
+                }
+            }
+
+            return dependencies;
         }
-	    
-	    return dependencies;
-	}
+    }
 }
 

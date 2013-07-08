@@ -2453,7 +2453,7 @@ public final class CompilerAPI {
                                   int start, int end) {
         final boolean[] result = {true};
 
-        ArrayList<Callable> commands = new ArrayList<Callable>();
+        List commands = new ArrayList<Callable>();
         prepareThreadPull();
 
         for (int i = start; i < end; i++) {
@@ -2504,31 +2504,33 @@ public final class CompilerAPI {
     }
 
     private static CompilationUnit parse1(Source s, flex2.compiler.SubCompiler[] compilers, SymbolTable symbolTable) {
-        if (s.isCompiled()) {
-            return s.getCompilationUnit();
-        }
-
-        CompilationUnit u = null;
-        flex2.compiler.SubCompiler c = getCompiler(s, compilers);
-        if (c != null) {
-            Logger original = ThreadLocalToolkit.getLogger(), local = s.getLogger();
-            ThreadLocalToolkit.setLogger(local);
-
-            u = c.parse1(s, symbolTable);
-
-            // reset the logger to the original one...
-            ThreadLocalToolkit.setLogger(original);
-
-            if (local.errorCount() == 0) {
-                symbolTable.registerQNames(u.topLevelDefinitions, u.getSource());
-
-                u.setState(CompilationUnit.SyntaxTree);
-                u.setWorkflow(preprocess);
-                u.setWorkflow(parse1);
+        synchronized (s) {
+            if (s.isCompiled()) {
+                return s.getCompilationUnit();
             }
-        }
 
-        return u;
+            CompilationUnit u = null;
+            SubCompiler c = getCompiler(s, compilers);
+            if (c != null) {
+                Logger original = ThreadLocalToolkit.getLogger(), local = s.getLogger();
+                ThreadLocalToolkit.setLogger(local);
+
+                u = c.parse1(s, symbolTable);
+
+                // reset the logger to the original one...
+                ThreadLocalToolkit.setLogger(original);
+
+                if (local.errorCount() == 0) {
+                    symbolTable.registerQNames(u.topLevelDefinitions, u.getSource());
+
+                    u.setState(CompilationUnit.SyntaxTree);
+                    u.setWorkflow(preprocess);
+                    u.setWorkflow(parse1);
+                }
+            }
+
+            return u;
+        }
     }
 
     private static boolean parse2(List<Source> sources, flex2.compiler.SubCompiler[] compilers,
@@ -2603,7 +2605,7 @@ public final class CompilerAPI {
                                    final SymbolTable symbolTable, int start, int end, final int phase) {
         final boolean[] result = {true};
 
-        ArrayList<Callable> commands = new ArrayList<Callable>();
+        List commands = new ArrayList<Callable>();
         prepareThreadPull();
 
         for (int i = start; i < end; i++) {
@@ -4188,16 +4190,16 @@ public final class CompilerAPI {
         }
     }
 
-    private static boolean tooManyErrors() {
+    private synchronized static boolean tooManyErrors() {
         return ThreadLocalToolkit.errorCount() > 100;
     }
 
-    public static boolean forcedToStop() {
+    public synchronized static boolean forcedToStop() {
         CompilerControl cc = ThreadLocalToolkit.getCompilerControl();
         return (cc != null && cc.getStatus() == CompilerControl.STOP);
     }
 
-    private static void calculateProgress(List<Source> sources, SymbolTable symbolTable) {
+    private synchronized static void calculateProgress(List<Source> sources, SymbolTable symbolTable) {
         symbolTable.tick++;
         int total = sources.size() * 12;
         double p = (double) symbolTable.tick / (double) total;

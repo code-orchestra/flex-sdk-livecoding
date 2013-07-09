@@ -109,7 +109,10 @@ public class CloneUtil {
     public static ObjectList<FunctionCommonNode> cloneListFCNode(ObjectList<FunctionCommonNode> src) throws CloneNotSupportedException
     {
         ObjectList<FunctionCommonNode> dst = new ObjectList<FunctionCommonNode>(src.size());
-        for (FunctionCommonNode item: src) dst.add(item.clone());
+        if (src.size() != 0)
+        {
+            for (FunctionCommonNode item: src) dst.add(item.clone());
+        }
         return dst;
     }
 

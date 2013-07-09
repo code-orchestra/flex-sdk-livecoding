@@ -132,7 +132,7 @@ public class FunctionDefinitionNode extends DefinitionNode
 
         // cx is transient
         //if (cx != null);
-        if (fexpr != null) result.fexpr = fexpr.clone();
+        if (fexpr != null) result.fexpr = fexpr.cloneWithDef(this, result);
         if (fun != null) result.fun = fun.clone();
         if (init != null) result.init = init.clone();
         if (name != null) result.name = name.clone();

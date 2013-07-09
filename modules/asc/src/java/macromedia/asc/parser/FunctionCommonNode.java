@@ -192,6 +192,21 @@ public class FunctionCommonNode extends Node
 		return this.void_result;
 	}
 
+    public FunctionCommonNode cloneWithDef(FunctionDefinitionNode def_value, FunctionDefinitionNode def_clone) throws CloneNotSupportedException
+    {
+        FunctionCommonNode result = (FunctionCommonNode) super.clone();
+
+        if (def == def_value)
+        {
+            result.def = def_clone;
+        }
+        else
+        {
+            result.def = def.clone();
+        }
+        return result;
+    }
+
     public FunctionCommonNode clone() throws CloneNotSupportedException
     {
         FunctionCommonNode result = (FunctionCommonNode) super.clone();
@@ -202,7 +217,9 @@ public class FunctionCommonNode extends Node
         //if (debug_name != null);
         if (default_dxns != null) result.default_dxns = default_dxns.clone();
         if (default_namespace != null) result.default_namespace = default_namespace.clone();
-        if (fexprs != null) result.fexprs = CloneUtil.cloneListFCNode(fexprs);
+        if (fexprs != null) {
+            result.fexprs = CloneUtil.cloneListFCNode(fexprs);
+        }
         if (fun != null) result.fun = fun.clone();
         if (identifier != null) result.identifier = identifier.clone();
         //internal_name is String

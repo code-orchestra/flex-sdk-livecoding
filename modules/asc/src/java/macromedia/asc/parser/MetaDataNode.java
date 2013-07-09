@@ -106,6 +106,17 @@ public class MetaDataNode extends Node
         return md;
     }
 
+    public MetaDataNode cloneWithDef(DefinitionNode def) throws CloneNotSupportedException
+    {
+        MetaDataNode result = (MetaDataNode) super.clone();
+
+        if (data != null) result.data = data.clone();
+        if (def != null) result.def = def;
+        if (md != null) result.md = md.clone();
+
+        return result;
+    }
+
     public MetaDataNode clone() throws CloneNotSupportedException
     {
         MetaDataNode result = (MetaDataNode) super.clone();

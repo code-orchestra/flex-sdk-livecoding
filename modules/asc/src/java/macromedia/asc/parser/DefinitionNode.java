@@ -75,7 +75,10 @@ public abstract class DefinitionNode extends Node
         DefinitionNode result = (DefinitionNode) super.clone();
 
         if (attrs != null) result.attrs = attrs.clone();
-        if (metaData != null) result.metaData = metaData.clone();
+        if (metaData != null)
+        {
+            result.metaData = metaData.cloneWithDef(this, result);
+        }
         if (pkgdef != null) result.pkgdef = pkgdef.clone();
 
         return result;

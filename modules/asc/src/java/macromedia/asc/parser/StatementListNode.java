@@ -165,13 +165,51 @@ public class StatementListNode extends Node
         }
     }
 
+    public StatementListNode cloneWithDef(DefinitionNode def, DefinitionNode def_clone) throws CloneNotSupportedException
+    {
+        StatementListNode result = (StatementListNode) super.clone();
+
+        if (config_attrs != null) result.config_attrs = config_attrs.clone();
+        if (default_namespace != null) result.default_namespace = default_namespace.clone();
+        if (numberUsage != null) result.numberUsage = numberUsage.clone();
+
+        if (items != null)
+        {
+            ObjectList<Node> dst = new ObjectList<Node>(items.size());
+            for (Node item: items){
+
+                if (item instanceof MetaDataNode
+                        && ((MetaDataNode) item).def == def
+                        && def.metaData == this)
+                {
+                    MetaDataNode item_clone = ((MetaDataNode) item).cloneWithDef(def_clone);
+                    item_clone.def.metaData = result;
+                }
+                else
+                {
+                    dst.add(item.clone());
+                }
+            }
+            result.items = dst;
+        }
+
+        return result;
+    }
+
     public StatementListNode clone() throws CloneNotSupportedException
     {
         StatementListNode result = (StatementListNode) super.clone();
 
         if (config_attrs != null) result.config_attrs = config_attrs.clone();
         if (default_namespace != null) result.default_namespace = default_namespace.clone();
-        if (items != null) result.items = CloneUtil.cloneListNode(items);
+        if (items != null)
+        {
+            ObjectList<Node> dst = new ObjectList<Node>(items.size());
+            for (Node item: items){
+                dst.add(item.clone());
+            }
+            result.items = dst;
+        }
         if (numberUsage != null) result.numberUsage = numberUsage.clone();
 
         return result;

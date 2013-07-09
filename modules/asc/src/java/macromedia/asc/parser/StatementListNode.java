@@ -203,6 +203,7 @@ public class StatementListNode extends Node
 
         if (config_attrs != null) result.config_attrs = config_attrs.clone();
         if (default_namespace != null) result.default_namespace = default_namespace.clone();
+        if (numberUsage != null) result.numberUsage = numberUsage.clone();
         if (items != null)
         {
             ObjectList<Node> dst = new ObjectList<Node>(items.size());
@@ -211,7 +212,6 @@ public class StatementListNode extends Node
             }
             result.items = dst;
         }
-        if (numberUsage != null) result.numberUsage = numberUsage.clone();
 
         return result;
     }

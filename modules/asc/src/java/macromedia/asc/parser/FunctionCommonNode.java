@@ -204,12 +204,6 @@ public class FunctionCommonNode extends Node
         {
             result.def = def.clone();
         }
-        return result;
-    }
-
-    public FunctionCommonNode clone() throws CloneNotSupportedException
-    {
-        FunctionCommonNode result = (FunctionCommonNode) super.clone();
 
         if (blocks != null) result.blocks = CloneUtil.cloneListBlock(blocks);
         if (body != null) result.body = body.clone();
@@ -233,7 +227,38 @@ public class FunctionCommonNode extends Node
         if (use_stmts != null) result.use_stmts = use_stmts.clone();
         if (used_namespaces != null) result.used_namespaces = CloneUtil.cloneList(used_namespaces);
 
+        if (imported_names != null) result.imported_names = CloneUtil.cloneMultinames(imported_names);
+
+        return result;
+    }
+
+    public FunctionCommonNode clone() throws CloneNotSupportedException
+    {
+        FunctionCommonNode result = (FunctionCommonNode) super.clone();
+
         if (def != null) result.def = def.clone();
+        if (blocks != null) result.blocks = CloneUtil.cloneListBlock(blocks);
+        if (body != null) result.body = body.clone();
+        //debug_name is String
+        //if (debug_name != null);
+        if (default_dxns != null) result.default_dxns = default_dxns.clone();
+        if (default_namespace != null) result.default_namespace = default_namespace.clone();
+        if (fexprs != null) {
+            result.fexprs = CloneUtil.cloneListFCNode(fexprs);
+        }
+        if (fun != null) result.fun = fun.clone();
+        if (identifier != null) result.identifier = identifier.clone();
+        //internal_name is String
+        //if (internal_name != null);
+        if (namespace_ids != null) result.namespace_ids = CloneUtil.cloneListString(namespace_ids);
+        if (private_namespace != null) result.private_namespace = private_namespace.clone();
+        if (public_namespace != null) result.public_namespace = public_namespace.clone();
+        if (ref != null) result.ref = ref.clone();
+        if (scope_chain != null) result.scope_chain = CloneUtil.cloneObjectListList(scope_chain);
+        if (signature != null) result.signature = signature.clone();
+        if (use_stmts != null) result.use_stmts = use_stmts.clone();
+        if (used_namespaces != null) result.used_namespaces = CloneUtil.cloneList(used_namespaces);
+
         if (imported_names != null) result.imported_names = CloneUtil.cloneMultinames(imported_names);
 
         // cx is transient

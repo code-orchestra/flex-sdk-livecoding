@@ -184,6 +184,7 @@ public class StatementListNode extends Node
                 {
                     MetaDataNode item_clone = ((MetaDataNode) item).cloneWithDef(def_clone);
                     item_clone.def.metaData = result;
+                    dst.add(item_clone);
                 }
                 else
                 {

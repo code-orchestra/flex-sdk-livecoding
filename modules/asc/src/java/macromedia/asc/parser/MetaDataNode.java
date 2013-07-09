@@ -137,7 +137,7 @@ public class MetaDataNode extends Node
         MetaDataNode that = (MetaDataNode) o;
 
         if (data != null ? !data.equals(that.data) : that.data != null) return false;
-        if (def != null ? !def.equals(that.def) : that.def != null) return false;
+        //if (def != null ? !def.equals(that.def) : that.def != null) return false;
         if (md != null ? !md.equals(that.md) : that.md != null) return false;
 
         return true;

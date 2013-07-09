@@ -288,7 +288,7 @@ public class FunctionCommonNode extends Node
         // cx is transient
         if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
         if (debug_name != null ? !debug_name.equals(that.debug_name) : that.debug_name != null) return false;
-        if (def != null ? !def.equals(that.def) : that.def != null) return false;
+//        if (def != null ? !(def == that.def) : that.def != null) return false;
         if (default_dxns != null ? !default_dxns.equals(that.default_dxns) : that.default_dxns != null) return false;
         if (default_namespace != null ? !default_namespace.equals(that.default_namespace) : that.default_namespace != null)
             return false;

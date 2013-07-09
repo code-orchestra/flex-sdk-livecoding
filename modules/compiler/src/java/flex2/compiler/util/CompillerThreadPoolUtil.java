@@ -79,4 +79,8 @@ public class CompillerThreadPoolUtil {
         CompilerControl cc = ThreadLocalToolkit.getCompilerControl();
         return (cc != null && cc.getStatus() == CompilerControl.STOP);
     }
+
+    public static void stopExecute() {
+        isBroken = true;
+    }
 }

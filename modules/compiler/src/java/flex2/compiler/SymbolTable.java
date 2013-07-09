@@ -75,136 +75,136 @@ public final class SymbolTable
 
 	static class NoType implements flex2.compiler.abc.AbcClass
 	{
-		public Variable getVariable(String[] namespaces, String name, boolean inherited)
+		public synchronized Variable getVariable(String[] namespaces, String name, boolean inherited)
 		{
 			return null;
 		}
 
-        public Variable getVariable(Namespaces namespaces, String name, boolean inherited)
+        public synchronized Variable getVariable(Namespaces namespaces, String name, boolean inherited)
         {
             return null;
         }
 
-		public Method getMethod(String[] namespaces, String name, boolean inherited)
+		public synchronized Method getMethod(String[] namespaces, String name, boolean inherited)
 		{
 			return null;
 		}
-        public Method getMethod(Namespaces namespaces, String name, boolean inherited)
+        public synchronized Method getMethod(Namespaces namespaces, String name, boolean inherited)
         {
             return null;
         }
 
-		public Method getGetter(String[] namespaces, String name, boolean inherited)
+		public synchronized Method getGetter(String[] namespaces, String name, boolean inherited)
 		{
 			return null;
 		}
-        public Method getGetter(Namespaces namespaces, String name, boolean inherited)
+        public synchronized Method getGetter(Namespaces namespaces, String name, boolean inherited)
         {
             return null;
         }
 
-		public Method getSetter(String[] namespaces, String name, boolean inherited)
+		public synchronized Method getSetter(String[] namespaces, String name, boolean inherited)
 		{
 			return null;
 		}
-        public Method getSetter(Namespaces namespaces, String name, boolean inherited)
+        public synchronized Method getSetter(Namespaces namespaces, String name, boolean inherited)
         {
             return null;
         }
 
-        public String getName()
+        public synchronized String getName()
 		{
 			return NOTYPE;
 		}
 
-        public String getElementTypeName()
+        public synchronized String getElementTypeName()
         {
             return null;
         }
 
-		public String getSuperTypeName()
+		public synchronized String getSuperTypeName()
 		{
 			return null;
 		}
 
-		public String[] getInterfaceNames()
+		public synchronized String[] getInterfaceNames()
 		{
 			return null;
 		}
 
-        public List<MetaData> getMetaData(boolean inherited)
+        public synchronized List<MetaData> getMetaData(boolean inherited)
 		{
 			return null;
 		}
 
-		public List<MetaData> getMetaData(String name, boolean inherited)
+		public synchronized List<MetaData> getMetaData(String name, boolean inherited)
 		{
 			return null;
 		}
 
-		public boolean implementsInterface(String interfaceName)
+		public synchronized boolean implementsInterface(String interfaceName)
 		{
 			return false;
 		}
 
-		public boolean isSubclassOf(String baseName)
+		public synchronized boolean isSubclassOf(String baseName)
 		{
 			return false;
 		}
 
-		public boolean isInterface()
+		public synchronized boolean isInterface()
 		{
 			assert false;
 			return false;
 		}
 
-        public boolean isDynamic()
+        public synchronized boolean isDynamic()
         {
             return true;
         }
 
-        public boolean isPublic()
+        public synchronized boolean isPublic()
         {
             return true;
         }
 
-		public void setTypeTable(Object typeTable)
+		public synchronized void setTypeTable(Object typeTable)
 		{
 		}
 
-        public Iterator<Variable> getVarIterator()
+        public synchronized Iterator<Variable> getVarIterator()
         {
             return new EmptyIter<Variable>();            
         }
-        public Iterator<Method> getMethodIterator()
+        public synchronized Iterator<Method> getMethodIterator()
         {
             return new EmptyIter<Method>();
         }
-        public Iterator<Method> getGetterIterator()
+        public synchronized Iterator<Method> getGetterIterator()
         {
             return new EmptyIter<Method>();
         }
-        public Iterator<Method> getSetterIterator()
+        public synchronized Iterator<Method> getSetterIterator()
         {
             return new EmptyIter<Method>();
         }
 
         class EmptyIter<T> implements Iterator<T>
         {
-            public boolean hasNext()
+            public synchronized boolean hasNext()
             {
                 return false;
             }
-            public T next()
+            public synchronized T next()
             {
                 throw new NoSuchElementException();
             }
-            public void remove()
+            public synchronized void remove()
             {
             }
         }
 
-        public void freeze()
+        public synchronized void freeze()
         {
             
         }
@@ -286,7 +286,7 @@ public final class SymbolTable
 	public int tick = 0;
 	public int currentPercentage = 0;
 	
-	public void adjustProgress()
+	public synchronized void adjustProgress()
 	{
 		ProgressMeter meter = ThreadLocalToolkit.getProgressMeter();
 		
@@ -296,14 +296,14 @@ public final class SymbolTable
 		}
 	}
 	
-	public void registerClass(String className, AbcClass cls)
+	public synchronized void registerClass(String className, AbcClass cls)
 	{
 		assert className.indexOf('/') == -1;
 
 		classTable.put(className, cls);
 	}
 
-    public AbcClass getClass(String className)
+    public synchronized AbcClass getClass(String className)
     {
         assert className == null || (className.indexOf('/') == -1) && NameFormatter.toColon(className).equals(className) : className;
         AbcClass result = null;
@@ -323,19 +323,19 @@ public final class SymbolTable
         return result;
     }
 
-    public Set<String> getClassNames()
+    public synchronized Set<String> getClassNames()
     {
         return classTable.keySet();
     }
 
 	// app-wide style management
 
-	public void registerStyles(Styles newStyles) throws StyleConflictException
+	public synchronized void registerStyles(Styles newStyles) throws StyleConflictException
 	{
 		styles.addStyles(newStyles);
 	}
 
-	public MetaData getStyle(String styleName)
+	public synchronized MetaData getStyle(String styleName)
 	{
 		if (styleName != null)
 		{
@@ -347,7 +347,7 @@ public final class SymbolTable
 		}
 	}
 
-	public Styles getStyles()
+	public synchronized Styles getStyles()
 	{
 		return styles;
 	}
@@ -372,7 +372,7 @@ public final class SymbolTable
 	 * @param qName ClassDefinitionNode.cframe.classname
 	 * @param source Source
 	 */
-	public void registerQName(QName qName, Source source)
+	public synchronized void registerQName(QName qName, Source source)
 	{
 		Source old = qNameTable.get(qName);
 		if (old == null)
@@ -385,7 +385,7 @@ public final class SymbolTable
 		}
 	}
 	
-	public void registerResourceBundle(String rbName, Source source)
+	public synchronized void registerResourceBundle(String rbName, Source source)
 	{
 		/*
 		Source old = (Source) rbNameTable.get(rbName);
@@ -401,7 +401,7 @@ public final class SymbolTable
 	 * If CompilerAPI.resolveMultiName() is successful, the QName result should be associated with a Source object.
 	 * This method allows for quick lookups given a qname.
 	 */
-	public Source findSourceByQName(QName qName)
+	public synchronized Source findSourceByQName(QName qName)
 	{
 		return qNameTable.get(qName);
 	}
@@ -410,12 +410,12 @@ public final class SymbolTable
 	 * If CompilerAPI.resolveMultiName() is successful, the QName result should be associated with a Source object.
 	 * This method allows for quick lookups given a qname.
 	 */
-	public Source findSourceByQName(String namespaceURI, String localPart)
+	public synchronized Source findSourceByQName(String namespaceURI, String localPart)
 	{
 		return qNameTable.get(namespaceURI, localPart);
 	}
 	
-	public Source findSourceByResourceBundleName(String rbName)
+	public synchronized Source findSourceByResourceBundleName(String rbName)
 	{
 		return rbNameTable.get(rbName);
 	}
@@ -437,12 +437,12 @@ public final class SymbolTable
 	 * If CompilerAPI.resolveMultiName() successfully resolves a multiname to a qname, the result will be stored here.
 	 * This method allows for quick lookup.
 	 */
-	public QName isMultiNameResolved(MultiName multiName)
+	public synchronized QName isMultiNameResolved(MultiName multiName)
 	{
 		return multiNames.get(multiName);
 	}
 	
-	public QName[] isResourceBundleResolved(String rbName)
+	public synchronized QName[] isResourceBundleResolved(String rbName)
 	{
 		return rbNames.get(rbName);
 	}
@@ -450,7 +450,7 @@ public final class SymbolTable
 	/**
 	 * placeholder for transient data
 	 */
-	public CompilerContext getContext()
+	public synchronized CompilerContext getContext()
 	{
 		if (context == null)
 		{
@@ -464,7 +464,7 @@ public final class SymbolTable
 	 * dereference the flex2.compiler.abc.AbcClass instances from flex2.compiler.as3.reflect.TypeTable. This is
 	 * necessary for lowering the peak memory. It also makes the instances reusable in subsequent compilations.
 	 */
-	public void cleanClassTable()
+	public synchronized void cleanClassTable()
 	{
 		for (Iterator<String> i = classTable.keySet().iterator(); i.hasNext();)
 		{
@@ -477,17 +477,17 @@ public final class SymbolTable
 
 	private TypeAnalyzer typeAnalyzer;
 
-	public TypeAnalyzer getTypeAnalyzer()
+	public synchronized TypeAnalyzer getTypeAnalyzer()
 	{
 		return typeAnalyzer;
 	}
     
-    public boolean getSuppressWarningsIncremental()
+    public synchronized boolean getSuppressWarningsIncremental()
     {
         return suppressWarnings;
     }
     
-    public void register(String rbName, QName[] qNames, Source source)
+    public synchronized void register(String rbName, QName[] qNames, Source source)
     {
 		if (source != null)
 		{

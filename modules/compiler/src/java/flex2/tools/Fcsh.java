@@ -1029,9 +1029,9 @@ public class Fcsh extends Tool {
         } catch (Throwable thr) // IOException, Throwable
         {
             ThreadLocalToolkit.logError(thr.getMessage());
-            if (Trace.error) {
+//            if (Trace.error) {
                 thr.printStackTrace();
-            }
+//            }
         } finally {
             if (benchmark != null) {
                 if ((ThreadLocalToolkit.errorCount() == 0) &&

@@ -79,6 +79,7 @@ public class ImportDirectiveNode extends DefinitionNode
         if (attrs != null) result.attrs = attrs.clone();
         // cx is transient
         //if (cx != null);
+        result.cx = null;
         if (name != null) result.name = name.clone();
         if (pkg_node != null) result.pkg_node = pkg_node.clone();
         if (ref != null) result.ref = ref.clone();
@@ -96,7 +97,7 @@ public class ImportDirectiveNode extends DefinitionNode
 
         if (package_retrieved != that.package_retrieved) return false;
         if (attrs != null ? !attrs.equals(that.attrs) : that.attrs != null) return false;
-        if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+        //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (pkg_node != null ? !pkg_node.equals(that.pkg_node) : that.pkg_node != null) return false;
         if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;

@@ -101,6 +101,7 @@ public class ProgramNode extends Node
         if (clsdefs != null) result.clsdefs = CloneUtil.cloneListCDNode(clsdefs);
         // cx is transient
         //if (cx != null);
+        result.cx = null;
         if (default_namespace != null) result.default_namespace = default_namespace.clone();
         if (fa_unresolved != null) result.fa_unresolved = CloneUtil.cloneSet(fa_unresolved);
         if (fexprs != null) result.fexprs = CloneUtil.cloneListFCNode(fexprs);
@@ -137,7 +138,7 @@ public class ProgramNode extends Node
         if (ce_unresolved != null ? !ce_unresolved.equals(that.ce_unresolved) : that.ce_unresolved != null)
             return false;
         if (clsdefs != null ? !clsdefs.equals(that.clsdefs) : that.clsdefs != null) return false;
-        if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+        //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
         if (default_namespace != null ? !default_namespace.equals(that.default_namespace) : that.default_namespace != null)
             return false;
         if (fa_unresolved != null ? !fa_unresolved.equals(that.fa_unresolved) : that.fa_unresolved != null)

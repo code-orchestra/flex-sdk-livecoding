@@ -132,6 +132,7 @@ public class FunctionDefinitionNode extends DefinitionNode
 
         // cx is transient
         //if (cx != null);
+        result.cx = null;
         if (fexpr != null) result.fexpr = fexpr.cloneWithDef(this, result);
         if (fun != null) result.fun = fun.clone();
         if (init != null) result.init = init.clone();
@@ -154,7 +155,7 @@ public class FunctionDefinitionNode extends DefinitionNode
         if (needs_init != that.needs_init) return false;
         if (skipLiveCoding != that.skipLiveCoding) return false;
         if (version != that.version) return false;
-        if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+        //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
         if (fexpr != null ? !fexpr.equals(that.fexpr) : that.fexpr != null) return false;
         if (fun != null ? !fun.equals(that.fun) : that.fun != null) return false;
         if (init != null ? !init.equals(that.init) : that.init != null) return false;

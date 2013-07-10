@@ -66,8 +66,10 @@ public class IncludeDirectiveNode extends DefinitionNode
 
         // cx is transient
         //if (cx != null);
+        result.cx = null;
         // prev_cx is transient
         //if (prev_cx != null);
+        result.prev_cx = null;
         if (filespec != null) result.filespec = filespec.clone();
         if (program != null) result.program = program.clone();
 
@@ -83,9 +85,9 @@ public class IncludeDirectiveNode extends DefinitionNode
         IncludeDirectiveNode that = (IncludeDirectiveNode) o;
 
         if (in_this_include != that.in_this_include) return false;
-        if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+        //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
         if (filespec != null ? !filespec.equals(that.filespec) : that.filespec != null) return false;
-        if (prev_cx != null ? !prev_cx.equals(that.prev_cx) : that.prev_cx != null) return false;
+        //if (prev_cx != null ? !prev_cx.equals(that.prev_cx) : that.prev_cx != null) return false;
         if (program != null ? !program.equals(that.program) : that.program != null) return false;
 
         return true;

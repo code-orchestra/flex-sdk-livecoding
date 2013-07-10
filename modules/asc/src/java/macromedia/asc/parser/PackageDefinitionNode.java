@@ -125,6 +125,7 @@ public class PackageDefinitionNode extends DefinitionNode
 
         // cx is transient
         //if (cx != null);
+        result.cx = null;
 
         return result;
     }
@@ -143,7 +144,7 @@ public class PackageDefinitionNode extends DefinitionNode
         if (var_count != that.var_count) return false;
         if (clsdefs != null ? !clsdefs.equals(that.clsdefs) : that.clsdefs != null) return false;
         // cx is transient
-        if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+        //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
         if (defaultNamespace != null ? !defaultNamespace.equals(that.defaultNamespace) : that.defaultNamespace != null)
             return false;
         if (fexprs != null ? !fexprs.equals(that.fexprs) : that.fexprs != null) return false;

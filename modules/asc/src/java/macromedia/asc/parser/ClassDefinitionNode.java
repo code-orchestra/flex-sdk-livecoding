@@ -151,6 +151,7 @@ public class ClassDefinitionNode extends DefinitionNode
         if (clsdefs != null) result.clsdefs = CloneUtil.cloneListCDNode(clsdefs);
         // cx is transient
         //if (cx != null);
+        result.cx = null;
         // debug_name is String
         //if (debug_name != null);
         if (default_namespace != null) result.default_namespace = default_namespace.clone();
@@ -198,9 +199,9 @@ public class ClassDefinitionNode extends DefinitionNode
         if (version != that.version) return false;
         if (baseclass != null ? !baseclass.equals(that.baseclass) : that.baseclass != null) return false;
         if (baseref != null ? !baseref.equals(that.baseref) : that.baseref != null) return false;
-        if (cframe != null ? !cframe.equals(that.cframe) : that.cframe != null) return false;
+        //if (cframe != null ? !cframe.equals(that.cframe) : that.cframe != null) return false;
         if (clsdefs != null ? !clsdefs.equals(that.clsdefs) : that.clsdefs != null) return false;
-        if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+        //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
         if (debug_name != null ? !debug_name.equals(that.debug_name) : that.debug_name != null) return false;
         if (default_namespace != null ? !default_namespace.equals(that.default_namespace) : that.default_namespace != null)
             return false;

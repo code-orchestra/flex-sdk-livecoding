@@ -263,6 +263,7 @@ public class FunctionCommonNode extends Node
 
         // cx is transient
         //if (cx != null);
+        result.cx = null;
 
         return result;
     }
@@ -286,7 +287,7 @@ public class FunctionCommonNode extends Node
         if (blocks != null ? !blocks.equals(that.blocks) : that.blocks != null) return false;
         if (body != null ? !body.equals(that.body) : that.body != null) return false;
         // cx is transient
-        if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+        //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
         if (debug_name != null ? !debug_name.equals(that.debug_name) : that.debug_name != null) return false;
 //        if (def != null ? !(def == that.def) : that.def != null) return false;
         if (default_dxns != null ? !default_dxns.equals(that.default_dxns) : that.default_dxns != null) return false;

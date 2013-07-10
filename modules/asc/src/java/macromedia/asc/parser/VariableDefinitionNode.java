@@ -145,6 +145,7 @@ public class VariableDefinitionNode extends DefinitionNode
 
         // cx is transient
         //if (cx != null);
+        result.cx = null;
         if (list != null) result.list = list.clone();
 
         return result;
@@ -159,7 +160,7 @@ public class VariableDefinitionNode extends DefinitionNode
         VariableDefinitionNode that = (VariableDefinitionNode) o;
 
         if (kind != that.kind) return false;
-        if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+        //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
         if (list != null ? !list.equals(that.list) : that.list != null) return false;
 
         return true;

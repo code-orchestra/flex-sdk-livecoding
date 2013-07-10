@@ -208,7 +208,14 @@ public class StatementListNode extends Node
         {
             ObjectList<Node> dst = new ObjectList<Node>(items.size());
             for (Node item: items){
-                dst.add(item.clone());
+                if (item != null){
+                    dst.add(item.clone());
+                }
+                else
+                {
+                    //TODO: get this situation on project KR for Cloning of game.actor.RxAbilities
+                    dst.add(item);
+                }
             }
             result.items = dst;
         }

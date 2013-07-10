@@ -79,7 +79,7 @@ public class LoadRegisterNode extends Node
 
         if (void_result != that.void_result) return false;
         if (reg != null ? !reg.equals(that.reg) : that.reg != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        //if (type != null ? !type.equals(that.type) : that.type != null) return false;
 
         return true;
     }

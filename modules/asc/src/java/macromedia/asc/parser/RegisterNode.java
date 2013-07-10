@@ -78,7 +78,7 @@ public class RegisterNode extends Node
 
         if (index != that.index) return false;
         if (void_result != that.void_result) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        //if (type != null ? !type.equals(that.type) : that.type != null) return false;
 
         return true;
     }

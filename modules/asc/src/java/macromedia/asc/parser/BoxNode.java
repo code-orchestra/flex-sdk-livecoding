@@ -82,7 +82,7 @@ public class BoxNode extends Node
         BoxNode boxNode = (BoxNode) o;
 
         if (void_result != boxNode.void_result) return false;
-        if (actual != null ? !actual.equals(boxNode.actual) : boxNode.actual != null) return false;
+        //if (actual != null ? !actual.equals(boxNode.actual) : boxNode.actual != null) return false;
         if (expr != null ? !expr.equals(boxNode.expr) : boxNode.expr != null) return false;
 
         return true;

@@ -170,8 +170,8 @@ public class ExpressionStatementNode extends Node
 
         if (is_var_stmt != that.is_var_stmt) return false;
         if (skip != that.skip) return false;
-        if (expected_type != null ? !expected_type.equals(that.expected_type) : that.expected_type != null)
-            return false;
+//        if (expected_type != null ? !expected_type.equals(that.expected_type) : that.expected_type != null)
+//            return false;
         if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
         if (gen_bits != null ? !gen_bits.equals(that.gen_bits) : that.gen_bits != null) return false;
         if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;

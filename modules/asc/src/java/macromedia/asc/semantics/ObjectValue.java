@@ -829,7 +829,7 @@ public class ObjectValue extends Value
         if (protected_ns != null ? !protected_ns.equals(that.protected_ns) : that.protected_ns != null) return false;
         if (slot_ids != null ? !slot_ids.equals(that.slot_ids) : that.slot_ids != null) return false;
         if (slots != null ? !slots.equals(that.slots) : that.slots != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        //if (type != null ? !type.equals(that.type) : that.type != null) return false;
         if (value != null ? !value.equals(that.value) : that.value != null) return false;
 
         return true;
@@ -866,7 +866,6 @@ public class ObjectValue extends Value
         if (_proto_ != null) result._proto_ = _proto_.clone();
         if (numberUsage != null) result.numberUsage = numberUsage.clone();
         if (activation != null) result.activation = activation.clone();
-        if (type != null) result.type = type.clone();
 
         if (names != null) result.names = names.clone();
         if (slots != null) {

@@ -168,8 +168,8 @@ public class TypeInfo implements Serializable, Cloneable // CodeOrchestra: made 
         if (is_default != typeInfo.is_default) return false;
         if (is_nullable != typeInfo.is_nullable) return false;
         if (name != null ? !name.equals(typeInfo.name) : typeInfo.name != null) return false;
-        if (prototype != null ? !prototype.equals(typeInfo.prototype) : typeInfo.prototype != null) return false;
         if (type != null ? !type.equals(typeInfo.type) : typeInfo.type != null) return false;
+        //if (prototype != null ? !prototype.equals(typeInfo.prototype) : typeInfo.prototype != null) return false;
 
         return true;
     }

@@ -156,7 +156,8 @@ public class PackageDefinitionNode extends DefinitionNode
         if (publicNamespace != null ? !publicNamespace.equals(that.publicNamespace) : that.publicNamespace != null)
             return false;
         if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
-        if (statements != null ? !statements.equals(that.statements) : that.statements != null) return false;
+        // in statements.items have link to this object
+        //if (statements != null ? !statements.equals(that.statements) : that.statements != null) return false;
         if (used_def_namespaces != null ? !used_def_namespaces.equals(that.used_def_namespaces) : that.used_def_namespaces != null)
             return false;
         if (used_namespaces != null ? !used_namespaces.equals(that.used_namespaces) : that.used_namespaces != null)

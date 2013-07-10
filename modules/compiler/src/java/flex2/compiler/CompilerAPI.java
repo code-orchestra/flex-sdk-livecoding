@@ -2464,17 +2464,16 @@ public final class CompilerAPI {
             units.add(null);
         }
 
-        for (int i = start; i < end; i++) {
-            final int finalI = i;
-            CompillerThreadPoolUtil.addCommand(new Runnable() {
-                @Override
-                public void run() {
-                    Source s = sources.get(finalI);
-                    CompilationUnit u;
-                    parse1(s, compilers, symbolTable);
-                }
-            });
-        }
+//        for (int i = start; i < end; i++) {
+//            final int finalI = i;
+//            CompillerThreadPoolUtil.addCommand(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Source s = sources.get(finalI);
+//                    parse1(s, compilers, symbolTable);
+//                }
+//            });
+//        }
 
         for (int i = start; i < end; i++) {
             Source s = sources.get(i);
@@ -2493,7 +2492,7 @@ public final class CompilerAPI {
         }
 
         CompillerThreadPoolUtil.logCommands("parce1");
-        CompillerThreadPoolUtil.flush(false);
+        CompillerThreadPoolUtil.flushWithoutMultiThreading();
 
         return result[0];
     }
@@ -2558,7 +2557,7 @@ public final class CompilerAPI {
         }
 
         CompillerThreadPoolUtil.logCommands("parce2");
-        CompillerThreadPoolUtil.flush(false);
+        CompillerThreadPoolUtil.flushWithoutMultiThreading();
 
         return result[0];
     }
@@ -2636,7 +2635,7 @@ public final class CompilerAPI {
         }
 
         CompillerThreadPoolUtil.logCommands("analize");
-        CompillerThreadPoolUtil.flush(false);
+        CompillerThreadPoolUtil.flushWithoutMultiThreading();
 
         return result[0];
     }
@@ -3805,12 +3804,14 @@ public final class CompilerAPI {
     }
 
     private static flex2.compiler.SubCompiler getCompiler(Source source, flex2.compiler.SubCompiler[] compilers) {
-        for (int i = 0, length = source == null || compilers == null ? 0 : compilers.length; i < length; i++) {
-            if (compilers[i].isSupported(source.getMimeType())) {
-                return compilers[i];
+        synchronized (compilers) {
+            for (int i = 0, length = source == null || compilers == null ? 0 : compilers.length; i < length; i++) {
+                if (compilers[i].isSupported(source.getMimeType())) {
+                    return compilers[i];
+                }
             }
+            return null;
         }
-        return null;
     }
 
     /**

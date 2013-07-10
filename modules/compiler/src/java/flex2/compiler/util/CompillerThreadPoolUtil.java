@@ -27,23 +27,18 @@ public class CompillerThreadPoolUtil {
         return isBroken;
     }
 
-    public static boolean flush(Boolean pool) {
-        if (!pool) {
-            isBroken = false;
-            try {
-                for (Object command : commands) {
-                    ((Callable) command).call();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+    public static boolean flushWithoutMultiThreading() {
+        isBroken = false;
+        try {
+            for (Object command : commands) {
+                ((Callable) command).call();
             }
-
-            commands.clear();
-            return isBroken;
-
-        } else {
-            return flush();
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+
+        commands.clear();
+        return isBroken;
     }
 
     public static void addCommand(final Runnable command) {
@@ -66,8 +61,8 @@ public class CompillerThreadPoolUtil {
         });
     }
 
-    public static void logCommands(String message){
-        System.out.println(message + ": "+ commands.size());
+    public static void logCommands(String message) {
+        System.out.println(message + ": " + commands.size());
     }
 
 

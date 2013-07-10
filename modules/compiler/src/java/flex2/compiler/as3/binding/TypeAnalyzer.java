@@ -66,16 +66,12 @@ public class TypeAnalyzer extends EvaluatorAdapter
 	private static final String TRUE = "true";
 
     private SymbolTable symbolTable;
-    private Map<String, ClassInfo> classInfoMap;
-    private Map<String, InterfaceInfo> interfaceInfoMap;
     private Info currentInfo;
     private String currentPackageName;
 
     public TypeAnalyzer(SymbolTable symbolTable)
     {
         this.symbolTable = symbolTable;
-        classInfoMap = new HashMap<String, ClassInfo>();
-        interfaceInfoMap = new HashMap<String, InterfaceInfo>();
     }
 
     private void analyzeInterfaces(Context context, List multiNames, Info info)
@@ -100,7 +96,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
         {
             Source source = symbolTable.findSourceByQName(qName);
 
-            interfaceInfo = interfaceInfoMap.get( qName.toString() );
+            interfaceInfo = symbolTable.getInterfaceInfo( qName.toString() );
 
             if (interfaceInfo == null)
             {
@@ -132,7 +128,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
                     }
                 }
 
-                interfaceInfo = interfaceInfoMap.get( qName.toString() );
+                interfaceInfo = symbolTable.getInterfaceInfo( qName.toString() );
             }
 
             // The interfaceInfo can be null if there was a missing import.
@@ -177,7 +173,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
 
         if (qName != null)
         {
-            classInfo = classInfoMap.get( qName.toString() );
+            classInfo = symbolTable.getClassInfo( qName.toString() );
 
             if (classInfo == null)
             {
@@ -212,7 +208,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
                     }
                 }
 
-                classInfo = classInfoMap.get( qName.toString() );
+                classInfo = symbolTable.getClassInfo( qName.toString() );
             }
         }
         else
@@ -234,7 +230,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
         {
             Source source = symbolTable.findSourceByQName(qName);
 
-            InterfaceInfo baseInterfaceInfo = interfaceInfoMap.get( qName.toString() );
+            InterfaceInfo baseInterfaceInfo = symbolTable.getInterfaceInfo( qName.toString() );
 
             if (baseInterfaceInfo == null)
             {
@@ -269,7 +265,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
                     }
                 }
 
-                baseInterfaceInfo = interfaceInfoMap.get( qName.toString() );
+                baseInterfaceInfo = symbolTable.getInterfaceInfo( qName.toString() );
             }
 
             // The baseInterfaceInfo can be null if there was a missing import.
@@ -300,7 +296,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
             currentInfo.addImport(currentPackageName);
         }
 
-        classInfoMap.put(qName.toString(), classInfo);
+        symbolTable.addClassInfo(qName.toString(), classInfo);
 
         String superTypeName = abcClass.getSuperTypeName();
 
@@ -381,7 +377,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
     {
         InterfaceInfo interfaceInfo = new InterfaceInfo( abcClass.getName() );
 
-        interfaceInfoMap.put(qName.toString(), interfaceInfo);
+        symbolTable.addInterfaceInfo(qName.toString(), interfaceInfo);
 
 		String superTypeName = abcClass.getSuperTypeName();
 
@@ -448,11 +444,11 @@ public class TypeAnalyzer extends EvaluatorAdapter
     {
         String className = NodeMagic.getClassName(classDefinition);
 
-        if (classInfoMap.get(className) == null)
+        if (symbolTable.getClassInfo(className) == null)
         {
             Info oldInfo = currentInfo;
             currentInfo = new ClassInfo(className);
-            classInfoMap.put(className, (ClassInfo)currentInfo);
+            symbolTable.addClassInfo(className, (ClassInfo)currentInfo);
 
             if (currentPackageName != null)
             {
@@ -540,11 +536,11 @@ public class TypeAnalyzer extends EvaluatorAdapter
     {
         String interfaceName = NodeMagic.getClassName(interfaceDefinition);
 
-        if (interfaceInfoMap.get(interfaceName) == null)
+        if (symbolTable.getInterfaceInfo(interfaceName) == null)
         {
             Info oldInfo = currentInfo;
             currentInfo = new InterfaceInfo(interfaceName);
-            interfaceInfoMap.put(interfaceName, (InterfaceInfo)currentInfo);
+            symbolTable.addInterfaceInfo(interfaceName, (InterfaceInfo)currentInfo);
 
             if (interfaceDefinition.pkgdef != null)
             {
@@ -734,12 +730,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
 
     public ClassInfo getClassInfo(String className)
     {
-        return classInfoMap.get(className);
-    }
-
-    public Iterator<ClassInfo> getClassInfoIterator()
-    {
-        return classInfoMap.values().iterator();
+        return symbolTable.getClassInfo(className);
     }
 
     private Node getNode(CompilationUnit compilationUnit)
@@ -855,11 +846,6 @@ public class TypeAnalyzer extends EvaluatorAdapter
             
             analyzeInterfaces(context, currentInfo.getInterfaceMultiNames(), currentInfo);
         }
-    }
-
-    public void removeClassInfo(String className)
-    {
-        classInfoMap.remove(className);
     }
 
     private String toString(IdentifierNode identifier)

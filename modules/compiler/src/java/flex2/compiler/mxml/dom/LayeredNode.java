@@ -26,29 +26,24 @@ package flex2.compiler.mxml.dom;
  *
  * @author Corey Lucier
  */
-public class LayeredNode extends Node
-{
-	LayeredNode(String uri, String localName, int size, DesignLayerNode parent)
-	{
-		super(uri, localName, size);
-		layerParent = parent;
-	}
-	
-	private DesignLayerNode layerParent;
-	
-	public void setLayerParent(DesignLayerNode node)
-	{
-		layerParent = node;
-	}
+public class LayeredNode extends Node {
+    LayeredNode(String uri, String localName, int size, DesignLayerNode parent) {
+        super(uri, localName, size);
+        layerParent = parent;
+    }
 
-	public DesignLayerNode getLayerParent()
-	{
-		return layerParent;
-	}
-	
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    private DesignLayerNode layerParent;
+
+    public void setLayerParent(DesignLayerNode node) {
+        layerParent = node;
+    }
+
+    public DesignLayerNode getLayerParent() {
+        return layerParent;
+    }
+
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 }

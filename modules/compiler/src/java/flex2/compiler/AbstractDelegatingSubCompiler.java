@@ -28,20 +28,17 @@ import flex2.compiler.util.ThreadLocalToolkit;
  * Base class to be used for sub-compilers that delegate to another
  * sub-compiler.
  */
-public abstract class AbstractDelegatingSubCompiler extends AbstractSubCompiler
-{
+public abstract class AbstractDelegatingSubCompiler extends AbstractSubCompiler {
     protected static final String DELEGATE_UNIT = "DelegateUnit";
     protected static final String LINE_NUMBER_MAP = "LineNumberMap";
 
     protected AbstractSubCompiler delegateSubCompiler;
 
-    public Source preprocess(Source source)
-    {
+    public Source preprocess(Source source) {
         return source;
     }
 
-    public void parse2(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void parse2(CompilationUnit unit, SymbolTable symbolTable) {
         CompilationUnit ascUnit = (CompilationUnit) unit.getContext().getAttribute(DELEGATE_UNIT);
         Source.transferInheritance(unit, ascUnit);
 
@@ -59,11 +56,10 @@ public abstract class AbstractDelegatingSubCompiler extends AbstractSubCompiler
 
     /**
      * Analyze... The implementation must:
-     *
+     * <p/>
      * 1. register type info to SymbolTable
      */
-    public void analyze1(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void analyze1(CompilationUnit unit, SymbolTable symbolTable) {
         CompilationUnit ascUnit = (CompilationUnit) unit.getContext().getAttribute(DELEGATE_UNIT);
 
         Logger original = ThreadLocalToolkit.getLogger();
@@ -78,8 +74,7 @@ public abstract class AbstractDelegatingSubCompiler extends AbstractSubCompiler
         Source.transferNamespaces(ascUnit, unit);
     }
 
-    public void analyze2(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void analyze2(CompilationUnit unit, SymbolTable symbolTable) {
         CompilationUnit ascUnit = (CompilationUnit) unit.getContext().getAttribute(DELEGATE_UNIT);
         Source.transferDependencies(unit, ascUnit);
 
@@ -94,8 +89,7 @@ public abstract class AbstractDelegatingSubCompiler extends AbstractSubCompiler
         Source.transferDependencies(ascUnit, unit);
     }
 
-    public void analyze3(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void analyze3(CompilationUnit unit, SymbolTable symbolTable) {
         CompilationUnit ascUnit = (CompilationUnit) unit.getContext().getAttribute(DELEGATE_UNIT);
         Source.transferDependencies(unit, ascUnit);
 
@@ -108,8 +102,7 @@ public abstract class AbstractDelegatingSubCompiler extends AbstractSubCompiler
         ThreadLocalToolkit.setLogger(original);
     }
 
-    public void analyze4(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void analyze4(CompilationUnit unit, SymbolTable symbolTable) {
         CompilationUnit ascUnit = (CompilationUnit) unit.getContext().getAttribute(DELEGATE_UNIT);
 
         Logger original = ThreadLocalToolkit.getLogger();
@@ -119,8 +112,7 @@ public abstract class AbstractDelegatingSubCompiler extends AbstractSubCompiler
         ThreadLocalToolkit.setLogger(adapter);
         delegateSubCompiler.analyze4(ascUnit, symbolTable);
 
-        if (ThreadLocalToolkit.errorCount() > 0)
-        {
+        if (ThreadLocalToolkit.errorCount() > 0) {
             return;
         }
 
@@ -137,8 +129,7 @@ public abstract class AbstractDelegatingSubCompiler extends AbstractSubCompiler
     /**
      * Generate ABC
      */
-    public void generate(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void generate(CompilationUnit unit, SymbolTable symbolTable) {
         CompilationUnit ascUnit = (CompilationUnit) unit.getContext().getAttribute(DELEGATE_UNIT);
 
         Logger original = ThreadLocalToolkit.getLogger();
@@ -152,8 +143,7 @@ public abstract class AbstractDelegatingSubCompiler extends AbstractSubCompiler
         ThreadLocalToolkit.setLogger(adapter);
         delegateSubCompiler.generate(ascUnit, symbolTable);
 
-        if (ThreadLocalToolkit.errorCount() > 0)
-        {
+        if (ThreadLocalToolkit.errorCount() > 0) {
             return;
         }
 
@@ -164,8 +154,7 @@ public abstract class AbstractDelegatingSubCompiler extends AbstractSubCompiler
     /**
      * Postprocess... could be invoked multiple times.
      */
-    public void postprocess(CompilationUnit unit, SymbolTable symbolTable)
-    {
-        
+    public void postprocess(CompilationUnit unit, SymbolTable symbolTable) {
+
     }
 }

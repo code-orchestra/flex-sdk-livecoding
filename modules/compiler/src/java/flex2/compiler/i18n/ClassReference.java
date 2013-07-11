@@ -21,29 +21,24 @@ package flex2.compiler.i18n;
 
 /**
  * Represents a ClassReference(...) resource value in a .properties file.
- * 
+ *
  * @author Gordon Smith
  */
-public class ClassReference
-{
+public class ClassReference {
     private String value;
     private int lineNumber;
 
-    public ClassReference(String value, int lineNumber)
-    {
+    public ClassReference(String value, int lineNumber) {
         this.value = value;
         this.lineNumber = lineNumber;
     }
 
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         boolean result = false;
 
-        if (object instanceof ClassReference)
-        {
-            ClassReference classReferenceObject = (ClassReference)object;
-           if (classReferenceObject.getValue().equals(value))
-            {
+        if (object instanceof ClassReference) {
+            ClassReference classReferenceObject = (ClassReference) object;
+            if (classReferenceObject.getValue().equals(value)) {
                 result = true;
             }
         }
@@ -51,23 +46,19 @@ public class ClassReference
         return result;
     }
 
-    public int getLineNumber()
-    {
+    public int getLineNumber() {
         return lineNumber;
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
-    public int hashCode()
-    {
+    public int hashCode() {
         return value.hashCode();
     }
-    
-    public String toString()
-    {
-    	return value;
+
+    public String toString() {
+        return value;
     }
 }

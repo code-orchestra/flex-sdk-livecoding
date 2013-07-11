@@ -29,26 +29,24 @@ import java.util.Collections;
  * Utility wrapper for IteratorChain, culls empty adds and exploits
  * singletons.
  */
-public class IteratorList extends ArrayList<Iterator>
-{
-	private static final long serialVersionUID = -5093248926480065063L;
+public class IteratorList extends ArrayList<Iterator> {
+    private static final long serialVersionUID = -5093248926480065063L;
 
-    public boolean add(Iterator iter)
-	{
-		if (iter.hasNext())
-		{
-			return super.add(iter);
-		}
+    public boolean add(Iterator iter) {
+        if (iter.hasNext()) {
+            return super.add(iter);
+        }
         return false;
-	}
+    }
 
-	public Iterator toIterator()
-	{
-		switch (size())
-		{
-            case 0:     return Collections.emptyList().iterator();
-			case 1: 	return get(0);
-			default: 	return new IteratorChain(this);
-		}
-	}
+    public Iterator toIterator() {
+        switch (size()) {
+            case 0:
+                return Collections.emptyList().iterator();
+            case 1:
+                return get(0);
+            default:
+                return new IteratorChain(this);
+        }
+    }
 }

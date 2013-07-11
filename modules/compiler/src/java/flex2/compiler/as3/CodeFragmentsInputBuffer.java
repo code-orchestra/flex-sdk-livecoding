@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import macromedia.asc.parser.InputBuffer;
 
 /**
@@ -33,8 +34,7 @@ import macromedia.asc.parser.InputBuffer;
  *
  * @author Paul Reilly
  */
-public class CodeFragmentsInputBuffer extends InputBuffer
-{
+public class CodeFragmentsInputBuffer extends InputBuffer {
     private List<CodeFragment> codeFragments = new ArrayList<CodeFragment>();
     // Initialized to 1, because the default position for generated
     // ASC nodes is 0 and without this, they were getting mapped to
@@ -43,51 +43,42 @@ public class CodeFragmentsInputBuffer extends InputBuffer
     private int length = 1;
     private Map<Integer, Integer> positionToLineNumberMap = new HashMap<Integer, Integer>();
 
-    public CodeFragmentsInputBuffer(String path)
-    {
+    public CodeFragmentsInputBuffer(String path) {
         origin = path;
     }
 
-    public void addCodeFragment(int fragmentLength, InputBuffer inputBuffer, int lineNumberOffset)
-    {
+    public void addCodeFragment(int fragmentLength, InputBuffer inputBuffer, int lineNumberOffset) {
         int startPosition = length;
         int endPosition = length + fragmentLength;
         codeFragments.add(new CodeFragment(startPosition, endPosition,
-                                           inputBuffer, lineNumberOffset - 1));
+                inputBuffer, lineNumberOffset - 1));
         length = endPosition;
     }
 
     /**
      * Columns are not reported for Mxml, so we short circuit by returning -1.
      */
-    public int getColPos(int pos)
-    {
+    public int getColPos(int pos) {
         return -1;
     }
 
     /**
      * Columns are not reported for Mxml, so we short circuit by returning -1.
      */
-    public int getColPos(int pos, int lineNumber)
-    {
+    public int getColPos(int pos, int lineNumber) {
         return -1;
     }
 
-    public int getLnNum(int pos)
-    {
+    public int getLnNum(int pos) {
         int result = -1;
         Integer lineNumber = positionToLineNumberMap.get(pos);
 
-        if (lineNumber != null)
-        {
+        if (lineNumber != null) {
             result = lineNumber;
-        }
-        else
-        {
+        } else {
             CodeFragment codeFragment = lookupCodeFragment(pos);
 
-            if (codeFragment != null)
-            {
+            if (codeFragment != null) {
                 int codeFragmentLineNumber = codeFragment.inputBuffer.getLnNum(pos);
                 result = codeFragmentLineNumber + codeFragment.lineNumberOffset;
             }
@@ -96,39 +87,32 @@ public class CodeFragmentsInputBuffer extends InputBuffer
         return result;
     }
 
-    public int getLength()
-    {
+    public int getLength() {
         return length;
     }
 
-    public String getLineText(int pos)
-    {
+    public String getLineText(int pos) {
         String result = null;
         CodeFragment codeFragment = lookupCodeFragment(pos);
 
-        if (codeFragment != null)
-        {
+        if (codeFragment != null) {
             result = codeFragment.inputBuffer.getLineText(pos - codeFragment.startPosition);
         }
 
         return result;
     }
 
-    private CodeFragment lookupCodeFragment(int pos)
-    {
+    private CodeFragment lookupCodeFragment(int pos) {
         CodeFragment result = null;
 
-        if (pos != -1)
-        {
+        if (pos != -1) {
             Iterator<CodeFragment> iterator = codeFragments.iterator();
 
-            while (iterator.hasNext())
-            {
+            while (iterator.hasNext()) {
                 CodeFragment codeFragment = iterator.next();
-            
+
                 if ((codeFragment.startPosition <= pos) &&
-                    (pos < codeFragment.endPosition))
-                {
+                        (pos < codeFragment.endPosition)) {
                     result = codeFragment;
                     break;
                 }
@@ -138,8 +122,7 @@ public class CodeFragmentsInputBuffer extends InputBuffer
         return result;
     }
 
-    public int positionOfMark()
-    {
+    public int positionOfMark() {
         return 0;
     }
 
@@ -150,21 +133,18 @@ public class CodeFragmentsInputBuffer extends InputBuffer
      * numbers.  It's important when emitting debug info in the byte
      * code.
      */
-    public void addLineNumber(int lineNumber)
-    {
+    public void addLineNumber(int lineNumber) {
         positionToLineNumberMap.put(length++, lineNumber);
     }
 
-    private static class CodeFragment
-    {
+    private static class CodeFragment {
         public int startPosition;
         public int endPosition;
         public InputBuffer inputBuffer;
         public int lineNumberOffset;
 
         public CodeFragment(int startPosition, int endPosition,
-                            InputBuffer inputBuffer, int lineNumberOffset)
-        {
+                            InputBuffer inputBuffer, int lineNumberOffset) {
             this.startPosition = startPosition;
             this.endPosition = endPosition;
             this.inputBuffer = inputBuffer;

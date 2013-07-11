@@ -24,16 +24,14 @@ import flex2.compiler.mxml.reflect.Type;
 /**
  * This class represents an XMLList node in a Mxml document.
  */
-public class XMLList extends Model
-{
+public class XMLList extends Model {
     private String literalXML;
     private boolean hasBindings;
 
-    public XMLList(MxmlDocument document, Type type, Model parent, int line)
-    {
+    public XMLList(MxmlDocument document, Type type, Model parent, int line) {
         super(document, type, parent, line);
     }
-    
+
     public boolean hasBindings() {
         return hasBindings;
     }

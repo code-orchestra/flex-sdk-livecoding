@@ -42,68 +42,56 @@ import flex2.tools.Fcsh;
  * than the actual characters involved: "toInternal", "toExternal" or whatever. But for now I can never remember which
  * is which.
  */
-public class NameFormatter
-{
-	/**
-	 * convert pair of strings to single string delimited by '.'
-	 */
-	public static String toDot(String ns, String n)
-	{
-		return ns.length() > 0 ? ns + '.' + n : n;
-	}
+public class NameFormatter {
+    /**
+     * convert pair of strings to single string delimited by '.'
+     */
+    public static String toDot(String ns, String n) {
+        return ns.length() > 0 ? ns + '.' + n : n;
+    }
 
-	/**
-	 * convert pair of strings to single string delimited by ':'
-	 */
-	public static String toColon(String ns, String n)
-	{
-		return ns.length() > 0 ? (ns + ':' + n).intern() : n;
-	}
+    /**
+     * convert pair of strings to single string delimited by ':'
+     */
+    public static String toColon(String ns, String n) {
+        return ns.length() > 0 ? (ns + ':' + n).intern() : n;
+    }
 
-	/**
-	 * convert p.q:C to p.q.C
-	 * NOTE: idempotent
-	 */
-	public static String toDot(String n)
-	{
-		assert n.indexOf('/') == -1;
-		return toDot(n, ':');
-	}
+    /**
+     * convert p.q:C to p.q.C
+     * NOTE: idempotent
+     */
+    public static String toDot(String n) {
+        assert n.indexOf('/') == -1;
+        return toDot(n, ':');
+    }
 
-	/**
-	 *
-	 */
-	public static String toDot(QName qname)
-	{
-		return toDot(qname.getNamespace(), qname.getLocalPart());
-	}
+    /**
+     *
+     */
+    public static String toDot(QName qname) {
+        return toDot(qname.getNamespace(), qname.getLocalPart());
+    }
 
-	/**
-	 * convert <strong>all instances</strong> of <code>delimiter</code> with '.'.
-	 */
-	public static String toDot(String n, char delimiter)
-	{
-		return n.replace(delimiter, '.');
-	}
+    /**
+     * convert <strong>all instances</strong> of <code>delimiter</code> with '.'.
+     */
+    public static String toDot(String n, char delimiter) {
+        return n.replace(delimiter, '.');
+    }
 
-	/**
-	 * convert p.q.C to p.q:C
-	 * NOTE: idempotent
-	 */
-	public static String toColon(String n)
-	{
+    /**
+     * convert p.q.C to p.q:C
+     * NOTE: idempotent
+     */
+    public static String toColon(String n) {
         String result;
 
-        if (n.startsWith(StandardDefs.CLASS_VECTOR))
-        {
+        if (n.startsWith(StandardDefs.CLASS_VECTOR)) {
             result = SymbolTable.VECTOR + n.substring(StandardDefs.CLASS_VECTOR.length());
-        }
-        else if (n.startsWith(SymbolTable.VECTOR))
-        {
+        } else if (n.startsWith(SymbolTable.VECTOR)) {
             result = n;
-        }
-        else
-        {
+        } else {
             int i = toDot(n).lastIndexOf('.');
             if (i > 0) {
                 String s = n.substring(0, i) + ':' + n.substring(i + 1);
@@ -114,126 +102,103 @@ public class NameFormatter
         }
 
         return result;
-	}
-
-	/**
-	 *
-	 */
-	public static String toDotStar(String pkg)
-	{
-		return pkg + ".*";
-	}
-
-	/**
-	 * retrieve package name from qualified name (dot or slash format ok)
-	 */
-	public static String retrievePackageName(String n)
-	{
-		int i = toDot(n).lastIndexOf('.');
-		return i == -1 ? "" : n.substring(0, i);
-	}
+    }
 
     /**
-     * just removes $internal from package name.   
+     *
      */
-	public static String normalizePackageName(String n)
-	{
+    public static String toDotStar(String pkg) {
+        return pkg + ".*";
+    }
+
+    /**
+     * retrieve package name from qualified name (dot or slash format ok)
+     */
+    public static String retrievePackageName(String n) {
+        int i = toDot(n).lastIndexOf('.');
+        return i == -1 ? "" : n.substring(0, i);
+    }
+
+    /**
+     * just removes $internal from package name.
+     */
+    public static String normalizePackageName(String n) {
         return n.endsWith("$internal") ? n.substring(0, n.length() - "$internal".length()) : n;
     }
 
-	/**
-	 * retrieve class name from qualified name (dot or slash format ok)
-	 */
-	public static String retrieveClassName(String n)
-	{
+    /**
+     * retrieve class name from qualified name (dot or slash format ok)
+     */
+    public static String retrieveClassName(String n) {
         String result;
         String toDot = toDot(n);
 
-        if (toDot.startsWith(StandardDefs.CLASS_VECTOR + ".<"))
-        {
+        if (toDot.startsWith(StandardDefs.CLASS_VECTOR + ".<")) {
             result = "Vector" + n.substring(StandardDefs.CLASS_VECTOR.length() + 1);
-        }
-        else
-        {
+        } else {
             int i = toDot.lastIndexOf('.');
             result = i == -1 ? n : n.substring(i + 1);
         }
 
         return result;
-	}
+    }
 
-	/**
-	 * convert name (dot or slash format ok) to MultiName
-	 */
-	public static MultiName toMultiName(String n)
-	{
-		int i = toDot(n).lastIndexOf('.');
-		return i >= 0 ?
-				new MultiName(new String[]{n.substring(0, i)}, n.substring(i + 1)) :
-				new MultiName(new String[]{""}, n);
-	}
+    /**
+     * convert name (dot or slash format ok) to MultiName
+     */
+    public static MultiName toMultiName(String n) {
+        int i = toDot(n).lastIndexOf('.');
+        return i >= 0 ?
+                new MultiName(new String[]{n.substring(0, i)}, n.substring(i + 1)) :
+                new MultiName(new String[]{""}, n);
+    }
 
-	/**
-	 * QName to Multiname
-	 */
-	public static MultiName toMultiName(QName qname)
-	{
-		return new MultiName(qname.getNamespace(), qname.getLocalPart());
-	}
+    /**
+     * QName to Multiname
+     */
+    public static MultiName toMultiName(QName qname) {
+        return new MultiName(qname.getNamespace(), qname.getLocalPart());
+    }
 
-	/**
-	 * convert name (dot or slash format ok) to QName
-	 */
-	public static QName toQName(String n)
-	{
-		int i = toDot(n).lastIndexOf('.');
-		return i >= 0 ?
-				new QName(n.substring(0, i), n.substring(i + 1)) :
-				new QName("", n);
-	}
+    /**
+     * convert name (dot or slash format ok) to QName
+     */
+    public static QName toQName(String n) {
+        int i = toDot(n).lastIndexOf('.');
+        return i >= 0 ?
+                new QName(n.substring(0, i), n.substring(i + 1)) :
+                new QName("", n);
+    }
 
     /**
      * Derive class name from file path
      */
-    private static String classNameFromSource(Source source)
-    {
-    	if (source.isSourcePathOwner() || source.isSourceListOwner())
-    	{
-    		return source.getShortName();
-    	}
-    	else if (source.isSwcScriptOwner() || source.getCompilationUnit() != null)
-    	{
-    		return source.getCompilationUnit().topLevelDefinitions.first().getLocalPart();
-    	}
-    	else
-    	{
-    		assert false;
-    		return null;
-    	}
+    private static String classNameFromSource(Source source) {
+        if (source.isSourcePathOwner() || source.isSourceListOwner()) {
+            return source.getShortName();
+        } else if (source.isSwcScriptOwner() || source.getCompilationUnit() != null) {
+            return source.getCompilationUnit().topLevelDefinitions.first().getLocalPart();
+        } else {
+            assert false;
+            return null;
+        }
     }
 
-    public static String nameFromSource(Source source)
-    {
-    	if (source.isSwcScriptOwner())
-    	{
-    		SwcScript script = (SwcScript) source.getOwner();
-    		return script.getName();
-    	}
-    	else if (source.getCompilationUnit() != null)
-    	{
-        	return source.getCompilationUnit().topLevelDefinitions.first().toString().replace(':', '/').replace('.', '/');
-    	}
-    	else
-    	{
-    		assert false : source + ", owner = " + source.getOwner();
-    		return null;
-    	}
+    public static String nameFromSource(Source source) {
+        if (source.isSwcScriptOwner()) {
+            SwcScript script = (SwcScript) source.getOwner();
+            return script.getName();
+        } else if (source.getCompilationUnit() != null) {
+            return source.getCompilationUnit().topLevelDefinitions.first().toString().replace(':', '/').replace('.', '/');
+        } else {
+            assert false : source + ", owner = " + source.getOwner();
+            return null;
+        }
     }
 
-	public static QName qNameFromSource(Source src)
-	{
-		String rel = src.getRelativePath();
-		String name = (rel == null || rel.length() == 0 ? "" : (rel.replace('/', '.').replace('\\', '.') + ":")) + classNameFromSource(src);
-		return new QName(name);
-	}
+    public static QName qNameFromSource(Source src) {
+        String rel = src.getRelativePath();
+        String name = (rel == null || rel.length() == 0 ? "" : (rel.replace('/', '.').replace('\\', '.') + ":")) + classNameFromSource(src);
+        return new QName(name);
+    }
 }

@@ -33,58 +33,48 @@ import java.util.Set;
  *
  * @author Clement Wong
  */
-public class ScriptNode extends Node
-{
-	public static final Set<QName> attributes;
+public class ScriptNode extends Node {
+    public static final Set<QName> attributes;
 
-	static
-	{
-		attributes = new HashSet<QName>();
-		attributes.add(new QName("", "source"));
-		attributes.add(new QName("", "scope"));
-	}
+    static {
+        attributes = new HashSet<QName>();
+        attributes.add(new QName("", "source"));
+        attributes.add(new QName("", "scope"));
+    }
 
-	ScriptNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
+    ScriptNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
 
-	private CDATANode sourceFile;
+    private CDATANode sourceFile;
 
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 
-	public void setSourceFile(CDATANode cdata)
-	{
-		sourceFile = cdata;
-	}
+    public void setSourceFile(CDATANode cdata) {
+        sourceFile = cdata;
+    }
 
-	public CDATANode getSourceFile()
-	{
-		return sourceFile;
-	}
+    public CDATANode getSourceFile() {
+        return sourceFile;
+    }
 
-	public String getText()
-	{
-		CDATANode cdata = (CDATANode) getChildAt(0);
-		return (cdata == null) ? null : cdata.image;
-	}
+    public String getText() {
+        CDATANode cdata = (CDATANode) getChildAt(0);
+        return (cdata == null) ? null : cdata.image;
+    }
 
-	public int getChildCount()
-	{
-		return sourceFile != null ? 1 : super.getChildCount();
-	}
+    public int getChildCount() {
+        return sourceFile != null ? 1 : super.getChildCount();
+    }
 
-	public Token getChildAt(int index)
-	{
-		return sourceFile != null && index == 0 ? sourceFile : super.getChildAt(index);
-	}
+    public Token getChildAt(int index) {
+        return sourceFile != null && index == 0 ? sourceFile : super.getChildAt(index);
+    }
 
-	public List<Token> getChildren()
-	{
-		return sourceFile != null ? Collections.<Token>singletonList(sourceFile) : super.getChildren();
-	}
+    public List<Token> getChildren() {
+        return sourceFile != null ? Collections.<Token>singletonList(sourceFile) : super.getChildren();
+    }
 }

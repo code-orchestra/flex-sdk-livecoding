@@ -42,42 +42,38 @@ import java.util.Set;
  *
  * @author Clement Wong
  */
-public final class BytecodeEmitter extends ActionBlockEmitter
-{
-	public BytecodeEmitter(Context cx, Source source, boolean debug, boolean codeHints)
-	{
-		this(cx, source, debug, codeHints, false, null);
-	}
+public final class BytecodeEmitter extends ActionBlockEmitter {
+    public BytecodeEmitter(Context cx, Source source, boolean debug, boolean codeHints) {
+        this(cx, source, debug, codeHints, false, null);
+    }
 
-	public BytecodeEmitter(Context cx, Source source, boolean debug, boolean codeHints, boolean keepEmbed, LineNumberMap map)
-	{
-		super(cx, source != null ? source.getName() : null, new StringPrintWriter(),
-              new StringPrintWriter(), false, false, false, debug, codeHints);
-		this.map = map;
-		this.source = source;
-		this.cx = cx;
+    public BytecodeEmitter(Context cx, Source source, boolean debug, boolean codeHints, boolean keepEmbed, LineNumberMap map) {
+        super(cx, source != null ? source.getName() : null, new StringPrintWriter(),
+                new StringPrintWriter(), false, false, false, debug, codeHints);
+        this.map = map;
+        this.source = source;
+        this.cx = cx;
         this.keepEmbed = keepEmbed;
 
-		if (debug)
-		{
-			lines = new HashSet<Line>();
-			key = new Line();
-		}
-	}
+        if (debug) {
+            lines = new HashSet<Line>();
+            key = new Line();
+        }
+    }
 
-	private LineNumberMap map;
-	private Source source;
-	private String currentFileName;
-	private Context cx;
+    private LineNumberMap map;
+    private Source source;
+    private String currentFileName;
+    private Context cx;
 
     // Do we want to strip out Embed metadata or not - if this is true,
     // we will emit the Embed metadata, but if false, then we will not emit
     // any embed metadata
     private boolean keepEmbed;
 
-	// C: not used when debug is false...
-	private Set<Line> lines;
-	private Line key;
+    // C: not used when debug is false...
+    private Set<Line> lines;
+    private Line key;
 
     /**
      * Overrides ActionBlockEmitter's addMetadata() to add support for
@@ -87,25 +83,21 @@ public final class BytecodeEmitter extends ActionBlockEmitter
      * compile time for libraries or at runtime for Applications.  We
      * already handle non-debug applications in PostLink.
      */
-    protected IntList addMetadata(ArrayList<MetaData> metadata)
-    {
+    protected IntList addMetadata(ArrayList<MetaData> metadata) {
         // If we're keeping [Embed] metadata then we can just call the default impl
         // in the base class as we're not doing any special filtering here
-        if( keepEmbed )
+        if (keepEmbed)
             return super.addMetadata(metadata);
 
         IntList metaDataIndices = null;
 
-        if ((metadata != null) && (metadata.size() > 0))
-        {
+        if ((metadata != null) && (metadata.size() > 0)) {
             metaDataIndices = new IntList(metadata.size());
 
-            for (MetaData metaData : metadata)
-            {
+            for (MetaData metaData : metadata) {
                 String id = metaData.id;
 
-                if (!id.equals(StandardDefs.MD_EMBED))
-                {
+                if (!id.equals(StandardDefs.MD_EMBED)) {
                     Value[] values = metaData.values;
                     int metaDataIndex = addMetadataInfo(id, values);
                     metaDataIndices.add(metaDataIndex);
@@ -115,176 +107,133 @@ public final class BytecodeEmitter extends ActionBlockEmitter
         return metaDataIndices;
     }
 
-	protected void DebugSlot(String name, int slot, int line)
-	{
-		if (source.isDebuggable())
-		{
-			int newLine = calculateLineNumber(line);
+    protected void DebugSlot(String name, int slot, int line) {
+        if (source.isDebuggable()) {
+            int newLine = calculateLineNumber(line);
 
-			if (newLine != -1)
-			{
-				super.DebugSlot(name, slot, newLine);
-			}
-		}
-	}
+            if (newLine != -1) {
+                super.DebugSlot(name, slot, newLine);
+            }
+        }
+    }
 
-	protected void DebugFile(String name)
-	{
-		currentFileName = name;
+    protected void DebugFile(String name) {
+        currentFileName = name;
 
-		if (!source.isDebuggable())
-		{
-			return;
-		}
+        if (!source.isDebuggable()) {
+            return;
+        }
 
-		if (map != null)
-		{
-			if (map.getNewName().equals(name))
-			{
-				name = map.getOldName();
-			}
-		}
+        if (map != null) {
+            if (map.getNewName().equals(name)) {
+                name = map.getOldName();
+            }
+        }
 
-		// C: reconstruct filenames based on the path;package;file format.
-		//    apply to SourcePath files only...
-		//    root is in FileSpec but we're considered it a special case. it's questionable...
-		//	  Note ResourceContainer case added for inline components 
-		if (source.isSourcePathOwner() ||
-				source.isSourceListOwner() ||
-				source.isResourceContainerOwner() ||
-				source.isRoot())
-		{
-			String relativePath = source.getRelativePath().replace('/', File.separatorChar);
-			if (relativePath.length() == 0)
-			{
-				int index = name.lastIndexOf(File.separatorChar);
-				if (index != -1)
-				{
-					name = name.substring(0, index) + ";;" + name.substring(index + 1);
-				}
-			}
-			else
-			{
-				// C: e.g. relativePath = mx\controls
-				int separatorIndex = name.lastIndexOf(File.separatorChar);
-				int index = separatorIndex > -1 ? name.lastIndexOf(relativePath, separatorIndex) : name.lastIndexOf(relativePath);
-				if (index > 0)
-				{
-					name = name.substring(0, index - 1) + ";" + relativePath + ";" + name.substring(index + relativePath.length() + 1);
-				}
-			}
-		}
+        // C: reconstruct filenames based on the path;package;file format.
+        //    apply to SourcePath files only...
+        //    root is in FileSpec but we're considered it a special case. it's questionable...
+        //	  Note ResourceContainer case added for inline components
+        if (source.isSourcePathOwner() ||
+                source.isSourceListOwner() ||
+                source.isResourceContainerOwner() ||
+                source.isRoot()) {
+            String relativePath = source.getRelativePath().replace('/', File.separatorChar);
+            if (relativePath.length() == 0) {
+                int index = name.lastIndexOf(File.separatorChar);
+                if (index != -1) {
+                    name = name.substring(0, index) + ";;" + name.substring(index + 1);
+                }
+            } else {
+                // C: e.g. relativePath = mx\controls
+                int separatorIndex = name.lastIndexOf(File.separatorChar);
+                int index = separatorIndex > -1 ? name.lastIndexOf(relativePath, separatorIndex) : name.lastIndexOf(relativePath);
+                if (index > 0) {
+                    name = name.substring(0, index - 1) + ";" + relativePath + ";" + name.substring(index + relativePath.length() + 1);
+                }
+            }
+        }
 
-		super.DebugFile(name);
-	}
+        super.DebugFile(name);
+    }
 
-	protected void DebugLine(ByteList code, int lineNumber)
-	{
-		if (!source.isDebuggable())
-		{
-			return;
-		}
+    protected void DebugLine(ByteList code, int lineNumber) {
+        if (!source.isDebuggable()) {
+            return;
+        }
 
-		if (lines != null)
-		{
-			key.fileName = currentFileName;
-			key.lineNumber = lineNumber;
+        if (lines != null) {
+            key.fileName = currentFileName;
+            key.lineNumber = lineNumber;
 
-			if (!lines.contains(key))
-			{
-				lines.add(new Line(currentFileName, lineNumber));
-				source.lineCount = lines.size();
-			}
-		}
+            if (!lines.contains(key)) {
+                lines.add(new Line(currentFileName, lineNumber));
+                source.lineCount = lines.size();
+            }
+        }
 
-		int newLineNumber = calculateLineNumber(lineNumber);
+        int newLineNumber = calculateLineNumber(lineNumber);
 
-		if (newLineNumber > 0)
-		{
-			super.DebugLine(code, newLineNumber);
-		}
-	}
+        if (newLineNumber > 0) {
+            super.DebugLine(code, newLineNumber);
+        }
+    }
 
-	private int calculateLineNumber(int lineNumber)
-	{
-		if (map == null || !source.getName().equals(currentFileName))
-		{
-			return lineNumber;
-		}
-		else
-		{
-			int newLineNumber = map.get(lineNumber);
-			if (newLineNumber > 0)
-			{
-				return newLineNumber;
-			}
-			else
-			{
-				// C: lines corresponding to internal code are not "debuggable".
-				return -1;
-			}
-		}
-	}
+    private int calculateLineNumber(int lineNumber) {
+        if (map == null || !source.getName().equals(currentFileName)) {
+            return lineNumber;
+        } else {
+            int newLineNumber = map.get(lineNumber);
+            if (newLineNumber > 0) {
+                return newLineNumber;
+            } else {
+                // C: lines corresponding to internal code are not "debuggable".
+                return -1;
+            }
+        }
+    }
 
-	private static class Line
-	{
-		Line()
-		{
-		}
+    private static class Line {
+        Line() {
+        }
 
-		Line(String fileName, int lineNumber)
-		{
-			this.fileName = fileName;
-			this.lineNumber = lineNumber;
-		}
+        Line(String fileName, int lineNumber) {
+            this.fileName = fileName;
+            this.lineNumber = lineNumber;
+        }
 
-		public String fileName;
-		public int lineNumber;
+        public String fileName;
+        public int lineNumber;
 
-		public boolean equals(Object o)
-		{
-			if (o == this)
-			{
-				return true;
-			}
-			else if (o instanceof Line)
-			{
-				Line line = (Line) o;
+        public boolean equals(Object o) {
+            if (o == this) {
+                return true;
+            } else if (o instanceof Line) {
+                Line line = (Line) o;
 
-                if ((fileName != null) && (line.fileName != null))
-                {
+                if ((fileName != null) && (line.fileName != null)) {
                     return fileName.equals(line.fileName) && lineNumber == line.lineNumber;
-                }
-                else if (((fileName != null) && (line.fileName == null)) ||
-                         ((fileName == null) && (line.fileName != null)))
-                {
+                } else if (((fileName != null) && (line.fileName == null)) ||
+                        ((fileName == null) && (line.fileName != null))) {
                     return false;
-                }
-                else
-                {
+                } else {
                     return lineNumber == line.lineNumber;
                 }
-			}
-			else
-			{
-				return false;
-			}
-		}
+            } else {
+                return false;
+            }
+        }
 
-		public int hashCode()
-		{
+        public int hashCode() {
             int result;
 
-            if (fileName != null)
-            {
+            if (fileName != null) {
                 result = fileName.hashCode() ^ lineNumber;
-            }
-            else
-            {
+            } else {
                 result = lineNumber;
             }
 
             return result;
-		}
-	}
+        }
+    }
 }

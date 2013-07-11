@@ -26,7 +26,6 @@ package flex2.compiler.util.graph;
  *
  * @author Clement Wong
  */
-public interface Visitor<T>
-{
-	void visit(T object);
+public interface Visitor<T> {
+    void visit(T object);
 }

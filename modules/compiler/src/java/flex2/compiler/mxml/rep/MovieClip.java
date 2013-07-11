@@ -39,77 +39,67 @@ import java.util.*;
  * 
  * jono: someone should really check in with you-know-who before you-know-when... or else.
  */
-public class MovieClip extends Model
-{
-	private Collection<VisualChildInitializer> children;
+public class MovieClip extends Model {
+    private Collection<VisualChildInitializer> children;
 
-	public MovieClip(MxmlDocument document, Type type, Model parent, int line)
-	{
-		super(document, type, parent, line);
-		children = new ArrayList<VisualChildInitializer>();
-	}
+    public MovieClip(MxmlDocument document, Type type, Model parent, int line) {
+        super(document, type, parent, line);
+        children = new ArrayList<VisualChildInitializer>();
+    }
 
-	public void addChild(MovieClip child)
-	{
-		children.add(new VisualChildInitializer(child));
+    public void addChild(MovieClip child) {
+        children.add(new VisualChildInitializer(child));
 
-		if (standardDefs.isRepeater(child.getType()))
-		{
-			getDocument().ensureDeclaration(this);
-		}
-	}
-	
-	public Collection<VisualChildInitializer> children()
-	{
-		return children;
-	}
+        if (standardDefs.isRepeater(child.getType())) {
+            getDocument().ensureDeclaration(this);
+        }
+    }
 
-	public boolean hasChildren()
-	{
-		return !children.isEmpty();
-	}
+    public Collection<VisualChildInitializer> children() {
+        return children;
+    }
 
-	/**
-	 *
-	 */
-	public Iterator<VisualChildInitializer> getChildInitializerIterator()
-	{
-		return children.iterator();
-	}
+    public boolean hasChildren() {
+        return !children.isEmpty();
+    }
 
-	/**
-	 *  iterator containing definitions from our initializers
-	 */
-	public Iterator<CodeFragmentList> getSubDefinitionsIterator()
-	{
-		IteratorList iterList = new IteratorList();
+    /**
+     *
+     */
+    public Iterator<VisualChildInitializer> getChildInitializerIterator() {
+        return children.iterator();
+    }
 
-		iterList.add(super.getSubDefinitionsIterator());
-		
-		addDefinitionIterators(iterList, getChildInitializerIterator());
+    /**
+     * iterator containing definitions from our initializers
+     */
+    public Iterator<CodeFragmentList> getSubDefinitionsIterator() {
+        IteratorList iterList = new IteratorList();
 
-		return iterList.toIterator();
-	}
+        iterList.add(super.getSubDefinitionsIterator());
 
-	/**
-	 *  iterator containing our initializers
-	 */
-	public Iterator<Initializer> getSubInitializerIterator()
-	{
-		IteratorList iterList = new IteratorList();
+        addDefinitionIterators(iterList, getChildInitializerIterator());
 
-		iterList.add(super.getSubInitializerIterator());
-		iterList.add(getChildInitializerIterator());
+        return iterList.toIterator();
+    }
 
-		return iterList.toIterator();
-	}
+    /**
+     * iterator containing our initializers
+     */
+    public Iterator<Initializer> getSubInitializerIterator() {
+        IteratorList iterList = new IteratorList();
 
-	/**
-	 * override hasBindings to check children
-	 */
-	public boolean hasBindings()
-	{
-		return bindingsOnly(children().iterator()).hasNext() || super.hasBindings();
-	}
+        iterList.add(super.getSubInitializerIterator());
+        iterList.add(getChildInitializerIterator());
+
+        return iterList.toIterator();
+    }
+
+    /**
+     * override hasBindings to check children
+     */
+    public boolean hasBindings() {
+        return bindingsOnly(children().iterator()).hasNext() || super.hasBindings();
+    }
 
 }

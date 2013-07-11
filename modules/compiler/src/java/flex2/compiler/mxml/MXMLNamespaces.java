@@ -24,10 +24,10 @@ package flex2.compiler.mxml;
  * <p>
  * Note that prior to Flex 4, language and component namespaces overlapped.
  * </p>
+ *
  * @author Pete Farland
  */
-public interface MXMLNamespaces
-{
+public interface MXMLNamespaces {
     public static final String FXG_2008_NAMESPACE = "http://ns.adobe.com/fxg/2008";
 
     public static final String MXML_1_NAMESPACE = "http://www.macromedia.com/2003/mxml";

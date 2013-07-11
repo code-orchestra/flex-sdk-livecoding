@@ -20,7 +20,7 @@ package flex2.compiler.swc.zip;
 /**
  * Simple placeholder for all those extra fields we don't want to deal
  * with.
- *
+ * <p/>
  * <p>Assumes local file data and central directory entries are
  * identical - unless told the opposite.</p>
  *

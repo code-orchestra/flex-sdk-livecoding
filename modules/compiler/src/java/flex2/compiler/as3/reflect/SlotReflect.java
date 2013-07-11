@@ -28,45 +28,37 @@ import java.util.List;
 
 /**
  * Base class for Variable & Method - just a facade, that wraps a macromedi.asc.semantics.Slot.
+ *
  * @author Erik Tierney (tierney@adobe.com)
  */
-public class SlotReflect
-{
+public class SlotReflect {
     protected Slot slot;
     protected ObjectValue namespace;
     protected String name;
 
-    public SlotReflect(Slot s, ObjectValue ns, String name)
-    {
+    public SlotReflect(Slot s, ObjectValue ns, String name) {
         this.slot = s;
         this.namespace = ns;
         this.name = name;
     }
 
-    protected static String getTypeName(TypeInfo ti)
-    {
+    protected static String getTypeName(TypeInfo ti) {
         String typeName = null;
-        if( ti != null )
-        {
+        if (ti != null) {
             TypeValue tv = ti.getTypeValue();
             typeName = tv.name.toString();
         }
         return typeName;
     }
 
-    public List<flex2.compiler.abc.MetaData> getMetaData(String id)
-    {
+    public List<flex2.compiler.abc.MetaData> getMetaData(String id) {
         ArrayList<macromedia.asc.semantics.MetaData> list = slot.getMetadata();
 
         List<MetaData> result = null;
-        if( list != null )
-        {
-            for (int i = 0, length = list.size(); i < length; i++)
-            {
-                if (id.equals( (list.get(i)).id))
-                {
-                    if (result == null)
-                    {
+        if (list != null) {
+            for (int i = 0, length = list.size(); i < length; i++) {
+                if (id.equals((list.get(i)).id)) {
+                    if (result == null) {
                         result = new ArrayList<MetaData>();
                     }
                     result.add(new flex2.compiler.as3.reflect.MetaData(list.get(i)));
@@ -76,14 +68,11 @@ public class SlotReflect
         return result;
     }
 
-    protected static String getElementTypeName(TypeInfo ti)
-    {
+    protected static String getElementTypeName(TypeInfo ti) {
         String elementTypeName = null;
-        if( ti != null )
-        {
+        if (ti != null) {
             TypeValue tv = ti.getTypeValue();
-            if( tv.indexed_type != null )
-            {
+            if (tv.indexed_type != null) {
                 elementTypeName = tv.indexed_type.name.toString();
             }
         }

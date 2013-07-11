@@ -46,24 +46,21 @@ import java.util.Iterator;
  *
  * @author Paul Reilly
  */
-class VectorBuilder extends AbstractBuilder
-{
-    
+class VectorBuilder extends AbstractBuilder {
+
     VectorBuilder(CompilationUnit unit, TypeTable typeTable, MxmlConfiguration mxmlConfiguration,
-            MxmlDocument document, Model parent, Assignable assignable,
-            Type elementType, boolean allowBinding)
-    {
-      this(unit, typeTable, mxmlConfiguration, document, parent, assignable, allowBinding);
-      this.elementType = elementType;
+                  MxmlDocument document, Model parent, Assignable assignable,
+                  Type elementType, boolean allowBinding) {
+        this(unit, typeTable, mxmlConfiguration, document, parent, assignable, allowBinding);
+        this.elementType = elementType;
     }
-    
+
     VectorBuilder(CompilationUnit unit, TypeTable typeTable, MxmlConfiguration mxmlConfiguration,
-                MxmlDocument document, Model parent, Assignable assignable, boolean allowBinding)
-    {
-      super(unit, typeTable, mxmlConfiguration, document);
-      this.parent = parent;
-      this.assignableProperty = assignable;
-      this.allowBinding = allowBinding;
+                  MxmlDocument document, Model parent, Assignable assignable, boolean allowBinding) {
+        super(unit, typeTable, mxmlConfiguration, document);
+        this.parent = parent;
+        this.assignableProperty = assignable;
+        this.allowBinding = allowBinding;
     }
 
     private ElementNodeHandler elementNodeHandler = new ElementNodeHandler();
@@ -76,25 +73,20 @@ class VectorBuilder extends AbstractBuilder
     Vector vector;
 
     private static final int FLAGS = (TextParser.FlagIgnoreArraySyntax |
-                                      TextParser.FlagIgnoreAtFunction |
-                                      TextParser.FlagIgnoreAtFunctionEscape);
+            TextParser.FlagIgnoreAtFunction |
+            TextParser.FlagIgnoreAtFunctionEscape);
 
-    public void analyze(VectorNode node)
-    {
+    public void analyze(VectorNode node) {
         boolean fixed = false;
         String fixedAttribute = (String) getLanguageAttributeValue(node, StandardDefs.PROP_FIXED);
 
-        if (fixedAttribute != null)
-        {
+        if (fixedAttribute != null) {
             Object fixedObject = textParser.parseValue(fixedAttribute, typeTable.booleanType, FLAGS,
-                                                       node.beginLine, StandardDefs.PROP_FIXED);
+                    node.beginLine, StandardDefs.PROP_FIXED);
 
-            if (fixedObject instanceof BindingExpression)
-            {
+            if (fixedObject instanceof BindingExpression) {
                 log(node.beginLine, new BindingNotAllowed());
-            }
-            else if (fixedObject != null)
-            {
+            } else if (fixedObject != null) {
                 fixed = (Boolean) fixedObject;
             }
         }
@@ -109,8 +101,7 @@ class VectorBuilder extends AbstractBuilder
     /*
      * TODO should take vector element type and use when processing text initializer, etc.
      */
-    public void createVectorModel(int line, boolean fixed)
-    {
+    public void createVectorModel(int line, boolean fixed) {
         vector = new Vector(document, parent, line, getElementType(), fixed);
         vector.setParentIndex(getName(), getStateName());
     }
@@ -118,16 +109,14 @@ class VectorBuilder extends AbstractBuilder
     /**
      *
      */
-    void createSyntheticVectorModel(int line)
-    {
+    void createSyntheticVectorModel(int line) {
         createVectorModel(line, false);
     }
 
     /**
      *
      */
-    private void ensureId(VectorNode node)
-    {
+    private void ensureId(VectorNode node) {
         String id = (String) getLanguageAttributeValue(node, StandardDefs.PROP_ID);
         if (id != null)
             vector.setId(id, false);
@@ -136,34 +125,26 @@ class VectorBuilder extends AbstractBuilder
     /**
      *
      */
-    void processChildren(Collection nodes)
-    {
+    void processChildren(Collection nodes) {
         CDATANode cdata = getTextContent(nodes, true);
-        if (cdata != null)
-        {
+        if (cdata != null) {
             processTextInitializer(cdata.image, typeTable.objectType, cdata.inCDATA, cdata.beginLine);
-        }
-        else
-        {
-            for (Iterator iter = nodes.iterator(); iter.hasNext(); )
-            {
-                elementNodeHandler.invoke(assignableProperty, (Node)iter.next(), document);
+        } else {
+            for (Iterator iter = nodes.iterator(); iter.hasNext(); ) {
+                elementNodeHandler.invoke(assignableProperty, (Node) iter.next(), document);
             }
         }
     }
 
-    private String getName()
-    {
+    private String getName() {
         return assignableProperty != null ? assignableProperty.getName() : null;
     }
 
-    private String getStateName()
-    {
+    private String getStateName() {
         return assignableProperty != null ? assignableProperty.getStateName() : null;
     }
 
-    private Type getElementType()
-    {
+    private Type getElementType() {
         if (elementType != null)
             return elementType;
         else
@@ -173,156 +154,119 @@ class VectorBuilder extends AbstractBuilder
     /**
      *
      */
-    protected class ElementNodeHandler extends ValueNodeHandler
-    {
-        protected void componentNode(Assignable property, Node node, MxmlDocument document)
-        {
+    protected class ElementNodeHandler extends ValueNodeHandler {
+        protected void componentNode(Assignable property, Node node, MxmlDocument document) {
             ComponentBuilder builder = new ComponentBuilder(unit, typeTable, mxmlConfiguration, document, vector, null, null, false, elementBindingHandler);
             node.analyze(builder);
 
-            if (builder.component.getType().isAssignableTo(getElementType()))
-            {
+            if (builder.component.getType().isAssignableTo(getElementType())) {
                 builder.component.setParentIndex(vector.size());
                 vector.addEntry(builder.component);
-            }
-            else
-            {
+            } else {
                 log(node, new WrongElementType(getElementType().getName()));
             }
         }
 
-        protected void arrayNode(Assignable property, ArrayNode node)
-        {
+        protected void arrayNode(Assignable property, ArrayNode node) {
             ArrayBuilder builder = new ArrayBuilder(unit, typeTable, mxmlConfiguration, document, vector, null, allowBinding);
             node.analyze(builder);
 
-            if (builder.array.getType().isAssignableTo(getElementType()))
-            {
+            if (builder.array.getType().isAssignableTo(getElementType())) {
                 builder.array.setParentIndex(vector.size());
                 vector.addEntry(builder.array);
-            }
-            else
-            {
+            } else {
                 log(node, new WrongElementType(getElementType().getName()));
             }
         }
 
-        protected void vectorNode(Assignable property, VectorNode node)
-        {
+        protected void vectorNode(Assignable property, VectorNode node) {
             String typeAttributeValue = (String) node.getAttribute(StandardDefs.PROP_TYPE).getValue();
             Type elementType = typeTable.getType(NameFormatter.toColon(typeAttributeValue));
             VectorBuilder builder = new VectorBuilder(unit, typeTable, mxmlConfiguration, document,
                     vector, null, elementType, allowBinding);
             node.analyze(builder);
 
-            if (builder.vector.getType().isAssignableTo(getElementType()))
-            {
+            if (builder.vector.getType().isAssignableTo(getElementType())) {
                 builder.vector.setParentIndex(vector.size());
                 vector.addEntry(builder.vector);
-            }
-            else
-            {
+            } else {
                 log(node, new WrongElementType(getElementType().getName()));
             }
         }
 
-        protected void primitiveNode(Assignable property, PrimitiveNode node)
-        {
+        protected void primitiveNode(Assignable property, PrimitiveNode node) {
             PrimitiveBuilder builder = new PrimitiveBuilder(unit, typeTable, mxmlConfiguration, document, vector, false, null, elementBindingHandler);
             node.analyze(builder);
 
-            if (builder.value.getType().isAssignableTo(getElementType()))
-            {
+            if (builder.value.getType().isAssignableTo(getElementType())) {
                 vector.addEntry(builder.value);
-            }
-            else
-            {
+            } else {
                 log(node, new WrongElementType(getElementType().getName()));
             }
         }
 
-        protected void xmlNode(Assignable property, XMLNode node)
-        {
+        protected void xmlNode(Assignable property, XMLNode node) {
             //    TODO why not support XML nodes as vector elements?
             log(node, new ElementNotSupported(node.image));
         }
 
-        protected void xmlListNode(Assignable property, XMLListNode node)
-        {
+        protected void xmlListNode(Assignable property, XMLListNode node) {
             //  TODO why not support XMLLists nodes as vector elements?
             log(node, new ElementNotSupported(node.image));
         }
 
-        protected void modelNode(Assignable property, ModelNode node)
-        {
+        protected void modelNode(Assignable property, ModelNode node) {
             //    TODO why not support Model nodes as vector elements?
             log(node, new ElementNotSupported(node.image));
         }
 
-        protected void inlineComponentNode(Assignable property, InlineComponentNode node)
-        {
+        protected void inlineComponentNode(Assignable property, InlineComponentNode node) {
             InlineComponentBuilder builder = new InlineComponentBuilder(unit, typeTable, mxmlConfiguration, document, false);
             node.analyze(builder);
 
-            if (builder.getRValue().getType().isAssignableTo(getElementType()))
-            {
+            if (builder.getRValue().getType().isAssignableTo(getElementType())) {
                 vector.addEntry(builder.getRValue());
-            }
-            else
-            {
+            } else {
                 log(node, new WrongElementType(getElementType().getName()));
             }
         }
 
-        protected void reparentNode(Assignable property, ReparentNode node)
-        {
+        protected void reparentNode(Assignable property, ReparentNode node) {
             ComponentBuilder builder = new ComponentBuilder(unit, typeTable, mxmlConfiguration, document, vector, null, null, false, null);
             node.analyze(builder);
 
-            if (builder.component.getType().isAssignableTo(getElementType()))
-            {
+            if (builder.component.getType().isAssignableTo(getElementType())) {
                 builder.component.setParentIndex(vector.size());
                 vector.addEntry(builder.component);
-            }
-            else
-            {
+            } else {
                 log(node, new WrongElementType(getElementType().getName()));
             }
         }
 
-        protected void cdataNode(Assignable property, CDATANode node)
-        {
+        protected void cdataNode(Assignable property, CDATANode node) {
             PrimitiveBuilder builder = new PrimitiveBuilder(unit, typeTable, mxmlConfiguration, document, vector, false, null, elementBindingHandler);
             node.analyze(builder);
 
-            if (builder.value.getType().isAssignableTo(getElementType()))
-            {
+            if (builder.value.getType().isAssignableTo(getElementType())) {
                 vector.addEntry(builder.value);
-            }
-            else
-            {
+            } else {
                 log(node, new WrongElementType(getElementType().getName()));
             }
         }
 
-        protected void stateNode(Assignable property, StateNode node)
-        {
+        protected void stateNode(Assignable property, StateNode node) {
             ComponentBuilder builder = new ComponentBuilder(unit, typeTable, mxmlConfiguration, document, vector, null, null, false, null);
             node.analyze(builder);
 
-            if (builder.component.getType().isAssignableTo(getElementType()))
-            {
+            if (builder.component.getType().isAssignableTo(getElementType())) {
                 builder.component.setParentIndex(vector.size());
                 vector.addEntry(builder.component);
-            }
-            else
-            {
+            } else {
                 log(node, new WrongElementType(getElementType().getName()));
             }
         }
 
-        protected void unknown(Assignable property, Node node)
-        {
+        protected void unknown(Assignable property, Node node) {
             log(node, new UnknownNode(node.image));
         }
     }
@@ -330,41 +274,30 @@ class VectorBuilder extends AbstractBuilder
     /**
      *
      */
-    public void processTextInitializer(String text, Type vectorElementType, boolean cdata, int line)
-    {
+    public void processTextInitializer(String text, Type vectorElementType, boolean cdata, int line) {
         int flags = cdata ? TextParser.FlagInCDATA : 0;
         Type vectorType = typeTable.getVectorType(vectorElementType);
         Object result = textParser.parseValue(text, vectorType, vectorElementType, flags, line, SymbolTable.VECTOR);
 
-        if (result != null)
-        {
-            if (result instanceof BindingExpression)
-            {
-                if (allowBinding)
-                {
-                    BindingExpression bindingExpression = (BindingExpression)result;
-                    if (parent != null)
-                    {
+        if (result != null) {
+            if (result instanceof BindingExpression) {
+                if (allowBinding) {
+                    BindingExpression bindingExpression = (BindingExpression) result;
+                    if (parent != null) {
                         bindingExpression.setDestination(parent);
-                    }
-                    else
-                    {
+                    } else {
                         bindingExpression.setDestination(vector);
                     }
 
                     bindingExpression.setDestinationLValue(getName());
                     bindingExpression.setDestinationProperty(getName());
-                }
-                else
-                {
+                } else {
                     log(line, new BindingNotAllowed());
                 }
-            }
-            else
-            {
+            } else {
                 //    TODO for symmetry's sake, allow <Vector>[a,b,c]</Vector>. (Used to error.) Can yank.
                 assert result instanceof Vector;
-                vector.setEntries(((Vector)result).getEntries());
+                vector.setEntries(((Vector) result).getEntries());
             }
         }
     }
@@ -372,10 +305,8 @@ class VectorBuilder extends AbstractBuilder
     /**
      * Note that we don't mind if dest == null. See comments in PrimitiveBuilder
      */
-    protected class ElementBindingHandler implements BindingHandler
-    {
-        public BindingExpression invoke(BindingExpression bindingExpression, Model dest)
-        {
+    protected class ElementBindingHandler implements BindingHandler {
+        public BindingExpression invoke(BindingExpression bindingExpression, Model dest) {
             bindingExpression.setDestination(vector);
             bindingExpression.setDestinationLValue(Integer.toString(vector.size()));
             bindingExpression.setDestinationProperty(vector.size());
@@ -383,35 +314,29 @@ class VectorBuilder extends AbstractBuilder
         }
     }
 
-    public static class ElementNotSupported extends CompilerError
-    {
+    public static class ElementNotSupported extends CompilerError {
         private static final long serialVersionUID = 8466102389418978639L;
         public String image;
 
-        public ElementNotSupported(String image)
-        {
+        public ElementNotSupported(String image) {
             this.image = image;
         }
     }
 
-    public static class UnknownNode extends CompilerError
-    {
+    public static class UnknownNode extends CompilerError {
         private static final long serialVersionUID = -3924881722877853113L;
         public String image;
 
-        public UnknownNode(String image)
-        {
+        public UnknownNode(String image) {
             this.image = image;
         }
     }
 
-    public static class WrongElementType extends CompilerError
-    {
+    public static class WrongElementType extends CompilerError {
         private static final long serialVersionUID = -3924881723877853113L;
         public String elementTypeName;
 
-        public WrongElementType(String elementTypeName)
-        {
+        public WrongElementType(String elementTypeName) {
             this.elementTypeName = elementTypeName;
         }
     }

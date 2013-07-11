@@ -30,11 +30,10 @@ import java.util.Set;
 /**
  * This value object is used to pass information from the
  * DataBindingFirstPassEvaluator back to DataBindingExtension.
- * 
+ *
  * @author Paul Reilly
  */
-public class DataBindingInfo
-{
+public class DataBindingInfo {
     private String className;
     /**
      * Root watchers are watchers that watch things hanging off the
@@ -45,44 +44,36 @@ public class DataBindingInfo
     private String watcherSetupUtilClassName;
     private Set<String> imports;
 
-    public DataBindingInfo(Set<String> imports)
-    {
+    public DataBindingInfo(Set<String> imports) {
         this.imports = imports;
         rootWatchers = new HashMap<String, Watcher>();
     }
 
-    public List<BindingExpression> getBindingExpressions()
-    {
+    public List<BindingExpression> getBindingExpressions() {
         return bindingExpressions;
     }
 
-    public String getClassName()
-    {
+    public String getClassName() {
         return className;
     }
 
-    public Set<String> getImports()
-    {
+    public Set<String> getImports() {
         return imports;
     }
 
-    public Map<String, Watcher> getRootWatchers()
-    {
+    public Map<String, Watcher> getRootWatchers() {
         return rootWatchers;
     }
 
-    public String getWatcherSetupUtilClassName()
-    {
+    public String getWatcherSetupUtilClassName() {
         return watcherSetupUtilClassName;
     }
 
-    public void setBindingExpressions(List<BindingExpression> bindingExpressions)
-    {
+    public void setBindingExpressions(List<BindingExpression> bindingExpressions) {
         this.bindingExpressions = bindingExpressions;
     }
 
-    public void setClassName(String className)
-    {
+    public void setClassName(String className) {
         this.className = NameFormatter.toDot(className);
         watcherSetupUtilClassName = "_" + this.className.replace('.', '_') + "WatcherSetupUtil";
     }

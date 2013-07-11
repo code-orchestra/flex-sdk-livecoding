@@ -27,30 +27,27 @@ import flex2.compiler.util.QName;
 /**
  * Represents a &lt;Private&gt; tag in the FXG or MXML 2009 language
  * namespace.
- * 
+ * <p/>
  * A container for design-time private data, which is not available at
  * runtime.
- * 
+ *
  * @author dloverin
  */
-public class PrivateNode extends Node
-{
+public class PrivateNode extends Node {
     public static final Set<QName> attributes;
 
-    static
-    {
+    static {
         attributes = new HashSet<QName>();
     }
-    
-	PrivateNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
 
-	
-	public void analyze(Analyzer analyzer) {
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    PrivateNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
+
+
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 
 }

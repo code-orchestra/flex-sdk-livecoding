@@ -26,23 +26,19 @@ import flex2.compiler.mxml.reflect.Type;
 /**
  * This class represents an initializer for a non-dynamic property.
  */
-public class StaticPropertyInitializer extends NamedInitializer
-{
-	final Property property;
+public class StaticPropertyInitializer extends NamedInitializer {
+    final Property property;
 
-	public StaticPropertyInitializer(Property property, Object value, int line, StandardDefs defs)
-	{
-		super(value, line, defs);
-		this.property = property;
-	}
+    public StaticPropertyInitializer(Property property, Object value, int line, StandardDefs defs) {
+        super(value, line, defs);
+        this.property = property;
+    }
 
-	public String getName()
-	{
-		return property.getName();
-	}
+    public String getName() {
+        return property.getName();
+    }
 
-	public Type getLValueType()
-	{
-		return property.getType();
-	}
+    public Type getLValueType() {
+        return property.getType();
+    }
 }

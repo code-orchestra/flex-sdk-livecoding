@@ -32,51 +32,44 @@ import java.util.StringTokenizer;
  *
  * @author Roger Gonzalez
  */
-public class SystemPropertyConfigurator
-{
+public class SystemPropertyConfigurator {
     /**
      * Opportunistically find some configuration settings in system properties.
+     *
      * @param buffer the intermediate config buffer
      * @param prefix an optional prefix to add to the variable, pass null if no prefix
      * @throws ConfigurationException
      */
-    public static void load( final ConfigurationBuffer buffer, String prefix ) throws ConfigurationException
-    {
-        try
-        {
+    public static void load(final ConfigurationBuffer buffer, String prefix) throws ConfigurationException {
+        try {
             Properties props = System.getProperties();
 
-            for (Enumeration e = props.propertyNames(); e.hasMoreElements();)
-            {
+            for (Enumeration e = props.propertyNames(); e.hasMoreElements(); ) {
                 String propname = (String) e.nextElement();
 
-                if (!propname.startsWith( prefix + "."))
-                {
-                    String value = System.getProperty( propname );
-                    buffer.setToken( propname, value );
+                if (!propname.startsWith(prefix + ".")) {
+                    String value = System.getProperty(propname);
+                    buffer.setToken(propname, value);
                     continue;
                 }
 
-                String varname = propname.substring( prefix.length() + 1 );
+                String varname = propname.substring(prefix.length() + 1);
 
-                if (!buffer.isValidVar( varname ))
+                if (!buffer.isValidVar(varname))
                     continue;
 
-                String value = System.getProperty( propname );
+                String value = System.getProperty(propname);
 
                 List<String> args = new LinkedList<String>();
-                StringTokenizer t = new StringTokenizer( value, "," );
+                StringTokenizer t = new StringTokenizer(value, ",");
 
-                while (t.hasMoreTokens())
-                {
+                while (t.hasMoreTokens()) {
                     String token = t.nextToken();
-                    args.add( token );
+                    args.add(token);
                 }
-                buffer.setVar( varname, args, "system properties", -1 );
+                buffer.setVar(varname, args, "system properties", -1);
             }
-        }
-        catch (SecurityException se)
-        {
+        } catch (SecurityException se) {
             // just ignore, this is an optional for loading configuration   
         }
     }

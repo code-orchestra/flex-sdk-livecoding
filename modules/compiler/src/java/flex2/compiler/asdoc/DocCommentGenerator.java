@@ -19,15 +19,15 @@
 
 package flex2.compiler.asdoc;
 
-/** 
- * Interface that should be implemented by the classes that 
+/**
+ * Interface that should be implemented by the classes that
  * generate documentation using the DocCommentTable.
  */
-public interface DocCommentGenerator
-{
-	/**
-	 * This method takes the DocCommentTable and generates documentation.
-	 * @param table
-	 */
+public interface DocCommentGenerator {
+    /**
+     * This method takes the DocCommentTable and generates documentation.
+     *
+     * @param table
+     */
     public void generate(DocCommentTable table);
 }

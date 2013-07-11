@@ -36,45 +36,34 @@ import flex2.compiler.TranscoderException;
  *
  * @author Roger Gonzalez
  */
-public class JPEGTranscoder extends ImageTranscoder
-{
-    public JPEGTranscoder()
-    {
+public class JPEGTranscoder extends ImageTranscoder {
+    public JPEGTranscoder() {
         super(new String[]{MimeMappings.JPG, MimeMappings.JPEG}, DefineSprite.class, true);
     }
 
-    public ImageInfo getImage( VirtualFile source, Map args ) throws TranscoderException
-    {
+    public ImageInfo getImage(VirtualFile source, Map args) throws TranscoderException {
         ImageTranscoder.ImageInfo info = new ImageInfo();
-		JPEGImage image = null;
+        JPEGImage image = null;
 
-		try
-		{
-			image = new JPEGImage(source.getName(),
-                                  source.getLastModified(),
-                                  source.size(),
-                                  source.getInputStream());
+        try {
+            image = new JPEGImage(source.getName(),
+                    source.getLastModified(),
+                    source.size(),
+                    source.getInputStream());
             info.width = image.getWidth();
             info.height = image.getHeight();
             DefineBits defineBits = new DefineBits(Tag.stagDefineBitsJPEG2);
             defineBits.data = image.getData();
             info.defineBits = defineBits;
+        } catch (Exception ex) {
+            throw new AbstractTranscoder.ExceptionWhileTranscoding(ex);
+        } finally {
+            try {
+                if (image != null)
+                    image.dispose();
+            } catch (Throwable t) {
+            }
         }
-		catch (Exception ex)
-		{
-            throw new AbstractTranscoder.ExceptionWhileTranscoding( ex );
-		}
-		finally
-		{
-		    try
-		    {
-		        if (image != null)
-		            image.dispose();
-		    }
-		    catch (Throwable t)
-		    {
-		    }
-		}
 
         return info;
     }

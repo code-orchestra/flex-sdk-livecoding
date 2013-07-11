@@ -31,19 +31,18 @@ import java.util.Map;
  *
  * @author Clement Wong
  */
-public interface Transcoder
-{
-	/**
-	 * If this transcoder can process the specified file, return true.
-	 */
-	boolean isSupported(String mimeType);
+public interface Transcoder {
+    /**
+     * If this transcoder can process the specified file, return true.
+     */
+    boolean isSupported(String mimeType);
 
-	/**
-	 * Read the media file and create DefineTag
-	 */
+    /**
+     * Read the media file and create DefineTag
+     */
     TranscodingResults transcode(PathResolver context, SymbolTable symbolTable,
                                  Map<String, Object> args, String className, boolean generateSource)
-        throws TranscoderException;
+            throws TranscoderException;
 
     /**
      * Returns class that should be extended with given DefineTag for this transcoder
@@ -71,14 +70,15 @@ public interface Transcoder
      * Value object used to pass the results of a transcoding from the
      * transcoder back to the caller.
      */
-    public class TranscodingResults
-    {
-        public TranscodingResults() {}
-        public TranscodingResults( VirtualFile assetSource )
-        {
+    public class TranscodingResults {
+        public TranscodingResults() {
+        }
+
+        public TranscodingResults(VirtualFile assetSource) {
             this.assetSource = assetSource;
             this.modified = assetSource.getLastModified();
         }
+
         public DefineTag defineTag;
         public String generatedCode;
         public VirtualFile assetSource;

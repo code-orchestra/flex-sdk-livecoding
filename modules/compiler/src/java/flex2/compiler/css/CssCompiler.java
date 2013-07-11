@@ -53,6 +53,7 @@ import flex2.compiler.util.VelocityException.GenerateException;
 import flex2.compiler.util.VelocityException.TemplateNotFound;
 import flex2.compiler.util.VelocityException.UnableToWriteGeneratedFile;
 import flex2.compiler.util.VelocityManager;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,8 +74,7 @@ import org.apache.flex.forks.velocity.VelocityContext;
  *
  * @author Paul Reilly
  */
-public class CssCompiler extends AbstractDelegatingSubCompiler
-{
+public class CssCompiler extends AbstractDelegatingSubCompiler {
     private static final String TEMPLATE_PATH = "flex2/compiler/css/";
     private static final String STYLE_MODULE_KEY = "styleModule";
     private static final String COMPILER_NAME = "css";
@@ -83,12 +83,11 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
     private CompilerConfiguration configuration;
     private NameMappings nameMappings;
 
-    public CssCompiler(CompilerConfiguration configuration, Transcoder[] transcoders, NameMappings mappings)
-    {
+    public CssCompiler(CompilerConfiguration configuration, Transcoder[] transcoders, NameMappings mappings) {
         this.configuration = configuration;
         mimeTypes = new String[]{MimeMappings.CSS};
         nameMappings = mappings;
-        String gendir = (configuration.keepGeneratedActionScript()? configuration.getGeneratedDirectory() : null);
+        String gendir = (configuration.keepGeneratedActionScript() ? configuration.getGeneratedDirectory() : null);
 
         // Create an As3Compiler as our delegate sub-compiler.
         As3Compiler asc = new As3Compiler(configuration);
@@ -98,36 +97,31 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
 
     /**
      * The name of this compiler as a simple String identifier.
-     * 
-     * @return This Compiler's name. 
+     *
+     * @return This Compiler's name.
      */
-    public String getName()
-    {
+    public String getName() {
         return COMPILER_NAME;
     }
 
     /**
      * If this compiler can process the specified file, return true.
      */
-    public boolean isSupported(String mimeType)
-    {
+    public boolean isSupported(String mimeType) {
         return mimeTypes[0].equals(mimeType);
     }
 
-    private String generateStyleName(Source source)
-    {
+    private String generateStyleName(Source source) {
         String result = source.getName();
 
         int lastSeparator = result.lastIndexOf(File.separator);
 
-        if (lastSeparator != -1)
-        {
+        if (lastSeparator != -1) {
             result = result.substring(lastSeparator + 1);
 
             int extension = result.indexOf(".css");
 
-            if (extension != -1)
-            {
+            if (extension != -1) {
                 result = result.substring(0, extension);
             }
         }
@@ -138,18 +132,15 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
     /**
      * Return supported mime types.
      */
-    public String[] getSupportedMimeTypes()
-    {
+    public String[] getSupportedMimeTypes() {
         return mimeTypes;
     }
 
     /**
      * Pre-process source file.
      */
-    public Source preprocess(Source source)
-    {
-        if (benchmarkHelper != null)
-        {
+    public Source preprocess(Source source) {
+        if (benchmarkHelper != null) {
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.PREPROCESS, source.getNameForReporting());
         }
 
@@ -166,10 +157,9 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
         // of framework.swc, but this prevents customers from using
         // skin assets from framework.swc in their runtime CSS
         // modules.
-    	if (!configuration.archiveClassesAndAssets())
-    	{
-    	    StandardDefs standardDefs = ThreadLocalToolkit.getStandardDefs();
-    	    
+        if (!configuration.archiveClassesAndAssets()) {
+            StandardDefs standardDefs = ThreadLocalToolkit.getStandardDefs();
+
             configuration.addExtern(standardDefs.CLASS_CSSSTYLEDECLARATION);
             configuration.addExtern(standardDefs.CLASS_DOWNLOADPROGRESSBAR);
             configuration.addExtern(standardDefs.CLASS_FLEXEVENT);
@@ -179,8 +169,8 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
             configuration.addExtern(standardDefs.CLASS_MODULEMANAGER);
             configuration.addExtern(standardDefs.CLASS_PRELOADER);
             configuration.addExtern(standardDefs.CLASS_STYLEEVENT);
-    		// Don't extern StyleManager.  It is needed in case the module
-    		// is loaded in a bootstrap topology
+            // Don't extern StyleManager.  It is needed in case the module
+            // is loaded in a bootstrap topology
             // configuration.addExtern(StandardDefs.CLASS_STYLEMANAGER);
             configuration.addExtern(standardDefs.CLASS_SYSTEMCHILDRENLIST);
             configuration.addExtern(standardDefs.CLASS_SYSTEMMANAGER);
@@ -196,18 +186,16 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
             configuration.addExtern(standardDefs.INTERFACE_ISTYLECLIENT);
             configuration.addExtern(standardDefs.INTERFACE_ISYSTEMMANAGER);
             configuration.addExtern(standardDefs.INTERFACE_IUICOMPONENT);
-    	}
-    	
+        }
+
         String componentName = source.getShortName();
-        if (!TextParser.isValidIdentifier(componentName))
-        {
+        if (!TextParser.isValidIdentifier(componentName)) {
             InvalidComponentName invalidComponentName = new InvalidComponentName(componentName);
             invalidComponentName.setPath(source.getNameForReporting());
             ThreadLocalToolkit.log(invalidComponentName);
         }
 
-        if (benchmarkHelper != null)
-        {
+        if (benchmarkHelper != null) {
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.PREPROCESS);
         }
 
@@ -216,25 +204,22 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
 
     /**
      * Parse... The implementation must:
-     *
+     * <p/>
      * 1. create a compilation unit
      * 2. put the Source object and the syntax tree in the compilation unit
      * 3. register unit.includes, unit.dependencies, unit.topLevelDefinitions and unit.metadata
      */
-    public CompilationUnit parse1(Source source, SymbolTable symbolTable)
-    {
-        if (benchmarkHelper != null)
-        {
+    public CompilationUnit parse1(Source source, SymbolTable symbolTable) {
+        if (benchmarkHelper != null) {
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.PARSE1, source.getNameForReporting());
         }
 
         CompilationUnit unit = source.getCompilationUnit();
 
-        if (unit != null && unit.hasTypeInfo)
-        {
+        if (unit != null && unit.hasTypeInfo) {
             return unit;
         }
-        
+
         // System.out.println("parse1: " + source.getNameForReporting());
         FontManager fontManager = configuration.getFontsConfiguration().getTopLevelManager();
 
@@ -242,18 +227,14 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
         styleSheet.checkDeprecation(configuration.showDeprecationWarnings());
 
         InputStream in = null;
-        try
-        {
+        try {
             in = source.getInputStream();
             styleSheet.parse(source.getName(),
-                             in,
-                             ThreadLocalToolkit.getLogger(),
-                             fontManager);
-        }
-        catch (Exception exception)
-        {
-            if (Trace.error)
-            {
+                    in,
+                    ThreadLocalToolkit.getLogger(),
+                    fontManager);
+        } catch (Exception exception) {
+            if (Trace.error) {
                 exception.printStackTrace();
             }
 
@@ -261,24 +242,17 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
             parseError.setPath(source.getName());
             ThreadLocalToolkit.log(parseError);
             return null;
-        }
-        finally
-        {
-            if (in != null)
-            {
-                try
-                {
+        } finally {
+            if (in != null) {
+                try {
                     in.close();
-                }
-                catch (IOException ex)
-                {
+                } catch (IOException ex) {
 
                 }
             }
-        }        
+        }
 
-        if (styleSheet.errorsExist())
-        {
+        if (styleSheet.errorsExist()) {
             // Error
             ThreadLocalToolkit.getLogger().log(new StyleSheetParseError(source.getName()));
         }
@@ -286,13 +260,10 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
         StyleModule styleModule = new StyleModule(source, symbolTable.perCompileData);
 
         // Flex3 and earlier didn't support qualified types or advanced css.
-        if (configuration.getCompatibilityVersion() <= flex2.compiler.common.MxmlConfiguration.VERSION_3_0)
-        {
+        if (configuration.getCompatibilityVersion() <= flex2.compiler.common.MxmlConfiguration.VERSION_3_0) {
             styleModule.setAdvanced(false);
             styleModule.setQualifiedTypeSelectors(false);
-        }
-        else
-        {
+        } else {
             styleModule.setQualifiedTypeSelectors(configuration.getQualifiedTypeSelectors());
         }
 
@@ -311,25 +282,21 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
 
         // when building a SWC, we want to locate all the asset sources and ask compc to put them in the SWC.
         Collection<AtEmbed> atEmbeds = styleModule.getAtEmbeds();
-        if (atEmbeds != null && configuration.archiveClassesAndAssets())
-        {
-        	Map<String, LocalFile> archiveFiles = new HashMap<String, LocalFile>();
-        	for (Iterator<AtEmbed>  i = atEmbeds.iterator(); i.hasNext(); )
-        	{
-        		AtEmbed e = (AtEmbed) i.next();
-        		String src = (String) e.getAttributes().get(Transcoder.SOURCE);
-        		String original = (String) e.getAttributes().get(Transcoder.ORIGINAL);
-        		if (src != null)
-        		{
-        			archiveFiles.put(original, new LocalFile(new File(src)));
-        		}
-        	}
-        	if (archiveFiles.size() > 0)
-        	{
-        		context.setAttribute(CompilerContext.CSS_ARCHIVE_FILES, archiveFiles);
-        	}
+        if (atEmbeds != null && configuration.archiveClassesAndAssets()) {
+            Map<String, LocalFile> archiveFiles = new HashMap<String, LocalFile>();
+            for (Iterator<AtEmbed> i = atEmbeds.iterator(); i.hasNext(); ) {
+                AtEmbed e = (AtEmbed) i.next();
+                String src = (String) e.getAttributes().get(Transcoder.SOURCE);
+                String original = (String) e.getAttributes().get(Transcoder.ORIGINAL);
+                if (src != null) {
+                    archiveFiles.put(original, new LocalFile(new File(src)));
+                }
+            }
+            if (archiveFiles.size() > 0) {
+                context.setAttribute(CompilerContext.CSS_ARCHIVE_FILES, archiveFiles);
+            }
         }
-        
+
         // Use MxmlLogAdapter to do filtering, e.g. -generated.as -> .css, as line -> css
         // line, etc...
         Logger original = ThreadLocalToolkit.getLogger();
@@ -339,8 +306,7 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
 
         CompilationUnit ascCompilationUnit = delegateSubCompiler.parse1(generatedSource, symbolTable);
 
-        if (ascCompilationUnit != null)
-        {
+        if (ascCompilationUnit != null) {
             // transfer includes from the ASC unit to the CSS unit
             cssCompilationUnit.getSource().addFileIncludes(ascCompilationUnit.getSource());
             context.setAttribute(DELEGATE_UNIT, ascCompilationUnit);
@@ -349,27 +315,22 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
             Source.transferGeneratedSources(ascCompilationUnit, cssCompilationUnit);
             Source.transferDefinitions(ascCompilationUnit, cssCompilationUnit);
             Source.transferInheritance(ascCompilationUnit, cssCompilationUnit);
-        }
-        else
-        {
+        } else {
             cssCompilationUnit = null;
         }
 
-        if (benchmarkHelper != null)
-        {
+        if (benchmarkHelper != null) {
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.PARSE1);
         }
 
         return cssCompilationUnit;
     }
 
-    public void parse2(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void parse2(CompilationUnit unit, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.PARSE2, unit.getSource().getNameForReporting());
 
-        if (unit != null && unit.hasTypeInfo)
-        {
+        if (unit != null && unit.hasTypeInfo) {
             return;
         }
 
@@ -379,13 +340,11 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.PARSE2);
     }
 
-    public void analyze1(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void analyze1(CompilationUnit unit, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.ANALYZE1, unit.getSource().getNameForReporting());
 
-        if (unit != null && unit.hasTypeInfo)
-        {
+        if (unit != null && unit.hasTypeInfo) {
             return;
         }
 
@@ -395,13 +354,11 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.ANALYZE1);
     }
 
-    public void analyze2(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void analyze2(CompilationUnit unit, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.ANALYZE2, unit.getSource().getNameForReporting());
 
-        if (unit != null && unit.hasTypeInfo)
-        {
+        if (unit != null && unit.hasTypeInfo) {
             return;
         }
 
@@ -411,13 +368,11 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.ANALYZE2);
     }
 
-    public void analyze3(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void analyze3(CompilationUnit unit, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.ANALYZE3, unit.getSource().getNameForReporting());
 
-        if (unit != null && unit.hasTypeInfo)
-        {
+        if (unit != null && unit.hasTypeInfo) {
             return;
         }
 
@@ -427,8 +382,7 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.ANALYZE3);
     }
 
-    public void analyze4(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void analyze4(CompilationUnit unit, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.ANALYZE4, unit.getSource().getNameForReporting());
 
@@ -438,13 +392,11 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.ANALYZE4);
     }
 
-    public void generate(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void generate(CompilationUnit unit, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
-            benchmarkHelper.startPhase(CompilerBenchmarkHelper.GENERATE,unit.getSource().getNameForReporting());
+            benchmarkHelper.startPhase(CompilerBenchmarkHelper.GENERATE, unit.getSource().getNameForReporting());
 
-        if (unit != null && unit.hasTypeInfo)
-        {
+        if (unit != null && unit.hasTypeInfo) {
             return;
         }
 
@@ -454,13 +406,11 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.GENERATE);
     }
 
-    public void postprocess(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void postprocess(CompilationUnit unit, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.POSTPROCESS, unit.getSource().getNameForReporting());
 
-        if (unit != null && unit.hasTypeInfo)
-        {
+        if (unit != null && unit.hasTypeInfo) {
             return;
         }
 
@@ -470,18 +420,14 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.POSTPROCESS);
     }
 
-    private VirtualFile generateSourceCodeFile(CompilationUnit compilationUnit, StyleModule styleModule)
-    {
+    private VirtualFile generateSourceCodeFile(CompilationUnit compilationUnit, StyleModule styleModule) {
         Template template;
         StandardDefs standardDefs = compilationUnit.getStandardDefs();
         String templateName = TEMPLATE_PATH + (!configuration.archiveClassesAndAssets() ? standardDefs.getStyleModuleTemplate() : standardDefs.getStyleLibraryTemplate());
 
-        try
-        {
+        try {
             template = VelocityManager.getTemplate(templateName);
-        }
-        catch (Exception exception)
-        {
+        } catch (Exception exception) {
             ThreadLocalToolkit.log(new TemplateNotFound(templateName));
             return null;
         }
@@ -489,39 +435,32 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
         SourceCodeBuffer sourceCodeBuffer = new SourceCodeBuffer();
 
         String genFileName = (configuration.getGeneratedDirectory() +
-                              File.separatorChar +
-                              styleModule.getName() +
-                              "-generated.as");
+                File.separatorChar +
+                styleModule.getName() +
+                "-generated.as");
 
         Source source = compilationUnit.getSource();
 
         DualModeLineNumberMap lineNumberMap = new DualModeLineNumberMap(source.getNameForReporting(), genFileName);
         styleModule.setLineNumberMap(lineNumberMap);
 
-        try
-        {
+        try {
             VelocityUtil velocityUtil = new VelocityUtil(TEMPLATE_PATH, configuration.debug(),
-                                                         sourceCodeBuffer, lineNumberMap);
+                    sourceCodeBuffer, lineNumberMap);
             VelocityContext velocityContext = VelocityManager.getCodeGenContext(velocityUtil);
             velocityContext.put(STYLE_MODULE_KEY, styleModule);
             template.merge(velocityContext, sourceCodeBuffer);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             ThreadLocalToolkit.log(new GenerateException(styleModule.getName(), e.getLocalizedMessage()));
             return null;
         }
 
         String sourceCode = sourceCodeBuffer.toString();
 
-        if (configuration.keepGeneratedActionScript())
-        {
-            try
-            {
+        if (configuration.keepGeneratedActionScript()) {
+            try {
                 FileUtil.writeFile(genFileName, sourceCode);
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 ThreadLocalToolkit.log(new UnableToWriteGeneratedFile(genFileName, e.getLocalizedMessage()));
             }
         }
@@ -529,24 +468,20 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
         return new TextFile(sourceCode, genFileName, null, MimeMappings.AS, Long.MAX_VALUE);
     }
 
-    public static class InvalidComponentName extends CompilerError
-    {
+    public static class InvalidComponentName extends CompilerError {
         private static final long serialVersionUID = -6052613984350060542L;
         public final String name;
 
-        public InvalidComponentName(String name)
-        {
+        public InvalidComponentName(String name) {
             this.name = name;
         }
     }
 
-    public static class StyleSheetParseError extends CompilerError
-    {
+    public static class StyleSheetParseError extends CompilerError {
         private static final long serialVersionUID = -2795572334523977344L;
         public final String stylePath;
 
-        public StyleSheetParseError(String stylePath)
-        {
+        public StyleSheetParseError(String stylePath) {
             this.stylePath = stylePath;
         }
     }

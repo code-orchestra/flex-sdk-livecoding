@@ -21,22 +21,20 @@ package flex2.compiler.asdoc;
 
 /**
  * This class is used to store package level asdoc descriptions.
- * 
+ *
  * @author Brian Deitte
  */
-public class PackageInfo
-{
-	public String name, description;
+public class PackageInfo {
+    public String name, description;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param name
-	 * @param description
-	 */
-	public PackageInfo(String name, String description)
-	{
-		this.name = name;
-		this.description = description;
-	}
+    /**
+     * Constructor
+     *
+     * @param name
+     * @param description
+     */
+    public PackageInfo(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }

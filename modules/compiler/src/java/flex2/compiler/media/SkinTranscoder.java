@@ -34,8 +34,10 @@ import flex2.compiler.util.MultiName;
 import flex2.compiler.util.QName;
 import flex2.compiler.util.ThreadLocalToolkit;
 import flex2.compiler.util.VelocityManager;
+
 import java.io.StringWriter;
 import java.util.Map;
+
 import org.apache.flex.forks.velocity.Template;
 import org.apache.flex.forks.velocity.VelocityContext;
 
@@ -47,29 +49,24 @@ import org.apache.flex.forks.velocity.VelocityContext;
  *
  * @author Paul Reilly
  */
-public class SkinTranscoder extends AbstractTranscoder
-{
+public class SkinTranscoder extends AbstractTranscoder {
     private static final String CODEGEN_TEMPLATE_PATH = "flex2/compiler/media/";
 
-    public SkinTranscoder()
-    {
-        super(new String[] {MimeMappings.SKIN}, null, false);
+    public SkinTranscoder() {
+        super(new String[]{MimeMappings.SKIN}, null, false);
     }
 
     public TranscodingResults doTranscode(PathResolver context, SymbolTable symbolTable,
                                           Map args, String className,
                                           boolean generateSource)
-        throws TranscoderException
-    {
+            throws TranscoderException {
         TranscodingResults result = null;
 
-        if (generateSource)
-        {
+        if (generateSource) {
             String skinClassName = (String) args.get(Transcoder.SKINCLASS);
             Source skinSource = symbolTable.findSourceByQName(new QName(NameFormatter.toColon(skinClassName)));
 
-            if (skinSource == null)
-            {
+            if (skinSource == null) {
                 throw new SkinClassNotFound(skinClassName);
             }
 
@@ -77,9 +74,7 @@ public class SkinTranscoder extends AbstractTranscoder
             TypeAnalyzer typeAnalyzer = symbolTable.getTypeAnalyzer();
             ClassInfo skinClassInfo = typeAnalyzer.analyzeClass(null, new MultiName(NameFormatter.toColon(skinClassName)));
             result.generatedCode = generateSource(className, skinClassName, skinClassInfo);
-        }
-        else
-        {
+        } else {
             throw new EmbedRequiresCodegen((String) args.get(Transcoder.ORIGINAL), className);
         }
 
@@ -87,26 +82,25 @@ public class SkinTranscoder extends AbstractTranscoder
     }
 
     private String generateSource(String fullClassName, String baseClassName, ClassInfo classInfo)
-        throws TranscoderException
-    {
+            throws TranscoderException {
         StandardDefs standardDefs = ThreadLocalToolkit.getStandardDefs();
 
         boolean needsIBorder = !classInfo.implementsInterface(standardDefs.getCorePackage(), "IBorder");
         boolean needsBorderMetrics = !classInfo.definesGetter("borderMetrics", true);
         boolean needsIFlexDisplayObject = !classInfo.implementsInterface(standardDefs.getCorePackage(),
-                                                                         "IFlexDisplayObject");
+                "IFlexDisplayObject");
         boolean needsMeasuredHeight = !classInfo.definesGetter("measuredHeight", true);
         boolean needsMeasuredWidth = !classInfo.definesGetter("measuredWidth", true);
         boolean needsMove = !classInfo.definesFunction("move", true);
         boolean needsSetActualSize = !classInfo.definesFunction("setActualSize", true);
         boolean flexMovieClipOrSprite = (classInfo.extendsClass(NameFormatter.toColon(standardDefs.getCorePackage(),
-                                                                                      "FlexMovieClip")) ||
-                                         classInfo.extendsClass(NameFormatter.toColon(standardDefs.getCorePackage(),
-                                                                                      "FlexSprite")));
+                "FlexMovieClip")) ||
+                classInfo.extendsClass(NameFormatter.toColon(standardDefs.getCorePackage(),
+                        "FlexSprite")));
 
         return generateSource(fullClassName, baseClassName, needsIBorder, needsBorderMetrics,
-                              needsIFlexDisplayObject, needsMeasuredHeight, needsMeasuredWidth,
-                              needsMove, needsSetActualSize, flexMovieClipOrSprite);
+                needsIFlexDisplayObject, needsMeasuredHeight, needsMeasuredWidth,
+                needsMove, needsSetActualSize, flexMovieClipOrSprite);
     }
 
     public static String generateSource(String fullClassName, String baseClassName,
@@ -114,33 +108,27 @@ public class SkinTranscoder extends AbstractTranscoder
                                         boolean needsIFlexDisplayObject, boolean needsMeasuredHeight,
                                         boolean needsMeasuredWidth, boolean needsMove,
                                         boolean needsSetActualSize, boolean flexMovieClipOrSprite)
-        throws TranscoderException
-    {
+            throws TranscoderException {
         String result = null;
 
         StandardDefs standardDefs = ThreadLocalToolkit.getStandardDefs();
 
-        try
-        {
+        try {
             String templateName = CODEGEN_TEMPLATE_PATH + standardDefs.getSkinClassTemplate();
             Template template = VelocityManager.getTemplate(templateName);
 
-            if (template == null)
-            {
-                throw new TemplateException( templateName );
+            if (template == null) {
+                throw new TemplateException(templateName);
             }
 
-            int dot = fullClassName.lastIndexOf( '.' );
+            int dot = fullClassName.lastIndexOf('.');
             String packageName;
             String className;
 
-            if (dot != -1)
-            {
+            if (dot != -1) {
                 packageName = fullClassName.substring(0, dot);
                 className = fullClassName.substring(dot + 1);
-            }
-            else
-            {
+            } else {
                 packageName = "";
                 className = fullClassName;
             }
@@ -162,11 +150,8 @@ public class SkinTranscoder extends AbstractTranscoder
             StringWriter stringWriter = new StringWriter();
             template.merge(velocityContext, stringWriter);
             result = stringWriter.toString();
-        }
-        catch (Exception e)
-        {
-            if (Trace.error)
-            {
+        } catch (Exception e) {
+            if (Trace.error) {
                 e.printStackTrace();
             }
             throw new UnableToGenerateSource(fullClassName);
@@ -175,12 +160,10 @@ public class SkinTranscoder extends AbstractTranscoder
         return result;
     }
 
-    public boolean isSupportedAttribute(String attribute)
-    {
+    public boolean isSupportedAttribute(String attribute) {
         boolean result = true;
 
-        if (!attribute.equals(Transcoder.SKINCLASS))
-        {
+        if (!attribute.equals(Transcoder.SKINCLASS)) {
             result = false;
         }
 
@@ -188,18 +171,15 @@ public class SkinTranscoder extends AbstractTranscoder
     }
 
     // Override super.clear(), because we don't use transcodingCache.
-    public void clear()
-    {
+    public void clear() {
     }
 
-    public static class SkinClassNotFound extends TranscoderException
-    {
+    public static class SkinClassNotFound extends TranscoderException {
         private static final long serialVersionUID = -4004608594735899535L;
-        
+
         public String className;
 
-        public SkinClassNotFound(String className)
-        {
+        public SkinClassNotFound(String className) {
             this.className = className;
         }
     }

@@ -24,8 +24,10 @@ import flex2.compiler.as3.binding.ClassInfo;
 import flex2.compiler.as3.binding.TypeAnalyzer;
 import flex2.compiler.as3.reflect.TypeTable;
 import flex2.compiler.CompilationUnit;
+
 import java.util.Iterator;
 import java.util.Map.Entry;
+
 import macromedia.asc.parser.Evaluator;
 import macromedia.asc.parser.Node;
 import macromedia.asc.util.Context;
@@ -37,8 +39,7 @@ import macromedia.asc.util.Context;
  * @author Basil Hosmer
  * @author Paul Reilly
  */
-public abstract class GenerativeExtension implements Extension
-{
+public abstract class GenerativeExtension implements Extension {
     public static final String IEVENT_DISPATCHER = "IEventDispatcher";
 
     protected String generatedOutputDirectory;
@@ -48,8 +49,7 @@ public abstract class GenerativeExtension implements Extension
     /**
      *
      */
-    public GenerativeExtension(String generatedOutputDirectory, boolean generateAbstractSyntaxTree, boolean processComments)
-    {
+    public GenerativeExtension(String generatedOutputDirectory, boolean generateAbstractSyntaxTree, boolean processComments) {
         this.generatedOutputDirectory = generatedOutputDirectory;
         this.generateAbstractSyntaxTree = generateAbstractSyntaxTree;
         this.processComments = processComments;
@@ -66,44 +66,40 @@ public abstract class GenerativeExtension implements Extension
     protected abstract GenerativeFirstPassEvaluator getFirstPassEvaluator(CompilationUnit unit,
                                                                           TypeTable typeTable);
 
-	/**
-	 *
-	 */
-	protected abstract String getFirstPassEvaluatorKey();
+    /**
+     *
+     */
+    protected abstract String getFirstPassEvaluatorKey();
 
     /**
      *
      */
-    protected abstract Evaluator getSecondPassEvaluator(CompilationUnit unit, 
+    protected abstract Evaluator getSecondPassEvaluator(CompilationUnit unit,
                                                         TypeAnalyzer typeAnalyzer,
                                                         GenerativeFirstPassEvaluator firstPassEvaluator);
 
     /**
      *
      */
-    public void parse1(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void parse1(CompilationUnit unit, TypeTable typeTable) {
         Node node = (Node) unit.getSyntaxTree();
         Context cx = unit.getContext().getAscContext();
         GenerativeFirstPassEvaluator firstPassEvaluator = getFirstPassEvaluator(unit, typeTable);
 
         node.evaluate(cx, firstPassEvaluator);
 
-        if ( firstPassEvaluator.makeSecondPass() )
-        {
+        if (firstPassEvaluator.makeSecondPass()) {
             addInheritance(unit);
         }
 
         unit.getContext().setAttribute(getFirstPassEvaluatorKey(), firstPassEvaluator);
     }
 
-    public void parse2(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void parse2(CompilationUnit unit, TypeTable typeTable) {
         GenerativeFirstPassEvaluator firstPassEvaluator =
-            (GenerativeFirstPassEvaluator) unit.getContext().removeAttribute(getFirstPassEvaluatorKey());
+                (GenerativeFirstPassEvaluator) unit.getContext().removeAttribute(getFirstPassEvaluatorKey());
 
-        if (firstPassEvaluator != null && firstPassEvaluator.makeSecondPass())
-        {
+        if (firstPassEvaluator != null && firstPassEvaluator.makeSecondPass()) {
             Node node = (Node) unit.getSyntaxTree();
             Context cx = unit.getContext().getAscContext();
             TypeAnalyzer typeAnalyzer = typeTable.getSymbolTable().getTypeAnalyzer();
@@ -112,8 +108,7 @@ public abstract class GenerativeExtension implements Extension
 
             Iterator iterator = firstPassEvaluator.getClassMap().entrySet().iterator();
 
-            while ( iterator.hasNext() )
-            {
+            while (iterator.hasNext()) {
                 Entry entry = (Entry) iterator.next();
                 String className = (String) entry.getKey();
                 GenerativeClassInfo generativeClassInfo = (GenerativeClassInfo) entry.getValue();
@@ -130,35 +125,30 @@ public abstract class GenerativeExtension implements Extension
     /**
      *
      */
-    public void analyze1(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze1(CompilationUnit unit, TypeTable typeTable) {
     }
 
     /**
      *
      */
-    public void analyze2(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze2(CompilationUnit unit, TypeTable typeTable) {
     }
 
     /**
      *
      */
-    public void analyze3(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze3(CompilationUnit unit, TypeTable typeTable) {
     }
 
     /**
      *
      */
-    public void analyze4(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze4(CompilationUnit unit, TypeTable typeTable) {
     }
 
     /**
      *
      */
-    public void generate(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void generate(CompilationUnit unit, TypeTable typeTable) {
     }
 }

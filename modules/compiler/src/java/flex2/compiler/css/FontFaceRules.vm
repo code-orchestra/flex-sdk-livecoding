@@ -1,4 +1,3 @@
-
 #*
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -15,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 *#
-package 
+package
 {
 
 import mx.core.IFlexModuleFactory;
@@ -23,13 +22,13 @@ import mx.core.IFlexModuleFactory;
 public class _FontFaceRules
 {
 #foreach ($atEmbed in $atEmbeds)
-    [Embed(#set ($vals = $atEmbed.getAttributes())#foreach( $key in $vals.keySet() )#if ($velocityCount > 1), #end#set ($val = $vals.get($key))$key='$val'#end)]
-    private static var $atEmbed.propName:$atEmbed.type;
+[Embed(#set ($vals = $atEmbed.getAttributes())#foreach( $key in $vals.keySet() )#if ($velocityCount > 1), #end#set ($val = $vals.get($key))$key='$val'#end)]
+private static var $atEmbed.propName:$atEmbed.type;
 #end
 
-    public static function init(fbs:IFlexModuleFactory):void
-    {
-    }
+public static function init(fbs:IFlexModuleFactory):void
+{
+}
 }
 
 }

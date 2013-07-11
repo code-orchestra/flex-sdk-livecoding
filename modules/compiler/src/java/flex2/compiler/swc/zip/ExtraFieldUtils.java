@@ -44,7 +44,7 @@ public class ExtraFieldUtils {
 
     /**
      * Register a ZipExtraField implementation.
-     *
+     * <p/>
      * <p>The given class must have a no-arg constructor and implement
      * the {@link ZipExtraField ZipExtraField interface}.</p>
      *
@@ -55,7 +55,7 @@ public class ExtraFieldUtils {
             ZipExtraField ze = c.newInstance();
             implementations.put(ze.getHeaderId(), c);
 
-	    // the exceptions below should never happen, so they are not localized  
+            // the exceptions below should never happen, so they are not localized
         } catch (ClassCastException cc) {
             throw new RuntimeException(c + " doesn\'t implement ZipExtraField");
         } catch (InstantiationException ie) {
@@ -72,7 +72,7 @@ public class ExtraFieldUtils {
      * @since 1.1
      */
     public static ZipExtraField createExtraField(ZipShort headerId)
-        throws InstantiationException, IllegalAccessException {
+            throws InstantiationException, IllegalAccessException {
         Class c = implementations.get(headerId);
         if (c != null) {
             return (ZipExtraField) c.newInstance();
@@ -101,11 +101,11 @@ public class ExtraFieldUtils {
                 ZipExtraField ze = createExtraField(headerId);
                 ze.parseFromLocalFileData(data, start + 4, length);
                 v.addElement(ze);
-            // the exceptions below should never happen, so they are not localized
+                // the exceptions below should never happen, so they are not localized
             } catch (InstantiationException ie) {
                 throw new RuntimeException("Could not instantiate zip class: " + ie.getMessage());
             } catch (IllegalAccessException iae) {
-	            throw new RuntimeException("Could not access zip class: " + iae.getMessage());
+                throw new RuntimeException("Could not access zip class: " + iae.getMessage());
             }
             start += (length + 4);
         }
@@ -132,9 +132,9 @@ public class ExtraFieldUtils {
         int start = 0;
         for (int i = 0; i < data.length; i++) {
             System.arraycopy(data[i].getHeaderId().getBytes(),
-                             0, result, start, 2);
+                    0, result, start, 2);
             System.arraycopy(data[i].getLocalFileDataLength().getBytes(),
-                             0, result, start + 2, 2);
+                    0, result, start + 2, 2);
             byte[] local = data[i].getLocalFileDataData();
             System.arraycopy(local, 0, result, start + 4, local.length);
             start += (local.length + 4);
@@ -156,9 +156,9 @@ public class ExtraFieldUtils {
         int start = 0;
         for (int i = 0; i < data.length; i++) {
             System.arraycopy(data[i].getHeaderId().getBytes(),
-                             0, result, start, 2);
+                    0, result, start, 2);
             System.arraycopy(data[i].getCentralDirectoryLength().getBytes(),
-                             0, result, start + 2, 2);
+                    0, result, start + 2, 2);
             byte[] local = data[i].getCentralDirectoryData();
             System.arraycopy(local, 0, result, start + 4, local.length);
             start += (local.length + 4);

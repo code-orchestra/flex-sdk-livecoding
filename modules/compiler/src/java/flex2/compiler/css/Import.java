@@ -25,27 +25,22 @@ package flex2.compiler.css;
  *
  * @author Paul Reilly
  */
-public class Import
-{
+public class Import {
     private String value;
     private int lineNumber;
 
-    public Import(String value, int lineNumber)
-    {
+    public Import(String value, int lineNumber) {
         this.value = value;
         this.lineNumber = lineNumber;
     }
 
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         boolean result = false;
 
-        if (object instanceof Import)
-        {
+        if (object instanceof Import) {
             Import importObject = (Import) object;
 
-            if (importObject.getValue().equals(value))
-            {
+            if (importObject.getValue().equals(value)) {
                 result = true;
             }
         }
@@ -53,18 +48,15 @@ public class Import
         return result;
     }
 
-    public int getLineNumber()
-    {
+    public int getLineNumber() {
         return lineNumber;
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
-    public int hashCode()
-    {
+    public int hashCode() {
         return value.hashCode();
     }
 }

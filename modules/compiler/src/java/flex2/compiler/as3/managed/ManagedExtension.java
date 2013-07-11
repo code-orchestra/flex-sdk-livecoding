@@ -34,61 +34,54 @@ import macromedia.asc.parser.Evaluator;
  *
  * @author Paul Reilly
  */
-public final class ManagedExtension extends GenerativeExtension
-{
+public final class ManagedExtension extends GenerativeExtension {
     public static final String IMANAGED = "IManaged";
 
-	private ServicesDependenciesWrapper servicesDependencies;
-    
-	public ManagedExtension(String generatedOutputDirectory, boolean generateAbstractSyntaxTree, boolean processComments)
-	{
-		this(generatedOutputDirectory, generateAbstractSyntaxTree, null, processComments);
-	}
+    private ServicesDependenciesWrapper servicesDependencies;
+
+    public ManagedExtension(String generatedOutputDirectory, boolean generateAbstractSyntaxTree, boolean processComments) {
+        this(generatedOutputDirectory, generateAbstractSyntaxTree, null, processComments);
+    }
 
     public ManagedExtension(String generatedOutputDirectory, boolean generateAbstractSyntaxTree,
-                            ServicesDependenciesWrapper services, boolean processComments)
-    {
-        super(generatedOutputDirectory, generateAbstractSyntaxTree, processComments );
+                            ServicesDependenciesWrapper services, boolean processComments) {
+        super(generatedOutputDirectory, generateAbstractSyntaxTree, processComments);
         servicesDependencies = services;
     }
 
-	/**
-	 * Add the MultiNames for the definitions that the BindableSecondPassEvaluator
-	 * requires.
-	 */
-    protected void addInheritance(CompilationUnit unit)
-    {
+    /**
+     * Add the MultiNames for the definitions that the BindableSecondPassEvaluator
+     * requires.
+     */
+    protected void addInheritance(CompilationUnit unit) {
         unit.inheritance.add(new MultiName(StandardDefs.PACKAGE_FLASH_EVENTS, IEVENT_DISPATCHER));
         unit.inheritance.add(new MultiName(unit.getStandardDefs().getDataPackage(), IMANAGED));
     }
 
-	/**
-	 *
-	 */
-	protected GenerativeFirstPassEvaluator getFirstPassEvaluator(CompilationUnit unit,
-                                                                 TypeTable typeTable)
-	{
-		return new ManagedFirstPassEvaluator(typeTable, unit.getStandardDefs(), unit.metadata, servicesDependencies);
-	}
+    /**
+     *
+     */
+    protected GenerativeFirstPassEvaluator getFirstPassEvaluator(CompilationUnit unit,
+                                                                 TypeTable typeTable) {
+        return new ManagedFirstPassEvaluator(typeTable, unit.getStandardDefs(), unit.metadata, servicesDependencies);
+    }
 
-	/**
-	 *
-	 */
-	protected String getFirstPassEvaluatorKey()
-    {
+    /**
+     *
+     */
+    protected String getFirstPassEvaluatorKey() {
         return "ManagedFirstPassEvaluator";
     }
 
-	/**
-	 *
-	 */
-	protected Evaluator getSecondPassEvaluator(CompilationUnit unit,
+    /**
+     *
+     */
+    protected Evaluator getSecondPassEvaluator(CompilationUnit unit,
                                                TypeAnalyzer typeAnalyzer,
-                                               GenerativeFirstPassEvaluator firstPassEvaluator)
-	{
-		return new ManagedSecondPassEvaluator(unit, firstPassEvaluator.getClassMap(),
-                                              typeAnalyzer, generatedOutputDirectory,
-                                              generateAbstractSyntaxTree, processComments);
-	}
+                                               GenerativeFirstPassEvaluator firstPassEvaluator) {
+        return new ManagedSecondPassEvaluator(unit, firstPassEvaluator.getClassMap(),
+                typeAnalyzer, generatedOutputDirectory,
+                generateAbstractSyntaxTree, processComments);
+    }
 
 }

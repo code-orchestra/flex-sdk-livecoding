@@ -44,168 +44,134 @@ import java.util.zip.GZIPInputStream;
  * @author Roger Gonzalez
  * @author Clement Wong
  */
-public class SVGTranscoder extends AbstractTranscoder
-{
-	private boolean deprecationIssued = false;
+public class SVGTranscoder extends AbstractTranscoder {
+    private boolean deprecationIssued = false;
     private boolean showDeprecationWarnings;
 
-	public SVGTranscoder(boolean showDeprecationWarnings)
-	{
-		super(new String[]{MimeMappings.SVG, MimeMappings.SVG_XML}, DefineSprite.class, true);
+    public SVGTranscoder(boolean showDeprecationWarnings) {
+        super(new String[]{MimeMappings.SVG, MimeMappings.SVG_XML}, DefineSprite.class, true);
         this.showDeprecationWarnings = showDeprecationWarnings;
-	}
+    }
 
-	public TranscodingResults doTranscode( PathResolver context, SymbolTable symbolTable,
-                                           Map<String, Object> args, String className, boolean generateSource )
-        throws TranscoderException
-	{
+    public TranscodingResults doTranscode(PathResolver context, SymbolTable symbolTable,
+                                          Map<String, Object> args, String className, boolean generateSource)
+            throws TranscoderException {
         // Flag a deprecation warning, as SVG has been deprecated since Flex 4.0. We only issue 
         // a warning once per compilation.
-        if (!deprecationIssued && showDeprecationWarnings)
-        {
+        if (!deprecationIssued && showDeprecationWarnings) {
             ThreadLocalToolkit.log(new Deprecated());
             deprecationIssued = true;
         }
-        
-        TranscodingResults results = new TranscodingResults( resolveSource( context, args ));
-        String newName = (String) args.get( NEWNAME );
+
+        TranscodingResults results = new TranscodingResults(resolveSource(context, args));
+        String newName = (String) args.get(NEWNAME);
 
         results.defineTag = svg(results.assetSource, newName, args);
         if (generateSource)
-            generateSource( results, className, args );
-        
-        return results;
-	}
+            generateSource(results, className, args);
 
-    public boolean isSupportedAttribute(String attr)
-    {
-        return SCALE9TOP.equals( attr ) || SCALE9LEFT.equals( attr ) || SCALE9BOTTOM.equals( attr ) || SCALE9RIGHT.equals( attr );
+        return results;
     }
 
-	private DefineSprite svg(VirtualFile source, String newName, Map<String, Object> args)
-            throws TranscoderException
-	{
-		InputStream is = null;
+    public boolean isSupportedAttribute(String attr) {
+        return SCALE9TOP.equals(attr) || SCALE9LEFT.equals(attr) || SCALE9BOTTOM.equals(attr) || SCALE9RIGHT.equals(attr);
+    }
 
-		try
-		{
-			String docURI = source.getURL();
+    private DefineSprite svg(VirtualFile source, String newName, Map<String, Object> args)
+            throws TranscoderException {
+        InputStream is = null;
 
-			is = new BufferedInputStream(source.getInputStream());
+        try {
+            String docURI = source.getURL();
 
-			if (isGZIPCompressed((BufferedInputStream) is))
-			{
-				is = new GZIPInputStream(is);
-			}
+            is = new BufferedInputStream(source.getInputStream());
 
-			TranscoderInput ti = new TranscoderInput(is);
-			ti.setURI(docURI);
+            if (isGZIPCompressed((BufferedInputStream) is)) {
+                is = new GZIPInputStream(is);
+            }
 
-			DefineSprite sprite = transcodeSVG(ti, source, newName);
-            if (args.containsKey(SCALE9LEFT) || args.containsKey(SCALE9RIGHT) || args.containsKey(SCALE9TOP) || args.containsKey(SCALE9BOTTOM))
-            {
-                MovieTranscoder.defineScalingGrid( sprite, args );
+            TranscoderInput ti = new TranscoderInput(is);
+            ti.setURI(docURI);
+
+            DefineSprite sprite = transcodeSVG(ti, source, newName);
+            if (args.containsKey(SCALE9LEFT) || args.containsKey(SCALE9RIGHT) || args.containsKey(SCALE9TOP) || args.containsKey(SCALE9BOTTOM)) {
+                MovieTranscoder.defineScalingGrid(sprite, args);
             }
             return sprite;
+        } catch (IOException ex) {
+            throw new AbstractTranscoder.ExceptionWhileTranscoding(ex);
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                }
+            }
         }
-		catch (IOException ex)
-		{
-			throw new AbstractTranscoder.ExceptionWhileTranscoding( ex );
-		}
-		finally
-		{
-			if (is != null)
-			{
-				try
-				{
-					is.close();
-				}
-				catch (IOException e)
-				{
-				}
-			}
-		}
-	}
+    }
 
-	private DefineSprite transcodeSVG(TranscoderInput ti, VirtualFile source, String symbolName)
-            throws TranscoderException
-	{
-		try
-		{
-			SpriteTranscoder transcoder = new SpriteTranscoder();
-			transcoder.transcode(ti, null);
+    private DefineSprite transcodeSVG(TranscoderInput ti, VirtualFile source, String symbolName)
+            throws TranscoderException {
+        try {
+            SpriteTranscoder transcoder = new SpriteTranscoder();
+            transcoder.transcode(ti, null);
 
-			DefineSprite defineSprite = new DefineSprite(symbolName);
-			defineSprite.tagList = transcoder.getTags();
-			defineSprite.framecount = 1; //SVG is static for now
+            DefineSprite defineSprite = new DefineSprite(symbolName);
+            defineSprite.tagList = transcoder.getTags();
+            defineSprite.framecount = 1; //SVG is static for now
 
             return defineSprite;
-		}
-		catch (Exception ex)
-		{
-			throw new AbstractTranscoder.ExceptionWhileTranscoding( ex );
-		}
-	}
+        } catch (Exception ex) {
+            throw new AbstractTranscoder.ExceptionWhileTranscoding(ex);
+        }
+    }
 
 
-	private static boolean isGZIPCompressed(BufferedInputStream in)
-	{
-		try
-		{
-			in.mark(4);
+    private static boolean isGZIPCompressed(BufferedInputStream in) {
+        try {
+            in.mark(4);
 
-			if (readUShort(in) == GZIPInputStream.GZIP_MAGIC // Check header magic
-					&& readUByte(in) == 8)// Check compression method
-			{
-				return true;
-			}
-		}
-		catch (Throwable t)
-		{
-			t.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				in.reset();
-			}
-			catch (IOException ex)
-			{
-				//This would be bad... but unexpected for this BufferedInputStream.
-			}
-		}
+            if (readUShort(in) == GZIPInputStream.GZIP_MAGIC // Check header magic
+                    && readUByte(in) == 8)// Check compression method
+            {
+                return true;
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
+        } finally {
+            try {
+                in.reset();
+            } catch (IOException ex) {
+                //This would be bad... but unexpected for this BufferedInputStream.
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/*
-	 * Util from java.zip.GZIPInputStream
-	 * Reads unsigned short in Intel byte order.
-	 */
-	private static int readUShort(InputStream in) throws IOException
-	{
-		int b = readUByte(in);
-		return readUByte(in) << 8 | b;
-	}
+    /*
+     * Util from java.zip.GZIPInputStream
+     * Reads unsigned short in Intel byte order.
+     */
+    private static int readUShort(InputStream in) throws IOException {
+        int b = readUByte(in);
+        return readUByte(in) << 8 | b;
+    }
 
-	/*
-	 * Util from java.zip.GZIPInputStream
-	 * Reads unsigned byte.
-	 */
-	private static int readUByte(InputStream in) throws IOException
-	{
-		int b = in.read();
-		if (b == -1)
-		{
-			throw new EOFException();
-		}
+    /*
+     * Util from java.zip.GZIPInputStream
+     * Reads unsigned byte.
+     */
+    private static int readUByte(InputStream in) throws IOException {
+        int b = in.read();
+        if (b == -1) {
+            throw new EOFException();
+        }
 
-		return b;
-	}
-	
-	public static class Deprecated extends CompilerMessage.CompilerWarning
-	{
-		private static final long serialVersionUID = 274970449301472265L;
-	}
+        return b;
+    }
+
+    public static class Deprecated extends CompilerMessage.CompilerWarning {
+        private static final long serialVersionUID = 274970449301472265L;
+    }
 }

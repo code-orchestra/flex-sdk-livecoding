@@ -28,54 +28,43 @@ import macromedia.asc.util.ObjectList;
  *
  * @author Clement Wong
  */
-public final class Method extends SlotReflect implements flex2.compiler.abc.Method
-{
-    public Method(Slot s, ObjectValue ns, String name)
-    {
+public final class Method extends SlotReflect implements flex2.compiler.abc.Method {
+    public Method(Slot s, ObjectValue ns, String name) {
         super(s, ns, name);
     }
 
-    public flex2.compiler.util.QName getQName()
-    {
+    public flex2.compiler.util.QName getQName() {
         return new flex2.compiler.util.QName(namespace.name, name);
     }
 
-    public String getReturnTypeName()
-    {
+    public String getReturnTypeName() {
         return getTypeName();
     }
 
-    public String getReturnElementTypeName()
-    {
+    public String getReturnElementTypeName() {
         return getElementTypeName();
     }
 
     // only used for setters
-    public String[] getParameterTypeNames()
-    {
+    public String[] getParameterTypeNames() {
         String[] type_names = null;
         ObjectList<TypeInfo> types = slot.getTypes();
-        if ( types != null )
-        {
+        if (types != null) {
             type_names = new String[types.size()];
-            for( int i = 0, l = types.size(); i < l; ++i )
-            {
+            for (int i = 0, l = types.size(); i < l; ++i) {
                 type_names[i] = getTypeName(types.get(i));
             }
-        } 
+        }
         return type_names;
     }
 
     // only used for setters
-    public String[] getParameterElementTypeNames()
-    {
+    public String[] getParameterElementTypeNames() {
         String[] type_names = null;
         ObjectList<TypeInfo> types = slot.getTypes();
-        if ( types != null )
-        {
+        if (types != null) {
             type_names = new String[types.size()];
-            for( int i = 0, l = types.size(); i < l; ++i )
-            {
+            for (int i = 0, l = types.size(); i < l; ++i) {
                 type_names[i] = getElementTypeName(types.get(i));
             }
         }

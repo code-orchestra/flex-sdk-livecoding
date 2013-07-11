@@ -25,29 +25,24 @@ import flex2.compiler.util.NameFormatter;
 /**
  * This class represents a Vector of MXML document nodes.
  */
-public class Vector extends Array
-{
+public class Vector extends Array {
     private boolean fixed;
 
-    public Vector(MxmlDocument document, int line, Type elementType, boolean fixed)
-    {
+    public Vector(MxmlDocument document, int line, Type elementType, boolean fixed) {
         this(document, null, line, elementType, fixed);
     }
 
     public Vector(MxmlDocument document, Model parent, int line,
-                  Type elementType, boolean fixed)
-    {
+                  Type elementType, boolean fixed) {
         super(document, document.getTypeTable().getVectorType(elementType), parent, line, elementType);
         this.fixed = fixed;
     }
 
-    public String getElementTypeName()
-    {
+    public String getElementTypeName() {
         return NameFormatter.toDot(elementType.getName());
     }
 
-    public boolean isFixed()
-    {
+    public boolean isFixed() {
         return fixed;
     }
 }

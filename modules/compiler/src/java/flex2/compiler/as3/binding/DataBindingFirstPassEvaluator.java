@@ -56,7 +56,7 @@ import java.util.Stack;
  * is collected for each element of the expression.  The event
  * information is later used when generating code to constuct the
  * watchers.
- *
+ * <p/>
  * This class is a rough equivalent of Flex 1.5's
  * flex.compiler.WatcherVisitor.  Historically, there was a second
  * pass evaluator, but as it's role shrunk, it was folded into
@@ -65,8 +65,7 @@ import java.util.Stack;
  * @author Paul Reilly
  * @author Matt Chotin
  */
-public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
-{
+public class DataBindingFirstPassEvaluator extends EvaluatorAdapter {
     private static final String BINDABLE = "Bindable";
     private static final String CHANGE_EVENT = "ChangeEvent";
     private static final String NON_COMMITTING_CHANGE_EVENT = "NonCommittingChangeEvent";
@@ -104,8 +103,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
     private boolean makeSecondPass = false;
     private StandardDefs standardDefs;
 
-    public DataBindingFirstPassEvaluator(CompilationUnit unit, TypeTable typeTable, boolean showBindingWarnings)
-    {
+    public DataBindingFirstPassEvaluator(CompilationUnit unit, TypeTable typeTable, boolean showBindingWarnings) {
         this.typeTable = typeTable;
         argumentListStack = new Stack<ArgumentListNode>();
         skipInitSet = new HashSet<ArgumentListNode>();
@@ -125,36 +123,26 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         setLocalizationManager(ThreadLocalToolkit.getLocalizationManager());
     }
 
-    private boolean addBindables(Watcher watcher, List bindables)
-    {
+    private boolean addBindables(Watcher watcher, List bindables) {
         boolean addedBindable = false;
 
-        if (bindables != null)
-        {
+        if (bindables != null) {
             Iterator bindablesIterator = bindables.iterator();
 
-            while ( bindablesIterator.hasNext() )
-            {
+            while (bindablesIterator.hasNext()) {
                 MetaData metaData = (MetaData) bindablesIterator.next();
 
-                if ("true".equals(metaData.getValue(STYLE)))
-                {
-                    if (watcher instanceof FunctionReturnWatcher)
-                    {
+                if ("true".equals(metaData.getValue(STYLE))) {
+                    if (watcher instanceof FunctionReturnWatcher) {
                         ((FunctionReturnWatcher) watcher).setStyleWatcher(true);
                         addedBindable = true;
                     }
-                }
-                else
-                {
+                } else {
                     String event = getEventName(metaData);
 
-                    if (event != null)
-                    {
+                    if (event != null) {
                         watcher.addChangeEvent(event);
-                    }
-                    else
-                    {
+                    } else {
                         watcher.addChangeEvent(StandardDefs.MDPARAM_PROPERTY_CHANGE);
                     }
 
@@ -166,10 +154,8 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return addedBindable;
     }
 
-    private void checkForStaticProperty(boolean isStatic, Watcher watcher, String srcTypeName)
-    {
-        if (isStatic && (watcher instanceof PropertyWatcher))
-        {
+    private void checkForStaticProperty(boolean isStatic, Watcher watcher, String srcTypeName) {
+        if (isStatic && (watcher instanceof PropertyWatcher)) {
             ((PropertyWatcher) watcher).setStaticProperty(true);
             watcher.setClassName(srcTypeName);
         }
@@ -178,21 +164,16 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
     /**
      * TODO this exactly replicates BindableFirstPassEvaluator.getEventName()'s logic on MetaDataNode. Find a way to factor
      */
-    private String getEventName(MetaData metaData)
-    {
+    private String getEventName(MetaData metaData) {
         String eventName = metaData.getValue(EVENT);
-        if (eventName != null)
-        {
+        if (eventName != null) {
             //    [Bindable( ... event="<eventname>" ... )]
             return eventName;
-        }
-        else if (metaData.count() == 1)
-        {
+        } else if (metaData.count() == 1) {
             // 1. Currently, ASC builds MetaDataNodes in such a way that [Foo] and [Foo("Foo")] both result in
             // node.count() == 1 and node.getValue(0).equals("Foo"). Soooooo, best not to have an event named Bindable!
             String param = metaData.getValue(0);
-            if (!param.equals(metaData.getID()))
-            {
+            if (!param.equals(metaData.getID())) {
                 //    [Bindable("<eventname>")]
                 return param;
             }
@@ -200,20 +181,16 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    private boolean addChangeEvents(Watcher watcher, List changeEvents)
-    {
+    private boolean addChangeEvents(Watcher watcher, List changeEvents) {
         boolean addedChangeEvent = false;
 
-        if (changeEvents != null)
-        {
+        if (changeEvents != null) {
             Iterator changeEventIterator = changeEvents.iterator();
 
-            while ( changeEventIterator.hasNext() )
-            {
+            while (changeEventIterator.hasNext()) {
                 MetaData metaData = (MetaData) changeEventIterator.next();
                 String event = metaData.getValue(0);
-                if (event != null)
-                {
+                if (event != null) {
                     watcher.addChangeEvent(event);
                     addedChangeEvent = true;
                 }
@@ -223,20 +200,16 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return addedChangeEvent;
     }
 
-    private boolean addNonCommittingChangeEvents(Watcher watcher, List changeEvents)
-    {
+    private boolean addNonCommittingChangeEvents(Watcher watcher, List changeEvents) {
         boolean addedChangeEvent = false;
 
-        if (changeEvents != null)
-        {
+        if (changeEvents != null) {
             Iterator changeEventIterator = changeEvents.iterator();
 
-            while ( changeEventIterator.hasNext() )
-            {
+            while (changeEventIterator.hasNext()) {
                 MetaData metaData = (MetaData) changeEventIterator.next();
                 String event = metaData.getValue(0);
-                if (event != null)
-                {
+                if (event != null) {
                     watcher.addChangeEvent(event, false);
                     addedChangeEvent = true;
                 }
@@ -246,28 +219,23 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return addedChangeEvent;
     }
 
-    public synchronized Value evaluate(Context context, ArgumentListNode node)
-    {
-        if (insideBindingsSetupFunction)
-        {
-            for (int i = 0, size = node.items.size(); i < size; i++)
-            {
+    public synchronized Value evaluate(Context context, ArgumentListNode node) {
+        if (insideBindingsSetupFunction) {
+            for (int i = 0, size = node.items.size(); i < size; i++) {
                 Node argument = node.items.get(i);
 
                 LinkedList<Watcher> tempWatcherList = watcherList;
 
                 argumentListStack.push(node);
-                srcTypeStack.push( srcTypeStack.firstElement() );
+                srcTypeStack.push(srcTypeStack.firstElement());
 
-                if (!skipInitSet.remove(node))
-                {
+                if (!skipInitSet.remove(node)) {
                     watcherList = new LinkedList<Watcher>();
                 }
 
                 argument.evaluate(context, this);
 
-                if (resetSet.remove(node))
-                {
+                if (resetSet.remove(node)) {
                     watcherList = tempWatcherList;
                 }
 
@@ -279,75 +247,58 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public synchronized Value evaluate(Context context, BinaryExpressionNode node)
-    {
-        if (node.lhs != null)
-        {
+    public synchronized Value evaluate(Context context, BinaryExpressionNode node) {
+        if (node.lhs != null) {
             node.lhs.evaluate(context, this);
         }
 
-        if (insideBindingsSetupFunction && (node.op != Tokens.AS_TOKEN))
-        {
+        if (insideBindingsSetupFunction && (node.op != Tokens.AS_TOKEN)) {
             watcherList = new LinkedList<Watcher>();
         }
 
-        if (node.rhs != null)
-        {
+        if (node.rhs != null) {
             node.rhs.evaluate(context, this);
         }
 
-        if (insideBindingsSetupFunction && (node.op != Tokens.AS_TOKEN))
-        {
+        if (insideBindingsSetupFunction && (node.op != Tokens.AS_TOKEN)) {
             watcherList = new LinkedList<Watcher>();
         }
 
         return null;
     }
 
-    public synchronized Value evaluate(Context context, CallExpressionNode node)
-    {
-        if (insideBindingsSetupFunction && (node.expr != null))
-        {
+    public synchronized Value evaluate(Context context, CallExpressionNode node) {
+        if (insideBindingsSetupFunction && (node.expr != null)) {
             if (insideRepeaterExpression &&
-                (node.expr instanceof IdentifierNode) &&
-                ((IdentifierNode) node.expr).name.equals("getItemAt"))
-            {
+                    (node.expr instanceof IdentifierNode) &&
+                    ((IdentifierNode) node.expr).name.equals("getItemAt")) {
                 skipInitSet.add((ArgumentListNode) node.args);
                 node.args.evaluate(context, this);
-            }
-            else
-            {
+            } else {
                 argumentListStack.push(node.args);
 
-                if (node.expr instanceof IdentifierNode)
-                {
+                if (node.expr instanceof IdentifierNode) {
                     IdentifierNode identifier = (IdentifierNode) node.expr;
 
                     // If expr.name is the same as the ref.type.name.name, then this seems to
                     // be a cast.  There is no need to setup a watcher for a cast, so skip
                     // evaluating expr.
                     if ((identifier.ref != null) &&
-                        (identifier.ref.getType(context) != null) &&
-                        !identifier.name.equals(identifier.ref.getType(context).getName().name))
-                    {
+                            (identifier.ref.getType(context) != null) &&
+                            !identifier.name.equals(identifier.ref.getType(context).getName().name)) {
                         callExpressionStack.push(node);
                         node.expr.evaluate(context, this);
                         callExpressionStack.pop();
                         resetSet.add(node.args);
-                    }
-                    else
-                    {
+                    } else {
                         skipInitSet.add((ArgumentListNode) node.args);
                     }
-                }
-                else
-                {
+                } else {
                     assert false : "Unexpected CallExpressionNode.expr type: " + node.expr.getClass().getName();
                 }
 
-                if (node.args != null)
-                {
-                    srcTypeStack.push( srcTypeStack.firstElement() );
+                if (node.args != null) {
+                    srcTypeStack.push(srcTypeStack.firstElement());
                     node.args.evaluate(context, this);
                     srcTypeStack.pop();
                 }
@@ -359,10 +310,8 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public synchronized Value evaluate(Context context, ClassDefinitionNode node)
-    {
-        if (!evaluatedClasses.contains(node))
-        {
+    public synchronized Value evaluate(Context context, ClassDefinitionNode node) {
+        if (!evaluatedClasses.contains(node)) {
             currentClassDefinition = node;
             String className = node.name.name;
             String convertedClassName = "_" + className.replace('.', '_').replace(':', '_');
@@ -370,18 +319,15 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
             String fullyQualifiedClassName = node.cframe.name.toString();
             srcTypeStack.push(fullyQualifiedClassName);
-            if (node.fexprs != null)
-            {
-                for (int i = 0, size = node.fexprs.size(); i < size; i++)
-                {
+            if (node.fexprs != null) {
+                for (int i = 0, size = node.fexprs.size(); i < size; i++) {
                     FunctionCommonNode functionCommon = node.fexprs.get(i);
                     functionCommon.evaluate(context, this);
                 }
             }
             srcTypeStack.pop();
 
-            if (dataBindingInfo != null)
-            {
+            if (dataBindingInfo != null) {
                 dataBindingInfo.setBindingExpressions(bindingExpressions);
                 dataBindingInfo.setClassName(fullyQualifiedClassName);
                 dataBindingInfoList.add(dataBindingInfo);
@@ -395,58 +341,46 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public synchronized Value evaluate(Context context, ConditionalExpressionNode node)
-    {
-        if (node.condition != null)
-        {
+    public synchronized Value evaluate(Context context, ConditionalExpressionNode node) {
+        if (node.condition != null) {
             node.condition.evaluate(context, this);
         }
 
-        if (insideBindingsSetupFunction)
-        {
+        if (insideBindingsSetupFunction) {
             watcherList = new LinkedList<Watcher>();
         }
 
-        if (node.thenexpr != null)
-        {
+        if (node.thenexpr != null) {
             node.thenexpr.evaluate(context, this);
         }
 
-        if (insideBindingsSetupFunction)
-        {
+        if (insideBindingsSetupFunction) {
             watcherList = new LinkedList<Watcher>();
         }
 
-        if (node.elseexpr != null)
-        {
+        if (node.elseexpr != null) {
             node.elseexpr.evaluate(context, this);
         }
 
-        if (insideBindingsSetupFunction)
-        {
+        if (insideBindingsSetupFunction) {
             watcherList = new LinkedList<Watcher>();
         }
 
         return null;
     }
 
-    public synchronized Value evaluate(Context context, FunctionCommonNode functionCommon)
-    {
-        if (functionCommon.identifier != null)
-        {
-            if (functionCommon.identifier.name.equals(bindingFunctionName))
-            {
+    public synchronized Value evaluate(Context context, FunctionCommonNode functionCommon) {
+        if (functionCommon.identifier != null) {
+            if (functionCommon.identifier.name.equals(bindingFunctionName)) {
                 insideBindingsSetupFunction = true;
-                dataBindingInfo = new DataBindingInfo( NodeMagic.getImports(currentClassDefinition.imported_names) );
+                dataBindingInfo = new DataBindingInfo(NodeMagic.getImports(currentClassDefinition.imported_names));
 
-                for (int i = 0; i < functionCommon.body.items.size(); i++)
-                {
+                for (int i = 0; i < functionCommon.body.items.size(); i++) {
                     Node item1 = functionCommon.body.items.get(i);
 
                     // Skip over the DocCommentNodes, which are generated when asdoc is
                     // enabled, VariableDefinitionNodes, and ReturnStatementNodes.
-                    if (item1 instanceof ExpressionStatementNode)
-                    {
+                    if (item1 instanceof ExpressionStatementNode) {
                         ExpressionStatementNode expressionStatement1 = (ExpressionStatementNode) item1;
                         ListNode list1 = (ListNode) expressionStatement1.expr;
                         MemberExpressionNode memberExpression1 = (MemberExpressionNode) list1.items.get(0);
@@ -458,19 +392,16 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
                         //
                         //   var result:Array = [];
                         //
-                        if (item2 instanceof MemberExpressionNode)
-                        {
+                        if (item2 instanceof MemberExpressionNode) {
                             MemberExpressionNode memberExpression2 = (MemberExpressionNode) item2;
 
-                            if (memberExpression2.selector instanceof CallExpressionNode)
-                            {
+                            if (memberExpression2.selector instanceof CallExpressionNode) {
                                 CallExpressionNode callExpression = (CallExpressionNode) memberExpression2.selector;
                                 Node arg1 = callExpression.args.items.get(1);
                                 currentBindingExpression = bindingExpressions.get(bindingId++);
                                 watcherList = new LinkedList<Watcher>();
 
-                                if (arg1 instanceof FunctionCommonNode)
-                                {
+                                if (arg1 instanceof FunctionCommonNode) {
                                     FunctionCommonNode srcFunctionCommon = (FunctionCommonNode) arg1;
                                     TypeExpressionNode typeExpression = (TypeExpressionNode) srcFunctionCommon.signature.result;
                                     List<Node> items = srcFunctionCommon.body.items;
@@ -489,30 +420,23 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
                                     //
                                     // so we want to ignore only the last ReturnStatementNode.
                                     //
-                                    if ((typeExpression != null) && isArrayOrString(typeExpression))
-                                    {
+                                    if ((typeExpression != null) && isArrayOrString(typeExpression)) {
                                         ExpressionStatementNode expressionStatement3 = (ExpressionStatementNode) items.get(size - 3);
                                         ListNode list2 = (ListNode) expressionStatement3.expr;
                                         MemberExpressionNode memberExpression4 = (MemberExpressionNode) list2.items.get(0);
                                         SetExpressionNode setExpression3 = (SetExpressionNode) memberExpression4.selector;
                                         setExpression3.args.items.get(0).evaluate(context, this);
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         ReturnStatementNode returnStatement = (ReturnStatementNode) items.get(size - 2);
                                         returnStatement.expr.evaluate(context, this);
                                     }
-                                }
-                                else if (arg1 instanceof LiteralNullNode)
-                                {
+                                } else if (arg1 instanceof LiteralNullNode) {
                                     LiteralStringNode literalString = (LiteralStringNode) callExpression.args.items.get(4);
                                     String name = literalString.value;
                                     Watcher watcher = watchExpressionStringAsProperty(name);
                                     MultiName multiName = new MultiName(SymbolTable.publicNamespace, name);
                                     findEvents(context, name, multiName, arg1.pos(), watcher);
-                                }
-                                else
-                                {
+                                } else {
                                     assert false : arg1.getClass().getName();
                                 }
 
@@ -531,25 +455,19 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public synchronized Value evaluate(Context context, GetExpressionNode node)
-    {
-        if (node.expr != null)
-        {
+    public synchronized Value evaluate(Context context, GetExpressionNode node) {
+        if (node.expr != null) {
             insideGetExpression = true;
 
-            if (node.expr instanceof ArgumentListNode)
-            {
+            if (node.expr instanceof ArgumentListNode) {
                 ArgumentListNode argumentList = (ArgumentListNode) node.expr;
 
-                if (!insideRepeaterExpression)
-                {
-                    if (!insideXMLExpression && showBindingWarnings)
-                    {
+                if (!insideRepeaterExpression) {
+                    if (!insideXMLExpression && showBindingWarnings) {
                         context.localizedWarning2(node.pos(), new UnableToDetectSquareBracketChanges());
                     }
 
-                    if (!insideXMLExpression)
-                    {
+                    if (!insideXMLExpression) {
                         argumentListStack.push(argumentList);
                         watchExpressionArray();
                         argumentListStack.pop();
@@ -558,9 +476,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
                     resetSet.add(argumentList);
                     node.expr.evaluate(context, this);
                 }
-            }
-            else
-            {
+            } else {
                 node.expr.evaluate(context, this);
             }
 
@@ -569,20 +485,16 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public synchronized Value evaluate(Context context, IdentifierNode node)
-    {
-        if (insideBindingsSetupFunction && !node.name.equals("instanceIndices"))
-        {
+    public synchronized Value evaluate(Context context, IdentifierNode node) {
+        if (insideBindingsSetupFunction && !node.name.equals("instanceIndices")) {
             watchExpression(context, node, new MultiName(SymbolTable.VISIBILITY_NAMESPACES, node.name));
         }
 
         return null;
     }
 
-    public synchronized Value evaluate(Context context, InvokeNode node)
-    {
-        if (insideBindingsSetupFunction && insideXMLExpression)
-        {
+    public synchronized Value evaluate(Context context, InvokeNode node) {
+        if (insideBindingsSetupFunction && insideXMLExpression) {
             // We get here when the data binding destination is something like:
             //
             //   xdata.(@id=='123456').@timestamp
@@ -599,51 +511,41 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public synchronized Value evaluate(Context context, LiteralNumberNode node)
-    {
-        if (insideBindingsSetupFunction && insideGetExpression)
-        {
+    public synchronized Value evaluate(Context context, LiteralNumberNode node) {
+        if (insideBindingsSetupFunction && insideGetExpression) {
             watchExpressionArray();
         }
 
         return null;
     }
 
-    public synchronized Value evaluate(Context context, WithStatementNode node)
-    {
-        if (node.expr != null)
-        {
+    public synchronized Value evaluate(Context context, WithStatementNode node) {
+        if (node.expr != null) {
             node.expr.evaluate(context, this);
         }
 
         LinkedList<Watcher> savedWatcherList = watcherList;
         boolean normalWarningMode = showBindingWarnings;
-        if (insideBindingsSetupFunction && !insideArrayExpression)
-        {
-            if (xmlMember != null)
-            {
+        if (insideBindingsSetupFunction && !insideArrayExpression) {
+            if (xmlMember != null) {
                 Watcher watcher = watchExpressionStringAsXML(xmlMember.ref.name);
-                if (watcher != null)
-                {
+                if (watcher != null) {
                     String name = xmlMember.ref.name;
                     MultiName multiName = new MultiName(SymbolTable.VISIBILITY_NAMESPACES, name);
                     findEvents(context, name, multiName, xmlMember.pos(), watcher);
                 }
                 xmlMember = null;
             }
-            if (insideXMLExpression)
-            {
+            if (insideXMLExpression) {
                 watcherList = new LinkedList<Watcher>();
                 showBindingWarnings = false;     // inside an e4x selector is the freakin' wild west..
             }
         }
 
-        if (node.statement != null)
-        {
+        if (node.statement != null) {
             node.statement.evaluate(context, this);
         }
-        if (insideBindingsSetupFunction && !insideArrayExpression && insideXMLExpression)
-        {
+        if (insideBindingsSetupFunction && !insideArrayExpression && insideXMLExpression) {
             watcherList = savedWatcherList;
             showBindingWarnings = normalWarningMode;
         }
@@ -651,10 +553,8 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public synchronized Value evaluate(Context context, MemberExpressionNode node)
-    {
-        if (insideBindingsSetupFunction && !insideRepeaterExpression && isRepeaterBase(node.base))
-        {
+    public synchronized Value evaluate(Context context, MemberExpressionNode node) {
+        if (insideBindingsSetupFunction && !insideRepeaterExpression && isRepeaterBase(node.base)) {
             insideRepeaterExpression = true;
             node.base.evaluate(context, this);
             // Since currentItem wasn't cast, we have no way to know the type.
@@ -662,23 +562,17 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
             node.selector.evaluate(context, this);
             srcTypeStack.pop();
             insideRepeaterExpression = false;
-        }
-        else if (insideBindingsSetupFunction && isRepeaterIndicesBase(node.base))
-        {
+        } else if (insideBindingsSetupFunction && isRepeaterIndicesBase(node.base)) {
             setupRepeaterWatchers(node);
-        }
-        else
-        {
+        } else {
             int pushed = 0;
             boolean oldArrayExpression = insideArrayExpression;
             insideArrayExpression = node.isIndexedMemberExpression();
 
-            if (node.base != null)
-            {
+            if (node.base != null) {
                 node.base.evaluate(context, this);
 
-                if (insideBindingsSetupFunction && (!insideArrayExpression || insideXMLExpression))
-                {
+                if (insideBindingsSetupFunction && (!insideArrayExpression || insideXMLExpression)) {
                     ReferenceValue ref = getRef(node);
                     pushSrcType(context, ref, node.base);
                     pushed++;
@@ -690,13 +584,10 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
             // we can't watch statics for changes.
             boolean staticReference = false;
 
-            if (insideBindingsSetupFunction)
-            {
+            if (insideBindingsSetupFunction) {
                 ReferenceValue ref = node.ref;
-                if (ref != null)
-                {
-                    if (isStaticReference(node.selector, ref))
-                    {
+                if (ref != null) {
+                    if (isStaticReference(node.selector, ref)) {
                         staticReference = true;
                         srcTypeStack.push(ref.slot.getObjectValue().toString());
                         pushed++;
@@ -704,23 +595,20 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
                     String type = ref.getType(context).getName().toString();
 
-                    if (type.equals("XML") || type.equals("XMLList"))
-                    {
+                    if (type.equals("XML") || type.equals("XMLList")) {
                         xmlMember = node;
                         insideXMLExpression = true;
                     }
                 }
             }
 
-            if ((node.selector != null) && !staticReference)
-            {
+            if ((node.selector != null) && !staticReference) {
                 node.selector.evaluate(context, this);
             }
 
             insideArrayExpression = oldArrayExpression;
 
-            for (int i = 0; i < pushed; i++)
-            {
+            for (int i = 0; i < pushed; i++) {
                 srcTypeStack.pop();
             }
         }
@@ -728,25 +616,19 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public synchronized Value evaluate(Context context, MetaDataNode node)
-    {
+    public synchronized Value evaluate(Context context, MetaDataNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context context, QualifiedIdentifierNode node)
-    {
-        if (insideBindingsSetupFunction)
-        {
+    public synchronized Value evaluate(Context context, QualifiedIdentifierNode node) {
+        if (insideBindingsSetupFunction) {
             QName qName = NodeMagic.getQName(node);
             Map<Integer, String> namespaces = currentBindingExpression.getNamespaces();
 
-            if ((namespaces != null) && namespaces.values().contains(qName.getNamespace()))
-            {
+            if ((namespaces != null) && namespaces.values().contains(qName.getNamespace())) {
                 MultiName multiName = new MultiName(SymbolTable.VISIBILITY_NAMESPACES, qName.getLocalPart());
                 watchExpression(context, node, multiName);
-            }
-            else
-            {
+            } else {
                 watchExpression(context, node, qName);
             }
         }
@@ -754,111 +636,86 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    private void findEvents(Context context, String name, MultiName multiName, int pos, Watcher watcher)
-    {
+    private void findEvents(Context context, String name, MultiName multiName, int pos, Watcher watcher) {
         findEvents(context, name, multiName, pos, watcher, null);
     }
 
-    private static Variable getVariable(Context cx, AbcClass watchedClass, ReferenceValue ref, MultiName multiName)
-    {
+    private static Variable getVariable(Context cx, AbcClass watchedClass, ReferenceValue ref, MultiName multiName) {
         Variable var = null;
         Slot s;
-        if( ref != null )
-        {
+        if (ref != null) {
             // if ref.slot is non-null then the reference has already been resolved.
-            if( ref.slot != null && ref.getKind() == Tokens.GET_TOKEN)
-            {
+            if (ref.slot != null && ref.getKind() == Tokens.GET_TOKEN) {
                 s = ref.getSlot(cx, Tokens.GET_TOKEN);
-                if( s instanceof VariableSlot )
-                {
+                if (s instanceof VariableSlot) {
                     var = new flex2.compiler.as3.reflect.Variable(s, ref.namespaces.at(0), ref.name);
                 }
             }
-            if (var == null )
-            {
+            if (var == null) {
                 var = watchedClass.getVariable(ref.namespaces, ref.name, true);
             }
-        }
-        else
-        {
+        } else {
             var = watchedClass.getVariable(multiName.getNamespace(), multiName.getLocalPart(), true);
         }
         return var;
     }
 
-    private static Method getGetter(Context cx, AbcClass watchedClass, ReferenceValue ref, MultiName multiName)
-    {
+    private static Method getGetter(Context cx, AbcClass watchedClass, ReferenceValue ref, MultiName multiName) {
         Method meth = null;
         Slot s;
         // if ref.slot is non-null then the reference has already been resolved.
-        if( ref != null )
-        {
+        if (ref != null) {
             meth = getMethodFromRef(cx, watchedClass, ref, Tokens.GET_TOKEN);
-        }
-        else
-        {
+        } else {
             meth = watchedClass.getGetter(multiName.getNamespace(), multiName.getLocalPart(), true);
         }
         return meth;
     }
 
-    private static Method getSetter(Context cx, AbcClass watchedClass, ReferenceValue ref, MultiName multiName)
-    {
+    private static Method getSetter(Context cx, AbcClass watchedClass, ReferenceValue ref, MultiName multiName) {
         Method meth;
-        if( ref != null )
-        {
+        if (ref != null) {
             meth = getMethodFromRef(cx, watchedClass, ref, Tokens.SET_TOKEN);
-        }
-        else
-        {
+        } else {
             meth = watchedClass.getSetter(multiName.getNamespace(), multiName.getLocalPart(), true);
         }
 
         return meth;
     }
 
-    private static Method getMethod(Context cx, AbcClass watchedClass, ReferenceValue ref, MultiName multiName)
-    {
+    private static Method getMethod(Context cx, AbcClass watchedClass, ReferenceValue ref, MultiName multiName) {
         Method meth = null;
-        if( ref != null )
-        {
+        if (ref != null) {
             meth = getMethodFromRef(cx, watchedClass, ref, Tokens.EMPTY_TOKEN);
-        }
-        else
-        {
+        } else {
             meth = watchedClass.getGetter(multiName.getNamespace(), multiName.getLocalPart(), true);
         }
 
         return meth;
     }
 
-    private static Method getMethodFromRef(Context cx, AbcClass watchedClass, ReferenceValue ref, int kind)
-    {
+    private static Method getMethodFromRef(Context cx, AbcClass watchedClass, ReferenceValue ref, int kind) {
         Method meth = null;
 
         int orig_kind = kind;
 
         // Empty token means we want the call slot,
         // but the ref will have a cached get slot, which implies the call slot
-        if( kind == Tokens.EMPTY_TOKEN ) {
+        if (kind == Tokens.EMPTY_TOKEN) {
             kind = Tokens.GET_TOKEN;
         }
 
-        if( ref.slot != null && ref.getKind() == kind)
-        {
+        if (ref.slot != null && ref.getKind() == kind) {
             Slot s = ref.getSlot(cx, orig_kind);
 
-            if( s instanceof MethodSlot )
-            {
+            if (s instanceof MethodSlot) {
                 // If we want a getter, make sure the slot is a real getter
-                if( (orig_kind==Tokens.GET_TOKEN) == s.isGetter() )
+                if ((orig_kind == Tokens.GET_TOKEN) == s.isGetter())
                     meth = new flex2.compiler.as3.reflect.Method(s, ref.namespaces.at(0), ref.name);
             }
         }
-        if (meth == null )
-        {
-            switch( orig_kind )
-            {
+        if (meth == null) {
+            switch (orig_kind) {
                 case Tokens.EMPTY_TOKEN:
                     meth = watchedClass.getMethod(ref.namespaces, ref.name, true);
                     break;
@@ -873,33 +730,24 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return meth;
     }
 
-    private void findEvents(Context context, String name, MultiName multiName, int pos, Watcher watcher, ReferenceValue ref)
-    {
+    private void findEvents(Context context, String name, MultiName multiName, int pos, Watcher watcher, ReferenceValue ref) {
         String srcTypeName = null;
 
-        if (watcher.isPartOfAnonObjectGraph())
-        {
+        if (watcher.isPartOfAnonObjectGraph()) {
             srcTypeName = standardDefs.CLASS_OBJECTPROXY;
-        }
-        else if (! srcTypeStack.empty())
-        {
+        } else if (!srcTypeStack.empty()) {
             srcTypeName = srcTypeStack.peek();
         }
 
         Watcher parentWatcher = watcher.getParent();
 
-        if ((parentWatcher != null) && parentWatcher.isOperation())
-        {
+        if ((parentWatcher != null) && parentWatcher.isOperation()) {
             watcher.addChangeEvent("resultForBinding");
-        }
-        else if (srcTypeName != null)
-        {
+        } else if (srcTypeName != null) {
             AbcClass watchedClass = typeTable.getClass(srcTypeName);
 
-            if (watchedClass != null)
-            {
-                if ( watchedClass.isSubclassOf(standardDefs.CLASS_OBJECTPROXY) )
-                {
+            if (watchedClass != null) {
+                if (watchedClass.isSubclassOf(standardDefs.CLASS_OBJECTPROXY)) {
                     watcher.setPartOfAnonObjectGraph(true);
                 }
 
@@ -909,8 +757,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
                 Variable variable = getVariable(context, watchedClass, ref, multiName);
 
-                if (variable != null)
-                {
+                if (variable != null) {
                     metaData = variable.getMetaData(BINDABLE);
                     foundEvents = addBindables(watcher, metaData) || foundEvents;
                     metaData = variable.getMetaData(CHANGE_EVENT);
@@ -922,41 +769,36 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
                     // some legacy compatibility crap left over from EMCA script 262, so
                     // we ignore it.
                     if (variable.isConst() &&
-                        !(multiName.getLocalPart().equals("length") &&
-                          variable.getDeclaringClassName().equals(SymbolTable.OBJECT)))
-                    {
+                            !(multiName.getLocalPart().equals("length") &&
+                                    variable.getDeclaringClassName().equals(SymbolTable.OBJECT))) {
                         // We didn't really find any events, but we want
                         // to follow the same code path below as if we did.
                         foundEvents = true;
                         //    TODO will this ever be something besides a PropertyWatcher?
-                        if (watcher instanceof PropertyWatcher)
-                        {
+                        if (watcher instanceof PropertyWatcher) {
                             ((PropertyWatcher) watcher).suppress();
                         }
                     }
 
                     // See comment above.
                     if (!(multiName.getLocalPart().equals("length") &&
-                          variable.getDeclaringClassName().equals(SymbolTable.OBJECT)))
-                    {
+                            variable.getDeclaringClassName().equals(SymbolTable.OBJECT))) {
                         checkForStaticProperty(variable.isStatic(), watcher, srcTypeName);
                     }
 
                     foundSource = true;
                 }
 
-                if (!foundEvents)
-                {
+                if (!foundEvents) {
                     Method getter = getGetter(context, watchedClass, ref, multiName);
 
-                    if (getter != null)
-                    {
+                    if (getter != null) {
                         metaData = getter.getMetaData(BINDABLE);
                         foundEvents = addBindables(watcher, metaData) || foundEvents;
                         metaData = getter.getMetaData(CHANGE_EVENT);
                         foundEvents = addChangeEvents(watcher, metaData) || foundEvents;
                         metaData = getter.getMetaData(NON_COMMITTING_CHANGE_EVENT);
-                        foundEvents = addNonCommittingChangeEvents( watcher, metaData) || foundEvents;
+                        foundEvents = addNonCommittingChangeEvents(watcher, metaData) || foundEvents;
 
                         checkForStaticProperty(getter.isStatic(), watcher, srcTypeName);
 
@@ -965,8 +807,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
                     Method setter = getSetter(context, watchedClass, ref, multiName);
 
-                    if (setter != null)
-                    {
+                    if (setter != null) {
                         metaData = setter.getMetaData(BINDABLE);
                         foundEvents = addBindables(watcher, metaData) || foundEvents;
                         metaData = setter.getMetaData(CHANGE_EVENT);
@@ -977,23 +818,18 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
                         checkForStaticProperty(setter.isStatic(), watcher, srcTypeName);
 
                         foundSource = true;
-                    }
-                    else
-                    {
-                        if (getter != null)
-                        {
+                    } else {
+                        if (getter != null) {
                             //    getters without setters are de facto const, use same bypass as above for const vars
                             foundEvents = true;
                         }
                     }
                 }
 
-                if (!foundSource)
-                {
+                if (!foundSource) {
                     Method function = getMethod(context, watchedClass, ref, multiName);
 
-                    if (function != null)
-                    {
+                    if (function != null) {
                         metaData = function.getMetaData(BINDABLE);
                         foundEvents = addBindables(watcher, metaData) || foundEvents;
                         metaData = function.getMetaData(CHANGE_EVENT);
@@ -1002,27 +838,22 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
                         foundEvents = addNonCommittingChangeEvents(watcher, metaData) || foundEvents;
                         foundSource = true;
 
-                        if (!foundEvents && callExpressionStack.isEmpty())
-                        {
+                        if (!foundEvents && callExpressionStack.isEmpty()) {
                             foundEvents = true;
                             //    TODO will this ever be something besides a PropertyWatcher?
-                            if (watcher instanceof PropertyWatcher)
-                            {
-                                ((PropertyWatcher)watcher).suppress();
+                            if (watcher instanceof PropertyWatcher) {
+                                ((PropertyWatcher) watcher).suppress();
                             }
                         }
                     }
                 }
 
-                if ((!foundSource) && watchedClass.isSubclassOf(standardDefs.CLASS_ABSTRACTSERVICE))
-                {
+                if ((!foundSource) && watchedClass.isSubclassOf(standardDefs.CLASS_ABSTRACTSERVICE)) {
                     watcher.setOperation(true);
-                }
-                else if (!foundEvents &&
-                         !(watcher instanceof FunctionReturnWatcher) &&
-                         !(watcher instanceof XMLWatcher) &&
-                         !watcher.isOperation())
-                {
+                } else if (!foundEvents &&
+                        !(watcher instanceof FunctionReturnWatcher) &&
+                        !(watcher instanceof XMLWatcher) &&
+                        !watcher.isOperation()) {
                     /***
                      * NOTE: when we've failed to find change events for properties of untyped or Object-typed parents, we go
                      * ahead and generate code to create a runtime PropertyWatcher with no change events specified. The lack
@@ -1030,18 +861,15 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
                      * actual type of the actual value being assigned to the property.
                      * OTOH for strongly-typed properties, we still require change events to be reachable at compile time.
                      */
-                    if (!(watchedClass.getName().equals(SymbolTable.OBJECT) || watchedClass.getName().equals(SymbolTable.NOTYPE)))
-                    {
+                    if (!(watchedClass.getName().equals(SymbolTable.OBJECT) || watchedClass.getName().equals(SymbolTable.NOTYPE))) {
                         //    TODO do we still want this to be configurable?
-                        if (showBindingWarnings)
-                        {
+                        if (showBindingWarnings) {
                             context.localizedWarning2(pos, new UnableToDetectChanges(name));
                         }
 
                         //    TODO will this ever be something besides a PropertyWatcher?
-                        if (watcher instanceof PropertyWatcher)
-                        {
-                            ((PropertyWatcher)watcher).suppress();
+                        if (watcher instanceof PropertyWatcher) {
+                            ((PropertyWatcher) watcher).suppress();
                         }
                     }
                 }
@@ -1049,48 +877,35 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         }
     }
 
-    public List<DataBindingInfo> getDataBindingInfoList()
-    {
+    public List<DataBindingInfo> getDataBindingInfoList() {
         return dataBindingInfoList;
     }
 
-    private ReferenceValue getRef(MemberExpressionNode memberExpression)
-    {
+    private ReferenceValue getRef(MemberExpressionNode memberExpression) {
         ReferenceValue ref = null;
 
-        if (memberExpression.base instanceof CallExpressionNode)
-        {
+        if (memberExpression.base instanceof CallExpressionNode) {
             CallExpressionNode base = (CallExpressionNode) memberExpression.base;
             ref = base.ref;
-        }
-        else if (memberExpression.base instanceof MemberExpressionNode)
-        {
+        } else if (memberExpression.base instanceof MemberExpressionNode) {
             MemberExpressionNode base = (MemberExpressionNode) memberExpression.base;
             ref = base.ref;
 
-            if ((ref == null) || (ref.slot == null))
-            {
+            if ((ref == null) || (ref.slot == null)) {
                 ref = getRef(base);
             }
-        }
-        else if (memberExpression.base instanceof GetExpressionNode)
-        {
+        } else if (memberExpression.base instanceof GetExpressionNode) {
             GetExpressionNode base = (GetExpressionNode) memberExpression.base;
             ref = base.ref;
-        }
-        else if (memberExpression.base instanceof ListNode)
-        {
+        } else if (memberExpression.base instanceof ListNode) {
             ListNode list = (ListNode) memberExpression.base;
             Node node = list.items.get(0);
 
-            if (node instanceof BinaryExpressionNode)
-            {
+            if (node instanceof BinaryExpressionNode) {
                 BinaryExpressionNode binaryExpression = (BinaryExpressionNode) node;
 
-                if (binaryExpression.op == Tokens.AS_TOKEN)
-                {
-                    if ((binaryExpression.rhs != null) && (binaryExpression.rhs instanceof MemberExpressionNode))
-                    {
+                if (binaryExpression.op == Tokens.AS_TOKEN) {
+                    if ((binaryExpression.rhs != null) && (binaryExpression.rhs instanceof MemberExpressionNode)) {
                         MemberExpressionNode memberExpressionNode = (MemberExpressionNode) binaryExpression.rhs;
                         ref = memberExpressionNode.ref;
                     }
@@ -1101,28 +916,21 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return ref;
     }
 
-    private boolean isRepeaterBase(Node node)
-    {
+    private boolean isRepeaterBase(Node node) {
         boolean result = false;
 
-        if ((node != null) && (node instanceof MemberExpressionNode))
-        {
+        if ((node != null) && (node instanceof MemberExpressionNode)) {
             MemberExpressionNode memberExpression = (MemberExpressionNode) node;
 
-            if (memberExpression.base != null)
-            {
+            if (memberExpression.base != null) {
                 result = isRepeaterBase(memberExpression.base);
-            }
-            else if (memberExpression.selector instanceof GetExpressionNode)
-            {
+            } else if (memberExpression.selector instanceof GetExpressionNode) {
                 GetExpressionNode getExpression = (GetExpressionNode) memberExpression.selector;
 
-                if (getExpression.expr instanceof IdentifierNode)
-                {
+                if (getExpression.expr instanceof IdentifierNode) {
                     IdentifierNode identifier = (IdentifierNode) getExpression.expr;
 
-                    if (currentBindingExpression.getRepeaterLevel(identifier.name) >= 0)
-                    {
+                    if (currentBindingExpression.getRepeaterLevel(identifier.name) >= 0) {
                         result = true;
                     }
                 }
@@ -1132,28 +940,21 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return result;
     }
 
-    private boolean isRepeaterIndicesBase(Node node)
-    {
+    private boolean isRepeaterIndicesBase(Node node) {
         boolean result = false;
 
-        if ((node != null) && (node instanceof MemberExpressionNode))
-        {
+        if ((node != null) && (node instanceof MemberExpressionNode)) {
             MemberExpressionNode memberExpression = (MemberExpressionNode) node;
 
-            if (memberExpression.base != null)
-            {
+            if (memberExpression.base != null) {
                 result = isRepeaterIndicesBase(memberExpression.base);
-            }
-            else if (memberExpression.selector instanceof GetExpressionNode)
-            {
+            } else if (memberExpression.selector instanceof GetExpressionNode) {
                 GetExpressionNode getExpression = (GetExpressionNode) memberExpression.selector;
 
-                if (getExpression.expr instanceof IdentifierNode)
-                {
+                if (getExpression.expr instanceof IdentifierNode) {
                     IdentifierNode identifier = (IdentifierNode) getExpression.expr;
 
-                    if (identifier.name.equals("repeaterIndices"))
-                    {
+                    if (identifier.name.equals("repeaterIndices")) {
                         result = true;
                     }
                 }
@@ -1163,8 +964,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return result;
     }
 
-    private boolean isStaticReference(SelectorNode selector, ReferenceValue referenceValue)
-    {
+    private boolean isStaticReference(SelectorNode selector, ReferenceValue referenceValue) {
         // Note: With a static variable reference, the selector will be a GetExpression
         // and the slot will be a VariableSlot.  With a static function call, the selector
         // will be a CallExpression and the slot will be a MethodSlot.  With a function
@@ -1181,25 +981,20 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
                 (referenceValue.slot.getObjectValue() != null));
     }
 
-    public boolean isArrayOrString(TypeExpressionNode typeExpression)
-    {
+    public boolean isArrayOrString(TypeExpressionNode typeExpression) {
         boolean result = false;
 
-        if (typeExpression.expr instanceof MemberExpressionNode)
-        {
+        if (typeExpression.expr instanceof MemberExpressionNode) {
             MemberExpressionNode memberExpression = (MemberExpressionNode) typeExpression.expr;
 
-            if (memberExpression.selector instanceof GetExpressionNode)
-            {
+            if (memberExpression.selector instanceof GetExpressionNode) {
                 GetExpressionNode getExpression = (GetExpressionNode) memberExpression.selector;
 
-                if (getExpression.expr instanceof IdentifierNode)
-                {
+                if (getExpression.expr instanceof IdentifierNode) {
                     IdentifierNode identifier = (IdentifierNode) getExpression.expr;
 
                     if (identifier.name.equals("Array") ||
-                        identifier.name.equals("String"))
-                    {
+                            identifier.name.equals("String")) {
                         result = true;
                     }
                 }
@@ -1209,65 +1004,46 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return result;
     }
 
-    public boolean makeSecondPass()
-    {
+    public boolean makeSecondPass() {
         return makeSecondPass;
     }
 
-    private void pushSrcType(Context context, ReferenceValue ref, Node base)
-    {
-        if ((ref != null) && (ref.slot != null))
-        {
-            if ((ref.slot.getObjectValue() != null) && (!ref.slot.getObjectValue().toString().equals("")))
-            {
+    private void pushSrcType(Context context, ReferenceValue ref, Node base) {
+        if ((ref != null) && (ref.slot != null)) {
+            if ((ref.slot.getObjectValue() != null) && (!ref.slot.getObjectValue().toString().equals(""))) {
                 srcTypeStack.push(ref.slot.getObjectValue().toString());
-            }
-            else if ((ref.getType(context) != null) && (!ref.getType(context).getName().toString().equals("")))
-            {
+            } else if ((ref.getType(context) != null) && (!ref.getType(context).getName().toString().equals(""))) {
                 srcTypeStack.push(ref.getType(context).getName().toString());
-            }
-            else if ((ref.slot.getType() != null) && (!ref.slot.getType().getName().toString().equals("")))
-            {
+            } else if ((ref.slot.getType() != null) && (!ref.slot.getType().getName().toString().equals(""))) {
                 srcTypeStack.push(ref.slot.getType().getName().toString());
-            }
-            else
-            {
+            } else {
                 srcTypeStack.push(null);
             }
-        }
-        else if (base instanceof ThisExpressionNode)
-        {
-            srcTypeStack.push( srcTypeStack.firstElement() );
-        }
-        else
-        {
+        } else if (base instanceof ThisExpressionNode) {
+            srcTypeStack.push(srcTypeStack.firstElement());
+        } else {
             srcTypeStack.push(null);
         }
     }
 
-    private void setupRepeaterWatchers(MemberExpressionNode node)
-    {
+    private void setupRepeaterWatchers(MemberExpressionNode node) {
         Watcher repeaterWatcher;
 
-        if (watcherList.isEmpty())
-        {
+        if (watcherList.isEmpty()) {
             GetExpressionNode getExpression = (GetExpressionNode) node.selector;
             ArgumentListNode argumentList = (ArgumentListNode) getExpression.expr;
             LiteralNumberNode literalNumber = (LiteralNumberNode) argumentList.items.get(0);
             int level = literalNumber.numericValue.intValue();
             repeaterWatcher = new PropertyWatcher(currentWatcherId++, currentBindingExpression.getRepeaterId(level));
             watcherList.addLast(repeaterWatcher);
-        }
-        else
-        {
+        } else {
             repeaterWatcher = watcherList.getLast();
         }
 
         PropertyWatcher dataProviderWatcher =
-            (PropertyWatcher) repeaterWatcher.getChild("dataProvider");
+                (PropertyWatcher) repeaterWatcher.getChild("dataProvider");
 
-        if (dataProviderWatcher == null)
-        {
+        if (dataProviderWatcher == null) {
             dataProviderWatcher = new PropertyWatcher(currentWatcherId++, "dataProvider");
             repeaterWatcher.addChild(dataProviderWatcher);
         }
@@ -1279,121 +1055,102 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         dataProviderWatcher.addChild(repeaterItemWatcher);
         watcherList.addLast(repeaterItemWatcher);
 
-        if (node.selector instanceof GetExpressionNode)
-        {
+        if (node.selector instanceof GetExpressionNode) {
             GetExpressionNode getExpression = (GetExpressionNode) node.selector;
 
-            if (getExpression.expr instanceof ArgumentListNode)
-            {
+            if (getExpression.expr instanceof ArgumentListNode) {
                 skipInitSet.add((ArgumentListNode) getExpression.expr);
-            }
-            else
-            {
+            } else {
                 assert false : "Unexpected selector for repeaterIndices MemberExpressionNode";
             }
-        }
-        else
-        {
+        } else {
             assert false : "Unexpected selector for repeaterIndices MemberExpressionNode";
         }
     }
 
-    private Watcher watchIdentifier(String name)
-    {
+    private Watcher watchIdentifier(String name) {
         Watcher watcher = null;
 
         int size = srcTypeStack.size();
 
         // Skip "Top Level" constants
         if (insideGetExpression &&
-            (! ((size == 1) &&
-                (name.equals("Infinity") ||
-                 name.equals("-Infinity") ||
-                 name.equals("NaN") ||
-                 name.equals("undefined")))))
-        {
+                (!((size == 1) &&
+                        (name.equals("Infinity") ||
+                                name.equals("-Infinity") ||
+                                name.equals("NaN") ||
+                                name.equals("undefined"))))) {
             String src = srcTypeStack.peek();
 
             if ((!watcherList.isEmpty() && (watcherList.getLast() instanceof XMLWatcher)) ||
-                ((src != null) && ((src.equals("XML") || src.equals("XMLList")))))
-            {
+                    ((src != null) && ((src.equals("XML") || src.equals("XMLList"))))) {
                 watcher = watchExpressionStringAsXML(name);
                 xmlMember = null;
-            }
-            else
-            {
+            } else {
                 watcher = watchExpressionStringAsProperty(name);
             }
         }
         // Skip "Top Level" functions
         else if (!callExpressionStack.isEmpty() &&
-                 (! ((size == 1) &&
-                     (name.equals("Array") ||
-                      name.equals("Boolean") ||
-                      name.equals("decodeURI") ||
-                      name.equals("decodeURIComponent") ||
-                      name.equals("encodeURI") ||
-                      name.equals("encodeURIComponent") ||
-                      name.equals("escape") ||
-                      name.equals("int") ||
-                      name.equals("isFinite") ||
-                      name.equals("isNaN") ||
-                      name.equals("isXMLName") ||
-                      name.equals("Number") ||
-                      name.equals("Object") ||
-                      name.equals("parseFloat") ||
-                      name.equals("parseInt") ||
-                      name.equals("trace") ||
-                      name.equals("uint") ||
-                      name.equals("unescape") ||
-                      name.equals("XML") ||
-                      name.equals("XMLList")))))
-        {
+                (!((size == 1) &&
+                        (name.equals("Array") ||
+                                name.equals("Boolean") ||
+                                name.equals("decodeURI") ||
+                                name.equals("decodeURIComponent") ||
+                                name.equals("encodeURI") ||
+                                name.equals("encodeURIComponent") ||
+                                name.equals("escape") ||
+                                name.equals("int") ||
+                                name.equals("isFinite") ||
+                                name.equals("isNaN") ||
+                                name.equals("isXMLName") ||
+                                name.equals("Number") ||
+                                name.equals("Object") ||
+                                name.equals("parseFloat") ||
+                                name.equals("parseInt") ||
+                                name.equals("trace") ||
+                                name.equals("uint") ||
+                                name.equals("unescape") ||
+                                name.equals("XML") ||
+                                name.equals("XMLList"))))) {
             watcher = watchExpressionStringAsFunction(name);
         }
 
         return watcher;
     }
 
-    private void watchExpression(Context context, IdentifierNode identifier, MultiName multiName)
-    {
+    private void watchExpression(Context context, IdentifierNode identifier, MultiName multiName) {
         String name = multiName.getLocalPart();
 
         Watcher watcher = watchIdentifier(name);
 
-        if (watcher != null)
-        {
+        if (watcher != null) {
             findEvents(context, name, multiName, identifier.pos(), watcher, identifier.ref);
         }
     }
 
-    private void watchExpression(Context context, QualifiedIdentifierNode qualifiedIdentifier, QName qName)
-    {
+    private void watchExpression(Context context, QualifiedIdentifierNode qualifiedIdentifier, QName qName) {
         String name = qName.getNamespace() + "::" + qName.getLocalPart();
 
         Watcher watcher = watchIdentifier(name);
 
-        if (watcher != null)
-        {
-            MultiName multiName = new MultiName(new String[] {qName.getNamespace()}, qName.getLocalPart());
+        if (watcher != null) {
+            MultiName multiName = new MultiName(new String[]{qName.getNamespace()}, qName.getLocalPart());
             findEvents(context, name, multiName, qualifiedIdentifier.pos(), watcher, qualifiedIdentifier.ref);
         }
     }
 
-    private void watchExpressionArray()
-    {
+    private void watchExpressionArray() {
         ArrayElementWatcher watcher = new ArrayElementWatcher(currentWatcherId++,
-                                                              currentBindingExpression,
-                                                              argumentListStack.peek());
+                currentBindingExpression,
+                argumentListStack.peek());
 
-        if (!watcherList.isEmpty())
-        {
+        if (!watcherList.isEmpty()) {
             Watcher parentWatcher = watcherList.getLast();
             watcher.setParentWatcher(parentWatcher);
             parentWatcher.addChild(watcher);
 
-            if (parentWatcher.isPartOfAnonObjectGraph())
-            {
+            if (parentWatcher.isPartOfAnonObjectGraph()) {
                 watcher.setPartOfAnonObjectGraph(true);
             }
         }
@@ -1401,21 +1158,17 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         watcherList.addLast(watcher);
     }
 
-    private FunctionReturnWatcher watchExpressionStringAsFunction(String value)
-    {
+    private FunctionReturnWatcher watchExpressionStringAsFunction(String value) {
         FunctionReturnWatcher watcher = new FunctionReturnWatcher(currentWatcherId++,
-                                                                  currentBindingExpression,
-                                                                  value,
-                                                                  argumentListStack.peek());
+                currentBindingExpression,
+                value,
+                argumentListStack.peek());
 
-        if (!watcherList.isEmpty())
-        {
+        if (!watcherList.isEmpty()) {
             Watcher parentWatcher = watcherList.getLast();
             parentWatcher.addChild(watcher);
             watcher.setParentWatcher(parentWatcher);
-        }
-        else
-        {
+        } else {
             //we want to get unique FunctionReturnWatchers in there
             dataBindingInfo.getRootWatchers().put(value + watcher.getId(), watcher);
         }
@@ -1426,10 +1179,9 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         // the watcherList is empty, then we need to set the new
         // watcher's className.
         if ((srcTypeStack.size() > 1) &&
-            (src != null) &&
-            (srcTypeStack.firstElement() != src) &&
-            watcherList.isEmpty())
-        {
+                (src != null) &&
+                (srcTypeStack.firstElement() != src) &&
+                watcherList.isEmpty()) {
             watcher.setClassName(src);
         }
 
@@ -1438,36 +1190,26 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return watcher;
     }
 
-    private XMLWatcher watchExpressionStringAsXML(String value)
-    {
+    private XMLWatcher watchExpressionStringAsXML(String value) {
         XMLWatcher watcher;
 
-        if (watcherList.isEmpty())
-        {
+        if (watcherList.isEmpty()) {
             Map<String, Watcher> rootWatchers = dataBindingInfo.getRootWatchers();
 
-            if (rootWatchers.containsKey(value))
-            {
+            if (rootWatchers.containsKey(value)) {
                 // See bug 159393 for a test case that gets here.
                 return null;
-            }
-            else
-            {
+            } else {
                 watcher = new XMLWatcher(currentWatcherId++, value);
                 rootWatchers.put(value, watcher);
             }
-        }
-        else
-        {
+        } else {
             Watcher parentWatcher = watcherList.getLast();
             Watcher child = parentWatcher.getChild(value);
 
-            if (child instanceof XMLWatcher)
-            {
+            if (child instanceof XMLWatcher) {
                 watcher = (XMLWatcher) child;
-            }
-            else
-            {
+            } else {
                 watcher = new XMLWatcher(currentWatcherId++, value);
                 parentWatcher.addChild(watcher);
             }
@@ -1479,10 +1221,9 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         // the watcherList is empty, then we need to set the new
         // watcher's className.
         if ((srcTypeStack.size() > 1) &&
-            (src != null) &&
-            (srcTypeStack.firstElement() != src) &&
-            watcherList.isEmpty())
-        {
+                (src != null) &&
+                (srcTypeStack.firstElement() != src) &&
+                watcherList.isEmpty()) {
             watcher.setClassName(src);
         }
 
@@ -1492,28 +1233,20 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return watcher;
     }
 
-    private PropertyWatcher watchExpressionStringAsProperty(String value)
-    {
+    private PropertyWatcher watchExpressionStringAsProperty(String value) {
         PropertyWatcher watcher = null;
 
-        if (watcherList.isEmpty())
-        {
+        if (watcherList.isEmpty()) {
             watcher = watchRootProperty(value);
-        }
-        else
-        {
+        } else {
             Watcher parentWatcher = watcherList.getLast();
             watcher = parentWatcher.getChild(value);
 
-            if (watcher == null)
-            {
+            if (watcher == null) {
                 watcher = new PropertyWatcher(currentWatcherId++, value);
-                if (parentWatcher.isPartOfAnonObjectGraph())
-                {
+                if (parentWatcher.isPartOfAnonObjectGraph()) {
                     watcher.setPartOfAnonObjectGraph(true);
-                }
-                else if (!parentWatcher.shouldWriteChildren())
-                {
+                } else if (!parentWatcher.shouldWriteChildren()) {
                     watcher.setShouldWriteChildren(false);
                 }
                 parentWatcher.addChild(watcher);
@@ -1526,8 +1259,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         return watcher;
     }
 
-    private PropertyWatcher watchRootProperty(String propertyName)
-    {
+    private PropertyWatcher watchRootProperty(String propertyName) {
         Map<String, Watcher> rootWatchers = dataBindingInfo.getRootWatchers();
         String key = propertyName;
         String srcType = srcTypeStack.peek();
@@ -1536,30 +1268,24 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         // If the top of srcTypeStack is not the document's class,
         // then we need to set the new watcher's className.
         if ((srcTypeStack.size() > 1) &&
-            (srcType != null) &&
-            (srcTypeStack.firstElement() != srcType))
-        {
+                (srcType != null) &&
+                (srcTypeStack.firstElement() != srcType)) {
             className = srcType;
             key = className + "." + propertyName;
         }
 
         PropertyWatcher result = (PropertyWatcher) rootWatchers.get(key);
 
-        if (result == null)
-        {
+        if (result == null) {
             Model destination = currentBindingExpression.getDestination();
 
-            if ((destination != null) && (destination.getRepeaterLevel() > 1))
-            {
+            if ((destination != null) && (destination.getRepeaterLevel() > 1)) {
                 result = new RepeaterComponentWatcher(currentWatcherId++, propertyName, destination.getRepeaterLevel());
-            }
-            else
-            {
+            } else {
                 result = new PropertyWatcher(currentWatcherId++, propertyName);
             }
 
-            if (className != null)
-            {
+            if (className != null) {
                 result.setClassName(className);
             }
 
@@ -1572,19 +1298,16 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
     /**
      * CompilerMessages
      */
-    public static class UnableToDetectChanges extends CompilerMessage.CompilerWarning
-    {
+    public static class UnableToDetectChanges extends CompilerMessage.CompilerWarning {
         private static final long serialVersionUID = -2290221228589394685L;
         public String name;
 
-        public UnableToDetectChanges(String name)
-        {
+        public UnableToDetectChanges(String name) {
             this.name = name;
         }
     }
 
-    public static class UnableToDetectSquareBracketChanges extends CompilerMessage.CompilerWarning
-    {
+    public static class UnableToDetectSquareBracketChanges extends CompilerMessage.CompilerWarning {
 
         private static final long serialVersionUID = 5936329878115867103L;
     }

@@ -33,20 +33,18 @@ import java.util.Map;
  * @author Basil Hosmer
  * @author Paul Reilly
  */
-public abstract class GenerativeFirstPassEvaluator extends EvaluatorAdapter
-{
-	protected final TypeTable typeTable;
+public abstract class GenerativeFirstPassEvaluator extends EvaluatorAdapter {
+    protected final TypeTable typeTable;
     protected final StandardDefs standardDefs;
 
-	public GenerativeFirstPassEvaluator(TypeTable typeTable, StandardDefs defs)
-	{
-		this.typeTable = typeTable;
-		this.standardDefs = defs;
-		setLocalizationManager(ThreadLocalToolkit.getLocalizationManager());
-	}
+    public GenerativeFirstPassEvaluator(TypeTable typeTable, StandardDefs defs) {
+        this.typeTable = typeTable;
+        this.standardDefs = defs;
+        setLocalizationManager(ThreadLocalToolkit.getLocalizationManager());
+    }
 
-	public abstract boolean makeSecondPass();
+    public abstract boolean makeSecondPass();
 
-	public abstract Map<String, ? extends GenerativeClassInfo> getClassMap();
+    public abstract Map<String, ? extends GenerativeClassInfo> getClassMap();
 
 }

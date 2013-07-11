@@ -29,27 +29,26 @@ import org.xml.sax.Attributes;
  * suitable for construction of an ActionScript XML object.  Taken in
  * pieces from SerializationContentImpl in Apache Axis.
  */
-public class XMLStringSerializer
-{
-	private Writer writer;
-	private boolean writingStartTag = false;
-	private boolean noNamespaceMappings = true;
-	private Stack<String> elementStack = new Stack<String>();
-	private NSStack nsStack = null;
-	private int lastPrefixIndex = 1;
-	private UTF8Encoder encoder;
+public class XMLStringSerializer {
+    private Writer writer;
+    private boolean writingStartTag = false;
+    private boolean noNamespaceMappings = true;
+    private Stack<String> elementStack = new Stack<String>();
+    private NSStack nsStack = null;
+    private int lastPrefixIndex = 1;
+    private UTF8Encoder encoder;
 
-	public static final String NS_PREFIX_SOAP_ENV   = "soapenv";
-    public static final String NS_PREFIX_SOAP_ENC   = "soapenc";
-    public static final String NS_PREFIX_SCHEMA_XSI = "xsi" ;
-    public static final String NS_PREFIX_SCHEMA_XSD = "xsd" ;
-    public static final String NS_PREFIX_WSDL       = "wsdl" ;
-    public static final String NS_PREFIX_WSDL_SOAP  = "wsdlsoap";
-    public static final String NS_PREFIX_XMLSOAP    = "apachesoap";
-    public static final String NS_PREFIX_XML        = "xml";
-	public static final String NS_URI_XML = "http://www.w3.org/XML/1998/namespace";
-	public static final String NS_URI_XMLNS = "http://www.w3.org/2000/xmlns/";
-    public static final String URI_SOAP11_ENC = "http://schemas.xmlsoap.org/soap/encoding/" ;
+    public static final String NS_PREFIX_SOAP_ENV = "soapenv";
+    public static final String NS_PREFIX_SOAP_ENC = "soapenc";
+    public static final String NS_PREFIX_SCHEMA_XSI = "xsi";
+    public static final String NS_PREFIX_SCHEMA_XSD = "xsd";
+    public static final String NS_PREFIX_WSDL = "wsdl";
+    public static final String NS_PREFIX_WSDL_SOAP = "wsdlsoap";
+    public static final String NS_PREFIX_XMLSOAP = "apachesoap";
+    public static final String NS_PREFIX_XML = "xml";
+    public static final String NS_URI_XML = "http://www.w3.org/XML/1998/namespace";
+    public static final String NS_URI_XMLNS = "http://www.w3.org/2000/xmlns/";
+    public static final String URI_SOAP11_ENC = "http://schemas.xmlsoap.org/soap/encoding/";
     public static final String URI_1999_SCHEMA_XSD = "http://www.w3.org/1999/XMLSchema";
     public static final String URI_1999_SCHEMA_XSI = "http://www.w3.org/1999/XMLSchema-instance";
     public static final String URI_2000_SCHEMA_XSD = "http://www.w3.org/2000/10/XMLSchema";
@@ -58,302 +57,297 @@ public class XMLStringSerializer
     public static final String URI_2001_SCHEMA_XSI = "http://www.w3.org/2001/XMLSchema-instance";
     public static final String XSI_TYPE_ATTR_NAME = "type";
 
-    public static final String URI_SOAP11_ENV = "http://schemas.xmlsoap.org/soap/envelope/" ;
-	/**
-	 * A list of particular namespace -> prefix mappings we should prefer.
-	 * See getPrefixForURI() below.
-	 */
-	HashMap<String, String> preferredPrefixes = new HashMap<String, String>();
-	
-	public XMLStringSerializer(Writer writer)
-	{
-		this.writer = writer;
-		initialize();
-	}
+    public static final String URI_SOAP11_ENV = "http://schemas.xmlsoap.org/soap/envelope/";
+    /**
+     * A list of particular namespace -> prefix mappings we should prefer.
+     * See getPrefixForURI() below.
+     */
+    HashMap<String, String> preferredPrefixes = new HashMap<String, String>();
 
-	private void initialize() {
-	    // These are the preferred prefixes we'll use instead of the "ns1"
-	    // style defaults.  MAKE SURE soapConstants IS SET CORRECTLY FIRST!
-	    preferredPrefixes.put(URI_SOAP11_ENC, NS_PREFIX_SOAP_ENC);
-	    preferredPrefixes.put(NS_URI_XML, NS_PREFIX_XML);
-	    preferredPrefixes.put(URI_1999_SCHEMA_XSD, NS_PREFIX_SCHEMA_XSD);
-	    preferredPrefixes.put(URI_1999_SCHEMA_XSI, NS_PREFIX_SCHEMA_XSI);
-	    preferredPrefixes.put(URI_2000_SCHEMA_XSD, NS_PREFIX_SCHEMA_XSD);
-	    preferredPrefixes.put(URI_2000_SCHEMA_XSI, NS_PREFIX_SCHEMA_XSI);
-	    preferredPrefixes.put(URI_2001_SCHEMA_XSD, NS_PREFIX_SCHEMA_XSD);
-	    preferredPrefixes.put(URI_2001_SCHEMA_XSI, NS_PREFIX_SCHEMA_XSI);
-	    preferredPrefixes.put(URI_SOAP11_ENV, NS_PREFIX_SOAP_ENV);
+    public XMLStringSerializer(Writer writer) {
+        this.writer = writer;
+        initialize();
+    }
 
-	    nsStack = new NSStack(false);
-	}
+    private void initialize() {
+        // These are the preferred prefixes we'll use instead of the "ns1"
+        // style defaults.  MAKE SURE soapConstants IS SET CORRECTLY FIRST!
+        preferredPrefixes.put(URI_SOAP11_ENC, NS_PREFIX_SOAP_ENC);
+        preferredPrefixes.put(NS_URI_XML, NS_PREFIX_XML);
+        preferredPrefixes.put(URI_1999_SCHEMA_XSD, NS_PREFIX_SCHEMA_XSD);
+        preferredPrefixes.put(URI_1999_SCHEMA_XSI, NS_PREFIX_SCHEMA_XSI);
+        preferredPrefixes.put(URI_2000_SCHEMA_XSD, NS_PREFIX_SCHEMA_XSD);
+        preferredPrefixes.put(URI_2000_SCHEMA_XSI, NS_PREFIX_SCHEMA_XSI);
+        preferredPrefixes.put(URI_2001_SCHEMA_XSD, NS_PREFIX_SCHEMA_XSD);
+        preferredPrefixes.put(URI_2001_SCHEMA_XSI, NS_PREFIX_SCHEMA_XSI);
+        preferredPrefixes.put(URI_SOAP11_ENV, NS_PREFIX_SOAP_ENV);
 
-	/**
-	 * Get a prefix for a namespace URI.  This method will ALWAYS
-	 * return a valid prefix - if the given URI is already mapped in this
-	 * serialization, we return the previous prefix.  If it is not mapped,
-	 * we will add a new mapping and return a generated prefix of the form
-	 * "ns<num>".
-	 * @param uri is the namespace uri
-	 * @return prefix
-	 */
-	public String getPrefixForURI(String uri)
-	{
-		return getPrefixForURI(uri, null, false);
-	}
+        nsStack = new NSStack(false);
+    }
 
-	/**
-	 * Get a prefix for the given namespace URI.  If one has already been
-	 * defined in this serialization, use that.  Otherwise, map the passed
-	 * default prefix to the URI, and return that.  If a null default prefix
-	 * is passed, use one of the form "ns<num>"
-	 */
-	public String getPrefixForURI(String uri, String defaultPrefix)
-	{
-		return getPrefixForURI(uri, defaultPrefix, false);
-	}
+    /**
+     * Get a prefix for a namespace URI.  This method will ALWAYS
+     * return a valid prefix - if the given URI is already mapped in this
+     * serialization, we return the previous prefix.  If it is not mapped,
+     * we will add a new mapping and return a generated prefix of the form
+     * "ns<num>".
+     *
+     * @param uri is the namespace uri
+     * @return prefix
+     */
+    public String getPrefixForURI(String uri) {
+        return getPrefixForURI(uri, null, false);
+    }
 
-	/**
-	 * Get a prefix for the given namespace URI.  If one has already been
-	 * defined in this serialization, use that.  Otherwise, map the passed
-	 * default prefix to the URI, and return that.  If a null default prefix
-	 * is passed, use one of the form "ns<num>"
-	 */
-	public String getPrefixForURI(String uri, String defaultPrefix, boolean attribute)
-	{
-		if ((uri == null) || (uri.length() == 0))
-		    return null;
+    /**
+     * Get a prefix for the given namespace URI.  If one has already been
+     * defined in this serialization, use that.  Otherwise, map the passed
+     * default prefix to the URI, and return that.  If a null default prefix
+     * is passed, use one of the form "ns<num>"
+     */
+    public String getPrefixForURI(String uri, String defaultPrefix) {
+        return getPrefixForURI(uri, defaultPrefix, false);
+    }
 
-		// If we're looking for an attribute prefix, we shouldn't use the
-		// "" prefix, but always register/find one.
-		String prefix = nsStack.getPrefix(uri, attribute);
+    /**
+     * Get a prefix for the given namespace URI.  If one has already been
+     * defined in this serialization, use that.  Otherwise, map the passed
+     * default prefix to the URI, and return that.  If a null default prefix
+     * is passed, use one of the form "ns<num>"
+     */
+    public String getPrefixForURI(String uri, String defaultPrefix, boolean attribute) {
+        if ((uri == null) || (uri.length() == 0))
+            return null;
 
-		if (prefix == null) {
-		    prefix = preferredPrefixes.get(uri);
+        // If we're looking for an attribute prefix, we shouldn't use the
+        // "" prefix, but always register/find one.
+        String prefix = nsStack.getPrefix(uri, attribute);
 
-		    if (prefix == null) {
-		        if (defaultPrefix == null) {
-		            prefix = "ns" + lastPrefixIndex++;
-		            while(nsStack.getNamespaceURI(prefix)!=null) {
-		                prefix = "ns" + lastPrefixIndex++;
-		            }
-		        } else {
-		            prefix = defaultPrefix;
-		        }
-		    }
+        if (prefix == null) {
+            prefix = preferredPrefixes.get(uri);
 
-		    registerPrefixForURI(prefix, uri);
-		}
+            if (prefix == null) {
+                if (defaultPrefix == null) {
+                    prefix = "ns" + lastPrefixIndex++;
+                    while (nsStack.getNamespaceURI(prefix) != null) {
+                        prefix = "ns" + lastPrefixIndex++;
+                    }
+                } else {
+                    prefix = defaultPrefix;
+                }
+            }
 
-		return prefix;
-	}
+            registerPrefixForURI(prefix, uri);
+        }
+
+        return prefix;
+    }
 
 
-	/**
-	 * Register prefix for the indicated uri
-	 * @param prefix
-	 * @param uri is the namespace uri
-	 */
-	public void registerPrefixForURI(String prefix, String uri)
-	{
-		if ((uri != null) && (prefix != null)) {
-		    if (noNamespaceMappings) {
-		        nsStack.push();
-		        noNamespaceMappings = false;
-		    }
-		    String activePrefix = nsStack.getPrefix(uri,true);
-		    if(activePrefix == null || !activePrefix.equals(prefix)) {
-		        nsStack.add(uri, prefix);
-		    }
-		}
-	}
+    /**
+     * Register prefix for the indicated uri
+     *
+     * @param prefix
+     * @param uri    is the namespace uri
+     */
+    public void registerPrefixForURI(String prefix, String uri) {
+        if ((uri != null) && (prefix != null)) {
+            if (noNamespaceMappings) {
+                nsStack.push();
+                noNamespaceMappings = false;
+            }
+            String activePrefix = nsStack.getPrefix(uri, true);
+            if (activePrefix == null || !activePrefix.equals(prefix)) {
+                nsStack.add(uri, prefix);
+            }
+        }
+    }
 
-	/**
-	 * Writes (using the Writer) the start tag for element QName along with the
-	 * indicated attributes and namespace mappings.
-	 * @param qName is the name of the element
-	 * @param attributes are the attributes to write
-	 */
-	public void startElement(QName qName, Attributes attributes) throws IOException
-	{
-		java.util.ArrayList<String> vecQNames = null;
+    /**
+     * Writes (using the Writer) the start tag for element QName along with the
+     * indicated attributes and namespace mappings.
+     *
+     * @param qName      is the name of the element
+     * @param attributes are the attributes to write
+     */
+    public void startElement(QName qName, Attributes attributes) throws IOException {
+        java.util.ArrayList<String> vecQNames = null;
 
-		if (writingStartTag) {
-		    writer.write('>');
-		}
+        if (writingStartTag) {
+            writer.write('>');
+        }
 
-		String elementQName = qName2String(qName, true);
-		writer.write('<');
+        String elementQName = qName2String(qName, true);
+        writer.write('<');
 
-		writer.write(elementQName);
+        writer.write(elementQName);
 
-		if (attributes != null) {
-		    for (int i = 0; i < attributes.getLength(); i++) {
-		        String qname = attributes.getQName(i);
-		        writer.write(' ');
+        if (attributes != null) {
+            for (int i = 0; i < attributes.getLength(); i++) {
+                String qname = attributes.getQName(i);
+                writer.write(' ');
 
-		        String prefix = "";
-		        String uri = attributes.getURI(i);
-		        if (uri != null && uri.length() > 0) {
-		            if (qname.length() == 0) {
-		                // If qname isn't set, generate one
-		                prefix = getPrefixForURI(uri);
-		            } else {
-		                // If it is, make sure the prefix looks reasonable.
-		                int idx = qname.indexOf(':');
-		                if (idx > -1) {
-		                    prefix = qname.substring(0, idx);
-		                    prefix = getPrefixForURI(uri,
-		                                             prefix, true);
-		                }
-		            }
-		            if (prefix.length() > 0) {
-		                qname = prefix + ':' + attributes.getLocalName(i);
-		            } else {
-		                qname = attributes.getLocalName(i);
-		            }
-		        } else {
-		           qname = attributes.getQName(i);
-		            if(qname.length() == 0)
-		                qname = attributes.getLocalName(i);
-		        }
+                String prefix = "";
+                String uri = attributes.getURI(i);
+                if (uri != null && uri.length() > 0) {
+                    if (qname.length() == 0) {
+                        // If qname isn't set, generate one
+                        prefix = getPrefixForURI(uri);
+                    } else {
+                        // If it is, make sure the prefix looks reasonable.
+                        int idx = qname.indexOf(':');
+                        if (idx > -1) {
+                            prefix = qname.substring(0, idx);
+                            prefix = getPrefixForURI(uri,
+                                    prefix, true);
+                        }
+                    }
+                    if (prefix.length() > 0) {
+                        qname = prefix + ':' + attributes.getLocalName(i);
+                    } else {
+                        qname = attributes.getLocalName(i);
+                    }
+                } else {
+                    qname = attributes.getQName(i);
+                    if (qname.length() == 0)
+                        qname = attributes.getLocalName(i);
+                }
 
-		        if (qname.startsWith("xmlns")) {
-		          if (vecQNames == null) vecQNames = new ArrayList<String>();
-		          vecQNames.add(qname);
-		        }
-		        writer.write(qname);
-		        writer.write("=\"");
+                if (qname.startsWith("xmlns")) {
+                    if (vecQNames == null) vecQNames = new ArrayList<String>();
+                    vecQNames.add(qname);
+                }
+                writer.write(qname);
+                writer.write("=\"");
 
-		        getEncoder().writeEncoded(writer, attributes.getValue(i));
+                getEncoder().writeEncoded(writer, attributes.getValue(i));
 
-		        writer.write('"');
-		    }
-		}
+                writer.write('"');
+            }
+        }
 
-		if (noNamespaceMappings) {
-		    nsStack.push();
-		} else {
-		    for (Mapping map=nsStack.topOfFrame(); map!=null; map=nsStack.next()) {
-		        if (!(map.getNamespaceURI().equals(NS_URI_XMLNS) && map.getPrefix().equals("xmlns")) &&
-		            !(map.getNamespaceURI().equals(NS_URI_XML) && map.getPrefix().equals("xml")))
-		        {
-		            StringBuilder sb = new StringBuilder("xmlns");
-		            if (map.getPrefix().length() > 0) {
-		                sb.append(':');
-		                sb.append(map.getPrefix());
-		            }
-		            if ((vecQNames==null) || (vecQNames.indexOf(sb.toString())==-1)) {
-		                writer.write(' ');
-		                sb.append("=\"");
-		                sb.append(map.getNamespaceURI());
-		                sb.append('"');
-		                writer.write(sb.toString());
-		            }
-		        }
-		    }
+        if (noNamespaceMappings) {
+            nsStack.push();
+        } else {
+            for (Mapping map = nsStack.topOfFrame(); map != null; map = nsStack.next()) {
+                if (!(map.getNamespaceURI().equals(NS_URI_XMLNS) && map.getPrefix().equals("xmlns")) &&
+                        !(map.getNamespaceURI().equals(NS_URI_XML) && map.getPrefix().equals("xml"))) {
+                    StringBuilder sb = new StringBuilder("xmlns");
+                    if (map.getPrefix().length() > 0) {
+                        sb.append(':');
+                        sb.append(map.getPrefix());
+                    }
+                    if ((vecQNames == null) || (vecQNames.indexOf(sb.toString()) == -1)) {
+                        writer.write(' ');
+                        sb.append("=\"");
+                        sb.append(map.getNamespaceURI());
+                        sb.append('"');
+                        writer.write(sb.toString());
+                    }
+                }
+            }
 
-		    noNamespaceMappings = true;
-		}
+            noNamespaceMappings = true;
+        }
 
-		writingStartTag = true;
+        writingStartTag = true;
 
-		elementStack.push(elementQName);
-	}
+        elementStack.push(elementQName);
+    }
 
-	public UTF8Encoder getEncoder() {
-		if(encoder == null) {
-	        encoder = new UTF8Encoder();
-		}
-		return encoder;
-	}
+    public UTF8Encoder getEncoder() {
+        if (encoder == null) {
+            encoder = new UTF8Encoder();
+        }
+        return encoder;
+    }
 
-	/**
-	 * Convenience operation to write out (to Writer) the String
-	 * @param string is the String to write.
-	 */
-	public void writeString(String string)
-		throws IOException
-	{
-		if (writingStartTag) {
-		    writer.write('>');
-		    writingStartTag = false;
-		}
-		writer.write(string);
-	}
+    /**
+     * Convenience operation to write out (to Writer) the String
+     *
+     * @param string is the String to write.
+     */
+    public void writeString(String string)
+            throws IOException {
+        if (writingStartTag) {
+            writer.write('>');
+            writingStartTag = false;
+        }
+        writer.write(string);
+    }
 
-	/**
-	 * Writes the end element tag for the open element.
-	 **/
-	public void endElement()
-		throws IOException
-	{
-		String elementQName = elementStack.pop();
+    /**
+     * Writes the end element tag for the open element.
+     */
+    public void endElement()
+            throws IOException {
+        String elementQName = elementStack.pop();
 
-		nsStack.pop();
+        nsStack.pop();
 
-		if (writingStartTag) {
-		    writer.write("/>");
-		    writingStartTag = false;
-		    return;
-		}
+        if (writingStartTag) {
+            writer.write("/>");
+            writingStartTag = false;
+            return;
+        }
 
-		writer.write("</");
-		writer.write(elementQName);
-		writer.write('>');
-	}
+        writer.write("</");
+        writer.write(elementQName);
+        writer.write('>');
+    }
 
-	public static String getLastLocalPart(String localPart) {
-		int anonymousDelimitorIndex = localPart.lastIndexOf('>');
-		if (anonymousDelimitorIndex > -1 && anonymousDelimitorIndex < localPart.length()-1) {
-		    localPart = localPart.substring(anonymousDelimitorIndex + 1);
-		}
-		return localPart;
+    public static String getLastLocalPart(String localPart) {
+        int anonymousDelimitorIndex = localPart.lastIndexOf('>');
+        if (anonymousDelimitorIndex > -1 && anonymousDelimitorIndex < localPart.length() - 1) {
+            localPart = localPart.substring(anonymousDelimitorIndex + 1);
+        }
+        return localPart;
 
-	}
+    }
 
-	/**
-	 * Convert QName to a string of the form <prefix>:<localpart>
-	 * @param qName
-	 * @return prefixed qname representation for serialization.
-	 */
-	public String qName2String(QName qName, boolean writeNS)
-	{
-		String prefix = null;
-		String namespaceURI = qName.getNamespace();
-		String localPart = qName.getLocalPart();
+    /**
+     * Convert QName to a string of the form <prefix>:<localpart>
+     *
+     * @param qName
+     * @return prefixed qname representation for serialization.
+     */
+    public String qName2String(QName qName, boolean writeNS) {
+        String prefix = null;
+        String namespaceURI = qName.getNamespace();
+        String localPart = qName.getLocalPart();
 
-		if(localPart != null && localPart.length() > 0) {
-		    int index = localPart.indexOf(':');
-		    if(index!=-1){
-		        prefix = localPart.substring(0,index);
-		        if(prefix.length()>0 && !prefix.equals("urn")){
-		            registerPrefixForURI(prefix, namespaceURI);
-		            localPart = localPart.substring(index+1);
-		        } else {
-		            prefix = null;
-		        }
-		    }
-		    localPart = getLastLocalPart(localPart);
-		}
+        if (localPart != null && localPart.length() > 0) {
+            int index = localPart.indexOf(':');
+            if (index != -1) {
+                prefix = localPart.substring(0, index);
+                if (prefix.length() > 0 && !prefix.equals("urn")) {
+                    registerPrefixForURI(prefix, namespaceURI);
+                    localPart = localPart.substring(index + 1);
+                } else {
+                    prefix = null;
+                }
+            }
+            localPart = getLastLocalPart(localPart);
+        }
 
-		if (namespaceURI.length() == 0) {
-		    if (writeNS) {
-		        // If this is unqualified (i.e. prefix ""), set the default
-		        // namespace to ""
-		        String defaultNS = nsStack.getNamespaceURI("");
-		        if (defaultNS != null && defaultNS.length() > 0) {
-		            registerPrefixForURI("", "");
-		        }
-		    }
-		} else {
-		    prefix = getPrefixForURI(namespaceURI, qName.getPreferredPrefix());
-		}
+        if (namespaceURI.length() == 0) {
+            if (writeNS) {
+                // If this is unqualified (i.e. prefix ""), set the default
+                // namespace to ""
+                String defaultNS = nsStack.getNamespaceURI("");
+                if (defaultNS != null && defaultNS.length() > 0) {
+                    registerPrefixForURI("", "");
+                }
+            }
+        } else {
+            prefix = getPrefixForURI(namespaceURI, qName.getPreferredPrefix());
+        }
 
-		if ((prefix == null) || (prefix.length() == 0))
-		   return localPart;
+        if ((prefix == null) || (prefix.length() == 0))
+            return localPart;
 
-		return prefix + ':' + localPart;
-	}
+        return prefix + ':' + localPart;
+    }
 }
 
 class UTF8Encoder {
@@ -365,6 +359,7 @@ class UTF8Encoder {
     protected static final String LF = "\n";
     protected static final String CR = "\r";
     protected static final String TAB = "\t";
+
     /**
      * gets the encoding supported by this encoder
      *
@@ -388,7 +383,7 @@ class UTF8Encoder {
         int length = xmlString.length();
         char character;
         for (int i = 0; i < length; i++) {
-            character = xmlString.charAt( i );
+            character = xmlString.charAt(i);
             switch (character) {
                 // we don't care about single quotes since axis will
                 // use double quotes anyway
@@ -415,8 +410,8 @@ class UTF8Encoder {
                     break;
                 default:
                     if (character < 0x20) {
-	                    String errString = ThreadLocalToolkit.getLocalizationManager().getLocalizedTextString("flex2.compiler.util.XMLStringSerializer.IllegalXMLChar");
-	                    errString += ": " + Integer.toHexString(character);
+                        String errString = ThreadLocalToolkit.getLocalizationManager().getLocalizedTextString("flex2.compiler.util.XMLStringSerializer.IllegalXMLChar");
+                        errString += ": " + Integer.toHexString(character);
                         throw new IllegalArgumentException(errString);
                     } else if (character > 0x7F) {
                         writer.write("&#x");
@@ -436,7 +431,7 @@ class UTF8Encoder {
  * length frames of prefix to namespace mappings.  Used for keeping track
  * of what namespaces are active at any given point as an XML document is
  * traversed or produced.
- *
+ * <p/>
  * From a performance point of view, this data will both be modified frequently
  * (at a minimum, there will be one push and pop per XML element processed),
  * and scanned frequently (many of the "good" mappings will be at the bottom
@@ -444,7 +439,7 @@ class UTF8Encoder {
  * cardinalities of the number of frames and the number of total mappings
  * is only in the dozens, representing the nesting depth of an XML document
  * and the number of active namespaces at any point in the processing.
- *
+ * <p/>
  * Accordingly, this stack is implemented as a single array, will null
  * values used to indicate frame boundaries.
  *
@@ -475,12 +470,12 @@ class NSStack {
      * Create a new frame at the top of the stack.
      */
     public void push() {
-        top ++;
+        top++;
 
         if (top >= stack.length) {
-           Mapping newstack[] = new Mapping[stack.length*2];
-           System.arraycopy (stack, 0, newstack, 0, stack.length);
-           stack = newstack;
+            Mapping newstack[] = new Mapping[stack.length * 2];
+            System.arraycopy(stack, 0, newstack, 0, stack.length);
+            stack = newstack;
         }
 
         stack[top] = null;
@@ -516,7 +511,7 @@ class NSStack {
 
         ArrayList<Mapping> clone = new ArrayList<Mapping>();
 
-        for (Mapping map=topOfFrame(); map!=null; map=next()) {
+        for (Mapping map = topOfFrame(); map != null; map = next()) {
             clone.add(map);
         }
 
@@ -564,7 +559,7 @@ class NSStack {
         prefix = prefix.intern();
         try {
             // Replace duplicate prefixes (last wins - this could also fault)
-            for (int cursor=top; stack[cursor]!=null; cursor--) {
+            for (int cursor = top; stack[cursor] != null; cursor--) {
                 if (stack[cursor].getPrefix() == prefix) {
                     stack[cursor].setNamespaceURI(namespaceURI);
                     idx = cursor;
@@ -589,21 +584,21 @@ class NSStack {
      * may return null even if the namespaceURI was actually mapped further
      * up the stack IF the prefix which was used has been repeated further
      * down the stack.  I.e.:
-     *
+     * <p/>
      * <pre:outer xmlns:pre="namespace">
-     *   <pre:inner xmlns:pre="otherNamespace">
-     *      *here's where we're looking*
-     *   </pre:inner>
+     * <pre:inner xmlns:pre="otherNamespace">
+     * *here's where we're looking*
+     * </pre:inner>
      * </pre:outer>
-     *
+     * <p/>
      * If we look for a prefix for "namespace" at the indicated spot, we won't
      * find one because "pre" is actually mapped to "otherNamespace"
      */
     public String getPrefix(String namespaceURI, boolean noDefault) {
-        if ((namespaceURI == null) || (namespaceURI.length()==0))
+        if ((namespaceURI == null) || (namespaceURI.length() == 0))
             return null;
 
-        if(optimizePrefixes) {
+        if (optimizePrefixes) {
             // If defaults are OK, and the given NS is the current default,
             // return "" as the prefix to favor defaults where possible.
             if (!noDefault && currentDefaultNS > 0 && stack[currentDefaultNS] != null &&
@@ -612,7 +607,7 @@ class NSStack {
         }
         namespaceURI = namespaceURI.intern();
 
-        for (int cursor=top; cursor>0; cursor--) {
+        for (int cursor = top; cursor > 0; cursor--) {
             Mapping map = stack[cursor];
             if (map == null)
                 continue;
@@ -656,7 +651,7 @@ class NSStack {
 
         prefix = prefix.intern();
 
-        for (int cursor=top; cursor>0; cursor--) {
+        for (int cursor = top; cursor > 0; cursor--) {
             Mapping map = stack[cursor];
             if (map == null) continue;
 
@@ -676,7 +671,7 @@ class Mapping implements Serializable {
     private String namespaceURI;
     private String prefix;
 
-    public Mapping (String namespaceURI, String prefix) {
+    public Mapping(String namespaceURI, String prefix) {
         setPrefix(prefix);
         setNamespaceURI(namespaceURI);
     }
@@ -685,7 +680,7 @@ class Mapping implements Serializable {
         return namespaceURI;
     }
 
-    public void setNamespaceURI (String namespaceURI) {
+    public void setNamespaceURI(String namespaceURI) {
         this.namespaceURI = namespaceURI.intern();
     }
 
@@ -693,7 +688,7 @@ class Mapping implements Serializable {
         return prefix;
     }
 
-    public void setPrefix (String prefix) {
+    public void setPrefix(String prefix) {
         this.prefix = prefix.intern();
     }
 }

@@ -52,37 +52,31 @@ import javax.imageio.stream.MemoryCacheImageOutputStream;
  * @author Joa Ebert
  * @author Paul Reilly
  */
-public class LosslessImageTranscoder extends ImageTranscoder
-{
+public class LosslessImageTranscoder extends ImageTranscoder {
     public static final String COMPRESSION = "compression";
     public static final String QUALITY = "quality";
 
-    public LosslessImageTranscoder()
-    {
+    public LosslessImageTranscoder() {
         super(new String[]{MimeMappings.GIF, MimeMappings.PNG}, DefineSprite.class, true);
     }
 
-    public boolean isSupportedAttribute(String attr)
-    {
-        return (COMPRESSION.equals(attr) || 
-                QUALITY.equals(attr) || 
+    public boolean isSupportedAttribute(String attr) {
+        return (COMPRESSION.equals(attr) ||
+                QUALITY.equals(attr) ||
                 super.isSupportedAttribute(attr));
     }
 
     public ImageInfo getImage(VirtualFile sourceFile, Map<String, Object> args)
-        throws TranscoderException
-    {
+            throws TranscoderException {
         ImageInfo info = new ImageInfo();
 
-        try
-        {
+        try {
             LosslessImage image = new LosslessImage(sourceFile.getName(),
-                                                    sourceFile.getInputStream(),
-                                                    sourceFile.getLastModified());
-        
+                    sourceFile.getInputStream(),
+                    sourceFile.getLastModified());
+
             // If compression is true, use JPEG compression.  Otherwise, use the lossless format.
-            if (args.containsKey(COMPRESSION) && Boolean.parseBoolean((String) args.get(COMPRESSION)))
-            {
+            if (args.containsKey(COMPRESSION) && Boolean.parseBoolean((String) args.get(COMPRESSION))) {
                 // We use DefineBitsJPEG3, because it supports an alpha channel
                 DefineBitsJPEG3 defineBits = new DefineBitsJPEG3();
                 int imageSize = image.getWidth() * image.getHeight();
@@ -92,30 +86,24 @@ public class LosslessImageTranscoder extends ImageTranscoder
 
                 bufferedImage.setRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
 
-                for (int i = 0; i < imageSize; ++i)
-                {
+                for (int i = 0; i < imageSize; ++i) {
                     alphaData[i] = (byte) ((pixels[i] >> 24) & 0xff);
                 }
 
                 float quality = 1.0f;
 
-                if (args.containsKey(QUALITY))
-                {
-                    try
-                    {
+                if (args.containsKey(QUALITY)) {
+                    try {
                         String qualityString = (String) args.get(QUALITY);
                         double qualityPercentage = Double.parseDouble(qualityString);
 
                         // quality must be a number between 0 and 100.
-                        if (qualityPercentage < 0 || qualityPercentage > 100)
-                        {
+                        if (qualityPercentage < 0 || qualityPercentage > 100) {
                             throw new InvalidQuality();
                         }
 
-                        quality = (float)(qualityPercentage / 100.0);
-                    }
-                    catch (NumberFormatException numberFormatException)
-                    {
+                        quality = (float) (qualityPercentage / 100.0);
+                    } catch (NumberFormatException numberFormatException) {
                         throw new InvalidQuality();
                     }
                 }
@@ -125,12 +113,9 @@ public class LosslessImageTranscoder extends ImageTranscoder
                 defineBits.alphaData = alphaData;
 
                 info.defineBits = defineBits;
-            }
-            else
-            {
+            } else {
                 // quality doesn't make sense without compression.
-                if (args.containsKey(QUALITY))
-                {
+                if (args.containsKey(QUALITY)) {
                     throw new QualityRequiresCompression();
                 }
 
@@ -140,13 +125,9 @@ public class LosslessImageTranscoder extends ImageTranscoder
 
             info.width = image.getWidth();
             info.height = image.getHeight();
-        }
-        catch (TranscoderException transcoderException)
-        {
+        } catch (TranscoderException transcoderException) {
             throw transcoderException;
-        }
-        catch (Exception exception)
-        {
+        } catch (Exception exception) {
             throw new ExceptionWhileTranscoding(exception);
         }
 
@@ -154,15 +135,14 @@ public class LosslessImageTranscoder extends ImageTranscoder
     }
 
     private static byte[] bufferedImageToJPEG(BufferedImage bufferedImage, float quality)
-        throws Exception
-    {
+            throws Exception {
         ImageWriter writer = ImageIO.getImageWritersByFormatName("jpeg").next();
         ImageWriteParam writeParam = writer.getDefaultWriteParam();
         ColorModel colorModel = new DirectColorModel(24, 0x00ff0000, 0x0000ff00, 0x000000ff);
         ImageTypeSpecifier imageTypeSpecifier =
-            new ImageTypeSpecifier(colorModel, colorModel.createCompatibleSampleModel(1, 1)/*ignored*/);
+                new ImageTypeSpecifier(colorModel, colorModel.createCompatibleSampleModel(1, 1)/*ignored*/);
         writeParam.setDestinationType(imageTypeSpecifier);
-        writeParam.setSourceBands(new int[] {0, 1, 2});
+        writeParam.setSourceBands(new int[]{0, 1, 2});
         writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
         writeParam.setCompressionQuality(quality);
 
@@ -177,21 +157,17 @@ public class LosslessImageTranscoder extends ImageTranscoder
         return buffer.toByteArray();
     }
 
-    public static class InvalidQuality extends TranscoderException
-    {
+    public static class InvalidQuality extends TranscoderException {
         private static final long serialVersionUID = 6347969168361169993L;
 
-        public InvalidQuality()
-        {
+        public InvalidQuality() {
         }
     }
 
-    public static class QualityRequiresCompression extends TranscoderException
-    {
+    public static class QualityRequiresCompression extends TranscoderException {
         private static final long serialVersionUID = 6347969168361169994L;
 
-        public QualityRequiresCompression()
-        {
+        public QualityRequiresCompression() {
         }
     }
 }

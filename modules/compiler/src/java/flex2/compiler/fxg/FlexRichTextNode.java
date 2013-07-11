@@ -24,19 +24,17 @@ import com.adobe.internal.fxg.dom.GraphicContext;
 import com.adobe.internal.fxg.dom.RichTextNode;
 
 /**
- * A Flex specific override for RichTextNode used to capture the 
+ * A Flex specific override for RichTextNode used to capture the
  * attributes specified on a &lt;RichText&gt; node in FXG 2.0.
- * 
+ *
  * @author Peter Farland
  * @since FXG 2.0
  */
-public class FlexRichTextNode extends RichTextNode
-{
+public class FlexRichTextNode extends RichTextNode {
     /**
      * Constructor.
      */
-    public FlexRichTextNode()
-    {
+    public FlexRichTextNode() {
         super();
     }
 
@@ -47,13 +45,11 @@ public class FlexRichTextNode extends RichTextNode
      * in SWF).
      */
     @Override
-    public void setDocumentNode(FXGNode root)
-    {
+    public void setDocumentNode(FXGNode root) {
         super.setDocumentNode(root);
 
-        if (root instanceof FlexGraphicNode)
-        {
-            ((FlexGraphicNode)root).hasText = true;
+        if (root instanceof FlexGraphicNode) {
+            ((FlexGraphicNode) root).hasText = true;
         }
     }
 
@@ -77,12 +73,10 @@ public class FlexRichTextNode extends RichTextNode
      * </p>
      */
     @Override
-    public GraphicContext createGraphicContext()
-    {
+    public GraphicContext createGraphicContext() {
         GraphicContext graphicContext = new GraphicContext();
 
-        if (colorTransform != null)
-        {
+        if (colorTransform != null) {
             graphicContext.colorTransform = colorTransform;
         }
 

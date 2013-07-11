@@ -37,38 +37,31 @@ import flex2.compiler.util.MimeMappings;
  * A SwcArchive implementation specialized for writing.  It's not
  * currently used.
  */
-public class SwcWriteOnlyArchive implements SwcArchive
-{
-    public SwcWriteOnlyArchive( String name, OutputStream out )
-    {
+public class SwcWriteOnlyArchive implements SwcArchive {
+    public SwcWriteOnlyArchive(String name, OutputStream out) {
         this.out = out;
         this.name = name;
     }
 
-    public String getLocation()
-    {
+    public String getLocation() {
         return name;
     }
 
-    public void load()
-    {
-    	throw new UnsupportedOperationException();
+    public void load() {
+        throw new UnsupportedOperationException();
     }
 
-    public void save() throws Exception
-    {
+    public void save() throws Exception {
         ZipOutputStream zos = null;
-	    try
-	    {
+        try {
             zos = new ZipOutputStream(out);
 
-            for (Iterator<VirtualFile> it = files.values().iterator(); it.hasNext(); )
-            {
+            for (Iterator<VirtualFile> it = files.values().iterator(); it.hasNext(); ) {
                 VirtualFile f = it.next();
 
-                ZipEntry entry = new ZipEntry( f.getName() );
+                ZipEntry entry = new ZipEntry(f.getName());
                 entry.setTime(f.getLastModified());
-                zos.putNextEntry( entry );
+                zos.putNextEntry(entry);
 
                 BufferedInputStream in = new BufferedInputStream(f.getInputStream());
                 FileUtil.streamOutput(in, zos);
@@ -76,40 +69,35 @@ public class SwcWriteOnlyArchive implements SwcArchive
             }
 
             zos.flush();
-        }
-        finally
-        {
-            try { if (zos != null) zos.close(); } catch(IOException ioe) {}
+        } finally {
+            try {
+                if (zos != null) zos.close();
+            } catch (IOException ioe) {
+            }
         }
     }
 
-	public void close()
-	{
-	}
+    public void close() {
+    }
 
-    public Map<String, VirtualFile> getFiles()
-    {
+    public Map<String, VirtualFile> getFiles() {
         return files;
     }
 
-    public VirtualFile getFile( String path )
-    {
-        return files.get( path );
+    public VirtualFile getFile(String path) {
+        return files.get(path);
     }
 
-    public void putFile( VirtualFile file )
-    {
-        files.put( file.getName(), file );
+    public void putFile(VirtualFile file) {
+        files.put(file.getName(), file);
     }
 
-    public void putFile( String path, byte[] data, long lastModified )
-    {
-        InMemoryFile file = new InMemoryFile( data, path, MimeMappings.getMimeType(path), lastModified );
-        files.put( file.getName(), file );
+    public void putFile(String path, byte[] data, long lastModified) {
+        InMemoryFile file = new InMemoryFile(data, path, MimeMappings.getMimeType(path), lastModified);
+        files.put(file.getName(), file);
     }
 
-    public long getLastModified()
-    {
+    public long getLastModified() {
         return 0;
     }
 

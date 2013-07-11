@@ -22,6 +22,7 @@ package flex2.compiler.as3;
 import flash.swf.tools.as3.EvaluatorAdapter;
 import flex2.compiler.util.MultiName;
 import flex2.compiler.util.Name;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -30,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
 import macromedia.asc.parser.BinaryClassDefNode;
 import macromedia.asc.parser.BinaryInterfaceDefinitionNode;
 import macromedia.asc.parser.ClassDefinitionNode;
@@ -54,152 +56,119 @@ import macromedia.asc.util.Context;
  * properly.
  *
  * @author Paul Reilly
- @ @see flex2.compiler.as3.binding.TypeAnalyzer
+ * @ @see flex2.compiler.as3.binding.TypeAnalyzer
  */
-public class InheritanceEvaluator extends EvaluatorAdapter
-{
+public class InheritanceEvaluator extends EvaluatorAdapter {
     private Set<String> imports;
     private Map<String, String> qualifiedImports;
     private List<String> inheritanceNames = new ArrayList<String>();
     private Set<Name> inheritanceMultiNames = new HashSet<Name>();
     private List<MultiName> definitionMultiNames = new ArrayList<MultiName>();
 
-    public InheritanceEvaluator()
-    {
+    public InheritanceEvaluator() {
         addImport("");
     }
 
-    private void addImport(String importName)
-    {
+    private void addImport(String importName) {
         assert importName != null;
 
-        if (imports == null)
-        {
+        if (imports == null) {
             imports = new TreeSet<String>();
         }
 
         imports.add(importName);
     }
 
-    private void addQualifiedImport(String localPart, String namespace)
-    {
+    private void addQualifiedImport(String localPart, String namespace) {
         assert (localPart != null) && (localPart.length() > 0) && (namespace != null);
 
-        if (qualifiedImports == null)
-        {
+        if (qualifiedImports == null) {
             qualifiedImports = new TreeMap<String, String>();
         }
 
         qualifiedImports.put(localPart, namespace);
     }
 
-    public synchronized Value evaluate(Context context, BinaryInterfaceDefinitionNode binaryInterfaceDefinition)
-    {
+    public synchronized Value evaluate(Context context, BinaryInterfaceDefinitionNode binaryInterfaceDefinition) {
         if ((binaryInterfaceDefinition.cframe != null) &&
-            (binaryInterfaceDefinition.cframe.name != null) &&
-            (binaryInterfaceDefinition.cframe.name.ns != null) &&
-            (binaryInterfaceDefinition.cframe.name.ns.name.length() > 0))
-        {
+                (binaryInterfaceDefinition.cframe.name != null) &&
+                (binaryInterfaceDefinition.cframe.name.ns != null) &&
+                (binaryInterfaceDefinition.cframe.name.ns.name.length() > 0)) {
             addImport(binaryInterfaceDefinition.cframe.name.ns.name);
         }
 
         return evaluateInterface(binaryInterfaceDefinition);
     }
 
-    public synchronized Value evaluate(Context context, BinaryClassDefNode binaryClassDefinition)
-    {
+    public synchronized Value evaluate(Context context, BinaryClassDefNode binaryClassDefinition) {
         if ((binaryClassDefinition.cframe != null) &&
-            (binaryClassDefinition.cframe.name != null) &&
-            (binaryClassDefinition.cframe.name.ns != null) &&
-            (binaryClassDefinition.cframe.name.ns.name.length() > 0))
-        {
+                (binaryClassDefinition.cframe.name != null) &&
+                (binaryClassDefinition.cframe.name.ns != null) &&
+                (binaryClassDefinition.cframe.name.ns.name.length() > 0)) {
             addImport(binaryClassDefinition.cframe.name.ns.name);
         }
 
         return evaluate(context, (ClassDefinitionNode) binaryClassDefinition);
     }
 
-    public synchronized Value evaluate(Context context, ClassDefinitionNode classDefinition)
-    {
-        if (classDefinition.pkgdef != null)
-        {
+    public synchronized Value evaluate(Context context, ClassDefinitionNode classDefinition) {
+        if (classDefinition.pkgdef != null) {
             processImports(classDefinition.pkgdef.statements.items.iterator());
 
             PackageNameNode packageName = classDefinition.pkgdef.name;
 
-            if (packageName != null)
-            {
+            if (packageName != null) {
                 PackageIdentifiersNode packageIdentifiers = packageName.id;
 
-                if ((packageIdentifiers != null) && (packageIdentifiers.pkg_part != null))
-                {
+                if ((packageIdentifiers != null) && (packageIdentifiers.pkg_part != null)) {
                     definitionMultiNames.add(new MultiName(packageIdentifiers.pkg_part, classDefinition.name.name));
                 }
             }
         }
 
-        if (classDefinition.statements != null)
-        {
+        if (classDefinition.statements != null) {
             processImports(classDefinition.statements.items.iterator());
         }
 
         // process extends
-        if (classDefinition.baseclass != null)
-        {
-            if (classDefinition.baseclass instanceof MemberExpressionNode)
-            {
+        if (classDefinition.baseclass != null) {
+            if (classDefinition.baseclass instanceof MemberExpressionNode) {
                 MemberExpressionNode memberExpression = (MemberExpressionNode) classDefinition.baseclass;
 
-                if (memberExpression.selector != null)
-                {
+                if (memberExpression.selector != null) {
                     IdentifierNode identifier = memberExpression.selector.getIdentifier();
                     String baseClassName = toString(identifier);
                     inheritanceNames.add(baseClassName);
                 }
-            }
-            else if (classDefinition.baseclass instanceof LiteralStringNode)
-            {
+            } else if (classDefinition.baseclass instanceof LiteralStringNode) {
                 String baseClassName = ((LiteralStringNode) classDefinition.baseclass).value;
                 inheritanceNames.add(baseClassName);
-            }
-            else
-            {
+            } else {
                 assert false;
             }
-        }
-        else
-        {
-        	inheritanceNames.add(":Object");
+        } else {
+            inheritanceNames.add(":Object");
         }
 
         // process interfaces
-        if (classDefinition.interfaces != null)
-        {
+        if (classDefinition.interfaces != null) {
             Iterator iterator = classDefinition.interfaces.items.iterator();
 
-            while ( iterator.hasNext() )
-            {
+            while (iterator.hasNext()) {
                 MemberExpressionNode memberExpression = (MemberExpressionNode) iterator.next();
 
-                if (memberExpression.selector != null)
-                {
+                if (memberExpression.selector != null) {
                     IdentifierNode identifier = memberExpression.selector.getIdentifier();
                     String interfaceName = toString(identifier);
 
-                    if ((identifier.ref != null) && (identifier.ref.namespaces != null))
-                    {
+                    if ((identifier.ref != null) && (identifier.ref.namespaces != null)) {
                         NamespaceValue namespaceValue = (NamespaceValue) identifier.ref.namespaces.get(0);
-                        if (namespaceValue.name.length() > 0)
-                        {
+                        if (namespaceValue.name.length() > 0) {
                             inheritanceMultiNames.add(new MultiName(namespaceValue.name, interfaceName));
-                        }
-                        else
-                        {
+                        } else {
                             inheritanceNames.add(interfaceName);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         inheritanceNames.add(interfaceName);
                     }
                 }
@@ -209,35 +178,27 @@ public class InheritanceEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public synchronized Value evaluate(Context context, ImportDirectiveNode importDirective)
-    {
-        if (importDirective.name.id.def_part.length() == 0)
-        {
+    public synchronized Value evaluate(Context context, ImportDirectiveNode importDirective) {
+        if (importDirective.name.id.def_part.length() == 0) {
             addImport(importDirective.name.id.pkg_part);
-        }
-        else
-        {
+        } else {
             addQualifiedImport(importDirective.name.id.def_part,
-                               importDirective.name.id.pkg_part);
+                    importDirective.name.id.pkg_part);
         }
-        
+
         return null;
     }
 
-    public synchronized Value evaluate(Context context, InterfaceDefinitionNode interfaceDefinition)
-    {
+    public synchronized Value evaluate(Context context, InterfaceDefinitionNode interfaceDefinition) {
         return evaluateInterface(interfaceDefinition);
     }
 
-    public synchronized Value evaluate(Context cx, PackageDefinitionNode packageDefinition)
-    {
+    public synchronized Value evaluate(Context cx, PackageDefinitionNode packageDefinition) {
         PackageNameNode packageName = packageDefinition.name;
 
-        if (packageName != null)
-        {
+        if (packageName != null) {
             PackageIdentifiersNode packageIdentifiers = packageName.id;
-            if ((packageIdentifiers != null) && (packageIdentifiers.pkg_part != null))
-            {
+            if ((packageIdentifiers != null) && (packageIdentifiers.pkg_part != null)) {
                 addImport(packageIdentifiers.pkg_part);
             }
         }
@@ -245,84 +206,63 @@ public class InheritanceEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    private Value evaluateInterface(ClassDefinitionNode interfaceDefinition)
-    {
-        if (interfaceDefinition.pkgdef != null)
-        {
+    private Value evaluateInterface(ClassDefinitionNode interfaceDefinition) {
+        if (interfaceDefinition.pkgdef != null) {
             processImports(interfaceDefinition.pkgdef.statements.items.iterator());
 
             PackageNameNode packageName = interfaceDefinition.pkgdef.name;
 
-            if (packageName != null)
-            {
+            if (packageName != null) {
                 PackageIdentifiersNode packageIdentifiers = packageName.id;
 
-                if ((packageIdentifiers != null) && (packageIdentifiers.pkg_part != null))
-                {
+                if ((packageIdentifiers != null) && (packageIdentifiers.pkg_part != null)) {
                     definitionMultiNames.add(new MultiName(packageIdentifiers.pkg_part, interfaceDefinition.name.name));
                 }
             }
         }
 
-        if (interfaceDefinition.statements != null)
-        {
+        if (interfaceDefinition.statements != null) {
             processImports(interfaceDefinition.statements.items.iterator());
         }
 
         // process extends
-        if (interfaceDefinition.baseclass != null)
-        {
-            if (interfaceDefinition.baseclass instanceof MemberExpressionNode)
-            {
+        if (interfaceDefinition.baseclass != null) {
+            if (interfaceDefinition.baseclass instanceof MemberExpressionNode) {
                 MemberExpressionNode memberExpression = (MemberExpressionNode) interfaceDefinition.baseclass;
 
-                if (memberExpression.selector != null)
-                {
+                if (memberExpression.selector != null) {
                     IdentifierNode identifier = memberExpression.selector.getIdentifier();
                     String baseInterfaceName = toString(identifier);
                     inheritanceNames.add(baseInterfaceName);
                 }
-            }
-            else
-            {
+            } else {
                 assert false;
             }
-        }
-        else
-        {
-        	inheritanceNames.add(":Object");
+        } else {
+            inheritanceNames.add(":Object");
         }
 
         // process interfaces: It would seem that ASC sometimes puts an interface's base
         // interface in the InterfaceDefinitionNode's interfaces list.  I'm not sure if
         // this is always the case, though.
-        if (interfaceDefinition.interfaces != null)
-        {
+        if (interfaceDefinition.interfaces != null) {
             Iterator iterator = interfaceDefinition.interfaces.items.iterator();
 
-            while ( iterator.hasNext() )
-            {
+            while (iterator.hasNext()) {
                 MemberExpressionNode memberExpression = (MemberExpressionNode) iterator.next();
 
-                if (memberExpression.selector != null)
-                {
+                if (memberExpression.selector != null) {
                     IdentifierNode identifier = memberExpression.selector.getIdentifier();
                     String baseInterfaceName = toString(identifier);
 
-                    if ((identifier.ref != null) && (identifier.ref.namespaces != null))
-                    {
+                    if ((identifier.ref != null) && (identifier.ref.namespaces != null)) {
                         NamespaceValue namespaceValue = (NamespaceValue) identifier.ref.namespaces.get(0);
-                        if (namespaceValue.name.length() > 0)
-                        {
+                        if (namespaceValue.name.length() > 0) {
                             inheritanceMultiNames.add(new MultiName(namespaceValue.name, baseInterfaceName));
-                        }
-                        else
-                        {
+                        } else {
                             inheritanceNames.add(baseInterfaceName);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         inheritanceNames.add(baseInterfaceName);
                     }
                 }
@@ -332,14 +272,11 @@ public class InheritanceEvaluator extends EvaluatorAdapter
         return null;
     }
 
-    public Set<Name> getInheritance()
-    {
-        if (inheritanceNames != null)
-        {
+    public Set<Name> getInheritance() {
+        if (inheritanceNames != null) {
             Iterator<String> iterator = inheritanceNames.iterator();
 
-            while ( iterator.hasNext() )
-            {
+            while (iterator.hasNext()) {
                 String inheritanceName = iterator.next();
 
                 MultiName inheritanceMultiName = getMultiName(inheritanceName);
@@ -352,23 +289,18 @@ public class InheritanceEvaluator extends EvaluatorAdapter
         // reference errors downstream.
         Iterator inheritanceIterator = inheritanceMultiNames.iterator();
 
-        while ( inheritanceIterator.hasNext() )
-        {
+        while (inheritanceIterator.hasNext()) {
             MultiName inheritanceMultiName = (MultiName) inheritanceIterator.next();
             String[] namespaces = inheritanceMultiName.getNamespace();
             Iterator<MultiName> definitionIterator = definitionMultiNames.iterator();
 
-            while ( definitionIterator.hasNext() )
-            {
+            while (definitionIterator.hasNext()) {
                 MultiName definitionMultiName = definitionIterator.next();
                 String namespace = definitionMultiName.getNamespace()[0];
 
-                if (inheritanceMultiName.getLocalPart().equals(definitionMultiName.getLocalPart()))
-                {
-                    for (int i = 0; i < inheritanceMultiName.namespaceURI.length; i++)
-                    {
-                        if (namespaces[i].equals(namespace))
-                        {
+                if (inheritanceMultiName.getLocalPart().equals(definitionMultiName.getLocalPart())) {
+                    for (int i = 0; i < inheritanceMultiName.namespaceURI.length; i++) {
+                        if (namespaces[i].equals(namespace)) {
                             inheritanceIterator.remove();
                         }
                     }
@@ -379,86 +311,64 @@ public class InheritanceEvaluator extends EvaluatorAdapter
         return inheritanceMultiNames;
     }
 
-    private MultiName getMultiName(String name)
-    {
+    private MultiName getMultiName(String name) {
         assert name != null : "InheritanceEvaluator.getMultiName(): null name";
 
         MultiName result;
 
         int lastIndex = name.lastIndexOf(":");
 
-        if (lastIndex < 0)
-        {
+        if (lastIndex < 0) {
             lastIndex = name.lastIndexOf(".");
         }
 
-        if (lastIndex >= 0)
-        {
-            result = new MultiName(new String[] {name.substring(0, lastIndex)},
-                                   name.substring(lastIndex + 1));
-        }
-        else if ((qualifiedImports != null) && qualifiedImports.containsKey(name))
-        {
-            result = new MultiName(new String[] {qualifiedImports.get(name)}, name);
-        }
-        else if (imports != null)
-        {
+        if (lastIndex >= 0) {
+            result = new MultiName(new String[]{name.substring(0, lastIndex)},
+                    name.substring(lastIndex + 1));
+        } else if ((qualifiedImports != null) && qualifiedImports.containsKey(name)) {
+            result = new MultiName(new String[]{qualifiedImports.get(name)}, name);
+        } else if (imports != null) {
             String[] namespaces = new String[imports.size()];
             imports.toArray(namespaces);
             result = new MultiName(namespaces, name);
-        }
-        else
-        {
+        } else {
             result = new MultiName(name);
         }
 
         return result;
     }
 
-    private void processImports(Iterator iterator)
-    {
-        while ( iterator.hasNext() )
-        {
+    private void processImports(Iterator iterator) {
+        while (iterator.hasNext()) {
             Object node = iterator.next();
 
-            if (node instanceof ImportDirectiveNode)
-            {
+            if (node instanceof ImportDirectiveNode) {
                 ImportDirectiveNode importDirective = (ImportDirectiveNode) node;
 
-                if (importDirective.name.id.def_part.length() == 0)
-                {
+                if (importDirective.name.id.def_part.length() == 0) {
                     addImport(importDirective.name.id.pkg_part);
-                }
-                else
-                {
+                } else {
                     addQualifiedImport(importDirective.name.id.def_part,
-                                       importDirective.name.id.pkg_part);
+                            importDirective.name.id.pkg_part);
                 }
             }
         }
     }
 
-    private String toString(IdentifierNode identifier)
-    {
+    private String toString(IdentifierNode identifier) {
         String result = null;
 
-        if (identifier instanceof QualifiedIdentifierNode)
-        {
+        if (identifier instanceof QualifiedIdentifierNode) {
             QualifiedIdentifierNode qualifiedIdentifier = (QualifiedIdentifierNode) identifier;
 
-            if (qualifiedIdentifier.qualifier instanceof LiteralStringNode)
-            {
+            if (qualifiedIdentifier.qualifier instanceof LiteralStringNode) {
                 LiteralStringNode literalString = (LiteralStringNode) qualifiedIdentifier.qualifier;
                 result = literalString.value + ":" + qualifiedIdentifier.name;
-            }
-            else
-            {
+            } else {
                 assert false : ("Unhandled QualifiedIdentifierNode qualifier type: " +
-                                qualifiedIdentifier.qualifier.getClass().getName());
+                        qualifiedIdentifier.qualifier.getClass().getName());
             }
-        }
-        else
-        {
+        } else {
             result = identifier.name;
         }
 

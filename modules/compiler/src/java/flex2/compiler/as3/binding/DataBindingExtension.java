@@ -59,8 +59,7 @@ import java.util.Map;
  *
  * @author Paul Reilly
  */
-public final class DataBindingExtension implements Extension
-{
+public final class DataBindingExtension implements Extension {
     private static final String TEMPLATE_PATH = "flex2/compiler/as3/binding/";
     private static final String DATA_BINDING_INFO_KEY = "dataBindingInfo";
 
@@ -103,61 +102,51 @@ public final class DataBindingExtension implements Extension
     private ObjectList<ConfigVar> defines;
 
     public DataBindingExtension(String generatedOutputDirectory, boolean showBindingWarnings,
-                                boolean generateAbstractSyntaxTree, ObjectList<ConfigVar> defines)
-    {
+                                boolean generateAbstractSyntaxTree, ObjectList<ConfigVar> defines) {
         this.generatedOutputDirectory = generatedOutputDirectory;
         this.showBindingWarnings = showBindingWarnings;
         this.generateAbstractSyntaxTree = generateAbstractSyntaxTree;
         this.defines = defines;
     }
 
-    public void parse1(CompilationUnit compilationUnit, TypeTable typeTable)
-    {
+    public void parse1(CompilationUnit compilationUnit, TypeTable typeTable) {
     }
 
-    public void parse2(CompilationUnit compilationUnit, TypeTable typeTable)
-    {
+    public void parse2(CompilationUnit compilationUnit, TypeTable typeTable) {
     }
 
-    public void analyze1(CompilationUnit compilationUnit, TypeTable typeTable)
-    {
+    public void analyze1(CompilationUnit compilationUnit, TypeTable typeTable) {
     }
 
-    public void analyze2(CompilationUnit compilationUnit, TypeTable typeTable)
-    {
+    public void analyze2(CompilationUnit compilationUnit, TypeTable typeTable) {
     }
 
-    public void analyze3(CompilationUnit compilationUnit, TypeTable typeTable)
-    {
+    public void analyze3(CompilationUnit compilationUnit, TypeTable typeTable) {
     }
 
-    public void analyze4(CompilationUnit compilationUnit, TypeTable typeTable)
-    {
+    public void analyze4(CompilationUnit compilationUnit, TypeTable typeTable) {
     }
 
-    public void generate(CompilationUnit compilationUnit, TypeTable typeTable)
-    {
+    public void generate(CompilationUnit compilationUnit, TypeTable typeTable) {
         CompilerContext context = compilationUnit.getContext();
         Context cx = context.getAscContext();
         Node node = (Node) compilationUnit.getSyntaxTree();
         DataBindingFirstPassEvaluator dataBindingFirstPassEvaluator =
-            new DataBindingFirstPassEvaluator(compilationUnit, typeTable, showBindingWarnings);
+                new DataBindingFirstPassEvaluator(compilationUnit, typeTable, showBindingWarnings);
 
         node.evaluate(cx, dataBindingFirstPassEvaluator);
 
         List dataBindingInfoList = dataBindingFirstPassEvaluator.getDataBindingInfoList();
 
-        if (dataBindingInfoList.size() > 1)
-        {
+        if (dataBindingInfoList.size() > 1) {
             assert false : compilationUnit.getSource().getName();
         }
 
-        if (dataBindingInfoList.size() > 0)
-        {
-	        // watcher setup classes should match the originating source timestamp.
+        if (dataBindingInfoList.size() > 0) {
+            // watcher setup classes should match the originating source timestamp.
             Map<QName, Source> generatedSources = generateWatcherSetupUtilClasses(compilationUnit,
-                                                                   typeTable.getSymbolTable(),
-                                                                   dataBindingInfoList);
+                    typeTable.getSymbolTable(),
+                    dataBindingInfoList);
             compilationUnit.addGeneratedSources(generatedSources);
         }
     }
@@ -166,35 +155,29 @@ public final class DataBindingExtension implements Extension
      *
      */
     private Source createSource(String fileName, String shortName, long lastModified,
-    							PathResolver resolver, SourceCodeBuffer sourceCodeBuffer)
-    {
+                                PathResolver resolver, SourceCodeBuffer sourceCodeBuffer) {
         Source result = null;
 
-        if (sourceCodeBuffer.getBuffer() != null)
-        {
+        if (sourceCodeBuffer.getBuffer() != null) {
             String sourceCode = sourceCodeBuffer.toString();
 
-            if (generatedOutputDirectory != null)
-            {
-                try
-                {
+            if (generatedOutputDirectory != null) {
+                try {
                     FileUtil.writeFile(generatedOutputDirectory + File.separatorChar + fileName, sourceCode);
-                }
-                catch (IOException e)
-                {
+                } catch (IOException e) {
                     ThreadLocalToolkit.log(new VelocityException.UnableToWriteGeneratedFile(fileName, e.getMessage()));
                 }
             }
 
-			VirtualFile generatedFile = new TextFile(sourceCode, fileName, null, MimeMappings.AS, lastModified);
+            VirtualFile generatedFile = new TextFile(sourceCode, fileName, null, MimeMappings.AS, lastModified);
 
             result = new Source(generatedFile,
-                                "",
-                                shortName,
-                                null,
-                                false,
-                                false,
-                                false);
+                    "",
+                    shortName,
+                    null,
+                    false,
+                    false,
+                    false);
             result.setPathResolver(resolver);
         }
 
@@ -203,18 +186,16 @@ public final class DataBindingExtension implements Extension
 
     private FunctionCommonNode generateAccessorFunction(NodeFactory nodeFactory, Context cx,
                                                         HashSet<String> configNamespaces,
-                                                        ArrayElementWatcher arrayElementWatcher)
-    {
+                                                        ArrayElementWatcher arrayElementWatcher) {
         FunctionSignatureNode functionSignature = nodeFactory.functionSignature(null, null);
 
         List<Node> nodeList = AbstractSyntaxTreeUtil.parseExpression(cx, configNamespaces,
-                                                                     arrayElementWatcher.getEvaluationPart());
+                arrayElementWatcher.getEvaluationPart());
         ListNode list = null;
 
         assert (nodeList.size() == 0) || (nodeList.size() == 1) : nodeList.size();
 
-        if (!nodeList.isEmpty())
-        {
+        if (!nodeList.isEmpty()) {
             ExpressionStatementNode expressionStatement = (ExpressionStatementNode) nodeList.get(0);
             list = (ListNode) expressionStatement.expr;
         }
@@ -227,26 +208,23 @@ public final class DataBindingExtension implements Extension
 
     private FunctionCommonNode generateAccessorFunction(NodeFactory nodeFactory, Context cx,
                                                         HashSet<String> configNamespaces,
-                                                        FunctionReturnWatcher functionReturnWatcher)
-    {
+                                                        FunctionReturnWatcher functionReturnWatcher) {
         MemberExpressionNode memberExpression = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, ARRAY, false);
         TypeExpressionNode returnType = nodeFactory.typeExpression(memberExpression, true, false, -1);
         FunctionSignatureNode functionSignature = nodeFactory.functionSignature(null, returnType);
 
         List<Node> nodeList = AbstractSyntaxTreeUtil.parseExpression(cx, configNamespaces,
-                                                                     functionReturnWatcher.getEvaluationPart());
+                functionReturnWatcher.getEvaluationPart());
         ArgumentListNode argumentList = null;
 
         assert (nodeList.size() == 0) || (nodeList.size() == 1) : nodeList.size();
 
-        if (!nodeList.isEmpty())
-        {
+        if (!nodeList.isEmpty()) {
             ExpressionStatementNode expressionStatement = (ExpressionStatementNode) nodeList.get(0);
             ListNode list = (ListNode) expressionStatement.expr;
             Iterator<Node> iterator = list.items.iterator();
 
-            while (iterator.hasNext())
-            {
+            while (iterator.hasNext()) {
                 argumentList = nodeFactory.argumentList(argumentList, iterator.next());
             }
         }
@@ -259,8 +237,7 @@ public final class DataBindingExtension implements Extension
         return nodeFactory.functionCommon(cx, null, functionSignature, statementList);
     }
 
-    private ExpressionStatementNode generateAddChild(NodeFactory nodeFactory, Watcher watcher)
-    {
+    private ExpressionStatementNode generateAddChild(NodeFactory nodeFactory, Watcher watcher) {
         MemberExpressionNode watchersMemberExpression = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
 
         GetExpressionNode getExpression = generateArrayIndex(nodeFactory, watcher.getParent().getId());
@@ -282,24 +259,20 @@ public final class DataBindingExtension implements Extension
         return nodeFactory.expressionStatement(list);
     }
 
-    private GetExpressionNode generateArrayIndex(NodeFactory nodeFactory, int index)
-    {
+    private GetExpressionNode generateArrayIndex(NodeFactory nodeFactory, int index) {
         LiteralNumberNode literalNumber = nodeFactory.literalNumber(index);
         ArgumentListNode argumentList = nodeFactory.argumentList(null, literalNumber);
         return nodeFactory.getExpression(argumentList);
     }
 
-    private Node generateChangeEvents(NodeFactory nodeFactory, Watcher watcher)
-    {
+    private Node generateChangeEvents(NodeFactory nodeFactory, Watcher watcher) {
         Node result;
         Iterator<ChangeEvent> iterator = watcher.getChangeEvents().iterator();
 
-        if (iterator.hasNext())
-        {
+        if (iterator.hasNext()) {
             ArgumentListNode argumentList = null;
 
-            while (iterator.hasNext())
-            {
+            while (iterator.hasNext()) {
                 ChangeEvent changeEvent = iterator.next();
                 IdentifierNode identifierNode = nodeFactory.identifier(changeEvent.getName());
                 LiteralBooleanNode literalBoolean = nodeFactory.literalBoolean(changeEvent.getCommitting());
@@ -308,9 +281,7 @@ public final class DataBindingExtension implements Extension
             }
 
             result = nodeFactory.literalObject(argumentList);
-        }
-        else
-        {
+        } else {
             result = nodeFactory.literalNull();
         }
 
@@ -319,17 +290,16 @@ public final class DataBindingExtension implements Extension
 
     private ClassDefinitionNode generateClassDefinition(Context cx, HashSet<String> configNamespaces,
                                                         String name, DataBindingInfo dataBindingInfo,
-                                                        StandardDefs standardDefs)
-    {
+                                                        StandardDefs standardDefs) {
         NodeFactory nodeFactory = cx.getNodeFactory();
         nodeFactory.StartClassDefs();
         MemberExpressionNode iWatcherSetupUtilMemberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, standardDefs.getBindingPackage(), IWATCHER_SETUP_UTIL2, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, standardDefs.getBindingPackage(), IWATCHER_SETUP_UTIL2, false);
         ListNode interfaces = nodeFactory.list(null, iWatcherSetupUtilMemberExpression);
         InheritanceNode inheritance = nodeFactory.inheritance(null, interfaces);
 
         FunctionDefinitionNode constructorFunctionDefinition =
-            AbstractSyntaxTreeUtil.generateConstructor(cx, name, null, true, null, -1);
+                AbstractSyntaxTreeUtil.generateConstructor(cx, name, null, true, null, -1);
         StatementListNode statementList = nodeFactory.statementList(null, constructorFunctionDefinition);
 
         FunctionCommonNode initFunctionCommon = generateInitFunctionCommon(nodeFactory, cx, dataBindingInfo);
@@ -338,24 +308,23 @@ public final class DataBindingExtension implements Extension
         statementList = nodeFactory.statementList(statementList, initFunctionDefinition);
 
         FunctionCommonNode setupFunctionCommon = generateSetupFunctionCommon(nodeFactory, cx, configNamespaces,
-                                                                             dataBindingInfo, standardDefs);
+                dataBindingInfo, standardDefs);
         setupFunctionCommon.setUserDefinedBody(true);
         FunctionDefinitionNode setupFunctionDefinition = generateSetupFunctionDefinition(nodeFactory, cx, setupFunctionCommon);
         statementList = nodeFactory.statementList(statementList, setupFunctionDefinition);
 
         ClassDefinitionNode classDefinition =
-            nodeFactory.classDefinition(cx,
-                                        AbstractSyntaxTreeUtil.generatePublicAttribute(nodeFactory),
-                                        AbstractSyntaxTreeUtil.generatePublicQualifiedIdentifier(nodeFactory, name),
-                                        inheritance,
-                                        statementList);
+                nodeFactory.classDefinition(cx,
+                        AbstractSyntaxTreeUtil.generatePublicAttribute(nodeFactory),
+                        AbstractSyntaxTreeUtil.generatePublicQualifiedIdentifier(nodeFactory, name),
+                        inheritance,
+                        statementList);
 
         return classDefinition;
     }
 
     private ExpressionStatementNode generateEvaluationWatcherPart(NodeFactory nodeFactory,
-                                                                  EvaluationWatcher evaluationWatcher)
-    {
+                                                                  EvaluationWatcher evaluationWatcher) {
         MemberExpressionNode watchersBase = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
         GetExpressionNode watchersSelector = generateArrayIndex(nodeFactory, evaluationWatcher.getId());
         MemberExpressionNode watcherBase = nodeFactory.memberExpression(watchersBase, watchersSelector);
@@ -363,21 +332,16 @@ public final class DataBindingExtension implements Extension
 
         IdentifierNode parentVariableIdentifier = null;
 
-        if (evaluationWatcher instanceof ArrayElementWatcher)
-        {
+        if (evaluationWatcher instanceof ArrayElementWatcher) {
             parentVariableIdentifier = nodeFactory.identifier(ARRAY_WATCHER, false);
-        }
-        else if (evaluationWatcher instanceof FunctionReturnWatcher)
-        {
+        } else if (evaluationWatcher instanceof FunctionReturnWatcher) {
             parentVariableIdentifier = nodeFactory.identifier(PARENT_WATCHER, false);
-        }
-        else
-        {
+        } else {
             assert false : "Unhandled EvaluationWatcher type: " + evaluationWatcher.getClass().getName();
         }
 
         MemberExpressionNode parentWatchersBase =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
         GetExpressionNode parentWatchersSelector = generateArrayIndex(nodeFactory, evaluationWatcher.getParent().getId());
         parentWatchersSelector.setMode(Tokens.LEFTBRACKET_TOKEN);
         MemberExpressionNode parentWatcherBase = nodeFactory.memberExpression(parentWatchersBase, parentWatchersSelector);
@@ -392,10 +356,9 @@ public final class DataBindingExtension implements Extension
     }
 
     private FunctionCommonNode generateInitFunctionCommon(NodeFactory nodeFactory, Context cx,
-                                                          DataBindingInfo dataBindingInfo)
-    {
+                                                          DataBindingInfo dataBindingInfo) {
         ParameterNode parameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, FBS, IFLEX_MODULE_FACTORY, false);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, FBS, IFLEX_MODULE_FACTORY, false);
         ParameterListNode parameterList = nodeFactory.parameterList(null, parameter);
         FunctionSignatureNode functionSignature = nodeFactory.functionSignature(parameterList, null);
         functionSignature.void_anno = true;
@@ -408,13 +371,10 @@ public final class DataBindingExtension implements Extension
         int index = className.lastIndexOf(DOT);
         ListNode base;
 
-        if (index > 0)
-        {
+        if (index > 0) {
             base = nodeFactory.list(null, AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, className.substring(0, index),
-                                                                                        className.substring(index + 1), true));
-        }
-        else
-        {
+                    className.substring(index + 1), true));
+        } else {
             base = nodeFactory.list(null, AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, className, true));
         }
 
@@ -437,16 +397,14 @@ public final class DataBindingExtension implements Extension
     }
 
     private FunctionDefinitionNode generateInitFunctionDefinition(NodeFactory nodeFactory, Context cx,
-                                                                  FunctionCommonNode functionCommon)
-    {
+                                                                  FunctionCommonNode functionCommon) {
         AttributeListNode attributeList = AbstractSyntaxTreeUtil.generatePublicStaticAttribute(nodeFactory);
         IdentifierNode identifier = nodeFactory.identifier(INIT, false);
         FunctionNameNode functionName = nodeFactory.functionName(Tokens.EMPTY_TOKEN, identifier);
         return nodeFactory.functionDefinition(cx, attributeList, functionName, functionCommon);
     }
 
-    private LiteralArrayNode generateListener(NodeFactory nodeFactory, int id)
-    {
+    private LiteralArrayNode generateListener(NodeFactory nodeFactory, int id) {
         MemberExpressionNode base = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, BINDINGS, false);
         GetExpressionNode selector = generateArrayIndex(nodeFactory, id);
         selector.setMode(Tokens.LEFTBRACKET_TOKEN);
@@ -456,16 +414,14 @@ public final class DataBindingExtension implements Extension
         return nodeFactory.literalArray(argumentList);
     }
 
-    private LiteralArrayNode generateListeners(NodeFactory nodeFactory, PropertyWatcher propertyWatcher)
-    {
+    private LiteralArrayNode generateListeners(NodeFactory nodeFactory, PropertyWatcher propertyWatcher) {
         ArgumentListNode argumentList = null;
         Iterator<BindingExpression> iterator = propertyWatcher.getBindingExpressions().iterator();
 
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             BindingExpression bindingExpression = iterator.next();
             MemberExpressionNode base =
-                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, BINDINGS, false);
+                    AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, BINDINGS, false);
             GetExpressionNode selector = generateArrayIndex(nodeFactory, bindingExpression.getId());
             selector.setMode(Tokens.LEFTBRACKET_TOKEN);
             MemberExpressionNode memberExpression = nodeFactory.memberExpression(base, selector);
@@ -475,19 +431,15 @@ public final class DataBindingExtension implements Extension
         return nodeFactory.literalArray(argumentList);
     }
 
-    private MemberExpressionNode generatePath(NodeFactory nodeFactory, String path)
-    {
+    private MemberExpressionNode generatePath(NodeFactory nodeFactory, String path) {
         int index = path.lastIndexOf(DOT);
         String string;
         Node base;
 
-        if (index > 0)
-        {
+        if (index > 0) {
             string = path.substring(index + 1);
             base = generatePath(nodeFactory, path.substring(0, index));
-        }
-        else
-        {
+        } else {
             string = path;
             base = null;
         }
@@ -500,11 +452,10 @@ public final class DataBindingExtension implements Extension
     }
 
     private StatementListNode generateRootWatcherBottom(NodeFactory nodeFactory, Context cx,
-                                                        StatementListNode statementList, Watcher watcher)
-    {
+                                                        StatementListNode statementList, Watcher watcher) {
         StatementListNode result = statementList;
         MemberExpressionNode watchersMemberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
         GetExpressionNode getExpression = generateArrayIndex(nodeFactory, watcher.getId());
         getExpression.setMode(Tokens.LEFTBRACKET_TOKEN);
         MemberExpressionNode base = nodeFactory.memberExpression(watchersMemberExpression, getExpression);
@@ -513,30 +464,24 @@ public final class DataBindingExtension implements Extension
         MemberExpressionNode parentMemberExpression;
         String className = watcher.getClassName();
 
-        if (className != null)
-        {
+        if (className != null) {
             result = nodeFactory.statementList(result, AbstractSyntaxTreeUtil.generateImport(cx, className));
 
             int index = className.lastIndexOf(DOT);
 
-            if (index > 0)
-            {
+            if (index > 0) {
                 parentMemberExpression =
-                    AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory,
-                                                                  className.substring(0, index),
-                                                                  className.substring(index + 1),
-                                                                  true);
-            }
-            else
-            {
+                        AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory,
+                                className.substring(0, index),
+                                className.substring(index + 1),
+                                true);
+            } else {
                 parentMemberExpression =
-                    AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, className, true);
+                        AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, className, true);
             }
-        }
-        else
-        {
+        } else {
             parentMemberExpression =
-                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, TARGET, false);
+                    AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, TARGET, false);
         }
 
         ArgumentListNode args = nodeFactory.argumentList(null, parentMemberExpression);
@@ -552,24 +497,23 @@ public final class DataBindingExtension implements Extension
     private FunctionCommonNode generateSetupFunctionCommon(NodeFactory nodeFactory, Context cx,
                                                            HashSet<String> configNamespaces,
                                                            DataBindingInfo dataBindingInfo,
-                                                           StandardDefs standardDefs)
-    {
+                                                           StandardDefs standardDefs) {
         ParameterListNode parameterList = null;
 
         ParameterNode targetParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, TARGET, OBJECT, false);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, TARGET, OBJECT, false);
         parameterList = nodeFactory.parameterList(parameterList, targetParameter);
         ParameterNode propertyGetterParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, PROPERTY_GETTER, FUNCTION, false);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, PROPERTY_GETTER, FUNCTION, false);
         parameterList = nodeFactory.parameterList(parameterList, propertyGetterParameter);
         ParameterNode staticPropertyGetterParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, STATIC_PROPERTY_GETTER, FUNCTION, false);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, STATIC_PROPERTY_GETTER, FUNCTION, false);
         parameterList = nodeFactory.parameterList(parameterList, staticPropertyGetterParameter);
         ParameterNode bindingsParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, BINDINGS, ARRAY, false);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, BINDINGS, ARRAY, false);
         parameterList = nodeFactory.parameterList(parameterList, bindingsParameter);
         ParameterNode watchersParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, WATCHERS, ARRAY, false);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, WATCHERS, ARRAY, false);
         parameterList = nodeFactory.parameterList(parameterList, watchersParameter);
 
         FunctionSignatureNode functionSignature = nodeFactory.functionSignature(parameterList, null);
@@ -579,71 +523,53 @@ public final class DataBindingExtension implements Extension
 
         Iterator<String> importIterator = dataBindingInfo.getImports().iterator();
 
-        while (importIterator.hasNext())
-        {
+        while (importIterator.hasNext()) {
             ImportDirectiveNode importDirective = AbstractSyntaxTreeUtil.generateImport(cx, importIterator.next());
             statementList = nodeFactory.statementList(statementList, importDirective);
         }
 
         Iterator<Watcher> iterator = dataBindingInfo.getRootWatchers().values().iterator();
 
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             Watcher watcher = iterator.next();
 
-            if (watcher.shouldWriteSelf())
-            {
-                if (watcher instanceof ArrayElementWatcher)
-                {
+            if (watcher.shouldWriteSelf()) {
+                if (watcher instanceof ArrayElementWatcher) {
                     ArrayElementWatcher arrayElementWatcher = (ArrayElementWatcher) watcher;
                     statementList = generateWatcher(nodeFactory, cx, configNamespaces, statementList,
-                                                    arrayElementWatcher, standardDefs);
-                }
-                else if (watcher instanceof FunctionReturnWatcher)
-                {
+                            arrayElementWatcher, standardDefs);
+                } else if (watcher instanceof FunctionReturnWatcher) {
                     FunctionReturnWatcher functionReturnWatcher = (FunctionReturnWatcher) watcher;
                     statementList = generateWatcher(nodeFactory, cx, configNamespaces, statementList,
-                                                    functionReturnWatcher, standardDefs);
-                }
-                else if (watcher instanceof RepeaterComponentWatcher)
-                {
+                            functionReturnWatcher, standardDefs);
+                } else if (watcher instanceof RepeaterComponentWatcher) {
                     RepeaterComponentWatcher repeaterComponentWatcher = (RepeaterComponentWatcher) watcher;
                     statementList = generateWatcher(nodeFactory, statementList, repeaterComponentWatcher, standardDefs);
-                }
-                else if (watcher instanceof RepeaterItemWatcher)
-                {
+                } else if (watcher instanceof RepeaterItemWatcher) {
                     RepeaterItemWatcher repeaterItemWatcher = (RepeaterItemWatcher) watcher;
                     statementList = generateWatcher(nodeFactory, cx, statementList, repeaterItemWatcher, standardDefs);
-                }
-                else if (watcher instanceof XMLWatcher)
-                {
+                } else if (watcher instanceof XMLWatcher) {
                     XMLWatcher xmlWatcher = (XMLWatcher) watcher;
                     statementList = generateWatcher(nodeFactory, statementList, xmlWatcher, standardDefs);
-                }
-                else if (watcher instanceof PropertyWatcher)
-                {
+                } else if (watcher instanceof PropertyWatcher) {
                     PropertyWatcher propertyWatcher = (PropertyWatcher) watcher;
                     statementList = generateWatcher(nodeFactory, cx, statementList, propertyWatcher, standardDefs,
-                                                    dataBindingInfo.getClassName());
-                }
-                else
-                {
+                            dataBindingInfo.getClassName());
+                } else {
                     assert false : "Unhandled Watcher type: " + watcher.getClass().getName();
                 }
             }
 
-            if (watcher.shouldWriteChildren())
-            {
+            if (watcher.shouldWriteChildren()) {
                 statementList = generateWatcherChildren(nodeFactory, cx, configNamespaces,
-                                                        statementList, watcher, standardDefs,
-                                                        dataBindingInfo.getClassName());
+                        statementList, watcher, standardDefs,
+                        dataBindingInfo.getClassName());
             }
         }
 
         iterator = dataBindingInfo.getRootWatchers().values().iterator();
 
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             Watcher watcher = iterator.next();
             statementList = generateWatcherBottom(nodeFactory, cx, statementList, watcher);
         }
@@ -652,16 +578,14 @@ public final class DataBindingExtension implements Extension
     }
 
     private FunctionDefinitionNode generateSetupFunctionDefinition(NodeFactory nodeFactory, Context cx,
-                                                                   FunctionCommonNode functionCommon)
-    {
+                                                                   FunctionCommonNode functionCommon) {
         AttributeListNode attributeList = AbstractSyntaxTreeUtil.generatePublicAttribute(nodeFactory);
         IdentifierNode identifier = nodeFactory.identifier(SETUP, false);
         FunctionNameNode functionName = nodeFactory.functionName(Tokens.EMPTY_TOKEN, identifier);
         return nodeFactory.functionDefinition(cx, attributeList, functionName, functionCommon);
     }
 
-    private ExpressionStatementNode generateUpdateParentProperty(NodeFactory nodeFactory, int watcherId, PropertyWatcher parent)
-    {
+    private ExpressionStatementNode generateUpdateParentProperty(NodeFactory nodeFactory, int watcherId, PropertyWatcher parent) {
         MemberExpressionNode watchersBase = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
         GetExpressionNode idSelector = generateArrayIndex(nodeFactory, watcherId);
         idSelector.setMode(Tokens.LEFTBRACKET_TOKEN);
@@ -679,10 +603,9 @@ public final class DataBindingExtension implements Extension
     }
 
     private ExpressionStatementNode generateUpdateParentPrivateProperty(NodeFactory nodeFactory, int watcherId,
-                                                                        PropertyWatcher parent)
-    {
+                                                                        PropertyWatcher parent) {
         MemberExpressionNode watchersBase =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
         GetExpressionNode idSelector = generateArrayIndex(nodeFactory, watcherId);
         idSelector.setMode(Tokens.LEFTBRACKET_TOKEN);
         MemberExpressionNode watcherBase = nodeFactory.memberExpression(watchersBase, idSelector);
@@ -690,7 +613,7 @@ public final class DataBindingExtension implements Extension
         IdentifierNode updateParentIdentifier = nodeFactory.identifier(UPDATE_PARENT, false);
 
         MemberExpressionNode propertyGetterBase =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, PROPERTY_GETTER, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, PROPERTY_GETTER, false);
         IdentifierNode applyIdentifier = nodeFactory.identifier(APPLY, false);
         IdentifierNode targetIdentifier = nodeFactory.identifier(TARGET, false);
         ArgumentListNode applyArgs = nodeFactory.argumentList(null, targetIdentifier);
@@ -711,10 +634,9 @@ public final class DataBindingExtension implements Extension
     }
 
     private ExpressionStatementNode generateUpdateParentStaticProperty(NodeFactory nodeFactory, int watcherId,
-                                                                       PropertyWatcher parent)
-    {
+                                                                       PropertyWatcher parent) {
         MemberExpressionNode watchersBase =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
         GetExpressionNode idSelector = generateArrayIndex(nodeFactory, watcherId);
         idSelector.setMode(Tokens.LEFTBRACKET_TOKEN);
         MemberExpressionNode watcherBase = nodeFactory.memberExpression(watchersBase, idSelector);
@@ -734,29 +656,27 @@ public final class DataBindingExtension implements Extension
                                               HashSet<String> configNamespaces,
                                               StatementListNode statementList,
                                               ArrayElementWatcher arrayElementWatcher,
-                                              StandardDefs standardDefs)
-    {
+                                              StandardDefs standardDefs) {
         StatementListNode result = statementList;
 
         // Only generate a watcher for the Array element if it will
         // have children, because an Array element watcher will not
         // ever receive a change event.  This is due to our inability
         // to add data binding support to Array.
-        if (arrayElementWatcher.shouldWriteChildren())
-        {
+        if (arrayElementWatcher.shouldWriteChildren()) {
             MemberExpressionNode base = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
 
             QualifiedIdentifierNode qualifiedIdentifier =
-                AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, standardDefs.getBindingPackage(), ARRAY_ELEMENT_WATCHER, false);
+                    AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, standardDefs.getBindingPackage(), ARRAY_ELEMENT_WATCHER, false);
 
             LiteralNumberNode literalNumber = nodeFactory.literalNumber(arrayElementWatcher.getId());
             ArgumentListNode expression = nodeFactory.argumentList(null, literalNumber);
 
             MemberExpressionNode targetMemberExpression =
-                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, TARGET, false);
+                    AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, TARGET, false);
             ArgumentListNode argumentList = nodeFactory.argumentList(null, targetMemberExpression);
             argumentList = nodeFactory.argumentList(argumentList, generateAccessorFunction(nodeFactory, cx, configNamespaces,
-                                                                                           arrayElementWatcher));
+                    arrayElementWatcher));
             int listenerId = arrayElementWatcher.getBindingExpression().getId();
             argumentList = nodeFactory.argumentList(argumentList, generateListener(nodeFactory, listenerId));
 
@@ -781,12 +701,11 @@ public final class DataBindingExtension implements Extension
                                               HashSet<String> configNamespaces,
                                               StatementListNode statementList,
                                               FunctionReturnWatcher functionReturnWatcher,
-                                              StandardDefs standardDefs)
-    {
+                                              StandardDefs standardDefs) {
         MemberExpressionNode base = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
 
         QualifiedIdentifierNode qualifiedIdentifier =
-            AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, standardDefs.getBindingPackage(), FUNCTION_RETURN_WATCHER, false);
+                AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, standardDefs.getBindingPackage(), FUNCTION_RETURN_WATCHER, false);
 
         LiteralNumberNode literalNumber = nodeFactory.literalNumber(functionReturnWatcher.getId());
         ArgumentListNode expression = nodeFactory.argumentList(null, literalNumber);
@@ -794,33 +713,29 @@ public final class DataBindingExtension implements Extension
         LiteralStringNode literalString = nodeFactory.literalString(functionReturnWatcher.getFunctionName());
         ArgumentListNode argumentList = nodeFactory.argumentList(null, literalString);
         MemberExpressionNode targetMemberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, TARGET, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, TARGET, false);
         argumentList = nodeFactory.argumentList(argumentList, targetMemberExpression);
         argumentList = nodeFactory.argumentList(argumentList, generateAccessorFunction(nodeFactory, cx, configNamespaces,
-                                                                                       functionReturnWatcher));
+                functionReturnWatcher));
         argumentList = nodeFactory.argumentList(argumentList, generateChangeEvents(nodeFactory, functionReturnWatcher));
 
         int listenerId = functionReturnWatcher.getBindingExpression().getId();
         argumentList = nodeFactory.argumentList(argumentList, generateListener(nodeFactory, listenerId));
 
-        if ((functionReturnWatcher.getParent() != null) || (functionReturnWatcher.getClassName() != null))
-        {
+        if ((functionReturnWatcher.getParent() != null) || (functionReturnWatcher.getClassName() != null)) {
             argumentList = nodeFactory.argumentList(argumentList, nodeFactory.literalNull());
-        }
-        else
-        {
+        } else {
             MemberExpressionNode propertyGetterMemberExpression =
-                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, PROPERTY_GETTER, false);
+                    AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, PROPERTY_GETTER, false);
             argumentList = nodeFactory.argumentList(argumentList, propertyGetterMemberExpression);
         }
 
-        if (functionReturnWatcher.isStyleWatcher())
-        {
+        if (functionReturnWatcher.isStyleWatcher()) {
             argumentList = nodeFactory.argumentList(argumentList, nodeFactory.literalBoolean(true));
         }
 
         CallExpressionNode callExpression =
-            (CallExpressionNode) nodeFactory.callExpression(qualifiedIdentifier, argumentList);
+                (CallExpressionNode) nodeFactory.callExpression(qualifiedIdentifier, argumentList);
         callExpression.setRValue(false);
         callExpression.is_new = true;
         MemberExpressionNode callMemberExpression = nodeFactory.memberExpression(null, callExpression);
@@ -840,24 +755,20 @@ public final class DataBindingExtension implements Extension
                                               StatementListNode statementList,
                                               PropertyWatcher propertyWatcher,
                                               StandardDefs standardDefs,
-                                              String documentClassName)
-    {
+                                              String documentClassName) {
         MemberExpressionNode base =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
 
         String type;
 
-        if (propertyWatcher.getStaticProperty())
-        {
+        if (propertyWatcher.getStaticProperty()) {
             type = STATIC_PROPERTY_WATCHER;
-        }
-        else
-        {
+        } else {
             type = PROPERTY_WATCHER;
         }
 
         QualifiedIdentifierNode qualifiedIdentifier =
-            AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, standardDefs.getBindingPackage(), type, false);
+                AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, standardDefs.getBindingPackage(), type, false);
         LiteralNumberNode literalNumber = nodeFactory.literalNumber(propertyWatcher.getId());
         ArgumentListNode expression = nodeFactory.argumentList(null, literalNumber);
 
@@ -866,22 +777,17 @@ public final class DataBindingExtension implements Extension
         argumentList = nodeFactory.argumentList(argumentList, generateChangeEvents(nodeFactory, propertyWatcher));
         argumentList = nodeFactory.argumentList(argumentList, generateListeners(nodeFactory, propertyWatcher));
 
-        if ((propertyWatcher.getParent() != null) || 
-            (propertyWatcher.getClassName() != null) &&
-            !propertyWatcher.getClassName().equals(documentClassName))
-        {
+        if ((propertyWatcher.getParent() != null) ||
+                (propertyWatcher.getClassName() != null) &&
+                        !propertyWatcher.getClassName().equals(documentClassName)) {
             argumentList = nodeFactory.argumentList(argumentList, nodeFactory.literalNull());
-        }
-        else if (propertyWatcher.getStaticProperty())
-        {
+        } else if (propertyWatcher.getStaticProperty()) {
             MemberExpressionNode staticPropertyGetterMemberExpression =
-                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, STATIC_PROPERTY_GETTER, false);
+                    AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, STATIC_PROPERTY_GETTER, false);
             argumentList = nodeFactory.argumentList(argumentList, staticPropertyGetterMemberExpression);
-        }
-        else
-        {
+        } else {
             MemberExpressionNode propertyGetterMemberExpression =
-                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, PROPERTY_GETTER, false);
+                    AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, PROPERTY_GETTER, false);
             argumentList = nodeFactory.argumentList(argumentList, propertyGetterMemberExpression);
         }
 
@@ -891,7 +797,7 @@ public final class DataBindingExtension implements Extension
         MemberExpressionNode callMemberExpression = nodeFactory.memberExpression(null, callExpression);
         ArgumentListNode args = nodeFactory.argumentList(null, callMemberExpression);
         SetExpressionNode selector = nodeFactory.setExpression(expression, args, false);
-		selector.setMode(Tokens.LEFTBRACKET_TOKEN);
+        selector.setMode(Tokens.LEFTBRACKET_TOKEN);
 
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(base, selector);
         ListNode list = nodeFactory.list(null, memberExpression);
@@ -904,61 +810,44 @@ public final class DataBindingExtension implements Extension
     private StatementListNode generateWatcherChildren(NodeFactory nodeFactory, Context cx,
                                                       HashSet<String> configNamespaces,
                                                       StatementListNode statementList, Watcher watcher,
-                                                      StandardDefs standardDefs, String documentClassName)
-    {
+                                                      StandardDefs standardDefs, String documentClassName) {
         StatementListNode result = statementList;
 
         Iterator<Watcher> iterator = watcher.getChildren().iterator();
 
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             Watcher childWatcher = iterator.next();
 
-            if (childWatcher.shouldWriteSelf())
-            {
-                if (childWatcher instanceof ArrayElementWatcher)
-                {
+            if (childWatcher.shouldWriteSelf()) {
+                if (childWatcher instanceof ArrayElementWatcher) {
                     ArrayElementWatcher childArrayElementWatcher = (ArrayElementWatcher) childWatcher;
                     result = generateWatcher(nodeFactory, cx, configNamespaces, result,
-                                             childArrayElementWatcher, standardDefs);
-                }
-                else if (childWatcher instanceof FunctionReturnWatcher)
-                {
+                            childArrayElementWatcher, standardDefs);
+                } else if (childWatcher instanceof FunctionReturnWatcher) {
                     FunctionReturnWatcher childFunctionReturnWatcher = (FunctionReturnWatcher) childWatcher;
                     result = generateWatcher(nodeFactory, cx, configNamespaces, result,
-                                             childFunctionReturnWatcher, standardDefs);
-                }
-                else if (childWatcher instanceof RepeaterComponentWatcher)
-                {
+                            childFunctionReturnWatcher, standardDefs);
+                } else if (childWatcher instanceof RepeaterComponentWatcher) {
                     RepeaterComponentWatcher childRepeaterComponentWatcher = (RepeaterComponentWatcher) childWatcher;
                     result = generateWatcher(nodeFactory, result, childRepeaterComponentWatcher, standardDefs);
-                }
-                else if (childWatcher instanceof RepeaterItemWatcher)
-                {
+                } else if (childWatcher instanceof RepeaterItemWatcher) {
                     RepeaterItemWatcher childRepeaterItemWatcher = (RepeaterItemWatcher) childWatcher;
                     result = generateWatcher(nodeFactory, cx, result, childRepeaterItemWatcher, standardDefs);
-                }
-                else if (childWatcher instanceof XMLWatcher)
-                {
+                } else if (childWatcher instanceof XMLWatcher) {
                     XMLWatcher childXMLWatcher = (XMLWatcher) childWatcher;
                     result = generateWatcher(nodeFactory, result, childXMLWatcher, standardDefs);
-                }
-                else if (childWatcher instanceof PropertyWatcher)
-                {
+                } else if (childWatcher instanceof PropertyWatcher) {
                     PropertyWatcher childPropertyWatcher = (PropertyWatcher) childWatcher;
                     result = generateWatcher(nodeFactory, cx, result, childPropertyWatcher, standardDefs,
-                                             documentClassName);
-                }
-                else
-                {
+                            documentClassName);
+                } else {
                     assert false : "Unhandled Watcher type: " + childWatcher.getClass().getName();
                 }
             }
 
-            if (childWatcher.shouldWriteChildren())
-            {
+            if (childWatcher.shouldWriteChildren()) {
                 result = generateWatcherChildren(nodeFactory, cx, configNamespaces, result, childWatcher,
-                                                 standardDefs, documentClassName);
+                        standardDefs, documentClassName);
             }
         }
 
@@ -966,23 +855,18 @@ public final class DataBindingExtension implements Extension
     }
 
     private Map<QName, Source> generateWatcherSetupUtilClasses(CompilationUnit compilationUnit, SymbolTable symbolTable,
-                                                List dataBindingInfoList)
-    {
+                                                               List dataBindingInfoList) {
         Map<QName, Source> extraSources = new HashMap<QName, Source>();
         Iterator iterator = dataBindingInfoList.iterator();
 
-        while ( iterator.hasNext() )
-        {
+        while (iterator.hasNext()) {
             DataBindingInfo dataBindingInfo = (DataBindingInfo) iterator.next();
             QName classQName = new QName(dataBindingInfo.getWatcherSetupUtilClassName());
 
-            if (generateAbstractSyntaxTree)
-            {
+            if (generateAbstractSyntaxTree) {
                 extraSources.put(classQName, generateWatcherSetupUtilAST(compilationUnit, symbolTable,
-                                                                         dataBindingInfo));
-            }
-            else
-            {
+                        dataBindingInfo));
+            } else {
                 extraSources.put(classQName, generateWatcherSetupUtil(compilationUnit, dataBindingInfo));
             }
         }
@@ -992,11 +876,10 @@ public final class DataBindingExtension implements Extension
 
     private StatementListNode generateWatcher(NodeFactory nodeFactory, StatementListNode statementList,
                                               RepeaterComponentWatcher repeaterComponentWatcher,
-                                              StandardDefs standardDefs)
-    {
+                                              StandardDefs standardDefs) {
         MemberExpressionNode base = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
         QualifiedIdentifierNode qualifiedIdentifier =
-            AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, standardDefs.getBindingPackage(), REPEATER_COMPONENT_WATCHER, false);
+                AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, standardDefs.getBindingPackage(), REPEATER_COMPONENT_WATCHER, false);
         LiteralNumberNode literalNumber = nodeFactory.literalNumber(repeaterComponentWatcher.getId());
         ArgumentListNode expression = nodeFactory.argumentList(null, literalNumber);
 
@@ -1005,7 +888,7 @@ public final class DataBindingExtension implements Extension
         argumentList = nodeFactory.argumentList(argumentList, generateChangeEvents(nodeFactory, repeaterComponentWatcher));
         argumentList = nodeFactory.argumentList(argumentList, generateListeners(nodeFactory, repeaterComponentWatcher));
         MemberExpressionNode propertyGetterMemberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, PROPERTY_GETTER, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, PROPERTY_GETTER, false);
         argumentList = nodeFactory.argumentList(argumentList, propertyGetterMemberExpression);
 
         CallExpressionNode callExpression = (CallExpressionNode) nodeFactory.callExpression(qualifiedIdentifier, argumentList);
@@ -1014,7 +897,7 @@ public final class DataBindingExtension implements Extension
         MemberExpressionNode callMemberExpression = nodeFactory.memberExpression(null, callExpression);
         ArgumentListNode args = nodeFactory.argumentList(null, callMemberExpression);
         SetExpressionNode selector = nodeFactory.setExpression(expression, args, false);
-		selector.setMode(Tokens.LEFTBRACKET_TOKEN);
+        selector.setMode(Tokens.LEFTBRACKET_TOKEN);
 
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(base, selector);
         ListNode list = nodeFactory.list(null, memberExpression);
@@ -1026,8 +909,7 @@ public final class DataBindingExtension implements Extension
 
     private StatementListNode generateWatcher(NodeFactory nodeFactory, Context cx,
                                               StatementListNode statementList, RepeaterItemWatcher repeaterItemWatcher,
-                                              StandardDefs standardDefs)
-    {
+                                              StandardDefs standardDefs) {
         MemberExpressionNode base = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
 
         QualifiedIdentifierNode qualifiedIdentifier = AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory,
@@ -1041,8 +923,8 @@ public final class DataBindingExtension implements Extension
         LiteralNumberNode parentId = nodeFactory.literalNumber(repeaterItemWatcher.getParent().getId());
         ArgumentListNode parentExpression = nodeFactory.argumentList(null, parentId);
         GetExpressionNode parentSelector = nodeFactory.getExpression(parentExpression);
-		parentSelector.setMode(Tokens.LEFTBRACKET_TOKEN);
-        MemberExpressionNode parentMemberExpression= nodeFactory.memberExpression(parentWatchersBase, parentSelector);
+        parentSelector.setMode(Tokens.LEFTBRACKET_TOKEN);
+        MemberExpressionNode parentMemberExpression = nodeFactory.memberExpression(parentWatchersBase, parentSelector);
         ArgumentListNode argumentList = nodeFactory.argumentList(null, parentMemberExpression);
 
         CallExpressionNode callExpression = (CallExpressionNode) nodeFactory.callExpression(qualifiedIdentifier, argumentList);
@@ -1052,7 +934,7 @@ public final class DataBindingExtension implements Extension
         ArgumentListNode args = nodeFactory.argumentList(null, callMemberExpression);
 
         SetExpressionNode selector = nodeFactory.setExpression(expression, args, false);
-		selector.setMode(Tokens.LEFTBRACKET_TOKEN);
+        selector.setMode(Tokens.LEFTBRACKET_TOKEN);
 
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(base, selector);
         ListNode list = nodeFactory.list(null, memberExpression);
@@ -1063,11 +945,10 @@ public final class DataBindingExtension implements Extension
     }
 
     private StatementListNode generateWatcher(NodeFactory nodeFactory, StatementListNode statementList,
-                                              XMLWatcher xmlWatcher, StandardDefs standardDefs)
-    {
+                                              XMLWatcher xmlWatcher, StandardDefs standardDefs) {
         MemberExpressionNode base = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WATCHERS, false);
         QualifiedIdentifierNode qualifiedIdentifier =
-            AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, standardDefs.getBindingPackage(), XML_WATCHER, false);
+                AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, standardDefs.getBindingPackage(), XML_WATCHER, false);
         LiteralNumberNode literalNumber = nodeFactory.literalNumber(xmlWatcher.getId());
         ArgumentListNode expression = nodeFactory.argumentList(null, literalNumber);
 
@@ -1081,7 +962,7 @@ public final class DataBindingExtension implements Extension
         MemberExpressionNode callMemberExpression = nodeFactory.memberExpression(null, callExpression);
         ArgumentListNode args = nodeFactory.argumentList(null, callMemberExpression);
         SetExpressionNode selector = nodeFactory.setExpression(expression, args, false);
-		selector.setMode(Tokens.LEFTBRACKET_TOKEN);
+        selector.setMode(Tokens.LEFTBRACKET_TOKEN);
 
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(base, selector);
         ListNode list = nodeFactory.list(null, memberExpression);
@@ -1092,79 +973,60 @@ public final class DataBindingExtension implements Extension
     }
 
     private StatementListNode generateWatcherBottom(NodeFactory nodeFactory, Context cx,
-                                                    StatementListNode statementList, Watcher watcher)
-    {
+                                                    StatementListNode statementList, Watcher watcher) {
         StatementListNode result = statementList;
 
-        if (watcher.shouldWriteSelf())
-        {
+        if (watcher.shouldWriteSelf()) {
             if (((watcher instanceof ArrayElementWatcher) &&
-                 watcher.shouldWriteSelf() &&
-                 watcher.shouldWriteChildren()) ||
-                (watcher instanceof FunctionReturnWatcher))
-            {
+                    watcher.shouldWriteSelf() &&
+                    watcher.shouldWriteChildren()) ||
+                    (watcher instanceof FunctionReturnWatcher)) {
                 EvaluationWatcher evaluationWatcher = (EvaluationWatcher) watcher;
 
-                if ((watcher.getParent() != null) && watcher.getParent().shouldWriteSelf())
-                {
+                if ((watcher.getParent() != null) && watcher.getParent().shouldWriteSelf()) {
                     result = nodeFactory.statementList(result, generateEvaluationWatcherPart(nodeFactory,
-                                                                                             evaluationWatcher));
+                            evaluationWatcher));
                 }
             }
 
-            if (watcher.getParent() != null)
-            {
-                if (watcher.getParent().shouldWriteSelf())
-                {
+            if (watcher.getParent() != null) {
+                if (watcher.getParent().shouldWriteSelf()) {
                     result = nodeFactory.statementList(result, generateAddChild(nodeFactory, watcher));
-                }
-                else
-                {
+                } else {
                     Watcher parent = watcher.getParent();
 
-                    if (parent instanceof PropertyWatcher)
-                    {
+                    if (parent instanceof PropertyWatcher) {
                         PropertyWatcher propertyWatcher = (PropertyWatcher) parent;
 
-                        if (propertyWatcher.getStaticProperty())
-                        {
+                        if (propertyWatcher.getStaticProperty()) {
                             result = nodeFactory.statementList(result,
-                                                               generateUpdateParentStaticProperty(nodeFactory,
-                                                                                                  watcher.getId(),
-                                                                                                  propertyWatcher));
-                        }
-                        else
-                        {
-                            if (parent.getParent() != null)
-                            {
+                                    generateUpdateParentStaticProperty(nodeFactory,
+                                            watcher.getId(),
+                                            propertyWatcher));
+                        } else {
+                            if (parent.getParent() != null) {
                                 result = nodeFactory.statementList(result,
-                                                                   generateUpdateParentProperty(nodeFactory,
-                                                                                                watcher.getId(),
-                                                                                                propertyWatcher));
-                            }
-                            else
-                            {
+                                        generateUpdateParentProperty(nodeFactory,
+                                                watcher.getId(),
+                                                propertyWatcher));
+                            } else {
                                 result = nodeFactory.statementList(result,
-                                                                   generateUpdateParentPrivateProperty(nodeFactory,
-                                                                                                       watcher.getId(),
-                                                                                                       propertyWatcher));
+                                        generateUpdateParentPrivateProperty(nodeFactory,
+                                                watcher.getId(),
+                                                propertyWatcher));
                             }
                         }
                     }
                 }
-            }
-            else
-            {
+            } else {
                 result = generateRootWatcherBottom(nodeFactory, cx, result, watcher);
             }
         }
 
-        if (watcher.shouldWriteChildren())
-        {
+        if (watcher.shouldWriteChildren()) {
             Iterator<Watcher> iterator = watcher.getChildren().iterator();
 
-            while (iterator.hasNext())
-            {
+            while (iterator.hasNext()) {
                 Watcher childWatcher = iterator.next();
                 result = generateWatcherBottom(nodeFactory, cx, result, childWatcher);
             }
@@ -1176,19 +1038,15 @@ public final class DataBindingExtension implements Extension
     /**
      *
      */
-    private Source generateWatcherSetupUtil(CompilationUnit compilationUnit, DataBindingInfo dataBindingInfo)
-    {
+    private Source generateWatcherSetupUtil(CompilationUnit compilationUnit, DataBindingInfo dataBindingInfo) {
         Template template;
 
         StandardDefs standardDefs = compilationUnit.getStandardDefs();
         String templatePath = TEMPLATE_PATH + standardDefs.getWatcherSetupUtilTemplate();
 
-        try
-        {
+        try {
             template = VelocityManager.getTemplate(templatePath);
-        }
-        catch (Exception exception)
-        {
+        } catch (Exception exception) {
             ThreadLocalToolkit.log(new VelocityException.TemplateNotFound(templatePath));
             return null;
         }
@@ -1200,36 +1058,32 @@ public final class DataBindingExtension implements Extension
 
         SourceCodeBuffer out = new SourceCodeBuffer();
 
-        try
-        {
+        try {
             VelocityUtil util = new VelocityUtil(TEMPLATE_PATH, false, out, null);
             VelocityContext velocityContext = VelocityManager.getCodeGenContext(util);
             velocityContext.put(DATA_BINDING_INFO_KEY, dataBindingInfo);
             template.merge(velocityContext, out);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             ThreadLocalToolkit.log(new VelocityException.GenerateException(compilationUnit.getSource().getRelativePath(),
-                                                                           e.getLocalizedMessage()));
+                    e.getLocalizedMessage()));
             return null;
         }
 
         return createSource(generatedName, shortName, compilationUnit.getSource().getLastModified(),
-        					compilationUnit.getSource().getPathResolver(), out);
+                compilationUnit.getSource().getPathResolver(), out);
     }
 
     private Source generateWatcherSetupUtilAST(CompilationUnit compilationUnit, SymbolTable symbolTable,
-                                               DataBindingInfo dataBindingInfo)
-    {
+                                               DataBindingInfo dataBindingInfo) {
         String className = dataBindingInfo.getWatcherSetupUtilClassName();
         String shortName = className.substring(className.lastIndexOf(DOT) + 1);
         String fileName = className.replace('.', File.separatorChar) + DOT_AS;
         VirtualFile emptyFile = new TextFile(EMPTY_STRING, fileName, null, MimeMappings.AS,
-                                             compilationUnit.getSource().getLastModified());
+                compilationUnit.getSource().getLastModified());
         Source result = new Source(emptyFile, EMPTY_STRING, shortName, null, false, false, false);
 
         Context cx = AbstractSyntaxTreeUtil.generateContext(symbolTable.perCompileData, result,
-                                                            symbolTable.emitter, defines);
+                symbolTable.emitter, defines);
         NodeFactory nodeFactory = cx.getNodeFactory();
 
         HashSet<String> configNamespaces = new HashSet<String>();
@@ -1238,8 +1092,7 @@ public final class DataBindingExtension implements Extension
         StatementListNode programStatementList = program.statements;
 
         String[] watcherImports = compilationUnit.getStandardDefs().getImports();
-        for (int i = 0; i < watcherImports.length; i++)
-        {
+        for (int i = 0; i < watcherImports.length; i++) {
             ImportDirectiveNode importDirective = AbstractSyntaxTreeUtil.generateImport(cx, watcherImports[i]);
             programStatementList = nodeFactory.statementList(programStatementList, importDirective);
         }
@@ -1248,16 +1101,16 @@ public final class DataBindingExtension implements Extension
         programStatementList = nodeFactory.statementList(programStatementList, metaDataNode);
 
         ClassDefinitionNode classDefinition = generateClassDefinition(cx, configNamespaces, shortName,
-                                                                      dataBindingInfo, compilationUnit.getStandardDefs());
+                dataBindingInfo, compilationUnit.getStandardDefs());
         programStatementList = nodeFactory.statementList(programStatementList, classDefinition);
         program.statements = programStatementList;
 
         PackageDefinitionNode packageDefinition = nodeFactory.finishPackage(cx, null);
         nodeFactory.statementList(programStatementList, packageDefinition);
 
-		CompilerContext context = new CompilerContext();
-		context.setAscContext(cx);
-		result.newCompilationUnit(program, context).setSyntaxTree(program);
+        CompilerContext context = new CompilerContext();
+        context.setAscContext(cx);
+        result.newCompilationUnit(program, context).setSyntaxTree(program);
 
         // Useful when comparing abstract syntax trees
         //flash.swf.tools.SyntaxTreeDumper.dump(program, "/tmp/" + className + "New.xml");

@@ -91,7 +91,7 @@ import macromedia.asc.util.Names;
  * from a previous compilation, and storing a compilation cache.
  *
  * @author Clement Wong
- * @see flex2.compiler.SubCompiler
+ * @see SubCompiler
  * @see flex2.compiler.PersistentStore
  * @see flex2.compiler.abc.AbcCompiler
  * @see flex2.compiler.as3.As3Compiler
@@ -220,7 +220,7 @@ public final class CompilerAPI {
     private static final int analyze3 = (1 << 6);
     private static final int analyze4 = (1 << 7);
     //    private static final int resolveInheritance         = (1 << 8);
-//    private static final int sortInheritance            = (1 << 9);
+    //    private static final int sortInheritance            = (1 << 9);
     private static final int resolveType = (1 << 10);
     //    private static final int importType                 = (1 << 11);
 //    private static final int resolveExpression          = (1 << 12);
@@ -237,7 +237,7 @@ public final class CompilerAPI {
      */
     private static void batch1(List<Source> sources, List<CompilationUnit> units,
                                DependencyGraph<CompilationUnit> igraph, DependencyGraph<Source> dgraph,
-                               SymbolTable symbolTable, flex2.compiler.SubCompiler[] compilers, SourceList sourceList,
+                               SymbolTable symbolTable, SubCompiler[] compilers, SourceList sourceList,
                                SourcePath sourcePath, ResourceContainer resources, CompilerSwcContext swcContext,
                                Configuration configuration) {
         int start = 0, end = sources.size();
@@ -363,7 +363,7 @@ public final class CompilerAPI {
      */
     private static void batch2(List<Source> sources, List<CompilationUnit> units,
                                DependencyGraph<CompilationUnit> igraph, DependencyGraph<Source> dgraph,
-                               SymbolTable symbolTable, flex2.compiler.SubCompiler[] compilers, SourceList sourceList,
+                               SymbolTable symbolTable, SubCompiler[] compilers, SourceList sourceList,
                                SourcePath sourcePath, ResourceContainer resources, CompilerSwcContext swcContext,
                                Configuration configuration) {
         Benchmark benchmark = ThreadLocalToolkit.getBenchmark();
@@ -2373,7 +2373,7 @@ public final class CompilerAPI {
         }
     }
 
-    private static boolean preprocess(List<Source> sources, flex2.compiler.SubCompiler[] compilers,
+    private static boolean preprocess(List<Source> sources, SubCompiler[] compilers,
                                       int start, int end, boolean suppressWarnings) {
         boolean result = true;
 
@@ -2417,14 +2417,14 @@ public final class CompilerAPI {
         }
     }
 
-    static Source preprocess(Source s, flex2.compiler.SubCompiler[] compilers, boolean suppressWarnings) {
+    static Source preprocess(Source s, SubCompiler[] compilers, boolean suppressWarnings) {
         if (!s.isCompiled()) {
             // C: A fresh or healthy Source should not have a Logger.
             if (s.getLogger() != null && s.getLogger().warningCount() > 0 && !s.getLogger().isConnected() && !suppressWarnings) {
                 s.getLogger().displayWarnings(ThreadLocalToolkit.getLogger());
             }
 
-            flex2.compiler.SubCompiler c = getCompiler(s, compilers);
+            SubCompiler c = getCompiler(s, compilers);
             if (c != null) {
                 Logger original = ThreadLocalToolkit.getLogger();
                 // assert !(original instanceof LocalLogger);
@@ -2456,7 +2456,7 @@ public final class CompilerAPI {
     }
 
     private static boolean parse1(final List<Source> sources, final List<CompilationUnit> units, final DependencyGraph<CompilationUnit> igraph, final DependencyGraph<Source> dgraph,
-                                  final flex2.compiler.SubCompiler[] compilers, final SymbolTable symbolTable,
+                                  final SubCompiler[] compilers, final SymbolTable symbolTable,
                                   int start, int end) {
         final boolean[] result = {true};
 
@@ -2464,16 +2464,17 @@ public final class CompilerAPI {
             units.add(null);
         }
 
-//        for (int i = start; i < end; i++) {
-//            final int finalI = i;
-//            CompillerThreadPoolUtil.addCommand(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Source s = sources.get(finalI);
-//                    parse1(s, compilers, symbolTable);
-//                }
-//            });
-//        }
+        //todo: падает с ошибкой
+        for (int i = start; i < end; i++) {
+            final int finalI = i;
+            CompillerThreadPoolUtil.addCommand(new Runnable() {
+                @Override
+                public void run() {
+                    Source s = sources.get(finalI);
+                    parse1(s, compilers, symbolTable);
+                }
+            });
+        }
 
         for (int i = start; i < end; i++) {
             Source s = sources.get(i);
@@ -2497,13 +2498,13 @@ public final class CompilerAPI {
         return result[0];
     }
 
-    private static CompilationUnit parse1(Source s, flex2.compiler.SubCompiler[] compilers, SymbolTable symbolTable) {
+    private static CompilationUnit parse1(Source s, SubCompiler[] compilers, SymbolTable symbolTable) {
         if (s.isCompiled()) {
             return s.getCompilationUnit();
         }
 
         CompilationUnit u = null;
-        flex2.compiler.SubCompiler c = getCompiler(s, compilers);
+        SubCompiler c = getCompiler(s, compilers);
         if (c != null) {
             Logger original = ThreadLocalToolkit.getLogger(), local = s.getLogger();
             ThreadLocalToolkit.setLogger(local);
@@ -2525,7 +2526,7 @@ public final class CompilerAPI {
         return u;
     }
 
-    private static boolean parse2(final List<Source> sources, final flex2.compiler.SubCompiler[] compilers,
+    private static boolean parse2(final List<Source> sources, final SubCompiler[] compilers,
                                   final SymbolTable symbolTable, int start, int end) {
         final boolean[] result = {true};
 
@@ -2562,15 +2563,15 @@ public final class CompilerAPI {
         return result[0];
     }
 
-    private static boolean parse2(List<Source> sources, flex2.compiler.SubCompiler[] compilers, SymbolTable symbolTable) {
+    private static boolean parse2(List<Source> sources, SubCompiler[] compilers, SymbolTable symbolTable) {
         return parse2(sources, compilers, symbolTable, 0, sources.size());
     }
 
-    private static boolean parse2(CompilationUnit u, flex2.compiler.SubCompiler[] compilers, SymbolTable symbolTable) {
+    private static boolean parse2(CompilationUnit u, SubCompiler[] compilers, SymbolTable symbolTable) {
         Source s = u.getSource();
 
         if (!s.isCompiled()) {
-            flex2.compiler.SubCompiler c = getCompiler(s, compilers);
+            SubCompiler c = getCompiler(s, compilers);
             if (c != null) {
                 // C: may use CompilationUnit to reference the local logger so as to minimize
                 //    the number of creations...
@@ -2592,12 +2593,12 @@ public final class CompilerAPI {
         return true;
     }
 
-    private static boolean analyze(List<Source> sources, flex2.compiler.SubCompiler[] compilers,
+    private static boolean analyze(List<Source> sources, SubCompiler[] compilers,
                                    SymbolTable symbolTable, int phase) {
         return analyze(sources, compilers, symbolTable, 0, sources.size(), phase);
     }
 
-    private static boolean analyze(final List<Source> sources, final flex2.compiler.SubCompiler[] compilers,
+    private static boolean analyze(final List<Source> sources, final SubCompiler[] compilers,
                                    final SymbolTable symbolTable, int start, int end, final int phase) {
         final boolean[] result = {true};
 
@@ -2640,12 +2641,12 @@ public final class CompilerAPI {
         return result[0];
     }
 
-    private static boolean analyze(CompilationUnit u, flex2.compiler.SubCompiler[] compilers, SymbolTable symbolTable,
+    private static boolean analyze(CompilationUnit u, SubCompiler[] compilers, SymbolTable symbolTable,
                                    int phase) {
         Source s = u.getSource();
 
         if (!s.isCompiled()) {
-            flex2.compiler.SubCompiler c = getCompiler(s, compilers);
+            SubCompiler c = getCompiler(s, compilers);
 
             if (c != null) {
                 // C: may use CompilationUnit to reference the local logger so as to minimize
@@ -3449,11 +3450,11 @@ public final class CompilerAPI {
         return qNames;
     }
 
-    private static boolean generate(List<Source> sources, List<CompilationUnit> units, flex2.compiler.SubCompiler[] compilers, SymbolTable symbolTable) {
+    private static boolean generate(List<Source> sources, List<CompilationUnit> units, SubCompiler[] compilers, SymbolTable symbolTable) {
         return generate(sources, units, compilers, symbolTable, 0, units.size());
     }
 
-    private static boolean generate(List<Source> sources, List<CompilationUnit> units, flex2.compiler.SubCompiler[] compilers, SymbolTable symbolTable,
+    private static boolean generate(List<Source> sources, List<CompilationUnit> units, SubCompiler[] compilers, SymbolTable symbolTable,
                                     int start, int end) {
         boolean result = true;
 
@@ -3488,7 +3489,7 @@ public final class CompilerAPI {
         return result;
     }
 
-    private static boolean generate(CompilationUnit u, flex2.compiler.SubCompiler[] compilers, SymbolTable symbolTable) {
+    private static boolean generate(CompilationUnit u, SubCompiler[] compilers, SymbolTable symbolTable) {
 // CodeOrchestra: TODO: investigate
 //        if (Fcsh.livecodingBaseMode && !Fcsh.livecodingBaseModeSecondPass) {
 //            // On first pass we do not need to generate artifact, just collect syntax trees
@@ -3497,7 +3498,7 @@ public final class CompilerAPI {
 
         Source s = u.getSource();
         if (!s.isCompiled()) {
-            flex2.compiler.SubCompiler c = getCompiler(s, compilers);
+            SubCompiler c = getCompiler(s, compilers);
             if (c != null) {
                 // C: may use CompilationUnit to reference the local logger so as to minimize
                 //    the number of creations...
@@ -3522,11 +3523,11 @@ public final class CompilerAPI {
         return true;
     }
 
-    private static boolean postprocess(List<Source> sources, List<CompilationUnit> units, flex2.compiler.SubCompiler[] compilers, SymbolTable symbolTable) {
+    private static boolean postprocess(List<Source> sources, List<CompilationUnit> units, SubCompiler[] compilers, SymbolTable symbolTable) {
         return postprocess(sources, units, compilers, symbolTable, 0, units.size());
     }
 
-    private static boolean postprocess(List<Source> sources, List<CompilationUnit> units, flex2.compiler.SubCompiler[] compilers, SymbolTable symbolTable,
+    private static boolean postprocess(List<Source> sources, List<CompilationUnit> units, SubCompiler[] compilers, SymbolTable symbolTable,
                                        int start, int end) {
         boolean result = true;
 
@@ -3553,10 +3554,10 @@ public final class CompilerAPI {
         return result;
     }
 
-    private static boolean postprocess(CompilationUnit u, flex2.compiler.SubCompiler[] compilers, SymbolTable symbolTable) {
+    private static boolean postprocess(CompilationUnit u, SubCompiler[] compilers, SymbolTable symbolTable) {
         Source s = u.getSource();
         if (!s.isCompiled()) {
-            flex2.compiler.SubCompiler c = getCompiler(s, compilers);
+            SubCompiler c = getCompiler(s, compilers);
             if (c != null) {
                 Logger original = ThreadLocalToolkit.getLogger(), local = s.getLogger();
                 ThreadLocalToolkit.setLogger(local);
@@ -3803,7 +3804,7 @@ public final class CompilerAPI {
         }
     }
 
-    private static flex2.compiler.SubCompiler getCompiler(Source source, flex2.compiler.SubCompiler[] compilers) {
+    private static SubCompiler getCompiler(Source source, SubCompiler[] compilers) {
         synchronized (compilers) {
             for (int i = 0, length = source == null || compilers == null ? 0 : compilers.length; i < length; i++) {
                 if (compilers[i].isSupported(source.getMimeType())) {

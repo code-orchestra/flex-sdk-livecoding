@@ -41,68 +41,54 @@ import flash.util.Trace;
  * @author Brian Deitte
  * @author Paul Reilly
  */
-public class SwcLazyReadArchive extends SwcDynamicArchive
-{
+public class SwcLazyReadArchive extends SwcDynamicArchive {
     private ZipFileHolder zipFileHolder;
 
-    public SwcLazyReadArchive( String path )
-    {
-	    super(path);
+    public SwcLazyReadArchive(String path) {
+        super(path);
     }
 
-    public SwcLazyReadArchive( OutputStream out, String path )
-    {
+    public SwcLazyReadArchive(OutputStream out, String path) {
         super(out, path);
     }
 
     /**
      * Fills in "files" with a VirtualZipFile for each zip file entry.
      */
-    public void load()
-    {
+    public void load() {
         assert files == null;
         files = new HashMap<String, VirtualFile>();
 
-        try
-        {
-	        File file = new File(path);
-	        ZipFile zipFile = new ZipFile(file);
-	        zipFileHolder = new ZipFileHolder(zipFile, path);
-	        Enumeration e = zipFile.getEntries();
-            while (e.hasMoreElements())
-            {
-	            ZipEntry ze = (ZipEntry) e.nextElement();
+        try {
+            File file = new File(path);
+            ZipFile zipFile = new ZipFile(file);
+            zipFileHolder = new ZipFileHolder(zipFile, path);
+            Enumeration e = zipFile.getEntries();
+            while (e.hasMoreElements()) {
+                ZipEntry ze = (ZipEntry) e.nextElement();
                 String name = ze.getName();
-                VirtualFile f = new VirtualZipFile(zipFileHolder,  MimeMappings.getMimeType(name),
-                                                   path + "$" + name, name);
+                VirtualFile f = new VirtualZipFile(zipFileHolder, MimeMappings.getMimeType(name),
+                        path + "$" + name, name);
                 files.put(name, f);
             }
-        }
-        catch (SwcException.UnknownZipFormat e)
-        {
-        	throw new SwcException.NotASwcFile(path);
-        }
-        catch (SwcException e)
-        {
-	        throw e;
-        }
-        catch (Exception e)
-        {
-            if (Trace.error)
-            {
+        } catch (SwcException.UnknownZipFormat e) {
+            throw new SwcException.NotASwcFile(path);
+        } catch (SwcException e) {
+            throw e;
+        } catch (Exception e) {
+            if (Trace.error) {
                 e.printStackTrace();
             }
-            throw new SwcException.FilesNotRead( e.getMessage() );
-		}
-	}
+            throw new SwcException.FilesNotRead(e.getMessage());
+        }
+    }
 
     /**
      * Closes the <code>zipFile</code>.  This is necessary to prevent
      * the <code>zipFile</code> from remaining open after a
      * compilation finishes.
      */
-	public void close()
-	{
+    public void close() {
         zipFileHolder.close();
-	}
+    }
 }

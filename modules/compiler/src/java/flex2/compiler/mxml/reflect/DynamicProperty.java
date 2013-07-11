@@ -23,7 +23,6 @@ package flex2.compiler.mxml.reflect;
  * Defines the reflection API of a dynamically created property or
  * variable.
  */
-public interface DynamicProperty extends Assignable
-{
+public interface DynamicProperty extends Assignable {
     String getName();
 }

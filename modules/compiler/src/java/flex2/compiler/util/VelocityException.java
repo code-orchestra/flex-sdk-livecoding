@@ -24,18 +24,15 @@ package flex2.compiler.util;
  *
  * @author Paul Reilly
  */
-public class VelocityException
-{
+public class VelocityException {
     /**
      * Error reported when a template is not found.
      */
-    public static class TemplateNotFound extends CompilerMessage.CompilerError
-    {
+    public static class TemplateNotFound extends CompilerMessage.CompilerError {
         private static final long serialVersionUID = 3281434659448341356L;
         public String template;
 
-        public TemplateNotFound(String template)
-        {
+        public TemplateNotFound(String template) {
             this.template = template;
             noPath();
         }
@@ -44,14 +41,12 @@ public class VelocityException
     /**
      * Error reported when a problem occurs during generation.
      */
-    public static class GenerateException extends CompilerMessage.CompilerError
-    {
+    public static class GenerateException extends CompilerMessage.CompilerError {
         private static final long serialVersionUID = -2645837653351436195L;
         public String message;
         public String template;
 
-        public GenerateException(String template, String message)
-        {
+        public GenerateException(String template, String message) {
             this.template = template;
             this.message = message;
         }
@@ -60,17 +55,15 @@ public class VelocityException
     /**
      * Error reported when a generated file can't be written to disk.
      */
-    public static class UnableToWriteGeneratedFile extends CompilerMessage.CompilerWarning
-    {
+    public static class UnableToWriteGeneratedFile extends CompilerMessage.CompilerWarning {
         private static final long serialVersionUID = 8829964076350246231L;
         public String fileName;
         public String message;
 
-        public UnableToWriteGeneratedFile(String fileName, String message)
-        {
+        public UnableToWriteGeneratedFile(String fileName, String message) {
             this.fileName = fileName;
-	        this.message = message;
-	        noPath();
+            this.message = message;
+            noPath();
         }
     }
 }

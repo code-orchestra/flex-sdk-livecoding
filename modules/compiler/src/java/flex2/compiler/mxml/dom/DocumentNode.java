@@ -34,63 +34,55 @@ import java.util.List;
  *
  * @author Clement Wong
  */
-public class DocumentNode extends Node
-{
-	private String outerDocumentClassName;
+public class DocumentNode extends Node {
+    private String outerDocumentClassName;
     private String languageNamespace;
     private int version;
 
-	/**
-	 * Qualified node mappings to classes locally defined for the document.
-	 */
-	private NameMappings localClassMappings;
-	
-	/**
-	 * Collection of declared DesignLayer instances that wouldn't otherwise
-	 * be associated with any layer children. These eventually will become
-	 * top level declarations.
-	 */
-	public List<DesignLayerNode> layerDeclarationNodes = 
-		new ArrayList<DesignLayerNode>();
+    /**
+     * Qualified node mappings to classes locally defined for the document.
+     */
+    private NameMappings localClassMappings;
 
-	public static final Set<QName> attributes;
+    /**
+     * Collection of declared DesignLayer instances that wouldn't otherwise
+     * be associated with any layer children. These eventually will become
+     * top level declarations.
+     */
+    public List<DesignLayerNode> layerDeclarationNodes =
+            new ArrayList<DesignLayerNode>();
 
-	static
-	{
-		attributes = new HashSet<QName>();
-	}
+    public static final Set<QName> attributes;
 
-	public DocumentNode(String uri, String localName)
-	{
-		this(uri, localName, 0);
-	}
+    static {
+        attributes = new HashSet<QName>();
+    }
 
-	public DocumentNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
+    public DocumentNode(String uri, String localName) {
+        this(uri, localName, 0);
+    }
 
-	public String getOuterDocumentClassName()
-	{
-		return outerDocumentClassName;
-	}
+    public DocumentNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
 
-	public boolean isInlineComponent()
-	{
-		return outerDocumentClassName != null;
-	}
+    public String getOuterDocumentClassName() {
+        return outerDocumentClassName;
+    }
 
-	public static DocumentNode inlineDocumentNode(String uri, String localName, String outerDocumentClassName)
-	{
-		DocumentNode node = new DocumentNode(uri, localName);
-		node.setOuterDocumentClassName(outerDocumentClassName);
-		return node;
-	}
+    public boolean isInlineComponent() {
+        return outerDocumentClassName != null;
+    }
 
-	private void setOuterDocumentClassName(String outerDocumentClassName)
-	{
-		this.outerDocumentClassName = outerDocumentClassName;
-	}
+    public static DocumentNode inlineDocumentNode(String uri, String localName, String outerDocumentClassName) {
+        DocumentNode node = new DocumentNode(uri, localName);
+        node.setOuterDocumentClassName(outerDocumentClassName);
+        return node;
+    }
+
+    private void setOuterDocumentClassName(String outerDocumentClassName) {
+        this.outerDocumentClassName = outerDocumentClassName;
+    }
 
     /**
      * Looks to see whether the Source has a local class mapping for a
@@ -100,10 +92,8 @@ public class DocumentNode extends Node
      * @param localPart The tag name.
      * @return The Class name, or null if a mapping was not found.
      */
-    public String getLocalClass(String namespace, String localPart)
-    {
-        if (localClassMappings != null)
-        {
+    public String getLocalClass(String namespace, String localPart) {
+        if (localClassMappings != null) {
             return localClassMappings.lookupClassName(namespace, localPart);
         }
 
@@ -112,13 +102,12 @@ public class DocumentNode extends Node
 
     /**
      * Maps a qualified tag name to a Class name for the local Source.
-     * 
+     *
      * @param namespace The tag namespace URI.
      * @param localPart The tag name.
      * @param className The name of the local Class.
      */
-    public void addLocalClass(String namespace, String localPart, String className)
-    {
+    public void addLocalClass(String namespace, String localPart, String className) {
         if (localClassMappings == null)
             localClassMappings = new NameMappings();
 
@@ -128,8 +117,7 @@ public class DocumentNode extends Node
     /**
      * @return The collection of local class mappings for this DocumentNode.
      */
-    public NameMappings getLocalClassMappings()
-    {
+    public NameMappings getLocalClassMappings() {
         return localClassMappings;
     }
 
@@ -137,11 +125,10 @@ public class DocumentNode extends Node
      * Update the collection of local class mappings for this document node.
      * This can be useful for the creation of synthetic DocumentNodes for
      * inline components and Library Definitions.
-     * 
+     *
      * @param mappings The local class mappings for this DocumentNode
      */
-    public void setLocalClassMappings(NameMappings mappings)
-    {
+    public void setLocalClassMappings(NameMappings mappings) {
         localClassMappings = mappings;
     }
 
@@ -150,8 +137,7 @@ public class DocumentNode extends Node
      *
      * @return String the URI representing the language namespace.
      */
-    public String getLanguageNamespace()
-    {
+    public String getLanguageNamespace() {
         return languageNamespace;
     }
 
@@ -160,8 +146,7 @@ public class DocumentNode extends Node
      *
      * @param namespace
      */
-    public void setLanguageNamespace(String namespace)
-    {
+    public void setLanguageNamespace(String namespace) {
         languageNamespace = namespace;
     }
 
@@ -171,16 +156,14 @@ public class DocumentNode extends Node
      * as to which rules are in effect and is an integer to allow for relative
      * comparison.
      */
-    public int getVersion()
-    {
+    public int getVersion() {
         return version;
     }
 
     /**
      * Sets the MXML language version.
      */
-    public void setVersion(int version)
-    {
+    public void setVersion(int version) {
         this.version = version;
     }
 }

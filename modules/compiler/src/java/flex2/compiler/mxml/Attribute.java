@@ -23,10 +23,8 @@ package flex2.compiler.mxml;
  * This class represents an attribute of an MXML DOM element. It is used to
  * keep track of the line number for the attribute.
  */
-public class Attribute
-{
-    Attribute(String uri, String localPart, Object value, int line)
-    {
+public class Attribute {
+    Attribute(String uri, String localPart, Object value, int line) {
         this.uri = uri;
         this.localPart = localPart;
         this.value = value;
@@ -38,23 +36,19 @@ public class Attribute
     private Object value;
     private int line;
 
-    public String getLocalPart()
-    {
+    public String getLocalPart() {
         return localPart;
     }
 
-    public String getNamespace()
-    {
+    public String getNamespace() {
         return uri;
     }
 
-    public Object getValue()
-    {
+    public Object getValue() {
         return value;
     }
 
-    public int getLine()
-    {
+    public int getLine() {
         return line;
     }
 }

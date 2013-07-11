@@ -253,7 +253,7 @@ public final class SymbolTable {
 
     public synchronized void registerResourceBundle(String rbName, Source source) {
         /*
-		Source old = (Source) rbNameTable.get(rbName);
+        Source old = (Source) rbNameTable.get(rbName);
 		if (old == null)
 		{
 			rbNameTable.put(rbName, source);

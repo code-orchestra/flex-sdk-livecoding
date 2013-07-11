@@ -26,70 +26,69 @@ package flex2.compiler.mxml.reflect;
  *
  * @author Clement Wong
  */
-public interface Type
-{
-	/**
-	 * Type name. AS3-compatible fully-qualified class name.
-	 */
-	String getName();
+public interface Type {
+    /**
+     * Type name. AS3-compatible fully-qualified class name.
+     */
+    String getName();
 
-	/**
-	 * return type table
-	 */
-	TypeTable getTypeTable();
+    /**
+     * return type table
+     */
+    TypeTable getTypeTable();
 
     /**
      * Element type
      */
     Type getElementType();
 
-	/**
-	 * Super type
-	 */
-	Type getSuperType();
+    /**
+     * Super type
+     */
+    Type getSuperType();
 
-	/**
-	 * Interfaces
-	 */
-	Type[] getInterfaces();
+    /**
+     * Interfaces
+     */
+    Type[] getInterfaces();
 
-	/**
-	 * Property = variable | [getter]/[setter]
-	 * Searches all standard namespaces: public, protected, internal, private
-	 */
-	Property getProperty(String name);
+    /**
+     * Property = variable | [getter]/[setter]
+     * Searches all standard namespaces: public, protected, internal, private
+     */
+    Property getProperty(String name);
 
-	/**
-	 * Property = variable | [getter]/[setter]
-	 * Searches specified namespace
-	 */
-	Property getProperty(String namespace, String name);
+    /**
+     * Property = variable | [getter]/[setter]
+     * Searches specified namespace
+     */
+    Property getProperty(String namespace, String name);
 
-	/**
-	 * Property = variable | [getter]/[setter]
-	 * Searches specified namespaces
-	 */
-	Property getProperty(String[] namespaces, String name);
+    /**
+     * Property = variable | [getter]/[setter]
+     * Searches specified namespaces
+     */
+    Property getProperty(String[] namespaces, String name);
 
-	/**
-	 *
-	 */
-	public boolean hasStaticMember(String name);
+    /**
+     *
+     */
+    public boolean hasStaticMember(String name);
 
-	/**
-	 * [Event]
-	 */
-	Event getEvent(String name);
+    /**
+     * [Event]
+     */
+    Event getEvent(String name);
 
-	/**
-	 * [Effect]
-	 */
-	Effect getEffect(String name);
+    /**
+     * [Effect]
+     */
+    Effect getEffect(String name);
 
-	/**
-	 * [Style]
-	 */
-	Style getStyle(String name);
+    /**
+     * [Style]
+     */
+    Style getStyle(String name);
 
     /**
      * [Style(theme="...")]
@@ -102,54 +101,54 @@ public interface Type
      */
     public String getLoaderClass();
 
-	/**
-	 * [Obsolete]
-	 */
-	boolean hasObsolete(String name);
+    /**
+     * [Obsolete]
+     */
+    boolean hasObsolete(String name);
 
-	/**
-	 * [DefaultProperty]
-	 * Note: returns name as given in metadata - may or may not correctly specify a public property 
-	 */
-	Property getDefaultProperty();
+    /**
+     * [DefaultProperty]
+     * Note: returns name as given in metadata - may or may not correctly specify a public property
+     */
+    Property getDefaultProperty();
 
-	/**
-	 * [MaxChildren]
-	 */
-	int getMaxChildren();
+    /**
+     * [MaxChildren]
+     */
+    int getMaxChildren();
 
-	/**
-	 * Dynamic type
-	 */
-	boolean hasDynamic();
+    /**
+     * Dynamic type
+     */
+    boolean hasDynamic();
 
     /**
      * Tests whether the type declares the specified metadata.
      */
     boolean hasMetadata(String name, boolean inherited);
 
-	/**
-	 * Return true if this type is assignable to 'baseType'.
-	 */
-	boolean isAssignableTo(Type baseType);
+    /**
+     * Return true if this type is assignable to 'baseType'.
+     */
+    boolean isAssignableTo(Type baseType);
 
-	/**
-	 * Return true if this type is assignable to 'baseName'.
-	 */
-	boolean isAssignableTo(String baseName);
+    /**
+     * Return true if this type is assignable to 'baseName'.
+     */
+    boolean isAssignableTo(String baseName);
 
     /**
      * Return true if the type has excluded this styles.
      */
     boolean isExcludedStyle(String name);
 
-	/**
-	 * Return true if this type is a subclass of 'baseType'.
-	 */
-	boolean isSubclassOf(Type baseType);
+    /**
+     * Return true if this type is a subclass of 'baseType'.
+     */
+    boolean isSubclassOf(Type baseType);
 
-	/**
-	 * Return true if this type is a subclass of 'baseName'.
-	 */
-	boolean isSubclassOf(String baseName);
+    /**
+     * Return true if this type is a subclass of 'baseName'.
+     */
+    boolean isSubclassOf(String baseName);
 }

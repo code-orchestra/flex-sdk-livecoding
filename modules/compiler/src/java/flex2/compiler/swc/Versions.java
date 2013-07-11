@@ -24,60 +24,48 @@ package flex2.compiler.swc;
  *
  * @author Brian Deitte
  */
-public class Versions
-{
+public class Versions {
     private String libVersion;
     private String flexVersion;
     private String flexBuild;
     private String minimumVersion;
-    
-    public String getLibVersion()
-    {
+
+    public String getLibVersion() {
         return libVersion;
     }
 
-    public void setLibVersion(String libVersion)
-    {
+    public void setLibVersion(String libVersion) {
         this.libVersion = libVersion;
     }
 
-    public String getFlexVersion()
-    {
+    public String getFlexVersion() {
         return flexVersion;
     }
 
-    public void setFlexVersion(String flexVersion)
-    {
+    public void setFlexVersion(String flexVersion) {
         this.flexVersion = flexVersion;
     }
 
-    public String getFlexBuild()
-    {
+    public String getFlexBuild() {
         return flexBuild;
     }
 
-    public void setFlexBuild(String flexBuild)
-    {
+    public void setFlexBuild(String flexBuild) {
         this.flexBuild = flexBuild;
     }
-    
-    public String getMinimumVersionString()
-    {
+
+    public String getMinimumVersionString() {
         return minimumVersion;
     }
 
-    public void setMinimumVersion(String libVersion)
-    {
+    public void setMinimumVersion(String libVersion) {
         this.minimumVersion = libVersion;
     }
-    
-    public int getMinimumVersion()
-    {
-        if (minimumVersion != null)
-        {
+
+    public int getMinimumVersion() {
+        if (minimumVersion != null) {
             String[] results = minimumVersion.split("\\.");
-            if (results.length >= 3)
-            {
+            if (results.length >= 3) {
                 int major = Integer.parseInt(results[0]);
                 int minor = Integer.parseInt(results[1]);
                 int revision = Integer.parseInt(results[2]);

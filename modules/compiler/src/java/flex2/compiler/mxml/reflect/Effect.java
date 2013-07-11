@@ -26,13 +26,12 @@ package flex2.compiler.mxml.reflect;
  * [Effect(name="...",event="...")]
  * </code>
  */
-public interface Effect extends Assignable
-{
-	String getEvent();
+public interface Effect extends Assignable {
+    String getEvent();
 
-	String getDeprecatedMessage();
-	
-	String getDeprecatedReplacement();
-	
-	String getDeprecatedSince();
+    String getDeprecatedMessage();
+
+    String getDeprecatedReplacement();
+
+    String getDeprecatedSince();
 }

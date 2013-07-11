@@ -37,50 +37,41 @@ import java.util.Map;
  *
  * @author Clement Wong
  */
-public final class ResourceContainer
-{
-	public ResourceContainer()
-	{
-		name2source = new LinkedHashMap<String, Source>();
-		qname2source = new QNameMap<Source>();
-	}
+public final class ResourceContainer {
+    public ResourceContainer() {
+        name2source = new LinkedHashMap<String, Source>();
+        qname2source = new QNameMap<Source>();
+    }
 
-	private Map<String, Source> name2source;
-	private QNameMap<Source> qname2source;
+    private Map<String, Source> name2source;
+    private QNameMap<Source> qname2source;
     private ApplicationCache applicationCache;
 
-	public Source addResource(Source s)
-	{
-		Source old = name2source.get(s.getName());
-		CompilationUnit u = old != null ? old.getCompilationUnit() : null;
+    public Source addResource(Source s) {
+        Source old = name2source.get(s.getName());
+        CompilationUnit u = old != null ? old.getCompilationUnit() : null;
 
-		if (u == null || 
-			(u != null && !u.isDone()) || 
-			(old.getLastModified() != s.getLastModified()) ||
-			old.isUpdated(s))
-		{
-			s.setOwner(this);
-			name2source.put(s.getName(), s);
-			return s;
-		}
-		else // if (u != null && u.isDone())
-		{
-			return old.copy();
-		}
-	}
-
-	public Source findSource(String name)
-	{
-        if (applicationCache != null)
+        if (u == null ||
+                (u != null && !u.isDone()) ||
+                (old.getLastModified() != s.getLastModified()) ||
+                old.isUpdated(s)) {
+            s.setOwner(this);
+            name2source.put(s.getName(), s);
+            return s;
+        } else // if (u != null && u.isDone())
         {
+            return old.copy();
+        }
+    }
+
+    public Source findSource(String name) {
+        if (applicationCache != null) {
             Source cachedSource = applicationCache.getSource(name);
 
-            if ((cachedSource != null) && !cachedSource.isUpdated())
-            {
+            if ((cachedSource != null) && !cachedSource.isUpdated()) {
                 CompilationUnit cachedCompilationUnit = cachedSource.getCompilationUnit();
 
-                if ((cachedCompilationUnit != null) && cachedCompilationUnit.hasTypeInfo)
-                {
+                if ((cachedCompilationUnit != null) && cachedCompilationUnit.hasTypeInfo) {
                     Source source = cachedSource.copy();
                     cachedSource.reused();
                     name2source.put(name, source);
@@ -89,27 +80,23 @@ public final class ResourceContainer
             }
         }
 
-		return checkSource(name2source.get(name));
-	}
+        return checkSource(name2source.get(name));
+    }
 
-	Source findSource(String namespaceURI, String localPart)
-	{
-		assert localPart.indexOf('.') == -1 && localPart.indexOf('/') == -1 && localPart.indexOf(':') == -1
+    Source findSource(String namespaceURI, String localPart) {
+        assert localPart.indexOf('.') == -1 && localPart.indexOf('/') == -1 && localPart.indexOf(':') == -1
                 : "findSource(" + namespaceURI + "," + localPart + ") has bad localPart";
 
-        if (applicationCache != null)
-        {
+        if (applicationCache != null) {
             String className = CompilerAPI.constructClassName(namespaceURI, localPart);
             Source cachedSource = applicationCache.getSource(className);
 
-            if ((cachedSource != null) && !cachedSource.isUpdated())
-            {
+            if ((cachedSource != null) && !cachedSource.isUpdated()) {
                 CompilationUnit cachedCompilationUnit = cachedSource.getCompilationUnit();
 
                 if ((cachedCompilationUnit != null) && cachedCompilationUnit.hasTypeInfo
                         // If isDone is false, then cachedSource.copy() below will just bail, and return null
-                        && cachedCompilationUnit.isDone())
-                {
+                        && cachedCompilationUnit.isDone()) {
                     Source source = cachedSource.copy();
                     cachedSource.reused();
                     name2source.put(source.getName(), source);
@@ -119,59 +106,48 @@ public final class ResourceContainer
             }
         }
 
-		return checkSource(qname2source.get(namespaceURI, localPart));
-	}
+        return checkSource(qname2source.get(namespaceURI, localPart));
+    }
 
-	private Source checkSource(Source s)
-	{
-		CompilationUnit u = s != null ? s.getCompilationUnit() : null;
+    private Source checkSource(Source s) {
+        CompilationUnit u = s != null ? s.getCompilationUnit() : null;
 
-		if ((u != null && !u.isDone()) || (s != null && s.isUpdated()))
-		{
-			// s.removeCompilationUnit();
-		}
-		else if (u != null)
-		{
-			s = s.copy();
-			assert s != null;
-		}
+        if ((u != null && !u.isDone()) || (s != null && s.isUpdated())) {
+            // s.removeCompilationUnit();
+        } else if (u != null) {
+            s = s.copy();
+            assert s != null;
+        }
 
-		return s;
-	}
+        return s;
+    }
 
-	public void refresh()
-	{
-		qname2source.clear();
-		
-		for (Iterator<Source> i = name2source.values().iterator(); i.hasNext();)
-		{
-			Source s = i.next();
-			CompilationUnit u = s.getCompilationUnit();
-			if (u != null)
-			{
-				for (int j = 0, size = u.topLevelDefinitions.size(); j < size; j++)
-				{
-					QName qName = u.topLevelDefinitions.get(j);
-					qname2source.put(qName, s);
-				}
-			}
-		}
-	}
+    public void refresh() {
+        qname2source.clear();
 
-	public Map<String, Source> sources()
-	{
+        for (Iterator<Source> i = name2source.values().iterator(); i.hasNext(); ) {
+            Source s = i.next();
+            CompilationUnit u = s.getCompilationUnit();
+            if (u != null) {
+                for (int j = 0, size = u.topLevelDefinitions.size(); j < size; j++) {
+                    QName qName = u.topLevelDefinitions.get(j);
+                    qname2source.put(qName, s);
+                }
+            }
+        }
+    }
+
+    public Map<String, Source> sources() {
         Map result = new HashMap<String, Source>(qname2source.size());
 
-        for (Map.Entry<QName, Source> entry : qname2source.entrySet())
-        {
+        for (Map.Entry<QName, Source> entry : qname2source.entrySet()) {
             result.put(entry.getKey().toString(), entry.getValue());
         }
 
-		return result;
-	}
+        return result;
+    }
 
-    public void setApplicationCache(ApplicationCache applicationCache)
-    {
+    public void setApplicationCache(ApplicationCache applicationCache) {
         this.applicationCache = applicationCache;
     }
 }

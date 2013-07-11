@@ -24,69 +24,68 @@ package flex2.compiler.mxml.reflect;
  *
  * @author Clement Wong
  */
-public interface Property extends Assignable
-{
-	/**
-	 * Property name
-	 */
-	String getName();
+public interface Property extends Assignable {
+    /**
+     * Property name
+     */
+    String getName();
 
-	/**
-	 * Type.
-	 * 
-	 * If this is a getter, the returned value is the getter's return type.
-	 * If this is a setter, the returned value is the type of the input argument of the setter.
-	 */
-	Type getType();
+    /**
+     * Type.
+     * <p/>
+     * If this is a getter, the returned value is the getter's return type.
+     * If this is a setter, the returned value is the type of the input argument of the setter.
+     */
+    Type getType();
 
     /**
      * [InstanceType]
      *
      * @return null if the instance type metadata is not available or if the
-     * instance type is not specified.
+     *         instance type is not specified.
      */
     Type getInstanceType();
 
-	/**
-	 * Is this read only?
-	 */
-	boolean readOnly();
+    /**
+     * Is this read only?
+     */
+    boolean readOnly();
 
     /**
-	 *
-	 */
-	boolean hasPublic();
+     *
+     */
+    boolean hasPublic();
 
     // metadata
 
-	/**
-	 * [Inspectable]
-	 */
-	Inspectable getInspectable();
+    /**
+     * [Inspectable]
+     */
+    Inspectable getInspectable();
 
-	/**
-	 * [CollapseWhiteSpace]
-	 */
-	boolean collapseWhiteSpace();
+    /**
+     * [CollapseWhiteSpace]
+     */
+    boolean collapseWhiteSpace();
 
     /**
      * [RichTextContent]
      */
     boolean richTextContent();
 
-	/**
-	 * [Deprecated]
-	 */
-	Deprecated getDeprecated();
+    /**
+     * [Deprecated]
+     */
+    Deprecated getDeprecated();
 
-	/**
-	 * [ChangeEvent]
-	 */
-	boolean hasChangeEvent(String name);
+    /**
+     * [ChangeEvent]
+     */
+    boolean hasChangeEvent(String name);
 
 
-	/**
-	 * [PercentProxy]
-	 */
-	String getPercentProxy();
+    /**
+     * [PercentProxy]
+     */
+    String getPercentProxy();
 }

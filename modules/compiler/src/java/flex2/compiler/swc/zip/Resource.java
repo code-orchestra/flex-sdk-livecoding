@@ -20,7 +20,7 @@ import flex2.compiler.swc.SwcException;
 
 /**
  * describes a File or a ZipEntry
- *
+ * <p/>
  * this class is meant to be used by classes needing to record path
  * and date/time information about a file, a zip entry or some similar
  * resource (URL, archive in a version control repository, ...)
@@ -42,11 +42,11 @@ public class Resource implements Cloneable, Comparable {
 
     /**
      * only sets the name.
-     *
+     * <p/>
      * <p>This is a dummy, used for not existing resources.</p>
      *
      * @param name relative path of the resource.  Expects
-     * &quot;/&quot; to be used as the directory separator.
+     *             &quot;/&quot; to be used as the directory separator.
      */
     public Resource(String name) {
         this(name, false, 0, false);
@@ -56,7 +56,7 @@ public class Resource implements Cloneable, Comparable {
      * sets the name, lastmodified flag, and exists flag
      *
      * @param name relative path of the resource.  Expects
-     * &quot;/&quot; to be used as the directory separator.
+     *             &quot;/&quot; to be used as the directory separator.
      */
     public Resource(String name, boolean exists, long lastmodified) {
         this(name, exists, lastmodified, false);
@@ -64,7 +64,7 @@ public class Resource implements Cloneable, Comparable {
 
     /**
      * @param name relative path of the resource.  Expects
-     * &quot;/&quot; to be used as the directory separator.
+     *             &quot;/&quot; to be used as the directory separator.
      */
     public Resource(String name, boolean exists, long lastmodified,
                     boolean directory) {
@@ -78,11 +78,11 @@ public class Resource implements Cloneable, Comparable {
      * name attribute will contain the path of a file relative to the
      * root directory of its fileset or the recorded path of a zip
      * entry.
-     *
+     * <p/>
      * <p>example for a file with fullpath /var/opt/adm/resource.txt
      * in a file set with root dir /var/opt it will be
      * adm/resource.txt.</p>
-     *
+     * <p/>
      * <p>&quot;/&quot; will be used as the directory separator.</p>
      */
     public String getName() {
@@ -91,11 +91,12 @@ public class Resource implements Cloneable, Comparable {
 
     /**
      * @param name relative path of the resource.  Expects
-     * &quot;/&quot; to be used as the directory separator.
+     *             &quot;/&quot; to be used as the directory separator.
      */
     public void setName(String name) {
         this.name = name;
     }
+
     /**
      * the exists attribute tells whether a file exists
      */
@@ -111,7 +112,7 @@ public class Resource implements Cloneable, Comparable {
      * tells the modification time in milliseconds since 01.01.1970 of
      *
      * @return 0 if the resource does not exist to mirror the behavior
-     * of {@link java.io.File File}.
+     *         of {@link java.io.File File}.
      */
     public long getLastModified() {
         return !exists || lastmodified < 0 ? 0 : lastmodified;
@@ -120,8 +121,10 @@ public class Resource implements Cloneable, Comparable {
     public void setLastModified(long lastmodified) {
         this.lastmodified = lastmodified;
     }
+
     /**
      * tells if the resource is a directory
+     *
      * @return boolean flag indicating if the resource is a directory
      */
     public boolean isDirectory() {
@@ -139,7 +142,7 @@ public class Resource implements Cloneable, Comparable {
         try {
             return super.clone();
         } catch (CloneNotSupportedException e) {
-	        // the exceptions below should never happen, so it is not localized
+            // the exceptions below should never happen, so it is not localized
             throw new Error("CloneNotSupportedException caught for a cloneable resource", e);
         }
     }

@@ -29,29 +29,24 @@ import flex2.compiler.util.QName;
  *
  * @author Clement Wong
  */
-public class MetaDataNode extends Node
-{
-	public static final Set<QName> attributes;
+public class MetaDataNode extends Node {
+    public static final Set<QName> attributes;
 
-	static
-	{
-		attributes = new HashSet<QName>();
-	}
+    static {
+        attributes = new HashSet<QName>();
+    }
 
-	public MetaDataNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
+    public MetaDataNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
 
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 
-	public String getText()
-	{
-		CDATANode cdata = (CDATANode) getChildAt(0);
-		return (cdata == null) ? null : cdata.image;
-	}
+    public String getText() {
+        CDATANode cdata = (CDATANode) getChildAt(0);
+        return (cdata == null) ? null : cdata.image;
+    }
 }

@@ -26,7 +26,6 @@ import java.util.List;
  *
  * @author Andrew Westberg
  */
-public interface IConfigurableExtension
-{
-    void configure( List<String> parameters );
+public interface IConfigurableExtension {
+    void configure(List<String> parameters);
 }

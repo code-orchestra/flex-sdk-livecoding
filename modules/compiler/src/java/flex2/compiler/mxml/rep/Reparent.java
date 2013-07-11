@@ -24,32 +24,26 @@ import flex2.compiler.mxml.reflect.Type;
 /**
  * This class represents a Reparent instance.
  */
-public class Reparent extends Model
-{
-    public Reparent(MxmlDocument document, Type type, int line)
-    {
+public class Reparent extends Model {
+    public Reparent(MxmlDocument document, Type type, int line) {
         super(document, type, line);
     }
-    
-    public Reparent(MxmlDocument document, Type type, Model parent, int line)
-    {
+
+    public Reparent(MxmlDocument document, Type type, Model parent, int line) {
         super(document, type, parent, line);
     }
 
-    public Reparent(MxmlDocument document, Type type, Model parent, String target, int line)
-    {
+    public Reparent(MxmlDocument document, Type type, Model parent, String target, int line) {
         super(document, type, parent, line);
         setId(target, true);
         setStateSpecific(true);
     }
 
-    public Object getTarget()
-    {
+    public Object getTarget() {
         return getId();
     }
 
-    public void setTarget(String value)
-    {
-        setId(value,true);
+    public void setTarget(String value) {
+        setId(value, true);
     }
 }

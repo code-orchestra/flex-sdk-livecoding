@@ -21,6 +21,7 @@ package flex2.compiler;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import macromedia.asc.util.Context;
 
 /**
@@ -34,63 +35,53 @@ import macromedia.asc.util.Context;
  * @see flex2.compiler.CompilationUnit
  * @see macromedia.asc.util.Context
  */
-public final class CompilerContext
-{
-	public static final String BINDING_EXPRESSIONS = "BindingExpressions";
-	public static final String RENAMED_VARIABLE_MAP = "RenamedVariableMap";
-	public static final String CSS_ARCHIVE_FILES = "CSSArchiveFiles";
-	public static final String L10N_ARCHIVE_FILES = "L10NArchiveFiles";
+public final class CompilerContext {
+    public static final String BINDING_EXPRESSIONS = "BindingExpressions";
+    public static final String RENAMED_VARIABLE_MAP = "RenamedVariableMap";
+    public static final String CSS_ARCHIVE_FILES = "CSSArchiveFiles";
+    public static final String L10N_ARCHIVE_FILES = "L10NArchiveFiles";
 
-	public CompilerContext()
-	{
-		attributes = new HashMap<String, Object>();
-	}
+    public CompilerContext() {
+        attributes = new HashMap<String, Object>();
+    }
 
-	private Map<String, Object> attributes;
+    private Map<String, Object> attributes;
     private Context ascContext;
 
-    public Context getAscContext()
-    {
+    public Context getAscContext() {
         return ascContext;
     }
 
-    public Context removeAscContext()
-    {
+    public Context removeAscContext() {
         Context result = ascContext;
         ascContext = null;
         return result;
     }
 
-    public void setAscContext(Context ascContext)
-    {
+    public void setAscContext(Context ascContext) {
         this.ascContext = ascContext;
     }
 
-	// C: check to see if some of this usage can be replaced by removeAttribute.
-	public Object getAttribute(String name)
-	{
-		return attributes.get(name);
-	}
+    // C: check to see if some of this usage can be replaced by removeAttribute.
+    public Object getAttribute(String name) {
+        return attributes.get(name);
+    }
 
-	public void setAttribute(String name, Object value)
-	{
-		attributes.put(name, value);
-	}
+    public void setAttribute(String name, Object value) {
+        attributes.put(name, value);
+    }
 
-	public Object removeAttribute(String name)
-	{
-		return attributes.remove(name);
-	}
+    public Object removeAttribute(String name) {
+        return attributes.remove(name);
+    }
 
-	public void clear()
-	{
-		attributes.clear();
+    public void clear() {
+        attributes.clear();
         ascContext = null;
-	}
+    }
 
-	public void setAttributes(CompilerContext context)
-	{
-		attributes.putAll(context.attributes);
+    public void setAttributes(CompilerContext context) {
+        attributes.putAll(context.attributes);
         ascContext = context.ascContext;
-	}
+    }
 }

@@ -37,6 +37,7 @@ import macromedia.asc.semantics.Value;
 import macromedia.asc.util.Context;
 import flash.swf.tools.as3.EvaluatorAdapter;
 import flash.util.Trace;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -57,94 +58,74 @@ import java.util.Set;
  *
  * @author Paul Reilly
  */
-public class TypeAnalyzer extends EvaluatorAdapter
-{
-	//	each subcompiler uses a delegate compilation unit for generated code
-	private static final String DELEGATE_UNIT = "DelegateUnit";
-	private static final String REQUIRED = "required";
-	private static final String SKINPART = "SkinPart";
-	private static final String TRUE = "true";
+public class TypeAnalyzer extends EvaluatorAdapter {
+    //	each subcompiler uses a delegate compilation unit for generated code
+    private static final String DELEGATE_UNIT = "DelegateUnit";
+    private static final String REQUIRED = "required";
+    private static final String SKINPART = "SkinPart";
+    private static final String TRUE = "true";
 
     private SymbolTable symbolTable;
     private Info currentInfo;
     private String currentPackageName;
 
-    public TypeAnalyzer(SymbolTable symbolTable)
-    {
+    public TypeAnalyzer(SymbolTable symbolTable) {
         this.symbolTable = symbolTable;
     }
 
-    private void analyzeInterfaces(Context context, List multiNames, Info info)
-    {
+    private void analyzeInterfaces(Context context, List multiNames, Info info) {
         Iterator iterator = multiNames.iterator();
 
-        while ( iterator.hasNext() )
-        {
+        while (iterator.hasNext()) {
             MultiName multiName = (MultiName) iterator.next();
 
             analyzeInterface(context, multiName, info);
         }
     }
 
-    public InterfaceInfo analyzeInterface(Context context, MultiName multiName, Info info)
-    {
+    public InterfaceInfo analyzeInterface(Context context, MultiName multiName, Info info) {
         InterfaceInfo interfaceInfo = null;
 
         QName qName = findQName(multiName);
 
-        if (qName != null)
-        {
+        if (qName != null) {
             Source source = symbolTable.findSourceByQName(qName);
 
-            interfaceInfo = symbolTable.getInterfaceInfo( qName.toString() );
+            interfaceInfo = symbolTable.getInterfaceInfo(qName.toString());
 
-            if (interfaceInfo == null)
-            {
+            if (interfaceInfo == null) {
                 CompilationUnit compilationUnit = source.getCompilationUnit();
 
-                if (compilationUnit != null)
-                {
-                    AbcClass abcClass = compilationUnit.classTable.get( qName.toString() );
+                if (compilationUnit != null) {
+                    AbcClass abcClass = compilationUnit.classTable.get(qName.toString());
 
-                    if (abcClass != null)
-                    {
+                    if (abcClass != null) {
                         buildInterfaceInfo(context, qName, abcClass);
-                    }
-                    else
-                    {
+                    } else {
                         Node node = getNode(compilationUnit);
 
-                        if (node != null)
-                        {
+                        if (node != null) {
                             Info oldInfo = currentInfo;
-                            currentInfo = null;                            
+                            currentInfo = null;
                             node.evaluate(context, this);
                             currentInfo = oldInfo;
-                        }
-                        else
-                        {
+                        } else {
                             assert false : "Compilation unit had no type info and after parsing has no syntax tree";
                         }
                     }
                 }
 
-                interfaceInfo = symbolTable.getInterfaceInfo( qName.toString() );
+                interfaceInfo = symbolTable.getInterfaceInfo(qName.toString());
             }
 
             // The interfaceInfo can be null if there was a missing import.
-            if (interfaceInfo != null)
-            {
+            if (interfaceInfo != null) {
                 info.addInterfaceInfo(interfaceInfo);
-            }
-            else if (Trace.binding)
-            {
+            } else if (Trace.binding) {
                 Trace.trace("TypeAnalyzer.analyzeInterfaces: unresolved qName " + qName);
-            }                
-        }
-        else
-        {
-            if (Trace.binding)
-            {
+            }
+        } else {
+            if (Trace.binding) {
                 Trace.trace("TypeAnalyzer.analyzeInterfaces: unresolved multiName " + multiName);
             }
         }
@@ -152,12 +133,10 @@ public class TypeAnalyzer extends EvaluatorAdapter
         return interfaceInfo;
     }
 
-    private void analyzeBaseClass(Context context, MultiName multiName, ClassInfo classInfo)
-    {
+    private void analyzeBaseClass(Context context, MultiName multiName, ClassInfo classInfo) {
         ClassInfo baseClassInfo = analyzeClass(context, multiName);
 
-        if (baseClassInfo != null)
-        {
+        if (baseClassInfo != null) {
             classInfo.setBaseClassInfo(baseClassInfo);
         }
     }
@@ -165,56 +144,44 @@ public class TypeAnalyzer extends EvaluatorAdapter
     /**
      *
      */
-    public ClassInfo analyzeClass(Context context, MultiName multiName)
-    {
+    public ClassInfo analyzeClass(Context context, MultiName multiName) {
         ClassInfo classInfo = null;
 
         QName qName = findQName(multiName);
 
-        if (qName != null)
-        {
-            classInfo = symbolTable.getClassInfo( qName.toString() );
+        if (qName != null) {
+            classInfo = symbolTable.getClassInfo(qName.toString());
 
-            if (classInfo == null)
-            {
+            if (classInfo == null) {
                 Source source = symbolTable.findSourceByQName(qName);
 
                 assert source != null : "no source for qname '" + qName + "', even though multiname was resolved";
 
                 CompilationUnit compilationUnit = source.getCompilationUnit();
 
-                AbcClass abcClass = compilationUnit.classTable.get( qName.toString() );
+                AbcClass abcClass = compilationUnit.classTable.get(qName.toString());
 
-                if (abcClass != null)
-                {
+                if (abcClass != null) {
                     buildClassInfo(context, qName, abcClass);
-                }
-                else
-                {
+                } else {
                     Node node = getNode(compilationUnit);
 
-                    if (node != null)
-                    {
+                    if (node != null) {
                         Info oldInfo = currentInfo;
                         currentInfo = null;
                         node.evaluate(context, this);
                         currentInfo = oldInfo;
-                    }
-                    else if (Trace.error)
-                    {
+                    } else if (Trace.error) {
                         // This can happen when an error, like base class not found, happens.
                         Trace.trace("Compilation unit had no type info and after parsing has no syntax tree: qname = '" +
-                                    qName.toString() + "'");
+                                qName.toString() + "'");
                     }
                 }
 
-                classInfo = symbolTable.getClassInfo( qName.toString() );
+                classInfo = symbolTable.getClassInfo(qName.toString());
             }
-        }
-        else
-        {
-            if (Trace.binding)
-            {
+        } else {
+            if (Trace.binding) {
                 Trace.trace("TypeAnalyzer.analyzeBaseClass: unresolved multiName " + multiName);
             }
         }
@@ -222,77 +189,60 @@ public class TypeAnalyzer extends EvaluatorAdapter
         return classInfo;
     }
 
-    private void analyzeBaseInterface(Context context, MultiName multiName, InterfaceInfo interfaceInfo)
-    {
+    private void analyzeBaseInterface(Context context, MultiName multiName, InterfaceInfo interfaceInfo) {
         QName qName = findQName(multiName);
 
-        if (qName != null)
-        {
+        if (qName != null) {
             Source source = symbolTable.findSourceByQName(qName);
 
-            InterfaceInfo baseInterfaceInfo = symbolTable.getInterfaceInfo( qName.toString() );
+            InterfaceInfo baseInterfaceInfo = symbolTable.getInterfaceInfo(qName.toString());
 
-            if (baseInterfaceInfo == null)
-            {
+            if (baseInterfaceInfo == null) {
                 CompilationUnit compilationUnit = source.getCompilationUnit();
 
                 AbcClass abcClass = null;
 
-                if (compilationUnit != null)
-                {
-                    abcClass = compilationUnit.classTable.get( qName.toString() );
+                if (compilationUnit != null) {
+                    abcClass = compilationUnit.classTable.get(qName.toString());
 
-                    if (abcClass != null)
-                    {
+                    if (abcClass != null) {
                         buildInterfaceInfo(context, qName, abcClass);
                     }
                 }
 
-                if (abcClass == null)
-                {
+                if (abcClass == null) {
                     Node node = getNode(compilationUnit);
-                    
-                    if (node != null)
-                    {
+
+                    if (node != null) {
                         Info oldInfo = currentInfo;
                         currentInfo = null;
                         node.evaluate(context, this);
                         currentInfo = oldInfo;
-                    }
-                    else
-                    {
+                    } else {
                         assert false : "Compilation unit had no type info and after parsing has no syntax tree";
                     }
                 }
 
-                baseInterfaceInfo = symbolTable.getInterfaceInfo( qName.toString() );
+                baseInterfaceInfo = symbolTable.getInterfaceInfo(qName.toString());
             }
 
             // The baseInterfaceInfo can be null if there was a missing import.
-            if (baseInterfaceInfo != null)
-            {
+            if (baseInterfaceInfo != null) {
                 interfaceInfo.setBaseInterfaceInfo(baseInterfaceInfo);
-            }
-            else if (Trace.binding)
-            {
+            } else if (Trace.binding) {
                 Trace.trace("TypeAnalyzer.analyzeInterfaces: unresolved qName " + qName);
-            }                
-        }
-        else
-        {
-            if (Trace.binding)
-            {
+            }
+        } else {
+            if (Trace.binding) {
                 Trace.trace("TypeAnalyzer.analyzeBaseInterface: unresolved multiName " + multiName);
             }
         }
     }
 
-    private void buildClassInfo(Context context, QName qName, AbcClass abcClass)
-    {
-        ClassInfo classInfo = new ClassInfo( abcClass.getName() );
+    private void buildClassInfo(Context context, QName qName, AbcClass abcClass) {
+        ClassInfo classInfo = new ClassInfo(abcClass.getName());
 
-        if (currentPackageName != null)
-        {
+        if (currentPackageName != null) {
             currentInfo.addImport(currentPackageName);
         }
 
@@ -300,8 +250,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
 
         String superTypeName = abcClass.getSuperTypeName();
 
-        if (superTypeName != null)
-        {
+        if (superTypeName != null) {
             classInfo.setBaseClassName(superTypeName);
 
             analyzeBaseClass(context, classInfo.getBaseClassMultiName(), classInfo);
@@ -309,10 +258,8 @@ public class TypeAnalyzer extends EvaluatorAdapter
 
         String[] interfaceNames = abcClass.getInterfaceNames();
 
-        if (interfaceNames != null)
-        {
-            for (int i = 0; i < interfaceNames.length; i++)
-            {
+        if (interfaceNames != null) {
+            for (int i = 0; i < interfaceNames.length; i++) {
                 classInfo.addInterfaceName(interfaceNames[i]);
             }
 
@@ -322,19 +269,16 @@ public class TypeAnalyzer extends EvaluatorAdapter
         processMembers(abcClass, classInfo);
     }
 
-    private void processMembers(AbcClass abcClass, ClassInfo classInfo)
-    {
-        Iterator<Method> meth_iter= abcClass.getMethodIterator();
+    private void processMembers(AbcClass abcClass, ClassInfo classInfo) {
+        Iterator<Method> meth_iter = abcClass.getMethodIterator();
 
-        while(meth_iter.hasNext())
-        {
+        while (meth_iter.hasNext()) {
             classInfo.addFunction(meth_iter.next().getQName());
         }
 
         Iterator<Method> get_iter = abcClass.getGetterIterator();
 
-        while(get_iter.hasNext())
-        {
+        while (get_iter.hasNext()) {
             Method getter = get_iter.next();
             QName getterName = getter.getQName();
             classInfo.addGetter(getterName);
@@ -344,14 +288,12 @@ public class TypeAnalyzer extends EvaluatorAdapter
 
         Iterator<Method> set_iter = abcClass.getSetterIterator();
 
-        while(set_iter.hasNext())
-        {
+        while (set_iter.hasNext()) {
             classInfo.addSetter(set_iter.next().getQName());
         }
 
         Iterator<Variable> var_iter = abcClass.getVarIterator();
-        while (var_iter.hasNext())
-        {
+        while (var_iter.hasNext()) {
             Variable variable = var_iter.next();
             QName varName = variable.getQName();
             classInfo.addVariable(varName);
@@ -360,40 +302,33 @@ public class TypeAnalyzer extends EvaluatorAdapter
         }
     }
 
-    private void processSkinPartMetaData(List<MetaData> metaData, ClassInfo classInfo, QName qname)
-    {
-    	if (metaData != null)
-        {
-    		for (MetaData skinPart : metaData)
-            {
-    			String sRequired = skinPart.getValue(REQUIRED);
+    private void processSkinPartMetaData(List<MetaData> metaData, ClassInfo classInfo, QName qname) {
+        if (metaData != null) {
+            for (MetaData skinPart : metaData) {
+                String sRequired = skinPart.getValue(REQUIRED);
                 boolean required = ((sRequired != null) && sRequired.equalsIgnoreCase(TRUE)) ? true : false;
                 classInfo.addSkinPart(qname.getLocalPart(), required);
             }
         }
     }
 
-    private void buildInterfaceInfo(Context context, QName qName, AbcClass abcClass)
-    {
-        InterfaceInfo interfaceInfo = new InterfaceInfo( abcClass.getName() );
+    private void buildInterfaceInfo(Context context, QName qName, AbcClass abcClass) {
+        InterfaceInfo interfaceInfo = new InterfaceInfo(abcClass.getName());
 
         symbolTable.addInterfaceInfo(qName.toString(), interfaceInfo);
 
-		String superTypeName = abcClass.getSuperTypeName();
+        String superTypeName = abcClass.getSuperTypeName();
 
-        if (superTypeName != null)
-        {
-            interfaceInfo.setBaseInterfaceName( superTypeName );
+        if (superTypeName != null) {
+            interfaceInfo.setBaseInterfaceName(superTypeName);
 
             analyzeBaseInterface(context, interfaceInfo.getBaseInterfaceMultiName(), interfaceInfo);
         }
 
         String[] interfaceNames = abcClass.getInterfaceNames();
 
-        if (interfaceNames != null)
-        {
-            for (int i = 0; i < interfaceNames.length; i++)
-            {
+        if (interfaceNames != null) {
+            for (int i = 0; i < interfaceNames.length; i++) {
                 interfaceInfo.addInterfaceName(interfaceNames[i]);
             }
 
@@ -402,18 +337,15 @@ public class TypeAnalyzer extends EvaluatorAdapter
 
         Iterator<Method> meth_iter = abcClass.getMethodIterator();
 
-        while (meth_iter.hasNext())
-        {
+        while (meth_iter.hasNext()) {
             interfaceInfo.addFunction(meth_iter.next().getQName());
         }
     }
 
-    public synchronized Value evaluate(Context context, BinaryInterfaceDefinitionNode binaryInterfaceDefinition)
-    {
+    public synchronized Value evaluate(Context context, BinaryInterfaceDefinitionNode binaryInterfaceDefinition) {
         if ((binaryInterfaceDefinition.cframe != null) &&
-            (binaryInterfaceDefinition.cframe.name != null) &&
-            (binaryInterfaceDefinition.cframe.name.ns != null))
-        {
+                (binaryInterfaceDefinition.cframe.name != null) &&
+                (binaryInterfaceDefinition.cframe.name.ns != null)) {
             currentPackageName = binaryInterfaceDefinition.cframe.name.ns.name;
         }
 
@@ -424,12 +356,10 @@ public class TypeAnalyzer extends EvaluatorAdapter
         return result;
     }
 
-    public synchronized Value evaluate(Context context, BinaryClassDefNode binaryClassDefinition)
-    {
+    public synchronized Value evaluate(Context context, BinaryClassDefNode binaryClassDefinition) {
         if ((binaryClassDefinition.cframe != null) &&
-            (binaryClassDefinition.cframe.name != null) &&
-            (binaryClassDefinition.cframe.name.ns != null))
-        {
+                (binaryClassDefinition.cframe.name != null) &&
+                (binaryClassDefinition.cframe.name.ns != null)) {
             currentPackageName = binaryClassDefinition.cframe.name.ns.name;
         }
 
@@ -440,66 +370,53 @@ public class TypeAnalyzer extends EvaluatorAdapter
         return result;
     }
 
-    public synchronized Value evaluate(Context context, ClassDefinitionNode classDefinition)
-    {
+    public synchronized Value evaluate(Context context, ClassDefinitionNode classDefinition) {
         String className = NodeMagic.getClassName(classDefinition);
 
-        if (symbolTable.getClassInfo(className) == null)
-        {
+        if (symbolTable.getClassInfo(className) == null) {
             Info oldInfo = currentInfo;
             currentInfo = new ClassInfo(className);
-            symbolTable.addClassInfo(className, (ClassInfo)currentInfo);
+            symbolTable.addClassInfo(className, (ClassInfo) currentInfo);
 
-            if (currentPackageName != null)
-            {
+            if (currentPackageName != null) {
                 currentInfo.addImport(currentPackageName);
             }
 
-            if (classDefinition.pkgdef != null)
-            {
+            if (classDefinition.pkgdef != null) {
                 processImports(classDefinition.pkgdef.statements.items.iterator(), currentInfo);
             }
 
-            if (classDefinition.statements != null)
-            {
+            if (classDefinition.statements != null) {
                 processImports(classDefinition.statements.items.iterator(), currentInfo);
             }
 
             // process extends
-            if (classDefinition.baseclass != null)
-            {
+            if (classDefinition.baseclass != null) {
                 ClassInfo classInfo = (ClassInfo) currentInfo;
-                if (classDefinition.baseclass instanceof MemberExpressionNode)
-                {
+                if (classDefinition.baseclass instanceof MemberExpressionNode) {
                     MemberExpressionNode memberExpression = (MemberExpressionNode) classDefinition.baseclass;
 
-                    if (memberExpression.selector != null)
-                    {
+                    if (memberExpression.selector != null) {
                         IdentifierNode identifier = memberExpression.selector.getIdentifier();
                         String baseClassName = toString(identifier);
                         classInfo.setBaseClassName(baseClassName);
                         analyzeBaseClass(context, classInfo.getBaseClassMultiName(), classInfo);
                     }
-                }
-                else if (classDefinition.baseclass instanceof LiteralStringNode)
-                {
+                } else if (classDefinition.baseclass instanceof LiteralStringNode) {
                     String baseClassName = ((LiteralStringNode) classDefinition.baseclass).value;
                     classInfo.setBaseClassName(baseClassName);
                     analyzeBaseClass(context, classInfo.getBaseClassMultiName(), classInfo);
-                }
-                else
-                {
+                } else {
                     assert false;
                 }
             }
 
             processInterfaces(context, classDefinition);
 
-            if( classDefinition instanceof BinaryClassDefNode )
-            {
+            if (classDefinition instanceof BinaryClassDefNode) {
                 // OV is already built, so use that to process the members, since
                 // binary class defs won't have anything in their statement lists
-                processMembers(new As3Class(classDefinition, null), (ClassInfo)currentInfo);
+                processMembers(new As3Class(classDefinition, null), (ClassInfo) currentInfo);
             }
 
             super.evaluate(context, classDefinition);
@@ -527,49 +444,39 @@ public class TypeAnalyzer extends EvaluatorAdapter
     }
     */
 
-    public synchronized Value evaluate(Context context, InterfaceDefinitionNode interfaceDefinition)
-    {
+    public synchronized Value evaluate(Context context, InterfaceDefinitionNode interfaceDefinition) {
         return evaluateInterface(context, interfaceDefinition);
     }
 
-    private Value evaluateInterface(Context context, ClassDefinitionNode interfaceDefinition)
-    {
+    private Value evaluateInterface(Context context, ClassDefinitionNode interfaceDefinition) {
         String interfaceName = NodeMagic.getClassName(interfaceDefinition);
 
-        if (symbolTable.getInterfaceInfo(interfaceName) == null)
-        {
+        if (symbolTable.getInterfaceInfo(interfaceName) == null) {
             Info oldInfo = currentInfo;
             currentInfo = new InterfaceInfo(interfaceName);
-            symbolTable.addInterfaceInfo(interfaceName, (InterfaceInfo)currentInfo);
+            symbolTable.addInterfaceInfo(interfaceName, (InterfaceInfo) currentInfo);
 
-            if (interfaceDefinition.pkgdef != null)
-            {
+            if (interfaceDefinition.pkgdef != null) {
                 processImports(interfaceDefinition.pkgdef.statements.items.iterator(), currentInfo);
             }
 
-            if (interfaceDefinition.statements != null)
-            {
+            if (interfaceDefinition.statements != null) {
                 processImports(interfaceDefinition.statements.items.iterator(), currentInfo);
             }
 
             // process extends
-            if (interfaceDefinition.baseclass != null)
-            {
-                if (interfaceDefinition.baseclass instanceof MemberExpressionNode)
-                {
+            if (interfaceDefinition.baseclass != null) {
+                if (interfaceDefinition.baseclass instanceof MemberExpressionNode) {
                     MemberExpressionNode memberExpression = (MemberExpressionNode) interfaceDefinition.baseclass;
 
-                    if (memberExpression.selector != null)
-                    {
+                    if (memberExpression.selector != null) {
                         IdentifierNode identifier = memberExpression.selector.getIdentifier();
                         String baseInterfaceName = toString(identifier);
                         InterfaceInfo interfaceInfo = (InterfaceInfo) currentInfo;
                         interfaceInfo.setBaseInterfaceName(baseInterfaceName);
                         analyzeBaseInterface(context, interfaceInfo.getBaseInterfaceMultiName(), interfaceInfo);
                     }
-                }
-                else
-                {
+                } else {
                     assert false;
                 }
             }
@@ -579,7 +486,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
             // interfaces list.  I'm not sure if this is always the
             // case, though.
             processInterfaces(context, interfaceDefinition);
-            
+
             super.evaluate(context, interfaceDefinition);
 
             currentInfo = oldInfo;
@@ -588,38 +495,27 @@ public class TypeAnalyzer extends EvaluatorAdapter
         return null;
     }
 
-    public synchronized Value evaluate(Context context, FunctionCommonNode functionCommon)
-    {
+    public synchronized Value evaluate(Context context, FunctionCommonNode functionCommon) {
         return null;
     }
 
-    public synchronized Value evaluate(Context context, FunctionDefinitionNode functionDefinition)
-    {
+    public synchronized Value evaluate(Context context, FunctionDefinitionNode functionDefinition) {
         if ((functionDefinition.name != null) &&
-            (functionDefinition.name.identifier != null) &&
-            (functionDefinition.name.identifier.name != null))
-        {
+                (functionDefinition.name.identifier != null) &&
+                (functionDefinition.name.identifier.name != null)) {
             QName functionName = new QName(NodeMagic.getUserNamespace(functionDefinition),
-                                           NodeMagic.getFunctionName(functionDefinition));
+                    NodeMagic.getFunctionName(functionDefinition));
 
-			if (currentInfo != null)
-            {
-				//	CAUTION used to test fexpr.kind, not name.kind. Ditto setter case below
-				if (NodeMagic.functionIsGetter(functionDefinition))
-                {
+            if (currentInfo != null) {
+                //	CAUTION used to test fexpr.kind, not name.kind. Ditto setter case below
+                if (NodeMagic.functionIsGetter(functionDefinition)) {
                     currentInfo.addGetter(functionName);
-                }
-                else if (NodeMagic.functionIsSetter(functionDefinition))
-                {
+                } else if (NodeMagic.functionIsSetter(functionDefinition)) {
                     currentInfo.addSetter(functionName);
-                }
-                else
-                {
+                } else {
                     currentInfo.addFunction(functionName);
                 }
-            }
-            else
-            {
+            } else {
                 // Ignore these, they are classless functions like
                 // trace() in the flash.utils package.
             }
@@ -628,15 +524,12 @@ public class TypeAnalyzer extends EvaluatorAdapter
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, PackageDefinitionNode packageDefinition)
-    {
+    public synchronized Value evaluate(Context cx, PackageDefinitionNode packageDefinition) {
         PackageNameNode packageName = packageDefinition.name;
 
-        if (packageName != null)
-        {
+        if (packageName != null) {
             PackageIdentifiersNode packageIdentifiers = packageName.id;
-            if ((packageIdentifiers != null) && (packageIdentifiers.pkg_part != null))
-            {
+            if ((packageIdentifiers != null) && (packageIdentifiers.pkg_part != null)) {
                 currentPackageName = packageIdentifiers.pkg_part;
             }
         }
@@ -648,78 +541,66 @@ public class TypeAnalyzer extends EvaluatorAdapter
         return null;
     }
 
-    public synchronized Value evaluate(Context context, VariableDefinitionNode variableDefinition)
-    {
+    public synchronized Value evaluate(Context context, VariableDefinitionNode variableDefinition) {
         if ((variableDefinition.list != null) &&
-            (variableDefinition.list.items != null) &&
-            (variableDefinition.list.items.get(0) instanceof VariableBindingNode))
-        {
+                (variableDefinition.list.items != null) &&
+                (variableDefinition.list.items.get(0) instanceof VariableBindingNode)) {
             QName variableName = new QName(NodeMagic.getUserNamespace(variableDefinition),
-                                           NodeMagic.getVariableName(variableDefinition));
+                    NodeMagic.getVariableName(variableDefinition));
 
-            if (currentInfo != null)
-            {
+            if (currentInfo != null) {
                 // if currentInfo is an instance of InterfaceInfo, ASC
                 // will report an error downstream, because variable
                 // declarations are not permitted in interfaces.
-                if (currentInfo instanceof ClassInfo)
-                {
+                if (currentInfo instanceof ClassInfo) {
                     ((ClassInfo) currentInfo).addVariable(variableName);
                 }
-            }
-            else
-            {
+            } else {
                 // Ignore these, they are classless variables. 
             }
         }
 
         return null;
     }
-    
+
     /**
      * Currently only used for SkinParts. When metadata with the id SkinPart is
-     * found it gets added to the ClassInfo instance. 
-     * 
-     * @param cx  The current context
+     * found it gets added to the ClassInfo instance.
+     *
+     * @param cx   The current context
      * @param node The current metadata node
      */
-    public synchronized Value evaluate(Context cx, MetaDataNode node)
-    {
+    public synchronized Value evaluate(Context cx, MetaDataNode node) {
         //SkinParts
-        if((node.getId() != null) && node.getId().equals(SKINPART))
-        {
-        	if(node.def instanceof VariableDefinitionNode || 
-        	   node.def instanceof FunctionDefinitionNode)
-        	{
+        if ((node.getId() != null) && node.getId().equals(SKINPART)) {
+            if (node.def instanceof VariableDefinitionNode ||
+                    node.def instanceof FunctionDefinitionNode) {
                 String fieldName;
-        		
+
                 if (node.def instanceof VariableDefinitionNode)
                     fieldName = NodeMagic.getVariableName((VariableDefinitionNode) node.def);
                 else
                     fieldName = NodeMagic.getFunctionName((FunctionDefinitionNode) node.def);
-	
-	            //skin parts are not always required
-	            String value = node.getValue(REQUIRED);
-	            ((ClassInfo) currentInfo).addSkinPart(fieldName, TRUE.equalsIgnoreCase(value));
-        	}
+
+                //skin parts are not always required
+                String value = node.getValue(REQUIRED);
+                ((ClassInfo) currentInfo).addSkinPart(fieldName, TRUE.equalsIgnoreCase(value));
+            }
         }
-       
+
         return null;
     }
 
     // Ignore ambiguity checks here, because they are checked by CompilerAPI.resolveMultiName().
-    private QName findQName(MultiName multiName)
-    {
+    private QName findQName(MultiName multiName) {
         String[] namespace = multiName.getNamespace();
         String localPart = multiName.getLocalPart();
         int i = 0;
         int length = namespace.length;
         QName result = null;
 
-        while ((i < length) && (result == null))
-        {
-            if (symbolTable.findSourceByQName(namespace[i], localPart) != null)
-            {
+        while ((i < length) && (result == null)) {
+            if (symbolTable.findSourceByQName(namespace[i], localPart) != null) {
                 result = multiName.getQName(i);
             }
             i++;
@@ -728,35 +609,28 @@ public class TypeAnalyzer extends EvaluatorAdapter
         return result;
     }
 
-    public ClassInfo getClassInfo(String className)
-    {
+    public ClassInfo getClassInfo(String className) {
         return symbolTable.getClassInfo(className);
     }
 
-    private Node getNode(CompilationUnit compilationUnit)
-    {
+    private Node getNode(CompilationUnit compilationUnit) {
         assert compilationUnit != null : "null CompilationUnit passed to getNode()";
 
         Node result = null;
 
         Object syntaxTree = compilationUnit.getSyntaxTree();
 
-        if (syntaxTree != null)
-        {
-            if (!(syntaxTree instanceof Node))
-            {
+        if (syntaxTree != null) {
+            if (!(syntaxTree instanceof Node)) {
                 flex2.compiler.CompilerContext context = compilationUnit.getContext();
                 CompilationUnit delegateUnit =
-                    (CompilationUnit) context.getAttribute(DELEGATE_UNIT);
+                        (CompilationUnit) context.getAttribute(DELEGATE_UNIT);
                 // delegateUnit can be null in the case of an error, like base class not
                 // found.
-                if (delegateUnit != null)
-                {
+                if (delegateUnit != null) {
                     result = (Node) delegateUnit.getSyntaxTree();
                 }
-            }
-            else
-            {
+            } else {
                 result = (Node) syntaxTree;
             }
         }
@@ -764,111 +638,83 @@ public class TypeAnalyzer extends EvaluatorAdapter
         return result;
     }
 
-    private void processImports(Iterator iterator, Info info)
-    {
-        while ( iterator.hasNext() )
-        {
+    private void processImports(Iterator iterator, Info info) {
+        while (iterator.hasNext()) {
             Object node = iterator.next();
 
-            if (node instanceof ImportDirectiveNode)
-            {
+            if (node instanceof ImportDirectiveNode) {
                 ImportDirectiveNode importDirective = (ImportDirectiveNode) node;
 
-                if (importDirective.name.id.def_part.length() == 0)
-                {
+                if (importDirective.name.id.def_part.length() == 0) {
                     info.addImport(importDirective.name.id.pkg_part);
-                }
-                else
-                {
+                } else {
                     info.addQualifiedImport(importDirective.name.id.def_part,
-                                            importDirective.name.id.pkg_part);
+                            importDirective.name.id.pkg_part);
                 }
             }
         }
     }
 
-    private void processInterfaces(Context context, ClassDefinitionNode definition)
-    {
-        if (definition.interfaces != null)
-        {
+    private void processInterfaces(Context context, ClassDefinitionNode definition) {
+        if (definition.interfaces != null) {
             Iterator iterator = definition.interfaces.items.iterator();
 
-            while ( iterator.hasNext() )
-            {
+            while (iterator.hasNext()) {
                 MemberExpressionNode memberExpression = (MemberExpressionNode) iterator.next();
 
-                if (memberExpression.selector != null)
-                {
+                if (memberExpression.selector != null) {
                     IdentifierNode identifier = memberExpression.selector.getIdentifier();
                     String interfaceName = toString(identifier);
-                    
-                    if ((identifier.ref != null) && (identifier.ref.namespaces != null))
-                    {
+
+                    if ((identifier.ref != null) && (identifier.ref.namespaces != null)) {
                         int size = identifier.ref.namespaces.size();
 
-                        if (size == 0)
-                        {
+                        if (size == 0) {
                             NamespaceValue namespaceValue = (NamespaceValue) identifier.ref.namespaces.get(0);
-                            if (namespaceValue.name.length() > 0)
-                            {
+                            if (namespaceValue.name.length() > 0) {
                                 currentInfo.addInterfaceMultiName(namespaceValue.name, interfaceName);
-                            }
-                            else
-                            {
+                            } else {
                                 currentInfo.addInterfaceName(interfaceName);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             Set<String> namespacesSet = new HashSet<String>();
-                            
-                            for (int i = 0; i < size; i++)
-                            {
+
+                            for (int i = 0; i < size; i++) {
                                 NamespaceValue namespaceValue = (NamespaceValue) identifier.ref.namespaces.get(i);
-                                
-                                if (namespaceValue.name.length() > 0)
-                                {
+
+                                if (namespaceValue.name.length() > 0) {
                                     namespacesSet.add(namespaceValue.name);
                                 }
                             }
-                            
+
                             String[] namespaces = new String[namespacesSet.size()];
                             namespacesSet.toArray(namespaces);
                             currentInfo.addInterfaceMultiName(namespaces, interfaceName);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         currentInfo.addInterfaceName(interfaceName);
                     }
                 }
             }
-            
+
             analyzeInterfaces(context, currentInfo.getInterfaceMultiNames(), currentInfo);
         }
     }
 
-    private String toString(IdentifierNode identifier)
-    {
+    private String toString(IdentifierNode identifier) {
         String result = null;
 
-        if (identifier instanceof QualifiedIdentifierNode)
-        {
+        if (identifier instanceof QualifiedIdentifierNode) {
             QualifiedIdentifierNode qualifiedIdentifier = (QualifiedIdentifierNode) identifier;
 
-            if (qualifiedIdentifier.qualifier instanceof LiteralStringNode)
-            {
+            if (qualifiedIdentifier.qualifier instanceof LiteralStringNode) {
                 LiteralStringNode literalString = (LiteralStringNode) qualifiedIdentifier.qualifier;
                 result = literalString.value + ":" + qualifiedIdentifier.name;
-            }
-            else
-            {
+            } else {
                 assert false : ("Unhandled QualifiedIdentifierNode qualifier type: " +
-                                qualifiedIdentifier.qualifier.getClass().getName());
+                        qualifiedIdentifier.qualifier.getClass().getName());
             }
-        }
-        else
-        {
+        } else {
             result = identifier.name;
         }
 

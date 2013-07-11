@@ -30,28 +30,24 @@ import java.util.Set;
  *
  * @author Clement Wong
  */
-public class ArrayNode extends Node
-{
-	public static final Set<QName> attributes;
+public class ArrayNode extends Node {
+    public static final Set<QName> attributes;
 
-	static
-	{
-		attributes = new HashSet<QName>();
-		attributes.add(new QName("", StandardDefs.PROP_ID));
-		attributes.add(new QName("", StandardDefs.PROP_INCLUDE_STATES));
-		attributes.add(new QName("", StandardDefs.PROP_EXCLUDE_STATES));
-		attributes.add(new QName("", StandardDefs.PROP_ITEM_CREATION_POLICY));
-		attributes.add(new QName("", StandardDefs.PROP_ITEM_DESTRUCTION_POLICY));
-	}
+    static {
+        attributes = new HashSet<QName>();
+        attributes.add(new QName("", StandardDefs.PROP_ID));
+        attributes.add(new QName("", StandardDefs.PROP_INCLUDE_STATES));
+        attributes.add(new QName("", StandardDefs.PROP_EXCLUDE_STATES));
+        attributes.add(new QName("", StandardDefs.PROP_ITEM_CREATION_POLICY));
+        attributes.add(new QName("", StandardDefs.PROP_ITEM_DESTRUCTION_POLICY));
+    }
 
-	ArrayNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
+    ArrayNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
 
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 }

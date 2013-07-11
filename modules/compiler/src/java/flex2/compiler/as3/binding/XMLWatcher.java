@@ -25,15 +25,12 @@ package flex2.compiler.as3.binding;
  *
  * @author Roger Gonzalez
  */
-public class XMLWatcher extends PropertyWatcher
-{
-    public XMLWatcher( int id, String prop )
-    {
-        super( id, prop );
+public class XMLWatcher extends PropertyWatcher {
+    public XMLWatcher(int id, String prop) {
+        super(id, prop);
     }
 
-    public boolean shouldWriteSelf()
-    {
+    public boolean shouldWriteSelf() {
         return !(getParent() instanceof XMLWatcher);
     }
 }

@@ -34,169 +34,140 @@ import java.net.MalformedURLException;
  *
  * @author Clement Wong
  */
-public class LocalFile implements VirtualFile
-{
+public class LocalFile implements VirtualFile {
 
-	public LocalFile(File f)
-	{
-		this.f = f;
-	}
+    public LocalFile(File f) {
+        this.f = f;
+    }
 
-	private File f;
-	private String name;
-	private String mimeType;
+    private File f;
+    private String name;
+    private String mimeType;
 
-	/**
-	 * Return name... It could be canonical path name, URL, etc. But it must be unique among all the files
-	 * processed by the compiler...
-	 *
-	 * The compiler should not use this to get... e.g. parent path... There is no guarantee that this returns
-	 * a pathname even though the underlying implementation deals with files...
-	 */
-	public String getName()
-	{
-		if (name == null)
-		{
-			name = FileUtil.getCanonicalPath(f);
-			f = FileUtil.openFile(name);
-		}
+    /**
+     * Return name... It could be canonical path name, URL, etc. But it must be unique among all the files
+     * processed by the compiler...
+     * <p/>
+     * The compiler should not use this to get... e.g. parent path... There is no guarantee that this returns
+     * a pathname even though the underlying implementation deals with files...
+     */
+    public String getName() {
+        if (name == null) {
+            name = FileUtil.getCanonicalPath(f);
+            f = FileUtil.openFile(name);
+        }
 
-		return name;
-	}
+        return name;
+    }
 
-	public String getNameForReporting()
-	{
-		return getName();
-	}
+    public String getNameForReporting() {
+        return getName();
+    }
 
-	public String getURL()
-	{
-		try
-		{
-			return f.toURL().toExternalForm();
-		}
-		catch (MalformedURLException ex)
-		{
-			return null;
-		}
-	}
+    public String getURL() {
+        try {
+            return f.toURL().toExternalForm();
+        } catch (MalformedURLException ex) {
+            return null;
+        }
+    }
 
-	// This is temporary...
-	public String getParent()
-	{
-		return f.getParentFile().getAbsolutePath();
-	}
+    // This is temporary...
+    public String getParent() {
+        return f.getParentFile().getAbsolutePath();
+    }
 
-	public boolean isDirectory()
-	{
-		return f.isDirectory();
-	}
+    public boolean isDirectory() {
+        return f.isDirectory();
+    }
 
-	/**
-	 * Return file size...
-	 */
-	public long size()
-	{
-		return f.length();
-	}
+    /**
+     * Return file size...
+     */
+    public long size() {
+        return f.length();
+    }
 
-	/**
-	 * Return mime type
-	 */
-	public String getMimeType()
-	{
-		if (mimeType == null)
-		{
-			mimeType = MimeMappings.getMimeType(getName());
-		}
-		return mimeType;
-	}
+    /**
+     * Return mime type
+     */
+    public String getMimeType() {
+        if (mimeType == null) {
+            mimeType = MimeMappings.getMimeType(getName());
+        }
+        return mimeType;
+    }
 
-	/**
-	 * Return input stream...
-	 */
-	public InputStream getInputStream() throws IOException
-	{
-		return FileUtil.openStream(f);
-	}
+    /**
+     * Return input stream...
+     */
+    public InputStream getInputStream() throws IOException {
+        return FileUtil.openStream(f);
+    }
 
-	public byte[] toByteArray() throws IOException
-	{
-		return null;
-	}
+    public byte[] toByteArray() throws IOException {
+        return null;
+    }
 
-	/**
-	 * Return last time the underlying source is modified.
-	 */
-	public long getLastModified()
-	{
-		return f.lastModified();
-	}
+    /**
+     * Return last time the underlying source is modified.
+     */
+    public long getLastModified() {
+        return f.lastModified();
+    }
 
-	/**
-	 * Return an instance of this interface which represents the specified relative path.
-	 */
-	public VirtualFile resolve(String relativeStr)
-	{
-		File relativeFile = null;
+    /**
+     * Return an instance of this interface which represents the specified relative path.
+     */
+    public VirtualFile resolve(String relativeStr) {
+        File relativeFile = null;
 
-		if (FileUtils.isDirectory(f))
-		{
-			relativeFile = FileUtil.openFile(f, relativeStr);
-		}
-		else if (FileUtils.isFile(f))
-		{
-			relativeFile = FileUtil.openFile(f.getParentFile(), relativeStr);
-		}
+        if (FileUtils.isDirectory(f)) {
+            relativeFile = FileUtil.openFile(f, relativeStr);
+        } else if (FileUtils.isFile(f)) {
+            relativeFile = FileUtil.openFile(f.getParentFile(), relativeStr);
+        }
 
-		VirtualFile result = null;
+        VirtualFile result = null;
 
-		if (relativeFile != null && FileUtils.exists(relativeFile))
-		{
-			result = new LocalFile(relativeFile);
-		}
+        if (relativeFile != null && FileUtils.exists(relativeFile)) {
+            result = new LocalFile(relativeFile);
+        }
 
-		if ((result != null) && Trace.pathResolver)
-		{
-			Trace.trace("LocalFile.resolve: resolved " + relativeStr + " to " + result.getName());
-		}
+        if ((result != null) && Trace.pathResolver) {
+            Trace.trace("LocalFile.resolve: resolved " + relativeStr + " to " + result.getName());
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	/**
-	 * Signal the hosting environment that this instance is no longer used.
-	 */
-	public void close()
-	{
-	}
+    /**
+     * Signal the hosting environment that this instance is no longer used.
+     */
+    public void close() {
+    }
 
-	public boolean equals(Object obj)
-	{
-		boolean result = false;
+    public boolean equals(Object obj) {
+        boolean result = false;
 
-		if (obj instanceof LocalFile)
-		{
-			result = (this == obj) || getName().equals(((LocalFile) obj).getName());
-		}
+        if (obj instanceof LocalFile) {
+            result = (this == obj) || getName().equals(((LocalFile) obj).getName());
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	public int hashCode()
-	{
-		return getName().hashCode();
-	}
+    public int hashCode() {
+        return getName().hashCode();
+    }
 
-	public boolean isTextBased()
-	{
-		return false;
-	}
+    public boolean isTextBased() {
+        return false;
+    }
 
-	public String toString()
-	{
-		return getName();
-	}
+    public String toString() {
+        return getName();
+    }
 }
 
 

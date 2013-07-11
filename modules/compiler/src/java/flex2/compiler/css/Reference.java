@@ -26,38 +26,32 @@ package flex2.compiler.css;
  *
  * @author Paul Reilly
  */
-public class Reference
-{
+public class Reference {
     private String value;
     private boolean isClassReference;
     private String path;
     private int lineNumber;
 
-    public Reference(String value, boolean isClassReference, String path, int lineNumber)
-    {
+    public Reference(String value, boolean isClassReference, String path, int lineNumber) {
         this.value = value;
         this.isClassReference = isClassReference;
         this.path = path;
         this.lineNumber = lineNumber;
     }
 
-    public int getLineNumber()
-    {
+    public int getLineNumber() {
         return lineNumber;
     }
 
-    public String getPath()
-    {
+    public String getPath() {
         return path;
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
-    public boolean isClassReference()
-    {
+    public boolean isClassReference() {
         return isClassReference;
     }
 
@@ -65,8 +59,7 @@ public class Reference
      * Used by Velocity templates, so that we don't have to test for
      * instances of Reference and if so, call getValue().
      */
-    public String toString()
-    {
+    public String toString() {
         return value;
     }
 }

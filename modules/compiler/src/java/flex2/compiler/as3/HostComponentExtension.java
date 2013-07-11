@@ -41,6 +41,7 @@ import flex2.compiler.util.QName;
 
 import java.util.Iterator;
 import java.util.List;
+
 import macromedia.asc.parser.ClassDefinitionNode;
 import macromedia.asc.parser.DocCommentNode;
 import macromedia.asc.parser.MetaDataNode;
@@ -56,26 +57,24 @@ import macromedia.asc.util.Context;
  *
  * @author Corey Lucier
  */
-public final class HostComponentExtension implements Extension
-{
+public final class HostComponentExtension implements Extension {
     private static final String SKINHOSTCOMPONENT = "hostComponent".intern();
     private static final String BINDABLE = "Bindable".intern();
-    private static final String[] PUBLIC_NAMESPACE = new String[] {SymbolTable.publicNamespace};
+    private static final String[] PUBLIC_NAMESPACE = new String[]{SymbolTable.publicNamespace};
 
     private boolean reportMissingRequiredSkinPartsAsWarnings; // true generates a warning,
-                                                              // false generates an error
+    // false generates an error
 
     /**
-     * @param reportMissingRequiredSkinPartsAsWarnings If true output a warning if any
-     * required skin parts are missing. Otherwise an error is generated.
+     * @param reportMissingRequiredSkinPartsAsWarnings
+     *         If true output a warning if any
+     *         required skin parts are missing. Otherwise an error is generated.
      */
-    public HostComponentExtension(boolean reportMissingRequiredSkinPartsAsWarnings)
-    {
+    public HostComponentExtension(boolean reportMissingRequiredSkinPartsAsWarnings) {
         this.reportMissingRequiredSkinPartsAsWarnings = reportMissingRequiredSkinPartsAsWarnings;
     }
 
-    public void parse1(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void parse1(CompilationUnit unit, TypeTable typeTable) {
         // Add a dependency on IEventDispatcher in parse1() so that it is
         // transferred in time to parent compilers from sub-compilers.
         // Theoretically, this dependency would be unnecessary if there is an
@@ -84,22 +83,19 @@ public final class HostComponentExtension implements Extension
         // base Skin class from the framework implements IEventDispatcher.
         // We're comfortable with doing this because IEventDispatcher is player
         // runtime interface that isn't linked into a SWF. See SDK-29306
-        if (unit.hostComponentMetaData != null)
-        {
+        if (unit.hostComponentMetaData != null) {
             unit.inheritance.add(new MultiName(StandardDefs.PACKAGE_FLASH_EVENTS, "IEventDispatcher"));
         }
     }
 
-    public void parse2(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void parse2(CompilationUnit unit, TypeTable typeTable) {
         // HostComponentExtension processing should not be done in parse1
         // because getting the classInfo for a class during parse1
         // will pollute the symbol table when an ancestor class is defined in a
         // SWC. The polluted symbol table then causes the
         // BindableSecondPassEvaluator to assume the class does not already
         // implement IEventDispatcher. See SDK-25312
-        if (unit.hostComponentMetaData != null)
-        {
+        if (unit.hostComponentMetaData != null) {
             CompilerContext context = unit.getContext();
             Context cx = (Context) context.getAscContext();
             TypeAnalyzer typeAnalyzer = typeTable.getSymbolTable().getTypeAnalyzer();
@@ -107,26 +103,20 @@ public final class HostComponentExtension implements Extension
         }
     }
 
-    public void analyze1(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze1(CompilationUnit unit, TypeTable typeTable) {
     }
 
-    public void analyze2(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze2(CompilationUnit unit, TypeTable typeTable) {
     }
 
-    public void analyze3(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze3(CompilationUnit unit, TypeTable typeTable) {
     }
 
-    public void analyze4(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze4(CompilationUnit unit, TypeTable typeTable) {
     }
 
-    public void generate(CompilationUnit unit, TypeTable typeTable)
-    {
-        if (unit.hostComponentMetaData != null)
-        {
+    public void generate(CompilationUnit unit, TypeTable typeTable) {
+        if (unit.hostComponentMetaData != null) {
             CompilerContext context = unit.getContext();
             Context cx = (Context) context.getAscContext();
             validateRequiredSkinPartsAndStates(cx, unit, typeTable);
@@ -137,21 +127,17 @@ public final class HostComponentExtension implements Extension
      * Generate a strongly typed variable 'hostComponent' on the current
      * class instance with type specified by the HostComponent metadata.
      */
-    private void generateHostComponentVariable(Context cx, CompilationUnit unit, TypeAnalyzer typeAnalyzer)
-    {
+    private void generateHostComponentVariable(Context cx, CompilationUnit unit, TypeAnalyzer typeAnalyzer) {
         MetaDataNode node = unit.hostComponentMetaData;
 
-        if (node.count() == 1)
-        {
+        if (node.count() == 1) {
             Node def = node.def;
 
-            if (def instanceof ClassDefinitionNode)
-            {
+            if (def instanceof ClassDefinitionNode) {
                 unit.expressions.add(NameFormatter.toMultiName(node.getValue(0)));
                 ClassDefinitionNode classDef = (ClassDefinitionNode) def;
 
-                if (!classDeclaresIdentifier(cx, classDef, typeAnalyzer, SKINHOSTCOMPONENT))
-                {
+                if (!classDeclaresIdentifier(cx, classDef, typeAnalyzer, SKINHOSTCOMPONENT)) {
                     NodeFactory nodeFactory = cx.getNodeFactory();
                     MetaDataNode bindingMetaData = AbstractSyntaxTreeUtil.generateMetaData(nodeFactory, BINDABLE);
                     bindingMetaData.setId(BINDABLE);
@@ -160,47 +146,39 @@ public final class HostComponentExtension implements Extension
                     int listSize = node.def.metaData.items.size();
                     // if the HostComponent metadata node has more than one items.
                     // then look for the associated comment and stick it to the variable.
-                    if (listSize > 1)
-                    {
-                        for (int ix = 0; ix < listSize; ix++)
-                        {
+                    if (listSize > 1) {
+                        for (int ix = 0; ix < listSize; ix++) {
                             // check if the node is of type MetaDataNode.
                             Node tempMeta = node.def.metaData.items.get(ix);
 
-                            if (tempMeta instanceof MetaDataNode)
-                            {
+                            if (tempMeta instanceof MetaDataNode) {
                                 MetaDataNode tempMetaData = (MetaDataNode) tempMeta;
 
-                                if ("HostComponent".equals(tempMetaData.getId()) && (ix < listSize - 1))
-                                {
+                                if ("HostComponent".equals(tempMetaData.getId()) && (ix < listSize - 1)) {
                                     // if the node has the comment, it would be the next one.
                                     Node temp = node.def.metaData.items.get(ix + 1);
 
                                     // if the last one is a DocCommentnode, we can run it through the evaluator.
-                                    if (temp instanceof DocCommentNode)
-                                    {
-                                        DocCommentNode tempDoc = ((DocCommentNode)temp);
+                                    if (temp instanceof DocCommentNode) {
+                                        DocCommentNode tempDoc = ((DocCommentNode) temp);
 
                                         // we can not access the metadata node directly because it doesn't
                                         // have public access and it is buried deep into the tree.  this is
                                         // required so that we can access the comment easily.
                                         macromedia.asc.parser.MetaDataEvaluator evaluator =
-                                            new macromedia.asc.parser.MetaDataEvaluator();
+                                                new macromedia.asc.parser.MetaDataEvaluator();
                                         evaluator.evaluate(cx, tempDoc);
 
                                         // if evaluator has not null comment.
-                                        if (evaluator.doccomments != null && evaluator.doccomments.size() != 0)
-                                        {
+                                        if (evaluator.doccomments != null && evaluator.doccomments.size() != 0) {
                                             String comment = evaluator.doccomments.get(0).getId();
 
                                             // if comment is present then create a DocCommentNode for the hostComponent variable
-                                            if (comment != null)
-                                            {
+                                            if (comment != null) {
                                                 DocCommentNode hostComponentComment =
-                                                    AbstractSyntaxTreeUtil.generateDocComment(nodeFactory, comment.intern());
+                                                        AbstractSyntaxTreeUtil.generateDocComment(nodeFactory, comment.intern());
 
-                                                if (hostComponentComment != null)
-                                                {
+                                                if (hostComponentComment != null) {
                                                     statementList = nodeFactory.statementList(statementList, hostComponentComment);
                                                 }
                                             }
@@ -217,12 +195,12 @@ public final class HostComponentExtension implements Extension
                     VariableDefinitionNode variableDefinition = AbstractSyntaxTreeUtil.generatePublicVariable(cx, typeExpression, SKINHOSTCOMPONENT);
 
                     classDef.statements = nodeFactory.statementList(statementList, variableDefinition);
-                    
-                    
+
+
                     BindableFirstPassEvaluator firstPassEvaluator =
-                        (BindableFirstPassEvaluator) unit.getContext().getAttribute(BindableExtension.FIRST_PASS_EVALUATOR_KEY);
+                            (BindableFirstPassEvaluator) unit.getContext().getAttribute(BindableExtension.FIRST_PASS_EVALUATOR_KEY);
                     if (firstPassEvaluator != null)
-                    	firstPassEvaluator.registerBindableVariable(cx, classDef, variableDefinition);
+                        firstPassEvaluator.registerBindableVariable(cx, classDef, variableDefinition);
                 }
             }
         }
@@ -233,66 +211,57 @@ public final class HostComponentExtension implements Extension
      * the identifier provided.
      */
     private boolean classDeclaresIdentifier(Context cx, ClassDefinitionNode classDef,
-                                            TypeAnalyzer typeAnalyzer, String identifier)
-    {
+                                            TypeAnalyzer typeAnalyzer, String identifier) {
         String className = NodeMagic.getClassName(classDef);
 
         typeAnalyzer.evaluate(cx, classDef);
 
         ClassInfo classInfo = typeAnalyzer.getClassInfo(className);
         if (classInfo != null && (
-            classInfo.definesVariable(identifier) ||
-            classInfo.definesFunction(identifier, true) ||
-            classInfo.definesGetter(identifier, true) ||
-            classInfo.definesSetter(identifier, true)))
-        {
+                classInfo.definesVariable(identifier) ||
+                        classInfo.definesFunction(identifier, true) ||
+                        classInfo.definesGetter(identifier, true) ||
+                        classInfo.definesSetter(identifier, true))) {
             return true;
         }
         return false;
     }
 
     private void validateRequiredSkinParts(AbcClass hostComponentClass, AbcClass skinClass,
-                                           Context cx, int position, TypeTable typeTable)
-    {
+                                           Context cx, int position, TypeTable typeTable) {
         Iterator<Variable> variables = hostComponentClass.getVarIterator();
 
-        while (variables.hasNext())
-        {
+        while (variables.hasNext()) {
             Variable variable = variables.next();
 
             List<MetaData> skinPartsMetaDataList = variable.getMetaData("SkinPart");
 
-            if (skinPartsMetaDataList != null)
-            {
+            if (skinPartsMetaDataList != null) {
                 validateRequiredSkinParts(skinPartsMetaDataList, variable.getQName().getLocalPart(),
-                                          variable.getTypeName(), skinClass, typeTable, cx, position);
+                        variable.getTypeName(), skinClass, typeTable, cx, position);
             }
         }
 
         Iterator<Method> get_iter = hostComponentClass.getGetterIterator();
 
-        while ( get_iter.hasNext() )
-        {
+        while (get_iter.hasNext()) {
             Method getter = get_iter.next();
 
             List<MetaData> skinPartsMetaDataList = getter.getMetaData("SkinPart");
 
-            if (skinPartsMetaDataList != null)
-            {
+            if (skinPartsMetaDataList != null) {
                 validateRequiredSkinParts(skinPartsMetaDataList, getter.getQName().getLocalPart(),
-                                          getter.getReturnTypeName(), skinClass, typeTable, cx, position);
+                        getter.getReturnTypeName(), skinClass, typeTable, cx, position);
             }
         }
 
         // Validate up the inheritance chain
         String superTypeName = hostComponentClass.getSuperTypeName();
 
-        if (superTypeName != null)
-        {
+        if (superTypeName != null) {
             AbcClass superType = typeTable.getClass(superTypeName);
 
-            if (superType != null)
-            {
+            if (superType != null) {
                 validateRequiredSkinParts(superType, skinClass, cx, position, typeTable);
             }
         }
@@ -300,62 +269,46 @@ public final class HostComponentExtension implements Extension
 
     private void validateRequiredSkinParts(List<MetaData> skinPartsMetaDataList, String hostSkinPartName,
                                            String hostSkinPartTypeName, AbcClass skinClass, TypeTable typeTable,
-                                           Context cx, int position)
-    {
-        for (MetaData skinPartsMetaData : skinPartsMetaDataList)
-        {
+                                           Context cx, int position) {
+        for (MetaData skinPartsMetaData : skinPartsMetaDataList) {
             String skinPartTypeName = null;
 
             Variable variable = skinClass.getVariable(PUBLIC_NAMESPACE, hostSkinPartName, true);
 
-            if (variable != null)
-            {
+            if (variable != null) {
                 skinPartTypeName = variable.getTypeName();
-            }
-            else
-            {
+            } else {
                 Method getter = skinClass.getGetter(PUBLIC_NAMESPACE, hostSkinPartName, true);
 
-                if (getter != null)
-                {
+                if (getter != null) {
                     skinPartTypeName = getter.getReturnTypeName();
                 }
             }
 
             String required = skinPartsMetaData.getValue("required");
 
-            if ("true".equals(required) && skinPartTypeName == null)
-            {
-                if (reportMissingRequiredSkinPartsAsWarnings)
-                {
+            if ("true".equals(required) && skinPartTypeName == null) {
+                if (reportMissingRequiredSkinPartsAsWarnings) {
                     cx.localizedWarning2(cx.input.origin, position, new MissingSkinPartWarning(hostSkinPartName));
-                }
-                else
-                {
+                } else {
                     cx.localizedError2(cx.input.origin, position, new MissingSkinPart(hostSkinPartName));
                 }
-            }
-            else if ((skinPartTypeName != null) &&
-                     !typeTable.getClass(NameFormatter.toColon(skinPartTypeName)).isSubclassOf(hostSkinPartTypeName))
-            {
+            } else if ((skinPartTypeName != null) &&
+                    !typeTable.getClass(NameFormatter.toColon(skinPartTypeName)).isSubclassOf(hostSkinPartTypeName)) {
                 cx.localizedError2(cx.input.origin, position, new WrongSkinPartType(skinPartTypeName, hostSkinPartTypeName));
             }
         }
     }
 
-    private void validateRequiredSkinPartsAndStates(Context cx, CompilationUnit unit, TypeTable typeTable)
-    {
-    	MetaDataNode metaData = unit.hostComponentMetaData;
+    private void validateRequiredSkinPartsAndStates(Context cx, CompilationUnit unit, TypeTable typeTable) {
+        MetaDataNode metaData = unit.hostComponentMetaData;
         String hostComponentClassName = metaData.getValue(0);
         AbcClass hostComponentClass = typeTable.getClass(NameFormatter.toColon(hostComponentClassName));
 
-        if (hostComponentClass == null)
-        {
+        if (hostComponentClass == null) {
             cx.localizedError2(cx.input.origin, metaData.pos(),
-                               new HostComponentClassNotFound(hostComponentClassName));
-        }
-        else if (unit.hostComponentOwnerClass != null)
-        {
+                    new HostComponentClassNotFound(hostComponentClassName));
+        } else if (unit.hostComponentOwnerClass != null) {
             AbcClass skinClass = typeTable.getClass(unit.hostComponentOwnerClass);
             validateRequiredSkinParts(hostComponentClass, skinClass, cx, metaData.pos(), typeTable);
             validateRequiredSkinStates(hostComponentClass, skinClass, cx, metaData.pos());
@@ -363,29 +316,22 @@ public final class HostComponentExtension implements Extension
     }
 
     private void validateRequiredSkinStates(AbcClass hostComponentClass, AbcClass skinClass,
-                                            Context cx, int position)
-    {
+                                            Context cx, int position) {
         List<MetaData> skinStatesMetaDataList = hostComponentClass.getMetaData("SkinState", true);
         List<MetaData> statesMetaDataList = skinClass.getMetaData("States", true);
 
-        if (skinStatesMetaDataList != null)
-        {
-            for (MetaData skinStatesMetaData : skinStatesMetaDataList)
-            {
+        if (skinStatesMetaDataList != null) {
+            for (MetaData skinStatesMetaData : skinStatesMetaDataList) {
                 String skinStateName = skinStatesMetaData.getValue(0);
                 boolean isFound = false;
 
-                if (statesMetaDataList != null)
-                {
+                if (statesMetaDataList != null) {
                     foundIt:
-                    for (MetaData statesMetaData : statesMetaDataList)
-                    {
-                        for (int i = 0, count = statesMetaData.count(); i < count; i++)
-                        {
+                    for (MetaData statesMetaData : statesMetaDataList) {
+                        for (int i = 0, count = statesMetaData.count(); i < count; i++) {
                             String state = statesMetaData.getValue(i);
 
-                            if (skinStateName.equals(state))
-                            {
+                            if (skinStateName.equals(state)) {
                                 isFound = true;
                                 break foundIt;
                             }
@@ -393,71 +339,60 @@ public final class HostComponentExtension implements Extension
                     }
                 }
 
-                if (!isFound)
-                {
+                if (!isFound) {
                     cx.localizedError2(cx.input.origin, position, new MissingSkinState(skinStateName));
                 }
             }
         }
     }
 
-    public static class HostComponentClassNotFound extends CompilerMessage.CompilerError
-    {
+    public static class HostComponentClassNotFound extends CompilerMessage.CompilerError {
         private static final long serialVersionUID = 5290330001936137678L;
 
         public String className;
 
-        public HostComponentClassNotFound(String className)
-        {
+        public HostComponentClassNotFound(String className) {
             this.className = className;
         }
     }
 
-    public static class MissingSkinPart extends CompilerMessage.CompilerError
-    {
+    public static class MissingSkinPart extends CompilerMessage.CompilerError {
         private static final long serialVersionUID = 5290330001936137667L;
 
         public String skinPartName;
 
-        public MissingSkinPart(String skinPartName)
-        {
+        public MissingSkinPart(String skinPartName) {
             this.skinPartName = skinPartName;
         }
     }
 
-    public static class MissingSkinPartWarning extends CompilerMessage.CompilerWarning
-    {
+    public static class MissingSkinPartWarning extends CompilerMessage.CompilerWarning {
         private static final long serialVersionUID = 5290330001936137667L;
 
         public String skinPartName;
 
-        public MissingSkinPartWarning(String skinPartName)
-        {
+        public MissingSkinPartWarning(String skinPartName) {
             this.skinPartName = skinPartName;
         }
     }
 
-    public static class MissingSkinState extends CompilerMessage.CompilerError
-    {
+    public static class MissingSkinState extends CompilerMessage.CompilerError {
         private static final long serialVersionUID = 5290330001936137669L;
 
         public String skinStateName;
 
-        public MissingSkinState(String skinStateName)
-        {
+        public MissingSkinState(String skinStateName) {
             this.skinStateName = skinStateName;
         }
     }
 
-    public static class WrongSkinPartType extends CompilerMessage.CompilerError
-    {
+    public static class WrongSkinPartType extends CompilerMessage.CompilerError {
         private static final long serialVersionUID = 5290330001936137670L;
 
         public String skinPartTypeName;
         public String hostSkinPartTypeName;
 
-        public WrongSkinPartType(String skinPartTypeName, String hostSkinPartTypeName)
-        {
+        public WrongSkinPartType(String skinPartTypeName, String hostSkinPartTypeName) {
             this.skinPartTypeName = skinPartTypeName;
             this.hostSkinPartTypeName = hostSkinPartTypeName;
         }

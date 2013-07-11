@@ -24,15 +24,12 @@ import flex2.compiler.mxml.reflect.Type;
 /**
  * This class represents a DesignLayer instance.
  */
-public class DesignLayer extends Model
-{
-    public DesignLayer(MxmlDocument document, Type type, int line)
-    {
+public class DesignLayer extends Model {
+    public DesignLayer(MxmlDocument document, Type type, int line) {
         super(document, type, line);
     }
-    
-    public DesignLayer(MxmlDocument document, Type type, DesignLayer parent, int line)
-    {
+
+    public DesignLayer(MxmlDocument document, Type type, DesignLayer parent, int line) {
         super(document, type, (Model) parent, line);
     }
 }

@@ -32,55 +32,45 @@ import macromedia.asc.util.Context;
  *
  * @author Paul Reilly
  */
-public class BindableInfo extends GenerativeClassInfo
-{
+public class BindableInfo extends GenerativeClassInfo {
     private boolean needsToImplementIEventDispatcher;
     private boolean needsStaticEventDispatcher;
     private boolean requiresStaticEventDispatcher;
 
-    public BindableInfo(Context context, SymbolTable symbolTable)
-    {
+    public BindableInfo(Context context, SymbolTable symbolTable) {
         super(context, symbolTable);
     }
 
-    public boolean needsAdditionalInterfaces()
-    {
+    public boolean needsAdditionalInterfaces() {
         return needsToImplementIEventDispatcher;
     }
 
     // Bean like methods for Velocity Template
-    public boolean getNeedsToImplementIEventDispatcher()
-    {
+    public boolean getNeedsToImplementIEventDispatcher() {
         return needsToImplementIEventDispatcher;
     }
 
-    public boolean getNeedsStaticEventDispatcher()
-    {
+    public boolean getNeedsStaticEventDispatcher() {
         return needsStaticEventDispatcher;
     }
 
-    public boolean getRequiresStaticEventDispatcher()
-    {
+    public boolean getRequiresStaticEventDispatcher() {
         return requiresStaticEventDispatcher;
     }
 
-    public void removeOriginalMetaData(DefinitionNode definitionNode)
-    {
+    public void removeOriginalMetaData(DefinitionNode definitionNode) {
         NodeMagic.removeMetaData(definitionNode, StandardDefs.MD_BINDABLE);
     }
 
-    public void setNeedsToImplementIEventDispatcher(boolean needsToImplementIEventDispatcher)
-    {
+    public void setNeedsToImplementIEventDispatcher(boolean needsToImplementIEventDispatcher) {
         this.needsToImplementIEventDispatcher = needsToImplementIEventDispatcher;
     }
 
-    public void setNeedsStaticEventDispatcher(boolean needsStaticEventDispatcher)
-    {
+    public void setNeedsStaticEventDispatcher(boolean needsStaticEventDispatcher) {
         this.needsStaticEventDispatcher = needsStaticEventDispatcher;
     }
 
-    public void setRequiresStaticEventDispatcher(boolean requiresStaticEventDispatcher)
-    {
+    public void setRequiresStaticEventDispatcher(boolean requiresStaticEventDispatcher) {
         this.requiresStaticEventDispatcher = requiresStaticEventDispatcher;
     }
 }

@@ -28,26 +28,21 @@ package flex2.compiler;
  * @author Clement Wong
  * @see flex2.compiler.util.CompilerMessage
  */
-public class CompilerException extends Exception
-{
+public class CompilerException extends Exception {
     private static final long serialVersionUID = 1587688606009074835L;
 
-    public CompilerException()
-    {
+    public CompilerException() {
     }
 
-	public CompilerException(String message)
-	{
-		super(message);
-	}
+    public CompilerException(String message) {
+        super(message);
+    }
 
-    public CompilerException(String message, Throwable cause)
-    {
+    public CompilerException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public CompilerException(Throwable cause)
-    {
+    public CompilerException(Throwable cause) {
         super(cause);
     }
 }

@@ -34,20 +34,17 @@ import java.util.*;
  * typetable lookups.  Use NameFormatter.toDot() to convert to source
  * code format.  (Note: an exception is lists of import names, in dot
  * format already.)
- * 
+ * <p/>
  * A few select constants are interned, primarily because they are
  * utilized during AST generation.
  */
-public abstract class StandardDefs
-{
+public abstract class StandardDefs {
     private static StandardDefs STANDARD_DEFS_MXML_2006;
 
-    private StandardDefs()
-    {
+    private StandardDefs() {
     }
 
-    public static StandardDefs getStandardDefs(String frameworkType)
-    {
+    public static StandardDefs getStandardDefs(String frameworkType) {
         if (STANDARD_DEFS_MXML_2006 == null)
             STANDARD_DEFS_MXML_2006 = new StandardDefs2006();
 
@@ -55,44 +52,72 @@ public abstract class StandardDefs
     }
 
     public abstract String getBindingPackage();
+
     public abstract String getContainerPackage();
+
     public abstract String getCorePackage();
+
     public abstract String getControlsPackage();
+
     public abstract String getDataPackage();
+
     public abstract String getDataUtilsPackage();
+
     public abstract String getEffectsPackage();
+
     public abstract String getEventsPackage();
+
     public abstract String getManagersPackage();
+
     public abstract String getMessagingConfigPackage();
+
     public abstract String getModulesPackage();
+
     public abstract String getPreloadersPackage();
+
     public abstract String getResourcesPackage();
+
     public abstract String getRPCPackage();
+
     public abstract String getRPCXMLPackage();
+
     public abstract String getStatesPackage();
+
     public abstract String getStylesPackage();
+
     public abstract String getUtilsPackage();
 
     public abstract String getBindablePropertyTemplate();
+
     public abstract String getClassDefTemplate();
+
     public abstract String getClassDefLibTemplate();
+
     public abstract String getEmbedClassTemplate();
+
     public abstract String getFontFaceRulesTemplate();
+
     public abstract String getInterfaceDefTemplate();
+
     public abstract String getManagedPropertyTemplate();
+
     public abstract String getSkinClassTemplate();
+
     public abstract String getStyleDefTemplate();
+
     public abstract String getStyleLibraryTemplate();
+
     public abstract String getStyleModuleTemplate();
+
     public abstract String getWatcherSetupUtilTemplate();
 
     //--------------------------------------------------------------------------
     //
-	//  SWCs
+    //  SWCs
     //
     //--------------------------------------------------------------------------
 
-	public static final String SWC_AIRGLOBAL = "airglobal.swc";
+    public static final String SWC_AIRGLOBAL = "airglobal.swc";
     public static final String SWC_AVMPLUS = "avmplus.swc";
     public static final String SWC_PLAYERGLOBAL = "playerglobal.swc";
 
@@ -131,7 +156,7 @@ public abstract class StandardDefs
 
     // flashx.textLayout.*
     public static final String PACKAGE_FLASH_TEXTLAYOUT_COMPOSE = "flashx.textLayout.compose";
-    
+
     // mx.*
     private static final String PACKAGE_MX_BINDING = "mx.binding".intern();
     private static final String PACKAGE_MX_CONTAINERS = "mx.containers";
@@ -187,7 +212,7 @@ public abstract class StandardDefs
     // Interface name with colon
     // flashx.textLayout
     public static final String INTERFACE_FLASH_TEXTLAYOUT_ISWFCONTEXT = NameFormatter.toColon(PACKAGE_FLASH_TEXTLAYOUT_COMPOSE, "ISWFContext");
-    
+
     public final String INTERFACE_ICHILDLIST = NameFormatter.toColon(getCorePackage(), "IChildList");
     public final String INTERFACE_ICONTAINER = NameFormatter.toColon(getCorePackage(), "IContainer");
     public final String INTERFACE_IDEFERREDINSTANCE = NameFormatter.toColon(getCorePackage(), "IDeferredInstance");
@@ -218,7 +243,7 @@ public abstract class StandardDefs
 
     // Interface without the package name
     public static final String INTERFACE_IMODULE_NO_PACKAGE = "IModule";
-    
+
     //--------------------------------------------------------------------------
     //
     //  Classes
@@ -226,7 +251,7 @@ public abstract class StandardDefs
     //--------------------------------------------------------------------------    
 
     // Class name with dot    
-	public final String CLASS_CROSSDOMAINRSLITEM_DOT = NameFormatter.toDot(getCorePackage(), "CrossDomainRSLItem");
+    public final String CLASS_CROSSDOMAINRSLITEM_DOT = NameFormatter.toDot(getCorePackage(), "CrossDomainRSLItem");
     public final String CLASS_EMBEDDEDFONTREGISTRY_DOT = NameFormatter.toDot(getCorePackage(), "EmbeddedFontRegistry");
     public final String CLASS_FLEXVERSION_DOT = NameFormatter.toDot(getCorePackage(), "FlexVersion");
     public final String CLASS_EFFECTMANAGER_DOT = NameFormatter.toDot(getEffectsPackage(), "EffectManager");
@@ -258,7 +283,7 @@ public abstract class StandardDefs
     public final String CLASS_FLEXEVENT = NameFormatter.toColon(getEventsPackage(), "FlexEvent");
     public final String CLASS_FLEXSPRITE = NameFormatter.toColon(getCorePackage(), "FlexSprite");
     public final String CLASS_SPARK_RADIOBUTTONGROUP = NameFormatter.toColon(PACKAGE_SPARK_COMPONENTS, "RadioButtonGroup");
-	public final String CLASS_ITEMSCOMPONENT = NameFormatter.toColon(PACKAGE_SPARK_COMPONENTS, "SkinnableContainer");
+    public final String CLASS_ITEMSCOMPONENT = NameFormatter.toColon(PACKAGE_SPARK_COMPONENTS, "SkinnableContainer");
     public final String CLASS_LOADERCONFIG = NameFormatter.toColon(getMessagingConfigPackage(), "LoaderConfig");
     public final String CLASS_MANAGED = NameFormatter.toColon(getDataUtilsPackage(), "Managed");
     public final String CLASS_MODULEEVENT = NameFormatter.toColon(getModulesPackage(), "ModuleEvent");
@@ -288,7 +313,7 @@ public abstract class StandardDefs
     public static final String CLASS_ARRAY = "Array";
     public static final String CLASS_VECTOR = NameFormatter.toDot(PACKAGE___AS3___VEC, "Vector");
     public static final String CLASS_VECTOR_SHORTNAME = "Vector";
-	public static final String CLASS_XML = "XML";
+    public static final String CLASS_XML = "XML";
     public static final String CLASS_XMLLIST = "XMLList";
     public static final String CLASS_XMLNODE = NameFormatter.toColon(PACKAGE_FLASH_XML, "XMLNode");
 
@@ -304,7 +329,7 @@ public abstract class StandardDefs
     public static final String CLASS_TEXT_SPAN = NameFormatter.toColon(PACKAGE_TEXT_ELEMENTS, "SpanElement");
     public static final String CLASS_TEXT_TAB = NameFormatter.toColon(PACKAGE_TEXT_ELEMENTS, "TabElement");
     public static final String CLASS_TEXT_TCY = NameFormatter.toColon(PACKAGE_TEXT_ELEMENTS, "TCYElement");
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -373,8 +398,8 @@ public abstract class StandardDefs
     public static final String MD_SKINPART = "SkinPart";
     public static final String MD_ALTERNATIVE = "Alternative";
     public static final String MD_DISCOURAGEDFORPROFILE = "DiscouragedForProfile";
-    
-    
+
+
     //    metadata param names
     public static final String MDPARAM_BINDABLE_EVENT = "event";
     public static final String MDPARAM_TYPE = "type";
@@ -390,12 +415,12 @@ public abstract class StandardDefs
     public static final String MDPARAM_MANAGED_MODE_ASSOCIATION = "association";
     public static final String MDPARAM_MANAGED_MODE_MANUAL = "manual";
 
-    
-    public static final String[] DefaultAS3Metadata = new String[] {StandardDefs.MD_BINDABLE,
-                                                                    StandardDefs.MD_MANAGED,
-                                                                    StandardDefs.MD_CHANGEEVENT,
-                                                                    StandardDefs.MD_NONCOMMITTINGCHANGEEVENT,
-                                                                    StandardDefs.MD_TRANSIENT};
+
+    public static final String[] DefaultAS3Metadata = new String[]{StandardDefs.MD_BINDABLE,
+            StandardDefs.MD_MANAGED,
+            StandardDefs.MD_CHANGEEVENT,
+            StandardDefs.MD_NONCOMMITTINGCHANGEEVENT,
+            StandardDefs.MD_TRANSIENT};
 
     //--------------------------------------------------------------------------
     //
@@ -422,13 +447,13 @@ public abstract class StandardDefs
     //
     //--------------------------------------------------------------------------    
 
-    
+
     /**
      * implicit imports - not MXML support, but auto-imported to facilitate user script code.
      */
     public static final Set<String> implicitImports = new HashSet<String>();
-    static
-    {
+
+    static {
         implicitImports.add(NameFormatter.toDotStar(PACKAGE_FLASH_ACCESSIBILITY));
         implicitImports.add(NameFormatter.toDotStar(PACKAGE_FLASH_DEBUGGER));
         implicitImports.add(NameFormatter.toDotStar(PACKAGE_FLASH_DISPLAY));
@@ -454,8 +479,8 @@ public abstract class StandardDefs
      * SDK-24611.
      */
     public static final HashSet<String> SPARK_TEXT_TAGS = new HashSet<String>(13);
-    static
-    {
+
+    static {
         SPARK_TEXT_TAGS.add("RichEditableText");
         SPARK_TEXT_TAGS.add("RichText");
         SPARK_TEXT_TAGS.add("TextArea");
@@ -476,8 +501,8 @@ public abstract class StandardDefs
      * content. This is part of a workaround to avoid SDK-23972.
      */
     public static final HashSet<String> SPARK_TEXT_CONTENT_PROPERTIES = new HashSet<String>(3);
-    static
-    {
+
+    static {
         SPARK_TEXT_CONTENT_PROPERTIES.add("content");
         SPARK_TEXT_CONTENT_PROPERTIES.add("mxmlChildren");
         SPARK_TEXT_CONTENT_PROPERTIES.add("text");
@@ -491,25 +516,22 @@ public abstract class StandardDefs
 
 
     public static final String[] splitPackageMxFilters;
-    static
-    {
+
+    static {
         splitPackageMxFilters = NameFormatter.toDotStar(PACKAGE_MX_FILTERS).split("\\.");
 
-        for (int i = 0; i < splitPackageMxFilters.length; i++)
-        {
+        for (int i = 0; i < splitPackageMxFilters.length; i++) {
             splitPackageMxFilters[i] = splitPackageMxFilters[i].intern();
         }
     }
 
     public static final Map<String, String[]> splitImplicitImports = new HashMap<String, String[]>();
-    static
-    {
-        for (String implicitImport : implicitImports)
-        {
+
+    static {
+        for (String implicitImport : implicitImports) {
             String[] splitImplicitImport = implicitImport.split("\\.");
 
-            for (int i = 0; i < splitImplicitImport.length; i++)
-            {
+            for (int i = 0; i < splitImplicitImport.length; i++) {
                 splitImplicitImport[i] = splitImplicitImport[i].intern();
             }
 
@@ -521,8 +543,8 @@ public abstract class StandardDefs
      * implicit imports that exist only in AIR
      */
     public static final Set<String> airOnlyImplicitImports = new HashSet<String>();
-    static
-    {
+
+    static {
         airOnlyImplicitImports.add(NameFormatter.toDotStar(PACKAGE_FLASH_DATA));
         airOnlyImplicitImports.add(NameFormatter.toDotStar(PACKAGE_FLASH_DESKTOP));
         airOnlyImplicitImports.add(NameFormatter.toDotStar(PACKAGE_FLASH_FILESYSTEM));
@@ -531,14 +553,12 @@ public abstract class StandardDefs
     }
 
     public static final Map<String, String[]> splitAirOnlyImplicitImports = new HashMap<String, String[]>();
-    static
-    {
-        for (String airOnlyImplicitImport : airOnlyImplicitImports)
-        {
+
+    static {
+        for (String airOnlyImplicitImport : airOnlyImplicitImports) {
             String[] splitAirOnlyImplicitImport = airOnlyImplicitImport.split("\\.");
 
-            for (int i = 0; i < splitAirOnlyImplicitImport.length; i++)
-            {
+            for (int i = 0; i < splitAirOnlyImplicitImport.length; i++) {
                 splitAirOnlyImplicitImport[i] = splitAirOnlyImplicitImport[i].intern();
             }
 
@@ -551,10 +571,8 @@ public abstract class StandardDefs
     /**
      * standard (framework-independent) MXML support imports
      */
-    public final Set<String> getStandardMxmlImports()
-    {
-        if (standardMxmlImports == null)
-        {
+    public final Set<String> getStandardMxmlImports() {
+        if (standardMxmlImports == null) {
             standardMxmlImports = new HashSet<String>();
             standardMxmlImports.add(NameFormatter.toDotStar(getStylesPackage()));
             standardMxmlImports.add(NameFormatter.toDotStar(getBindingPackage()));
@@ -575,20 +593,17 @@ public abstract class StandardDefs
     }
 
     private Map<String, String[]> splitStandardMxmlImports;
-    public final Map<String, String[]> getSplitStandardMxmlImports()
-    {
-        if (splitStandardMxmlImports == null)
-        {
+
+    public final Map<String, String[]> getSplitStandardMxmlImports() {
+        if (splitStandardMxmlImports == null) {
             splitStandardMxmlImports = new HashMap<String, String[]>();
-            for (String standardMxmlImport : getStandardMxmlImports())
-            {
+            for (String standardMxmlImport : getStandardMxmlImports()) {
                 String[] splitStandardMxmlImport = standardMxmlImport.split("\\.");
-    
-                for (int i = 0; i < splitStandardMxmlImport.length; i++)
-                {
+
+                for (int i = 0; i < splitStandardMxmlImport.length; i++) {
                     splitStandardMxmlImport[i] = splitStandardMxmlImport[i].intern();
                 }
-    
+
                 splitStandardMxmlImports.put(standardMxmlImport, splitStandardMxmlImport);
             }
         }
@@ -597,21 +612,20 @@ public abstract class StandardDefs
     }
 
     private String[] watcherImports;
-    public String[] getImports()
-    {
-        if (watcherImports == null)
-        {
-            watcherImports = new String[] {
-                getCorePackage() + ".IFlexModuleFactory",
-                getBindingPackage() + ".ArrayElementWatcher",
-                getBindingPackage() + ".FunctionReturnWatcher",
-                getBindingPackage() + ".IWatcherSetupUtil2",
-                getBindingPackage() + ".PropertyWatcher",
-                getBindingPackage() + ".RepeaterComponentWatcher",
-                getBindingPackage() + ".RepeaterItemWatcher",
-                getBindingPackage() + ".StaticPropertyWatcher",
-                getBindingPackage() + ".XMLWatcher",
-                getBindingPackage() + ".Watcher"
+
+    public String[] getImports() {
+        if (watcherImports == null) {
+            watcherImports = new String[]{
+                    getCorePackage() + ".IFlexModuleFactory",
+                    getBindingPackage() + ".ArrayElementWatcher",
+                    getBindingPackage() + ".FunctionReturnWatcher",
+                    getBindingPackage() + ".IWatcherSetupUtil2",
+                    getBindingPackage() + ".PropertyWatcher",
+                    getBindingPackage() + ".RepeaterComponentWatcher",
+                    getBindingPackage() + ".RepeaterItemWatcher",
+                    getBindingPackage() + ".StaticPropertyWatcher",
+                    getBindingPackage() + ".XMLWatcher",
+                    getBindingPackage() + ".Watcher"
             };
         }
 
@@ -625,8 +639,8 @@ public abstract class StandardDefs
      * Note also that "get" and "set" do not appear, as they seem to be legal AS3 variable names.
      */
     private static final Set<String> as3ReservedWords = new HashSet<String>();
-    static
-    {
+
+    static {
         as3ReservedWords.add("as");
         as3ReservedWords.add("break");
         as3ReservedWords.add("case");
@@ -680,8 +694,7 @@ public abstract class StandardDefs
     /**
      * true iff passed string is a reserved word
      */
-    public static final boolean isReservedWord(String s)
-    {
+    public static final boolean isReservedWord(String s) {
         return as3ReservedWords.contains(s);
     }
 
@@ -689,8 +702,8 @@ public abstract class StandardDefs
      *
      */
     private static final Set<String> as3BuiltInTypeNames = new HashSet<String>();
-    static
-    {
+
+    static {
         as3BuiltInTypeNames.add("String");
         as3BuiltInTypeNames.add("Boolean");
         as3BuiltInTypeNames.add("Number");
@@ -705,34 +718,31 @@ public abstract class StandardDefs
         as3BuiltInTypeNames.add("RegExp");
         as3BuiltInTypeNames.add(CLASS_VECTOR);
     }
-	
-	public static boolean isApplication(Type type)
-    {
+
+    public static boolean isApplication(Type type) {
         assert type != null;
-        return type.isAssignableTo(CLASS_APPLICATION) || 
-               type.isAssignableTo(CLASS_SPARK_APPLICATION);
+        return type.isAssignableTo(CLASS_APPLICATION) ||
+                type.isAssignableTo(CLASS_SPARK_APPLICATION);
     }
 
     /**
      * true iff passed string is the name of a built-in type
      */
-    public static final boolean isBuiltInTypeName(String s)
-    {
+    public static final boolean isBuiltInTypeName(String s) {
         return as3BuiltInTypeNames.contains(s);
     }
 
     /**
-     *  Properties of a main application that are proxies for the
-     *  Flash Player's Stage properties.
+     * Properties of a main application that are proxies for the
+     * Flash Player's Stage properties.
      */
     private static final Set<String> stageProperties = new HashSet<String>();
-    static
-    {
+
+    static {
         stageProperties.add("colorCorrection");
     }
-    
-    public static final boolean isStageProperty(String s)
-    {
+
+    public static final boolean isStageProperty(String s) {
         return stageProperties.contains(s);
     }
 
@@ -741,8 +751,8 @@ public abstract class StandardDefs
      * Note: here, instead of FrameworkDefs, because the target tag names could be mapped to any classes, in or out of our framework.
      */
     private static final Map<Class, String> compatTagMappings = new HashMap<Class, String>();
-    static
-    {
+
+    static {
         compatTagMappings.put(OperationNode.class, "WebServiceOperation");
         compatTagMappings.put(MethodNode.class, "RemoteObjectOperation");
     }
@@ -750,8 +760,7 @@ public abstract class StandardDefs
     /**
      * returns converted tag name for nodes representing migrated MXML 1.5 tags, original node name otherwise
      */
-    public final String getConvertedTagName(Node node)
-    {
+    public final String getConvertedTagName(Node node) {
         String name = compatTagMappings.get(node.getClass());
         return name != null ? name : node.getLocalPart();
     }
@@ -759,8 +768,7 @@ public abstract class StandardDefs
     /**
      * TODO formalize the type relationship between IContainer and (I)Repeater
      */
-    public boolean isContainer(Type type)
-    {
+    public boolean isContainer(Type type) {
         assert type != null;
         return type.isAssignableTo(INTERFACE_ICONTAINER) || type.isAssignableTo(CLASS_REPEATER);
     }
@@ -768,35 +776,31 @@ public abstract class StandardDefs
     /**
      *
      */
-    public boolean isNavigatorContent(Type type)
-    {
+    public boolean isNavigatorContent(Type type) {
         assert type != null;
         return type.isAssignableTo(INTERFACE_INAVIGATORCONTENT) || type.isAssignableTo(CLASS_REPEATER);
     }
 
     /**
-    *
-    */
-   public boolean isIFlexModule(Type type)
-   {
-       assert type != null;
-       return type.isAssignableTo(INTERFACE_IFLEXMODULE);
-   }
+     *
+     */
+    public boolean isIFlexModule(Type type) {
+        assert type != null;
+        return type.isAssignableTo(INTERFACE_IFLEXMODULE);
+    }
 
     /**
      *
      */
-    public boolean isIUIComponent(Type type)
-    {
+    public boolean isIUIComponent(Type type) {
         assert type != null;
         return type.isAssignableTo(INTERFACE_IUICOMPONENT);
     }
 
     /**
-     * 
+     *
      */
-    public boolean isItemsComponent(Type type)
-    {
+    public boolean isItemsComponent(Type type) {
         assert type != null;
         return type.isAssignableTo(CLASS_ITEMSCOMPONENT);
     }
@@ -804,26 +808,23 @@ public abstract class StandardDefs
     /**
      *
      */
-    public boolean isHaloNavigator(Type type)
-    {
+    public boolean isHaloNavigator(Type type) {
         assert type != null;
         return type.isAssignableTo(CLASS_ACCORDION) || type.isAssignableTo(CLASS_VIEWSTACK);
     }
 
-	/**
-	 *
-	 */
-	public boolean isSparkGraphic(Type type)
-	{
-		assert type != null;
-		return type.isAssignableTo(INTERFACE_IGRAPHICELEMENT);
-	}
+    /**
+     *
+     */
+    public boolean isSparkGraphic(Type type) {
+        assert type != null;
+        return type.isAssignableTo(INTERFACE_IGRAPHICELEMENT);
+    }
 
     /**
-     * 
+     *
      */
-    public boolean isSimpleStyleComponent(Type type)
-    {
+    public boolean isSimpleStyleComponent(Type type) {
         assert type != null;
         return type.isAssignableTo(INTERFACE_ISIMPLESTYLECLIENT);
     }
@@ -831,28 +832,25 @@ public abstract class StandardDefs
     /**
      * Note that we trigger factory coercions only on IFactory type equality, *not* assignability
      */
-    public boolean isIFactory(Type type)
-    {
+    public boolean isIFactory(Type type) {
         assert type != null;
         return type.getName().equals(INTERFACE_IFACTORY);
     }
 
     /**
-     * Note that we trigger DI coercions only on IDeferredInstance or ITransientDeferredInstance 
+     * Note that we trigger DI coercions only on IDeferredInstance or ITransientDeferredInstance
      * type equality, *not* assignability
      */
-    public boolean isIDeferredInstance(Type type)
-    {
+    public boolean isIDeferredInstance(Type type) {
         assert type != null;
-        return (type.getName().equals(INTERFACE_IDEFERREDINSTANCE) || 
-        	    type.getName().equals(INTERFACE_ITRANSIENTDEFERREDINSTANCE));
+        return (type.getName().equals(INTERFACE_IDEFERREDINSTANCE) ||
+                type.getName().equals(INTERFACE_ITRANSIENTDEFERREDINSTANCE));
     }
 
     /**
      * Note that we trigger DI coercions only on ITransientDeferredInstance type equality, *not* assignability
      */
-    public boolean isITransientDeferredInstance(Type type)
-    {
+    public boolean isITransientDeferredInstance(Type type) {
         assert type != null;
         return type.getName().equals(INTERFACE_ITRANSIENTDEFERREDINSTANCE);
     }
@@ -860,8 +858,7 @@ public abstract class StandardDefs
     /**
      *
      */
-    public boolean isInstanceGenerator(Type type)
-    {
+    public boolean isInstanceGenerator(Type type) {
         assert type != null;
         return isIFactory(type) || isIDeferredInstance(type);
     }
@@ -869,34 +866,30 @@ public abstract class StandardDefs
     /**
      *
      */
-    public boolean isRepeater(Type type)
-    {
+    public boolean isRepeater(Type type) {
         assert type != null;
         return type.isAssignableTo(CLASS_REPEATER);
     }
-    
+
     /**
      * Used when filtering and processing of state nodes.
      */
-    public boolean isState(String cls)
-    {
+    public boolean isState(String cls) {
         return CLASS_STATE.equals(cls);
     }
-    
+
     /**
      * for use before MXML type load
      * TODO once mxml core types have been factored out of frameworks.swc, ideally we can fail fast if they aren't available
      */
-    public boolean isRepeater(String cls)
-    {
+    public boolean isRepeater(String cls) {
         return CLASS_REPEATER.equals(cls);
     }
 
     /**
      *
      */
-    public final String getXmlBackingClassName(boolean e4x)
-    {
+    public final String getXmlBackingClassName(boolean e4x) {
         return e4x ? CLASS_XML : CLASS_XMLNODE;
     }
 
@@ -905,8 +898,7 @@ public abstract class StandardDefs
      * scrub. The backstop is to avoid asserting when the core framework interfaces are entirely absent.
      * TODO post-scrub, this should be modified to check whatever subinterface of IUIComponent defines id.
      */
-    public final boolean isIUIComponentWithIdProperty(Type type)
-    {
+    public final boolean isIUIComponentWithIdProperty(Type type) {
         assert (type.getTypeTable().getType(INTERFACE_IDEFERREDINSTANTIATIONUICOMPONENT) != null) ==
                 (type.getTypeTable().getType(INTERFACE_IUICOMPONENT) != null)
                 : "interface " + INTERFACE_IDEFERREDINSTANTIATIONUICOMPONENT + " not found in core framework interface set";
@@ -917,14 +909,13 @@ public abstract class StandardDefs
     /**
      * MXML 2006 specific standard definitions.
      */
-    public static class StandardDefs2006 extends StandardDefs
-    {
+    public static class StandardDefs2006 extends StandardDefs {
         private static final String BINDABLE_PROPERTY_TEMPLATE = "BindableProperty.vm";
         private static final String CLASSDEF_TEMPLATE = "ClassDef.vm";
         private static final String CLASSDEF_LIB_TEMPLATE = "ClassDefLib.vm";
         private static final String EMBED_CLASS_TEMPLATE = "EmbedClass.vm";
         private static final String FONTFACERULES_TEMPLATE = "FontFaceRules.vm";
-        private static final String INTERFACE_DEF_TEMPLATE = "InterfaceDef.vm"; 
+        private static final String INTERFACE_DEF_TEMPLATE = "InterfaceDef.vm";
         private static final String MANAGED_PROPERTY_TEMPLATE = "ManagedProperty.vm";
         private static final String SKINCLASS_TEMPLATE = "SkinClass.vm";
         private static final String STYLEDEF_TEMPLATE = "StyleDef.vm";
@@ -932,98 +923,79 @@ public abstract class StandardDefs
         private static final String STYLE_MODULE_TEMPLATE = "StyleModule.vm";
         private static final String WATCHER_SETUP_UTIL_TEMPLATE = "WatcherSetupUtil.vm";
 
-        private StandardDefs2006()
-        {
+        private StandardDefs2006() {
             super();
         }
 
-        public String getBindingPackage()
-        {
+        public String getBindingPackage() {
             return PACKAGE_MX_BINDING;
         }
 
-        public String getContainerPackage()
-        {
+        public String getContainerPackage() {
             return PACKAGE_MX_CONTAINERS;
         }
 
-        public String getCorePackage()
-        {
+        public String getCorePackage() {
             return PACKAGE_MX_CORE;
         }
 
-        public String getControlsPackage()
-        {
+        public String getControlsPackage() {
             return PACKAGE_MX_CONTROLS;
         }
 
-        public String getDataPackage()
-        {
+        public String getDataPackage() {
             return PACKAGE_MX_DATA;
         }
 
-        public String getDataUtilsPackage()
-        {
+        public String getDataUtilsPackage() {
             return PACKAGE_MX_DATA_UTILS;
         }
 
-        public String getEffectsPackage()
-        {
+        public String getEffectsPackage() {
             return PACKAGE_MX_EFFECTS;
         }
 
-        public String getEventsPackage()
-        {
+        public String getEventsPackage() {
             return PACKAGE_MX_EVENTS;
         }
 
-        public String getManagersPackage()
-        {
+        public String getManagersPackage() {
             return StandardDefs.PACKAGE_MX_MANAGERS;
         }
 
-        public String getMessagingConfigPackage()
-        {
+        public String getMessagingConfigPackage() {
             return StandardDefs.PACKAGE_MX_MESSAGING_CONFIG;
         }
 
-        public String getModulesPackage()
-        {
+        public String getModulesPackage() {
             return StandardDefs.PACKAGE_MX_MODULES;
         }
 
-        public String getPreloadersPackage()
-        {
+        public String getPreloadersPackage() {
             return StandardDefs.PACKAGE_MX_PRELOADERS;
         }
 
-        public String getResourcesPackage()
-        {
+        public String getResourcesPackage() {
             return StandardDefs.PACKAGE_MX_RESOURCES;
         }
 
-        public String getRPCPackage()
-        {
+        public String getRPCPackage() {
             return StandardDefs.PACKAGE_MX_RPC;
         }
 
-        public String getRPCXMLPackage()
-        {
+        public String getRPCXMLPackage() {
             return StandardDefs.PACKAGE_MX_RPC_XML;
         }
 
-        public String getStatesPackage()
-        {
+        public String getStatesPackage() {
             return StandardDefs.PACKAGE_MX_STATES;
         }
 
-        public String getStylesPackage()
-        {
+        public String getStylesPackage() {
             return StandardDefs.PACKAGE_MX_STYLES;
         }
 
-        public String getUtilsPackage()
-        {
+        public String getUtilsPackage() {
             return PACKAGE_MX_UTILS;
         }
 
@@ -1033,63 +1005,51 @@ public abstract class StandardDefs
         //
         //----------------------------------------------------------------------
 
-        public String getBindablePropertyTemplate()
-        {
+        public String getBindablePropertyTemplate() {
             return BINDABLE_PROPERTY_TEMPLATE;
         }
 
-        public String getClassDefTemplate()
-        {
+        public String getClassDefTemplate() {
             return CLASSDEF_TEMPLATE;
         }
 
-        public String getClassDefLibTemplate()
-        {
+        public String getClassDefLibTemplate() {
             return CLASSDEF_LIB_TEMPLATE;
         }
 
-        public String getEmbedClassTemplate()
-        {
+        public String getEmbedClassTemplate() {
             return EMBED_CLASS_TEMPLATE;
         }
 
-        public String getFontFaceRulesTemplate()
-        {
+        public String getFontFaceRulesTemplate() {
             return FONTFACERULES_TEMPLATE;
         }
 
-        public String getInterfaceDefTemplate()
-        {
+        public String getInterfaceDefTemplate() {
             return INTERFACE_DEF_TEMPLATE;
         }
 
-        public String getManagedPropertyTemplate()
-        {
+        public String getManagedPropertyTemplate() {
             return MANAGED_PROPERTY_TEMPLATE;
         }
 
-        public String getSkinClassTemplate()
-        {
+        public String getSkinClassTemplate() {
             return SKINCLASS_TEMPLATE;
         }
 
-        public String getStyleDefTemplate()
-        {
+        public String getStyleDefTemplate() {
             return STYLEDEF_TEMPLATE;
         }
 
-        public String getStyleLibraryTemplate()
-        {
+        public String getStyleLibraryTemplate() {
             return STYLE_LIBRARY_TEMPLATE;
         }
 
-        public String getStyleModuleTemplate()
-        {
+        public String getStyleModuleTemplate() {
             return STYLE_MODULE_TEMPLATE;
         }
 
-        public String getWatcherSetupUtilTemplate()
-        {
+        public String getWatcherSetupUtilTemplate() {
             return WATCHER_SETUP_UTIL_TEMPLATE;
         }
     }

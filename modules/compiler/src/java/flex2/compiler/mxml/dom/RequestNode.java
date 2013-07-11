@@ -29,24 +29,20 @@ import java.util.Set;
  *
  * @author Clement Wong
  */
-public class RequestNode extends Node
-{
-	public static final Set<QName> attributes;
+public class RequestNode extends Node {
+    public static final Set<QName> attributes;
 
-	static
-	{
-		attributes = new HashSet<QName>();
-		attributes.add(new QName("", "format"));
-	}
+    static {
+        attributes = new HashSet<QName>();
+        attributes.add(new QName("", "format"));
+    }
 
-	RequestNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
+    RequestNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
 
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 }

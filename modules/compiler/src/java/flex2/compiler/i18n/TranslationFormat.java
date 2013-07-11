@@ -30,8 +30,7 @@ import flex2.compiler.SymbolTable;
  *
  * @author Brian Deitte
  */
-public interface TranslationFormat
-{
+public interface TranslationFormat {
     /**
      * Let the compiler know whether the given mimeType is supported by this class
      */
@@ -47,6 +46,6 @@ public interface TranslationFormat
      * Process the given file and return a Set of Map.Entry values with String keys and values.
      */
     public TranslationInfo getTranslationSet(CompilerConfiguration configuration,
-            SymbolTable symbolTable, Source source, String locale, StandardDefs standardDefs)
-    	throws TranslationException;
+                                             SymbolTable symbolTable, Source source, String locale, StandardDefs standardDefs)
+            throws TranslationException;
 }

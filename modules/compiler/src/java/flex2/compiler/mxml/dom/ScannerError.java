@@ -22,33 +22,28 @@ package flex2.compiler.mxml.dom;
 /**
  * @author Clement Wong
  */
-public class ScannerError extends Error
-{
-	private static final long serialVersionUID = -619000486885987644L;
+public class ScannerError extends Error {
+    private static final long serialVersionUID = -619000486885987644L;
 
-    ScannerError(int line, int col, String reason)
-	{
-		this.line = line;
-		this.col = col;
-		this.reason = reason;
-	}
+    ScannerError(int line, int col, String reason) {
+        this.line = line;
+        this.col = col;
+        this.reason = reason;
+    }
 
-	private int line;
-	private int col;
-	private String reason;
+    private int line;
+    private int col;
+    private String reason;
 
-	public int getLineNumber()
-	{
-		return line;
-	}
+    public int getLineNumber() {
+        return line;
+    }
 
-	public int getColumnNumber()
-	{
-		return col;
-	}
+    public int getColumnNumber() {
+        return col;
+    }
 
-	public String getReason()
-	{
-		return reason;
-	}
+    public String getReason() {
+        return reason;
+    }
 }

@@ -31,6 +31,7 @@ import flex2.compiler.util.NameFormatter;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
 import macromedia.asc.util.IntegerPool;
+
 import java.util.*;
 
 /**
@@ -43,17 +44,25 @@ import java.util.*;
  * @author mchotin
  * @author preilly
  */
-public class BindingExpression implements Comparable<BindingExpression>
-{
-    /** The source expression for this binding */
+public class BindingExpression implements Comparable<BindingExpression> {
+    /**
+     * The source expression for this binding
+     */
     private String sourceExpression;
-    /** The destination Model of this binding */
+    /**
+     * The destination Model of this binding
+     */
     private Model destination;
-    /** The destination property within the Model (numeric for Arrays) */
+    /**
+     * The destination property within the Model (numeric for Arrays)
+     */
     private String destinationProperty;
-    /** The destination style */
+    /**
+     * The destination style
+     */
     private String destinationStyle;
-    /** If destinationProperty is an array index, this is true.  Controlled by
+    /**
+     * If destinationProperty is an array index, this is true.  Controlled by
      * calling setDestinationProperty(int).
      */
     private boolean arrayAccess = false;
@@ -64,16 +73,24 @@ public class BindingExpression implements Comparable<BindingExpression>
      */
     private String destinationLValue;
     /**
-     * The id of the binding expression, used for variable name. 
+     * The id of the binding expression, used for variable name.
      */
     private int id;
-    /** Is this an XML attribute? */
+    /**
+     * Is this an XML attribute?
+     */
     private boolean isDestinationXMLAttribute;
-    /** Is this an XML node value? */
+    /**
+     * Is this an XML node value?
+     */
     private boolean isDestinationXMLNode;
-    /** Is this XMLnode an E4X assignment? */
+    /**
+     * Is this XMLnode an E4X assignment?
+     */
     private boolean isDestinationE4X;
-    /** Is the destination a Model? */
+    /**
+     * Is the destination a Model?
+     */
     private boolean isDestinationObjectProxy;
     /**
      * Used to signal that the destination must be parsed.
@@ -86,66 +103,58 @@ public class BindingExpression implements Comparable<BindingExpression>
      * be set on the runtime Binding object.
      */
     private boolean isTwoWayPrimary;
-    /** The line number where this binding expression was set up*/
+    /**
+     * The line number where this binding expression was set up
+     */
     public int xmlLineNumber;
 
     private MxmlDocument mxmlDocument;
 
     private BindingExpression twoWayCounterpart;
 
-	// namespace-aware e4x expressions need namespaces
-	private Map<Integer, String> namespaces;
+    // namespace-aware e4x expressions need namespaces
+    private Map<Integer, String> namespaces;
 
     private String sourceAsProperty;
 
-	public BindingExpression(String bindingExpression, int xmlLineNumber, MxmlDocument mxmlDocument)
-    {
+    public BindingExpression(String bindingExpression, int xmlLineNumber, MxmlDocument mxmlDocument) {
         this.sourceExpression = bindingExpression;
-		this.xmlLineNumber = xmlLineNumber;
+        this.xmlLineNumber = xmlLineNumber;
 
-		assert mxmlDocument != null;
-		setMxmlDocument(mxmlDocument);
+        assert mxmlDocument != null;
+        setMxmlDocument(mxmlDocument);
     }
 
-    public int compareTo(BindingExpression bindingExpression)
-    {
+    public int compareTo(BindingExpression bindingExpression) {
         int result = 0;
 
-        if (id < bindingExpression.id)
-        {
+        if (id < bindingExpression.id) {
             result = -1;
-        }
-        else if (id > bindingExpression.id)
-        {
+        } else if (id > bindingExpression.id) {
             result = 1;
         }
 
         return result;
     }
 
-    private void ensureHighestLevelModelDeclared(Model model)
-    {
+    private void ensureHighestLevelModelDeclared(Model model) {
         if (!((model instanceof XML) ||
-              (model instanceof AnonymousObjectGraph) ||
-              model.equals(mxmlDocument.getRoot())) &&
-            (model.getId() != null))
-        {
+                (model instanceof AnonymousObjectGraph) ||
+                model.equals(mxmlDocument.getRoot())) &&
+                (model.getId() != null)) {
             // This object needs to have an id at runtime, so instruct
             // SWCBuilder to emit one.
             mxmlDocument.ensureDeclaration(model);
         }
     }
 
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         boolean result = false;
 
-        if (object instanceof BindingExpression)
-        {
+        if (object instanceof BindingExpression) {
             BindingExpression bindingExpression = (BindingExpression) object;
 
-            if (bindingExpression.id == id)
-            {
+            if (bindingExpression.id == id) {
                 result = true;
             }
         }
@@ -153,66 +162,54 @@ public class BindingExpression implements Comparable<BindingExpression>
         return result;
     }
 
-	public void setMxmlDocument(MxmlDocument mxmlDocument)
-	{
-		this.mxmlDocument = mxmlDocument;
-		mxmlDocument.addBindingExpression(this);
-	}
+    public void setMxmlDocument(MxmlDocument mxmlDocument) {
+        this.mxmlDocument = mxmlDocument;
+        mxmlDocument.addBindingExpression(this);
+    }
 
-    public boolean isDestinationXMLAttribute()
-    {
+    public boolean isDestinationXMLAttribute() {
         return isDestinationXMLAttribute;
     }
 
-    public boolean isDestinationXMLNode()
-    {
+    public boolean isDestinationXMLNode() {
         return isDestinationXMLNode;
     }
 
-    public boolean isDestinationE4X()
-    {
+    public boolean isDestinationE4X() {
         return isDestinationE4X;
     }
 
-    public boolean isDestinationObjectProxy()
-    {
+    public boolean isDestinationObjectProxy() {
         return isDestinationObjectProxy;
     }
 
-    public String getSourceAsProperty()
-    {
+    public String getSourceAsProperty() {
         return sourceAsProperty;
     }
 
-    public boolean isDestinationNonPublicProperty()
-    {
-    	// We currently assume our destination is publicly accessible, and only 
-    	// validate the simple property case.
-    	boolean result = false;
-    	
-    	if ((destination != null) && (destinationProperty != null && destinationStyle == null) &&
-            !isArrayAccess() && !((isDestinationXMLAttribute || isDestinationXMLNode)))
-    	{
-    		Type type = destination.getType();
-    		Property property = type.getProperty(destinationProperty);
-    		
-    		if (property != null && !property.hasPublic())
-    			result = true;
-    	}
-    	
-    	return result;
-    }
-    
-    public boolean isSourcePublicProperty()
-    {
-        String potentialProperty;
-        
-        if (sourceExpression.startsWith("(") && sourceExpression.endsWith(")"))
-        {
-            potentialProperty = sourceExpression.substring(1, sourceExpression.length() - 1);
+    public boolean isDestinationNonPublicProperty() {
+        // We currently assume our destination is publicly accessible, and only
+        // validate the simple property case.
+        boolean result = false;
+
+        if ((destination != null) && (destinationProperty != null && destinationStyle == null) &&
+                !isArrayAccess() && !((isDestinationXMLAttribute || isDestinationXMLNode))) {
+            Type type = destination.getType();
+            Property property = type.getProperty(destinationProperty);
+
+            if (property != null && !property.hasPublic())
+                result = true;
         }
-        else
-        {
+
+        return result;
+    }
+
+    public boolean isSourcePublicProperty() {
+        String potentialProperty;
+
+        if (sourceExpression.startsWith("(") && sourceExpression.endsWith(")")) {
+            potentialProperty = sourceExpression.substring(1, sourceExpression.length() - 1);
+        } else {
             potentialProperty = sourceExpression;
         }
 
@@ -220,21 +217,18 @@ public class BindingExpression implements Comparable<BindingExpression>
 
         boolean result = false;
 
-        if (potentialProperty.indexOf(":") == -1)
-        {
+        if (potentialProperty.indexOf(":") == -1) {
             Property property = skeletonClass.getProperty(SymbolTable.publicNamespace, potentialProperty);
 
             // It looks like we are checking for "public" twice, but
             // the above call also returns properties in the unnamed
             // package, because they are both equivalent to an empty
             // string.
-            if ((property != null) && property.hasPublic())
-            {
+            if ((property != null) && property.hasPublic()) {
                 result = true;
                 sourceAsProperty = potentialProperty;
 
-                if (mxmlDocument.showDeprecationWarnings())
-                {
+                if (mxmlDocument.showDeprecationWarnings()) {
                     AbstractBuilder.checkDeprecation(property, mxmlDocument.getSourcePath(), xmlLineNumber);
                 }
             }
@@ -245,34 +239,26 @@ public class BindingExpression implements Comparable<BindingExpression>
 
     private static final String NODE_VALUE = "nodeValue".intern();
 
-    public MemberExpressionNode generateDestinationAssignment(NodeFactory nodeFactory, String rvalue)
-    {
+    public MemberExpressionNode generateDestinationAssignment(NodeFactory nodeFactory, String rvalue) {
         Node base = null;
 
-        if (!((isDestinationXMLAttribute || isDestinationXMLNode)))
-        {
+        if (!((isDestinationXMLAttribute || isDestinationXMLNode))) {
             base = generateDestinationPathRoot(nodeFactory, false);
         }
 
         IdentifierNode identifier = null;
 
-        if (destinationLValue != null)
-        {
+        if (destinationLValue != null) {
             identifier = nodeFactory.identifier(destinationLValue);
-        }
-        else if (destinationProperty != null)
-        {
+        } else if (destinationProperty != null) {
             identifier = nodeFactory.identifier(destinationProperty);
-        }
-        else if (destinationStyle != null)
-        {
+        } else if (destinationStyle != null) {
             identifier = nodeFactory.identifier(destinationStyle);
         }
 
         assert identifier != null;
 
-        if (isDestinationXMLNode && !isDestinationE4X)
-        {
+        if (isDestinationXMLNode && !isDestinationE4X) {
             //buffer.append(".nodeValue");
             GetExpressionNode getExpression = nodeFactory.getExpression(identifier);
             base = nodeFactory.memberExpression(base, getExpression);
@@ -280,19 +266,16 @@ public class BindingExpression implements Comparable<BindingExpression>
         }
 
         MemberExpressionNode memberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, rvalue, true);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, rvalue, true);
         ArgumentListNode argumentList = nodeFactory.argumentList(null, memberExpression);
         SetExpressionNode selector = nodeFactory.setExpression(identifier, argumentList, false);
 
         if ((destination != null) &&
-            (destinationProperty != null || destinationStyle != null) &&
-            !isArrayAccess() &&
-            !((isDestinationXMLAttribute || isDestinationXMLNode)))
-        {
+                (destinationProperty != null || destinationStyle != null) &&
+                !isArrayAccess() &&
+                !((isDestinationXMLAttribute || isDestinationXMLNode))) {
             selector.setMode(Tokens.DOT_TOKEN);
-        }
-        else if (isArrayAccess())
-        {
+        } else if (isArrayAccess()) {
             selector.setMode(Tokens.LEFTBRACKET_TOKEN);
         }
 
@@ -302,12 +285,10 @@ public class BindingExpression implements Comparable<BindingExpression>
     private static final String SET_STYLE = "setStyle".intern();
     private static final String _SOURCE_FUNCTION_RETURN_VALUE = "_sourceFunctionReturnValue".intern();
 
-    public MemberExpressionNode generateDestinationSetStyle(NodeFactory nodeFactory, String rvalue)
-    {
+    public MemberExpressionNode generateDestinationSetStyle(NodeFactory nodeFactory, String rvalue) {
         Node base = null;
 
-        if (!((isDestinationXMLAttribute || isDestinationXMLNode)))
-        {
+        if (!((isDestinationXMLAttribute || isDestinationXMLNode))) {
             base = generateDestinationPathRoot(nodeFactory, false);
         }
 
@@ -315,10 +296,10 @@ public class BindingExpression implements Comparable<BindingExpression>
         LiteralStringNode literalString = nodeFactory.literalString(destinationStyle);
         ArgumentListNode argumentList = nodeFactory.argumentList(null, literalString);
         MemberExpressionNode memberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, _SOURCE_FUNCTION_RETURN_VALUE, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, _SOURCE_FUNCTION_RETURN_VALUE, false);
         argumentList = nodeFactory.argumentList(argumentList, memberExpression);
         CallExpressionNode selector = (CallExpressionNode) nodeFactory.callExpression(identifier,
-                                                                                      argumentList);
+                argumentList);
         selector.setRValue(false);
 
         return nodeFactory.memberExpression(base, selector);
@@ -327,31 +308,26 @@ public class BindingExpression implements Comparable<BindingExpression>
     /**
      * Sometimes the destination is not a member of the document, so
      * we have to climb the parent tree to find a parent that is.  Here is an example:
-     *
-     *   <mx:AreaChart>
-     *    <mx:horizontalAxis>
-     *      <mx:CategoryAxis dataProvider="{expenses}"/>
-     *    </mx:horizontalAxis>
-     *   </mx:AreaChart>
-     *
+     * <p/>
+     * <mx:AreaChart>
+     * <mx:horizontalAxis>
+     * <mx:CategoryAxis dataProvider="{expenses}"/>
+     * </mx:horizontalAxis>
+     * </mx:AreaChart>
+     * <p/>
      * For the above example the destination stack would be
      * ["_AreaChart1", "horizontalAxis"].
      */
-    private Stack<Model> generateDestinationStack()
-    {
+    private Stack<Model> generateDestinationStack() {
         Stack<Model> destinationStack = new Stack<Model>();
         Model model = destination;
 
-        while (model != null)
-        {
+        while (model != null) {
             destinationStack.push(model);
 
-            if ((model.getId() == null) || model.getIsAnonymous())
-            {
+            if ((model.getId() == null) || model.getIsAnonymous()) {
                 model = model.getParent();
-            }
-            else
-            {
+            } else {
                 break;
             }
         }
@@ -359,63 +335,48 @@ public class BindingExpression implements Comparable<BindingExpression>
         return destinationStack;
     }
 
-    public String getDestinationPath(boolean doXML)
-    {
+    public String getDestinationPath(boolean doXML) {
         StringBuilder buffer = new StringBuilder();
 
         // Always treat E4X as XML so the destinationLValue is used.
-        if (isDestinationE4X)
-        {
-            doXML = true;            
+        if (isDestinationE4X) {
+            doXML = true;
         }
-        
-        if (!(doXML && (isDestinationXMLAttribute || isDestinationXMLNode)))
-        {
-            buffer.append( getDestinationPathRoot(false) );
+
+        if (!(doXML && (isDestinationXMLAttribute || isDestinationXMLNode))) {
+            buffer.append(getDestinationPathRoot(false));
         }
 
         if ((destination != null) &&
-            (destinationProperty != null || destinationStyle != null) &&
-            !isArrayAccess() &&
-            !(doXML && (isDestinationXMLAttribute || isDestinationXMLNode)))
-        {
+                (destinationProperty != null || destinationStyle != null) &&
+                !isArrayAccess() &&
+                !(doXML && (isDestinationXMLAttribute || isDestinationXMLNode))) {
             buffer.append(".");
         }
 
-        if (isArrayAccess())
-        {
+        if (isArrayAccess()) {
             buffer.append("[");
         }
 
-        if ((doXML || (!(isDestinationXMLAttribute || isDestinationXMLNode))) && (destinationLValue != null))
-        {
+        if ((doXML || (!(isDestinationXMLAttribute || isDestinationXMLNode))) && (destinationLValue != null)) {
             buffer.append(destinationLValue);
-        }
-        else if (destinationProperty != null)
-        {
+        } else if (destinationProperty != null) {
             buffer.append(destinationProperty);
-        }
-        else if (destinationStyle != null)
-        {
+        } else if (destinationStyle != null) {
             buffer.append(destinationStyle);
         }
 
-        if (doXML && isDestinationXMLNode && !isDestinationE4X)
-        {
+        if (doXML && isDestinationXMLNode && !isDestinationE4X) {
             buffer.append(".nodeValue");
-        }
-        else if (isArrayAccess())
-        {
+        } else if (isArrayAccess()) {
             buffer.append("]");
         }
 
         return buffer.toString();
     }
 
-    public String getDestinationPathRoot(boolean doRepeatable)
-    {        
-        if (destination == null)
-        {
+    public String getDestinationPathRoot(boolean doRepeatable) {
+        if (destination == null) {
             return "";
         }
 
@@ -428,32 +389,23 @@ public class BindingExpression implements Comparable<BindingExpression>
 
         boolean writeRepeaterIndices = doRepeatable;
 
-        while (!destinationStack.isEmpty())
-        {
+        while (!destinationStack.isEmpty()) {
             model = destinationStack.pop();
 
-            if (model.equals(mxmlDocument.getRoot()))
-            {
+            if (model.equals(mxmlDocument.getRoot())) {
                 destinationRoot.append("this");
-            }
-            else
-            {
+            } else {
                 String parentIndex = model.getParentIndex();
 
-                if ((parentIndex != null) && (destinationRoot.length() > 0))
-                {
+                if ((parentIndex != null) && (destinationRoot.length() > 0)) {
                     destinationRoot.append("[");
                     destinationRoot.append(parentIndex);
                     destinationRoot.append("]");
-                }
-                else
-                {
+                } else {
                     String id = model.getId();
 
-                    if (id != null)
-                    {
-                        if (!model.getIsAnonymous())
-                        {
+                    if (id != null) {
+                        if (!model.getIsAnonymous()) {
                             mxmlDocument.ensureDeclaration(model);
                         }
                         destinationRoot.append(id);
@@ -461,10 +413,8 @@ public class BindingExpression implements Comparable<BindingExpression>
                 }
             }
 
-            if (writeRepeaterIndices && isRepeatable())
-            {
-                for (int i = 0; i < model.getRepeaterLevel(); ++i)
-                {
+            if (writeRepeaterIndices && isRepeatable()) {
+                for (int i = 0; i < model.getRepeaterLevel(); ++i) {
                     destinationRoot.append("[instanceIndices[");
                     destinationRoot.append(i);
                     destinationRoot.append("]]");
@@ -472,79 +422,61 @@ public class BindingExpression implements Comparable<BindingExpression>
                 writeRepeaterIndices = false;
             }
 
-            if (!destinationStack.isEmpty())
-            {
+            if (!destinationStack.isEmpty()) {
                 Model child = destinationStack.peek();
-                
-                if (child.getParentIndex() == null)
-                {
+
+                if (child.getParentIndex() == null) {
                     destinationRoot.append(".");
                 }
             }
         }
-        
+
         return destinationRoot.toString();
     }
 
-    public Node generateDestinationPathRoot(NodeFactory nodeFactory, boolean doRepeatable)
-    {
+    public Node generateDestinationPathRoot(NodeFactory nodeFactory, boolean doRepeatable) {
         Node result = null;
 
-        if (destination != null)
-        {
+        if (destination != null) {
             Stack<Model> destinationStack = generateDestinationStack();
             Model model = destinationStack.peek();
             ensureHighestLevelModelDeclared(model);
 
             boolean writeRepeaterIndices = doRepeatable;
 
-            while (!destinationStack.isEmpty())
-            {
+            while (!destinationStack.isEmpty()) {
                 model = destinationStack.pop();
 
-                if (model.equals(mxmlDocument.getRoot()))
-                {
+                if (model.equals(mxmlDocument.getRoot())) {
                     result = nodeFactory.thisExpression(-1);
-                }
-                else
-                {
+                } else {
                     String parentIndex = model.getParentIndex();
 
-                    if ((parentIndex != null) && (result != null))
-                    {
+                    if ((parentIndex != null) && (result != null)) {
                         //destinationRoot.append("[");
                         //destinationRoot.append(parentIndex);
                         //destinationRoot.append("]");
                         assert false;
-                    }
-                    else
-                    {
+                    } else {
                         String id = model.getId();
 
-                        if (id != null)
-                        {
-                            if (!model.getIsAnonymous())
-                            {
+                        if (id != null) {
+                            if (!model.getIsAnonymous()) {
                                 mxmlDocument.ensureDeclaration(model);
                             }
                             //destinationRoot.append(id);
 
-                            if (result == null)
-                            {
+                            if (result == null) {
                                 result = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, id, true);
-                            }
-                            else
-                            {
+                            } else {
                                 assert false;
                             }
                         }
                     }
                 }
 
-                if (writeRepeaterIndices && isRepeatable())
-                {
-                    for (int i = 0; i < model.getRepeaterLevel(); ++i)
-                    {
+                if (writeRepeaterIndices && isRepeatable()) {
+                    for (int i = 0; i < model.getRepeaterLevel(); ++i) {
                         //destinationRoot.append("[instanceIndices[");
                         //destinationRoot.append(i);
                         //destinationRoot.append("]]");
@@ -553,12 +485,10 @@ public class BindingExpression implements Comparable<BindingExpression>
                     writeRepeaterIndices = false;
                 }
 
-                if (!destinationStack.isEmpty())
-                {
+                if (!destinationStack.isEmpty()) {
                     Model child = destinationStack.peek();
-                
-                    if (child.getParentIndex() == null)
-                    {
+
+                    if (child.getParentIndex() == null) {
                         //destinationRoot.append(".");
                         assert false;
                     }
@@ -574,74 +504,59 @@ public class BindingExpression implements Comparable<BindingExpression>
      * code generating the binding source and destination functions.
      * It's also used when code generating the document's imports.
      */
-    public String getDestinationTypeName()
-    {
+    public String getDestinationTypeName() {
         Type type = null;
 
         if ((destination != null) &&
-            !(destination instanceof AnonymousObjectGraph) &&
-            !(destination instanceof XML))
-        {
-            if (destinationProperty != null)
-            {
+                !(destination instanceof AnonymousObjectGraph) &&
+                !(destination instanceof XML)) {
+            if (destinationProperty != null) {
                 Type destinationType = destination.getType();
 
-                if (!destinationType.getName().equals(mxmlDocument.getStandardDefs().CLASS_OBJECTPROXY))
-                {
+                if (!destinationType.getName().equals(mxmlDocument.getStandardDefs().CLASS_OBJECTPROXY)) {
                     Property property = destinationType.getProperty(destinationProperty);
 
-                    if (property != null)
-                    {
+                    if (property != null) {
                         type = property.getType();
                     }
                 }
-            }
-            else if (destinationStyle != null)
-            {
+            } else if (destinationStyle != null) {
                 Type destinationType = destination.getType();
                 Style style = destinationType.getStyle(destinationStyle);
 
-                if (style != null)
-                {
+                if (style != null) {
                     type = style.getType();
                 }
-            }
-            else
-            {
+            } else {
                 type = destination.getType();
             }
         }
 
         String result = SymbolTable.NOTYPE;
 
-        if (type != null)
-        {
+        if (type != null) {
             result = NameFormatter.toDot(type.getName());
         }
 
         return result;
     }
 
-    public int getId()
-    {
+    public int getId() {
         return id;
     }
 
-    public String getRepeatableSourceExpression()
-    {
+    public String getRepeatableSourceExpression() {
         String repeatableSourceExpression = sourceExpression;
         List repeaterParents = destination.getRepeaterParents();
         Iterator iterator = repeaterParents.iterator();
 
-        while ( iterator.hasNext() )
-        {
+        while (iterator.hasNext()) {
             Model repeater = (Model) iterator.next();
             int repeaterLevel = repeater.getRepeaterLevel();
             StringBuilder buffer = new StringBuilder();
             int i;
 
-            for (i = 0; i < repeaterLevel; i++)
-            {
+            for (i = 0; i < repeaterLevel; i++) {
                 buffer.append("[instanceIndices[");
                 buffer.append(i);
                 buffer.append("]]");
@@ -652,43 +567,37 @@ public class BindingExpression implements Comparable<BindingExpression>
             buffer.append("])");
 
             repeatableSourceExpression = repeatableSourceExpression.replaceAll(repeater.getId() + "\\.currentItem",
-                                                                               repeater.getId() + buffer.toString());
+                    repeater.getId() + buffer.toString());
 
             repeatableSourceExpression = repeatableSourceExpression.replaceAll(repeater.getId() + "\\.currentIndex",
-                                                                               "repeaterIndices[" + i + "]");
+                    "repeaterIndices[" + i + "]");
         }
 
         return repeatableSourceExpression;
     }
 
-    public String getSourceExpression()
-    {
+    public String getSourceExpression() {
         return sourceExpression;
     }
 
-    public void setDestinationProperty(String destinationProperty)
-    {
+    public void setDestinationProperty(String destinationProperty) {
         this.destinationProperty = destinationProperty;
     }
 
-    public void setDestinationProperty(int destinationProperty)
-    {
+    public void setDestinationProperty(int destinationProperty) {
         this.destinationProperty = Integer.toString(destinationProperty);
         arrayAccess = true;
     }
 
-    public void setDestinationStyle(String destinationStyle)
-    {
+    public void setDestinationStyle(String destinationStyle) {
         this.destinationStyle = destinationStyle;
     }
 
-    public String getDestinationStyle()
-    {
+    public String getDestinationStyle() {
         return destinationStyle;
     }
 
-    public boolean isSimpleChain()
-    {
+    public boolean isSimpleChain() {
         return (!isFromBindingNode() &&
                 !isStyle() &&
                 !isDestinationObjectProxy() &&
@@ -697,96 +606,77 @@ public class BindingExpression implements Comparable<BindingExpression>
                 (getDestinationPath(false).indexOf("[") == -1));
     }
 
-    public boolean isStyle()
-    {
+    public boolean isStyle() {
         return destinationStyle != null;
     }
 
-    public void setId(int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public void setDestinationXMLAttribute(boolean isDestinationXMLAttribute)
-    {
+    public void setDestinationXMLAttribute(boolean isDestinationXMLAttribute) {
         this.isDestinationXMLAttribute = isDestinationXMLAttribute;
     }
 
-    public void setDestinationXMLNode(boolean isDestinationXMLNode)
-    {
+    public void setDestinationXMLNode(boolean isDestinationXMLNode) {
         this.isDestinationXMLNode = isDestinationXMLNode;
     }
 
-    public void setDestinationE4X(boolean isDestinationE4X)
-    {
+    public void setDestinationE4X(boolean isDestinationE4X) {
         this.isDestinationE4X = isDestinationE4X;
     }
 
-    public void setDestinationObjectProxy(boolean isDestinationObjectProxy)
-    {
+    public void setDestinationObjectProxy(boolean isDestinationObjectProxy) {
         this.isDestinationObjectProxy = isDestinationObjectProxy;
     }
 
-    public String getDestinationProperty()
-    {
+    public String getDestinationProperty() {
         return destinationProperty;
     }
 
-    public boolean isArrayAccess()
-    {
+    public boolean isArrayAccess() {
         return arrayAccess;
     }
 
-    public String getDestinationLValue()
-    {
+    public String getDestinationLValue() {
         return destinationLValue;
     }
 
-    public void setDestinationLValue(String lvalue)
-    {
+    public void setDestinationLValue(String lvalue) {
         destinationLValue = lvalue;
     }
 
-    public Model getDestination()
-    {
+    public Model getDestination() {
         return destination;
     }
 
-    public void setDestination(Model destination)
-    {
+    public void setDestination(Model destination) {
         this.destination = destination;
-        if (this.xmlLineNumber == 0)
-        {
-	        // C: The destination xml line number may not be as accurate as the binding expression's original number...
-	        this.xmlLineNumber = destination.getXmlLineNumber();
+        if (this.xmlLineNumber == 0) {
+            // C: The destination xml line number may not be as accurate as the binding expression's original number...
+            this.xmlLineNumber = destination.getXmlLineNumber();
         }
     }
 
-    public boolean isRepeatable()
-    {
+    public boolean isRepeatable() {
         return ((destination != null) && (destination.getRepeaterLevel() > 0));
     }
 
-    public int getRepeaterLevel(String var)
-    {
-        if (var.indexOf("[repeaterIndices") > -1)
-        {
+    public int getRepeaterLevel(String var) {
+        if (var.indexOf("[repeaterIndices") > -1) {
             var = var.substring(0, var.indexOf("["));
         }
-        
+
         int repeaterLevel = -1;
 
-        if (destination != null)
-        {
+        if (destination != null) {
             List repeaters = destination.getRepeaterParents();
 
             repeaterLevel = repeaters.size() - 1;
 
-            for (; repeaterLevel >= 0; --repeaterLevel)
-            {
+            for (; repeaterLevel >= 0; --repeaterLevel) {
                 Model r = (Model) repeaters.get(repeaterLevel);
-                if (var.equals(r.getId()))
-                {
+                if (var.equals(r.getId())) {
                     break;
                 }
             }
@@ -795,115 +685,100 @@ public class BindingExpression implements Comparable<BindingExpression>
         return repeaterLevel;
     }
 
-    public String getRepeaterId(int level)
-    {
+    public String getRepeaterId(int level) {
         Model repeater = (Model) destination.getRepeaterParents().get(level);
         return repeater.getId();
     }
 
-    public BindingExpression getTwoWayCounterpart()
-    {
+    public BindingExpression getTwoWayCounterpart() {
         return twoWayCounterpart;
     }
 
-    public void setTwoWayCounterpart(BindingExpression twoWayCounterpart)
-    {
+    public void setTwoWayCounterpart(BindingExpression twoWayCounterpart) {
         this.twoWayCounterpart = twoWayCounterpart;
     }
 
-	/**
-	 *
-	 */
-	public int getXmlLineNumber()
-	{
-		return xmlLineNumber;
-	}
-
-	public void addNamespace(String nsUri, int i)
-	{
-		if (namespaces == null)
-		{
-			namespaces = new HashMap<Integer, String>();
-		}
-		namespaces.put(IntegerPool.getNumber(i), nsUri);
-	}
-	
-	public Map<Integer, String> getNamespaces()
-	{
-	    return namespaces;
-	}
-
     /**
-     * Combine the namespaces from all of the binding expressions.  Use the 	 
-     * Integer for the key, since it is unique across all the binding expressions. 	 
-     * @param bindingExpressions 	 
-     * @return 	 
-     */ 	 
-    public static String getAllBindingNamespaceDeclarations(List<BindingExpression> bindingExpressions) 	 
-    { 	 
-        Map<Integer, String> allNs = new HashMap<Integer, String>(); 	 
-	  	 
-        // Combine all the namespaces using the Integer as the unique key. 	 
-        for (BindingExpression be : bindingExpressions) 	 
-        { 	 
-            allNs.putAll(be.getNamespaces()); 	 
-        } 	 
-	  	 
-        return getNamespaceDeclarations(allNs); 	 
+     *
+     */
+    public int getXmlLineNumber() {
+        return xmlLineNumber;
     }
 
-	/**
-	 * Build the AS var Namespace declarations for the namespaces in the map.
-	 * @param namespaceMap
-	 * @return
-	 */
-    public static String getNamespaceDeclarations(Map<Integer, String> namespaceMap)
-    {
-        if (namespaceMap != null)
-        {
+    public void addNamespace(String nsUri, int i) {
+        if (namespaces == null) {
+            namespaces = new HashMap<Integer, String>();
+        }
+        namespaces.put(IntegerPool.getNumber(i), nsUri);
+    }
+
+    public Map<Integer, String> getNamespaces() {
+        return namespaces;
+    }
+
+    /**
+     * Combine the namespaces from all of the binding expressions.  Use the
+     * Integer for the key, since it is unique across all the binding expressions.
+     *
+     * @param bindingExpressions
+     * @return
+     */
+    public static String getAllBindingNamespaceDeclarations(List<BindingExpression> bindingExpressions) {
+        Map<Integer, String> allNs = new HashMap<Integer, String>();
+
+        // Combine all the namespaces using the Integer as the unique key. 	 
+        for (BindingExpression be : bindingExpressions) {
+            allNs.putAll(be.getNamespaces());
+        }
+
+        return getNamespaceDeclarations(allNs);
+    }
+
+    /**
+     * Build the AS var Namespace declarations for the namespaces in the map.
+     *
+     * @param namespaceMap
+     * @return
+     */
+    public static String getNamespaceDeclarations(Map<Integer, String> namespaceMap) {
+        if (namespaceMap != null) {
             StringBuilder b = new StringBuilder();
-            for (Integer key : namespaceMap.keySet())
-            {
+            for (Integer key : namespaceMap.keySet()) {
                 int k = key.intValue();
                 String uri = namespaceMap.get(key);
                 b.append("var ns").append(k).append(":Namespace = new Namespace(\"").append(uri).append("\");\n");
             }
             return b.toString();
         }
-        
+
         return "";
     }
-	
-	public String getNamespaceDeclarations()
-	{
-	    return getNamespaceDeclarations(namespaces);
-	}
+
+    public String getNamespaceDeclarations() {
+        return getNamespaceDeclarations(namespaces);
+    }
 
     // intern all identifier constants
     private static final String NAMESPACE = "Namespace".intern();
 
-    public StatementListNode generateNamespaceDeclarations(Context context, StatementListNode statementList)
-    {
+    public StatementListNode generateNamespaceDeclarations(Context context, StatementListNode statementList) {
         return generateNamespaceDeclarations(namespaces, context, statementList);
     }
 
     public static StatementListNode generateNamespaceDeclarations(
             Map<Integer, String> map, Context context,
-            StatementListNode statementList)
-    {
+            StatementListNode statementList) {
         StatementListNode result = statementList;
 
-        if (map != null)
-        {
+        if (map != null) {
             NodeFactory nodeFactory = context.getNodeFactory();
 
-            for (Integer key : map.keySet())
-            {
+            for (Integer key : map.keySet()) {
                 String uri = map.get(key);
                 IdentifierNode identifier = nodeFactory.identifier(NAMESPACE, false);
                 LiteralStringNode literalString = nodeFactory.literalString(uri);
                 ArgumentListNode argumentList = nodeFactory.argumentList(null, literalString);
-                CallExpressionNode callExpression = (CallExpressionNode)nodeFactory.callExpression(identifier, argumentList);
+                CallExpressionNode callExpression = (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
                 callExpression.is_new = true;
                 callExpression.setRValue(false);
                 MemberExpressionNode initializer = nodeFactory.memberExpression(null, callExpression);
@@ -916,23 +791,19 @@ public class BindingExpression implements Comparable<BindingExpression>
         return result;
     }
 
-    public boolean isFromBindingNode()
-    {
+    public boolean isFromBindingNode() {
         return isFromBindingNode;
     }
 
-    public void setFromBindingNode(boolean isFromBindingNode)
-    {
+    public void setFromBindingNode(boolean isFromBindingNode) {
         this.isFromBindingNode = isFromBindingNode;
     }
 
-    public boolean isTwoWayPrimary()
-    {
+    public boolean isTwoWayPrimary() {
         return isTwoWayPrimary;
     }
 
-    public void setTwoWayPrimary(boolean isTwoWayPrimary)
-    {
+    public void setTwoWayPrimary(boolean isTwoWayPrimary) {
         this.isTwoWayPrimary = isTwoWayPrimary;
     }
 }

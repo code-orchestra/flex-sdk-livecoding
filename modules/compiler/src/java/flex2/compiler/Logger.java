@@ -26,8 +26,7 @@ import flash.localization.LocalizationManager;
  *
  * @author Clement Wong
  */
-public interface Logger
-{
+public interface Logger {
     int errorCount();
 
     int warningCount();
@@ -46,11 +45,11 @@ public interface Logger
 
     void logWarning(String path, String warning);
 
-	void logWarning(String path, String warning, int errorCode);
+    void logWarning(String path, String warning, int errorCode);
 
     void logError(String path, String error);
 
-	void logError(String path, String error, int errorCode);
+    void logError(String path, String error, int errorCode);
 
     void logInfo(String path, int line, String info);
 
@@ -58,11 +57,11 @@ public interface Logger
 
     void logWarning(String path, int line, String warning);
 
-	void logWarning(String path, int line, String warning, int errorCode);
+    void logWarning(String path, int line, String warning, int errorCode);
 
     void logError(String path, int line, String error);
 
-	void logError(String path, int line, String error, int errorCode);
+    void logError(String path, int line, String error, int errorCode);
 
     void logInfo(String path, int line, int col, String info);
 
@@ -74,21 +73,21 @@ public interface Logger
 
     void logWarning(String path, int line, int col, String warning, String source);
 
-	void logWarning(String path, int line, int col, String warning, String source, int errorCode);
+    void logWarning(String path, int line, int col, String warning, String source, int errorCode);
 
     void logError(String path, int line, int col, String error, String source);
 
-	void logError(String path, int line, int col, String error, String source, int errorCode);
+    void logError(String path, int line, int col, String error, String source, int errorCode);
 
     void log(ILocalizableMessage m);
 
-	void log(ILocalizableMessage m, String source);
+    void log(ILocalizableMessage m, String source);
 
     void needsCompilation(String path, String reason);
 
-	void includedFileUpdated(String path);
+    void includedFileUpdated(String path);
 
-	void includedFileAffected(String path);
+    void includedFileAffected(String path);
 
-    void setLocalizationManager( LocalizationManager mgr );
+    void setLocalizationManager(LocalizationManager mgr);
 }

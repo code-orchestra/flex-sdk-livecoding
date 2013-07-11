@@ -40,15 +40,14 @@ import macromedia.asc.util.ContextStatics;
  * This class provides an MXML specific reflection API, built on top
  * of the compiler's symbol table.  Type and Property wrappers may be
  * cached.
- *
+ * <p/>
  * Design Note: flex2.compiler.mxml.reflect.* interface with
  * flex2.compiler.abc.*. That way, the MXML type system is not tightly
  * coupled with the player VM type system.
  *
  * @author Clement Wong
  */
-public class TypeTable
-{
+public class TypeTable {
     private SymbolTable symbolTable;
     private final StandardDefs standardDefs;
     private NameMappings manifest;
@@ -73,8 +72,7 @@ public class TypeTable
     private Map<String, String> nonRepeaters;
 
     public TypeTable(SymbolTable symbolTable, NameMappings manifest,
-                     StandardDefs standardDefs, Set<String> themeNames)
-    {
+                     StandardDefs standardDefs, Set<String> themeNames) {
         this.symbolTable = symbolTable;
         this.manifest = manifest;
         this.standardDefs = standardDefs;
@@ -83,43 +81,40 @@ public class TypeTable
         nonRepeaters = new WeakHashMap<String, String>();
         typeMap = new HashMap<String, Type>();
 
-        noType          = getType(SymbolTable.NOTYPE);
-        objectType      = getType(SymbolTable.OBJECT);
-        stringType      = getType(SymbolTable.STRING);
-        booleanType     = getType(SymbolTable.BOOLEAN);
-        classType       = getType(SymbolTable.CLASS);
-        functionType    = getType(SymbolTable.FUNCTION);
-        numberType      = getType(SymbolTable.NUMBER);
-        intType         = getType(SymbolTable.INT);
-        uintType        = getType(SymbolTable.UINT);
-        arrayType       = getType(SymbolTable.ARRAY);
-        xmlType         = getType(SymbolTable.XML);
-        xmlListType     = getType(SymbolTable.XML_LIST);
-        regExpType      = getType(SymbolTable.REGEXP);
-        vectorType      = getType(SymbolTable.VECTOR);
+        noType = getType(SymbolTable.NOTYPE);
+        objectType = getType(SymbolTable.OBJECT);
+        stringType = getType(SymbolTable.STRING);
+        booleanType = getType(SymbolTable.BOOLEAN);
+        classType = getType(SymbolTable.CLASS);
+        functionType = getType(SymbolTable.FUNCTION);
+        numberType = getType(SymbolTable.NUMBER);
+        intType = getType(SymbolTable.INT);
+        uintType = getType(SymbolTable.UINT);
+        arrayType = getType(SymbolTable.ARRAY);
+        xmlType = getType(SymbolTable.XML);
+        xmlListType = getType(SymbolTable.XML_LIST);
+        regExpType = getType(SymbolTable.REGEXP);
+        vectorType = getType(SymbolTable.VECTOR);
     }
 
     /**
      * @return The Map of QNames to class names used by this TypeTable.
      */
-    public NameMappings getNameMappings()
-    {
+    public NameMappings getNameMappings() {
         return manifest;
     }
 
     /**
      * Use <namespaceURI:localPart> to lookup a component implementation
      */
-    public Type getType(String namespaceURI, String localPart)
-    {
+    public Type getType(String namespaceURI, String localPart) {
         // use manifest to lookup classname based on namespaceURI and localPart. classname is fully qualfied.
         String className = manifest.resolveClassName(namespaceURI, localPart);
         // C: should check the type visibility here...
         return getType(className);
     }
 
-    public Type getType(QName qName)
-    {
+    public Type getType(QName qName) {
         return getType(qName.getNamespace(), qName.getLocalPart());
     }
 
@@ -128,37 +123,29 @@ public class TypeTable
      *
      * @param className Expected to be in colon format, ie foo:Bar.
      */
-    public Type getType(String className)
-    {
+    public Type getType(String className) {
         assert NameFormatter.toColon(className).equals(className) : "toColon = " + NameFormatter.toColon(className) + ", className = " + className;
         Type type = typeMap.get(className);
 
-        if (type == null)
-        {
+        if (type == null) {
             // use symbolTable to lookup Class.
             AbcClass classInfo = symbolTable.getClass(className);
 
-            if (classInfo != null)
-            {
+            if (classInfo != null) {
                 type = new TypeHelper(classInfo, standardDefs);
                 typeMap.put(className, type);
-            }
-            else
-            {
+            } else {
                 // Check if we have a Vector.
                 int lessThanIndex = className.indexOf("<");
-            
-                if (lessThanIndex != -1)
-                {
+
+                if (lessThanIndex != -1) {
                     int greaterThanIndex = className.lastIndexOf(">");
 
-                    if (greaterThanIndex != -1)
-                    {
+                    if (greaterThanIndex != -1) {
                         String elementTypeName = className.substring(lessThanIndex + 1, greaterThanIndex);
                         Type elementType = getType(elementTypeName);
 
-                        if (elementType != null)
-                        {
+                        if (elementType != null) {
                             type = new TypeHelper(symbolTable.getClass(SymbolTable.VECTOR), elementType, standardDefs);
                             typeMap.put(className, type);
                             assert type.getName().equals(className) : "type = " + type.getName() + ", className = " + className;
@@ -171,13 +158,11 @@ public class TypeTable
         return type;
     }
 
-    public Type getVectorType(Type elementType)
-    {
+    public Type getVectorType(Type elementType) {
         String className = SymbolTable.VECTOR + ".<" + elementType.getName() + ">";
         Type type = typeMap.get(className);
 
-        if (type == null)
-        {
+        if (type == null) {
             type = new TypeHelper(symbolTable.getClass(SymbolTable.VECTOR), elementType, standardDefs);
             typeMap.put(className, type);
         }
@@ -190,53 +175,45 @@ public class TypeTable
     /**
      * Look up a globally-defined style property
      */
-    public Style getStyle(String styleName)
-    {
+    public Style getStyle(String styleName) {
         MetaData md = symbolTable.getStyle(styleName);
         return md == null ? null : new StyleHelper(styleName,
-                                                   md.getValue("type"),
-                                                   md.getValue("enumeration"),
-                                                   md.getValue("format"),
-                                                   md.getValue("inherit"),
-                                                   md.getValue(Deprecated.DEPRECATED_MESSAGE),
-                                                   md.getValue(Deprecated.DEPRECATED_REPLACEMENT),
-                                                   md.getValue(Deprecated.DEPRECATED_SINCE));
+                md.getValue("type"),
+                md.getValue("enumeration"),
+                md.getValue("format"),
+                md.getValue("inherit"),
+                md.getValue(Deprecated.DEPRECATED_MESSAGE),
+                md.getValue(Deprecated.DEPRECATED_REPLACEMENT),
+                md.getValue(Deprecated.DEPRECATED_SINCE));
     }
 
-    public Styles getStyles()
-    {
+    public Styles getStyles() {
         return symbolTable.getStyles();
     }
 
     /**
      * DynamicProperty gets a new, undeclared property placeholder
      */
-    public DynamicProperty getDynamicProperty(String name, String state)
-    {
+    public DynamicProperty getDynamicProperty(String name, String state) {
         return new DynamicPropertyHelper(name, state);
     }
 
-	public ContextStatics getPerCompileData()
-    {
+    public ContextStatics getPerCompileData() {
         return symbolTable.perCompileData;
     }
 
-	public StandardDefs getStandardDefs()
-	{
-	    return standardDefs;
-	}
-	
+    public StandardDefs getStandardDefs() {
+        return standardDefs;
+    }
+
     // Helper classes
 
-    private final class TypeHelper implements Type
-    {
-        private TypeHelper(AbcClass classInfo, StandardDefs defs)
-        {
+    private final class TypeHelper implements Type {
+        private TypeHelper(AbcClass classInfo, StandardDefs defs) {
             this(classInfo, null, defs);
         }
 
-        private TypeHelper(AbcClass classInfo, Type elementType, StandardDefs defs)
-        {
+        private TypeHelper(AbcClass classInfo, Type elementType, StandardDefs defs) {
             assert classInfo != null;
             this.classInfo = classInfo;
             this.elementType = elementType;
@@ -251,40 +228,29 @@ public class TypeTable
         private List<MetaData> styles;
         private final StandardDefs standardDefs;
 
-        public boolean equals(Object obj)
-        {
-            if (obj == this)
-            {
+        public boolean equals(Object obj) {
+            if (obj == this) {
                 return true;
-            }
-            else if (obj instanceof Type)
-            {
+            } else if (obj instanceof Type) {
                 return getName().equals(((Type) obj).getName());
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
 
-        public TypeTable getTypeTable()
-        {
+        public TypeTable getTypeTable() {
             return TypeTable.this;
         }
 
         /**
          * Type name. AS3-compatible fully-qualified class name.
          */
-        public String getName()
-        {
+        public String getName() {
             String result;
 
-            if (elementType != null)
-            {
+            if (elementType != null) {
                 result = classInfo.getName() + ".<" + elementType.getName() + ">";
-            }
-            else
-            {
+            } else {
                 result = classInfo.getName();
             }
 
@@ -294,34 +260,27 @@ public class TypeTable
         /**
          * Super type
          */
-        public Type getSuperType()
-        {
+        public Type getSuperType() {
             return classInfo.getSuperTypeName() != null ? getType(classInfo.getSuperTypeName()) : null;
         }
 
-        public Type getElementType()
-        {
+        public Type getElementType() {
             return elementType;
         }
 
         /**
          * Interfaces
          */
-        public Type[] getInterfaces()
-        {
+        public Type[] getInterfaces() {
             String[] ifaces = classInfo.getInterfaceNames();
 
-            if (ifaces != null)
-            {
+            if (ifaces != null) {
                 Type[] types = new Type[ifaces.length];
-                for (int i = 0, length = types.length; i < length; i++)
-                {
+                for (int i = 0, length = types.length; i < length; i++) {
                     types[i] = getType(ifaces[i]);
                 }
                 return types;
-            }
-            else
-            {
+            } else {
                 return null;
             }
         }
@@ -330,8 +289,7 @@ public class TypeTable
          * Property. variables, getters, setters, etc.
          * Searches SymbolTable.VISIBILITY_NAMESPACES: public protected internal private
          */
-        public Property getProperty(String name)
-        {
+        public Property getProperty(String name) {
             return getProperty(SymbolTable.VISIBILITY_NAMESPACES, name);
         }
 
@@ -339,8 +297,7 @@ public class TypeTable
          * Property. variables, getters, setters, etc.
          * Searches specified namespace
          */
-        public Property getProperty(String namespace, String name)
-        {
+        public Property getProperty(String namespace, String name) {
             return getProperty(new String[]{namespace}, name);
         }
 
@@ -348,46 +305,34 @@ public class TypeTable
          * Property. variables, getters, setters, etc.
          * Searches specified namespaces
          */
-        public Property getProperty(String[] namespaces, String name)
-        {
+        public Property getProperty(String[] namespaces, String name) {
             AbcClass cls = classInfo, superClass = null;
 
             // walk the superclass chain for the specified property...
-            while (cls != null)
-            {
+            while (cls != null) {
                 Variable var = cls.getVariable(namespaces, name, false);
-                if (var != null)
-                {
-                    if (!var.isStatic())
-                    {
+                if (var != null) {
+                    if (!var.isStatic()) {
                         // found the property as a variable...
                         return new PropertyHelper(var);
-                    }
-                    else
-                    {
+                    } else {
                         superClass = symbolTable.getClass(cls.getSuperTypeName());
                     }
-                }
-                else
-                {
+                } else {
                     Method setter = cls.getSetter(namespaces, name, false);
                     Method getter = cls.getGetter(namespaces, name, false);
-                    if (setter != null && getter != null)
-                    {
+                    if (setter != null && getter != null) {
                         // found the property as a pair of getter and setter...
                         return new PropertyHelper(setter, getter);
                     }
 
                     superClass = symbolTable.getClass(cls.getSuperTypeName());
 
-                    if (setter != null && superClass != null)
-                    {
+                    if (setter != null && superClass != null) {
                         // search for a superclass getter before creating PropertyHelper.
                         getter = findGetter(superClass, name);
                         return new PropertyHelper(setter, getter);
-                    }
-                    else if (getter != null && superClass != null)
-                    {
+                    } else if (getter != null && superClass != null) {
                         // search for a superclass setter before creating PropertyHelper.
                         setter = findSetter(superClass, name);
                         return new PropertyHelper(setter, getter);
@@ -402,28 +347,20 @@ public class TypeTable
         /**
          *
          */
-        public boolean hasStaticMember(String name)
-        {
+        public boolean hasStaticMember(String name) {
             AbcClass cls = classInfo;
 
             // walk the superclass chain for the specified property...
-            while (cls != null)
-            {
+            while (cls != null) {
                 Variable var = cls.getVariable(SymbolTable.VISIBILITY_NAMESPACES, name, false);
-                if (var != null)
-                {
-                    if (var.isStatic())
-                    {
+                if (var != null) {
+                    if (var.isStatic()) {
                         return true;
                     }
-                }
-                else
-                {
-                    Method method = cls.getMethod(new String[] {SymbolTable.publicNamespace}, name, false);
-                    if (method != null)
-                    {
-                        if (method.isStatic())
-                        {
+                } else {
+                    Method method = cls.getMethod(new String[]{SymbolTable.publicNamespace}, name, false);
+                    if (method != null) {
+                        if (method.isStatic()) {
                             return true;
                         }
                     }
@@ -438,27 +375,22 @@ public class TypeTable
         /**
          * [Event]
          * NOTE a) for now, we assume that Event's type attribute (if specified) is either fully qualified,
-         *  ***in internal format***, or is in flash.core (!)
+         * ***in internal format***, or is in flash.core (!)
          * NOTE b) for now, we assume that Event's class can be found within current type set (!)
          * NOTE c) for now, we silently revert to flash.core.Event if (a) or (b) are false (!)
          * TODO fix (a), (b), (c) above, following ASC rearchitecture. EventExtension should a) try resolving unqualified
          * type against current imports; b) add import if implied by qualified type; c) logError if a/b fail
          */
-        public Event getEvent(String name)
-        {
-            if (events == null)
-            {
+        public Event getEvent(String name) {
+            if (events == null) {
                 events = new EventListHelper(classInfo.getMetaData("Event", false));
             }
 
             Event e = events.getEvent(name);
 
-            if (e != null)
-            {
+            if (e != null) {
                 return e;
-            }
-            else
-            {
+            } else {
                 Type st = getSuperType();
                 return (st != null) ? st.getEvent(name) : null;
             }
@@ -467,23 +399,19 @@ public class TypeTable
         /**
          * [Effect]
          */
-        public Effect getEffect(String name)
-        {
-            if (effects == null)
-            {
+        public Effect getEffect(String name) {
+            if (effects == null) {
                 effects = classInfo.getMetaData("Effect", true);
             }
 
-            for (int i = 0, length = effects.size(); i < length; i++)
-            {
+            for (int i = 0, length = effects.size(); i < length; i++) {
                 MetaData md = effects.get(i);
-                if (name.equals(md.getValue(0)))
-                {
+                if (name.equals(md.getValue(0))) {
                     return new EffectHelper(name,
-                                            md.getValue("event"),
-                                            md.getValue(Deprecated.DEPRECATED_MESSAGE),
-                                            md.getValue(Deprecated.DEPRECATED_REPLACEMENT),
-                                            md.getValue(Deprecated.DEPRECATED_SINCE));
+                            md.getValue("event"),
+                            md.getValue(Deprecated.DEPRECATED_MESSAGE),
+                            md.getValue(Deprecated.DEPRECATED_REPLACEMENT),
+                            md.getValue(Deprecated.DEPRECATED_SINCE));
                 }
             }
 
@@ -493,33 +421,27 @@ public class TypeTable
         /**
          * [Style]
          */
-        public Style getStyle(String name)
-        {
-            if (styles == null)
-            {
+        public Style getStyle(String name) {
+            if (styles == null) {
                 styles = classInfo.getMetaData("Style", true);
             }
 
-            if (!isExcludedStyle(name))
-            {
-                for (int i = 0, length = styles.size(); i < length; i++)
-                {
+            if (!isExcludedStyle(name)) {
+                for (int i = 0, length = styles.size(); i < length; i++) {
                     MetaData md = styles.get(i);
 
-                    if (name.equals(md.getValue("name")))
-                    {
+                    if (name.equals(md.getValue("name"))) {
                         String theme = md.getValue("theme");
 
-                        if ((theme == null) || (themeNames == null) || hasTheme(theme))
-                        {
+                        if ((theme == null) || (themeNames == null) || hasTheme(theme)) {
                             return new StyleHelper(name,
-                                                   md.getValue("type"),
-                                                   md.getValue("enumeration"),
-                                                   md.getValue("format"),
-                                                   md.getValue("inherit"),
-                                                   md.getValue(Deprecated.DEPRECATED_MESSAGE),
-                                                   md.getValue(Deprecated.DEPRECATED_REPLACEMENT),
-                                                   md.getValue(Deprecated.DEPRECATED_SINCE));
+                                    md.getValue("type"),
+                                    md.getValue("enumeration"),
+                                    md.getValue("format"),
+                                    md.getValue("inherit"),
+                                    md.getValue(Deprecated.DEPRECATED_MESSAGE),
+                                    md.getValue(Deprecated.DEPRECATED_REPLACEMENT),
+                                    md.getValue(Deprecated.DEPRECATED_SINCE));
                         }
                     }
                 }
@@ -528,20 +450,16 @@ public class TypeTable
             return null;
         }
 
-        public boolean isExcludedStyle(String name)
-        {
+        public boolean isExcludedStyle(String name) {
             boolean result = false;
 
-            if (excludes == null)
-            {
+            if (excludes == null) {
                 excludes = classInfo.getMetaData("Exclude", true);
             }
 
-            for (MetaData metaData : excludes)
-            {
+            for (MetaData metaData : excludes) {
                 if (name.equals(metaData.getValue("name")) &&
-                    "style".equals(metaData.getValue("kind")))
-                {
+                        "style".equals(metaData.getValue("kind"))) {
                     result = true;
                 }
             }
@@ -552,35 +470,28 @@ public class TypeTable
         /**
          * [Style(theme="...")]
          */
-        public String getStyleThemes(String name)
-        {
-            if (styles == null)
-            {
+        public String getStyleThemes(String name) {
+            if (styles == null) {
                 styles = classInfo.getMetaData("Style", true);
             }
 
-            for (int i = 0, length = styles.size(); i < length; i++)
-            {
+            for (int i = 0, length = styles.size(); i < length; i++) {
                 MetaData md = styles.get(i);
 
-                if (name.equals(md.getValue("name")))
-                {
+                if (name.equals(md.getValue("name"))) {
                     return md.getValue("theme");
                 }
             }
 
             return null;
         }
-        
-        private boolean hasTheme(String value)
-        {
+
+        private boolean hasTheme(String value) {
             boolean result = false;
             String[] themes = value.split("[, ]");
-            
-            for (int i = 0; i < themes.length; i++)
-            {
-                if (themeNames.contains(themes[i]))
-                {
+
+            for (int i = 0; i < themes.length; i++) {
+                if (themeNames.contains(themes[i])) {
                     result = true;
                     break;
                 }
@@ -591,12 +502,12 @@ public class TypeTable
 
         /**
          * Determines whether this type declares the specified metadata.
-         * @param name Specifies the name of the metadata to find.
+         *
+         * @param name       Specifies the name of the metadata to find.
          * @param inheriting Controls whether super types should be searched
-         * for the specified metadata. 
+         *                   for the specified metadata.
          */
-        public boolean hasMetadata(String name, boolean inheriting)
-        {
+        public boolean hasMetadata(String name, boolean inheriting) {
             List<MetaData> metadata = classInfo.getMetaData(name, inheriting);
             if (metadata != null && metadata.size() > 0)
                 return true;
@@ -609,16 +520,12 @@ public class TypeTable
          * Note: returns name as given in metadata - may or may not correctly specify a public property
          * TODO validate: should error when [DefaultProperty] is defined, but doesn't yield a default property
          */
-        public Property getDefaultProperty()
-        {
+        public Property getDefaultProperty() {
             List<MetaData> metadata = classInfo.getMetaData("DefaultProperty", true);
-            if (metadata.size() > 0)
-            {
+            if (metadata.size() > 0) {
                 String defaultPropertyName = (metadata.get(0)).getValue(0);
                 return defaultPropertyName != null ? getProperty(defaultPropertyName) : null;
-            }
-            else
-            {
+            } else {
                 return null;
             }
         }
@@ -626,14 +533,11 @@ public class TypeTable
         /**
          * [Obsolete]
          */
-        public boolean hasObsolete(String name)
-        {
+        public boolean hasObsolete(String name) {
             List<MetaData> metadata = classInfo.getMetaData("Obsolete", false);
-            for (int i = 0, length = metadata.size(); i < length; i++)
-            {
+            for (int i = 0, length = metadata.size(); i < length; i++) {
                 MetaData md = metadata.get(i);
-                if (name.equals(md.getValue(0)))
-                {
+                if (name.equals(md.getValue(0))) {
                     return true;
                 }
             }
@@ -641,11 +545,9 @@ public class TypeTable
             return false;
         }
 
-        public int getMaxChildren()
-        {
+        public int getMaxChildren() {
             List<MetaData> metadata = classInfo.getMetaData("MaxChildren", true);
-            if (!metadata.isEmpty())
-            {
+            if (!metadata.isEmpty()) {
                 MetaData md = metadata.get(0);
                 return Integer.parseInt(md.getValue(0));
             }
@@ -653,14 +555,12 @@ public class TypeTable
             return 0;
         }
 
-        public String getLoaderClass()
-        {
+        public String getLoaderClass() {
             List<MetaData> metadata = classInfo.getMetaData("Frame", true);
-            if (!metadata.isEmpty())
-            {
+            if (!metadata.isEmpty()) {
                 MetaData md = metadata.get(0);
 
-                return md.getValue( "factoryClass" );
+                return md.getValue("factoryClass");
             }
             return null;
         }
@@ -668,117 +568,88 @@ public class TypeTable
         /**
          * Dynamic type
          */
-        public boolean hasDynamic()
-        {
+        public boolean hasDynamic() {
             return classInfo.isDynamic();
         }
 
         /**
          * Is this type a subclass of baseType?
-         *
+         * <p/>
          * C: Note that this implementation of isAssignableTo *might* run into infinite recursion if there is a
-         *    circular reference in the supertype/interface hierarchies. The type table is not expecting stuff
-         *    registered in SymbolTable to have compile problems.
-         *
-         *    If we want to stop infinite recursion in this code, we just need to pass a HashSet down the recursion,
-         *    detect when the code is processing something that already exists in the HashSet.
+         * circular reference in the supertype/interface hierarchies. The type table is not expecting stuff
+         * registered in SymbolTable to have compile problems.
+         * <p/>
+         * If we want to stop infinite recursion in this code, we just need to pass a HashSet down the recursion,
+         * detect when the code is processing something that already exists in the HashSet.
          */
-        public boolean isSubclassOf(Type baseType)
-        {
-            if (baseType == this)
-            {
+        public boolean isSubclassOf(Type baseType) {
+            if (baseType == this) {
                 return true;
-            }
-            else if (baseType == noType)
-            {
+            } else if (baseType == noType) {
                 return false;
-            }
-            else if (baseType != null)
-            {
+            } else if (baseType != null) {
                 return isSubclassOf(baseType.getName());
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
 
-        public boolean isSubclassOf(String baseName)
-        {
-            if (SymbolTable.NOTYPE.equals(baseName))
-            {
+        public boolean isSubclassOf(String baseName) {
+            if (SymbolTable.NOTYPE.equals(baseName)) {
                 return false;
-            }
-            else
-            {
+            } else {
                 return isAssignableTo(baseName);
             }
         }
 
-        public boolean isAssignableTo(Type baseType)
-        {
-            if (baseType == this || baseType == noType)
-            {
+        public boolean isAssignableTo(Type baseType) {
+            if (baseType == this || baseType == noType) {
                 return true;
-            }
-            else if (baseType != null)
-            {
+            } else if (baseType != null) {
                 return isAssignableTo(baseType.getName());
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
 
-        public boolean isAssignableTo(String baseName)
-        {
+        public boolean isAssignableTo(String baseName) {
             String name = getName();
 
             // C: if this type is not assignable to Repeater, return false immediately.
-            if (standardDefs.CLASS_REPEATER.equals(baseName) && TypeTable.this.nonRepeaters.containsKey(name))
-            {
+            if (standardDefs.CLASS_REPEATER.equals(baseName) && TypeTable.this.nonRepeaters.containsKey(name)) {
                 return false;
             }
 
-            if (SymbolTable.NOTYPE.equals(baseName) || name.equals(baseName))
-            {
+            if (SymbolTable.NOTYPE.equals(baseName) || name.equals(baseName)) {
                 return true;
             }
 
             Type superType = getSuperType();
 
-            if (superType != null && superType.getName().equals(baseName))
-            {
+            if (superType != null && superType.getName().equals(baseName)) {
                 return true;
             }
 
             Type[] interfaces = getInterfaces();
 
-            for (int i = 0, length = (interfaces == null) ? 0 : interfaces.length; i < length; i++)
-            {
-                if (baseName != null && interfaces[i] != null && baseName.equals(interfaces[i].getName()))
-                {
+            for (int i = 0, length = (interfaces == null) ? 0 : interfaces.length; i < length; i++) {
+                if (baseName != null && interfaces[i] != null && baseName.equals(interfaces[i].getName())) {
                     return true;
                 }
             }
 
-            if (superType != null && superType.isAssignableTo(baseName))
-            {
+            if (superType != null && superType.isAssignableTo(baseName)) {
                 return true;
             }
 
-            for (int i = 0, length = (interfaces == null) ? 0 : interfaces.length; i < length; i++)
-            {
-                if (interfaces[i] != null && interfaces[i].isAssignableTo(baseName))
-                {
+            for (int i = 0, length = (interfaces == null) ? 0 : interfaces.length; i < length; i++) {
+                if (interfaces[i] != null && interfaces[i].isAssignableTo(baseName)) {
                     return true;
                 }
             }
 
             // C: if this type is not assignable to Repeater, remember it.
-            if (standardDefs.CLASS_REPEATER.equals(baseName))
-            {
+            if (standardDefs.CLASS_REPEATER.equals(baseName)) {
                 TypeTable.this.nonRepeaters.put(name, name);
             }
 
@@ -786,43 +657,32 @@ public class TypeTable
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return "Type " + getName();
         }
 
         // lookup superclass chain until it finds a matching getter...
 
-        private Method findGetter(AbcClass cls, String name)
-        {
-            while (cls != null)
-            {
-                Method getter = cls.getGetter(new String[] {SymbolTable.publicNamespace},
-                                              name, true);
-                if (getter != null)
-                {
+        private Method findGetter(AbcClass cls, String name) {
+            while (cls != null) {
+                Method getter = cls.getGetter(new String[]{SymbolTable.publicNamespace},
+                        name, true);
+                if (getter != null) {
                     return getter;
-                }
-                else
-                {
+                } else {
                     cls = symbolTable.getClass(cls.getSuperTypeName());
                 }
             }
             return null;
         }
 
-        private Method findSetter(AbcClass cls, String name)
-        {
-            while (cls != null)
-            {
-                Method setter = cls.getSetter(new String[] {SymbolTable.publicNamespace},
-                                              name, true);
-                if (setter != null)
-                {
+        private Method findSetter(AbcClass cls, String name) {
+            while (cls != null) {
+                Method setter = cls.getSetter(new String[]{SymbolTable.publicNamespace},
+                        name, true);
+                if (setter != null) {
                     return setter;
-                }
-                else
-                {
+                } else {
                     cls = symbolTable.getClass(cls.getSuperTypeName());
                 }
             }
@@ -830,55 +690,44 @@ public class TypeTable
         }
     }
 
-    private final class EventListHelper
-    {
-        private EventListHelper(List<MetaData> events)
-        {
+    private final class EventListHelper {
+        private EventListHelper(List<MetaData> events) {
             if (events.size() == 0) return;
 
             eventTypes = new HashMap<String, EventHelper>(events.size());
 
-            for (int i = 0, length = events.size(); i < length; i++)
-            {
+            for (int i = 0, length = events.size(); i < length; i++) {
                 MetaData md = events.get(i);
 
                 String name = md.getValue("name");
                 String typeName = md.getValue("type");
-                
-                if (name != null)
-                {
-                    if (typeName == null)
-                    {
+
+                if (name != null) {
+                    if (typeName == null) {
                         // [Event(name="...")]
                         typeName = SymbolTable.EVENT;
-                    }
-                    else
-                    {
+                    } else {
                         // [Event(name="...",type="...")]
                         typeName = NameFormatter.toColon(typeName);
                     }
-                }
-                else
-                {
+                } else {
                     // [Event("name")]
                     name = md.getValue(0);
                     typeName = SymbolTable.EVENT;
                 }
 
-                if (typeName != null)
-                {
+                if (typeName != null) {
                     eventTypes.put(name, new EventHelper(name, typeName,
-                                                         md.getValue(Deprecated.DEPRECATED_MESSAGE),
-                                                         md.getValue(Deprecated.DEPRECATED_REPLACEMENT),
-                                                         md.getValue(Deprecated.DEPRECATED_SINCE)));
+                            md.getValue(Deprecated.DEPRECATED_MESSAGE),
+                            md.getValue(Deprecated.DEPRECATED_REPLACEMENT),
+                            md.getValue(Deprecated.DEPRECATED_SINCE)));
                 }
             }
         }
 
         private Map<String, EventHelper> eventTypes;
 
-        Event getEvent(String name)
-        {
+        Event getEvent(String name) {
             return (eventTypes == null) ? null : eventTypes.get(name);
         }
     }
@@ -886,54 +735,47 @@ public class TypeTable
     /*
      * Serves as base for EventHelper, PropertyHelper, StyleHelper,and EffectHelper
      */
-    private abstract class StatefulHelper implements Stateful
-    {
+    private abstract class StatefulHelper implements Stateful {
         protected String state;
-        
+
         /**
          * Is this a stateful property?
          */
-        public boolean isStateSpecific()
-        {
+        public boolean isStateSpecific() {
             return (state != null);
         }
-        
+
         /**
          * Set state for which this property applies.
          */
-        public void setStateName(String state)
-        {
+        public void setStateName(String state) {
             this.state = state;
         }
-        
+
         /**
          * Returns state for which this property applies.
          */
-        public String getStateName()
-        {
+        public String getStateName() {
             return state;
         }
     }
-    
-    private final class PropertyHelper extends StatefulHelper implements Property
-    {
-        private PropertyHelper(Variable var)
-        {
+
+    private final class PropertyHelper extends StatefulHelper implements Property {
+        private PropertyHelper(Variable var) {
             this.var = var;
-            if( var != null )
+            if (var != null)
                 this.name = var.getQName().getLocalPart();
 
             readOnly = var.isConst();
         }
 
-        PropertyHelper(Method setter, Method getter)
-        {
+        PropertyHelper(Method setter, Method getter) {
             this.setter = setter;
             this.getter = getter;
 
-            if( setter != null )
+            if (setter != null)
                 this.name = setter.getQName().getLocalPart();
-            else if (getter != null )
+            else if (getter != null)
                 this.name = getter.getQName().getLocalPart();
 
             readOnly = setter == null && getter != null;
@@ -942,7 +784,7 @@ public class TypeTable
         private boolean readOnly;
 
         private String name;
-        
+
         private Variable var;
         private Method setter;
         private Method getter;
@@ -952,16 +794,12 @@ public class TypeTable
         private Type instanceType;
         private Type lvalueType;
 
-        public boolean equals(Object obj)
-        {
-            if (obj instanceof Property)
-            {
+        public boolean equals(Object obj) {
+            if (obj instanceof Property) {
                 Property p = (Property) obj;
                 // FIXME
                 return getName().equals(p.getName());
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
@@ -969,33 +807,26 @@ public class TypeTable
         /**
          * Property name
          */
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
         /**
          * Type.
-         *
+         * <p/>
          * If this is a getter, the returned value is the getter's return type.
          * If this is a setter, the returned value is the type of the input
          * argument of the setter.
          */
-        public Type getType()
-        {
-            if (type == null)
-            {
+        public Type getType() {
+            if (type == null) {
                 String className;
-    
-                if (var != null)
-                {
+
+                if (var != null) {
                     className = var.getTypeName();
-                }
-                else if (setter != null)
-                {
+                } else if (setter != null) {
                     className = setter.getParameterTypeNames()[0];
-                }
-                else // if (getter != null)
+                } else // if (getter != null)
                 {
                     className = getter.getReturnTypeName();
                 }
@@ -1006,16 +837,13 @@ public class TypeTable
             return type;
         }
 
-        public Type getLValueType()
-        {
-            if (lvalueType == null)
-            {
+        public Type getLValueType() {
+            if (lvalueType == null) {
                 lvalueType = getType();
 
                 // lvalue type - initializers to IDeferredInstance-typed properties
                 // are values to be returned by the generated factory.
-                if (standardDefs.isIDeferredInstance(lvalueType))
-                {
+                if (standardDefs.isIDeferredInstance(lvalueType)) {
                     lvalueType = getInstanceType();
                 }
             }
@@ -1025,43 +853,35 @@ public class TypeTable
         /**
          * [ArrayElementType] or Vector type
          */
-        public Type getElementType()
-        {
+        public Type getElementType() {
             elementType = getType().getElementType();
 
-            if (elementType == null)
-            {
+            if (elementType == null) {
                 String elementTypeName = null;
                 List<MetaData> mdList = getMetaDataList(StandardDefs.MD_ARRAYELEMENTTYPE);
-    
-                if (mdList != null)
-                {
+
+                if (mdList != null) {
                     MetaData metaData = (MetaData) mdList.get(0);
-    
-                    if (metaData.count() > 0)
-                    {
+
+                    if (metaData.count() > 0) {
                         String value = metaData.getValue(0);
 
-                        if (value != null)
-                        {
+                        if (value != null) {
                             elementTypeName = NameFormatter.toColon(value);
                         }
                     }
                 }
 
-                if (elementTypeName != null)
-                {
+                if (elementTypeName != null) {
                     elementType = TypeTable.this.getType(elementTypeName);
 
-                    if (getType().equals(arrayType) && (elementType == null))
-                    {
+                    if (getType().equals(arrayType) && (elementType == null)) {
                         ElementTypeNotFound e = new ElementTypeNotFound(StandardDefs.MD_ARRAYELEMENTTYPE, elementTypeName);
                         ThreadLocalToolkit.log(e);
                     }
                 }
 
-                if (elementType == null)
-                {
+                if (elementType == null) {
                     elementType = objectType;
                 }
             }
@@ -1072,32 +892,24 @@ public class TypeTable
         /**
          * [InstanceType]
          */
-        public Type getInstanceType()
-        {
-            if (instanceType == null)
-            {
+        public Type getInstanceType() {
+            if (instanceType == null) {
                 String instanceTypeName = null;
-    
+
                 List<MetaData> mdList = getMetaDataList(StandardDefs.MD_INSTANCETYPE);
-                if (mdList != null)
-                {
+                if (mdList != null) {
                     MetaData metaData = (MetaData) mdList.get(0);
-                    if (metaData.count() > 0)
-                    {
+                    if (metaData.count() > 0) {
                         instanceTypeName = NameFormatter.toColon(metaData.getValue(0));
                     }
                 }
 
-                if (instanceTypeName == null)
-                {
+                if (instanceTypeName == null) {
                     instanceType = objectType;
-                }
-                else
-                {
+                } else {
                     instanceType = TypeTable.this.getType(instanceTypeName);
 
-                    if (instanceType == null)
-                    {
+                    if (instanceType == null) {
                         // TODO: this needs to be handled differently,
                         // because it doesn't get a path or a line
                         // number before being reported.  Since there
@@ -1116,71 +928,60 @@ public class TypeTable
         /**
          * Is this read only?
          */
-        public boolean readOnly()
-        {
+        public boolean readOnly() {
             return readOnly;
         }
 
         /**
          *
          */
-        public boolean hasPublic()
-        {
+        public boolean hasPublic() {
             return var != null ? var.isPublic() :
                     setter != null ? setter.isPublic() :
-                    getter.isPublic();
+                            getter.isPublic();
         }
 
         /**
          *
          */
-        public Inspectable getInspectable()
-        {
+        public Inspectable getInspectable() {
             List<MetaData> mdList = getMetaDataList(Inspectable.INSPECTABLE);
-            if (mdList != null)
-            {
+            if (mdList != null) {
                 MetaData md = mdList.get(0);
 
                 return new InspectableHelper(md.getValue(Inspectable.ENUMERATION),
-                                             md.getValue(Inspectable.DEFAULT_VALUE),
-                                             md.getValue(Inspectable.IS_DEFAULT),
-                                             md.getValue(Inspectable.CATEGORY),
-                                             md.getValue(Inspectable.IS_VERBOSE),
-                                             md.getValue(Inspectable.TYPE),
-                                             md.getValue(Inspectable.OBJECT_TYPE),
-                                             md.getValue(Inspectable.ARRAY_TYPE),
-                                             md.getValue(Inspectable.ENVIRONMENT),
-                                             md.getValue(Inspectable.FORMAT));
-            }
-            else
-            {
+                        md.getValue(Inspectable.DEFAULT_VALUE),
+                        md.getValue(Inspectable.IS_DEFAULT),
+                        md.getValue(Inspectable.CATEGORY),
+                        md.getValue(Inspectable.IS_VERBOSE),
+                        md.getValue(Inspectable.TYPE),
+                        md.getValue(Inspectable.OBJECT_TYPE),
+                        md.getValue(Inspectable.ARRAY_TYPE),
+                        md.getValue(Inspectable.ENVIRONMENT),
+                        md.getValue(Inspectable.FORMAT));
+            } else {
                 return null;
             }
         }
 
-        public Deprecated getDeprecated()
-        {
+        public Deprecated getDeprecated() {
             List<MetaData> mdList = getMetaDataList(Deprecated.DEPRECATED);
-            if (mdList != null)
-            {
+            if (mdList != null) {
                 MetaData md = mdList.get(0);
 
                 String replacement = md.getValue(Deprecated.REPLACEMENT);
-                String message     = md.getValue(Deprecated.MESSAGE);
-                String since       = md.getValue(Deprecated.SINCE);
+                String message = md.getValue(Deprecated.MESSAGE);
+                String since = md.getValue(Deprecated.SINCE);
 
                 // grab whatever string /was/ provided: [Deprecated("foo")]
                 if ((replacement == null) &&
                         (message == null) &&
-                          (since == null) && (md.count() > 0))
-                {
+                        (since == null) && (md.count() > 0)) {
                     message = md.getValue(0);
                 }
-                
+
                 return new DeprecatedHelper(replacement, message, since);
-            }
-            else
-            {
+            } else {
                 return null;
             }
         }
@@ -1189,18 +990,13 @@ public class TypeTable
          * [ChangeEvent]
          * TODO why just on var? should it be returned for getter/setter props?
          */
-        public boolean hasChangeEvent(String name)
-        {
-            if (var != null)
-            {
+        public boolean hasChangeEvent(String name) {
+            if (var != null) {
                 List<MetaData> mdList = var.getMetaData(StandardDefs.MD_CHANGEEVENT);
-                if (mdList != null)
-                {
-                    for (int i = 0, size = mdList.size(); i < size; i++)
-                    {
+                if (mdList != null) {
+                    for (int i = 0, size = mdList.size(); i < size; i++) {
                         MetaData md = mdList.get(i);
-                        if (name.equals(md.getValue(0)))
-                        {
+                        if (name.equals(md.getValue(0))) {
                             return true;
                         }
                     }
@@ -1213,14 +1009,11 @@ public class TypeTable
         /**
          * [PercentProxy]
          */
-        public String getPercentProxy()
-        {
+        public String getPercentProxy() {
             List<MetaData> metaDataList = getMetaDataList(StandardDefs.MD_PERCENTPROXY);
-            if (metaDataList != null && !metaDataList.isEmpty())
-            {
+            if (metaDataList != null && !metaDataList.isEmpty()) {
                 MetaData metaData = (MetaData) metaDataList.get(0);
-                if (metaData.count() > 0)
-                {
+                if (metaData.count() > 0) {
                     return metaData.getValue(0);
                 }
             }
@@ -1231,16 +1024,14 @@ public class TypeTable
         /**
          * [RichTextContent]
          */
-        public boolean richTextContent()
-        {
+        public boolean richTextContent() {
             return getMetaDataList(StandardDefs.MD_RICHTEXTCONTENT) != null;
         }
 
         /**
          * [CollapseWhiteSpace]
          */
-        public boolean collapseWhiteSpace()
-        {
+        public boolean collapseWhiteSpace() {
             return getMetaDataList(StandardDefs.MD_COLLAPSEWHITESPACE) != null;
         }
 
@@ -1249,23 +1040,17 @@ public class TypeTable
          * Return value is guaranteed non-empty if non-null.
          * Note: validation should ensure that each metadata name occurs at most once on the latter pair.
          */
-        private List<MetaData> getMetaDataList(String name)
-        {
+        private List<MetaData> getMetaDataList(String name) {
             List<MetaData> mdList = null;
 
-            if (var != null)
-            {
+            if (var != null) {
                 mdList = var.getMetaData(name);
-            }
-            else
-            {
-                if (getter != null)
-                {
+            } else {
+                if (getter != null) {
                     mdList = getter.getMetaData(name);
                 }
 
-                if (mdList == null && setter != null)
-                {
+                if (mdList == null && setter != null) {
                     mdList = setter.getMetaData(name);
                 }
             }
@@ -1274,23 +1059,20 @@ public class TypeTable
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return "Property " + getName();
         }
     }
 
-    private final class EventHelper extends StatefulHelper implements Event
-    {
+    private final class EventHelper extends StatefulHelper implements Event {
         private final String name;
         private final String typeName;
         private Type type;
         private final String message;
         private final String replacement;
         private final String since;
-        
-        private EventHelper(String name, String typeName, String message, String replacement, String since)
-        {
+
+        private EventHelper(String name, String typeName, String message, String replacement, String since) {
             this.name = name;
             this.typeName = typeName;
             this.message = message;
@@ -1298,45 +1080,37 @@ public class TypeTable
             this.since = since;
         }
 
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
-        public String getTypeName()
-        {
+        public String getTypeName() {
             return typeName;
         }
 
-        public Type getType()
-        {
+        public Type getType() {
             return type != null ? type : (type = TypeTable.this.getType(typeName));
         }
-        
-        public String getDeprecatedMessage()
-        {
+
+        public String getDeprecatedMessage() {
             return message;
         }
 
-        public String getDeprecatedReplacement()
-        {
+        public String getDeprecatedReplacement() {
             return replacement;
         }
 
-        public String getDeprecatedSince()
-        {
+        public String getDeprecatedSince() {
             return since;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return "Event " + getName();
         }
     }
 
-    private final class StyleHelper extends StatefulHelper implements Style
-    {
+    private final class StyleHelper extends StatefulHelper implements Style {
         /**
          * NOTE for now, we assume that specified type name (if specified) is either fully qualified,
          * TODO fix this, following ASC rearchitecture. StyleExtension should a) try resolving unqualified
@@ -1344,39 +1118,32 @@ public class TypeTable
          * TODO make StyleHelper and EventHelper consistent w.r.t. type member
          */
         private StyleHelper(String name, String typeName, String enumeration, String format, String inherit,
-                            String message, String replacement, String since)
-        {
-            if (typeName == null)
-            {
+                            String message, String replacement, String since) {
+            if (typeName == null) {
                 typeName = (enumeration == null) ? SymbolTable.OBJECT : SymbolTable.STRING;
-            }
-            else
-            {
+            } else {
                 //  HACK: for now, if declared type isn't found... (no more actionscript.lang)
                 //  TODO: this should no longer be necessary given metadata scanning in as3.SyntaxTreeEvaluator, but
                 //  leaving it in place for now out of cowardice.
                 Type t = TypeTable.this.getType(NameFormatter.toColon(typeName));
-                if (t == null)
-                {
+                if (t == null) {
                     typeName = SymbolTable.OBJECT;
                 }
                 //  /HACK
             }
 
             this.name = name;
-			this.typeName = NameFormatter.toColon(typeName);
-            if (enumeration != null)
-            {
+            this.typeName = NameFormatter.toColon(typeName);
+            if (enumeration != null) {
                 StringTokenizer t = new StringTokenizer(enumeration, ",");
                 this.enumeration = new String[t.countTokens()];
-                for (int i = 0; t.hasMoreTokens(); i++)
-                {
+                for (int i = 0; t.hasMoreTokens(); i++) {
                     this.enumeration[i] = t.nextToken();
                 }
             }
             this.format = format;
             isInherit = "yes".equalsIgnoreCase(inherit);
-            
+
             this.message = message;
             this.replacement = replacement;
             this.since = since;
@@ -1393,88 +1160,72 @@ public class TypeTable
         private Type type;
         private Type lvalueType;
 
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
-        public Type getType()
-        {
-            if (type == null)
-            {
+        public Type getType() {
+            if (type == null) {
                 type = TypeTable.this.getType(typeName);
             }
             return type;
         }
 
-        public Type getLValueType()
-        {
-            if (lvalueType == null)
-            {
+        public Type getLValueType() {
+            if (lvalueType == null) {
                 lvalueType = getType();
 
                 //  lvalue type - initializers to IDeferredInstance-typed styles
                 // are values to be returned by the generated factory.
-                if (standardDefs.isIDeferredInstance(lvalueType))
-                {
+                if (standardDefs.isIDeferredInstance(lvalueType)) {
                     lvalueType = TypeTable.this.objectType;
                 }
             }
             return lvalueType;
         }
 
-        public Type getElementType()
-        {
+        public Type getElementType() {
             return objectType;
         }
 
-        public String[] getEnumeration()
-        {
+        public String[] getEnumeration() {
             return enumeration;
         }
 
-        public String getFormat()
-        {
+        public String getFormat() {
             return format;
         }
 
-        public boolean isInherit()
-        {
+        public boolean isInherit() {
             return isInherit;
         }
 
-        public String getDeprecatedMessage()
-        {
+        public String getDeprecatedMessage() {
             return message;
         }
 
-        public String getDeprecatedReplacement()
-        {
+        public String getDeprecatedReplacement() {
             return replacement;
         }
 
-        public String getDeprecatedSince()
-        {
+        public String getDeprecatedSince() {
             return since;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return "Style " + getName();
         }
     }
 
-    private final class EffectHelper extends StatefulHelper implements Effect
-    {
+    private final class EffectHelper extends StatefulHelper implements Effect {
         private final String name;
         private final String event;
         private final String message;
         private final String replacement;
         private final String since;
 
-        private EffectHelper(String name, String event, String message, String replacement, String since)
-        {
+        private EffectHelper(String name, String event, String message, String replacement, String since) {
             this.name = name;
             this.event = event;
             this.message = message;
@@ -1482,92 +1233,75 @@ public class TypeTable
             this.since = since;
         }
 
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
-        public Type getType()
-        {
+        public Type getType() {
             return TypeTable.this.getType(standardDefs.CLASS_EFFECT);
         }
 
-        public Type getLValueType()
-        {
+        public Type getLValueType() {
             return getType();
         }
 
-        public Type getElementType()
-        {
+        public Type getElementType() {
             return objectType;
         }
 
-        public String getEvent()
-        {
+        public String getEvent() {
             return event;
         }
 
-        public String getDeprecatedMessage()
-        {
+        public String getDeprecatedMessage() {
             return message;
         }
 
-        public String getDeprecatedReplacement()
-        {
+        public String getDeprecatedReplacement() {
             return replacement;
         }
 
-        public String getDeprecatedSince()
-        {
+        public String getDeprecatedSince() {
             return since;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return "Effect " + getName();
         }
     }
 
-    private final class DynamicPropertyHelper extends StatefulHelper implements DynamicProperty
-    {
+    private final class DynamicPropertyHelper extends StatefulHelper implements DynamicProperty {
         private final String name;
 
-        private DynamicPropertyHelper(String name, String state)
-        {
+        private DynamicPropertyHelper(String name, String state) {
             this.name = name;
             this.state = state;
         }
 
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
-        public Type getType()
-        {
+        public Type getType() {
             return objectType;
         }
 
-        public Type getLValueType()
-        {
+        public Type getLValueType() {
             return getType();
         }
 
-        public Type getElementType()
-        {
+        public Type getElementType() {
             return objectType;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return "DynamicProperty " + getName();
         }
     }
 
-    private final class InspectableHelper implements Inspectable
-    {
+    private final class InspectableHelper implements Inspectable {
         private InspectableHelper(String enumeration,
                                   String defaultValue,
                                   String isDefault,
@@ -1577,14 +1311,11 @@ public class TypeTable
                                   String objectType,
                                   String arrayType,
                                   String environment,
-                                  String format)
-        {
-            if (enumeration != null)
-            {
+                                  String format) {
+            if (enumeration != null) {
                 StringTokenizer t = new StringTokenizer(enumeration, ",");
                 this.enumeration = new String[t.countTokens()];
-                for (int i = 0; t.hasMoreTokens(); i++)
-                {
+                for (int i = 0; t.hasMoreTokens(); i++) {
                     this.enumeration[i] = t.nextToken();
                 }
             }
@@ -1614,88 +1345,76 @@ public class TypeTable
         /**
          * enumeration
          */
-        public String[] getEnumeration()
-        {
+        public String[] getEnumeration() {
             return enumeration;
         }
 
         /**
          * default value
          */
-        public String getDefaultValue()
-        {
+        public String getDefaultValue() {
             return defaultValue;
         }
 
         /**
          * default?
          */
-        public boolean isDefault()
-        {
+        public boolean isDefault() {
             return isDefault;
         }
 
         /**
          * category
          */
-        public String getCategory()
-        {
+        public String getCategory() {
             return category;
         }
 
         /**
          * verbose?
          */
-        public boolean isVerbose()
-        {
+        public boolean isVerbose() {
             return isVerbose;
         }
 
         /**
          * type
          */
-        public String getType()
-        {
+        public String getType() {
             return type;
         }
 
         /**
          * object type
          */
-        public String getObjectType()
-        {
+        public String getObjectType() {
             return objectType;
         }
 
         /**
          * array type
          */
-        public String getArrayType()
-        {
+        public String getArrayType() {
             return arrayType;
         }
 
         /**
          * environment
          */
-        public String getEnvironment()
-        {
+        public String getEnvironment() {
             return environment;
         }
 
         /**
          * format
          */
-        public String getFormat()
-        {
+        public String getFormat() {
             return format;
         }
     }
 
-    private final class DeprecatedHelper implements Deprecated
-    {
-        private DeprecatedHelper(String replacement, String message, String since)
-        {
+    private final class DeprecatedHelper implements Deprecated {
+        private DeprecatedHelper(String replacement, String message, String since) {
             this.replacement = replacement;
             this.message = message;
             this.since = since;
@@ -1705,30 +1424,25 @@ public class TypeTable
         private String message;
         private String since;
 
-        public String getReplacement()
-        {
+        public String getReplacement() {
             return replacement;
         }
 
-        public String getMessage()
-        {
+        public String getMessage() {
             return message;
         }
-        
-        public String getSince()
-        {
+
+        public String getSince() {
             return since;
         }
     }
 
-    public static class NullInstanceType extends CompilerWarning
-    {
+    public static class NullInstanceType extends CompilerWarning {
         private static final long serialVersionUID = 9108186251245008722L;
         public String instanceType;
         public String instanceTypeName;
 
-        public NullInstanceType(String instanceType, String instanceTypeName)
-        {
+        public NullInstanceType(String instanceType, String instanceTypeName) {
             this.instanceType = instanceType;
             this.instanceTypeName = instanceTypeName;
         }

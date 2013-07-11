@@ -31,12 +31,10 @@ import flash.localization.LocalizationManager;
  *
  * @author Roger Gonzalez
  */
-public class CompilerMessage extends CompilerException implements ILocalizableMessage
-{
+public class CompilerMessage extends CompilerException implements ILocalizableMessage {
     private static final long serialVersionUID = 3500487484906739205L;
 
-    public CompilerMessage(String level, String path, int line, int col)
-    {
+    public CompilerMessage(String level, String path, int line, int col) {
         this.level = level;
         this.path = path;
         this.line = line;
@@ -44,8 +42,7 @@ public class CompilerMessage extends CompilerException implements ILocalizableMe
         isPathAvailable = true;
     }
 
-    public CompilerMessage(String level, String path, int line, int col, Throwable rootCause)
-    {
+    public CompilerMessage(String level, String path, int line, int col, Throwable rootCause) {
         super(rootCause);
         this.level = level;
         this.path = path;
@@ -53,136 +50,109 @@ public class CompilerMessage extends CompilerException implements ILocalizableMe
         this.column = col;
         isPathAvailable = true;
         if (rootCause instanceof Exception)
-            detailEx = (Exception)rootCause;
+            detailEx = (Exception) rootCause;
     }
 
-    public String getLevel()
-    {
+    public String getLevel() {
         return level;
     }
 
-    public String getPath()
-    {
+    public String getPath() {
         return path;
     }
 
-    public void setPath(String path)
-    {
+    public void setPath(String path) {
         this.path = path;
     }
 
-    public int getLine()
-    {
+    public int getLine() {
         return line;
     }
 
-    public void setLine(int line)
-    {
+    public void setLine(int line) {
         this.line = line;
     }
 
-    public int getColumn()
-    {
+    public int getColumn() {
         return column;
     }
 
-    public void setColumn(int column)
-    {
+    public void setColumn(int column) {
         this.column = column;
     }
 
-    public Exception getExceptionDetail()
-    {
+    public Exception getExceptionDetail() {
         return detailEx;
     }
 
-	public String getMessage()
-	{
-		String msg = super.getMessage();
-		if (msg != null)
-		{
-			return msg;
-		}
-		else
-		{
-			LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
-			if (l10n == null)
-			{
-				return null;
-			}
-			else
-			{
-				return l10n.getLocalizedTextString(this);
-			}
-		}
-	}
-	
-	public String toString()
-	{
-		return getMessage();
-	}
+    public String getMessage() {
+        String msg = super.getMessage();
+        if (msg != null) {
+            return msg;
+        } else {
+            LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
+            if (l10n == null) {
+                return null;
+            } else {
+                return l10n.getLocalizedTextString(this);
+            }
+        }
+    }
 
-	public boolean isPathAvailable()
-	{
-		return isPathAvailable;
-	}
+    public String toString() {
+        return getMessage();
+    }
 
-	protected void noPath()
-	{
-		isPathAvailable = false;
-	}
-	
+    public boolean isPathAvailable() {
+        return isPathAvailable;
+    }
+
+    protected void noPath() {
+        isPathAvailable = false;
+    }
+
     public String level;
     public String path;
     public int line;
     public int column;
-    private Exception detailEx; 
+    private Exception detailEx;
     private boolean isPathAvailable;
 
 
     // TODO - add ctors to these as needed
 
-    public static class CompilerError extends CompilerMessage
-    {
+    public static class CompilerError extends CompilerMessage {
         private static final long serialVersionUID = -4267301959263918376L;
 
-        public CompilerError()
-        {
+        public CompilerError() {
             super(ERROR, null, -1, -1);
         }
 
-        public CompilerError(Throwable rootCause)
-        {
+        public CompilerError(Throwable rootCause) {
             super(ERROR, null, -1, -1, rootCause);
         }
     }
 
-    public static class CompilerWarning extends CompilerMessage
-    {
+    public static class CompilerWarning extends CompilerMessage {
         private static final long serialVersionUID = -6415139860097981650L;
 
-        public CompilerWarning()
-        {
+        public CompilerWarning() {
             super(WARNING, null, -1, -1);
         }
 
-        public CompilerWarning(Throwable rootCause)
-        {
+        public CompilerWarning(Throwable rootCause) {
             super(WARNING, null, -1, -1, rootCause);
         }
     }
 
-    public static class CompilerInfo extends CompilerMessage
-    {
+    public static class CompilerInfo extends CompilerMessage {
         private static final long serialVersionUID = 7011676633916976231L;
 
-        public CompilerInfo()
-        {
+        public CompilerInfo() {
             super(INFO, null, -1, -1);
         }
 
-        public CompilerInfo(Throwable rootCause)
-        {
+        public CompilerInfo(Throwable rootCause) {
             super(INFO, null, -1, -1, rootCause);
         }
     }

@@ -22,11 +22,10 @@ package flex2.compiler.mxml.rep;
 /**
  * This class represents an operation instance.
  */
-public class Operation
-{
-    public static final int CONCURRENCY_MULTIPLE    = 0;
-    public static final int CONCURRENCY_SINGLE      = 1;
-    public static final int CONCURRENCY_LAST        = 2;
+public class Operation {
+    public static final int CONCURRENCY_MULTIPLE = 0;
+    public static final int CONCURRENCY_SINGLE = 1;
+    public static final int CONCURRENCY_LAST = 2;
 
     public String name;
     public EventHandler faultHandler;
@@ -39,18 +38,15 @@ public class Operation
 
     public Operation(String name, String faultHandlerText, String resultHandlerText,
                      int concurrency, String resultFormat, int xmlLineNumber, String showBusyCursor,
-                     boolean makeObjectsBindable)
-    {
+                     boolean makeObjectsBindable) {
         this.name = name;
 
-        if (faultHandlerText != null)
-        {
+        if (faultHandlerText != null) {
             faultHandler = new EventHandler(null, null, faultHandlerText);
             faultHandler.setXmlLineNumber(xmlLineNumber);
         }
 
-        if (resultHandlerText != null)
-        {
+        if (resultHandlerText != null) {
             resultHandler = new EventHandler(null, null, resultHandlerText);
             resultHandler.setXmlLineNumber(xmlLineNumber);
         }

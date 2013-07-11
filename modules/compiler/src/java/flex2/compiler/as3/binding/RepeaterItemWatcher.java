@@ -25,10 +25,8 @@ package flex2.compiler.as3.binding;
  *
  * @author Paul Reilly
  */
-public class RepeaterItemWatcher extends Watcher
-{
-    public RepeaterItemWatcher(int id)
-    {
+public class RepeaterItemWatcher extends Watcher {
+    public RepeaterItemWatcher(int id) {
         super(id);
     }
 }

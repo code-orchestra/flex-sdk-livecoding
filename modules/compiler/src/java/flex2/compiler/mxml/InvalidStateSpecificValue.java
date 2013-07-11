@@ -26,9 +26,11 @@ import flex2.compiler.util.CompilerMessage;
  *
  * @author Corey Lucier
  */
-public class InvalidStateSpecificValue extends CompilerMessage.CompilerError
-{
-	private static final long serialVersionUID = 7417396262769478428L;
-	public final String name;
-    public InvalidStateSpecificValue(String text) { this.name = text; }
+public class InvalidStateSpecificValue extends CompilerMessage.CompilerError {
+    private static final long serialVersionUID = 7417396262769478428L;
+    public final String name;
+
+    public InvalidStateSpecificValue(String text) {
+        this.name = text;
+    }
 }

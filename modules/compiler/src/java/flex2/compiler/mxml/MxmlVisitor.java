@@ -26,51 +26,50 @@ import java.util.List;
  *
  * @author Clement Wong
  */
-public interface MxmlVisitor
-{
-	void parseApplication(Token app, List<Token> components);
+public interface MxmlVisitor {
+    void parseApplication(Token app, List<Token> components);
 
-	void parseDeclarations(Token t, List properties);
+    void parseDeclarations(Token t, List properties);
 
-	void parseComponent(Token comp, List<Token> components);
+    void parseComponent(Token comp, List<Token> components);
 
-	void parseStyle(Token style, Token text);
+    void parseStyle(Token style, Token text);
 
-	void parseScript(Token script, Token text);
+    void parseScript(Token script, Token text);
 
-	void parseMetaData(Token metadata, Token text);
+    void parseMetaData(Token metadata, Token text);
 
-	void parseModel(Token t, List<Token> objects);
+    void parseModel(Token t, List<Token> objects);
 
-	void parseXML(Token t, List<Token> objects);
-    
+    void parseXML(Token t, List<Token> objects);
+
     void parseXMLList(Token t, List<Token> objects);
 
-	void parseArray(Token t, List<Token> elements);
+    void parseArray(Token t, List<Token> elements);
 
-	void parseVector(Token t, List<Token> elements);
+    void parseVector(Token t, List<Token> elements);
 
-	void parseBinding(Token t);
+    void parseBinding(Token t);
 
-	void parseAnonymousObject(Token t, List<Token> objects);
+    void parseAnonymousObject(Token t, List<Token> objects);
 
-	void parseWebService(Token t, List<Token> children);
+    void parseWebService(Token t, List<Token> children);
 
-	void parseHTTPService(Token t, List<Token> children);
+    void parseHTTPService(Token t, List<Token> children);
 
-	void parseRemoteObject(Token t, List<Token> children);
+    void parseRemoteObject(Token t, List<Token> children);
 
-	void parseOperation(Token t, List<Token> children);
+    void parseOperation(Token t, List<Token> children);
 
-	void parseRequest(Token t, List<Token> children);
+    void parseRequest(Token t, List<Token> children);
 
-	void parseMethod(Token t, List<Token> children);
+    void parseMethod(Token t, List<Token> children);
 
-	void parseArguments(Token t, List<Token> children);
+    void parseArguments(Token t, List<Token> children);
 
-	void parseString(Token s, Token data);
+    void parseString(Token s, Token data);
 
-	void parseNumber(Token n, Token data);
+    void parseNumber(Token n, Token data);
 
     void parseInt(Token n, Token data);
 
@@ -78,23 +77,23 @@ public interface MxmlVisitor
 
     void parseBoolean(Token b, Token data);
 
-	void parseClass(Token b, Token data);
+    void parseClass(Token b, Token data);
 
-	void parseFunction(Token b, Token data);
+    void parseFunction(Token b, Token data);
 
-	void parseInlineComponent(Token t, Token child);
-	
-	// States Specific Additions
-	void parseReparent(Token t);
-	
-	void parseState(Token t, List<Token> children);
+    void parseInlineComponent(Token t, Token child);
 
-	/*
-	 * FXG Specific Additions 
-	 */
+    // States Specific Additions
+    void parseReparent(Token t);
+
+    void parseState(Token t, List<Token> children);
+
+    /*
+     * FXG Specific Additions
+     */
     void parseLibrary(Token t, List children);
 
     void parseDefinition(Token t, Token child);
- 
+
     void parseDesignLayer(Token t, List<Token> children);
 }

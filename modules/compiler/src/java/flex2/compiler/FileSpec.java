@@ -33,121 +33,98 @@ import java.util.*;
  *
  * @author Clement Wong
  */
-public final class FileSpec
-{
-	public FileSpec(List<VirtualFile> files, String[] mimeTypes)
-		throws CompilerException
-	{
+public final class FileSpec {
+    public FileSpec(List<VirtualFile> files, String[] mimeTypes)
+            throws CompilerException {
         this(files, mimeTypes, true);
-	}
+    }
 
     public FileSpec(List<VirtualFile> files, String[] mimeTypes, boolean lastIsRoot)
-	    throws CompilerException
-    {
+            throws CompilerException {
         VirtualFile[] vfiles = new VirtualFile[files.size()];
         files.toArray(vfiles);
         init(vfiles, mimeTypes, lastIsRoot);
     }
 
-	private void init(VirtualFile[] files, String[] mimeTypes, boolean lastIsRoot)
-		throws CompilerException
-	{
-		this.mimeTypes = mimeTypes;
+    private void init(VirtualFile[] files, String[] mimeTypes, boolean lastIsRoot)
+            throws CompilerException {
+        this.mimeTypes = mimeTypes;
 
-		sources = new LinkedHashMap<String, Source>(files.length);
+        sources = new LinkedHashMap<String, Source>(files.length);
 
-		for (int i = 0, length = files.length; i < length; i++)
-		{
-			if (isSupported(files[i]))
-			{
-				String name = files[i].getName();
-				String shortName = name.substring(name.lastIndexOf(File.separator) + 1, name.lastIndexOf('.'));
-				// C: Source.relativePath = "". Strictly speaking, Source in FileSpec shouldn't have the notion of
-				//    relative paths.
-				Source s = new Source(files[i], "", shortName, this, false, (i == length - 1) && lastIsRoot);
-				sources.put(name, s);
-			}
-			else
-			{
-				UnsupportedFileType err = new UnsupportedFileType(files[i].getName());
-				ThreadLocalToolkit.log(err);
-				throw err;
-			}
-		}
-	}
+        for (int i = 0, length = files.length; i < length; i++) {
+            if (isSupported(files[i])) {
+                String name = files[i].getName();
+                String shortName = name.substring(name.lastIndexOf(File.separator) + 1, name.lastIndexOf('.'));
+                // C: Source.relativePath = "". Strictly speaking, Source in FileSpec shouldn't have the notion of
+                //    relative paths.
+                Source s = new Source(files[i], "", shortName, this, false, (i == length - 1) && lastIsRoot);
+                sources.put(name, s);
+            } else {
+                UnsupportedFileType err = new UnsupportedFileType(files[i].getName());
+                ThreadLocalToolkit.log(err);
+                throw err;
+            }
+        }
+    }
 
-	private Map<String, Source> sources;
-	private String[] mimeTypes;
+    private Map<String, Source> sources;
+    private String[] mimeTypes;
 
-	public List<Source> retrieveSources()
-	{
-		List<Source> sources = new ArrayList<Source>(this.sources.size());
+    public List<Source> retrieveSources() {
+        List<Source> sources = new ArrayList<Source>(this.sources.size());
 
-		for (Iterator<String> i = this.sources.keySet().iterator(); i.hasNext();)
-		{
-			String name = i.next();
-			Source s = this.sources.get(name);
-			CompilationUnit u = (s != null) ? s.getCompilationUnit() : null;
+        for (Iterator<String> i = this.sources.keySet().iterator(); i.hasNext(); ) {
+            String name = i.next();
+            Source s = this.sources.get(name);
+            CompilationUnit u = (s != null) ? s.getCompilationUnit() : null;
 
-			if (s != null && !s.exists())
-			{
-				// C: This is a FileSpec. If the source doesn't exist, the compiler should get a warning...
-				s = null;
-			}
-			else if ((u != null && !u.isDone()) || (s != null && s.isUpdated()))
-			{
-				// s.removeCompilationUnit();
-			}
-			else if (u != null)
-			{
-				s = s.copy();
-				assert s != null;
-			}
+            if (s != null && !s.exists()) {
+                // C: This is a FileSpec. If the source doesn't exist, the compiler should get a warning...
+                s = null;
+            } else if ((u != null && !u.isDone()) || (s != null && s.isUpdated())) {
+                // s.removeCompilationUnit();
+            } else if (u != null) {
+                s = s.copy();
+                assert s != null;
+            }
 
-			if (s != null)
-			{
-				sources.add(s);
-			}
-		}
+            if (s != null) {
+                sources.add(s);
+            }
+        }
 
-		return sources;
-	}
+        return sources;
+    }
 
-	private boolean isSupported(VirtualFile file)
-	{
-		for (int i = 0, length = mimeTypes.length; i < length; i++)
-		{
-			if (mimeTypes[i].equals(file.getMimeType()))
-			{
-				return true;
-			}
-		}
+    private boolean isSupported(VirtualFile file) {
+        for (int i = 0, length = mimeTypes.length; i < length; i++) {
+            if (mimeTypes[i].equals(file.getMimeType())) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	String[] getMimeTypes()
-	{
-		return mimeTypes;
-	}
+    String[] getMimeTypes() {
+        return mimeTypes;
+    }
 
-	Collection<Source> sources()
-	{
-		return sources.values();
-	}
+    Collection<Source> sources() {
+        return sources.values();
+    }
 
-	// error messages
+    // error messages
 
-	public static class UnsupportedFileType extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = -149187184530224369L;
+    public static class UnsupportedFileType extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = -149187184530224369L;
 
-        public UnsupportedFileType(String name)
-		{
-			super();
-			this.name = name;
-		}
+        public UnsupportedFileType(String name) {
+            super();
+            this.name = name;
+        }
 
-		public final String name;
-	}
+        public final String name;
+    }
 }

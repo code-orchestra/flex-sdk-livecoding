@@ -36,8 +36,7 @@ import flex2.compiler.util.QNameMap;
  *
  * @author Roger Gonzalez
  */
-public class SwcScript
-{
+public class SwcScript {
     private final SwcLibrary library;
     private final long modtime;
     private final Long signatureChecksum;
@@ -45,12 +44,11 @@ public class SwcScript
     private final String name;
     private final SwcDependencySet deps;
     private Set<String> symbolClasses;
-	private CompilationUnit compilationUnit;
+    private CompilationUnit compilationUnit;
     private byte[] abc;
 
-    public SwcScript( SwcLibrary library, String name, Set<String> defs, SwcDependencySet deps, long modtime,
-    				Long signatureChecksum )
-    {
+    public SwcScript(SwcLibrary library, String name, Set<String> defs, SwcDependencySet deps, long modtime,
+                     Long signatureChecksum) {
         this.library = library;
         this.name = name;
         this.defs = defs;
@@ -59,14 +57,12 @@ public class SwcScript
         this.signatureChecksum = signatureChecksum;
     }
 
-    void setABC(byte[] abc)
-    {
+    void setABC(byte[] abc) {
         assert abc != null;
         this.abc = abc;
     }
 
-    public byte[] getABC()
-    {
+    public byte[] getABC() {
         // Need to parse the library in case there is Symbol information in the SWC/SWF
         // that is needed by compilations that reference the definitions from the ABC.
         // Unfortunately this info does not live anywhere else, like in catalog.xml, so we
@@ -77,95 +73,77 @@ public class SwcScript
         return abc;
     }
 
-    public SwcLibrary getLibrary()
-    {
+    public SwcLibrary getLibrary() {
         return library;
     }
 
-	public String getSwcLocation()
-	{
-		return library.getSwcLocation();
-	}
+    public String getSwcLocation() {
+        return library.getSwcLocation();
+    }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public long getLastModified()
-    {
+    public long getLastModified() {
         return modtime;
     }
 
-    public Iterator<String> getDefinitionIterator()
-    {
+    public Iterator<String> getDefinitionIterator() {
         return defs.iterator();
     }
 
-    public SwcDependencySet getDependencySet()
-    {
+    public SwcDependencySet getDependencySet() {
         return deps;
     }
 
-    public CompilationUnit getCompilationUnit()
-    {
+    public CompilationUnit getCompilationUnit() {
         return compilationUnit;
-    }        
-	
-	public void setCompilationUnit(CompilationUnit compilationUnit)
-	{
+    }
+
+    public void setCompilationUnit(CompilationUnit compilationUnit) {
         this.compilationUnit = compilationUnit;
 
         // This lets us avoid parsing the library's SWF for downstream compilations.
-        if ((compilationUnit != null) && compilationUnit.isBytecodeAvailable() && (abc == null))
-        {
+        if ((compilationUnit != null) && compilationUnit.isBytecodeAvailable() && (abc == null)) {
             abc = compilationUnit.getByteCodes();
-	}
-	}
-	
-	public Set<String> getSymbolClasses()
-	{
-		if (symbolClasses == null)
-		{
-			symbolClasses = new HashSet<String>();
-			for (Iterator<String> i = getDefinitionIterator(); i.hasNext(); )
-			{
-				library.getSymbolClasses(i.next(), symbolClasses);
-			}
-		}
-		
-		return symbolClasses;
-	}
-	
-	// C: Only the Flex Compiler API (flex-compiler-oem.jar) uses this method.
-	//    Do not use it in the mxmlc/compc codepath.
-	public Script toScript(boolean includeBytecodes)
-	{
-		return new ScriptImpl(this, includeBytecodes);
-	}
+        }
+    }
 
-	/**
-	 * 
-	 * @return signature checksum of the source script.
-	 */
-	public Long getSignatureChecksum()
-	{
-		return signatureChecksum;
-	}
+    public Set<String> getSymbolClasses() {
+        if (symbolClasses == null) {
+            symbolClasses = new HashSet<String>();
+            for (Iterator<String> i = getDefinitionIterator(); i.hasNext(); ) {
+                library.getSymbolClasses(i.next(), symbolClasses);
+            }
+        }
 
-    public String toString()
-    {
+        return symbolClasses;
+    }
+
+    // C: Only the Flex Compiler API (flex-compiler-oem.jar) uses this method.
+    //    Do not use it in the mxmlc/compc codepath.
+    public Script toScript(boolean includeBytecodes) {
+        return new ScriptImpl(this, includeBytecodes);
+    }
+
+    /**
+     * @return signature checksum of the source script.
+     */
+    public Long getSignatureChecksum() {
+        return signatureChecksum;
+    }
+
+    public String toString() {
         StringBuilder builder = new StringBuilder(getSwcLocation());
         builder.append("(");
 
         Iterator<String> iterator = defs.iterator();
 
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             builder.append(iterator.next());
 
-            if (iterator.hasNext())
-            {
+            if (iterator.hasNext()) {
                 builder.append(", ");
             }
         }
@@ -177,123 +155,98 @@ public class SwcScript
 }
 
 
+class ScriptImpl implements Script {
+    ScriptImpl(SwcScript swcScript, boolean includeBytecodes) {
+        location = swcScript.getSwcLocation();
+        lastModified = swcScript.getLastModified();
 
-class ScriptImpl implements Script
-{
-	ScriptImpl(SwcScript swcScript, boolean includeBytecodes)
-	{
-		location = swcScript.getSwcLocation();
-		lastModified = swcScript.getLastModified();
-		
-		Set<String> names = new LinkedHashSet<String>();
-		
-		for (Iterator<String> i = swcScript.getDefinitionIterator(); i.hasNext(); )
-		{
-			names.add(i.next());
-		}
-		
-		names.toArray(definitions = new String[names.size()]);
+        Set<String> names = new LinkedHashSet<String>();
+
+        for (Iterator<String> i = swcScript.getDefinitionIterator(); i.hasNext(); ) {
+            names.add(i.next());
+        }
+
+        names.toArray(definitions = new String[names.size()]);
 
         SwcDependencySet set = swcScript.getDependencySet();
 
-		names = new TreeSet<String>();		
+        names = new TreeSet<String>();
 
-        for (Iterator i = set.getDependencyIterator(SwcDependencySet.INHERITANCE); i != null && i.hasNext();)
-        {
-        	names.add((String) i.next());
+        for (Iterator i = set.getDependencyIterator(SwcDependencySet.INHERITANCE); i != null && i.hasNext(); ) {
+            names.add((String) i.next());
         }
 
-		names.toArray(prerequisites = new String[names.size()]);
+        names.toArray(prerequisites = new String[names.size()]);
 
-		names.clear();
-		
-        for (Iterator i = set.getDependencyIterator(SwcDependencySet.SIGNATURE); i != null && i.hasNext();)
-        {
-        	names.add((String) i.next());
+        names.clear();
+
+        for (Iterator i = set.getDependencyIterator(SwcDependencySet.SIGNATURE); i != null && i.hasNext(); ) {
+            names.add((String) i.next());
         }
 
-		names.toArray(signatures = new String[names.size()]);
+        names.toArray(signatures = new String[names.size()]);
 
-		names.clear();
+        names.clear();
 
-        for (Iterator i = set.getDependencyIterator(SwcDependencySet.NAMESPACE); i != null && i.hasNext();)
-        {
-        	names.add((String) i.next());
+        for (Iterator i = set.getDependencyIterator(SwcDependencySet.NAMESPACE); i != null && i.hasNext(); ) {
+            names.add((String) i.next());
         }
 
-		names.toArray(namespaces = new String[names.size()]);
+        names.toArray(namespaces = new String[names.size()]);
 
-		names.clear();
+        names.clear();
 
-        for (Iterator i = set.getDependencyIterator(SwcDependencySet.EXPRESSION); i != null && i.hasNext();)
-        {
-        	names.add((String) i.next());
+        for (Iterator i = set.getDependencyIterator(SwcDependencySet.EXPRESSION); i != null && i.hasNext(); ) {
+            names.add((String) i.next());
         }
 
-        for (Iterator<String> i = swcScript.getSymbolClasses().iterator(); i.hasNext(); )
-        {
-        	names.add(i.next());
+        for (Iterator<String> i = swcScript.getSymbolClasses().iterator(); i.hasNext(); ) {
+            names.add(i.next());
         }
-        
-		names.toArray(expressions = new String[names.size()]);
-		
-		if (includeBytecodes)
-		{
-			bytecodes = swcScript.getABC();
-		}
-	}
 
-	private String location;
-	private long lastModified;
-	private String[] definitions, prerequisites, signatures, namespaces, expressions;
-	private byte[] bytecodes;
-	
-	public String[] getDefinitionNames()
-	{
-		return definitions;
-	}
+        names.toArray(expressions = new String[names.size()]);
 
-	public String[] getDependencies(Object type)
-	{
-		if (type == INHERITANCE)
-		{
-			return prerequisites;
-		}
-		else if (type == SIGNATURE)
-		{
-			return signatures;
-		}
-		else if (type == NAMESPACE)
-		{
-			return namespaces;
-		}
-		else if (type == EXPRESSION)
-		{
-			return expressions;
-		}
-		else
-		{
-			return null;
-		}
-	}
+        if (includeBytecodes) {
+            bytecodes = swcScript.getABC();
+        }
+    }
 
-	public long getLastModified()
-	{
-		return lastModified;
-	}
+    private String location;
+    private long lastModified;
+    private String[] definitions, prerequisites, signatures, namespaces, expressions;
+    private byte[] bytecodes;
 
-	public String getLocation()
-	{
-		return location;
-	}
+    public String[] getDefinitionNames() {
+        return definitions;
+    }
 
-	public String[] getPrerequisites()
-	{
-		return prerequisites;
-	}
-	
-	public byte[] getBytecodes()
-	{
-		return bytecodes;
-	}
+    public String[] getDependencies(Object type) {
+        if (type == INHERITANCE) {
+            return prerequisites;
+        } else if (type == SIGNATURE) {
+            return signatures;
+        } else if (type == NAMESPACE) {
+            return namespaces;
+        } else if (type == EXPRESSION) {
+            return expressions;
+        } else {
+            return null;
+        }
+    }
+
+    public long getLastModified() {
+        return lastModified;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String[] getPrerequisites() {
+        return prerequisites;
+    }
+
+    public byte[] getBytecodes() {
+        return bytecodes;
+    }
 }

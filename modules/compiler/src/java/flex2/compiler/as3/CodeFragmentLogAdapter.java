@@ -30,94 +30,76 @@ import flex2.compiler.util.AbstractLogAdapter;
  *
  * @author Paul Reilly
  */
-public final class CodeFragmentLogAdapter extends AbstractLogAdapter
-{
+public final class CodeFragmentLogAdapter extends AbstractLogAdapter {
     private int lineNumberOffset;
 
-    public CodeFragmentLogAdapter(Logger original, int lineNumberOffset)
-    {
+    public CodeFragmentLogAdapter(Logger original, int lineNumberOffset) {
         super(original);
-        this.lineNumberOffset = lineNumberOffset  - 1;
+        this.lineNumberOffset = lineNumberOffset - 1;
     }
 
-    public void logInfo(String path, int line, String info)
-    {
+    public void logInfo(String path, int line, String info) {
         original.logInfo(path, line + lineNumberOffset, info);
     }
 
-    public void logDebug(String path, int line, String debug)
-    {
+    public void logDebug(String path, int line, String debug) {
         original.logDebug(path, line + lineNumberOffset, debug);
     }
 
-    public void logWarning(String path, int line, String warning)
-    {
+    public void logWarning(String path, int line, String warning) {
         original.logWarning(path, line + lineNumberOffset, warning);
     }
 
-    public void logWarning(String path, int line, String warning, int errorCode)
-    {
+    public void logWarning(String path, int line, String warning, int errorCode) {
         original.logWarning(path, line + lineNumberOffset, warning, errorCode);
     }
 
-    public void logError(String path, int line, String error)
-    {
+    public void logError(String path, int line, String error) {
         original.logError(path, line + lineNumberOffset, error);
     }
 
-    public void logError(String path, int line, String error, int errorCode)
-    {
+    public void logError(String path, int line, String error, int errorCode) {
         original.logError(path, line + lineNumberOffset, error, errorCode);
     }
 
-    public void logInfo(String path, int line, int col, String info)
-    {
+    public void logInfo(String path, int line, int col, String info) {
         original.logInfo(path, line + lineNumberOffset, info);
     }
 
-    public void logDebug(String path, int line, int col, String debug)
-    {
+    public void logDebug(String path, int line, int col, String debug) {
         original.logDebug(path, line + lineNumberOffset, debug);
     }
 
-    public void logWarning(String path, int line, int col, String warning)
-    {
+    public void logWarning(String path, int line, int col, String warning) {
         original.logWarning(path, line + lineNumberOffset, warning);
     }
 
-    public void logError(String path, int line, int col, String error)
-    {
+    public void logError(String path, int line, int col, String error) {
         original.logError(path, line + lineNumberOffset, error);
     }
 
-    public void logWarning(String path, int line, int col, String warning, String source)
-    {
+    public void logWarning(String path, int line, int col, String warning, String source) {
         original.logWarning(path, line + lineNumberOffset, warning);
     }
 
-    public void logWarning(String path, int line, int col, String warning, String source, int errorCode)
-    {
+    public void logWarning(String path, int line, int col, String warning, String source, int errorCode) {
         original.logWarning(path, line + lineNumberOffset, warning, errorCode);
     }
 
-    public void logError(String path, int line, int col, String error, String source)
-    {
+    public void logError(String path, int line, int col, String error, String source) {
         original.logError(path, line + lineNumberOffset, error);
     }
 
-    public void logError(String path, int line, int col, String error, String source, int errorCode)
-    {
+    public void logError(String path, int line, int col, String error, String source, int errorCode) {
         original.logError(path, line + lineNumberOffset, error, errorCode);
     }
 
-    public void log(ILocalizableMessage m)
-    {
+    public void log(ILocalizableMessage m) {
         m.setLine(m.getLine() + lineNumberOffset);
         original.log(m);
     }
 
-    public void log(ILocalizableMessage m, String source)
-    {
+    public void log(ILocalizableMessage m, String source) {
         m.setLine(m.getLine() + lineNumberOffset);
         original.log(m, source);
     }

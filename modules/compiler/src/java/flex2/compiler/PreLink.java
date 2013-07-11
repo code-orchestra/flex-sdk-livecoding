@@ -21,6 +21,7 @@ package flex2.compiler;
 
 import flex2.compiler.common.Configuration;
 import flex2.compiler.util.NameMappings;
+
 import java.util.List;
 
 /**
@@ -29,26 +30,25 @@ import java.util.List;
  *
  * @author Clement Wong
  */
-public interface PreLink
-{
-	/**
-	 * Runs pre-link to analyze known dependencies and generate mix-ins and 
-	 * style initialization code.
-	 * 
-	 * @return true if additional sources were generated and pre-link should be
-	 * run again, otherwise false (and thus postRun() can now be called).
-	 */
-	boolean run(List<Source> sources,
-	         List<CompilationUnit> units,
-	         FileSpec fileSpec,
-	         SourceList sourceList,
-	         SourcePath sourcePath,
-	         ResourceBundlePath bundlePath,
-	         ResourceContainer resources,
-	         SymbolTable symbolTable,
-             CompilerSwcContext swcContext,
-             NameMappings nameMappings,
-	         Configuration configuration);
+public interface PreLink {
+    /**
+     * Runs pre-link to analyze known dependencies and generate mix-ins and
+     * style initialization code.
+     *
+     * @return true if additional sources were generated and pre-link should be
+     *         run again, otherwise false (and thus postRun() can now be called).
+     */
+    boolean run(List<Source> sources,
+                List<CompilationUnit> units,
+                FileSpec fileSpec,
+                SourceList sourceList,
+                SourcePath sourcePath,
+                ResourceBundlePath bundlePath,
+                ResourceContainer resources,
+                SymbolTable symbolTable,
+                CompilerSwcContext swcContext,
+                NameMappings nameMappings,
+                Configuration configuration);
 
     void postRun(List<Source> sources,
                  List<CompilationUnit> units,

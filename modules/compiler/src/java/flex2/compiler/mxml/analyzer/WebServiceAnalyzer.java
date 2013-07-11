@@ -35,70 +35,57 @@ import flex2.compiler.util.CompilerMessage;
  *
  * @author Clement Wong
  */
-public class WebServiceAnalyzer extends AnalyzerAdapter
-{
+public class WebServiceAnalyzer extends AnalyzerAdapter {
     private MxmlDocument document;
 
-	public WebServiceAnalyzer(CompilationUnit unit, MxmlConfiguration mxmlConfiguration, MxmlDocument document)
-	{
-		super(unit, mxmlConfiguration);
-		this.document = document;
-	}
+    public WebServiceAnalyzer(CompilationUnit unit, MxmlConfiguration mxmlConfiguration, MxmlDocument document) {
+        super(unit, mxmlConfiguration);
+        this.document = document;
+    }
 
-	public void analyze(OperationNode node)
-	{
-		if (node.getAttributeValue("name") == null)
-		{
-			log(node, new OperationRequiresName());
-		}
-		super.analyze(node);
-	}
-
-    public void analyze(RequestNode node)
-    {
-		int attrCount = node.getAttributeCount();
-		if (attrCount > 1 ||
-            (attrCount == 1 && !((node.getAttributeNames().next())).getLocalPart().equals("format")))
-        {
-	        log(node, new RequestRequiresFormat());
+    public void analyze(OperationNode node) {
+        if (node.getAttributeValue("name") == null) {
+            log(node, new OperationRequiresName());
         }
         super.analyze(node);
     }
 
-    public void analyze(Node node)
-    {
+    public void analyze(RequestNode node) {
+        int attrCount = node.getAttributeCount();
+        if (attrCount > 1 ||
+                (attrCount == 1 && !((node.getAttributeNames().next())).getLocalPart().equals("format"))) {
+            log(node, new RequestRequiresFormat());
+        }
         super.analyze(node);
     }
 
-    protected int getDocumentVersion()
-    {
+    public void analyze(Node node) {
+        super.analyze(node);
+    }
+
+    protected int getDocumentVersion() {
         return document.getVersion();
     }
 
-    protected String getLanguageNamespace()
-    {
+    protected String getLanguageNamespace() {
         return document.getLanguageNamespace();
     }
 
-	// error messages
+    // error messages
 
-	public static class OperationRequiresName extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = -2365576843611189649L;
+    public static class OperationRequiresName extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = -2365576843611189649L;
 
-        public OperationRequiresName()
-		{
-			super();
-		}
-	}
+        public OperationRequiresName() {
+            super();
+        }
+    }
 
-	public static class RequestRequiresFormat extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = 2836590913630566556L;
+    public static class RequestRequiresFormat extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = 2836590913630566556L;
 
-        public RequestRequiresFormat()
-		{
-			super();
-		}
-	}
+        public RequestRequiresFormat() {
+            super();
+        }
+    }
 }

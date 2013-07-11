@@ -30,62 +30,52 @@ import java.util.*;
  *
  * @author Clement Wong
  */
-public class XMLNode extends Node
-{
-	public static final Set<QName> attributes;
+public class XMLNode extends Node {
+    public static final Set<QName> attributes;
 
-	static
-	{
-		attributes = new HashSet<QName>();
-		attributes.add(new QName("", StandardDefs.PROP_ID));
-		attributes.add(new QName("", StandardDefs.PROP_SOURCE));
+    static {
+        attributes = new HashSet<QName>();
+        attributes.add(new QName("", StandardDefs.PROP_ID));
+        attributes.add(new QName("", StandardDefs.PROP_SOURCE));
         attributes.add(new QName("", StandardDefs.PROP_FORMAT)); //for WebService Operation
-	}
+    }
 
-	XMLNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
+    XMLNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
 
-	private Node[] sourceFile;
-	
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    private Node[] sourceFile;
 
-	public void setSourceFile(Node[] nodes)
-	{
-		sourceFile = nodes;
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 
-	public Node[] getSourceFile()
-	{
-		return sourceFile;
-	}
+    public void setSourceFile(Node[] nodes) {
+        sourceFile = nodes;
+    }
 
-	public int getChildCount()
-	{
-		return sourceFile != null ? sourceFile.length : super.getChildCount();
-	}
+    public Node[] getSourceFile() {
+        return sourceFile;
+    }
 
-	public Token getChildAt(int index)
-	{
-		return sourceFile != null ? sourceFile[index] : super.getChildAt(index);
-	}
+    public int getChildCount() {
+        return sourceFile != null ? sourceFile.length : super.getChildCount();
+    }
 
-	public List<Token> getChildren()
-	{
-		return sourceFile != null ? Collections.<Token>unmodifiableList(Arrays.asList(sourceFile)) : super.getChildren();
-	}
+    public Token getChildAt(int index) {
+        return sourceFile != null ? sourceFile[index] : super.getChildAt(index);
+    }
 
-	/**
-	 *
-	 */
-	public boolean isE4X()
-	{
-		String formatAttr = (String)getAttributeValue("format");
-		return formatAttr == null || "E4X".equalsIgnoreCase(formatAttr);
-	}
+    public List<Token> getChildren() {
+        return sourceFile != null ? Collections.<Token>unmodifiableList(Arrays.asList(sourceFile)) : super.getChildren();
+    }
+
+    /**
+     *
+     */
+    public boolean isE4X() {
+        String formatAttr = (String) getAttributeValue("format");
+        return formatAttr == null || "E4X".equalsIgnoreCase(formatAttr);
+    }
 }

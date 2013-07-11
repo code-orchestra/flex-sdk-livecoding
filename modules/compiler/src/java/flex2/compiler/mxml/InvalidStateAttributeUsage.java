@@ -26,9 +26,11 @@ import flex2.compiler.util.CompilerMessage;
  *
  * @author Corey Lucier
  */
-public class InvalidStateAttributeUsage extends CompilerMessage.CompilerError
-{
-	private static final long serialVersionUID = -6808111864046809268L;
-	public final String name;
-    public InvalidStateAttributeUsage(String text) { this.name = text; }
+public class InvalidStateAttributeUsage extends CompilerMessage.CompilerError {
+    private static final long serialVersionUID = -6808111864046809268L;
+    public final String name;
+
+    public InvalidStateAttributeUsage(String text) {
+        this.name = text;
+    }
 }

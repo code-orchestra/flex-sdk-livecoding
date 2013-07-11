@@ -41,50 +41,42 @@ import java.util.*;
  * @author Clement Wong
  */
 public class SourcePath extends SourcePathBase
-    implements SinglePathResolver
-{
+        implements SinglePathResolver {
     protected final List<File> directories;
     private ApplicationCache applicationCache;
 
-	public SourcePath(VirtualFile[] classPath, VirtualFile appPath, String[] mimeTypes, boolean allowSourcePathOverlap)
-	{
-		this(mimeTypes, allowSourcePathOverlap);
+    public SourcePath(VirtualFile[] classPath, VirtualFile appPath, String[] mimeTypes, boolean allowSourcePathOverlap) {
+        this(mimeTypes, allowSourcePathOverlap);
 
-		addApplicationParentToSourcePath(appPath, classPath, this.directories);
-		addPathElements(classPath, this.directories, allowSourcePathOverlap, warnings);
-	}
-	
-	public SourcePath(String[] mimeTypes, boolean allowSourcePathOverlap)
-	{
-		super(mimeTypes, allowSourcePathOverlap);
-		directories = new LinkedList<File>();
-	}
+        addApplicationParentToSourcePath(appPath, classPath, this.directories);
+        addPathElements(classPath, this.directories, allowSourcePathOverlap, warnings);
+    }
 
-	public void addPathElements(VirtualFile[] classPath)
-	{
-		addPathElements(classPath, directories, allowSourcePathOverlap, warnings);
-	}	
+    public SourcePath(String[] mimeTypes, boolean allowSourcePathOverlap) {
+        super(mimeTypes, allowSourcePathOverlap);
+        directories = new LinkedList<File>();
+    }
 
-	private Source newSource(File file, File pathRoot, String namespaceURI, String localPart)
-	{
+    public void addPathElements(VirtualFile[] classPath) {
+        addPathElements(classPath, directories, allowSourcePathOverlap, warnings);
+    }
+
+    private Source newSource(File file, File pathRoot, String namespaceURI, String localPart) {
         Source source = new Source(new LocalFile(file), new LocalFile(pathRoot),
-                                   namespaceURI.replace('.', '/'), localPart, this, false, false);
+                namespaceURI.replace('.', '/'), localPart, this, false, false);
 
-        if (applicationCache != null)
-        {
+        if (applicationCache != null) {
             String className = CompilerAPI.constructClassName(namespaceURI, localPart);
             Source cachedSource = applicationCache.getSource(className);
 
-            if ((cachedSource != null) && !cachedSource.isUpdated())
-            {
+            if ((cachedSource != null) && !cachedSource.isUpdated()) {
                 CompilationUnit cachedCompilationUnit = cachedSource.getCompilationUnit();
 
                 if (cachedSource.getPathRoot().equals(source.getPathRoot()) &&
-                    (cachedCompilationUnit != null) && cachedCompilationUnit.hasTypeInfo)
-                {
+                        (cachedCompilationUnit != null) && cachedCompilationUnit.hasTypeInfo) {
                     CompilationUnit compilationUnit =
-                        source.newCompilationUnit(cachedCompilationUnit.getSyntaxTree(),
-                                                  new CompilerContext());
+                            source.newCompilationUnit(cachedCompilationUnit.getSyntaxTree(),
+                                    new CompilerContext());
 
                     Source.copyCompilationUnit(cachedCompilationUnit, compilationUnit, true);
                     source.setFileTime(cachedSource.getFileTime());
@@ -101,162 +93,132 @@ public class SourcePath extends SourcePathBase
         }
 
         return source;
-	}
+    }
 
-	// see if the Source object continues to be the first choice given a QName.
-	boolean checkPreference(Source s)
-	{
-		assert s.getOwner() == this;
-		
-		String relativePath = constructRelativePath(s), pathRoot = s.getPathRoot().getName();
-		if (relativePath == null)
-		{
-			// not possible, but don't disrupt the flow...
-			return true;
-		}
-		
-		boolean thisPath = false;
-		
-		for (int i = 0, size = directories.size(); i < size; i++)
-		{
-			File d = directories.get(i), f = null;
-			if (pathRoot.equals(FileUtil.getCanonicalPath(d)))
-			{
-				thisPath = true;
-			}
-			
-			try
-			{
-				f = findFile(d, relativePath, mimeTypes);
-			}
-			catch (CompilerException ex)
-			{
-				removeSource(s);
-				return false;
-			}
+    // see if the Source object continues to be the first choice given a QName.
+    boolean checkPreference(Source s) {
+        assert s.getOwner() == this;
 
-			if (f != null && !thisPath)
-			{
-				removeSource(s);
-				return false;
-			}
-		}
-		
-		return true;
-	}
-	
-	protected Source findFile(String className, String namespaceURI, String localPart) throws CompilerException
-	{
-		String p = className.replace(':', '.').replace('.', File.separatorChar);
-		Source s = null;
+        String relativePath = constructRelativePath(s), pathRoot = s.getPathRoot().getName();
+        if (relativePath == null) {
+            // not possible, but don't disrupt the flow...
+            return true;
+        }
 
-		for (int i = 0, size = directories.size(); i < size; i++)
-		{
-			File f, d = directories.get(i);
+        boolean thisPath = false;
 
-			if ((f = findFile(d, p, mimeTypes)) != null)
-			{
-				sources.put(className, s = newSource(f, d, namespaceURI, localPart));
-				return s;
-			}
-		}
-		
-		return null;
-	}
-	
-	public boolean hasPackage(String packageName)
-	{
-		for (int i = 0, size = directories.size(); i < size; i++)
-		{
-			File d = directories.get(i);
-			if (hasDirectory(d, packageName))
-			{
-				return true;
-			}
-		}
+        for (int i = 0, size = directories.size(); i < size; i++) {
+            File d = directories.get(i), f = null;
+            if (pathRoot.equals(FileUtil.getCanonicalPath(d))) {
+                thisPath = true;
+            }
 
-		return false;
-	}
+            try {
+                f = findFile(d, relativePath, mimeTypes);
+            } catch (CompilerException ex) {
+                removeSource(s);
+                return false;
+            }
 
-	public boolean hasDefinition(QName qName)
-	{
-		String className = CompilerAPI.constructClassName(qName.getNamespace(), qName.getLocalPart());
+            if (f != null && !thisPath) {
+                removeSource(s);
+                return false;
+            }
+        }
 
-		if (misses.contains(className))
-		{
-			return false;
-		}
+        return true;
+    }
 
-		if (hits.contains(className))
-		{
-			return true;
-		}
+    protected Source findFile(String className, String namespaceURI, String localPart) throws CompilerException {
+        String p = className.replace(':', '.').replace('.', File.separatorChar);
+        Source s = null;
 
-		String p = className.replace(':', '.').replace('.', File.separatorChar);
+        for (int i = 0, size = directories.size(); i < size; i++) {
+            File f, d = directories.get(i);
 
-		for (int i = 0, size = directories.size(); i < size; i++)
-		{
-			File f, d = directories.get(i);
+            if ((f = findFile(d, p, mimeTypes)) != null) {
+                sources.put(className, s = newSource(f, d, namespaceURI, localPart));
+                return s;
+            }
+        }
 
-			try
-			{
-				if ((f = findFile(d, p, mimeTypes)) != null)
-				{
-					hits.add(className);
-					return true;
-				}
-			}
-			catch (CompilerException ex)
-			{
-			}
-		}
+        return null;
+    }
 
-		misses.add(className);
-		return false;
-	}
+    public boolean hasPackage(String packageName) {
+        for (int i = 0, size = directories.size(); i < size; i++) {
+            File d = directories.get(i);
+            if (hasDirectory(d, packageName)) {
+                return true;
+            }
+        }
 
-	private boolean hasDirectory(File dir, String packageName)
-	{
-		if (packageName.length() == 0)
-		{
-			return true;
-		}
+        return false;
+    }
 
-		String relativePath = packageName.replace('.', File.separatorChar);
-		String fullPath = dir.getPath() + File.separator + relativePath;
+    public boolean hasDefinition(QName qName) {
+        String className = CompilerAPI.constructClassName(qName.getNamespace(), qName.getLocalPart());
 
-		if (dirs.get(fullPath) == NO_DIR)
-		{
-			return false;
-		}
+        if (misses.contains(className)) {
+            return false;
+        }
 
-		boolean result = new File(dir, relativePath).isDirectory();
-		dirs.put(fullPath, result ? fullPath : NO_DIR);
+        if (hits.contains(className)) {
+            return true;
+        }
 
-		return result;
-	}
-	
-	public List<File> getPaths()
-	{
-		return directories;
-	}
+        String p = className.replace(':', '.').replace('.', File.separatorChar);
+
+        for (int i = 0, size = directories.size(); i < size; i++) {
+            File f, d = directories.get(i);
+
+            try {
+                if ((f = findFile(d, p, mimeTypes)) != null) {
+                    hits.add(className);
+                    return true;
+                }
+            } catch (CompilerException ex) {
+            }
+        }
+
+        misses.add(className);
+        return false;
+    }
+
+    private boolean hasDirectory(File dir, String packageName) {
+        if (packageName.length() == 0) {
+            return true;
+        }
+
+        String relativePath = packageName.replace('.', File.separatorChar);
+        String fullPath = dir.getPath() + File.separator + relativePath;
+
+        if (dirs.get(fullPath) == NO_DIR) {
+            return false;
+        }
+
+        boolean result = new File(dir, relativePath).isDirectory();
+        dirs.put(fullPath, result ? fullPath : NO_DIR);
+
+        return result;
+    }
+
+    public List<File> getPaths() {
+        return directories;
+    }
 
     /**
      * Resolves paths with a leading slash and relative to a Source
      * Path directory.
      */
-    public VirtualFile resolve(String path)
-    {
-        if (path.charAt(0) == '/')
-        {
+    public VirtualFile resolve(String path) {
+        if (path.charAt(0) == '/') {
             String relativePath = path.substring(1);
 
-            for (File directory : directories)
-            {
+            for (File directory : directories) {
                 File file = FileUtil.openFile(directory, relativePath);
 
-                if ((file != null) && file.exists())
-                {
+                if ((file != null) && file.exists()) {
                     return new LocalFile(file);
                 }
             }
@@ -265,8 +227,7 @@ public class SourcePath extends SourcePathBase
         return null;
     }
 
-    public void setApplicationCache(ApplicationCache applicationCache)
-    {
+    public void setApplicationCache(ApplicationCache applicationCache) {
         this.applicationCache = applicationCache;
     }
 }
@@ -274,369 +235,307 @@ public class SourcePath extends SourcePathBase
 /**
  * @author Clement Wong
  */
-abstract class SourcePathBase
-{
-	protected final static String NO_DIR = "";
+abstract class SourcePathBase {
+    protected final static String NO_DIR = "";
 
-	static void addApplicationParentToSourcePath(VirtualFile appPath, VirtualFile[] classPath, List<File> directories)
-	{
-		if (appPath != null)
-		{
-			File f = FileUtil.openFile(appPath.getParent());
-			// if (f != null && f.isDirectory())
-			if (f != null && f.isDirectory() && (FileUtil.isSubdirectoryOf(appPath.getParent(), classPath) == -1))
-			{
-				directories.add(f);
-			}
-		}
-	}
+    static void addApplicationParentToSourcePath(VirtualFile appPath, VirtualFile[] classPath, List<File> directories) {
+        if (appPath != null) {
+            File f = FileUtil.openFile(appPath.getParent());
+            // if (f != null && f.isDirectory())
+            if (f != null && f.isDirectory() && (FileUtil.isSubdirectoryOf(appPath.getParent(), classPath) == -1)) {
+                directories.add(f);
+            }
+        }
+    }
 
-	static void addPathElements(VirtualFile[] classPath, List<File> directories, boolean allowSourcePathOverlap, List<ClasspathOverlap> warnings)
-	{
-		boolean badPaths = false;
+    static void addPathElements(VirtualFile[] classPath, List<File> directories, boolean allowSourcePathOverlap, List<ClasspathOverlap> warnings) {
+        boolean badPaths = false;
 
-		for (int i = 0, length = (classPath == null) ? 0 : classPath.length; i < length; i++)
-		{
-			String path = classPath[i].getName();
-			File f = FileUtil.openFile(path);
-			if (f != null && f.isDirectory())
-			{
-				if (!allowSourcePathOverlap && !badPaths)
-				{
-					int index = FileUtil.isSubdirectoryOf(f, directories);
-					if (index != -1)
-					{
-						String dirPath = directories.get(index).getAbsolutePath();
-						if (checkValidPackageName(path, dirPath))
-						{
-							// C: don't want to use ThreadLocalToolkit here...
+        for (int i = 0, length = (classPath == null) ? 0 : classPath.length; i < length; i++) {
+            String path = classPath[i].getName();
+            File f = FileUtil.openFile(path);
+            if (f != null && f.isDirectory()) {
+                if (!allowSourcePathOverlap && !badPaths) {
+                    int index = FileUtil.isSubdirectoryOf(f, directories);
+                    if (index != -1) {
+                        String dirPath = directories.get(index).getAbsolutePath();
+                        if (checkValidPackageName(path, dirPath)) {
+                            // C: don't want to use ThreadLocalToolkit here...
 
-	                        // preilly: don't use logError below, because we don't stop
-	                        // compiling and if the error count is non-zero downstream mayhem
-	                        // occurs.  For example, no SWC's get loaded, which makes it
-	                        // alittle tough to compile.
+                            // preilly: don't use logError below, because we don't stop
+                            // compiling and if the error count is non-zero downstream mayhem
+                            // occurs.  For example, no SWC's get loaded, which makes it
+                            // alittle tough to compile.
 
-							warnings.add(new ClasspathOverlap(path, dirPath));
-							badPaths = true;
-						}
-					}
-				}
-				directories.add(f);
-			}
-		}		
-	}
-	
-	private static boolean checkValidPackageName(String path1, String path2)
-	{
-		if (path1.equals(path2)) return true;
-		String packagePath = path1.length() > path2.length() ? path1.substring(path2.length()) : path2.substring(path1.length());
+                            warnings.add(new ClasspathOverlap(path, dirPath));
+                            badPaths = true;
+                        }
+                    }
+                }
+                directories.add(f);
+            }
+        }
+    }
 
-		for (StringTokenizer t = new StringTokenizer(packagePath, File.separator); t.hasMoreTokens(); )
-		{
-			String s = t.nextToken();
-			if (!flex2.compiler.mxml.lang.TextParser.isValidIdentifier(s))
-			{
-				return false;
-			}
-		}
-		
-		return true;
-	}
+    private static boolean checkValidPackageName(String path1, String path2) {
+        if (path1.equals(path2)) return true;
+        String packagePath = path1.length() > path2.length() ? path1.substring(path2.length()) : path2.substring(path1.length());
 
-	public SourcePathBase(String[] mimeTypes, boolean allowSourcePathOverlap)
-	{
-		this.mimeTypes = mimeTypes;
-		this.allowSourcePathOverlap = allowSourcePathOverlap;
-		sources = new HashMap<String, Source>();
+        for (StringTokenizer t = new StringTokenizer(packagePath, File.separator); t.hasMoreTokens(); ) {
+            String s = t.nextToken();
+            if (!flex2.compiler.mxml.lang.TextParser.isValidIdentifier(s)) {
+                return false;
+            }
+        }
 
-		hits = new HashSet<String>();
-		misses = new HashSet<String>(1024);
-		dirs = new HashMap<String, String>();
-		warnings = new ArrayList<ClasspathOverlap>(5);
-	}
+        return true;
+    }
 
-	protected final String[] mimeTypes;
-	protected final Map<String, Source> sources;
-	protected boolean allowSourcePathOverlap;
+    public SourcePathBase(String[] mimeTypes, boolean allowSourcePathOverlap) {
+        this.mimeTypes = mimeTypes;
+        this.allowSourcePathOverlap = allowSourcePathOverlap;
+        sources = new HashMap<String, Source>();
 
-	protected final Set<String> hits, misses;
-	protected final HashMap<String, String> dirs;
-	protected final List<ClasspathOverlap> warnings;
+        hits = new HashSet<String>();
+        misses = new HashSet<String>(1024);
+        dirs = new HashMap<String, String>();
+        warnings = new ArrayList<ClasspathOverlap>(5);
+    }
 
-	public Source findSource(String namespaceURI, String localPart) throws CompilerException
-	{
-		assert localPart.indexOf('.') == -1 && localPart.indexOf('/') == -1 && localPart.indexOf(':') == -1
+    protected final String[] mimeTypes;
+    protected final Map<String, Source> sources;
+    protected boolean allowSourcePathOverlap;
+
+    protected final Set<String> hits, misses;
+    protected final HashMap<String, String> dirs;
+    protected final List<ClasspathOverlap> warnings;
+
+    public Source findSource(String namespaceURI, String localPart) throws CompilerException {
+        assert localPart.indexOf('.') == -1 && localPart.indexOf('/') == -1 && localPart.indexOf(':') == -1
                 : "findSource(" + namespaceURI + "," + localPart + ") has bad localPart";
 
-		// classname format is a.b:c
-		String className = CompilerAPI.constructClassName(namespaceURI, localPart);
-		
-		return findSource(className, namespaceURI, localPart);
-	}
-	
-	protected Source findSource(String className, String namespaceURI, String localPart) throws CompilerException
-	{
-		if (misses.contains(className))
-		{
-			return null;
-		}
+        // classname format is a.b:c
+        String className = CompilerAPI.constructClassName(namespaceURI, localPart);
 
-		Source s = sources.get(className);
+        return findSource(className, namespaceURI, localPart);
+    }
 
-		if (s == null)
-		{
-			if ((s = findFile(className, namespaceURI, localPart)) != null)
-			{
-				return s;
-			}
-		}
+    protected Source findSource(String className, String namespaceURI, String localPart) throws CompilerException {
+        if (misses.contains(className)) {
+            return null;
+        }
 
-		CompilationUnit u = (s != null) ? s.getCompilationUnit() : null;
+        Source s = sources.get(className);
 
-		if (s != null && !s.exists())
-		{
-			sources.remove(className);
-			s = null;
-		}
+        if (s == null) {
+            if ((s = findFile(className, namespaceURI, localPart)) != null) {
+                return s;
+            }
+        }
 
-		if (adjustDefinitionName(namespaceURI, localPart, s, u))
-		{
-			u = null;
-			s = null;
-		}
+        CompilationUnit u = (s != null) ? s.getCompilationUnit() : null;
 
-		if (s != null && ((u != null && !u.isDone()) || s.isUpdated()))
-		{
-			// s.removeCompilationUnit();
-		}
-		else if (s != null && u != null)
-		{
-			s = s.copy();
-			assert s != null;
-		}
+        if (s != null && !s.exists()) {
+            sources.remove(className);
+            s = null;
+        }
 
-		if (s == null)
-		{
-			misses.add(className);
-		}
+        if (adjustDefinitionName(namespaceURI, localPart, s, u)) {
+            u = null;
+            s = null;
+        }
 
-		return s;
-	}
+        if (s != null && ((u != null && !u.isDone()) || s.isUpdated())) {
+            // s.removeCompilationUnit();
+        } else if (s != null && u != null) {
+            s = s.copy();
+            assert s != null;
+        }
 
-	protected boolean adjustDefinitionName(String namespaceURI, String localPart, Source s, CompilationUnit u)
-	{
-		// If the compilation unit does exist and the top level definition name doesn't match
-		// the specified class name, we don't count it as a match.
-		if (s != null && u != null && u.topLevelDefinitions.size() == 1)
-		{
-			if (!u.topLevelDefinitions.contains(namespaceURI, localPart))
-			{
-				String realName = (u.topLevelDefinitions.first()).toString();
-				sources.put(realName, s);
-				misses.remove(realName);
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	abstract boolean checkPreference(Source s);
+        if (s == null) {
+            misses.add(className);
+        }
 
-	protected abstract Source findFile(String className, String namespaceURI, String localPart) throws CompilerException;
+        return s;
+    }
 
-	protected File findFile(File directory, String relativePath, String[] mimeTypes) throws CompilerException
-	{
-		File found = null;
+    protected boolean adjustDefinitionName(String namespaceURI, String localPart, Source s, CompilationUnit u) {
+        // If the compilation unit does exist and the top level definition name doesn't match
+        // the specified class name, we don't count it as a match.
+        if (s != null && u != null && u.topLevelDefinitions.size() == 1) {
+            if (!u.topLevelDefinitions.contains(namespaceURI, localPart)) {
+                String realName = (u.topLevelDefinitions.first()).toString();
+                sources.put(realName, s);
+                misses.remove(realName);
+                return true;
+            }
+        }
 
-		for (int k = 0, length = mimeTypes.length; k < length; k++)
-		{
-			File f = findFile(directory, relativePath, mimeTypes[k]);
+        return false;
+    }
 
-			if (f != null && found == null)
-			{
-				found = f;
-				// break;
-			}
-			else if (f != null)
-			{
-				throw new MoreThanOneComponentOfTheSameName(found.getAbsolutePath(), f.getAbsolutePath());
-			}
-		}
+    abstract boolean checkPreference(Source s);
 
-		return found;
-	}
+    protected abstract Source findFile(String className, String namespaceURI, String localPart) throws CompilerException;
 
-	protected File findFile(File directory, String relativePath, String mimeType)
-	{
-		String fullPath = directory.getPath() + File.separator + relativePath;
-		int lastSlash = fullPath.lastIndexOf(File.separator);
-		String dir = null;
-		if (lastSlash != -1)
-		{
-			dir = fullPath.substring(0, lastSlash);
-			if (dirs.get(dir) == NO_DIR)
-			{
-				return null;
-			}
-		}
+    protected File findFile(File directory, String relativePath, String[] mimeTypes) throws CompilerException {
+        File found = null;
 
-		String path = relativePath + MimeMappings.getExtension(mimeType);
-		File f = FileUtil.openFile(directory, path);
+        for (int k = 0, length = mimeTypes.length; k < length; k++) {
+            File f = findFile(directory, relativePath, mimeTypes[k]);
 
-		if ((f != null) && f.isFile() && FileUtil.getCanonicalPath(f).endsWith(path))
-		{
-			return f;
-		}
-		else if (f != null && dir != null && !dirs.containsKey(dir))
-		{
-			File p = f.getParentFile();
-			dirs.put(dir, p != null && p.isDirectory() ? dir : NO_DIR);
-		}
+            if (f != null && found == null) {
+                found = f;
+                // break;
+            } else if (f != null) {
+                throw new MoreThanOneComponentOfTheSameName(found.getAbsolutePath(), f.getAbsolutePath());
+            }
+        }
 
-		return null;
-	}
+        return found;
+    }
 
-	String[] checkClassNameFileName(Source s)
-	{
-		String defName = null, pathName = null;
-		
-		if (s.getOwner() == this)
-		{
-			QName def = s.getCompilationUnit().topLevelDefinitions.last();
-			
-			defName = def.getLocalPart();
-			pathName = s.getShortName();
-			
-			if (defName.equals(pathName))
-			{
-				return null;
-			}
-		}
-		
-		return new String[] { pathName, defName };
-	}
+    protected File findFile(File directory, String relativePath, String mimeType) {
+        String fullPath = directory.getPath() + File.separator + relativePath;
+        int lastSlash = fullPath.lastIndexOf(File.separator);
+        String dir = null;
+        if (lastSlash != -1) {
+            dir = fullPath.substring(0, lastSlash);
+            if (dirs.get(dir) == NO_DIR) {
+                return null;
+            }
+        }
 
-	String[] checkPackageNameDirectoryName(Source s)
-	{
-		String defPackage = null, pathPackage = null;
-		
-		if (s.getOwner() == this)
-		{
-			QName def = s.getCompilationUnit().topLevelDefinitions.last();
-			
-			defPackage = NameFormatter.normalizePackageName(def.getNamespace());		
-			pathPackage = NameFormatter.toDot(s.getRelativePath(), '/');
-			
-			if (defPackage.equals(pathPackage))
-			{
-				return null;
-			}
-		}
-		
-		return new String[] { pathPackage, defPackage };
-	}
+        String path = relativePath + MimeMappings.getExtension(mimeType);
+        File f = FileUtil.openFile(directory, path);
 
-	protected String constructRelativePath(Source s)
-	{
-		// + 1 removes the leading /
-		String relativePath = s.getName().substring(s.getPathRoot().getName().length() + 1);
-		for (int k = 0, length = mimeTypes.length; k < length; k++)
-		{
-			String ext = MimeMappings.getExtension(mimeTypes[k]);
-			if (relativePath.endsWith(ext))
-			{
-				relativePath = relativePath.substring(0, relativePath.length() - ext.length());
-				return relativePath;
-			}
-		}
-		
-		assert false;
-		return null;
-	}
-	
-	// used by CompilerAPI.validateCompilationUnits()... not efficient, but we rarely call it...
-	public void removeSource(Source s)
-	{
-		for (Iterator i = sources.entrySet().iterator(); i.hasNext(); )
-		{
-			Map.Entry e = (Map.Entry) i.next();
-			if (e.getValue() == s)
-			{
-				i.remove();
-				return;
-			}
-		}
+        if ((f != null) && f.isFile() && FileUtil.getCanonicalPath(f).endsWith(path)) {
+            return f;
+        } else if (f != null && dir != null && !dirs.containsKey(dir)) {
+            File p = f.getParentFile();
+            dirs.put(dir, p != null && p.isDirectory() ? dir : NO_DIR);
+        }
+
+        return null;
+    }
+
+    String[] checkClassNameFileName(Source s) {
+        String defName = null, pathName = null;
+
+        if (s.getOwner() == this) {
+            QName def = s.getCompilationUnit().topLevelDefinitions.last();
+
+            defName = def.getLocalPart();
+            pathName = s.getShortName();
+
+            if (defName.equals(pathName)) {
+                return null;
+            }
+        }
+
+        return new String[]{pathName, defName};
+    }
+
+    String[] checkPackageNameDirectoryName(Source s) {
+        String defPackage = null, pathPackage = null;
+
+        if (s.getOwner() == this) {
+            QName def = s.getCompilationUnit().topLevelDefinitions.last();
+
+            defPackage = NameFormatter.normalizePackageName(def.getNamespace());
+            pathPackage = NameFormatter.toDot(s.getRelativePath(), '/');
+
+            if (defPackage.equals(pathPackage)) {
+                return null;
+            }
+        }
+
+        return new String[]{pathPackage, defPackage};
+    }
+
+    protected String constructRelativePath(Source s) {
+        // + 1 removes the leading /
+        String relativePath = s.getName().substring(s.getPathRoot().getName().length() + 1);
+        for (int k = 0, length = mimeTypes.length; k < length; k++) {
+            String ext = MimeMappings.getExtension(mimeTypes[k]);
+            if (relativePath.endsWith(ext)) {
+                relativePath = relativePath.substring(0, relativePath.length() - ext.length());
+                return relativePath;
+            }
+        }
+
+        assert false;
+        return null;
+    }
+
+    // used by CompilerAPI.validateCompilationUnits()... not efficient, but we rarely call it...
+    public void removeSource(Source s) {
+        for (Iterator i = sources.entrySet().iterator(); i.hasNext(); ) {
+            Map.Entry e = (Map.Entry) i.next();
+            if (e.getValue() == s) {
+                i.remove();
+                return;
+            }
+        }
 
         assert false : "couldn't find " + s;
-	}
+    }
 
-	public void clearCache()
-	{
-		hits.clear();
-		misses.clear();
-		dirs.clear();
-	}
+    public void clearCache() {
+        hits.clear();
+        misses.clear();
+        dirs.clear();
+    }
 
-	String[] getMimeTypes()
-	{
-		return mimeTypes;
-	}
+    String[] getMimeTypes() {
+        return mimeTypes;
+    }
 
-	public Map<String, Source> sources()
-	{
-		return sources;
-	}
+    public Map<String, Source> sources() {
+        return sources;
+    }
 
-    public String toString()
-    {
+    public String toString() {
         StringBuilder buffer = new StringBuilder("SourcePath: \n");
-		Iterator<Source> iterator = sources.values().iterator();
+        Iterator<Source> iterator = sources.values().iterator();
 
-        while (iterator.hasNext())
-		{
+        while (iterator.hasNext()) {
             Source source = iterator.next();
             buffer.append("\tsource = " + source + ", cu = " + source.getCompilationUnit() + "\n");
-		}
+        }
 
         return buffer.toString();
     }
-	
-	public void displayWarnings()
-	{
-		for (int i = 0, size = warnings.size(); i < size; i++)
-		{
-			ThreadLocalToolkit.log(warnings.get(i));
-		}
-	}
 
-	// error messages
+    public void displayWarnings() {
+        for (int i = 0, size = warnings.size(); i < size; i++) {
+            ThreadLocalToolkit.log(warnings.get(i));
+        }
+    }
 
-	public static class ClasspathOverlap extends CompilerMessage.CompilerWarning
-	{
-		private static final long serialVersionUID = -6314431057641028497L;
+    // error messages
 
-        public ClasspathOverlap(String path, String directory)
-		{
-			super();
-			this.cpath = path;
-			this.directory = directory;
-		}
+    public static class ClasspathOverlap extends CompilerMessage.CompilerWarning {
+        private static final long serialVersionUID = -6314431057641028497L;
 
-		public final String cpath, directory;
-	}
+        public ClasspathOverlap(String path, String directory) {
+            super();
+            this.cpath = path;
+            this.directory = directory;
+        }
 
-	public static class MoreThanOneComponentOfTheSameName extends CompilerMessage.CompilerInfo
-	{
-		private static final long serialVersionUID = 5943423934006966281L;
+        public final String cpath, directory;
+    }
 
-        public MoreThanOneComponentOfTheSameName(String file1, String file2)
-		{
-			super();
-			this.file1 = file1;
-			this.file2 = file2;
-		}
+    public static class MoreThanOneComponentOfTheSameName extends CompilerMessage.CompilerInfo {
+        private static final long serialVersionUID = 5943423934006966281L;
 
-		public final String file1, file2;
-	}
+        public MoreThanOneComponentOfTheSameName(String file1, String file2) {
+            super();
+            this.file1 = file1;
+            this.file2 = file2;
+        }
+
+        public final String file1, file2;
+    }
 }

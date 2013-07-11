@@ -34,35 +34,29 @@ import java.util.ArrayList;
  *
  * @author Brian Deitte
  */
-public class PathResolver implements SinglePathResolver
-{
+public class PathResolver implements SinglePathResolver {
     private List<SinglePathResolver> bases;
 
     /**
      * Resolve the current file used the registered SinglePathResolvers
      */
-    public VirtualFile resolve( String pathStr )
-    {
-        return resolve((SinglePathResolver)null, pathStr);
+    public VirtualFile resolve(String pathStr) {
+        return resolve((SinglePathResolver) null, pathStr);
     }
 
     /**
      * Resolve the current file, checking the passed in resolver first
      */
-    public VirtualFile resolve( SinglePathResolver resolver, String pathStr )
-    {
-        if (pathStr == null)
-        {
+    public VirtualFile resolve(SinglePathResolver resolver, String pathStr) {
+        if (pathStr == null) {
             return null;
         }
 
         VirtualFile virt = null;
-        if (resolver != null)
-        {
+        if (resolver != null) {
             virt = resolver.resolve(pathStr);
         }
-        if (virt == null)
-        {
+        if (virt == null) {
             virt = checkSinglePathResolvers(virt, pathStr);
         }
 
@@ -72,26 +66,21 @@ public class PathResolver implements SinglePathResolver
     /**
      * Resolve the current file, checking the passed in resolvers first
      */
-    public VirtualFile resolve( SinglePathResolver[] resolvers, String pathStr )
-    {
-        if (pathStr == null)
-        {
+    public VirtualFile resolve(SinglePathResolver[] resolvers, String pathStr) {
+        if (pathStr == null) {
             return null;
         }
 
         VirtualFile virt = null;
-        if (resolvers != null)
-        {
-            for (int i = 0; i < resolvers.length; i++)
-            {
+        if (resolvers != null) {
+            for (int i = 0; i < resolvers.length; i++) {
                 SinglePathResolver resolver = resolvers[i];
                 virt = resolver.resolve(pathStr);
                 if (virt != null)
                     break;
             }
         }
-        if (virt == null)
-        {
+        if (virt == null) {
             virt = checkSinglePathResolvers(virt, pathStr);
         }
 
@@ -101,12 +90,10 @@ public class PathResolver implements SinglePathResolver
     /**
      * Add a resolver that will be used in all resolves
      */
-    public void addSinglePathResolver( SinglePathResolver resolver )
-    {
+    public void addSinglePathResolver(SinglePathResolver resolver) {
         int index = 0;
 
-        if (bases != null)
-        {
+        if (bases != null) {
             index = bases.size();
         }
 
@@ -116,29 +103,23 @@ public class PathResolver implements SinglePathResolver
     /**
      * Add a resolver that will be used in all resolves
      */
-    public void addSinglePathResolver( int index, SinglePathResolver resolver )
-    {
+    public void addSinglePathResolver(int index, SinglePathResolver resolver) {
         assert resolver != null;
 
-        if (bases == null)
-        {
+        if (bases == null) {
             bases = new ArrayList<SinglePathResolver>();
         }
 
         bases.add(index, resolver);
     }
 
-    private VirtualFile checkSinglePathResolvers(VirtualFile virt, String pathStr)
-    {
-        if (bases != null)
-        {
+    private VirtualFile checkSinglePathResolvers(VirtualFile virt, String pathStr) {
+        if (bases != null) {
             // fixme: should we just grab the first one or check mod times?
-            for (Iterator<SinglePathResolver> iterator = bases.iterator(); iterator.hasNext();)
-            {
+            for (Iterator<SinglePathResolver> iterator = bases.iterator(); iterator.hasNext(); ) {
                 SinglePathResolver baseResolver = iterator.next();
                 virt = baseResolver.resolve(pathStr);
-                if (virt != null)
-                {
+                if (virt != null) {
                     break;
                 }
             }
@@ -146,13 +127,10 @@ public class PathResolver implements SinglePathResolver
         return virt;
     }
 
-    public void removeSinglePathResolver( SinglePathResolver resolver )
-    {
-        for (Iterator<SinglePathResolver> iterator = bases.iterator(); iterator.hasNext();)
-        {
+    public void removeSinglePathResolver(SinglePathResolver resolver) {
+        for (Iterator<SinglePathResolver> iterator = bases.iterator(); iterator.hasNext(); ) {
             // Intentionally using == here.
-            if (iterator.next() == resolver)
-            {
+            if (iterator.next() == resolver) {
                 iterator.remove();
                 return;
             }

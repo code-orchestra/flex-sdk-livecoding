@@ -22,18 +22,17 @@ package flex2.compiler.config;
 /**
  * Defines the API for configuration filters, which can be used to
  * restrict the valid configuration options.
- *  
+ *
  * @author dloverin
  */
-public interface ConfigurationFilter
-{
-	/**
-	 * Decide if a given configuration option should be removed from the set
-	 * of configuration options.  
-	 * 
-	 * @param name full name of the configuration option
-	 * @return true if the option should be in the configuration,
-	 * 		   false if the option is excluded.
-	 */
-	boolean select(String name);
+public interface ConfigurationFilter {
+    /**
+     * Decide if a given configuration option should be removed from the set
+     * of configuration options.
+     *
+     * @param name full name of the configuration option
+     * @return true if the option should be in the configuration,
+     *         false if the option is excluded.
+     */
+    boolean select(String name);
 }

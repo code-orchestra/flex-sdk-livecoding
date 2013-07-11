@@ -29,51 +29,47 @@ import java.util.HashSet;
 
 /**
  * This class is stores the package info classes for all packages in the source paths.
+ *
  * @author Brian Deitte
  */
-public class PackagesConfiguration
-{
-	//
-	// 'packages.package' option
-	//
-	
-	private List<PackageInfo> packages = new ArrayList<PackageInfo>();
-	private Set<String> packageNames = new HashSet<String>();
+public class PackagesConfiguration {
+    //
+    // 'packages.package' option
+    //
 
-	/**
-	 * returns a list of all the packageInfo objects. 
-	 * @return
-	 */
-	public List<PackageInfo> getPackages()
-	{
-		return packages;
-	}
+    private List<PackageInfo> packages = new ArrayList<PackageInfo>();
+    private Set<String> packageNames = new HashSet<String>();
 
-	public Set<String> getPackageNames()
-	{
-		return packageNames;
-	}
-	
-	/** 
-	 * Assigns description to a package
-	 * @param cfgval
-	 * @param name
-	 * @param desc
-	 */
-	public void cfgPackage(ConfigurationValue cfgval, String name, String desc)
-	{
-		packages.add(new PackageInfo(name, desc));
-		packageNames.add(name);
-	}
+    /**
+     * returns a list of all the packageInfo objects.
+     *
+     * @return
+     */
+    public List<PackageInfo> getPackages() {
+        return packages;
+    }
 
-	public static ConfigurationInfo getPackageInfo()
-	{
-	    return new ConfigurationInfo( )
-	    {
-	        public boolean allowMultiple()
-	        {
-	            return true;
-	        }
-	    };
-	}
+    public Set<String> getPackageNames() {
+        return packageNames;
+    }
+
+    /**
+     * Assigns description to a package
+     *
+     * @param cfgval
+     * @param name
+     * @param desc
+     */
+    public void cfgPackage(ConfigurationValue cfgval, String name, String desc) {
+        packages.add(new PackageInfo(name, desc));
+        packageNames.add(name);
+    }
+
+    public static ConfigurationInfo getPackageInfo() {
+        return new ConfigurationInfo() {
+            public boolean allowMultiple() {
+                return true;
+            }
+        };
+    }
 }

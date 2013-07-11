@@ -23,7 +23,9 @@ import flex2.compiler.mxml.gen.TextGen;
 import flex2.compiler.mxml.lang.StandardDefs;
 import flex2.compiler.mxml.reflect.Style;
 import flex2.compiler.mxml.reflect.Type;
+
 import java.util.HashSet;
+
 import macromedia.asc.parser.ArgumentListNode;
 import macromedia.asc.parser.CallExpressionNode;
 import macromedia.asc.parser.ExpressionStatementNode;
@@ -38,52 +40,45 @@ import macromedia.asc.parser.StatementListNode;
 /**
  * This class represents an initializer for a style.
  */
-public class StyleInitializer extends NamedInitializer
-{
-	protected final Style style;
+public class StyleInitializer extends NamedInitializer {
+    protected final Style style;
 
-	public StyleInitializer(Style style, Object value, int line, StandardDefs standardDefs)
-	{
-		super(value, line, standardDefs);
-		this.style = style;
-	}
+    public StyleInitializer(Style style, Object value, int line, StandardDefs standardDefs) {
+        super(value, line, standardDefs);
+        this.style = style;
+    }
 
-	public Style getStyle()
-	{
-		return style;
-	}
+    public Style getStyle() {
+        return style;
+    }
 
-	public Type getLValueType()
-	{
-		return style.getType();
-	}
+    public Type getLValueType() {
+        return style.getType();
+    }
 
-	public String getName()
-	{
-		return style.getName();
-	}
+    public String getName() {
+        return style.getName();
+    }
 
-	public String getAssignExpr(String lvalueBase)
-	{
-		return lvalueBase + ".setStyle(" + TextGen.quoteWord(getName()) + ", " + getValueExpr() + ")";
-	}
+    public String getAssignExpr(String lvalueBase) {
+        return lvalueBase + ".setStyle(" + TextGen.quoteWord(getName()) + ", " + getValueExpr() + ")";
+    }
 
     // intern all identifier constants
     private static final String SET_STYLE = "setStyle".intern();
 
-	public StatementListNode generateAssignExpr(NodeFactory nodeFactory,
+    public StatementListNode generateAssignExpr(NodeFactory nodeFactory,
                                                 HashSet<String> configNamespaces,
-                                                boolean generateDocComments, 
+                                                boolean generateDocComments,
                                                 StatementListNode statementList,
-                                                Node lvalueBase)
-    {
+                                                Node lvalueBase) {
         IdentifierNode identifier = nodeFactory.identifier(SET_STYLE, false);
         LiteralStringNode literalString = nodeFactory.literalString(getName());
         ArgumentListNode argumentList = nodeFactory.argumentList(null, literalString);
         Node valueExpr = generateValueExpr(nodeFactory, configNamespaces, generateDocComments);
         argumentList = nodeFactory.argumentList(argumentList, valueExpr);
         CallExpressionNode callExpression =
-            (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
+                (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
         callExpression.setRValue(false);
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(lvalueBase, callExpression);
         ListNode list = nodeFactory.list(null, memberExpression);

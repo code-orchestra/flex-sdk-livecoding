@@ -135,13 +135,12 @@ import flex2.compiler.util.QName;
 
 /**
  * Evaluates an AS3 syntax tree and emits a file signature.
- *
+ * <p/>
  * This class is not meant to be reused -- always create a new instance when you need it.
  *
  * @author Jono Spiro
  */
-public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
-{
+public class SignatureEvaluator extends EvaluatorAdapter implements Tokens {
 
 //    ______ _      _     _
 //    |  ___(_)    | |   | |
@@ -192,8 +191,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
      *
      * @see SignatureEvaluator(int suggestedBufferSize, SignatureRules signatureRules)
      */
-    public SignatureEvaluator(int suggestedBufferSize, boolean humanReadable)
-    {
+    public SignatureEvaluator(int suggestedBufferSize, boolean humanReadable) {
         this(suggestedBufferSize, humanReadable, new SignatureRules());
     }
 
@@ -202,8 +200,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
      * Uses a custom SignatureRules (rules for determining what to include in a signature).
      */
     public SignatureEvaluator(int suggestedBufferSize, boolean humanReadable,
-                              SignatureRules signatureRules)
-    {
+                              SignatureRules signatureRules) {
         this.out = new StringBuilder(suggestedBufferSize);
         this.humanReadable = humanReadable;
         this.signatureRules = signatureRules;
@@ -216,13 +213,11 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 //    | |  | |  __/ | | | | | |_) |  __/ |    | | | |_| | | | | (__| |_| | (_) | | | \__ \
 //    \_|  |_/\___|_| |_| |_|_.__/ \___|_|    \_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
 
-    public String getSignature()
-    {
+    public String getSignature() {
         return out.toString();
     }
 
-    public String toString()
-    {
+    public String toString() {
         return getSignature();
     }
 
@@ -232,14 +227,11 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     /**
      * Returns the current indentation.
      */
-    private String indent()
-    {
+    private String indent() {
         assert (indent >= 0);
-        if (lastIndent != indent)
-        {
+        if (lastIndent != indent) {
             indentCache = "";
-            for (int i = 0; i < indent; i++)
-            {
+            for (int i = 0; i < indent; i++) {
                 indentCache += "    ";
             }
         }
@@ -252,70 +244,52 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 //     |_____|_____|_____| | |___ \ V / (_| | | |_| | (_| | || (_) | |  \__ \ |_____|_____|_____|
 //                         |_____| \_/ \__,_|_|\__,_|\__,_|\__\___/|_|  |___/
 
-    public boolean checkFeature(Context cx, Node node)
-    {
+    public boolean checkFeature(Context cx, Node node) {
         // RULES!
         // if none of the rules fail, process the node (default)
         boolean result = true;
-        if (node instanceof DefinitionNode)
-        {
-            final AttributeInfo attInfo = attributeInfoCache.getAttributeInfo((DefinitionNode)node);
-            if (node instanceof FunctionDefinitionNode)
-            {
-                result = !((attInfo.isPublic    && !signatureRules.KEEP_FUN_SCOPE_PUBLIC)    ||
-                           (attInfo.isPrivate   && !signatureRules.KEEP_FUN_SCOPE_PRIVATE)   ||
-                           (attInfo.isProtected && !signatureRules.KEEP_FUN_SCOPE_PROTECTED) ||
-                           (attInfo.isUser      && !signatureRules.KEEP_FUN_SCOPE_USER)      ||
-                           (attInfo.isInternal  && !signatureRules.KEEP_FUN_SCOPE_INTERNAL));
-            }
-            else if (node instanceof VariableDefinitionNode)
-            {
-                result = !((attInfo.isPublic    && !signatureRules.KEEP_VAR_SCOPE_PUBLIC)    ||
-                           (attInfo.isPrivate   && !signatureRules.KEEP_VAR_SCOPE_PRIVATE)   ||
-                           (attInfo.isProtected && !signatureRules.KEEP_VAR_SCOPE_PROTECTED) ||
-                           (attInfo.isUser      && !signatureRules.KEEP_VAR_SCOPE_USER)      ||
-                           (attInfo.isInternal  && !signatureRules.KEEP_VAR_SCOPE_INTERNAL));
-            }
-            else if (node instanceof ImportDirectiveNode)
-            {
+        if (node instanceof DefinitionNode) {
+            final AttributeInfo attInfo = attributeInfoCache.getAttributeInfo((DefinitionNode) node);
+            if (node instanceof FunctionDefinitionNode) {
+                result = !((attInfo.isPublic && !signatureRules.KEEP_FUN_SCOPE_PUBLIC) ||
+                        (attInfo.isPrivate && !signatureRules.KEEP_FUN_SCOPE_PRIVATE) ||
+                        (attInfo.isProtected && !signatureRules.KEEP_FUN_SCOPE_PROTECTED) ||
+                        (attInfo.isUser && !signatureRules.KEEP_FUN_SCOPE_USER) ||
+                        (attInfo.isInternal && !signatureRules.KEEP_FUN_SCOPE_INTERNAL));
+            } else if (node instanceof VariableDefinitionNode) {
+                result = !((attInfo.isPublic && !signatureRules.KEEP_VAR_SCOPE_PUBLIC) ||
+                        (attInfo.isPrivate && !signatureRules.KEEP_VAR_SCOPE_PRIVATE) ||
+                        (attInfo.isProtected && !signatureRules.KEEP_VAR_SCOPE_PROTECTED) ||
+                        (attInfo.isUser && !signatureRules.KEEP_VAR_SCOPE_USER) ||
+                        (attInfo.isInternal && !signatureRules.KEEP_VAR_SCOPE_INTERNAL));
+            } else if (node instanceof ImportDirectiveNode) {
                 result = signatureRules.KEEP_IMPORTS;
-            }
-            else if (node instanceof ClassDefinitionNode)
-            {
+            } else if (node instanceof ClassDefinitionNode) {
                 result = signatureRules.KEEP_CLASSES;
-            }
-            else if (node instanceof InterfaceDefinitionNode)
-            {
+            } else if (node instanceof InterfaceDefinitionNode) {
                 result = signatureRules.KEEP_INTERFACES;
-            }
-            else if (node instanceof UseDirectiveNode)
-            {
+            } else if (node instanceof UseDirectiveNode) {
                 result = signatureRules.KEEP_USE_NAMESPACE;
             }
-        }
-        else if (node instanceof MetaDataNode)
-        {
+        } else if (node instanceof MetaDataNode) {
             // only print metadata if the definition it is attached to will get evaluated
-            result = (signatureRules.KEEP_METADATA && checkFeature(cx, ((MetaDataNode)node).def));
+            result = (signatureRules.KEEP_METADATA && checkFeature(cx, ((MetaDataNode) node).def));
         }
 
         return result;
     }
 
-    public synchronized Value evaluate(Context unused_cx, ProgramNode node)
-    {
+    public synchronized Value evaluate(Context unused_cx, ProgramNode node) {
         final Context cx = node.cx;
 
         // if we don't have a package, an error will be reported downstream.
-        if ((node.pkgdefs != null) && !node.pkgdefs.isEmpty())
-        {
+        if ((node.pkgdefs != null) && !node.pkgdefs.isEmpty()) {
             // TODO (why?) there can be multiple packages inside of a file for some reason
             // we're only interested in the main package, however
             final PackageDefinitionNode mainPackage = node.pkgdefs.first();
 
             // BODY
-            if (mainPackage.statements != null)
-            {
+            if (mainPackage.statements != null) {
                 indent++;
                 mainPackage.statements.evaluate(cx, this);
                 indent--;
@@ -332,12 +306,10 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 //    | |/ /  __/ | | | | | | | |_| | (_) | | | | |\  | (_) | (_| |  __/\__ \
 //    |___/ \___|_| |_|_| |_|_|\__|_|\___/|_| |_\_| \_/\___/ \__,_|\___||___/
 
-    public synchronized Value evaluate(Context unused_cx, ClassDefinitionNode node)
-    {
+    public synchronized Value evaluate(Context unused_cx, ClassDefinitionNode node) {
         final Context cx = node.cx;
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(indent());
         }
 
@@ -346,42 +318,31 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
             node.attrs.evaluate(cx, this);
 
         // "No class name found for ClassDefinitionNode"
-        assert node.name      != null : "Sanity Failed";
+        assert node.name != null : "Sanity Failed";
         assert node.name.name != null : "Sanity Failed";
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append("class ");
-        }
-        else
-        {
+        } else {
             out.append("C");
         }
 
         out.append(NodeMagic.getUnqualifiedClassName(node));
 
-        if (node.baseclass != null)
-        {
-            if (humanReadable)
-            {
+        if (node.baseclass != null) {
+            if (humanReadable) {
                 out.append(" extends ");
-            }
-            else
-            {
+            } else {
                 out.append(" E");
             }
 
             node.baseclass.evaluate(cx, this);
         }
 
-        if (node.interfaces != null)
-        {
-            if (humanReadable)
-            {
+        if (node.interfaces != null) {
+            if (humanReadable) {
                 out.append(" implements ");
-            }
-            else
-            {
+            } else {
                 out.append(" I");
             }
 
@@ -389,35 +350,30 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
             evaluateSorted(cx, node.interfaces);
         }
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(NEWLINE).append(indent()).append("{").append(NEWLINE);
         }
 
         // these only seem to be in use during FlowAnalyzer and later
-        assert node.fexprs        == null : "Sanity Failed";
-        assert node.staticfexprs  == null : "Sanity Failed";
+        assert node.fexprs == null : "Sanity Failed";
+        assert node.staticfexprs == null : "Sanity Failed";
         assert node.instanceinits == null : "Sanity Failed";
 
-        if (node.statements != null)
-        {
+        if (node.statements != null) {
             indent++;
             node.statements.evaluate(cx, this);
             indent--;
         }
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(indent()).append("}").append(NEWLINE);
         }
 
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, InterfaceDefinitionNode node)
-    {
-        if (humanReadable)
-        {
+    public synchronized Value evaluate(Context cx, InterfaceDefinitionNode node) {
+        if (humanReadable) {
             out.append(indent());
         }
 
@@ -426,29 +382,22 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
             node.attrs.evaluate(cx, this);
 
         // "No class name found for InterfaceDefinitionNode"
-        assert node.name      != null : "Sanity Failed";
+        assert node.name != null : "Sanity Failed";
         assert node.name.name != null : "Sanity Failed";
         {
-            if (humanReadable)
-            {
+            if (humanReadable) {
                 out.append("interface ");
-            }
-            else
-            {
+            } else {
                 out.append("I");
             }
 
             out.append(NodeMagic.getUnqualifiedClassName(node));
         }
 
-        if (node.interfaces != null)
-        {
-            if (humanReadable)
-            {
+        if (node.interfaces != null) {
+            if (humanReadable) {
                 out.append(" extends ");
-            }
-            else
-            {
+            } else {
                 out.append(" E");
             }
 
@@ -459,28 +408,24 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         // interfaces don't have a baseclass
         assert node.baseclass == null : "Sanity Failed";
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(NEWLINE).append(indent()).append("{").append(NEWLINE);
         }
 
-        if (node.statements != null)
-        {
+        if (node.statements != null) {
             indent++;
             node.statements.evaluate(cx, this);
             indent--;
         }
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(indent()).append("}").append(NEWLINE);
         }
 
         return null;
     }
 
-    public synchronized Value evaluate(Context unused_cx, FunctionDefinitionNode node)
-    {
+    public synchronized Value evaluate(Context unused_cx, FunctionDefinitionNode node) {
         final Context cx = node.cx;
 
         // ATTRIBUTES
@@ -494,48 +439,34 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         // internal var foo --> internal var foo
         //   static var foo --> internal static var foo
         final TreeSet<String> sortedAttributeSet = NodeMagic.getSortedAttributes(node.attrs);
-        if(node.attrs == null || attributeInfoCache.getAttributeInfo(node).isInternal)
-        {
+        if (node.attrs == null || attributeInfoCache.getAttributeInfo(node).isInternal) {
             // it's a set, so it's okay if this is redundant
             sortedAttributeSet.add(NodeMagic.INTERNAL);
         }
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(indent());
         }
 
         out.append(NodeMagic.setToString(sortedAttributeSet, " "));
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(" function ");
-        }
-        else
-        {
+        } else {
             out.append("F");
         }
 
         // GET or SET
-        if (NodeMagic.functionIsGetter(node))
-        {
-            if (humanReadable)
-            {
+        if (NodeMagic.functionIsGetter(node)) {
+            if (humanReadable) {
                 out.append("get ");
-            }
-            else
-            {
+            } else {
                 out.append("G ");
             }
-        }
-        else if (NodeMagic.functionIsSetter(node))
-        {
-            if (humanReadable)
-            {
+        } else if (NodeMagic.functionIsSetter(node)) {
+            if (humanReadable) {
                 out.append("set ");
-            }
-            else
-            {
+            } else {
                 out.append("S ");
             }
         }
@@ -553,40 +484,36 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         assert node.fexpr != null : "Sanity Failed";
 
         // PARAMETERS
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append("(");
         }
 
-        if (NodeMagic.getFunctionParamCount(node) > 0)
-        {
-            for(final Iterator<ParameterNode> iter = node.fexpr.signature.parameter.items.iterator(); iter.hasNext(); )
-            {
+        if (NodeMagic.getFunctionParamCount(node) > 0) {
+            for (final Iterator<ParameterNode> iter = node.fexpr.signature.parameter.items.iterator(); iter.hasNext(); ) {
                 final ParameterNode param = iter.next();
 
                 assert param.kind == VAR_TOKEN : "Sanity Failed";
 
                 // rest (...)
-                if(param instanceof RestParameterNode)
+                if (param instanceof RestParameterNode)
                     out.append("...");
 
-                // normal parameter
-                else
-                {
+                    // normal parameter
+                else {
                     //TODO OPTIMIZATION:
                     // Is (x) the same as (x:*)? the difference should probably be
                     // reflectted in the signature for type checking and warning purposes.
 
                     // if node has a type                       (x:foo.bar)
-                    if(param.type != null)
+                    if (param.type != null)
                         param.type.evaluate(cx, this);
 
-                    // or there is no annotation                (x:*)
+                        // or there is no annotation                (x:*)
                     else if (!param.no_anno)
                         out.append(SymbolTable.NOTYPE);
 
                     //else, no type declaration:                (x)
-                        // print nothing
+                    // print nothing
 
                     // INITIALIZERS/DEFAULT VALUES
                     // TODO OPTIMIZATION:
@@ -595,19 +522,15 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
                     // do not affect dependent bytecode, I need to check if the type checking
                     // works without recompiling dependent files (catching what would be RTEs).
                     // If it does, then we can omit these, if not, then we need them.
-                    if(param.init != null)
-                    {
-                        if (signatureRules.KEEP_FUN_PARAM_INITIALIZER)
-                        {
+                    if (param.init != null) {
+                        if (signatureRules.KEEP_FUN_PARAM_INITIALIZER) {
                             // what kinds of initializers are possible -- numbers, strings, nulls,
                             // anything else, that could possibly print incorrectly? anonymous
                             // function definitions!? (if so, node.name will be null, eek)
                             out.append("=<");
                             param.init.evaluate(null, this);
                             out.append(">");
-                        }
-                        else
-                        {
+                        } else {
                             out.append("=...");
                         }
                     }
@@ -618,8 +541,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
             }
         }
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(")");
         }
 
@@ -636,45 +558,35 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         // to do type checking. forget return values?
 
         //TODO patch NodeMagic.getFunctionTypeName with these cases?
-        if (node.fexpr.signature.void_anno)
-        {
-            if (humanReadable)
-            {
+        if (node.fexpr.signature.void_anno) {
+            if (humanReadable) {
                 out.append(":");
             }
 
             out.append("void");
-        }
-        else if (node.fexpr.signature.no_anno)
-        {
+        } else if (node.fexpr.signature.no_anno) {
             // print nothing
-        }
-        else if(node.fexpr.signature.result != null) // the return type is a literal string
+        } else if (node.fexpr.signature.result != null) // the return type is a literal string
         {
             // following is insufficient because of MemberExpressions that have non-null .base
             // as in: function foo():bar.Baz
             //out.append(":" + NodeMagic.getFunctionTypeName(node));
 
-            if (humanReadable)
-            {
+            if (humanReadable) {
                 out.append(":");
             }
 
             node.fexpr.signature.result.evaluate(cx, this);
-        }
-        else
-        {
+        } else {
             // result type is *
-            if (humanReadable)
-            {
+            if (humanReadable) {
                 out.append(":");
             }
 
             out.append(SymbolTable.NOTYPE);
         }
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(NEWLINE);
         }
 
@@ -699,8 +611,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, VariableDefinitionNode node)
-    {
+    public synchronized Value evaluate(Context cx, VariableDefinitionNode node) {
         // ATTRIBUTES and USER NAMESPACE
         // if (node.attrs != null)
         //     node.attrs.evaluate(cx, this);
@@ -712,41 +623,34 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         // internal var foo --> internal var foo
         //   static var foo --> internal static var foo
         final TreeSet<String> sortedAttributeSet = NodeMagic.getSortedAttributes(node.attrs);
-        if(node.attrs == null || attributeInfoCache.getAttributeInfo(node).isInternal)
-        {
+        if (node.attrs == null || attributeInfoCache.getAttributeInfo(node).isInternal) {
             // it's a set, so it's okay if this is redundant
             sortedAttributeSet.add(NodeMagic.INTERNAL);
         }
 
         String kind;
 
-        if (humanReadable)
-        {
-            kind = (node.kind == CONST_TOKEN) ? "const " : (node.kind == VAR_TOKEN)   ? "var " : null;
-        }
-        else
-        {
-            kind = (node.kind == CONST_TOKEN) ? "C" : (node.kind == VAR_TOKEN)   ? "V" : null;
+        if (humanReadable) {
+            kind = (node.kind == CONST_TOKEN) ? "const " : (node.kind == VAR_TOKEN) ? "var " : null;
+        } else {
+            kind = (node.kind == CONST_TOKEN) ? "C" : (node.kind == VAR_TOKEN) ? "V" : null;
         }
 
         assert kind != null : "Unknown VariableDefinitionNode.kind";
 
         // outputs a new variable declaration for each variable in a list
         // e.g. 'var a,b,c' => var a; var b; var c
-        for(final Iterator<Node> iter = node.list.items.iterator(); iter.hasNext();)
-        {
-            final VariableBindingNode variableBinding = (VariableBindingNode)iter.next();
+        for (final Iterator<Node> iter = node.list.items.iterator(); iter.hasNext(); ) {
+            final VariableBindingNode variableBinding = (VariableBindingNode) iter.next();
 
             // ATTRIBUTES and KIND
-            if (humanReadable)
-            {
+            if (humanReadable) {
                 out.append(indent());
             }
 
             out.append(NodeMagic.setToString(sortedAttributeSet, " "));
 
-            if (humanReadable)
-            {
+            if (humanReadable) {
                 out.append(" ");
             }
 
@@ -757,20 +661,15 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
             // TYPE
             // if there is an annotation...
-            if(variableBinding.variable.no_anno == false)
-            {
-                if (humanReadable)
-                {
+            if (variableBinding.variable.no_anno == false) {
+                if (humanReadable) {
                     out.append(":");
                 }
 
-                if (variableBinding.variable.type != null)
-                {
+                if (variableBinding.variable.type != null) {
                     // :Object
                     variableBinding.variable.type.evaluate(cx, this);
-                }
-                else
-                {
+                } else {
                     // :*
                     out.append(SymbolTable.NOTYPE);
                 }
@@ -792,15 +691,13 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
             // For now, I will, with "=..." -- I might need to sort those with initializers separately.
 
             // INITIALIZER
-            if (variableBinding.initializer != null)
-            {
+            if (variableBinding.initializer != null) {
                 //TODO do I need this at all?
                 out.append("=...");
                 // variableBinding.initializer.evaluate(cx, this);
             }
 
-            if (humanReadable)
-            {
+            if (humanReadable) {
                 out.append(NEWLINE);
             }
         }
@@ -812,8 +709,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, ImportDirectiveNode node)
-    {
+    public synchronized Value evaluate(Context cx, ImportDirectiveNode node) {
         assert node.attrs == null : "Sanity Failed";
 
         // is it possible for node.name to be null?
@@ -821,41 +717,32 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         assert node.name.id.list != null : "Sanity Failed";
         assert !node.name.id.list.isEmpty() : "Sanity Failed";
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(indent()).append("import ");
-        }
-        else
-        {
+        } else {
             out.append("I ");
         }
 
         out.append(NodeMagic.getDottedImportName(node));
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(NEWLINE);
         }
 
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, NamespaceDefinitionNode node)
-    {
-        if (humanReadable)
-        {
+    public synchronized Value evaluate(Context cx, NamespaceDefinitionNode node) {
+        if (humanReadable) {
             out.append(indent());
         }
 
         if (node.attrs != null)
             node.attrs.evaluate(cx, this);
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append("namespace ");
-        }
-        else
-        {
+        } else {
             out.append("N");
         }
 
@@ -864,14 +751,12 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
         // namespace values DO affect dependent files/the signature
         // clement: The namespace value might appear in the dependent external definitions.
-        if (node.value != null)
-        {
+        if (node.value != null) {
             out.append("=");
             node.value.evaluate(cx, this);
         }
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(NEWLINE);
         }
 
@@ -879,8 +764,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     }
 
     // e.g. "config namespace FOO"
-    public synchronized Value evaluate(Context cx, ConfigNamespaceDefinitionNode node)
-    {
+    public synchronized Value evaluate(Context cx, ConfigNamespaceDefinitionNode node) {
         // they are for conditional compilation, unusable, and only part
         // of the syntax tree for error checking (prevent namespace shadowing)
         // they should not be part of the signature
@@ -889,36 +773,27 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
     private PackageDefinitionNode currentPackage;
 
-    public synchronized Value evaluate(Context cx, PackageDefinitionNode node)
-    {
+    public synchronized Value evaluate(Context cx, PackageDefinitionNode node) {
         assert node.attrs == null : "Sanity Failed";
 
-        if (currentPackage == null)
-        {
+        if (currentPackage == null) {
             currentPackage = node;
 
-            if (humanReadable)
-            {
+            if (humanReadable) {
                 out.append("package ");
-            }
-            else
-            {
+            } else {
                 out.append("P");
             }
 
             out.append(NodeMagic.getPackageName(node));
 
-            if (humanReadable)
-            {
+            if (humanReadable) {
                 out.append(NEWLINE).append("{").append(NEWLINE);
             }
-        }
-        else
-        {
+        } else {
             currentPackage = null;
 
-            if (humanReadable)
-            {
+            if (humanReadable) {
                 out.append("}").append(NEWLINE);
             }
         }
@@ -938,40 +813,33 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     // * the parser will accept "use namespace (true ? AS3 : AS3);" (UGHHHHH)
     //
     //TODO add use directives into a list and emit later? is that how they work? (are they scoped?)
-    public synchronized Value evaluate(Context cx, UseDirectiveNode node)
-    {
+    public synchronized Value evaluate(Context cx, UseDirectiveNode node) {
         assert node.attrs == null : "Sanity Failed";
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(indent()).append("use namespace ");
-        }
-        else
-        {
+        } else {
             out.append("U");
         }
 
         //TODO EvaluatorAdapter should get updated with this code (it's not there)
         //     there could be more than one namespace in expr
-        if( node.expr != null )
-        {
+        if (node.expr != null) {
             // if it's a list, it's sortable
             if (node.expr instanceof ListNode)
-                evaluateSorted(cx, (ListNode)node.expr);
+                evaluateSorted(cx, (ListNode) node.expr);
             else
-                node.expr.evaluate(cx,this);
+                node.expr.evaluate(cx, this);
         }
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(NEWLINE);
         }
 
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, MetaDataNode node)
-    {
+    public synchronized Value evaluate(Context cx, MetaDataNode node) {
         // this fills out node.id and node.values
         if (node.data != null)
             (new macromedia.asc.parser.MetaDataEvaluator()).evaluate(cx, node);
@@ -984,15 +852,13 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         //    See ASC-2786.
         //assert node.def != null : "Sanity Failed";
 
-        if (humanReadable)
-        {
+        if (humanReadable) {
             out.append(indent()).append("[");
         }
 
         out.append(node.getId()).append(NodeMagic.getSortedMetaDataParamString(node));
-    
-        if (humanReadable)
-        {
+
+        if (humanReadable) {
             out.append("]").append(NEWLINE);
         }
 
@@ -1011,16 +877,14 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
      *    ...
      * }
      */
-    public synchronized Value evaluate(Context cx, ExpressionStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, ExpressionStatementNode node) {
         return null;
     }
 
     /**
      * default xml namespace = new Namespace(...);
      */
-    public synchronized Value evaluate(Context cx, DefaultXMLNamespaceNode node)
-    {
+    public synchronized Value evaluate(Context cx, DefaultXMLNamespaceNode node) {
         // I am pretty sure that the existence or value of this directive
         // cannot affect the signature of the current class (when used outside
         // of function scope) -- it should only affect the xmlns value of XML
@@ -1028,8 +892,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, TryStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, TryStatementNode node) {
         // these can show up as top-level statements in classes, and do not affect signature
         // ideally I'd like to check that the statement is either top level and return null,
         // or not top level an unreachable (in which case an assertion gets thrown).
@@ -1038,8 +901,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, CatchClauseNode node)
-    {
+    public synchronized Value evaluate(Context cx, CatchClauseNode node) {
         // see the comments above for TryStatementNode... same reasoning
         //assert false : "Should be an unreachable codepath";
         return null;
@@ -1052,22 +914,16 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 //    \ \_/ / |_| | | |  __/ |    | |\  | (_) | (_| |  __/\__ \
 //     \___/ \__|_| |_|\___|_|    \_| \_/\___/ \__,_|\___||___/
 
-    public synchronized Value evaluate(Context cx, ArgumentListNode node)
-    {
-        for(Iterator<Node> iter = node.items.iterator(); iter.hasNext(); )
-        {
+    public synchronized Value evaluate(Context cx, ArgumentListNode node) {
+        for (Iterator<Node> iter = node.items.iterator(); iter.hasNext(); ) {
             final Node item = iter.next();
             item.evaluate(cx, this);
 
             // example: LiteralObjectNode.fieldlist: { foo:bar, two:2 }
-            if (iter.hasNext())
-            {
-                if (humanReadable)
-                {
+            if (iter.hasNext()) {
+                if (humanReadable) {
                     out.append(", ");
-                }
-                else
-                {
+                } else {
                     out.append(" ");
                 }
             }
@@ -1076,21 +932,15 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     }
 
 
-    public synchronized Value evaluate(Context cx, ListNode node)
-    {
-        for (Iterator<Node> iter = node.items.iterator(); iter.hasNext(); )
-        {
+    public synchronized Value evaluate(Context cx, ListNode node) {
+        for (Iterator<Node> iter = node.items.iterator(); iter.hasNext(); ) {
             iter.next().evaluate(cx, this);
 
             // this can happen on "A" and "B" when, e.g., you have "implements A, B"
-            if (iter.hasNext())
-            {
-                if (humanReadable)
-                {
+            if (iter.hasNext()) {
+                if (humanReadable) {
                     out.append(", ");
-                }
-                else
-                {
+                } else {
                     out.append(" ");
                 }
             }
@@ -1098,15 +948,13 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public Value evaluateSorted(Context cx, ListNode list)
-    {
+    public Value evaluateSorted(Context cx, ListNode list) {
         StringBuilder tempOut = out;
 
         final TreeSet<String> sorted = new TreeSet<String>();
 
         // evaluate all elements of the list to strings, and sort on that
-        for (Node node : list.items)
-        {
+        for (Node node : list.items) {
             // temporarily swap out the in-use StringBuilder
             out = new StringBuilder();
             node.evaluate(cx, this);
@@ -1115,18 +963,13 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         out = tempOut;
 
         // now add the sorted elements into the original StringBuilder
-        for (Iterator<String> iter = sorted.iterator(); iter.hasNext(); )
-        {
+        for (Iterator<String> iter = sorted.iterator(); iter.hasNext(); ) {
             out.append(iter.next());
 
-            if (iter.hasNext())
-            {
-                if (humanReadable)
-                {
+            if (iter.hasNext()) {
+                if (humanReadable) {
                     out.append(", ");
-                }
-                else
-                {
+                } else {
                     out.append(" ");
                 }
             }
@@ -1135,17 +978,13 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, GetExpressionNode node)
-    {
-        if (node.expr != null)
-        {
-            if (node.expr instanceof ArgumentListNode)
-            {
+    public synchronized Value evaluate(Context cx, GetExpressionNode node) {
+        if (node.expr != null) {
+            if (node.expr instanceof ArgumentListNode) {
                 out.append("[");
                 node.expr.evaluate(cx, this);
                 out.append("]");
-            }
-            else
+            } else
                 node.expr.evaluate(cx, this);
         }
 
@@ -1154,10 +993,8 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
 
     // e.g., mx_internal::bar.Baz
-    public synchronized Value evaluate(Context cx, QualifiedIdentifierNode node)
-    {
-        if (node.qualifier != null)
-        {
+    public synchronized Value evaluate(Context cx, QualifiedIdentifierNode node) {
+        if (node.qualifier != null) {
             node.qualifier.evaluate(cx, this);
             // NOTE: "::" is not correct syntax, it should just be a dot,
             //       but this is a signature, so it doesn't matter.
@@ -1180,12 +1017,10 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     //        xmldata.@foo::["id"]
     //        xmldata.@*[1]
     //        xdata.@id
-    public synchronized Value evaluate(Context cx, QualifiedExpressionNode node)
-    {
+    public synchronized Value evaluate(Context cx, QualifiedExpressionNode node) {
         out.append("@");
-        evaluate(cx, (QualifiedIdentifierNode)node);
-        if (node.expr != null)
-        {
+        evaluate(cx, (QualifiedIdentifierNode) node);
+        if (node.expr != null) {
             //TODO I don't know how complex the expr can be, e.g. (logical ? "id1" : "id2")
             //     but anything other than a simple literal is probably unsupported
             out.append("[");
@@ -1197,14 +1032,11 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
 
     // e.g., interface foo extends bar.baz ("bar." is the base)
-    public synchronized Value evaluate(Context cx, MemberExpressionNode node)
-    {
-        if (node.base != null)
-        {
+    public synchronized Value evaluate(Context cx, MemberExpressionNode node) {
+        if (node.base != null) {
             node.base.evaluate(cx, this);
             if ((node.selector instanceof GetExpressionNode) &&
-                (!(((GetExpressionNode) node.selector).expr instanceof ArgumentListNode)))
-            {
+                    (!(((GetExpressionNode) node.selector).expr instanceof ArgumentListNode))) {
                 out.append(".");
             }
         }
@@ -1218,8 +1050,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     /**
      * Basically the same as MemberExpressionNodes, but only for type expressions.
      */
-    public synchronized Value evaluate(Context cx, TypeExpressionNode node)
-    {
+    public synchronized Value evaluate(Context cx, TypeExpressionNode node) {
         return super.evaluate(cx, node);
     }
 
@@ -1227,11 +1058,9 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     /**
      * Attributes are printed in (alphabetical) order.
      */
-    public synchronized Value evaluate(Context cx, AttributeListNode node)
-    {
+    public synchronized Value evaluate(Context cx, AttributeListNode node) {
         final String attrs = NodeMagic.getSortedAttributeString(node, " ");
-        if(attrs.length() > 0)
-        {
+        if (attrs.length() > 0) {
             out.append(attrs).append(" ");
         }
 
@@ -1239,8 +1068,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     }
 
     // Vector.<int>
-    public synchronized Value evaluate(Context cx, ApplyTypeExprNode node)
-    {
+    public synchronized Value evaluate(Context cx, ApplyTypeExprNode node) {
         // e.g. Vector
         if (node.expr != null)
             node.expr.evaluate(cx, this);
@@ -1270,15 +1098,13 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 //  if a variable id typed to int and changes to String, it will diff; if it is typed to */Object,
 //  then it may not matter that it changed type.
 
-    public synchronized Value evaluate(Context cx, IdentifierNode node)
-    {
+    public synchronized Value evaluate(Context cx, IdentifierNode node) {
         out.append(node.name);
         return null;
     }
 
 
-    public synchronized Value evaluate(Context cx, LiteralArrayNode node)
-    {
+    public synchronized Value evaluate(Context cx, LiteralArrayNode node) {
         out.append("[");
         {
             super.evaluate(cx, node);
@@ -1289,21 +1115,18 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     }
 
 
-    public synchronized Value evaluate(Context cx, LiteralBooleanNode node)
-    {
+    public synchronized Value evaluate(Context cx, LiteralBooleanNode node) {
         out.append(node.value);
         return null;
     }
 
 
     // these are the key:value pairs in a LiteralObjectNode
-    public synchronized Value evaluate(Context cx, LiteralFieldNode node)
-    {
+    public synchronized Value evaluate(Context cx, LiteralFieldNode node) {
         if (node.name != null)
             node.name.evaluate(cx, this);
 
-        if (node.value != null)
-        {
+        if (node.value != null) {
             out.append(':');
             node.value.evaluate(cx, this);
         }
@@ -1312,22 +1135,19 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     }
 
 
-    public synchronized Value evaluate(Context cx, LiteralNullNode node)
-    {
+    public synchronized Value evaluate(Context cx, LiteralNullNode node) {
         out.append("null");
         return null;
     }
 
 
-    public synchronized Value evaluate(Context cx, LiteralNumberNode node)
-    {
+    public synchronized Value evaluate(Context cx, LiteralNumberNode node) {
         out.append(node.value);
         return null;
     }
 
 
-    public synchronized Value evaluate(Context cx, LiteralObjectNode node)
-    {
+    public synchronized Value evaluate(Context cx, LiteralObjectNode node) {
         out.append('{');
         {
             if (node.fieldlist != null)
@@ -1338,15 +1158,13 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     }
 
 
-    public synchronized Value evaluate(Context cx, LiteralRegExpNode node)
-    {
+    public synchronized Value evaluate(Context cx, LiteralRegExpNode node) {
         out.append(node.value);
         return null;
     }
 
 
-    public synchronized Value evaluate(Context cx, LiteralStringNode node)
-    {
+    public synchronized Value evaluate(Context cx, LiteralStringNode node) {
         // TODO I'd like to be able to print quotes someday... meaning checking for LSNs in places
         //      like InterfaceDefNodes and ClassDefNodes, and MemberExprNodes, and overriding
         //      the evaluating behavior
@@ -1362,258 +1180,209 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, Node node)
-    {
+    public synchronized Value evaluate(Context cx, Node node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, VariableBindingNode node)
-    {
+    public synchronized Value evaluate(Context cx, VariableBindingNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, UntypedVariableBindingNode node)
-    {
+    public synchronized Value evaluate(Context cx, UntypedVariableBindingNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, TypedIdentifierNode node)
-    {
+    public synchronized Value evaluate(Context cx, TypedIdentifierNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, ParenExpressionNode node)
-    {
+    public synchronized Value evaluate(Context cx, ParenExpressionNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, ParenListExpressionNode node)
-    {
+    public synchronized Value evaluate(Context cx, ParenListExpressionNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, FunctionSignatureNode node)
-    {
+    public synchronized Value evaluate(Context cx, FunctionSignatureNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, FunctionCommonNode node)
-    {
+    public synchronized Value evaluate(Context cx, FunctionCommonNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, PackageIdentifiersNode node)
-    {
+    public synchronized Value evaluate(Context cx, PackageIdentifiersNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, PackageNameNode node)
-    {
+    public synchronized Value evaluate(Context cx, PackageNameNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, ClassNameNode node)
-    {
+    public synchronized Value evaluate(Context cx, ClassNameNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, FunctionNameNode node)
-    {
+    public synchronized Value evaluate(Context cx, FunctionNameNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, ImportNode node)
-    {
+    public synchronized Value evaluate(Context cx, ImportNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, ReturnStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, ReturnStatementNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, SuperExpressionNode node)
-    {
+    public synchronized Value evaluate(Context cx, SuperExpressionNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, SuperStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, SuperStatementNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, SwitchStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, SwitchStatementNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, ThisExpressionNode node)
-    {
+    public synchronized Value evaluate(Context cx, ThisExpressionNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, ThrowStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, ThrowStatementNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, UnaryExpressionNode node)
-    {
+    public synchronized Value evaluate(Context cx, UnaryExpressionNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, WhileStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, WhileStatementNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, WithStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, WithStatementNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, DeleteExpressionNode node)
-    {
+    public synchronized Value evaluate(Context cx, DeleteExpressionNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, DoStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, DoStatementNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, FinallyClauseNode node)
-    {
+    public synchronized Value evaluate(Context cx, FinallyClauseNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, ForStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, ForStatementNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, IfStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, IfStatementNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, IncrementNode node)
-    {
+    public synchronized Value evaluate(Context cx, IncrementNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, RestParameterNode node)
-    {
+    public synchronized Value evaluate(Context cx, RestParameterNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, BreakStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, BreakStatementNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, CallExpressionNode node)
-    {
+    public synchronized Value evaluate(Context cx, CallExpressionNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, CaseLabelNode node)
-    {
+    public synchronized Value evaluate(Context cx, CaseLabelNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, ConditionalExpressionNode node)
-    {
+    public synchronized Value evaluate(Context cx, ConditionalExpressionNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, ContinueStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, ContinueStatementNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, BinaryClassDefNode node)
-    {
+    public synchronized Value evaluate(Context cx, BinaryClassDefNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, BinaryExpressionNode node)
-    {
+    public synchronized Value evaluate(Context cx, BinaryExpressionNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, BinaryFunctionDefinitionNode node)
-    {
+    public synchronized Value evaluate(Context cx, BinaryFunctionDefinitionNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, BinaryInterfaceDefinitionNode node)
-    {
+    public synchronized Value evaluate(Context cx, BinaryInterfaceDefinitionNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, BinaryProgramNode node)
-    {
+    public synchronized Value evaluate(Context cx, BinaryProgramNode node) {
         return null;
     }
 
     // used in for..in loops
-    public synchronized Value evaluate(Context cx, HasNextNode node)
-    {
+    public synchronized Value evaluate(Context cx, HasNextNode node) {
         return null;
     }
 
     // used in for..in loops
-    public synchronized Value evaluate(Context cx, LoadRegisterNode node)
-    {
+    public synchronized Value evaluate(Context cx, LoadRegisterNode node) {
         return null;
     }
 
     // used in for..in loops
-    public synchronized Value evaluate(Context cx, StoreRegisterNode node)
-    {
+    public synchronized Value evaluate(Context cx, StoreRegisterNode node) {
         return null;
     }
 
     // used in for..in loops
-    public synchronized Value evaluate(Context cx, RegisterNode node)
-    {
+    public synchronized Value evaluate(Context cx, RegisterNode node) {
         return null;
     }
 
     // seems like these are unused in syntax trees, just used during parsing/generation of classes
-    public synchronized Value evaluate(Context cx, InheritanceNode node)
-    {
+    public synchronized Value evaluate(Context cx, InheritanceNode node) {
         return null;
     }
 
     // see DataBindingFirtPassEvaluator.java::evaluate(Context context, InvokeNode node)
-    public synchronized Value evaluate(Context cx, InvokeNode node)
-    {
+    public synchronized Value evaluate(Context cx, InvokeNode node) {
         return null;
     }
 
     // evaluated implicitly FunctionDefinitionNode
-    public synchronized Value evaluate(Context cx, ParameterListNode node)
-    {
+    public synchronized Value evaluate(Context cx, ParameterListNode node) {
         return null;
     }
 
     // evaluated implicitly FunctionDefinitionNode
-    public synchronized Value evaluate(Context cx, ParameterNode node)
-    {
+    public synchronized Value evaluate(Context cx, ParameterNode node) {
         return null;
     }
 
     // evaluated implicitly FunctionDefinitionNode
-    public synchronized Value evaluate(Context cx, RestExpressionNode node)
-    {
+    public synchronized Value evaluate(Context cx, RestExpressionNode node) {
         return null;
     }
 
     // abusive old-school labels for break and continue statements
-    public synchronized Value evaluate(Context cx, LabeledStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, LabeledStatementNode node) {
         return null;
     }
 
@@ -1621,44 +1390,37 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     // TODO BoxNodes do not seem to be created ANYWHERE in ASC or MXMLC
     //      Remove from Evaluator?
     // not part of AS3 syntax
-    public synchronized Value evaluate(Context cx, BoxNode node)
-    {
+    public synchronized Value evaluate(Context cx, BoxNode node) {
         return null;
     }
 
     // not part of AS3 syntax
-    public synchronized Value evaluate(Context cx, CoerceNode node)
-    {
+    public synchronized Value evaluate(Context cx, CoerceNode node) {
         return null;
     }
 
     // TODO ToObjectNodes do not seem to be created ANYWHERE in ASC or MXMLC
     //      Remove from Evaluator?
     // not part of AS3 syntax
-    public synchronized Value evaluate(Context cx, ToObjectNode node)
-    {
+    public synchronized Value evaluate(Context cx, ToObjectNode node) {
         return null;
     }
 
     // unimplemented in AS3 syntax: "use pragmaDirective"
-    public synchronized Value evaluate(Context cx, PragmaNode node)
-    {
+    public synchronized Value evaluate(Context cx, PragmaNode node) {
         return null;
     }
 
     // unimplemented in AS3 syntax: "use pragmaDirective"
-    public synchronized Value evaluate(Context cx, PragmaExpressionNode node)
-    {
+    public synchronized Value evaluate(Context cx, PragmaExpressionNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, SetExpressionNode node)
-    {
+    public synchronized Value evaluate(Context cx, SetExpressionNode node) {
         return null;
     }
 
-    public synchronized Value evaluate(Context cx, StatementListNode statementList)
-    {
+    public synchronized Value evaluate(Context cx, StatementListNode statementList) {
         StringBuilder originalOut = out;
 
         Set<String> imports = null;
@@ -1674,14 +1436,11 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         // and if the last Node is an IncludeDirectiveNode, we need to
         // be sure to evaluate it, so that in_this_include is turned
         // off.
-        for (int i = 0; i < statementList.items.size(); i++)
-        {
+        for (int i = 0; i < statementList.items.size(); i++) {
             Node node = statementList.items.get(i);
 
-            if (insidePackage && (node instanceof ImportDirectiveNode))
-            {
-                if (imports == null)
-                {
+            if (insidePackage && (node instanceof ImportDirectiveNode)) {
+                if (imports == null) {
                     imports = new TreeSet<String>();
                 }
 
@@ -1689,11 +1448,8 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
                 node.evaluate(cx, this);
                 imports.add(out.toString());
                 out = originalOut;
-            }
-            else if (insidePackage && (node instanceof NamespaceDefinitionNode))
-            {
-                if (useNamespaces == null)
-                {
+            } else if (insidePackage && (node instanceof NamespaceDefinitionNode)) {
+                if (useNamespaces == null) {
                     useNamespaces = new TreeSet<String>();
                 }
 
@@ -1701,47 +1457,32 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
                 node.evaluate(cx, this);
                 useNamespaces.add(out.toString());
                 out = originalOut;
-            }
-            else if (insidePackage && (node instanceof ClassDefinitionNode))
-            {
-                if (classes == null)
-                {
+            } else if (insidePackage && (node instanceof ClassDefinitionNode)) {
+                if (classes == null) {
                     classes = new TreeMap<String, Set<String>>();
                 }
 
                 putDefinition(classes, cx, (DefinitionNode) node);
-            }
-            else if (insidePackage && (node instanceof InterfaceDefinitionNode))
-            {
-                if (interfaces == null)
-                {
+            } else if (insidePackage && (node instanceof InterfaceDefinitionNode)) {
+                if (interfaces == null) {
                     interfaces = new TreeMap<String, Set<String>>();
                 }
 
                 putDefinition(interfaces, cx, (DefinitionNode) node);
-            }
-            else if (insidePackage && (node instanceof FunctionDefinitionNode))
-            {
-                if (functions == null)
-                {
+            } else if (insidePackage && (node instanceof FunctionDefinitionNode)) {
+                if (functions == null) {
                     functions = new TreeMap<String, Set<String>>();
                 }
 
                 putDefinition(functions, cx, (DefinitionNode) node);
-            }
-            else if (insidePackage && (node instanceof VariableDefinitionNode))
-            {
-                if (variables == null)
-                {
+            } else if (insidePackage && (node instanceof VariableDefinitionNode)) {
+                if (variables == null) {
                     variables = new TreeMap<String, Set<String>>();
                 }
 
                 putDefinition(variables, cx, (DefinitionNode) node);
-            }
-            else if (node instanceof PackageDefinitionNode)
-            {
-                if (insidePackage)
-                {
+            } else if (node instanceof PackageDefinitionNode) {
+                if (insidePackage) {
                     appendSorted(imports, useNamespaces, variables, functions, classes, interfaces);
                     imports = null;
                     useNamespaces = null;
@@ -1752,15 +1493,11 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
                     node.evaluate(cx, this);
                     insidePackage = false;
-                }
-                else
-                {
+                } else {
                     node.evaluate(cx, this);
                     insidePackage = true;
                 }
-            }
-            else if (!(node instanceof MetaDataNode))
-            {
+            } else if (!(node instanceof MetaDataNode)) {
                 node.evaluate(cx, this);
             }
         }
@@ -1775,8 +1512,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
                               Map<String, Set<String>> variables,
                               Map<String, Set<String>> functions,
                               Map<String, Set<String>> classes,
-                              Map<String, Set<String>> interfaces)
-    {
+                              Map<String, Set<String>> interfaces) {
         appendSorted(imports);
         appendSorted(useNamespaces);
         appendSorted(variables);
@@ -1785,27 +1521,19 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         appendSorted(interfaces);
     }
 
-    private void appendSorted(Set<String> statements)
-    {
-        if (statements != null)
-        {
-            for (String statement : statements)
-            {
+    private void appendSorted(Set<String> statements) {
+        if (statements != null) {
+            for (String statement : statements) {
                 out.append(statement);
             }
         }
     }
 
-    private void appendSorted(Map<String, Set<String>> definitions)
-    {
-        if (definitions != null)
-        {
-            for (Entry<String, Set<String>> entry : definitions.entrySet())
-            {
-                if (entry.getValue() != null)
-                {
-                    for (String metaData : entry.getValue())
-                    {
+    private void appendSorted(Map<String, Set<String>> definitions) {
+        if (definitions != null) {
+            for (Entry<String, Set<String>> entry : definitions.entrySet()) {
+                if (entry.getValue() != null) {
+                    for (String metaData : entry.getValue()) {
                         out.append(metaData);
                     }
                 }
@@ -1816,8 +1544,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     }
 
     private void putDefinition(Map<String, Set<String>> declarations,
-                               Context cx, DefinitionNode definition)
-    {
+                               Context cx, DefinitionNode definition) {
         StringBuilder originalOut = out;
         out = new StringBuilder();
 
@@ -1825,12 +1552,10 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
         String declaration = out.toString();
         Set<String> metaData = null;
 
-        if (definition.metaData != null)
-        {
+        if (definition.metaData != null) {
             metaData = new TreeSet<String>();
 
-            for (Node metaDataNode : definition.metaData.items)
-            {
+            for (Node metaDataNode : definition.metaData.items) {
                 out = new StringBuilder();
                 metaDataNode.evaluate(cx, this);
                 metaData.add(out.toString());
@@ -1849,45 +1574,37 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 //
 // These are in-use and can be commented out for production and left to the superclass.
 
-    public void setLocalizationManager(LocalizationManager l10n)
-    {
+    public void setLocalizationManager(LocalizationManager l10n) {
         super.setLocalizationManager(l10n);
     }
 
-    public synchronized Value evaluate(Context cx, DocCommentNode node)
-    {
+    public synchronized Value evaluate(Context cx, DocCommentNode node) {
         return super.evaluate(cx, node);
     }
 
-    public synchronized Value evaluate(Context cx, EmptyStatementNode node)
-    {
+    public synchronized Value evaluate(Context cx, EmptyStatementNode node) {
         return super.evaluate(cx, node);
     }
 
     // [1, 2, , 4] -- where 3 is an EmptyElementNode
-    public synchronized Value evaluate(Context cx, EmptyElementNode node)
-    {
+    public synchronized Value evaluate(Context cx, EmptyElementNode node) {
         return super.evaluate(cx, node);
     }
 
-    public synchronized Value evaluate(Context cx, IncludeDirectiveNode node)
-    {
+    public synchronized Value evaluate(Context cx, IncludeDirectiveNode node) {
         return super.evaluate(cx, node);
     }
 
-    public synchronized Value evaluate(Context cx, LiteralXMLNode node)
-    {
+    public synchronized Value evaluate(Context cx, LiteralXMLNode node) {
         return super.evaluate(cx, node);
     }
 
     // TODO I'd like to find a way to generate one of these...
     //      should I catch this node and assume that the signature is not valid?
-    public synchronized Value evaluate(Context cx, ErrorNode node)
-    {
+    public synchronized Value evaluate(Context cx, ErrorNode node) {
         return super.evaluate(cx, node);
     }
 }
-
 
 
 //     _   _      _                   _____ _
@@ -1905,19 +1622,17 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 //    | o || |  | | |   / || o \ U | | | | _|  | || \\ || _( o ) ( (_ | o ( (_ |   || _|
 //    |_n_||_|  |_| |_|\\_||___/___| |_| |___| |_||_|\_||_| \_/   \__||_n_|\__||_n_||___|
 
-class AttributeInfoCache
-{
+class AttributeInfoCache {
     private Map<DefinitionNode, AttributeInfo> attributeInfoCache = new HashMap<DefinitionNode, AttributeInfo>();
 
     /**
      * This caches computed AttributeInfo objects because:
-     *   - It's not cheap to compute (look at NodeMagic.getUserNamespace for instance)
-     *   - Evaluating MetaData requires looking at the attributes of MetaData.def
-     *   - The use case of a particular definition getting looked up more than once is
-     *     pretty high (due to MetaData.def)
+     * - It's not cheap to compute (look at NodeMagic.getUserNamespace for instance)
+     * - Evaluating MetaData requires looking at the attributes of MetaData.def
+     * - The use case of a particular definition getting looked up more than once is
+     * pretty high (due to MetaData.def)
      */
-    public AttributeInfo getAttributeInfo(DefinitionNode node)
-    {
+    public AttributeInfo getAttributeInfo(DefinitionNode node) {
         AttributeInfo info = attributeInfoCache.get(node);
 
         if (info == null)
@@ -1928,40 +1643,34 @@ class AttributeInfoCache
 }
 
 
-
 //      _  ___  ___  ___ _  ___ _ _  ___  ___   _  _  _  ___ _
 //     / \|_ _||_ _|| o \ || o ) | ||_ _|| __| | || \| || __/ \
 //    | o || |  | | |   / || o \ U | | | | _|  | || \\ || _( o )
 //    |_n_||_|  |_| |_|\\_||___/___| |_| |___| |_||_|\_||_| \_/
 
-class AttributeInfo
-{
+class AttributeInfo {
     public final boolean isInternal, isPrivate, isPublic, isProtected, isUser;
 
     /**
      * This is an expensive constructor, consider using an AttributeInfoCache
      * instead of calling this directly.
      */
-    public AttributeInfo(DefinitionNode node)
-    {
+    public AttributeInfo(DefinitionNode node) {
         final AttributeListNode attrs = node.attrs;
 
         // determine if we are internal
-        if (attrs == null)
-        {
+        if (attrs == null) {
             // implicit internal scope
             isPrivate = isPublic = isProtected = isUser = false;
 
             isInternal = true;
-        }
-        else
-        {
-            isPublic    = attrs.hasAttribute(NodeMagic.PUBLIC);
-            isPrivate   = attrs.hasAttribute(NodeMagic.PRIVATE);
+        } else {
+            isPublic = attrs.hasAttribute(NodeMagic.PUBLIC);
+            isPrivate = attrs.hasAttribute(NodeMagic.PRIVATE);
             isProtected = attrs.hasAttribute(NodeMagic.PROTECTED);
-            isUser      = !NodeMagic.getUserNamespace(node).equals(QName.DEFAULT_NAMESPACE);
+            isUser = !NodeMagic.getUserNamespace(node).equals(QName.DEFAULT_NAMESPACE);
 
-            isInternal  = (attrs.hasAttribute(NodeMagic.INTERNAL) ||
+            isInternal = (attrs.hasAttribute(NodeMagic.INTERNAL) ||
                     !(isPublic || isPrivate || isProtected || isUser));
         }
     }

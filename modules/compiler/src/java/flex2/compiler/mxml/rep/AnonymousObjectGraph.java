@@ -31,11 +31,9 @@ import flex2.compiler.mxml.reflect.Type;
  * &lt;/Object&gt;
  * </pre>
  */
-public class AnonymousObjectGraph extends Model
-{
-	public AnonymousObjectGraph(MxmlDocument document, Type objectType, int line)
-	{
-		super(document, objectType, line);
-	}
+public class AnonymousObjectGraph extends Model {
+    public AnonymousObjectGraph(MxmlDocument document, Type objectType, int line) {
+        super(document, objectType, line);
+    }
 
 }

@@ -27,13 +27,11 @@ import flex2.compiler.util.CompilerMessage.CompilerWarning;
  *
  * @author Paul Reilly
  */
-public class ConditionTypeNotSupported extends CompilerWarning
-{
+public class ConditionTypeNotSupported extends CompilerWarning {
     private static final long serialVersionUID = -5166876508357822239L;
     public String condition;
 
-    public ConditionTypeNotSupported(String path, int line, String condition)
-    {
+    public ConditionTypeNotSupported(String path, int line, String condition) {
         this.path = path;
         this.line = line;
         this.condition = condition;

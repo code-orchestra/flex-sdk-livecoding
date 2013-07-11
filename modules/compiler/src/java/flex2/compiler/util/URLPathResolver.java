@@ -23,6 +23,7 @@ import flash.util.Trace;
 import flex2.compiler.common.SinglePathResolver;
 import flex2.compiler.io.NetworkFile;
 import flex2.compiler.io.VirtualFile;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,43 +31,30 @@ import java.net.URL;
 /**
  * A resolver with tries to resolve paths using the URL class.
  */
-public class URLPathResolver implements SinglePathResolver
-{
+public class URLPathResolver implements SinglePathResolver {
     private static final URLPathResolver singleton = new URLPathResolver();
 
-    private URLPathResolver()
-    {
+    private URLPathResolver() {
     }
 
-    public static final URLPathResolver getSingleton()
-    {
+    public static final URLPathResolver getSingleton() {
         return singleton;
     }
 
-    public VirtualFile resolve(String uri)
-    {
+    public VirtualFile resolve(String uri) {
         VirtualFile location = null;
 
-		try
-		{
-			URL url = new URL(uri);
-            if (url != null)
-            {
+        try {
+            URL url = new URL(uri);
+            if (url != null) {
                 location = new NetworkFile(url);
-            }            
-		}
-		catch (SecurityException securityException)
-		{
-	    }
-	    catch (MalformedURLException malformedURLException)
-		{
-		}
-        catch (IOException ioException)
-        {
+            }
+        } catch (SecurityException securityException) {
+        } catch (MalformedURLException malformedURLException) {
+        } catch (IOException ioException) {
         }
 
-        if ((location != null) && Trace.pathResolver)
-        {
+        if ((location != null) && Trace.pathResolver) {
             Trace.trace("URLPathResolver.resolve: resolved " + uri + " to " + location.getName());
         }
 

@@ -24,14 +24,12 @@ import flex2.compiler.util.CompilerMessage.CompilerError;
 /**
  * Error reported when an element's type can't be resolved.
  */
-public class ElementTypeNotFound extends CompilerError
-{
+public class ElementTypeNotFound extends CompilerError {
     private static final long serialVersionUID = 2373851015809929644L;
     public String metadata;
     public String elementTypeName;
 
-    public ElementTypeNotFound(String metadata, String elementTypeName)
-    {
+    public ElementTypeNotFound(String metadata, String elementTypeName) {
         this.metadata = metadata;
         this.elementTypeName = elementTypeName;
     }

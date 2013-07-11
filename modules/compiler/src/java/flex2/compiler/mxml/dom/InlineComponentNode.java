@@ -31,40 +31,35 @@ import java.util.HashSet;
  *
  * @author Paul Reilly
  */
-public class InlineComponentNode extends Node
-{
-	public static final String CLASS_NAME_ATTR = "className";
+public class InlineComponentNode extends Node {
+    public static final String CLASS_NAME_ATTR = "className";
 
-	public static final Set<QName> attributes;
-	static
-	{
-		attributes = new HashSet<QName>();
-		attributes.add(new QName("", StandardDefs.PROP_ID));
-		attributes.add(new QName("", CLASS_NAME_ATTR));
-	}
+    public static final Set<QName> attributes;
 
-	private QName classQName;
+    static {
+        attributes = new HashSet<QName>();
+        attributes.add(new QName("", StandardDefs.PROP_ID));
+        attributes.add(new QName("", CLASS_NAME_ATTR));
+    }
 
-	InlineComponentNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
+    private QName classQName;
 
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    InlineComponentNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
 
-	public void setClassQName(QName classQName)
-	{
-		assert this.classQName == null;
-		this.classQName = classQName;
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 
-	public QName getClassQName()
-	{
-		assert this.classQName != null;
-		return classQName;
-	}
+    public void setClassQName(QName classQName) {
+        assert this.classQName == null;
+        this.classQName = classQName;
+    }
+
+    public QName getClassQName() {
+        assert this.classQName != null;
+        return classQName;
+    }
 }

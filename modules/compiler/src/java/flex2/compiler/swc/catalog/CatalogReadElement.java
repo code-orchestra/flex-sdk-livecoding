@@ -26,12 +26,10 @@ package flex2.compiler.swc.catalog;
  *
  * @author Brian Deitte
  */
-public abstract class CatalogReadElement
-{
+public abstract class CatalogReadElement {
     public abstract CatalogReadElement readElement(ReadContext context);
 
-    public void endElement(ReadContext context)
-    {
+    public void endElement(ReadContext context) {
         // by default, don't do anything
     }
 }

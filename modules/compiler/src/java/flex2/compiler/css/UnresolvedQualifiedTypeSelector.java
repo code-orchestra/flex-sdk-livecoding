@@ -26,14 +26,12 @@ import flex2.compiler.util.CompilerMessage.CompilerWarning;
  *
  * @author Paul Reilly
  */
-public class UnresolvedQualifiedTypeSelector extends CompilerWarning
-{
+public class UnresolvedQualifiedTypeSelector extends CompilerWarning {
     private static final long serialVersionUID = 459989935353560899L;
     public String selector;
     public String type;
 
-    public UnresolvedQualifiedTypeSelector(String path, int line, String type, String selector)
-    {
+    public UnresolvedQualifiedTypeSelector(String path, int line, String type, String selector) {
         this.path = path;
         this.line = line;
         this.type = type;

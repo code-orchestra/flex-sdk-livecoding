@@ -25,10 +25,8 @@ package flex2.compiler.config;
  *
  * @author Roger Gonzalez
  */
-public class AdvancedConfigurationInfo extends ConfigurationInfo
-{
-	public boolean isAdvanced()
-	{
-		return true;
-	}
+public class AdvancedConfigurationInfo extends ConfigurationInfo {
+    public boolean isAdvanced() {
+        return true;
+    }
 }

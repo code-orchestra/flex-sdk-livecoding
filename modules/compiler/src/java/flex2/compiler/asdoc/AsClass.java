@@ -27,8 +27,7 @@ import org.w3c.dom.Element;
 /**
  * Class to store all info for a class - this info will be used to assemble classes later in asdoc generation
  */
-public class AsClass
-{
+public class AsClass {
     private boolean innerClass;
     private boolean interfaceFlag;
     private String interfaceStr;
@@ -60,14 +59,13 @@ public class AsClass
     private HashMap<String, String> methodOverrideTable;
 
     private String sourceFile;
-    
+
     private boolean pendingCopyDoc;
-    
+
     /**
      * Constructor
      */
-    public AsClass()
-    {
+    public AsClass() {
         interfaceStr = "";
         name = "";
         fullName = "";
@@ -83,246 +81,197 @@ public class AsClass
         methodOverrideTable = new HashMap<String, String>();
     }
 
-    public boolean isInnerClass()
-    {
+    public boolean isInnerClass() {
         return innerClass;
     }
 
-    public void setInnerClass(boolean innerClass)
-    {
+    public void setInnerClass(boolean innerClass) {
         this.innerClass = innerClass;
     }
 
-    public boolean isInterfaceFlag()
-    {
+    public boolean isInterfaceFlag() {
         return interfaceFlag;
     }
 
-    public void setInterfaceFlag(boolean interfaceFlag)
-    {
+    public void setInterfaceFlag(boolean interfaceFlag) {
         this.interfaceFlag = interfaceFlag;
     }
 
-    public String getInterfaceStr()
-    {
+    public String getInterfaceStr() {
         return interfaceStr;
     }
 
-    public void setInterfaceStr(String interfaceStr)
-    {
+    public void setInterfaceStr(String interfaceStr) {
         this.interfaceStr = interfaceStr;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getFullName()
-    {
+    public String getFullName() {
         return fullName;
     }
 
-    public void setFullName(String fullName)
-    {
+    public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    public String getBaseName()
-    {
+    public String getBaseName() {
         return baseName;
     }
 
-    public void setBaseName(String baseName)
-    {
+    public void setBaseName(String baseName) {
         this.baseName = baseName;
     }
 
-    public ArrayList<String> getExcludedProperties()
-    {
+    public ArrayList<String> getExcludedProperties() {
         return excludedProperties;
     }
 
-    public void setExcludedProperties(ArrayList<String> excludedProperties)
-    {
+    public void setExcludedProperties(ArrayList<String> excludedProperties) {
         this.excludedProperties = excludedProperties;
     }
 
-    public QualifiedNameInfo getDecompName()
-    {
+    public QualifiedNameInfo getDecompName() {
         return decompName;
     }
 
-    public void setDecompName(QualifiedNameInfo decompName)
-    {
+    public void setDecompName(QualifiedNameInfo decompName) {
         this.decompName = decompName;
     }
 
-    public int getMethodCount()
-    {
+    public int getMethodCount() {
         return methodCount;
     }
 
-    public void setMethodCount(int methodCount)
-    {
+    public void setMethodCount(int methodCount) {
         this.methodCount = methodCount;
     }
 
-    public int getConstructorCount()
-    {
+    public int getConstructorCount() {
         return constructorCount;
     }
 
-    public void setConstructorCount(int constructorCount)
-    {
+    public void setConstructorCount(int constructorCount) {
         this.constructorCount = constructorCount;
     }
 
-    public int getFieldCount()
-    {
+    public int getFieldCount() {
         return fieldCount;
     }
 
-    public void setFieldCount(int fieldCount)
-    {
+    public void setFieldCount(int fieldCount) {
         this.fieldCount = fieldCount;
     }
 
-    public int getInnerClassCount()
-    {
+    public int getInnerClassCount() {
         return innerClassCount;
     }
 
-    public void setInnerClassCount(int innerClassCount)
-    {
+    public void setInnerClassCount(int innerClassCount) {
         this.innerClassCount = innerClassCount;
     }
 
-    public ArrayList<AsClass> getInnerClasses()
-    {
+    public ArrayList<AsClass> getInnerClasses() {
         return innerClasses;
     }
 
-    public void setInnerClasses(ArrayList<AsClass> innerClasses)
-    {
+    public void setInnerClasses(ArrayList<AsClass> innerClasses) {
         this.innerClasses = innerClasses;
     }
 
-    public String getHref()
-    {
+    public String getHref() {
         return href;
     }
 
-    public void setHref(String href)
-    {
+    public void setHref(String href) {
         this.href = href;
     }
 
-    public HashMap<String, String> getEventCommentTable()
-    {
+    public HashMap<String, String> getEventCommentTable() {
         return eventCommentTable;
     }
 
-    public void setEventCommentTable(HashMap<String, String> eventCommentTable)
-    {
+    public void setEventCommentTable(HashMap<String, String> eventCommentTable) {
         this.eventCommentTable = eventCommentTable;
     }
 
-    public HashMap<String, Integer> getFieldGetSet()
-    {
+    public HashMap<String, Integer> getFieldGetSet() {
         return fieldGetSet;
     }
 
-    public void setFieldGetSet(HashMap<String, Integer> fieldGetSet)
-    {
+    public void setFieldGetSet(HashMap<String, Integer> fieldGetSet) {
         this.fieldGetSet = fieldGetSet;
     }
 
-    public HashMap<String, Integer> getPrivateGetSet()
-    {
+    public HashMap<String, Integer> getPrivateGetSet() {
         return privateGetSet;
     }
 
-    public void setPrivateGetSet(HashMap<String, Integer> privateGetSet)
-    {
+    public void setPrivateGetSet(HashMap<String, Integer> privateGetSet) {
         this.privateGetSet = privateGetSet;
     }
 
-    public HashMap<String, String> getMethodOverrideTable()
-    {
+    public HashMap<String, String> getMethodOverrideTable() {
         return methodOverrideTable;
     }
 
     public void setMethodOverrideTable(
-            HashMap<String, String> methodOverrideTable)
-    {
+            HashMap<String, String> methodOverrideTable) {
         this.methodOverrideTable = methodOverrideTable;
     }
 
-    public Element getNode()
-    {
+    public Element getNode() {
         return node;
     }
 
-    public void setNode(Element node)
-    {
+    public void setNode(Element node) {
         this.node = node;
     }
 
-    public Element getMethods()
-    {
+    public Element getMethods() {
         return methods;
     }
 
-    public void setMethods(Element methods)
-    {
+    public void setMethods(Element methods) {
         this.methods = methods;
     }
 
-    public Element getConstructors()
-    {
+    public Element getConstructors() {
         return constructors;
     }
 
-    public void setConstructors(Element constructors)
-    {
+    public void setConstructors(Element constructors) {
         this.constructors = constructors;
     }
 
-    public Element getFields()
-    {
+    public Element getFields() {
         return fields;
     }
 
-    public void setFields(Element fields)
-    {
+    public void setFields(Element fields) {
         this.fields = fields;
     }
 
-    public String getSourceFile()
-    {
+    public String getSourceFile() {
         return sourceFile;
     }
 
-    public void setSourceFile(String sourceFile)
-    {
+    public void setSourceFile(String sourceFile) {
         this.sourceFile = sourceFile;
     }
 
-    public boolean isPendingCopyDoc()
-    {
+    public boolean isPendingCopyDoc() {
         return pendingCopyDoc;
     }
 
-    public void setPendingCopyDoc(boolean pendingCopyDoc)
-    {
-        if(!this.pendingCopyDoc)
-        {
+    public void setPendingCopyDoc(boolean pendingCopyDoc) {
+        if (!this.pendingCopyDoc) {
             this.pendingCopyDoc = pendingCopyDoc;
         }
     }

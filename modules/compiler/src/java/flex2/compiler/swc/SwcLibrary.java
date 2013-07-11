@@ -49,8 +49,7 @@ import flash.swf.tags.DefineTag;
  *
  * @author Roger Gonzalez
  */
-public class SwcLibrary
-{
+public class SwcLibrary {
     // changed from private to protected to support Flash Authoring - jkamerer 2007.07.30
     protected final Swc swc;
     protected final String path;
@@ -64,9 +63,8 @@ public class SwcLibrary
     private String location = null;
     private Set<String> metadata;
     protected Map<String, Digest> digests = new HashMap<String, Digest>();
-    
-    public SwcLibrary( Swc swc, String path )
-    {
+
+    public SwcLibrary(Swc swc, String path) {
         this.swc = swc;
         this.path = path;
         this.scripts = new LinkedList<SwcScript>();
@@ -76,119 +74,94 @@ public class SwcLibrary
         this.metadata = new HashSet<String>();
     }
 
-    public Swc getSwc()
-    {
+    public Swc getSwc() {
         return swc;
     }
 
-    public String getPath()
-    {
+    public String getPath() {
         return path;
     }
 
-    public String getSwcLocation()
-    {
-        if (location != null)
-        {
+    public String getSwcLocation() {
+        if (location != null) {
             return location;
-        }
-        else
-        {
+        } else {
             return swc.getLocation();
         }
     }
 
-	public long getSwcCreationTime()
-	{
-		return swc.getLastModified();
-	}
+    public long getSwcCreationTime() {
+        return swc.getLastModified();
+    }
 
-    public void clear()
-    {
+    public void clear() {
         scripts = null;
         def2symbol = null;
     }
 
-    public Set<String> getExterns()
-    {
+    public Set<String> getExterns() {
         return externs;
     }
 
-    public SwcScript addScript( String name, Set<String> defs, SwcDependencySet deps, long modtime,
-    							Long signatureChecksum)
-    {
-        SwcScript script = new SwcScript( this, name, defs, deps, modtime, signatureChecksum );
-        scripts.add( script );
-        name2script.put( script.getName(), script );
+    public SwcScript addScript(String name, Set<String> defs, SwcDependencySet deps, long modtime,
+                               Long signatureChecksum) {
+        SwcScript script = new SwcScript(this, name, defs, deps, modtime, signatureChecksum);
+        scripts.add(script);
+        name2script.put(script.getName(), script);
         assert ((name != null) && (name.length() > 0));
         return script;
     }
 
-    public Iterator<SwcScript> getScriptIterator()
-    {
+    public Iterator<SwcScript> getScriptIterator() {
         return scripts.iterator();
     }
 
-    public DefineTag getSymbol( String name )
-    {
+    public DefineTag getSymbol(String name) {
         DefineTag result = null;
 
-        if (def2symbol != null)
-        {
-        // stagSymbolClasses likes dots, no colons.
-        name = name.replace( ':', '.' );
-            result = def2symbol.get( name );
-    }
+        if (def2symbol != null) {
+            // stagSymbolClasses likes dots, no colons.
+            name = name.replace(':', '.');
+            result = def2symbol.get(name);
+        }
 
         return result;
     }
 
     // changed from private to protected to support Flash Authoring - jkamerer 2007.07.30
-    protected SwcScript getScript( DoABC doABC )
-    {
+    protected SwcScript getScript(DoABC doABC) {
         assert (doABC.code == Tag.stagDoABC2);
-        return name2script.get( doABC.name );
+        return name2script.get(doABC.name);
     }
 
     /**
      * The catalog should have been previously loaded such that we have a set of SwcScript objects.
      * Parse the SWF and associate a DoABC with each, and keep track of the stagSymbolClass values.
      */
-    protected void parse()
-    {
+    protected void parse() {
         if (parsed)
             return;
 
-        VirtualFile swcFile = swc.getArchive().getFile( path );
+        VirtualFile swcFile = swc.getArchive().getFile(path);
 
-        if (swcFile == null)
-        {
+        if (swcFile == null) {
             throw new SwcException.CatalogNotFound();
         }
 
         Movie movie = new Movie();
-        MovieDecoder movieDecoder = new MovieDecoder( movie );
+        MovieDecoder movieDecoder = new MovieDecoder(movie);
         InputStream inputStream = null;
 
-        try
-        {
+        try {
             inputStream = swcFile.getInputStream();
             TagDecoder tagDecoder = new TagDecoder(inputStream);
-            tagDecoder.parse( movieDecoder );
-        }
-        catch (IOException e)
-        {
-        }
-        finally
-        {
-            if (inputStream != null)
-            {
-                try
-                {
+            tagDecoder.parse(movieDecoder);
+        } catch (IOException e) {
+        } finally {
+            if (inputStream != null) {
+                try {
                     inputStream.close();
-                }
-                catch (IOException ioException)
-                {
+                } catch (IOException ioException) {
                     // ignore.
                 }
             }
@@ -199,170 +172,147 @@ public class SwcLibrary
 
         int c1 = 0;
         def2symbol = new HashMap<String, DefineTag>();
-        for (Iterator frames = movie.frames.iterator(); frames.hasNext(); )
-        {
+        for (Iterator frames = movie.frames.iterator(); frames.hasNext(); ) {
             Frame frame = (Frame) frames.next();
-            for (Iterator abcit = frame.doABCs.iterator(); abcit.hasNext(); )
-            {
+            for (Iterator abcit = frame.doABCs.iterator(); abcit.hasNext(); ) {
                 DoABC doABC = (DoABC) abcit.next();
-                SwcScript script = getScript( doABC );
+                SwcScript script = getScript(doABC);
                 script.setABC(doABC.abc);
             }
 
-            for (Iterator it = frame.symbolClass.class2tag.entrySet().iterator(); it.hasNext();)
-            {
+            for (Iterator it = frame.symbolClass.class2tag.entrySet().iterator(); it.hasNext(); ) {
                 Map.Entry e = (Map.Entry) it.next();
                 String className = (String) e.getKey();
                 DefineTag tag = (DefineTag) e.getValue();
 
-                def2symbol.put( className, tag );
+                def2symbol.put(className, tag);
             }
 
             if (Swc.FNORD)  // release SWCs must have magic hash label per frame
             {
-                if (frame.label != null)
-                {
-                    try { c1 = Integer.parseInt( frame.label.label ); } catch (Exception e) {};
+                if (frame.label != null) {
+                    try {
+                        c1 = Integer.parseInt(frame.label.label);
+                    } catch (Exception e) {
+                    }
+                    ;
                 }
-                int c2 = SimpleMovie.getCodeHash( frame );
+                int c2 = SimpleMovie.getCodeHash(frame);
 
-                if (c1 != c2)
-                {
+                if (c1 != c2) {
                     location = " " + swc.getLocation();
                 }
             }
         }
         parsed = true;
     }
-    
-    void getSymbolClasses(String def, Set<String> symbolClasses)
-    {
-    	// getSymbol() converts def from a.b:C to a.b.C
-    	DefineTag t = getSymbol(def);   
-    	HashSet<Tag> visited = new HashSet<Tag>();
-    	getReferencedSymbolClasses(t, symbolClasses, visited);
-    }
-    
-    void getReferencedSymbolClasses(Tag t, Set<String> symbolClasses, HashSet<Tag> visited)
-    {
-    	if (t != null && !visited.contains(t))
-    	{
-    		visited.add(t);
-    		for (Iterator i = t.getReferences(); i != null && i.hasNext(); )
-    		{
-    		    Tag r = (Tag)i.next();
-    			if (r != null)
-    			{
-					for (Iterator<String> j = def2symbol.keySet().iterator(); j.hasNext(); )
-					{
-						String className = j.next();
-						if (def2symbol.get(className) == r)
-						{
-							symbolClasses.add(NameFormatter.toColon(className));
-						}
-					}
-    			}
-    			getReferencedSymbolClasses(r, symbolClasses, visited);
-    		}
-    	}	
-    }
-    
-    /**
-     * Get the set of metadata to keep when optimizing codes from this library.
-     * 
-     * @return Set of metadata names of type String.
-     */
-    public Set<String> getMetadata()
-    {
-        return metadata;
-    }
-    
-    /**
-     * Set the metadata to the given Set.
-     * 
-     * @param metadata Collection of metadata names of type String.
-     */
-    public void setMetadata(Set<String> metadata)
-    {
-        this.metadata = metadata;
-    }
-    
-    /**
-     * Add a collection of names to the list of metadata in this library.
-     * 
-     * @param metadata Collection of metadata names of type String.
-     * 
-     * @throws NullPointerException if metadata is null
-     */
-    public void addMetadata(Collection<String> metadata)
-    {
-       this.metadata.addAll(metadata);
+
+    void getSymbolClasses(String def, Set<String> symbolClasses) {
+        // getSymbol() converts def from a.b:C to a.b.C
+        DefineTag t = getSymbol(def);
+        HashSet<Tag> visited = new HashSet<Tag>();
+        getReferencedSymbolClasses(t, symbolClasses, visited);
     }
 
-    
+    void getReferencedSymbolClasses(Tag t, Set<String> symbolClasses, HashSet<Tag> visited) {
+        if (t != null && !visited.contains(t)) {
+            visited.add(t);
+            for (Iterator i = t.getReferences(); i != null && i.hasNext(); ) {
+                Tag r = (Tag) i.next();
+                if (r != null) {
+                    for (Iterator<String> j = def2symbol.keySet().iterator(); j.hasNext(); ) {
+                        String className = j.next();
+                        if (def2symbol.get(className) == r) {
+                            symbolClasses.add(NameFormatter.toColon(className));
+                        }
+                    }
+                }
+                getReferencedSymbolClasses(r, symbolClasses, visited);
+            }
+        }
+    }
+
+    /**
+     * Get the set of metadata to keep when optimizing codes from this library.
+     *
+     * @return Set of metadata names of type String.
+     */
+    public Set<String> getMetadata() {
+        return metadata;
+    }
+
+    /**
+     * Set the metadata to the given Set.
+     *
+     * @param metadata Collection of metadata names of type String.
+     */
+    public void setMetadata(Set<String> metadata) {
+        this.metadata = metadata;
+    }
+
+    /**
+     * Add a collection of names to the list of metadata in this library.
+     *
+     * @param metadata Collection of metadata names of type String.
+     * @throws NullPointerException if metadata is null
+     */
+    public void addMetadata(Collection<String> metadata) {
+        this.metadata.addAll(metadata);
+    }
+
+
     /**
      * Get the digest of a specified library.
-     * 
-     * @param libPath
-     *          name of library path. If in doubt pass in LIBRARY_PATH.
-     * @param hashType
-     *          type of hash. Only valid choice is Digest.SHA_256.
-     * @param isSigned
-     *          if true return a signed digest, if false return an unsigned digest.
-     * 
+     *
+     * @param libPath  name of library path. If in doubt pass in LIBRARY_PATH.
+     * @param hashType type of hash. Only valid choice is Digest.SHA_256.
+     * @param isSigned if true return a signed digest, if false return an unsigned digest.
      * @return the digest of the specified library. May be null if not digest is found.
      */
-    public Digest getDigest(String hashType, boolean isSigned)
-    {
-        if (hashType == null)
-        {
+    public Digest getDigest(String hashType, boolean isSigned) {
+        if (hashType == null) {
             throw new NullPointerException("hashType may not be null");
         }
-        
+
         return digests.get(CatalogReader.createDigestHashValue(hashType, isSigned));
     }
-    
-    
+
+
     /**
      * Add a new digest to the swc or replace the existing digest if a
      * digest for libPath already exists.
-     * 
+     *
      * @param libPath name of the library file, may not be null
-     * @param digest digest of libPath
+     * @param digest  digest of libPath
      * @throws NullPointerException if libPath or digest are null.
      */
-    public void setDigest(Digest digest)
-    {
-        if (digest == null)
-        {
+    public void setDigest(Digest digest) {
+        if (digest == null) {
             throw new NullPointerException("setDigest:  digest may not be null");  // $NON-NLS-1$
         }
 
-        digests.put(CatalogReader.createDigestHashValue(digest.getType(), 
-                                                        digest.isSigned()), 
-                                                        digest);
+        digests.put(CatalogReader.createDigestHashValue(digest.getType(),
+                digest.isSigned()),
+                digest);
     }
-    
+
     /**
-     * 
      * @return all the digests in this swc. May be empty, but not null.
      */
-    public Map<String, Digest> getDigests()
-    {
+    public Map<String, Digest> getDigests() {
         return digests;
     }
-    
-    
+
+
     /**
      * Set all the digest of the library. Typically this is called after reading from
      * all the digests from catalog.xml.
-     *  
-     * @param digests - Map of digests in this swc. 
+     *
+     * @param digests - Map of digests in this swc.
      */
-    public void setDigests(Map<String, Digest> digests)
-    {
+    public void setDigests(Map<String, Digest> digests) {
         this.digests = digests;
     }
-    
-    
+
+
 }

@@ -21,11 +21,10 @@ package flex2.compiler.mxml.reflect;
 /**
  * Base interface used to mark state-specific model properties.
  */
-public interface Stateful
-{
+public interface Stateful {
     public void setStateName(String name);
-    
+
     public String getStateName();
-    
+
     public boolean isStateSpecific();
 }

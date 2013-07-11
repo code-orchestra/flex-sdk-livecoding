@@ -36,12 +36,10 @@ import flex2.compiler.util.QName;
  *
  * @author Paul Reilly
  */
-class InlineComponentBuilder extends AbstractBuilder
-{
+class InlineComponentBuilder extends AbstractBuilder {
     InlineComponentBuilder(CompilationUnit unit, TypeTable typeTable,
-            MxmlConfiguration mxmlConfiguration, MxmlDocument document,
-            boolean topLevel)
-    {
+                           MxmlConfiguration mxmlConfiguration, MxmlDocument document,
+                           boolean topLevel) {
         super(unit, typeTable, mxmlConfiguration, document);
         this.topLevel = topLevel;
     }
@@ -49,27 +47,21 @@ class InlineComponentBuilder extends AbstractBuilder
     protected boolean topLevel;
     Model rvalue;
 
-    public void analyze(InlineComponentNode node)
-    {
+    public void analyze(InlineComponentNode node) {
         QName classQName = node.getClassQName();
 
         rvalue = factoryFromClass(NameFormatter.toDot(classQName), node.beginLine);
 
-        String id = (String)getLanguageAttributeValue(node, StandardDefs.PROP_ID);
-        if (id != null || topLevel)
-        {
+        String id = (String) getLanguageAttributeValue(node, StandardDefs.PROP_ID);
+        if (id != null || topLevel) {
             // if node has a comment then transfer it to the model.
-            if (node.comment != null)
-            {
+            if (node.comment != null) {
                 // if generate ast is false, lets not scan the tokens here
                 // because they will be scanned later in asc scanner.
                 // we will go the velocity template route
-                if (!mxmlConfiguration.getGenerateAbstractSyntaxTree())
-                {
+                if (!mxmlConfiguration.getGenerateAbstractSyntaxTree()) {
                     rvalue.comment = node.comment;
-                }
-                else
-                {
+                } else {
                     rvalue.comment = MxmlCommentUtil.commentToXmlComment(node.comment);
                 }
             }
@@ -78,8 +70,7 @@ class InlineComponentBuilder extends AbstractBuilder
         }
     }
 
-    public Model getRValue()
-    {
+    public Model getRValue() {
         return rvalue;
     }
 }

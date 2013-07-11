@@ -22,15 +22,12 @@ package flex2.compiler.mxml.dom;
 /**
  * Represents an &lt;State&gt; tag in the MXML language namespace.
  */
-public class StateNode extends Node
-{
-    public StateNode(String uri, String localName, int size)
-    {
+public class StateNode extends Node {
+    public StateNode(String uri, String localName, int size) {
         super(uri, localName, size);
     }
-    
-    public void analyze(Analyzer analyzer)
-    {
+
+    public void analyze(Analyzer analyzer) {
         analyzer.prepare(this);
         analyzer.analyze(this);
     }

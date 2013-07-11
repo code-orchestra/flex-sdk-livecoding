@@ -24,7 +24,7 @@ import java.util.zip.CRC32;
 /**
  * Adds Unix file permission and UID/GID fields as well as symbolic
  * link handling.
- *
+ * <p/>
  * <p>This class uses the ASi extra field in the format:
  * <pre>
  *         Value         Size            Description
@@ -40,8 +40,8 @@ import java.util.zip.CRC32;
  * </pre>
  * taken from appnote.iz (Info-ZIP note, 981119) found at <a
  * href="ftp://ftp.uu.net/pub/archiving/zip/doc/">ftp://ftp.uu.net/pub/archiving/zip/doc/</a></p>
-
- *
+ * <p/>
+ * <p/>
  * <p>Short is two bytes and Long is four bytes in big endian byte and
  * word order, device numbers are currently not supported.</p>
  *
@@ -72,7 +72,7 @@ public class AsiExtraField implements ZipExtraField, UnixStat, Cloneable {
     private int gid = 0;
     /**
      * File this entry points to, if it is a symbolic link.
-     *
+     * <p/>
      * <p>empty string - if entry is not a symbolic link.</p>
      *
      * @since 1.1
@@ -112,11 +112,11 @@ public class AsiExtraField implements ZipExtraField, UnixStat, Cloneable {
      */
     public ZipShort getLocalFileDataLength() {
         return new ZipShort(4         // CRC
-                          + 2         // Mode
-                          + 4         // SizDev
-                          + 2         // UID
-                          + 2         // GID
-                          + getLinkedFile().getBytes().length);
+                + 2         // Mode
+                + 4         // SizDev
+                + 2         // UID
+                + 2         // GID
+                + getLinkedFile().getBytes().length);
     }
 
     /**
@@ -141,12 +141,12 @@ public class AsiExtraField implements ZipExtraField, UnixStat, Cloneable {
 
         byte[] linkArray = getLinkedFile().getBytes();
         System.arraycopy((new ZipLong(linkArray.length)).getBytes(),
-                         0, data, 2, 4);
+                0, data, 2, 4);
 
         System.arraycopy((new ZipShort(getUserId())).getBytes(),
-                         0, data, 6, 2);
+                0, data, 6, 2);
         System.arraycopy((new ZipShort(getGroupId())).getBytes(),
-                         0, data, 8, 2);
+                0, data, 8, 2);
 
         System.arraycopy(linkArray, 0, data, 10, linkArray.length);
 
@@ -210,7 +210,6 @@ public class AsiExtraField implements ZipExtraField, UnixStat, Cloneable {
      *
      * @param name Name of the file this entry links to, empty String
      *             if it is not a symbolic link.
-     *
      * @since 1.1
      */
     public void setLinkedFile(String name) {
@@ -223,7 +222,6 @@ public class AsiExtraField implements ZipExtraField, UnixStat, Cloneable {
      *
      * @return name of the file this entry links to if it is a
      *         symbolic link, the empty string otherwise.
-     *
      * @since 1.1
      */
     public String getLinkedFile() {
@@ -282,7 +280,7 @@ public class AsiExtraField implements ZipExtraField, UnixStat, Cloneable {
      * @since 1.1
      */
     public void parseFromLocalFileData(byte[] data, int offset, int length)
-        throws SwcException {
+            throws SwcException {
 
         long givenChecksum = (new ZipLong(data, offset)).getValue();
         byte[] tmp = new byte[length - 4];
@@ -292,7 +290,7 @@ public class AsiExtraField implements ZipExtraField, UnixStat, Cloneable {
         long realChecksum = crc.getValue();
         if (givenChecksum != realChecksum) {
             throw new SwcException.BadCRC(Long.toHexString(givenChecksum),
-		            Long.toHexString(realChecksum));
+                    Long.toHexString(realChecksum));
         }
 
         int newMode = (new ZipShort(tmp, 0)).getValue();

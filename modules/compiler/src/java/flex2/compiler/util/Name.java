@@ -25,35 +25,29 @@ package flex2.compiler.util;
  *
  * @author Paul Reilly
  */
-public abstract class Name
-{
-	public String localPart;
+public abstract class Name {
+    public String localPart;
 
-	public String getLocalPart()
-	{
-		return localPart;
-	}
+    public String getLocalPart() {
+        return localPart;
+    }
 
-	public void setLocalPart(String localPart)
-	{
+    public void setLocalPart(String localPart) {
         assert localPart.indexOf(":") < 0;
-		this.localPart = localPart;
-	}
+        this.localPart = localPart;
+    }
 
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         boolean result = false;
 
-        if (object instanceof Name)
-        {
+        if (object instanceof Name) {
             result = localPart.equals(((Name) object).localPart);
         }
 
         return result;
     }
 
-    public int hashCode()
-    {
+    public int hashCode() {
         return localPart.hashCode();
     }
 }

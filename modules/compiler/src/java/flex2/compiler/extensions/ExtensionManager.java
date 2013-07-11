@@ -41,63 +41,51 @@ import flex2.compiler.util.CompilerMessage.CompilerError;
  *
  * @author Andrew Westberg
  */
-public class ExtensionManager
-{
+public class ExtensionManager {
 
-    public static enum ExtensionType
-    {
-        PRELINK( "extensions-prelink" ), MXMLC( "extensions-mxmlc" ), COMPC( "extensions-compc" ), APPLICATION(
-            "extensions-application" ), LIBRARY( "extensions-library" ), PRE_COMPILE( "extensions-pre-compile" );
+    public static enum ExtensionType {
+        PRELINK("extensions-prelink"), MXMLC("extensions-mxmlc"), COMPC("extensions-compc"), APPLICATION(
+                "extensions-application"), LIBRARY("extensions-library"), PRE_COMPILE("extensions-pre-compile");
 
         private String extensionTag;
 
-        private ExtensionType( String extensionTag )
-        {
+        private ExtensionType(String extensionTag) {
             this.extensionTag = extensionTag;
         }
 
-        String getExtensionTag()
-        {
+        String getExtensionTag() {
             return extensionTag;
         }
     }
 
-    public static Set<IPreLinkExtension> getPreLinkExtensions( Map<String, List<String>> extensions )
-    {
-        return getExtension( ExtensionType.PRELINK, extensions, IPreLinkExtension.class );
+    public static Set<IPreLinkExtension> getPreLinkExtensions(Map<String, List<String>> extensions) {
+        return getExtension(ExtensionType.PRELINK, extensions, IPreLinkExtension.class);
     }
 
-    public static Set<IMxmlcExtension> getMxmlcExtensions( Map<String, List<String>> extensions )
-    {
-        return getExtension( ExtensionType.MXMLC, extensions, IMxmlcExtension.class );
+    public static Set<IMxmlcExtension> getMxmlcExtensions(Map<String, List<String>> extensions) {
+        return getExtension(ExtensionType.MXMLC, extensions, IMxmlcExtension.class);
     }
 
-    public static Set<ICompcExtension> getCompcExtensions( Map<String, List<String>> extensions )
-    {
-        return getExtension( ExtensionType.COMPC, extensions, ICompcExtension.class );
+    public static Set<ICompcExtension> getCompcExtensions(Map<String, List<String>> extensions) {
+        return getExtension(ExtensionType.COMPC, extensions, ICompcExtension.class);
     }
 
-    public static Set<ILibraryExtension> getLibraryExtensions( Map<String, List<String>> extensions )
-    {
-        return getExtension( ExtensionType.LIBRARY, extensions, ILibraryExtension.class );
+    public static Set<ILibraryExtension> getLibraryExtensions(Map<String, List<String>> extensions) {
+        return getExtension(ExtensionType.LIBRARY, extensions, ILibraryExtension.class);
     }
 
-    public static Set<IApplicationExtension> getApplicationExtensions( Map<String, List<String>> extensions )
-    {
-        return getExtension( ExtensionType.APPLICATION, extensions, IApplicationExtension.class );
+    public static Set<IApplicationExtension> getApplicationExtensions(Map<String, List<String>> extensions) {
+        return getExtension(ExtensionType.APPLICATION, extensions, IApplicationExtension.class);
     }
 
-    public static Set<IPreCompileExtension> getPreCompileExtensions( Map<String, List<String>> extensions )
-    {
-        return getExtension( ExtensionType.PRE_COMPILE, extensions, IPreCompileExtension.class );
+    public static Set<IPreCompileExtension> getPreCompileExtensions(Map<String, List<String>> extensions) {
+        return getExtension(ExtensionType.PRE_COMPILE, extensions, IPreCompileExtension.class);
     }
 
-    @SuppressWarnings( "deprecation" )
-    private static <E> Set<E> getExtension( ExtensionType extensionType, Map<String, List<String>> availableExtensions,
-                                            Class<E> clazz )
-    {
-        if ( availableExtensions == null )
-        {
+    @SuppressWarnings("deprecation")
+    private static <E> Set<E> getExtension(ExtensionType extensionType, Map<String, List<String>> availableExtensions,
+                                           Class<E> clazz) {
+        if (availableExtensions == null) {
             return Collections.emptySet();
         }
 
@@ -105,38 +93,30 @@ public class ExtensionManager
 
         Set<E> extensions = new LinkedHashSet<E>();
 
-        for ( String extensionPath : files )
-        {
-            List<String> parameters = availableExtensions.get( extensionPath );
+        for (String extensionPath : files) {
+            List<String> parameters = availableExtensions.get(extensionPath);
 
-            File extensionFile = new File( extensionPath );
-            if ( !extensionFile.exists() )
-            {
-                ThreadLocalToolkit.getLogger().log(new InvalidExtensionFileError(new FileNotFoundException().getLocalizedMessage() ) );
+            File extensionFile = new File(extensionPath);
+            if (!extensionFile.exists()) {
+                ThreadLocalToolkit.getLogger().log(new InvalidExtensionFileError(new FileNotFoundException().getLocalizedMessage()));
                 continue;
             }
 
-            try
-            {
+            try {
                 URLClassLoader loader;
                 Manifest mf;
-                try
-                {
-                    loader = new URLClassLoader( new URL[] { extensionFile.toURL() },
-                                                 Thread.currentThread().getContextClassLoader() );
-                    JarFile jar = new JarFile( extensionFile );
+                try {
+                    loader = new URLClassLoader(new URL[]{extensionFile.toURL()},
+                            Thread.currentThread().getContextClassLoader());
+                    JarFile jar = new JarFile(extensionFile);
                     mf = jar.getManifest();
-                }
-                catch ( IOException e )
-                {
-                    ThreadLocalToolkit.getLogger().log( new InvalidExtensionFileError( e.getLocalizedMessage() ) );
+                } catch (IOException e) {
+                    ThreadLocalToolkit.getLogger().log(new InvalidExtensionFileError(e.getLocalizedMessage()));
                     continue;
                 }
-                extensions.addAll( getClasses( mf, extensionType, loader, parameters, clazz ) );
-            }
-            catch ( CompilerError e )
-            {
-                ThreadLocalToolkit.getLogger().log( e );
+                extensions.addAll(getClasses(mf, extensionType, loader, parameters, clazz));
+            } catch (CompilerError e) {
+                ThreadLocalToolkit.getLogger().log(e);
                 continue;
             }
         }
@@ -144,58 +124,45 @@ public class ExtensionManager
         return extensions;
     }
 
-    @SuppressWarnings( "unchecked" )
-    private static <E> Set<E> getClasses( Manifest mf, ExtensionType extensionType, URLClassLoader loader,
-                                          List<String> parameters, Class<E> clazz )
-        throws CompilerError
-    {
-        String extensionsStr = mf.getMainAttributes().getValue( extensionType.getExtensionTag() );
+    @SuppressWarnings("unchecked")
+    private static <E> Set<E> getClasses(Manifest mf, ExtensionType extensionType, URLClassLoader loader,
+                                         List<String> parameters, Class<E> clazz)
+            throws CompilerError {
+        String extensionsStr = mf.getMainAttributes().getValue(extensionType.getExtensionTag());
 
-        if ( extensionsStr == null )
-        {
+        if (extensionsStr == null) {
             return Collections.emptySet();
         }
 
-        String[] extNames = extensionsStr.split( ":" );
+        String[] extNames = extensionsStr.split(":");
 
         Set<E> extensions = new LinkedHashSet<E>();
 
-        for ( int j = 0; j < extNames.length; j++ )
-        {
+        for (int j = 0; j < extNames.length; j++) {
             String extName = extNames[j];
             Class<?> extClass;
 
-            try
-            {
-                extClass = loader.loadClass( extName );
-            }
-            catch ( ClassNotFoundException e )
-            {
-                throw new UnexistentExtensionError( extName );
+            try {
+                extClass = loader.loadClass(extName);
+            } catch (ClassNotFoundException e) {
+                throw new UnexistentExtensionError(extName);
             }
 
-            if ( clazz.isAssignableFrom( extClass ) )
-            {
+            if (clazz.isAssignableFrom(extClass)) {
                 E extInstance;
-                try
-                {
+                try {
                     extInstance = (E) extClass.newInstance();
-                }
-                catch ( Exception e )
-                {
-                    throw new FailToInstanciateError( e.getMessage() );
+                } catch (Exception e) {
+                    throw new FailToInstanciateError(e.getMessage());
                 }
 
-                if ( extInstance instanceof IConfigurableExtension )
-                {
+                if (extInstance instanceof IConfigurableExtension) {
                     IConfigurableExtension configExtension = (IConfigurableExtension) extInstance;
-                    configExtension.configure( parameters );
+                    configExtension.configure(parameters);
                 }
-                extensions.add( extInstance );
-            }
-            else
-            {
-                throw new InvalidExtensionKindError( extClass, clazz );
+                extensions.add(extInstance);
+            } else {
+                throw new InvalidExtensionKindError(extClass, clazz);
 
             }
         }
@@ -204,55 +171,47 @@ public class ExtensionManager
     }
 
     public static class InvalidExtensionFileError
-        extends CompilerError
-    {
+            extends CompilerError {
         private static final long serialVersionUID = -1466423208365841681L;
 
         public String errorMessage;
 
-        public InvalidExtensionFileError( String errorMessage )
-        {
+        public InvalidExtensionFileError(String errorMessage) {
             this.errorMessage = errorMessage;
         }
     }
 
     public static class FailToInstanciateError
-        extends CompilerError
-    {
+            extends CompilerError {
         private static final long serialVersionUID = -4329041275278609962L;
 
         public String errorMessage;
 
-        public FailToInstanciateError( String errorMessage )
-        {
+        public FailToInstanciateError(String errorMessage) {
             this.errorMessage = errorMessage;
         }
     }
 
     public static class UnexistentExtensionError
-        extends CompilerError
-    {
+            extends CompilerError {
         private static final long serialVersionUID = 7778107370187386124L;
 
         public String extensionClassName;
 
-        public UnexistentExtensionError( String extName )
-        {
+        public UnexistentExtensionError(String extName) {
             this.extensionClassName = extName;
         }
     }
 
     public static class InvalidExtensionKindError
-        extends CompilerError
-    {
+            extends CompilerError {
         private static final long serialVersionUID = -3190757647243331631L;
 
         public Class<?> extensionClass;
 
         public Class<?> parentClass;
 
-        public InvalidExtensionKindError( Class<?> extClass, Class<?> clazz )
-        {
+        public InvalidExtensionKindError(Class<?> extClass, Class<?> clazz) {
             this.extensionClass = extClass;
             this.parentClass = clazz;
         }

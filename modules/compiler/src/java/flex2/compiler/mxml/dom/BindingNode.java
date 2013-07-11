@@ -29,28 +29,24 @@ import java.util.Set;
  *
  * @author Clement Wong
  */
-public class BindingNode extends Node
-{
-	public static final Set<QName> attributes;
+public class BindingNode extends Node {
+    public static final Set<QName> attributes;
 
-	static
-	{
-		attributes = new HashSet<QName>();
-		attributes.add(new QName("", "destination"));
+    static {
+        attributes = new HashSet<QName>();
+        attributes.add(new QName("", "destination"));
         attributes.add(new QName("", "source"));
         attributes.add(new QName("", "twoWay"));
-	}
+    }
 
-	BindingNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
+    BindingNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
 
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 }
 
 

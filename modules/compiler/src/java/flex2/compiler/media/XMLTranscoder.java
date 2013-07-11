@@ -39,105 +39,86 @@ import flash.util.FileUtils;
  *
  * @author Roger Gonzalez
  */
-public class XMLTranscoder extends AbstractTranscoder
-{
+public class XMLTranscoder extends AbstractTranscoder {
     public final static String ENCODING = "encoding";
-    public XMLTranscoder()
-    {
-        super( new String[] {MimeMappings.XML}, null, false );
+
+    public XMLTranscoder() {
+        super(new String[]{MimeMappings.XML}, null, false);
     }
 
-    public TranscodingResults doTranscode( PathResolver context, SymbolTable symbolTable,
-                                           Map args, String className, boolean generateSource )
-        throws TranscoderException
-    {
-        VirtualFile source = resolveSource( context, args );
+    public TranscodingResults doTranscode(PathResolver context, SymbolTable symbolTable,
+                                          Map args, String className, boolean generateSource)
+            throws TranscoderException {
+        VirtualFile source = resolveSource(context, args);
         TranscodingResults results = new TranscodingResults(source);
 
-        if (generateSource)
-        {
-            generateSource( results, className, args );
-        }
-        else
-        {
-            throw new EmbedRequiresCodegen( source.getName(), className );
+        if (generateSource) {
+            generateSource(results, className, args);
+        } else {
+            throw new EmbedRequiresCodegen(source.getName(), className);
         }
 
         return results;
     }
 
-    public void generateSource(TranscodingResults asset, String fullClassName, Map embedMap )
-            throws TranscoderException
-    {
-        String encoding = (String) embedMap.get( ENCODING );
+    public void generateSource(TranscodingResults asset, String fullClassName, Map embedMap)
+            throws TranscoderException {
+        String encoding = (String) embedMap.get(ENCODING);
         String packageName = "";
         String className = fullClassName;
-        int dot = fullClassName.lastIndexOf( '.' );
-        if (dot != -1)
-        {
-            packageName = fullClassName.substring( 0, dot );
-            className = fullClassName.substring( dot + 1 );
+        int dot = fullClassName.lastIndexOf('.');
+        if (dot != -1) {
+            packageName = fullClassName.substring(0, dot);
+            className = fullClassName.substring(dot + 1);
         }
 
-        StringBuilder source = new StringBuilder( 1024 );
-        source.append( "package " );
-        source.append( packageName );
-        source.append( " { public class " );
-        source.append( className );
-        source.append( " { public static var data:XML = " );
+        StringBuilder source = new StringBuilder(1024);
+        source.append("package ");
+        source.append(packageName);
+        source.append(" { public class ");
+        source.append(className);
+        source.append(" { public static var data:XML = ");
 
         BufferedInputStream in = null;
 
-        try
-        {
-            in = new BufferedInputStream( asset.assetSource.getInputStream() );
+        try {
+            in = new BufferedInputStream(asset.assetSource.getInputStream());
             in.mark(3);
 
-			Reader reader = new InputStreamReader(in, FileUtils.consumeBOM(in, encoding));
+            Reader reader = new InputStreamReader(in, FileUtils.consumeBOM(in, encoding));
 
             char[] line = new char[2000];
             int count = 0;
 
-            while ((count = reader.read(line, 0, line.length)) >= 0)
-            {
+            while ((count = reader.read(line, 0, line.length)) >= 0) {
                 source.append(line, 0, count);
             }
-		}
-        catch (Exception e)
-        {
-            throw new AbstractTranscoder.UnableToReadSource( asset.assetSource.getName() );
-        }
-        finally
-        {
-            try
-            {
+        } catch (Exception e) {
+            throw new AbstractTranscoder.UnableToReadSource(asset.assetSource.getName());
+        } finally {
+            try {
                 if (in != null)
                     in.close();
-            }
-            catch (Throwable t)
-            {
+            } catch (Throwable t) {
             }
         }
 
-        source.append( "; } }" );
+        source.append("; } }");
 
         asset.generatedCode = source.toString();
     }
 
 
-    public boolean isSupportedAttribute( String attr )
-    {
-        return ENCODING.equals( attr );
+    public boolean isSupportedAttribute(String attr) {
+        return ENCODING.equals(attr);
     }
 
 
-    public String getAssociatedClass( DefineTag tag )
-    {
+    public String getAssociatedClass(DefineTag tag) {
         return "Object";
     }
 
-    public void clear()
-    {
+    public void clear() {
     }
 
 }

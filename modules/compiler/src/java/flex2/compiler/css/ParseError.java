@@ -26,13 +26,11 @@ import flex2.compiler.util.CompilerMessage.CompilerError;
  *
  * @author Paul Reilly
  */
-public class ParseError extends CompilerError
-{
+public class ParseError extends CompilerError {
     private static final long serialVersionUID = 183990862216147373L;
     public String message;
 
-    public ParseError(String message)
-    {
+    public ParseError(String message) {
         this.message = message;
     }
 }

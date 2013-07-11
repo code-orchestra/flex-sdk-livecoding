@@ -10,10 +10,11 @@ package flex2.compiler.mxml;
 
 public interface TokenManager {
 
-  /** This gets the next token from the input stream.
-   *  A token of kind 0 (<EOF>) should be returned on EOF.
-   */
-  public Token getNextToken();
+    /**
+     * This gets the next token from the input stream.
+     * A token of kind 0 (<EOF>) should be returned on EOF.
+     */
+    public Token getNextToken();
 
 }
 /* JavaCC - OriginalChecksum=9b180e86f3ebfbd64d23f1ae826a6308 (do not edit this line) */

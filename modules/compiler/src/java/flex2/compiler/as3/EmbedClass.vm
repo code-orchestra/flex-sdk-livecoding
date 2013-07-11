@@ -1,4 +1,3 @@
-
 #*
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -29,15 +28,15 @@ import $assetType;
 [ExcludeClass]
 [Embed(#foreach($eparam in $embedMap.entrySet())$eparam.key="$eparam.value"#if ($len != $velocityCount), #end#end)]
 
-public class $embedClass extends $baseClass 
+public class $embedClass extends $baseClass
 {
-    public function $embedClass() 
-    { 
-	    super(); 
-    }
+public function $embedClass()
+{
+super();
+}
 
 #foreach ($eprop in $embedProps.entrySet())
-    public var $eprop.key:$eprop.value;
+public var $eprop.key:$eprop.value;
 #end
 }
 

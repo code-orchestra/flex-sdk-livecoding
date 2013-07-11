@@ -41,8 +41,7 @@ import java.util.Set;
  *
  * @author Basil Hosmer
  */
-public class DescriptorGenerator
-{
+public class DescriptorGenerator {
     private final static String INDENT = "  ".intern();
 
     /**
@@ -50,41 +49,37 @@ public class DescriptorGenerator
      */
     public static void addDescriptorInitializerFragments(CodeFragmentList list, Model model,
                                                          Set<String> includePropNames, boolean includeDesignLayer,
-                                                         String indent)
-    {
+                                                         String indent) {
         addDescriptorInitializerFragments(list, model, indent, includePropNames, includeDesignLayer, true);
     }
 
     /**
      * convenience wrapper for generating non-toplevel descriptor entries
      */
-    public static void addDescriptorInitializerFragments(CodeFragmentList list, Model model, String indent)
-    {
+    public static void addDescriptorInitializerFragments(CodeFragmentList list, Model model, String indent) {
         addDescriptorInitializerFragments(list, model, indent, null, true, false);
     }
 
     /**
      * @param includePropNames if non-null, this is a set of names of properties to include in the descriptor.
-     *
-     * A filtered set is sometimes needed to conform to the framework API, which requires a handful of properties
-     * (e.g. height, width) be encoded into the top-level descriptor, even though procedural code sets all top-level
-     * ('document') properties.
-     *
-     * Recursive calls to generateDescriptorCode() always pass null for this param, causing all child properties to be
-     * encoded, as required by the framework.
-     *
-     * Note: as with includePropNames, non-property entries are only suppressed (controlled by the propsOnly param to
-     * addDescriptorInitializerFragments being set to true) at the top level of the descriptor.
-     *
-     * Note: _childDescriptor, built from MovieClip.children, is encoded unconditionally at all levels.
-     *
-     * @param propsOnly if true, event, effect and style entries are suppressed. This is a top- vs. nontop-level
-     * constraint, like includePropNames.
+     *                         <p/>
+     *                         A filtered set is sometimes needed to conform to the framework API, which requires a handful of properties
+     *                         (e.g. height, width) be encoded into the top-level descriptor, even though procedural code sets all top-level
+     *                         ('document') properties.
+     *                         <p/>
+     *                         Recursive calls to generateDescriptorCode() always pass null for this param, causing all child properties to be
+     *                         encoded, as required by the framework.
+     *                         <p/>
+     *                         Note: as with includePropNames, non-property entries are only suppressed (controlled by the propsOnly param to
+     *                         addDescriptorInitializerFragments being set to true) at the top level of the descriptor.
+     *                         <p/>
+     *                         Note: _childDescriptor, built from MovieClip.children, is encoded unconditionally at all levels.
+     * @param propsOnly        if true, event, effect and style entries are suppressed. This is a top- vs. nontop-level
+     *                         constraint, like includePropNames.
      */
     private static void addDescriptorInitializerFragments(CodeFragmentList list, Model model, String indent,
                                                           Set<String> includePropNames, boolean includeDesignLayer,
-                                                          boolean propsOnly)
-    {
+                                                          boolean propsOnly) {
         model.setDescribed(true);
 
         //  open ctor call
@@ -95,12 +90,11 @@ public class DescriptorGenerator
         list.add(indent, "type: ", NameFormatter.toDot(model.getType().getName()), model.getXmlLineNumber());
 
         //  id?
-        if (model.isDeclared())
-        {
+        if (model.isDeclared()) {
             list.add(indent, ",", 0);
             list.add(indent, "id: ", TextGen.quoteWord(model.getId()), model.getXmlLineNumber());
         }
-        
+
         //  events?
         if (!propsOnly)
             addDescriptorEvents(list, model, indent);
@@ -124,70 +118,62 @@ public class DescriptorGenerator
     /**
      *
      */
-    private static void addDescriptorProperties(CodeFragmentList list, Model model, final Set<String> includePropNames, 
-                                                boolean includeDesignLayer, String indent)
-    {
+    private static void addDescriptorProperties(CodeFragmentList list, Model model, final Set<String> includePropNames,
+                                                boolean includeDesignLayer, String indent) {
         //  ordinary properties
         Iterator propIter = includePropNames == null ?
                 model.getPropertyInitializerIterator(false) :
                 new FilterIterator(model.getPropertyInitializerIterator(false), new Predicate() {
-                    public boolean evaluate(Object obj) { return includePropNames.contains(((NamedInitializer)obj).getName()); }
+                    public boolean evaluate(Object obj) {
+                        return includePropNames.contains(((NamedInitializer) obj).getName());
+                    }
                 });
 
         //  visual children
-        Iterator vcIter = (model instanceof MovieClip && ((MovieClip)model).hasChildren()) ?
-                ((MovieClip)model).children().iterator() :
+        Iterator vcIter = (model instanceof MovieClip && ((MovieClip) model).hasChildren()) ?
+                ((MovieClip) model).children().iterator() :
                 Collections.EMPTY_LIST.iterator();
 
         // designLayer ?
         Boolean hasDesignLayer = (includeDesignLayer && (model.layerParent != null) &&
-                                  model.getType().isAssignableTo(model.getStandardDefs().INTERFACE_IVISUALELEMENT));
-                
-        if (propIter.hasNext() || vcIter.hasNext() || hasDesignLayer)
-        {
-            if (!list.isEmpty())
-            {
+                model.getType().isAssignableTo(model.getStandardDefs().INTERFACE_IVISUALELEMENT));
+
+        if (propIter.hasNext() || vcIter.hasNext() || hasDesignLayer) {
+            if (!list.isEmpty()) {
                 list.add(indent, ",", 0);
             }
 
             list.add(indent, "propertiesFactory: function():Object { return {", 0);
             indent += DescriptorGenerator.INDENT;
-            
-            while (propIter.hasNext())
-            {
-                NamedInitializer init = (NamedInitializer)propIter.next();
-                if (!init.isStateSpecific())
-                {
+
+            while (propIter.hasNext()) {
+                NamedInitializer init = (NamedInitializer) propIter.next();
+                if (!init.isStateSpecific()) {
                     list.add(indent, init.getName(), ": ", init.getValueExpr(),
                             (propIter.hasNext() || vcIter.hasNext() || hasDesignLayer ? "," : ""),
                             init.getLineRef());
                 }
             }
-            
-            if (hasDesignLayer)
-            {
+
+            if (hasDesignLayer) {
                 list.add(indent, "designLayer", ": ", model.layerParent.getId(),
-                		(vcIter.hasNext() ? "," : ""),
-                		model.getXmlLineNumber());   
+                        (vcIter.hasNext() ? "," : ""),
+                        model.getXmlLineNumber());
             }
-         
-            if (vcIter.hasNext())
-            {
+
+            if (vcIter.hasNext()) {
                 list.add(indent, "childDescriptors: [", 0);
 
                 // Generate each child descriptor unless the child as explicitly filtered out.
                 boolean isFirst = true;
-                while (vcIter.hasNext())
-                {
-                    VisualChildInitializer init = (VisualChildInitializer)vcIter.next();
-                    Model child = (MovieClip)init.getValue();
-                    if (child.isDescriptorInit()) 
-                    {
-                        if (!isFirst)
-                        {
+                while (vcIter.hasNext()) {
+                    VisualChildInitializer init = (VisualChildInitializer) vcIter.next();
+                    Model child = (MovieClip) init.getValue();
+                    if (child.isDescriptorInit()) {
+                        if (!isFirst) {
                             list.add(indent, ",", 0);
                         }
-                        
+
                         addDescriptorInitializerFragments(list, child, indent + DescriptorGenerator.INDENT);
                         isFirst = false;
                     }
@@ -205,22 +191,18 @@ public class DescriptorGenerator
     /**
      *
      */
-    private static void addDescriptorStylesAndEffects(CodeFragmentList list, Model model, String indent)
-    {
+    private static void addDescriptorStylesAndEffects(CodeFragmentList list, Model model, String indent) {
         Iterator styleAndEffectIter = model.getStyleAndEffectInitializerIterator();
-        if (styleAndEffectIter.hasNext())
-        {
-            if (!list.isEmpty())
-            {
+        if (styleAndEffectIter.hasNext()) {
+            if (!list.isEmpty()) {
                 list.add(indent, ",", 0);
             }
 
             list.add(indent, "stylesFactory: function():void {", 0);
             indent += DescriptorGenerator.INDENT;
 
-            while (styleAndEffectIter.hasNext())
-            {
-                NamedInitializer init = (NamedInitializer)styleAndEffectIter.next();
+            while (styleAndEffectIter.hasNext()) {
+                NamedInitializer init = (NamedInitializer) styleAndEffectIter.next();
                 list.add(indent, "this.", init.getName(), " = ", init.getValueExpr() + ";", init.getLineRef());
             }
 
@@ -232,13 +214,10 @@ public class DescriptorGenerator
     /**
      *
      */
-    private static void addDescriptorEffectNames(CodeFragmentList list, Model model, String indent)
-    {
+    private static void addDescriptorEffectNames(CodeFragmentList list, Model model, String indent) {
         String effectEventNames = model.getEffectNames();
-        if (effectEventNames.length() > 0)
-        {
-            if (!list.isEmpty())
-            {
+        if (effectEventNames.length() > 0) {
+            if (!list.isEmpty()) {
                 list.add(indent, ",", 0);
             }
 
@@ -249,24 +228,20 @@ public class DescriptorGenerator
     /**
      *
      */
-    private static void addDescriptorEvents(CodeFragmentList list, Model model, String indent)
-    {
+    private static void addDescriptorEvents(CodeFragmentList list, Model model, String indent) {
         Iterator eventIter = model.getEventInitializerIterator();
-        if (eventIter.hasNext())
-        {
-            if (!list.isEmpty())
-            {
+        if (eventIter.hasNext()) {
+            if (!list.isEmpty()) {
                 list.add(indent, ",", 0);
             }
 
             list.add(indent, "events: {", 0);
             indent += DescriptorGenerator.INDENT;
 
-            while (eventIter.hasNext())
-            {
-                EventInitializer init = (EventInitializer)eventIter.next();
+            while (eventIter.hasNext()) {
+                EventInitializer init = (EventInitializer) eventIter.next();
                 list.add(indent, init.getName(), ": ", TextGen.quoteWord(init.getValueExpr()),
-                            (eventIter.hasNext() ? "," : ""),
+                        (eventIter.hasNext() ? "," : ""),
                         init.getLineRef());
             }
 

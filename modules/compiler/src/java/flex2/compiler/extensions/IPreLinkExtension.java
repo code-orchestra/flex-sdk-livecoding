@@ -39,9 +39,8 @@ import flex2.compiler.common.Configuration;
  * @author Andrew Westberg
  */
 public interface IPreLinkExtension
-    extends IExtension
-{
-    void run( List<Source> sources, List<CompilationUnit> units, FileSpec fileSpec, SourceList sourceList,
-              SourcePath sourcePath, ResourceBundlePath bundlePath, ResourceContainer resources,
-              SymbolTable symbolTable, CompilerSwcContext swcContext, Configuration configuration );
+        extends IExtension {
+    void run(List<Source> sources, List<CompilationUnit> units, FileSpec fileSpec, SourceList sourceList,
+             SourcePath sourcePath, ResourceBundlePath bundlePath, ResourceContainer resources,
+             SymbolTable symbolTable, CompilerSwcContext swcContext, Configuration configuration);
 }

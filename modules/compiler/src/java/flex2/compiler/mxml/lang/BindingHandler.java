@@ -32,7 +32,6 @@ import flex2.compiler.mxml.rep.Model;
  * BindingExpression and set information like the index of the
  * subbuilder.
  */
-public interface BindingHandler
-{
-	BindingExpression invoke(BindingExpression bindingExpression, Model dest);
+public interface BindingHandler {
+    BindingExpression invoke(BindingExpression bindingExpression, Model dest);
 }

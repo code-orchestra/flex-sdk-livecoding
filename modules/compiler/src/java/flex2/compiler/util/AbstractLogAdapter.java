@@ -30,172 +30,138 @@ import flex2.compiler.Logger;
  *
  * @author Paul Reilly
  */
-public abstract class AbstractLogAdapter implements Logger
-{
+public abstract class AbstractLogAdapter implements Logger {
     protected Logger original;
 
-    public AbstractLogAdapter(Logger original)
-    {
+    public AbstractLogAdapter(Logger original) {
         this.original = original;
     }
 
-    public int errorCount()
-    {
+    public int errorCount() {
         return original.errorCount();
     }
 
-    public int warningCount()
-    {
+    public int warningCount() {
         return original.warningCount();
     }
 
-    public void logInfo(String info)
-    {
+    public void logInfo(String info) {
         original.logInfo(info);
     }
 
-    public void logDebug(String debug)
-    {
+    public void logDebug(String debug) {
         original.logDebug(debug);
     }
 
-    public void logWarning(String warning)
-    {
+    public void logWarning(String warning) {
         original.logWarning(warning);
     }
 
-    public void logError(String error)
-    {
+    public void logError(String error) {
         original.logError(error);
     }
 
-    public void logInfo(String path, String info)
-    {
+    public void logInfo(String path, String info) {
         original.logInfo(path, info);
     }
 
-    public void logDebug(String path, String debug)
-    {
+    public void logDebug(String path, String debug) {
         original.logDebug(path, debug);
     }
 
-    public void logWarning(String path, String warning)
-    {
+    public void logWarning(String path, String warning) {
         original.logWarning(path, warning);
     }
 
-    public void logWarning(String path, String warning, int errorCode)
-    {
+    public void logWarning(String path, String warning, int errorCode) {
         original.logWarning(path, warning, errorCode);
     }
 
-    public void logError(String path, String error)
-    {
+    public void logError(String path, String error) {
         original.logError(path, error);
     }
 
-    public void logError(String path, String error, int errorCode)
-    {
+    public void logError(String path, String error, int errorCode) {
         original.logError(path, error, errorCode);
     }
 
-    public void logInfo(String path, int line, String info)
-    {
+    public void logInfo(String path, int line, String info) {
         original.logInfo(path, line, info);
     }
 
-    public void logDebug(String path, int line, String debug)
-    {
+    public void logDebug(String path, int line, String debug) {
         original.logDebug(path, line, debug);
     }
 
-    public void logWarning(String path, int line, String warning)
-    {
+    public void logWarning(String path, int line, String warning) {
         original.logWarning(path, line, warning);
     }
 
-    public void logWarning(String path, int line, String warning, int errorCode)
-    {
+    public void logWarning(String path, int line, String warning, int errorCode) {
         original.logWarning(path, line, warning, errorCode);
     }
 
-    public void logError(String path, int line, String error)
-    {
+    public void logError(String path, int line, String error) {
         original.logError(path, line, error);
     }
 
-    public void logError(String path, int line, String error, int errorCode)
-    {
+    public void logError(String path, int line, String error, int errorCode) {
         original.logError(path, line, error, errorCode);
     }
 
-    public void logInfo(String path, int line, int col, String info)
-    {
+    public void logInfo(String path, int line, int col, String info) {
         original.logInfo(path, line, col, info);
     }
 
-    public void logDebug(String path, int line, int col, String debug)
-    {
+    public void logDebug(String path, int line, int col, String debug) {
         original.logDebug(path, line, col, debug);
     }
 
-    public void logWarning(String path, int line, int col, String warning)
-    {
+    public void logWarning(String path, int line, int col, String warning) {
         original.logWarning(path, line, col, warning);
     }
 
-    public void logError(String path, int line, int col, String error)
-    {
+    public void logError(String path, int line, int col, String error) {
         original.logError(path, line, col, error);
     }
 
-    public void logWarning(String path, int line, int col, String warning, String source)
-    {
+    public void logWarning(String path, int line, int col, String warning, String source) {
         original.logWarning(path, line, col, warning, source);
     }
 
-    public void logWarning(String path, int line, int col, String warning, String source, int errorCode)
-    {
+    public void logWarning(String path, int line, int col, String warning, String source, int errorCode) {
         original.logWarning(path, line, col, warning, source, errorCode);
     }
 
-    public void logError(String path, int line, int col, String error, String source)
-    {
+    public void logError(String path, int line, int col, String error, String source) {
         original.logError(path, line, col, error, source);
     }
 
-    public void logError(String path, int line, int col, String error, String source, int errorCode)
-    {
+    public void logError(String path, int line, int col, String error, String source, int errorCode) {
         original.logError(path, line, col, error, source, errorCode);
     }
 
-    public void log(ILocalizableMessage m)
-    {
+    public void log(ILocalizableMessage m) {
         original.log(m);
     }
 
-    public void log(ILocalizableMessage m, String source)
-    {
+    public void log(ILocalizableMessage m, String source) {
         original.log(m, source);
     }
 
-    public void needsCompilation(String path, String reason)
-    {
+    public void needsCompilation(String path, String reason) {
         original.needsCompilation(path, reason);
     }
 
-    public void includedFileUpdated(String path)
-    {
+    public void includedFileUpdated(String path) {
         original.includedFileUpdated(path);
     }
 
-    public void includedFileAffected(String path)
-    {
+    public void includedFileAffected(String path) {
         original.includedFileAffected(path);
     }
 
-    public void setLocalizationManager(LocalizationManager mgr)
-    {
+    public void setLocalizationManager(LocalizationManager mgr) {
         original.setLocalizationManager(mgr);
     }
 }

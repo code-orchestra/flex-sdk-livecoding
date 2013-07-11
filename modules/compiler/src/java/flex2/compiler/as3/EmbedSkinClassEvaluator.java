@@ -36,28 +36,22 @@ import macromedia.asc.util.Context;
  *
  * @author Paul Reilly
  */
-class EmbedSkinClassEvaluator extends EvaluatorAdapter
-{
+class EmbedSkinClassEvaluator extends EvaluatorAdapter {
     private CompilationUnit unit;
 
-    EmbedSkinClassEvaluator(CompilationUnit unit)
-    {
+    EmbedSkinClassEvaluator(CompilationUnit unit) {
         this.unit = unit;
     }
 
-    public synchronized Value evaluate(Context context, MetaDataNode node)
-    {
-        if ("Embed".equals(node.getId()))
-        {
+    public synchronized Value evaluate(Context context, MetaDataNode node) {
+        if ("Embed".equals(node.getId())) {
             MetaData metaData = new MetaData(node);
             int len = metaData.count();
 
-            for (int i = 0; i < len; i++)
-            {
+            for (int i = 0; i < len; i++) {
                 String key = metaData.getKey(i);
 
-                if ((key != null) && key.equals(Transcoder.SKINCLASS))
-                {
+                if ((key != null) && key.equals(Transcoder.SKINCLASS)) {
                     String skinClass = metaData.getValue(i);
                     unit.inheritance.add(new MultiName(NameFormatter.toColon(skinClass)));
                 }

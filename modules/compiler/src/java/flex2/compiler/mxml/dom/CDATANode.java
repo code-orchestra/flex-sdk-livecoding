@@ -26,49 +26,39 @@ import java.io.StringWriter;
  *
  * @author Clement Wong
  */
-public class CDATANode extends Node
-{
-	public CDATANode()
-	{
-		super("", "", 0);
-		inCDATA = false;
-	}
+public class CDATANode extends Node {
+    public CDATANode() {
+        super("", "", 0);
+        inCDATA = false;
+    }
 
-	public boolean inCDATA;
+    public boolean inCDATA;
 
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 
-	public void toStartElement(StringWriter w)
-	{
-		if (inCDATA)
-		{
-			w.write("<![CDATA[");
-			w.write(image);
-			w.write("]]>");
-		}
-		else
-		{
-			w.write(image);
-		}
-	}
+    public void toStartElement(StringWriter w) {
+        if (inCDATA) {
+            w.write("<![CDATA[");
+            w.write(image);
+            w.write("]]>");
+        } else {
+            w.write(image);
+        }
+    }
 
-	public void toEndElement(StringWriter w)
-	{
-	}
+    public void toEndElement(StringWriter w) {
+    }
 
-	public boolean isWhitespace()
-	{
-	    return image != null && image.trim().length() == 0;
-	}
+    public boolean isWhitespace() {
+        return image != null && image.trim().length() == 0;
+    }
 
-	public String toString()
-	{
-		String cdata = image.replace('\r', ' ').replace('\n', ' ').trim();
-		cdata = (cdata.length() > 10) ? cdata.substring(0, 10) + "..." : cdata;
-		return "<![[ " + cdata + " ]]>";
-	}
+    public String toString() {
+        String cdata = image.replace('\r', ' ').replace('\n', ' ').trim();
+        cdata = (cdata.length() > 10) ? cdata.substring(0, 10) + "..." : cdata;
+        return "<![[ " + cdata + " ]]>";
+    }
 }

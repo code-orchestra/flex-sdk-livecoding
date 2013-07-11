@@ -1,4 +1,3 @@
-
 #*
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -31,38 +30,38 @@ import $name;
 ## class-level metadata
 ##
 #foreach ($md in $classMetaData)
-$md
+    $md
 #end
 ##
 ## begin class def
 ##
 public class $className extends $superClassName
 #foreach ($intf in $interfaceNames)
-#if ($velocityCount == 1) implements $intf #else, $intf #end
+    #if ($velocityCount == 1) implements $intf #else, $intf #end
 #end
 {
-	public function $className() {}
+public function $className() {}
 
 ##
 ## instance var declarations
 ##
 #foreach ($var in $variables)
-	[Bindable]
-	public var $var.getKey() : $var.getValue();
+[Bindable]
+public var $var.getKey() : $var.getValue();
 #end
 
 ##
 ## These are plucked out after parse() if they are found to be inherited.
 ##
 #foreach ($var in $bindingManagementVariables)
-	$var.namespace var $var.name : $var.type;
+    $var.namespace var $var.name : $var.type;
 #end
 
 ##
 ## scripts
 ##
 #foreach ($script in $scripts)
-$script
+    $script
 #end
 
 ##

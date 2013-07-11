@@ -20,6 +20,7 @@
 package flex2.compiler.abc;
 
 import flex2.compiler.util.QName;
+
 import java.util.List;
 
 /**
@@ -29,8 +30,7 @@ import java.util.List;
  * @see flex2.compiler.as3.reflect.TypeTable
  * @see flex2.compiler.abc.AbcClass#getVariable(String[], String, boolean)
  */
-public interface Variable
-{
+public interface Variable {
     QName getQName();
 
     String getTypeName();

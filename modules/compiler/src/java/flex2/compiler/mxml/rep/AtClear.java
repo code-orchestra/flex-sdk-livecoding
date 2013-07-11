@@ -25,22 +25,18 @@ import flex2.compiler.Source;
  * This class represents an MXML @Clear() use as a 'reset' for state-specific
  * properties.
  */
-public class AtClear implements LineNumberMapped
-{
-	private int lineNumber;
+public class AtClear implements LineNumberMapped {
+    private int lineNumber;
 
-	public AtClear(Source source, int lineNumber)
-	{
-		this.lineNumber = lineNumber;
-	}
+    public AtClear(Source source, int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
 
-	public int getXmlLineNumber()
-	{
-		return lineNumber;
-	}
+    public int getXmlLineNumber() {
+        return lineNumber;
+    }
 
-	public void setXmlLineNumber(int xmlLineNumber)
-	{
-		this.lineNumber = xmlLineNumber;
-	}
+    public void setXmlLineNumber(int xmlLineNumber) {
+        this.lineNumber = xmlLineNumber;
+    }
 }

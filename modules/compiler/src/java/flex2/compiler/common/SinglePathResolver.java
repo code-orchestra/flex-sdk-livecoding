@@ -28,8 +28,7 @@ import flex2.compiler.io.VirtualFile;
  *
  * @author Brian Deitte
  */
-public interface SinglePathResolver
-{
+public interface SinglePathResolver {
     /**
      * If <code>path</code> can be resolved, an instance of
      * VirtualFile is returned.

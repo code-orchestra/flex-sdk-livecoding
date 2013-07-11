@@ -31,25 +31,21 @@ import flex2.compiler.util.QName;
  *
  * @author Corey Lucier
  */
-public class ReparentNode extends Node
-{
+public class ReparentNode extends Node {
     public static final Set<QName> attributes;
 
-    static
-    {
+    static {
         attributes = new HashSet<QName>();
         attributes.add(new QName("", "target"));
         attributes.add(new QName("", StandardDefs.PROP_INCLUDE_STATES));
         attributes.add(new QName("", StandardDefs.PROP_EXCLUDE_STATES));
     }
-    
-    ReparentNode(String uri, String localName, int size)
-    {
+
+    ReparentNode(String uri, String localName, int size) {
         super(uri, localName, size);
     }
 
-    public void analyze(Analyzer analyzer)
-    {
+    public void analyze(Analyzer analyzer) {
         analyzer.prepare(this);
         analyzer.analyze(this);
     }

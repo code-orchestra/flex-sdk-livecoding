@@ -26,20 +26,17 @@ import java.util.regex.Pattern;
 /**
  * This class converts the plain comment to the format expected by the
  * ClassTable.
- * 
+ *
  * @author gauravj
  */
-public class MxmlCommentUtil
-{
-    public static String commentToXmlComment(String comment)
-    {
-        if(!comment.equals(""))
-        {
+public class MxmlCommentUtil {
+    public static String commentToXmlComment(String comment) {
+        if (!comment.equals("")) {
             // replace all asterisk at the beginning of the line. Some users may
             // copy paste comments from as to mxml.
             Pattern pattern = Pattern.compile("^\\s*\\*", Pattern.MULTILINE);
             Matcher matcher = pattern.matcher(comment);
-            comment = matcher.replaceAll("");            
+            comment = matcher.replaceAll("");
         }
 
         StringBuilder commentBuilder = new StringBuilder();
@@ -52,8 +49,7 @@ public class MxmlCommentUtil
 
         // Presence of @ means there could be special tags like @see, @copy,
         // @inheritDoc etc.
-        if (index != -1)
-        {
+        if (index != -1) {
             // lets get the description in then parse special tags.
             commentBuilder.append("<");
             commentBuilder.append(tagName);
@@ -68,25 +64,21 @@ public class MxmlCommentUtil
 
             String[] commentFragment = comment.split("@");
 
-            for (int ix = 0; ix < commentFragment.length; ix++)
-            {
+            for (int ix = 0; ix < commentFragment.length; ix++) {
                 StringTokenizer tokenizer = new StringTokenizer(commentFragment[ix], " \t\n\r\f", true);
-                if (tokenizer.hasMoreElements())
-                {
-                    tagName = ((String)tokenizer.nextElement()).trim();
+                if (tokenizer.hasMoreElements()) {
+                    tagName = ((String) tokenizer.nextElement()).trim();
                 }
 
                 String tagContent = "";
 
                 // build the content for a tag.
-                while (tokenizer.hasMoreElements())
-                {
+                while (tokenizer.hasMoreElements()) {
                     tagContent += tokenizer.nextElement();
                 }
 
                 // if there is a tag name. lets wrap content inside the tag.
-                if (!tagName.trim().equals(""))
-                {
+                if (!tagName.trim().equals("")) {
                     commentBuilder.append("<");
                     commentBuilder.append(tagName);
                     commentBuilder.append("><![CDATA[");
@@ -94,15 +86,11 @@ public class MxmlCommentUtil
                     commentBuilder.append("]]></");
                     commentBuilder.append(tagName);
                     commentBuilder.append(">");
-                }
-                else
-                {
+                } else {
                     commentBuilder.append(tagContent);
                 }
             }
-        }
-        else
-        {
+        } else {
             // there are no special tags. lets just process the description.
             commentBuilder.append("<");
             commentBuilder.append(tagName);

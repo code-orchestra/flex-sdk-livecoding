@@ -31,15 +31,14 @@ import com.adobe.internal.fxg.dom.GraphicContext;
 import com.adobe.internal.fxg.dom.TextGraphicNode;
 
 /**
- * A Flex specific override for TextGraphicNode used to capture the 
+ * A Flex specific override for TextGraphicNode used to capture the
  * attributes specified on a &lt;TextGraphic&gt; node in FXG 1.0.
- * 
+ *
  * @author Peter Farland
  * @since FXG 1.0
  */
-public class FlexTextGraphicNode extends TextGraphicNode
-{
-    private static final String FXG_TRACKING_RIGHT_PROPERTY = "trackingRight"; 
+public class FlexTextGraphicNode extends TextGraphicNode {
+    private static final String FXG_TRACKING_RIGHT_PROPERTY = "trackingRight";
     private static final String FXG_PARAGRAPH_START_INDENT_PROPERTY = "paragraphStartIndent";
     private static final String FXG_PARAGRAPH_SPACE_BEFORE_PROPERTY = "paragraphSpaceBefore";
     private static final String FXG_PARAGRAPH_END_INDENT_PROPERTY = "paragraphEndIndent";
@@ -50,8 +49,7 @@ public class FlexTextGraphicNode extends TextGraphicNode
     /**
      * Constructor.
      */
-    public FlexTextGraphicNode()
-    {
+    public FlexTextGraphicNode() {
         super();
         // Set TextGraphic defaults that should always be set. 
         setAttribute(FXG_FONTFAMILY_ATTRIBUTE, DEFAULT_FXG_FONT_FAMILY);
@@ -60,21 +58,19 @@ public class FlexTextGraphicNode extends TextGraphicNode
     /**
      * Flex specific override to keep track of the attributes set on this
      * TextGraphic node.
-     * 
-     * @param name the attribute name
+     *
+     * @param name  the attribute name
      * @param value the attribute value
      * @see TextGraphicNode#setAttribute(String, String)
      * @see AbstractTextNode#setAttribute(String, String)
      */
     @Override
-    public void setAttribute(String name, String value)
-    {
+    public void setAttribute(String name, String value) {
         super.setAttribute(name, value);
 
         // Translate FXG attributes to equivalent Flex properties
         String newName = FlexTextGraphicNode.translateAttribute(name);
-        if (!name.equals(newName))
-        {
+        if (!name.equals(newName)) {
             if (textAttributes != null)
                 textAttributes.remove(name);
 
@@ -89,13 +85,11 @@ public class FlexTextGraphicNode extends TextGraphicNode
      * in SWF).
      */
     @Override
-    public void setDocumentNode(FXGNode root)
-    {
+    public void setDocumentNode(FXGNode root) {
         super.setDocumentNode(root);
 
-        if (root instanceof FlexGraphicNode)
-        {
-            ((FlexGraphicNode)root).hasText = true;
+        if (root instanceof FlexGraphicNode) {
+            ((FlexGraphicNode) root).hasText = true;
         }
     }
 
@@ -119,12 +113,10 @@ public class FlexTextGraphicNode extends TextGraphicNode
      * </p>
      */
     @Override
-    public GraphicContext createGraphicContext()
-    {
+    public GraphicContext createGraphicContext() {
         GraphicContext graphicContext = new GraphicContext();
 
-        if (colorTransform != null)
-        {
+        if (colorTransform != null) {
             graphicContext.colorTransform = colorTransform;
         }
 
@@ -139,11 +131,10 @@ public class FlexTextGraphicNode extends TextGraphicNode
 
     /**
      * Converts an FXG attribute name to a Flex property name.
-     *  
+     *
      * @param name
      */
-    static String translateAttribute(String name)
-    {
+    static String translateAttribute(String name) {
         if (FXG_TRACKING_ATTRIBUTE.equals(name))
             name = FXG_TRACKING_RIGHT_PROPERTY;
         else if (FXG_MARGINLEFT_ATTRIBUTE.equals(name))

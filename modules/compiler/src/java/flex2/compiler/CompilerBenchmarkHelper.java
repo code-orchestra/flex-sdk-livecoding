@@ -28,8 +28,7 @@ import flash.util.Trace;
  * happen at different times, an individual phase for a given source is expected
  * to be completed before moving onto another phase.
  */
-public class CompilerBenchmarkHelper
-{
+public class CompilerBenchmarkHelper {
     /**
      * Index into 2nd dimension of array. Part of compile phase.
      */
@@ -52,12 +51,11 @@ public class CompilerBenchmarkHelper
 
     /**
      * Constructor.
-     * 
+     *
      * @param compilerName The name of the compiler of which this helper is
-     *        associated.
+     *                     associated.
      */
-    public CompilerBenchmarkHelper(String compilerName)
-    {
+    public CompilerBenchmarkHelper(String compilerName) {
         this.compilerName = compilerName;
     }
 
@@ -65,21 +63,15 @@ public class CompilerBenchmarkHelper
      * Initializes a new array of PerformanceData benchmarks for the phases
      * of compilation.
      */
-    public void initBenchmarks()
-    {
-        if (compileTimes == null)
-        {
+    public void initBenchmarks() {
+        if (compileTimes == null) {
             compileTimes = new PerformanceData[POSTPROCESS + 1];
         }
 
-        for (int j = 0; j <= POSTPROCESS; j++)
-        {
-            if (compileTimes[j] == null)
-            {
+        for (int j = 0; j <= POSTPROCESS; j++) {
+            if (compileTimes[j] == null) {
                 compileTimes[j] = new PerformanceData();
-            }
-            else
-            {
+            } else {
                 compileTimes[j].invocationCount = 0;
                 compileTimes[j].totalTime = 0;
             }
@@ -90,11 +82,10 @@ public class CompilerBenchmarkHelper
      * Returns an array of PerformanceData benchmarks for each compilation
      * phase. The position of a phase in the array is fixed. See the public
      * static constants above for a phase's index.
-     *  
+     *
      * @return PerformanceData[] array of compilation phase benchmarks.
      */
-    public PerformanceData[] getBenchmarks()
-    {
+    public PerformanceData[] getBenchmarks() {
         return compileTimes;
     }
 
@@ -103,21 +94,18 @@ public class CompilerBenchmarkHelper
      * sources compilation phases may happen at different times, an individual
      * phase for a given source is expected to be completed before moving onto
      * another phase (for either the same or more likely another source).
-     * 
-     * @param phase is the compiler phase beginning (PREPROCESS, etc..)
+     *
+     * @param phase  is the compiler phase beginning (PREPROCESS, etc..)
      * @param source is the name of the "file" being compiled
      */
-    public void startPhase(int phase, String source)
-    {
-        if (Trace.phase)
-        {
+    public void startPhase(int phase, String source) {
+        if (Trace.phase) {
             // phase trace will print a trace message when we enter each phase.
             // Note the abc compiler requires a special flag, as it can be too
             // verbose
             String name = (compilerName == null) ? "unknown" : compilerName;
             boolean isabc = name.equals("abc");
-            if (isabc == false || Trace.phaseabc)
-            {
+            if (isabc == false || Trace.phaseabc) {
                 // trace the compiler name and file name
                 Trace.trace("Start compiler " + name + " phase[" + getPhaseName(phase) + "] with: " + source);
             }
@@ -127,13 +115,11 @@ public class CompilerBenchmarkHelper
 
     /**
      * Call at the end of a compile phase to record the times.
-     * 
+     *
      * @param phase
      */
-    public void endPhase(int phase)
-    {
-        if (compileTimes != null && phase >= PREPROCESS && phase <= POSTPROCESS)
-        {
+    public void endPhase(int phase) {
+        if (compileTimes != null && phase >= PREPROCESS && phase <= POSTPROCESS) {
             compileTimes[phase].invocationCount++;
             compileTimes[phase].totalTime += System.currentTimeMillis() - startTime;
         }
@@ -142,15 +128,13 @@ public class CompilerBenchmarkHelper
     /**
      * Dumps the total time spent in each phase for the associated compiler, as
      * well as the total time (all in milliseconds).
-     * 
+     *
      * @param logger Logger
      */
-    public void logBenchmarks(Logger logger)
-    {
+    public void logBenchmarks(Logger logger) {
         logger.logInfo("Compiler: " + compilerName);
         long totalTime = 0;
-        for (int i = 0; i < compileTimes.length; i++)
-        {
+        for (int i = 0; i < compileTimes.length; i++) {
             // Log each phase time for this compiler as "phaseName: 0"
             logger.logInfo(getPhaseName(i) + ": " + compileTimes[i].totalTime);
             totalTime += compileTimes[i].totalTime;
@@ -161,24 +145,19 @@ public class CompilerBenchmarkHelper
     /**
      * Calculate difference in total time between to helpers. Copies the
      * invocationCount over without subtracting
-     * 
+     *
      * @param benchmark times to subtract from this.comipleTimes
      * @return (this) - (other)
      */
-    public PerformanceData[] subtract(final CompilerBenchmarkHelper other)
-    {
+    public PerformanceData[] subtract(final CompilerBenchmarkHelper other) {
         PerformanceData[] ret = new PerformanceData[POSTPROCESS + 1];
-        try
-        {
-            for (int i = PREPROCESS; i <= POSTPROCESS; ++i)
-            {
+        try {
+            for (int i = PREPROCESS; i <= POSTPROCESS; ++i) {
                 ret[i] = new PerformanceData();
                 ret[i].invocationCount = this.compileTimes[i].invocationCount;
                 ret[i].totalTime = this.compileTimes[i].totalTime - other.compileTimes[i].totalTime;
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("error " + e.getMessage());
         }
         return ret;
@@ -186,16 +165,14 @@ public class CompilerBenchmarkHelper
 
     /**
      * Returns the name of the phase as a String for a given int.
-     * 
+     *
      * @param phase the phase as an int
      * @return String the phase name
      */
-    private static String getPhaseName(int phase)
-    {
+    private static String getPhaseName(int phase) {
         String result = null;
 
-        switch (phase)
-        {
+        switch (phase) {
             case PREPROCESS:
                 result = "preprocess";
                 break;

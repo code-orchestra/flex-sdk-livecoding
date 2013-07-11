@@ -30,16 +30,14 @@ import flex2.compiler.Source;
  *
  * @author Paul Reilly
  */
-public class StyleConflictException extends CompilerMessage.CompilerError
-{
-	private static final long serialVersionUID = -8399014354067794602L;
+public class StyleConflictException extends CompilerMessage.CompilerError {
+    private static final long serialVersionUID = -8399014354067794602L;
     public String style;
-	public String source;
+    public String source;
 
-	public StyleConflictException(String style, Source source)
-	{
-		this.style = style;
-		this.source = source != null ? source.getNameForReporting() : "";
-	}
+    public StyleConflictException(String style, Source source) {
+        this.style = style;
+        this.source = source != null ? source.getNameForReporting() : "";
+    }
 
 }

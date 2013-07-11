@@ -33,22 +33,20 @@ import macromedia.asc.util.ContextStatics;
  *
  * @author Paul Reilly
  */
-public class MetaDataParser
-{
-	/**
-	 * @param file where the metadata string is located.
-	 * @param md
-	 */
-	public static MetaData parse(ContextStatics perCompileData, Source file, final int beginLine, String md)
-	{
-		StringBuilder stringBuffer = new StringBuilder();
+public class MetaDataParser {
+    /**
+     * @param file where the metadata string is located.
+     * @param md
+     */
+    public static MetaData parse(ContextStatics perCompileData, Source file, final int beginLine, String md) {
+        StringBuilder stringBuffer = new StringBuilder();
 
-		stringBuffer.append("[");
-		stringBuffer.append(md);
-		stringBuffer.append("]");
+        stringBuffer.append("[");
+        stringBuffer.append(md);
+        stringBuffer.append("]");
 
-		// C: Is it possible to find out the encoding of the string from the source?
-		/*InputStream inputStream = null;
+        // C: Is it possible to find out the encoding of the string from the source?
+        /*InputStream inputStream = null;
 		try
 		{
 			inputStream = new ByteArrayInputStream(stringBuffer.toString().getBytes("UTF-8"));
@@ -58,75 +56,63 @@ public class MetaDataParser
 			// not possible...
 		}*/
 
-		Context context = new Context((ContextStatics) perCompileData);
-		context.setPath(file.getParent());
-		context.setScriptName(file.getName());
-		context.setHandler(new flex2.compiler.as3.As3Compiler.CompilerHandler()
-		{
-			public void error2(String filename, int ln, int col, Object msg, String source)
-			{
-				ThreadLocalToolkit.log(new InvalidMetadataFormatError(), filename, beginLine);
-			}
+        Context context = new Context((ContextStatics) perCompileData);
+        context.setPath(file.getParent());
+        context.setScriptName(file.getName());
+        context.setHandler(new flex2.compiler.as3.As3Compiler.CompilerHandler() {
+            public void error2(String filename, int ln, int col, Object msg, String source) {
+                ThreadLocalToolkit.log(new InvalidMetadataFormatError(), filename, beginLine);
+            }
 
-			public void warning2(String filename, int ln, int col, Object msg, String source)
-			{
-				ThreadLocalToolkit.log(new InvalidMetadataFormatWarning(), filename, beginLine);
-			}
+            public void warning2(String filename, int ln, int col, Object msg, String source) {
+                ThreadLocalToolkit.log(new InvalidMetadataFormatWarning(), filename, beginLine);
+            }
 
-			public void error(String filename, int ln, int col, String msg, String source, int errorCode)
-			{
-				ThreadLocalToolkit.log(new InvalidMetadataFormatError(), filename, beginLine);				
-			}
-			
-			public void error(String filename, int ln, int col, String msg, String source)
-			{
-				ThreadLocalToolkit.log(new InvalidMetadataFormatError(), filename, beginLine);
-			}
+            public void error(String filename, int ln, int col, String msg, String source, int errorCode) {
+                ThreadLocalToolkit.log(new InvalidMetadataFormatError(), filename, beginLine);
+            }
 
-			public void warning(String filename, int ln, int col, String msg, String source, int errorCode)
-			{	
-				ThreadLocalToolkit.log(new InvalidMetadataFormatWarning(), filename, beginLine);
-			}
+            public void error(String filename, int ln, int col, String msg, String source) {
+                ThreadLocalToolkit.log(new InvalidMetadataFormatError(), filename, beginLine);
+            }
 
-			public void warning(String filename, int ln, int col, String msg, String source)
-			{
-				ThreadLocalToolkit.log(new InvalidMetadataFormatWarning(), filename, beginLine);
-			}
+            public void warning(String filename, int ln, int col, String msg, String source, int errorCode) {
+                ThreadLocalToolkit.log(new InvalidMetadataFormatWarning(), filename, beginLine);
+            }
 
-			public FileInclude findFileInclude(String parentPath, String filespec)
-			{
-				return null;
-			}			
-		});
-		((ContextStatics) perCompileData).handler = context.getHandler();
+            public void warning(String filename, int ln, int col, String msg, String source) {
+                ThreadLocalToolkit.log(new InvalidMetadataFormatWarning(), filename, beginLine);
+            }
 
-		Parser parser = new Parser(context, stringBuffer.toString(), file.getName());
-		MetaDataNode metaDataNode = parser.parseMetaData();
-		macromedia.asc.parser.MetaDataEvaluator metaDataEvaluator = new macromedia.asc.parser.MetaDataEvaluator();
-		metaDataNode.evaluate(context, metaDataEvaluator);
+            public FileInclude findFileInclude(String parentPath, String filespec) {
+                return null;
+            }
+        });
+        ((ContextStatics) perCompileData).handler = context.getHandler();
 
-		return context.errorCount() > 0 ? null : new MetaData(metaDataNode);
-	}
+        Parser parser = new Parser(context, stringBuffer.toString(), file.getName());
+        MetaDataNode metaDataNode = parser.parseMetaData();
+        macromedia.asc.parser.MetaDataEvaluator metaDataEvaluator = new macromedia.asc.parser.MetaDataEvaluator();
+        metaDataNode.evaluate(context, metaDataEvaluator);
 
-	// error messages
+        return context.errorCount() > 0 ? null : new MetaData(metaDataNode);
+    }
 
-	public static class InvalidMetadataFormatError extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = -6441349221772507527L;
+    // error messages
 
-        public InvalidMetadataFormatError()
-		{
-			super();
-		}
-	}
+    public static class InvalidMetadataFormatError extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = -6441349221772507527L;
 
-	public static class InvalidMetadataFormatWarning extends CompilerMessage.CompilerWarning
-	{
-		private static final long serialVersionUID = -9004017223630883454L;
+        public InvalidMetadataFormatError() {
+            super();
+        }
+    }
 
-        public InvalidMetadataFormatWarning()
-		{
-			super();
-		}
-	}
+    public static class InvalidMetadataFormatWarning extends CompilerMessage.CompilerWarning {
+        private static final long serialVersionUID = -9004017223630883454L;
+
+        public InvalidMetadataFormatWarning() {
+            super();
+        }
+    }
 }

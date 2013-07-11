@@ -25,18 +25,15 @@ package flex2.compiler.as3.binding;
  *
  * @author Paul Reilly
  */
-public class RepeaterComponentWatcher extends PropertyWatcher
-{
+public class RepeaterComponentWatcher extends PropertyWatcher {
     private int repeaterLevel;
 
-    public RepeaterComponentWatcher(int id, String property, int repeaterLevel)
-    {
+    public RepeaterComponentWatcher(int id, String property, int repeaterLevel) {
         super(id, property);
         this.repeaterLevel = repeaterLevel;
     }
 
-    public int getRepeaterLevel()
-    {
+    public int getRepeaterLevel() {
         return repeaterLevel;
     }
 }

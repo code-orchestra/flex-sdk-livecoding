@@ -33,178 +33,146 @@ import flex2.compiler.util.MimeMappings;
  * @author Brian Deitte
  * @author Paul Reilly
  */
-public class VirtualZipFile implements VirtualFile
-{
-	private String mimeType;
-	private String name;
-	private String nameInZip;
-	private byte[] bytes;
-	private ZipFileHolder zipFile;
+public class VirtualZipFile implements VirtualFile {
+    private String mimeType;
+    private String name;
+    private String nameInZip;
+    private byte[] bytes;
+    private ZipFileHolder zipFile;
 
-	public VirtualZipFile(ZipFileHolder zipFileHolder, String mimeType, String name, String nameInZip)
-	{
-		this.zipFile = zipFileHolder;
-		this.mimeType = mimeType;
-		this.name = name;
-		this.nameInZip = nameInZip;
-	}
+    public VirtualZipFile(ZipFileHolder zipFileHolder, String mimeType, String name, String nameInZip) {
+        this.zipFile = zipFileHolder;
+        this.mimeType = mimeType;
+        this.name = name;
+        this.nameInZip = nameInZip;
+    }
 
     /**
      * Nulls out "bytes", but does not close the zipFile, because it's
      * potentially shared by other VirtualZipFile and we want to avoid
      * opening and closing it numerous times during a compilation.
      */
-	public void close()
-	{
+    public void close() {
         bytes = null;
-	}
+    }
 
-	public InputStream getInputStream() throws IOException
-	{
-		return new ByteArrayInputStream(toByteArray());
-	}
+    public InputStream getInputStream() throws IOException {
+        return new ByteArrayInputStream(toByteArray());
+    }
 
-	/**
-	 * The bytes are only loaded as they are needed.
-	 */
-	public byte[] toByteArray() throws IOException
-	{
-		if (bytes == null)
-		{
-            try
-            {
+    /**
+     * The bytes are only loaded as they are needed.
+     */
+    public byte[] toByteArray() throws IOException {
+        if (bytes == null) {
+            try {
                 readBytes();
-            }
-            catch (IOException ioException)
-            {
+            } catch (IOException ioException) {
                 // ignore the first time around.  It's most likely
                 // caused by an invalid handle.
             }
-		    
-		    // with lazy swc loading, bytes are read only when
-		    // required.  if we do an incremental compile with a
-		    // change that requires some new dependency to be read
-		    // from the swc, bytes could be zero due to invalid
-		    // handle.
-		    if ((bytes == null) || (bytes.length == 0))
-		    {
-		        // refresh the swc file handle (only once)
-		        zipFile.close();
+
+            // with lazy swc loading, bytes are read only when
+            // required.  if we do an incremental compile with a
+            // change that requires some new dependency to be read
+            // from the swc, bytes could be zero due to invalid
+            // handle.
+            if ((bytes == null) || (bytes.length == 0)) {
+                // refresh the swc file handle (only once)
+                zipFile.close();
 
                 // swc handle should be refreshed now.  If an
                 // exception is thrown here, don't swallow it.
                 readBytes();
-		}
-		}
+            }
+        }
 
-		return bytes;
-	}
+        return bytes;
+    }
 
     /**
      * Fills in "bytes" from the zipFile entry, specified by "nameInZip".
      */
-    private void readBytes() throws IOException
-    {
+    private void readBytes() throws IOException {
         InputStream stream = null;
 
-        try
-        {
+        try {
             ZipEntry zipEntry = zipFile.getEntry(nameInZip);
             stream = zipFile.getZipFile().getInputStream(zipEntry);
             bytes = FileUtils.toByteArray(stream);
-        }
-        finally
-        {
-            if (stream != null)
-            {
-                try
-                {
+        } finally {
+            if (stream != null) {
+                try {
                     stream.close();
-                }
-                catch (IOException ioException)
-                {
+                } catch (IOException ioException) {
                     // ignore
                 }
             }
         }
     }
 
-	public long getLastModified()
-	{
+    public long getLastModified() {
         ZipEntry zipEntry = zipFile.getEntry(nameInZip);
         return zipEntry.getTime();
-	}
+    }
 
-	public String getMimeType()
-	{
-		return mimeType;
-	}
+    public String getMimeType() {
+        return mimeType;
+    }
 
-	public String getName()
-	{
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getNameForReporting()
-	{
-		return getName();
-	}
+    public String getNameForReporting() {
+        return getName();
+    }
 
-	public String getParent()
-	{
-		return zipFile.getPath();
-	}
+    public String getParent() {
+        return zipFile.getPath();
+    }
 
-    public boolean isDirectory()
-    {
+    public boolean isDirectory() {
         return false;
     }
 
-    public String getURL()
-	{
+    public String getURL() {
         return "jar:file://" + getName().replaceAll("\\$", "!/");
-	}
+    }
 
-	public long size()
-	{
+    public long size() {
         ZipEntry zipEntry = zipFile.getEntry(nameInZip);
         return zipEntry.getSize();
-	}
+    }
 
-	public VirtualFile resolve(String relative)
-	{
+    public VirtualFile resolve(String relative) {
         int separator = nameInZip.lastIndexOf("/");
 
-        if (separator != -1)
-        {
+        if (separator != -1) {
             relative = FileUtils.addPathComponents(nameInZip.substring(0, separator), relative, '/');
         }
 
         ZipEntry zipEntry = zipFile.getEntry(relative);
         VirtualFile result = null;
 
-        if (zipEntry != null)
-        {
+        if (zipEntry != null) {
             String name = zipEntry.getName();
             result = new VirtualZipFile(zipFile, MimeMappings.getMimeType(zipEntry.getName()),
-                                        zipFile.getPath() + "$" + name, name);
+                    zipFile.getPath() + "$" + name, name);
         }
 
         return result;
-	}
+    }
 
-	public boolean equals(Object obj)
-	{
-		return obj == this;
-	}
+    public boolean equals(Object obj) {
+        return obj == this;
+    }
 
-    public int hashCode()
-    {
+    public int hashCode() {
         return getName().hashCode();
     }
 
-	public boolean isTextBased()
-	{
-		return false;
-	}
+    public boolean isTextBased() {
+        return false;
+    }
 }

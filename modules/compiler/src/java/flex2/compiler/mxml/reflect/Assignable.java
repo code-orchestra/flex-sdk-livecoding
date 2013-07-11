@@ -23,8 +23,7 @@ package flex2.compiler.mxml.reflect;
  * Defines the reflection API of a property or variable, which can be
  * assigned a value.
  */
-public interface Assignable extends Stateful
-{
+public interface Assignable extends Stateful {
     /**
      * @return The name of the assignable field.
      */
@@ -37,7 +36,7 @@ public interface Assignable extends Stateful
 
     /**
      * @return The expected type of the assignable field. While typically
-     * the same as getType(), this may be customized with metadata.
+     *         the same as getType(), this may be customized with metadata.
      */
     Type getLValueType();
 
@@ -45,8 +44,8 @@ public interface Assignable extends Stateful
      * [ArrayElementType] or Vector data type.
      *
      * @return null if the assignable field is of type Array and the array
-     * element type metadata is not available or if the array element type is
-     * not specified.
+     *         element type metadata is not available or if the array element type is
+     *         not specified.
      */
     Type getElementType();
 }

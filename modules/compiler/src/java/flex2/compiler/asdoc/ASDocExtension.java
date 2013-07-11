@@ -48,11 +48,10 @@ import flash.util.Trace;
 
 /**
  * Compiler extension that creates the ASDoc xml file
- * 
+ *
  * @author Brian Deitte
  */
-public class ASDocExtension implements Extension
-{
+public class ASDocExtension implements Extension {
     private static String EXCLUDE_CLASS = "ExcludeClass";
 
     private StringBuilder out;
@@ -64,17 +63,16 @@ public class ASDocExtension implements Extension
     private ClassTable tab; // new
 
     /**
-     * Constructor. 
-     * 
+     * Constructor.
+     *
      * @param excludeClasses
      * @param includeOnly
      * @param packages
-     * @param restoreBuiltinClasses Flag used by the doc team. player sources are renamed before given 
-     * as input to asdoc. When walking the class inheritance, if this flag is set to true, the top most class is 
-     * Object_ASDoc and not Object. 
+     * @param restoreBuiltinClasses Flag used by the doc team. player sources are renamed before given
+     *                              as input to asdoc. When walking the class inheritance, if this flag is set to true, the top most class is
+     *                              Object_ASDoc and not Object.
      */
-    public ASDocExtension(List excludeClasses, Set includeOnly, Set packages, boolean restoreBuiltinClasses)
-    {
+    public ASDocExtension(List excludeClasses, Set includeOnly, Set packages, boolean restoreBuiltinClasses) {
         this.excludeClasses = excludeClasses;
         this.includeOnly = includeOnly;
         this.packages = packages;
@@ -84,12 +82,11 @@ public class ASDocExtension implements Extension
 
     /**
      * This method calls the TopLevelGenerator class which converts the doc comments into toplevel.xml
-     * 
-     * @param restoreBuiltinClasses Flag used by the doc team. when set to true it renames back the player 
-     * classes in toplevel.xml 
+     *
+     * @param restoreBuiltinClasses Flag used by the doc team. when set to true it renames back the player
+     *                              classes in toplevel.xml
      */
-    public void finish(boolean restoreBuiltinClasses)
-    {
+    public void finish(boolean restoreBuiltinClasses) {
         /*
          * This part shouldn't be exposed...the default should be a TopLevel
          * passed in.
@@ -98,9 +95,8 @@ public class ASDocExtension implements Extension
         g.generate(tab); // new
         xml = g.toString(); // new
         g = null; // new
-        
-        if(restoreBuiltinClasses && xml != null)
-        {
+
+        if (restoreBuiltinClasses && xml != null) {
             xml = xml.replaceAll("_ASDoc2", "");
             xml = xml.replaceAll("_ASDoc", "");
             xml = xml.replaceAll("Infinity_Neg_Inf", "-Infinity");
@@ -109,37 +105,28 @@ public class ASDocExtension implements Extension
 
     /**
      * This method is used to write the toplevel.xml file to the disk (in the output folder).
+     *
      * @param file
      */
-    public void saveFile(File file)
-    {
+    public void saveFile(File file) {
         BufferedOutputStream outputStream = null;
-        try
-        {
+        try {
             outputStream = new BufferedOutputStream(new FileOutputStream(file));
             outputStream.write(xml.getBytes("UTF-8"));
             outputStream.flush();
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             if (Trace.error)
                 ex.printStackTrace();
 
             throw new RuntimeException("Could not save " + file + ": " + ex);
-        }
-        finally
-        {
+        } finally {
             if (Trace.asdoc)
                 System.out.println("Wrote doc file: " + file);
 
-            if (outputStream != null)
-            {
-                try
-                {
+            if (outputStream != null) {
+                try {
                     outputStream.close();
-                }
-                catch (IOException ex)
-                {
+                } catch (IOException ex) {
                 }
             }
         }
@@ -147,63 +134,56 @@ public class ASDocExtension implements Extension
 
     /**
      * getter method for the generated toplevel.xml
+     *
      * @return
      */
-    public String getXML()
-    {
+    public String getXML() {
         return xml;
     }
 
     /**
      * compiler parse1 (not used by asdoc extension)
      */
-    public void parse1(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void parse1(CompilationUnit unit, TypeTable typeTable) {
     }
 
     /**
      * compiler parse2 (not used by asdoc extension)
      */
-    public void parse2(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void parse2(CompilationUnit unit, TypeTable typeTable) {
     }
 
     /**
      * compiler analyze1 (not used by asdoc extension)
      */
-    public void analyze1(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze1(CompilationUnit unit, TypeTable typeTable) {
     }
 
     /**
      * compiler analyze2 (not used by asdoc extension)
      */
-    public void analyze2(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze2(CompilationUnit unit, TypeTable typeTable) {
     }
 
     /**
      * compiler analyze3 (not used by asdoc extension)
      */
-    public void analyze3(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze3(CompilationUnit unit, TypeTable typeTable) {
     }
 
     /**
      * compiler analyze4 (not used by asdoc extension)
      */
-    public void analyze4(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze4(CompilationUnit unit, TypeTable typeTable) {
     }
 
     /**
      * The DocComments for each compilation are processed and organized into a class table.
      * It also checks if a class needs to not be processed (and skips those classes). Some examples
-     * are cases where the class contains an [ExcludeClass] metadata or if it is 
-     * mentioned in the exclude class list 
+     * are cases where the class contains an [ExcludeClass] metadata or if it is
+     * mentioned in the exclude class list
      */
-    public void generate(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void generate(CompilationUnit unit, TypeTable typeTable) {
         // this code is similar to code in asc. We don't go through the main asc
         // path, though,
         // and have multiple compilation passes, so we have to have our own
@@ -212,36 +192,29 @@ public class ASDocExtension implements Extension
         // Don't do the HashMap lookup for the context. access strongly typed
         // variable for the ASC Context from CompilerContext
         Context cx = flexCx.getAscContext();
-        ProgramNode node = (ProgramNode)unit.getSyntaxTree();
+        ProgramNode node = (ProgramNode) unit.getSyntaxTree();
 
         // stop processing if unit.topLevelDefinitions.first() is null
-        if (unit.topLevelDefinitions.first() == null)
-        {
+        if (unit.topLevelDefinitions.first() == null) {
             return;
         }
 
         String className = NameFormatter.toDot(unit.topLevelDefinitions.first());
         boolean exclude = false;
-        if (includeOnly != null && !includeOnly.contains(className))
-        {
+        if (includeOnly != null && !includeOnly.contains(className)) {
             exclude = true;
-        }
-        else if (excludeClasses.contains(className))
-        {
+        } else if (excludeClasses.contains(className)) {
             excludeClasses.remove(className);
             exclude = true;
         }
         // check the metadata for ExcludeClass. Like Flex Builder, ASDoc uses
         // this compiler metadata to
         // determine which classes should not be visible to the user
-        else if (unit.metadata != null)
-        {
+        else if (unit.metadata != null) {
 
-            for (Iterator iterator = unit.metadata.iterator(); iterator.hasNext();)
-            {
-                MetaDataNode metaDataNode = (MetaDataNode)iterator.next();
-                if (EXCLUDE_CLASS.equals(metaDataNode.getId()))
-                {
+            for (Iterator iterator = unit.metadata.iterator(); iterator.hasNext(); ) {
+                MetaDataNode metaDataNode = (MetaDataNode) iterator.next();
+                if (EXCLUDE_CLASS.equals(metaDataNode.getId())) {
                     exclude = true;
                     break;
                 }
@@ -250,36 +223,29 @@ public class ASDocExtension implements Extension
 
         // the inheritance needs to be processed in a predictable order.. 
         Set<QName> inheritance = new TreeSet<QName>(new ComparatorImpl());
-        
-        for (Name name : unit.inheritance)
-        {
-            if (name instanceof QName)
-            {
+
+        for (Name name : unit.inheritance) {
+            if (name instanceof QName) {
                 inheritance.add((QName) name);
             }
         }
 
         boolean flag = false;
-        if (!exclude && !unit.getSource().isInternal())
-        {
+        if (!exclude && !unit.getSource().isInternal()) {
             if (Trace.asdoc)
                 System.out.println("Generating XML for " + unit.getSource().getName());
 
             flag = false;
-        }
-        else
-        {
+        } else {
             if (Trace.asdoc)
                 System.out.println("Skipping generating XML for " + unit.getSource().getName());
 
             flag = true;
         }
-        
-        if (packages.size() != 0)
-        {
+
+        if (packages.size() != 0) {
             String n = unit.topLevelDefinitions.first().getNamespace();
-            if (n != null)
-            {
+            if (n != null) {
                 packages.remove(n);
             }
         }
@@ -294,18 +260,16 @@ public class ASDocExtension implements Extension
         AbcClass abcClass = typeTable.getClass(unit.topLevelDefinitions.first().toString());
         tab.addComments(unit.topLevelDefinitions.first(), comments, inheritance, flag, cx, abcClass);
 
-        cx.popScope();        
+        cx.popScope();
     }
 }
 
 /**
- * Comparator implementation to compare QNames so the inheritance chain for a 
- * compilation unit can be sorted before processing.  
+ * Comparator implementation to compare QNames so the inheritance chain for a
+ * compilation unit can be sorted before processing.
  */
-class ComparatorImpl implements Comparator<QName>
-{
-    public int compare(QName first, QName second)
-    {
+class ComparatorImpl implements Comparator<QName> {
+    public int compare(QName first, QName second) {
         return first.toString().compareTo(second.toString());
     }
 }

@@ -26,17 +26,16 @@ package flex2.compiler.mxml.reflect;
  * [Event(name="...",type="...")]
  * </code>
  */
-public interface Event extends Stateful
-{
-	String getName();
+public interface Event extends Stateful {
+    String getName();
 
-	String getTypeName();
+    String getTypeName();
 
-	Type getType();
-	
-	String getDeprecatedMessage();
-	
-	String getDeprecatedReplacement();
-	
-	String getDeprecatedSince();
+    Type getType();
+
+    String getDeprecatedMessage();
+
+    String getDeprecatedReplacement();
+
+    String getDeprecatedSince();
 }

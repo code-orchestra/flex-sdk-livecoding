@@ -32,44 +32,36 @@ import flex2.compiler.util.CompilerMessage;
  *
  * @author Clement Wong
  */
-public class HTTPServiceAnalyzer extends AnalyzerAdapter
-{
+public class HTTPServiceAnalyzer extends AnalyzerAdapter {
     private MxmlDocument document;
 
-	public HTTPServiceAnalyzer(CompilationUnit unit, MxmlConfiguration mxmlConfiguration, MxmlDocument document)
-	{
-		super(unit, mxmlConfiguration);
-		this.document = document;
-	}
+    public HTTPServiceAnalyzer(CompilationUnit unit, MxmlConfiguration mxmlConfiguration, MxmlDocument document) {
+        super(unit, mxmlConfiguration);
+        this.document = document;
+    }
 
-	public void analyze(RequestNode node)
-	{
-		if (node.getAttributeCount() > 0)
-		{
-			log(node, new RequestNoAttributes());
-		}
-		super.analyze(node);
-	}
+    public void analyze(RequestNode node) {
+        if (node.getAttributeCount() > 0) {
+            log(node, new RequestNoAttributes());
+        }
+        super.analyze(node);
+    }
 
-	protected int getDocumentVersion()
-	{
-	    return document.getVersion();
-	}
+    protected int getDocumentVersion() {
+        return document.getVersion();
+    }
 
-    protected String getLanguageNamespace()
-    {
+    protected String getLanguageNamespace() {
         return document.getLanguageNamespace();
     }
 
-	// error messages
+    // error messages
 
-	public static class RequestNoAttributes extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = -7135962786954334643L;
+    public static class RequestNoAttributes extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = -7135962786954334643L;
 
-        public RequestNoAttributes()
-		{
-			super();
-		}
-	}
+        public RequestNoAttributes() {
+            super();
+        }
+    }
 }

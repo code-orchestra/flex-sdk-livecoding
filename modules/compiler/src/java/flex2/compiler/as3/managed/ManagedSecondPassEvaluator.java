@@ -47,174 +47,154 @@ import java.util.Map;
  *
  * @author Paul Reilly
  */
-public class ManagedSecondPassEvaluator extends GenerativeSecondPassEvaluator
-{
-	private static final String CODEGEN_TEMPLATE_PATH = "flex2/compiler/as3/managed/";
+public class ManagedSecondPassEvaluator extends GenerativeSecondPassEvaluator {
+    private static final String CODEGEN_TEMPLATE_PATH = "flex2/compiler/as3/managed/";
     private static final String IMANAGED = "IManaged";
 
     private ManagedClassInfo currentInfo;
     private boolean inClass = false;
 
-	public ManagedSecondPassEvaluator(CompilationUnit unit, Map<String, ? extends GenerativeClassInfo> classMap,
-	                                  TypeAnalyzer typeAnalyzer, String generatedOutputDirectory,
-                                      boolean generateAbstractSyntaxTree, boolean processComments)
-	{
+    public ManagedSecondPassEvaluator(CompilationUnit unit, Map<String, ? extends GenerativeClassInfo> classMap,
+                                      TypeAnalyzer typeAnalyzer, String generatedOutputDirectory,
+                                      boolean generateAbstractSyntaxTree, boolean processComments) {
         super(unit, classMap, typeAnalyzer, generatedOutputDirectory, generateAbstractSyntaxTree, processComments);
     }
 
-	/**
-	 *
-	 */
-	public synchronized Value evaluate(Context context, ClassDefinitionNode node)
-	{
-		if (!evaluatedClasses.contains(node))
-		{
-			inClass = true;
+    /**
+     *
+     */
+    public synchronized Value evaluate(Context context, ClassDefinitionNode node) {
+        if (!evaluatedClasses.contains(node)) {
+            inClass = true;
 
-			String className = NodeMagic.getClassName(node);
+            String className = NodeMagic.getClassName(node);
 
-			currentInfo = (ManagedClassInfo) classMap.get(className);
+            currentInfo = (ManagedClassInfo) classMap.get(className);
 
-			if (currentInfo != null)
-			{
-				ClassInfo classInfo = currentInfo.getClassInfo();
+            if (currentInfo != null) {
+                ClassInfo classInfo = currentInfo.getClassInfo();
 
-				if (!classInfo.implementsInterface(StandardDefs.PACKAGE_FLASH_EVENTS,
-												   GenerativeExtension.IEVENT_DISPATCHER))
-				{
-					currentInfo.setNeedsToImplementIEventDispatcher(true);
+                if (!classInfo.implementsInterface(StandardDefs.PACKAGE_FLASH_EVENTS,
+                        GenerativeExtension.IEVENT_DISPATCHER)) {
+                    currentInfo.setNeedsToImplementIEventDispatcher(true);
 
-					MultiName multiName = new MultiName(StandardDefs.PACKAGE_FLASH_EVENTS,
-														GenerativeExtension.IEVENT_DISPATCHER);
-					InterfaceInfo interfaceInfo = typeAnalyzer.analyzeInterface(context, multiName, classInfo);
+                    MultiName multiName = new MultiName(StandardDefs.PACKAGE_FLASH_EVENTS,
+                            GenerativeExtension.IEVENT_DISPATCHER);
+                    InterfaceInfo interfaceInfo = typeAnalyzer.analyzeInterface(context, multiName, classInfo);
 
-					// interfaceInfo will be null if IEventDispatcher was not resolved.
-					// This most likely means that playerglobal.swc was not in the
-					// external-library-path and other errors will be reported, so punt.
-					if ((interfaceInfo == null) || checkForExistingMethods(context, node, classInfo, interfaceInfo))
-					{
-						return null;
-					}
+                    // interfaceInfo will be null if IEventDispatcher was not resolved.
+                    // This most likely means that playerglobal.swc was not in the
+                    // external-library-path and other errors will be reported, so punt.
+                    if ((interfaceInfo == null) || checkForExistingMethods(context, node, classInfo, interfaceInfo)) {
+                        return null;
+                    }
 
-					classInfo.addInterfaceMultiName(StandardDefs.PACKAGE_FLASH_EVENTS,
-                                                    GenerativeExtension.IEVENT_DISPATCHER);
-				}
+                    classInfo.addInterfaceMultiName(StandardDefs.PACKAGE_FLASH_EVENTS,
+                            GenerativeExtension.IEVENT_DISPATCHER);
+                }
 
-				if (!classInfo.implementsInterface(standardDefs.getDataPackage(), IMANAGED))
-				{
-					currentInfo.setNeedsToImplementIManaged(true);
+                if (!classInfo.implementsInterface(standardDefs.getDataPackage(), IMANAGED)) {
+                    currentInfo.setNeedsToImplementIManaged(true);
 
                     // Don't be tempted to check for mx.core.IUID here, because
                     // analyzeInterface() sets up the inheritance for downstream
                     // consumers and if we only add IUID to the inheritance, then
                     // the check for IManaged in the enclosing if statement will fail.
-					MultiName multiName = new MultiName(standardDefs.getDataPackage(), IMANAGED);
-					InterfaceInfo interfaceInfo = typeAnalyzer.analyzeInterface(context, multiName, classInfo);
+                    MultiName multiName = new MultiName(standardDefs.getDataPackage(), IMANAGED);
+                    InterfaceInfo interfaceInfo = typeAnalyzer.analyzeInterface(context, multiName, classInfo);
 
-					// interfaceInfo will be null if IManaged was not resolved.
-					// This most likely means that fds.swc was not in the
-					// library-path and other errors will be reported, so punt.
-					if ((interfaceInfo == null) || checkForExistingMethods(context, node, classInfo, interfaceInfo))
-					{
-						return null;
-					}
+                    // interfaceInfo will be null if IManaged was not resolved.
+                    // This most likely means that fds.swc was not in the
+                    // library-path and other errors will be reported, so punt.
+                    if ((interfaceInfo == null) || checkForExistingMethods(context, node, classInfo, interfaceInfo)) {
+                        return null;
+                    }
 
-					classInfo.addInterfaceMultiName(standardDefs.getDataPackage(), IMANAGED);
-				}
+                    classInfo.addInterfaceMultiName(standardDefs.getDataPackage(), IMANAGED);
+                }
 
-				postProcessClassInfo(context, currentInfo);
+                postProcessClassInfo(context, currentInfo);
 
-				if (node.statements != null)
-				{
-					node.statements.evaluate(context, this);
+                if (node.statements != null) {
+                    node.statements.evaluate(context, this);
 
-					modifySyntaxTree(context, node, currentInfo);
-				}
+                    modifySyntaxTree(context, node, currentInfo);
+                }
 
-				currentInfo = null;
-			}
+                currentInfo = null;
+            }
 
-			inClass = false;
+            inClass = false;
 
-			// Make sure we don't process this class again.
-			evaluatedClasses.add(node);
-		}
+            // Make sure we don't process this class again.
+            evaluatedClasses.add(node);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      *
      */
-    public synchronized Value evaluate(Context context, FunctionDefinitionNode node)
-    {
-		if (inClass)
-		{
-			QName qname = new QName(NodeMagic.getUserNamespace(node), NodeMagic.getFunctionName(node));
-			GenerativeClassInfo.AccessorInfo accessorInfo = currentInfo.getAccessor(qname);
-			if (accessorInfo != null)
-			{
-				hideFunction(node, accessorInfo);
-				registerRenamedAccessor(accessorInfo);
-			}
-		}
+    public synchronized Value evaluate(Context context, FunctionDefinitionNode node) {
+        if (inClass) {
+            QName qname = new QName(NodeMagic.getUserNamespace(node), NodeMagic.getFunctionName(node));
+            GenerativeClassInfo.AccessorInfo accessorInfo = currentInfo.getAccessor(qname);
+            if (accessorInfo != null) {
+                hideFunction(node, accessorInfo);
+                registerRenamedAccessor(accessorInfo);
+            }
+        }
 
-		return null;
+        return null;
     }
 
     /**
      * visits all variable definitions that occur inside class definitions (and outside function definitions) and mangles
      * their names
      */
-    public synchronized Value evaluate(Context context, VariableDefinitionNode node)
-    {
-        if (inClass)
-        {
-			QName qname = new QName(NodeMagic.getUserNamespace(node), NodeMagic.getVariableName(node));
-			GenerativeClassInfo.AccessorInfo info = currentInfo.getAccessor(qname);
-			if (info != null)
-			{
-				hideVariable(node, info);
-				registerRenamedAccessor(info);
-			}
+    public synchronized Value evaluate(Context context, VariableDefinitionNode node) {
+        if (inClass) {
+            QName qname = new QName(NodeMagic.getUserNamespace(node), NodeMagic.getVariableName(node));
+            GenerativeClassInfo.AccessorInfo info = currentInfo.getAccessor(qname);
+            if (info != null) {
+                hideVariable(node, info);
+                registerRenamedAccessor(info);
+            }
         }
 
         return null;
     }
 
-	/**
-	 *
-	 */
-	protected String getTemplateName()
-	{
-		return standardDefs.getManagedPropertyTemplate();
-	}
+    /**
+     *
+     */
+    protected String getTemplateName() {
+        return standardDefs.getManagedPropertyTemplate();
+    }
 
-	/**
-	 *
-	 */
-	protected Map<String, ManagedClassInfo> getTemplateVars()
-	{
-		Map<String, ManagedClassInfo> vars = new HashMap<String, ManagedClassInfo>();
-		vars.put("managedInfo", currentInfo);
+    /**
+     *
+     */
+    protected Map<String, ManagedClassInfo> getTemplateVars() {
+        Map<String, ManagedClassInfo> vars = new HashMap<String, ManagedClassInfo>();
+        vars.put("managedInfo", currentInfo);
 
-		return vars;
-	}
+        return vars;
+    }
 
-	/**
-	 *
-	 */
-	protected String getTemplatePath()
-	{
-		return CODEGEN_TEMPLATE_PATH;
-	}
+    /**
+     *
+     */
+    protected String getTemplatePath() {
+        return CODEGEN_TEMPLATE_PATH;
+    }
 
-	/**
-	 *
-	 */
-	protected String getGeneratedSuffix()
-	{
-		return "-managed-generated.as";
-	}
+    /**
+     *
+     */
+    protected String getGeneratedSuffix() {
+        return "-managed-generated.as";
+    }
 
 }

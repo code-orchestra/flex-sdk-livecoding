@@ -58,14 +58,12 @@ import java.util.Map;
  *
  * @author Roger Gonzalez
  */
-public class FontTranscoder extends AbstractTranscoder
-{
+public class FontTranscoder extends AbstractTranscoder {
     private FontsConfiguration fontsConfig;
     private int compatibilityVersion;
     private boolean showShadowedDeviceFontWarnings;
 
-    public FontTranscoder( Configuration config )
-    {
+    public FontTranscoder(Configuration config) {
         super(new String[]{MimeMappings.TTF, MimeMappings.OTF, MimeMappings.FONT, MimeMappings.TTC, MimeMappings.DFONT}, DefineFont.class, true);
         CompilerConfiguration compilerConfig = config.getCompilerConfiguration();
         fontsConfig = compilerConfig.getFontsConfiguration();
@@ -76,88 +74,73 @@ public class FontTranscoder extends AbstractTranscoder
     public static final String UNICODERANGE = "unicodeRange";
     public static final String SYSTEMFONT = "systemFont";
     public static final String SOURCELIST = "sourceList";
-	public static final String FLASHTYPE = "flashType";
-	public static final String ADVANTIALIASING = "advancedAntiAliasing";
-	public static final String EMBEDASCFF = "embedAsCFF";
+    public static final String FLASHTYPE = "flashType";
+    public static final String ADVANTIALIASING = "advancedAntiAliasing";
+    public static final String EMBEDASCFF = "embedAsCFF";
 
-    public boolean isSupportedAttribute( String attr )
-    {
-        return FONTNAME.equals( attr )
-               || FONTSTYLE.equals( attr )
-               || FONTWEIGHT.equals( attr )
-               || FONTFAMILY.equals( attr )
-               || UNICODERANGE.equals( attr )
-		       || FLASHTYPE.equals( attr )		        
-		       || ADVANTIALIASING.equals( attr )		        
-               || SYSTEMFONT.equals( attr )
-               || SOURCELIST.equals( attr )
-               || EMBEDASCFF.equals( attr );
+    public boolean isSupportedAttribute(String attr) {
+        return FONTNAME.equals(attr)
+                || FONTSTYLE.equals(attr)
+                || FONTWEIGHT.equals(attr)
+                || FONTFAMILY.equals(attr)
+                || UNICODERANGE.equals(attr)
+                || FLASHTYPE.equals(attr)
+                || ADVANTIALIASING.equals(attr)
+                || SYSTEMFONT.equals(attr)
+                || SOURCELIST.equals(attr)
+                || EMBEDASCFF.equals(attr);
     }
 
-    public TranscodingResults doTranscode( PathResolver context, SymbolTable symbolTable,
-                                           Map<String, Object> args, String className, boolean generateSource )
-            throws TranscoderException
-    {
+    public TranscodingResults doTranscode(PathResolver context, SymbolTable symbolTable,
+                                          Map<String, Object> args, String className, boolean generateSource)
+            throws TranscoderException {
         TranscodingResults results = new TranscodingResults();
         String systemFont = null;
         List<Serializable> locations;
 
-        if (args.containsKey( SOURCE ))
-        {
-            if (args.containsKey( SYSTEMFONT ) || args.containsKey( SOURCELIST ))
+        if (args.containsKey(SOURCE)) {
+            if (args.containsKey(SYSTEMFONT) || args.containsKey(SOURCELIST))
                 throw new BadParameters();
 
-            results.assetSource = resolveSource( context, args );
+            results.assetSource = resolveSource(context, args);
             results.modified = results.assetSource.getLastModified();
             locations = new LinkedList<Serializable>();
-            locations.add( getURL(results.assetSource) );
-        }
-        else if (args.containsKey( SYSTEMFONT ))
-        {
-            if (args.containsKey( SOURCE ) || args.containsKey( SOURCELIST ))
+            locations.add(getURL(results.assetSource));
+        } else if (args.containsKey(SYSTEMFONT)) {
+            if (args.containsKey(SOURCE) || args.containsKey(SOURCELIST))
                 throw new BadParameters();
 
-            systemFont = (String) args.get( SYSTEMFONT );
+            systemFont = (String) args.get(SYSTEMFONT);
             locations = new LinkedList<Serializable>();
             locations.add(systemFont);
-        }
-        else if (args.containsKey( SOURCELIST ))
-        {
+        } else if (args.containsKey(SOURCELIST)) {
             locations = resolveSourceList(context, args);
-        }
-        else
-        {
+        } else {
             throw new BadParameters();
         }
 
-        String family = (String) args.get( FONTFAMILY );
-        String alias = (String) args.get( FONTNAME );
-        if (alias == null)
-        {
+        String family = (String) args.get(FONTFAMILY);
+        String alias = (String) args.get(FONTNAME);
+        if (alias == null) {
             alias = systemFont;
         }
-        if (alias == null)
-        {
+        if (alias == null) {
             alias = family;     // FIXME, just either name it name or family, not both!
         }
-        if (alias == null)
-        {
+        if (alias == null) {
             throw new BadParameters();
         }
 
-        if (systemFont != null && systemFont.equals(alias) && showShadowedDeviceFontWarnings)
-        {
+        if (systemFont != null && systemFont.equals(alias) && showShadowedDeviceFontWarnings) {
             EmbeddedFontShadowsDeviceFont embeddedFontShadowsDeviceFont = new EmbeddedFontShadowsDeviceFont(alias);
             String path = (String) args.get(Transcoder.FILE);
             String pathSep = (String) args.get(Transcoder.PATHSEP);
-            if ("true".equals(pathSep))
-            {
+            if ("true".equals(pathSep)) {
                 path = path.replace('/', '\\');
             }
             embeddedFontShadowsDeviceFont.path = path;
-            if (args.containsKey(Transcoder.LINE))
-            {
-                int line = Integer.parseInt( (String) args.get(Transcoder.LINE) );
+            if (args.containsKey(Transcoder.LINE)) {
+                int line = Integer.parseInt((String) args.get(Transcoder.LINE));
                 embeddedFontShadowsDeviceFont.line = line;
             }
             ThreadLocalToolkit.log(embeddedFontShadowsDeviceFont);
@@ -168,42 +151,34 @@ public class FontTranscoder extends AbstractTranscoder
         FontDescription fontDesc = new FontDescription();
         fontDesc.alias = alias;
         fontDesc.style = getFontStyle(args);
-        fontDesc.unicodeRanges = (String)args.get(UNICODERANGE);
+        fontDesc.unicodeRanges = (String) args.get(UNICODERANGE);
         fontDesc.advancedAntiAliasing = useAdvancedAntiAliasing(args);
         fontDesc.compactFontFormat = useCompactFontFormat(args, compatibilityVersion);
 
         DefineFont defineFont = getDefineFont(fontDesc, locations, args);
 
-        try
-        {
+        try {
             results.defineTag = defineFont;
             if (generateSource)
                 generateSource(results, className, args);
-        }
-        catch (TranscoderException te)
-        {
-	        throw te;
-        }
-        catch (Exception e)
-        {
-	        if (Trace.error)
-		        e.printStackTrace();
+        } catch (TranscoderException te) {
+            throw te;
+        } catch (Exception e) {
+            if (Trace.error)
+                e.printStackTrace();
 
-            throw new ExceptionWhileTranscoding( e );
+            throw new ExceptionWhileTranscoding(e);
         }
         return results;
     }
 
-    private URL getURL(VirtualFile virtualFile) throws TranscoderException
-    {
+    private URL getURL(VirtualFile virtualFile) throws TranscoderException {
         URL result;
 
-        if (!(virtualFile instanceof LocalFile))
-        {
+        if (!(virtualFile instanceof LocalFile)) {
             InputStream in = null;
-            
-            try
-            {
+
+            try {
                 String name = virtualFile.getName();
                 String path = name.substring(name.indexOf("$") + 1);
                 // The path might look like "assets/fonts/Arial.ttf"
@@ -213,37 +188,24 @@ public class FontTranscoder extends AbstractTranscoder
                 in = virtualFile.getInputStream();
                 FileUtil.writeBinaryFile(file, in);
                 result = file.toURL();
-            }
-            catch (IOException ioException)
-            {
-                if (Trace.error)
-                {
+            } catch (IOException ioException) {
+                if (Trace.error) {
                     ioException.printStackTrace();
                 }
 
-                throw new UnableToExtract( virtualFile.getName() );
-            }
-            finally
-            {
-                try
-                {
+                throw new UnableToExtract(virtualFile.getName());
+            } finally {
+                try {
                     if (in != null)
                         in.close();
-                }
-                catch (Throwable t)
-                {
+                } catch (Throwable t) {
                 }
             }
-        }
-        else
-        {
-            try
-            {
+        } else {
+            try {
                 result = new URL(virtualFile.getURL());
-            }
-            catch (java.net.MalformedURLException e)
-            {
-                throw new AbstractTranscoder.UnableToReadSource( virtualFile.getName() );
+            } catch (java.net.MalformedURLException e) {
+                throw new AbstractTranscoder.UnableToReadSource(virtualFile.getName());
             }
         }
 
@@ -251,18 +213,15 @@ public class FontTranscoder extends AbstractTranscoder
     }
 
     private DefineFont getDefineFont(FontDescription fontDesc,
-            List<Serializable> locations, Map<String, Object> args) throws TranscoderException
-    {
+                                     List<Serializable> locations, Map<String, Object> args) throws TranscoderException {
         FontManager fontManager = fontsConfig.getTopLevelManager();
         int defineFontTag = TagValues.stagDefineFont3;
 
         DefineFont defineFont = null;
-        for (Iterator<Serializable> it = locations.iterator(); it.hasNext();)
-        {
+        for (Iterator<Serializable> it = locations.iterator(); it.hasNext(); ) {
             Object fontSource = it.next();
 
-            try
-            {
+            try {
                 // For now, keep the Flex 3 behavior of throwing errors for each 
                 // location when no FontManager exists.
                 if (fontManager == null)
@@ -270,38 +229,30 @@ public class FontTranscoder extends AbstractTranscoder
 
                 fontDesc.source = fontSource;
                 defineFont = fontManager.createDefineFont(defineFontTag, fontDesc);
-            }
-            catch (FontManager.InvalidUnicodeRangeException e)
-            {
+            } catch (FontManager.InvalidUnicodeRangeException e) {
                 // For now, keep the Flex 3 error message for invalid unicode
                 // ranges...
                 throw new InvalidUnicodeRangeException(e.range);
-            }
-            catch (Exception e)
-            {
-	            if (Trace.error)
-	            {
-		            e.printStackTrace();
-	            }
+            } catch (Exception e) {
+                if (Trace.error) {
+                    e.printStackTrace();
+                }
 
                 ExceptionWhileTranscoding exceptionWhileTranscoding = new ExceptionWhileTranscoding(e);
                 String path = (String) args.get(Transcoder.FILE);
                 String pathSep = (String) args.get(Transcoder.PATHSEP);
-                if ("true".equals(pathSep))
-                {
+                if ("true".equals(pathSep)) {
                     path = path.replace('/', '\\');
                 }
                 exceptionWhileTranscoding.path = path;
-                if (args.containsKey(Transcoder.LINE))
-                {
-                    int line = Integer.parseInt( (String) args.get(Transcoder.LINE) );
+                if (args.containsKey(Transcoder.LINE)) {
+                    int line = Integer.parseInt((String) args.get(Transcoder.LINE));
                     exceptionWhileTranscoding.line = line;
                 }
                 ThreadLocalToolkit.log(exceptionWhileTranscoding);
             }
 
-            if (defineFont != null)
-            {
+            if (defineFont != null) {
                 return defineFont;
             }
         }
@@ -310,26 +261,22 @@ public class FontTranscoder extends AbstractTranscoder
     }
 
     private List<Serializable> resolveSourceList(PathResolver context,
-            Map<String, Object> args) throws TranscoderException
-    {
+                                                 Map<String, Object> args) throws TranscoderException {
         List<Serializable> result = new LinkedList<Serializable>();
 
-        Iterator iterator = ((List) args.get( SOURCELIST )).iterator();
+        Iterator iterator = ((List) args.get(SOURCELIST)).iterator();
 
-        while ( iterator.hasNext() )
-        {
+        while (iterator.hasNext()) {
             Object source = iterator.next();
 
-            if (source instanceof URLSource)
-            {
+            if (source instanceof URLSource) {
                 URLSource urlSource = (URLSource) source;
                 VirtualFile virtualFile = resolve(context, urlSource.getValue());
-                result.add( getURL(virtualFile) );
-            }
-            else // if (source instanceof LocalSource)
+                result.add(getURL(virtualFile));
+            } else // if (source instanceof LocalSource)
             {
                 LocalSource localSource = (LocalSource) source;
-                result.add( localSource.getValue() );
+                result.add(localSource.getValue());
             }
         }
 
@@ -341,41 +288,27 @@ public class FontTranscoder extends AbstractTranscoder
      * in the font definition. The term 'Flash Type' is obsolete.
      */
     private boolean useAdvancedAntiAliasing(Map<String, Object> args)
-        throws TranscoderException
-    {
+            throws TranscoderException {
         boolean useAdvanced = true;
         boolean flashTypeAsName = true;
-        String advancedStr = (String)args.get(ADVANTIALIASING);
-        if (advancedStr == null)
-        {
-            advancedStr = (String)args.get(FLASHTYPE);
-        }
-        else
-        {
+        String advancedStr = (String) args.get(ADVANTIALIASING);
+        if (advancedStr == null) {
+            advancedStr = (String) args.get(FLASHTYPE);
+        } else {
             flashTypeAsName = false;
         }
 
-        if (advancedStr != null)
-        {
-            if (advancedStr.equalsIgnoreCase("true"))
-            {
+        if (advancedStr != null) {
+            if (advancedStr.equalsIgnoreCase("true")) {
                 useAdvanced = true;
-            }
-            else if (advancedStr.equalsIgnoreCase("false"))
-            {
+            } else if (advancedStr.equalsIgnoreCase("false")) {
                 useAdvanced = false;
-            }
-            else if (flashTypeAsName)
-            {
+            } else if (flashTypeAsName) {
                 throw new BadFlashType();
-            }
-            else
-            {
+            } else {
                 throw new BadAdvancedAntiAliasing();
             }
-        }
-        else
-        {
+        } else {
             useAdvanced = fontsConfig.getFlashType();
         }
 
@@ -384,67 +317,56 @@ public class FontTranscoder extends AbstractTranscoder
 
     /**
      * The CFF flag determines whether font information should be embedded in
-     * the Compact Font Format using SWF tag DefineFont4. 
+     * the Compact Font Format using SWF tag DefineFont4.
      */
-    private static boolean useCompactFontFormat(Map<String, Object> args, 
-        int compatibilityVersion)
-    {
-        String value = (String)args.get(EMBEDASCFF);
-        
+    private static boolean useCompactFontFormat(Map<String, Object> args,
+                                                int compatibilityVersion) {
+        String value = (String) args.get(EMBEDASCFF);
+
         boolean useCFF = true;
         if (compatibilityVersion < MxmlConfiguration.VERSION_4_0)
             useCFF = false;
-        
-        if (value != null)
-        {
-            useCFF  = Boolean.parseBoolean(value.trim());
+
+        if (value != null) {
+            useCFF = Boolean.parseBoolean(value.trim());
         }
 
         return useCFF;
     }
 
-    public static int getFontStyle(Map<String, Object> args)
-    {
+    public static int getFontStyle(Map<String, Object> args) {
         int s = FontFace.PLAIN;
 
-        String style = (String) args.get( FONTSTYLE );
+        String style = (String) args.get(FONTSTYLE);
         if (style == null)
             style = "normal";
 
-        String weight = (String) args.get( FONTWEIGHT );
+        String weight = (String) args.get(FONTWEIGHT);
         if (weight == null)
             weight = "normal";
 
-        if (isBold( weight ))
+        if (isBold(weight))
             s += FontFace.BOLD;
 
-        if (isItalic( style ))
+        if (isItalic(style))
             s += FontFace.ITALIC;
 
         return s;
     }
 
-    public static boolean isBold(String value)
-    {
+    public static boolean isBold(String value) {
         boolean bold = false;
 
-        if (value != null)
-        {
+        if (value != null) {
             String b = value.trim().toLowerCase();
-            if (b.startsWith("bold"))
-            {
+            if (b.startsWith("bold")) {
                 bold = true;
-            }
-            else
-            {
-                try
-                {
+            } else {
+                try {
                     int w = Integer.parseInt(b);
                     if (w >= 700)
                         bold = true;
-                }
-                catch (Throwable t)
-                {
+                } catch (Throwable t) {
                 }
             }
         }
@@ -452,12 +374,10 @@ public class FontTranscoder extends AbstractTranscoder
         return bold;
     }
 
-    public static boolean isItalic(String value)
-    {
+    public static boolean isItalic(String value) {
         boolean italic = false;
 
-        if (value != null)
-        {
+        if (value != null) {
             String ital = value.trim().toLowerCase();
             if (ital.equals("italic") || ital.equals("oblique"))
                 italic = true;
@@ -467,68 +387,63 @@ public class FontTranscoder extends AbstractTranscoder
     }
 
 
-    public static final class NoFontManagerException extends RuntimeException
-    {
+    public static final class NoFontManagerException extends RuntimeException {
         private static final long serialVersionUID = 755054716704678420L;
 
-        public NoFontManagerException()
-        {
+        public NoFontManagerException() {
             super("No FontManager provided. Cannot build font.");
         }
     }
 
-    public static final class InvalidUnicodeRangeException extends TranscoderException
-    {
+    public static final class InvalidUnicodeRangeException extends TranscoderException {
         private static final long serialVersionUID = 3173208110428813980L;
-        public InvalidUnicodeRangeException(String range)
-        {
+
+        public InvalidUnicodeRangeException(String range) {
             this.range = range;
         }
+
         public String range;
     }
 
-    public static final class BadParameters extends TranscoderException
-    {
+    public static final class BadParameters extends TranscoderException {
         private static final long serialVersionUID = -2390481014380505531L;
     }
 
-	public static final class BadFlashType extends TranscoderException
-	{
+    public static final class BadFlashType extends TranscoderException {
         private static final long serialVersionUID = 3971519462447951564L;
-	}
+    }
 
-	public static final class BadAdvancedAntiAliasing extends TranscoderException
-	{
+    public static final class BadAdvancedAntiAliasing extends TranscoderException {
         private static final long serialVersionUID = 8425867739365188050L;
-	}
+    }
 
-    public static final class UnableToBuildFont extends TranscoderException
-    {
+    public static final class UnableToBuildFont extends TranscoderException {
         private static final long serialVersionUID = 1520596054636875393L;
-        public UnableToBuildFont( String fontName )
-        {
+
+        public UnableToBuildFont(String fontName) {
             this.fontName = fontName;
         }
+
         public String fontName;
     }
 
-    public static final class UnableToExtract extends TranscoderException
-    {
+    public static final class UnableToExtract extends TranscoderException {
         private static final long serialVersionUID = -4585845590777360978L;
-        public UnableToExtract( String fileName )
-        {
+
+        public UnableToExtract(String fileName) {
             this.fileName = fileName;
         }
+
         public String fileName;
     }
 
-    public static final class EmbeddedFontShadowsDeviceFont extends CompilerMessage.CompilerWarning implements ILocalizableMessage
-    {
+    public static final class EmbeddedFontShadowsDeviceFont extends CompilerMessage.CompilerWarning implements ILocalizableMessage {
         private static final long serialVersionUID = -1125821048682931471L;
-        public EmbeddedFontShadowsDeviceFont( String alias )
-        {
+
+        public EmbeddedFontShadowsDeviceFont(String alias) {
             this.alias = alias;
         }
+
         public final String alias;
     }
 }

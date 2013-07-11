@@ -25,23 +25,22 @@ package flex2.compiler.mxml.reflect;
  *
  * @author Clement Wong
  */
-public interface Deprecated
-{
+public interface Deprecated {
     // [Deprecated(...)] statments
-	String DEPRECATED   = "Deprecated";
-	String REPLACEMENT  = "replacement";
-	String MESSAGE		= "message";
-	String SINCE		= "since";
+    String DEPRECATED = "Deprecated";
+    String REPLACEMENT = "replacement";
+    String MESSAGE = "message";
+    String SINCE = "since";
 
     // the following are used in other statements, e.g. [Style(..., deprecatedMessage=...)]
     //TODO want a "deprecated"-only property for Styles 
     String DEPRECATED_REPLACEMENT = "deprecatedReplacement";
-	String DEPRECATED_MESSAGE     = "deprecatedMessage";
-    String DEPRECATED_SINCE       = "deprecatedSince";
+    String DEPRECATED_MESSAGE = "deprecatedMessage";
+    String DEPRECATED_SINCE = "deprecatedSince";
 
-	String getReplacement();
+    String getReplacement();
 
-	String getMessage();
-	
-	String getSince();
+    String getMessage();
+
+    String getSince();
 }

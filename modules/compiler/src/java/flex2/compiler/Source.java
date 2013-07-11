@@ -263,7 +263,7 @@ public final class Source implements Comparable<Source> {
     }
 
     public boolean isCompiled() {
-         return unit != null && unit.isBytecodeAvailable();
+        return unit != null && unit.isBytecodeAvailable();
     }
 
     public boolean isUpdated() {
@@ -365,10 +365,8 @@ public final class Source implements Comparable<Source> {
 //        return resolver;
 //    }
 
-    public PathResolver getPathResolver()
-    {
-        if (resolver != null)
-        {
+    public PathResolver getPathResolver() {
+        if (resolver != null) {
             return resolver;
         }
 
@@ -878,10 +876,8 @@ public final class Source implements Comparable<Source> {
         to.styles = from.styles;
     }
 
-    static class ThreadLocalResolver implements SinglePathResolver
-    {
-        public VirtualFile resolve(String relative)
-        {
+    static class ThreadLocalResolver implements SinglePathResolver {
+        public VirtualFile resolve(String relative) {
             SinglePathResolver r = ThreadLocalToolkit.getPathResolver();
             return r != null ? r.resolve(relative) : null;
         }

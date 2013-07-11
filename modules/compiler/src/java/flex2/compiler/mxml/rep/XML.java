@@ -24,17 +24,15 @@ import flex2.compiler.mxml.reflect.Type;
 /**
  * This class represents an XML node in a Mxml document.
  */
-public class XML extends Model
-{
+public class XML extends Model {
     private String literalXML;
-	private boolean isE4X;
+    private boolean isE4X;
     private boolean hasBindings;
 
-    public XML(MxmlDocument document, Type t, Model parent, boolean isE4X, int line)
-    {
+    public XML(MxmlDocument document, Type t, Model parent, boolean isE4X, int line) {
         super(document, t, parent, line);
-		this.literalXML = null;
-		this.isE4X = isE4X;
+        this.literalXML = null;
+        this.isE4X = isE4X;
     }
 
     public boolean hasBindings() {
@@ -53,7 +51,7 @@ public class XML extends Model
         this.literalXML = literalXML;
     }
 
-	public boolean getIsE4X() {
-		return isE4X;
-	}
+    public boolean getIsE4X() {
+        return isE4X;
+    }
 }

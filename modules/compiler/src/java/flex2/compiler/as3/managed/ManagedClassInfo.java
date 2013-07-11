@@ -36,8 +36,7 @@ import java.util.Set;
  * This value object holds the information collected during the first
  * pass and is used in the second pass to generate code.
  */
-public class ManagedClassInfo extends GenerativeClassInfo
-{
+public class ManagedClassInfo extends GenerativeClassInfo {
     /**
      * Modes are: hierarchical (default), association (no transitive change events), or
      * manual (no codegen).
@@ -58,8 +57,7 @@ public class ManagedClassInfo extends GenerativeClassInfo
     private boolean needsToImplementIManaged;
     private Set transientProperties;
 
-    public ManagedClassInfo(Context context, SymbolTable symbolTable, String className)
-    {
+    public ManagedClassInfo(Context context, SymbolTable symbolTable, String className) {
         super(context, symbolTable);
         setClassName(className);
         propertyModes = new HashMap<QName, Integer>();
@@ -68,39 +66,32 @@ public class ManagedClassInfo extends GenerativeClassInfo
     /**
      * per-property modes
      */
-    public void setPropertyMode(QName propertyQName, int mode)
-    {
+    public void setPropertyMode(QName propertyQName, int mode) {
         propertyModes.put(propertyQName, IntegerPool.getNumber(mode));
     }
 
-    public int getPropertyMode(QName propertyQName)
-    {
+    public int getPropertyMode(QName propertyQName) {
         Integer propertyMode = propertyModes.get(propertyQName);
         return propertyMode != null ? propertyMode.intValue() : MODE_HIER;
     }
 
-    public boolean hasExplicitMode(QName propertyQName)
-    {
+    public boolean hasExplicitMode(QName propertyQName) {
         return propertyModes.get(propertyQName) != null;
     }
 
-    public boolean isAssociative(AccessorInfo accessorInfo)
-    {
+    public boolean isAssociative(AccessorInfo accessorInfo) {
         return getPropertyMode(new QName(accessorInfo.getUserNamespace(), accessorInfo.getPropertyName())) == MODE_ASSOC;
     }
 
     /**
      * transient properties
      */
-    public void setTransientProperties(Set properties)
-    {
+    public void setTransientProperties(Set properties) {
         transientProperties = properties;
     }
 
-    public boolean isTransientProperty(String propertyName)
-    {
-        if (transientProperties != null)
-        {
+    public boolean isTransientProperty(String propertyName) {
+        if (transientProperties != null) {
             return transientProperties.contains(propertyName);
         }
         return false;
@@ -109,34 +100,28 @@ public class ManagedClassInfo extends GenerativeClassInfo
     /**
      * interfaces
      */
-    public boolean needsAdditionalInterfaces()
-    {
+    public boolean needsAdditionalInterfaces() {
         return needsToImplementIEventDispatcher || needsToImplementIManaged;
     }
 
     // Bean like methods for Velocity Template
-    public boolean getNeedsToImplementIEventDispatcher()
-    {
+    public boolean getNeedsToImplementIEventDispatcher() {
         return needsToImplementIEventDispatcher;
     }
 
-    public boolean getNeedsToImplementIManaged()
-    {
+    public boolean getNeedsToImplementIManaged() {
         return needsToImplementIManaged;
     }
 
-    public void removeOriginalMetaData(DefinitionNode definitionNode)
-    {
+    public void removeOriginalMetaData(DefinitionNode definitionNode) {
         NodeMagic.removeMetaData(definitionNode, StandardDefs.MD_MANAGED);
     }
 
-    public void setNeedsToImplementIEventDispatcher(boolean needsToImplementIEventDispatcher)
-    {
+    public void setNeedsToImplementIEventDispatcher(boolean needsToImplementIEventDispatcher) {
         this.needsToImplementIEventDispatcher = needsToImplementIEventDispatcher;
     }
 
-    public void setNeedsToImplementIManaged(boolean needsToImplementIManaged)
-    {
+    public void setNeedsToImplementIManaged(boolean needsToImplementIManaged) {
         this.needsToImplementIManaged = needsToImplementIManaged;
     }
 }

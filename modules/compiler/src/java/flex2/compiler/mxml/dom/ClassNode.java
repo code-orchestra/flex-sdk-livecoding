@@ -24,16 +24,13 @@ package flex2.compiler.mxml.dom;
  *
  * @author Clement Wong
  */
-public class ClassNode extends PrimitiveNode
-{
-	ClassNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
+public class ClassNode extends PrimitiveNode {
+    ClassNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
 
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 }

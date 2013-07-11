@@ -26,15 +26,14 @@ import java.util.*;
  * Properties extension that reads properties in Unicode and uses a
  * Vector to maintain keys in order.
  */
-public class OrderedProperties extends Properties implements Serializable
-{
+public class OrderedProperties extends Properties implements Serializable {
     private static final long serialVersionUID = 8588726273721332377L;
-    
+
     // keys ordered
     private Vector<Object> keys = new Vector<Object>();
     protected Map<String, Integer> lines = new HashMap<String, Integer>();
 
-	// uncomment comment_blocks to maintain comment blocks
+    // uncomment comment_blocks to maintain comment blocks
     // comment blocks hashed on key+value they appear before
     //private Hashtable comment_blocks = new Hashtable();
 
@@ -56,13 +55,13 @@ public class OrderedProperties extends Properties implements Serializable
 
     // does nothing
     public OrderedProperties(OrderedProperties props) {
-    Enumeration<Object> k=props.keys();
-    String key;
-    // suck in all the properties
-    while(k.hasMoreElements()) {
-        key = (String) k.nextElement();
-        put(key, props.getProperty(key));
-    }
+        Enumeration<Object> k = props.keys();
+        String key;
+        // suck in all the properties
+        while (k.hasMoreElements()) {
+            key = (String) k.nextElement();
+            put(key, props.getProperty(key));
+        }
     }
 
     public int size() {
@@ -77,7 +76,7 @@ public class OrderedProperties extends Properties implements Serializable
         return null;
     }
 
-    public String getProperty(String property,String defaultval) {
+    public String getProperty(String property, String defaultval) {
         Object o = super.get(property);
         String val = null;
         if ((o != null) && (o instanceof String)) {
@@ -120,8 +119,8 @@ public class OrderedProperties extends Properties implements Serializable
         return super.get(property);
     }
 
-    public Object put(Object key,Object value) {
-        Object old = super.put(key,value);
+    public Object put(Object key, Object value) {
+        Object old = super.put(key, value);
         if (old == null)
             keys.addElement(key);
         return old;
@@ -167,8 +166,8 @@ public class OrderedProperties extends Properties implements Serializable
      * pattern. If the '*' is placed somewhere in the middle of the
      * pattern, then then the subset will contain properties that startWith
      * everything before the '*' and end with everything after the '*'.
-     *
-     *
+     * <p/>
+     * <p/>
      * Sample property patterns:
      * <table>
      * <tr><td>*.bar<td>   returns the subset of properties that end with '.bar'
@@ -178,36 +177,32 @@ public class OrderedProperties extends Properties implements Serializable
      *
      * @param propPattern a pattern with 0 or 1 '*' chars.
      * @return the subset of properties that match the specified pattern. Note that changing the
-     * properties in the returned subset will not affect this object.
-     *
+     *         properties in the returned subset will not affect this object.
      */
-    public Properties getProperties(String propPattern){
+    public Properties getProperties(String propPattern) {
         Properties props = new Properties();
         int index = propPattern.indexOf("*");
-        if(index == -1){
+        if (index == -1) {
             String value = getProperty(propPattern);
-            if(value != null){
+            if (value != null) {
                 props.put(propPattern, value);
             }
-        }
-        else{
+        } else {
             String startsWith = propPattern.substring(0, index);
             String endsWith;
-            if(index == propPattern.length()-1){
+            if (index == propPattern.length() - 1) {
                 endsWith = null;
-            }
-            else{
-                endsWith = propPattern.substring(index+1);
+            } else {
+                endsWith = propPattern.substring(index + 1);
             }
 
             Enumeration<Object> names = propertyNames();
-            while(names.hasMoreElements()){
-                String name = (String)names.nextElement();
-                if(name.startsWith(startsWith)){
-                    if(endsWith == null){
+            while (names.hasMoreElements()) {
+                String name = (String) names.nextElement();
+                if (name.startsWith(startsWith)) {
+                    if (endsWith == null) {
                         props.put(name, getProperty(name));
-                    }
-                    else if(name.endsWith(endsWith)){
+                    } else if (name.endsWith(endsWith)) {
                         props.put(name, getProperty(name));
                     }
                 }
@@ -222,39 +217,36 @@ public class OrderedProperties extends Properties implements Serializable
      *
      * @param propPattern a pattern with 0 or 1 '*' chars.
      */
-    public void removeProperties(String propPattern){
+    public void removeProperties(String propPattern) {
         int index = propPattern.indexOf("*");
-        if(index == -1){
+        if (index == -1) {
             String value = getProperty(propPattern);
-            if(value != null){
+            if (value != null) {
                 remove(propPattern);
             }
-        }
-        else{
+        } else {
             String startsWith = propPattern.substring(0, index);
             String endsWith;
-            if(index == propPattern.length()-1){
+            if (index == propPattern.length() - 1) {
                 endsWith = null;
-            }
-            else{
-                endsWith = propPattern.substring(index+1);
+            } else {
+                endsWith = propPattern.substring(index + 1);
             }
 
             // unchecked because Vector.clone() is not generic
             @SuppressWarnings("unchecked")
-            Vector<Object> cle = (Vector<Object>)keys.clone();
-            
-			int size = cle.size();
-            for (int i = 0;i < size;i += 1) {
-                String name = (String)cle.elementAt(i);
-            //Enumeration names = propertyNames();
-            //while(names.hasMoreElements()){
-            //    String name = (String)names.nextElement();
-                if(name.startsWith(startsWith)){
-                    if(endsWith == null){
+            Vector<Object> cle = (Vector<Object>) keys.clone();
+
+            int size = cle.size();
+            for (int i = 0; i < size; i += 1) {
+                String name = (String) cle.elementAt(i);
+                //Enumeration names = propertyNames();
+                //while(names.hasMoreElements()){
+                //    String name = (String)names.nextElement();
+                if (name.startsWith(startsWith)) {
+                    if (endsWith == null) {
                         remove(name);
-                    }
-                    else if(name.endsWith(endsWith)){
+                    } else if (name.endsWith(endsWith)) {
                         remove(name);
                     }
                 }
@@ -267,10 +259,10 @@ public class OrderedProperties extends Properties implements Serializable
      * This method will replace the value of any properties
      * that already existed.
      */
-    public void setProperties(Properties props){
+    public void setProperties(Properties props) {
         Enumeration names = props.propertyNames();
-        while(names.hasMoreElements()){
-            String name = (String)names.nextElement();
+        while (names.hasMoreElements()) {
+            String name = (String) names.nextElement();
             setProperty(name, props.getProperty(name));
         }
     }
@@ -319,24 +311,23 @@ public class OrderedProperties extends Properties implements Serializable
      * You don't need to escape a double-quote or a single-quote
      * (but it doesn't hurt to do so).
      */
-    public void load2(BufferedReader br) throws IOException
-    {
-    	terminators = getTerminators();
-    	
+    public void load2(BufferedReader br) throws IOException {
+        terminators = getTerminators();
+
         //BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String line;
         StringBuilder buffer = new StringBuilder(100);
-    	int lineNumber = 0;
-        int comment_length=0;
+        int lineNumber = 0;
+        int comment_length = 0;
         String sep = System.getProperty("line.separator");
         int sep_len = sep.length();
 
-        while((line=br.readLine())!=null) {
-        	lineNumber++;
+        while ((line = br.readLine()) != null) {
+            lineNumber++;
             //String comment=null;
             int len = line.length();
-            int start=0;
-            
+            int start = 0;
+
             // skip the Unicode BOM; UTF-8 is indicated by the byte sequence
             // EF BB BF, which is the UTF-8 encoding of the character U+FEFF)
             if (lineNumber == 1 && len > 0 && line.charAt(0) == '\uFEFF') {
@@ -345,28 +336,28 @@ public class OrderedProperties extends Properties implements Serializable
             }
 
             // find first non-whitespace char
-            for(;start<len && whitespace.indexOf(line.charAt(start))!=-1;start++);
+            for (; start < len && whitespace.indexOf(line.charAt(start)) != -1; start++) ;
 
             if (line.trim().length() == 0) {
                 buffer.append(sep);
-                comment_length+=sep_len;
+                comment_length += sep_len;
                 continue;
             }
 
             // if lines starts with !, # or only contains whitespace
             // add it to the buffer and start over with a new line
-            if(len==0 || line.charAt(start)=='!' || line.charAt(start)=='#' ||
-               whitespace.indexOf(line.charAt(start))!=-1) {
+            if (len == 0 || line.charAt(start) == '!' || line.charAt(start) == '#' ||
+                    whitespace.indexOf(line.charAt(start)) != -1) {
                 buffer.append(line);
-	            buffer.append(sep);
-                comment_length+=len+sep_len;
+                buffer.append(sep);
+                comment_length += len + sep_len;
                 continue;
             }
 
             // done with comment save it
-            if(comment_length!=0) {
+            if (comment_length != 0) {
                 buffer.setLength(comment_length);
-            //    comment = buffer.toString();
+                //    comment = buffer.toString();
             }
 
             buffer.setLength(0);
@@ -375,31 +366,32 @@ public class OrderedProperties extends Properties implements Serializable
             buffer.append(line.substring(start));
 
             // a line ending with a backslash is continued onto the following line
-            while(line != null && line.length() > 1 && line.charAt(line.length()-1)=='\\') {
-                buffer.setLength(buffer.length()-1); // remove the backslash
-                line=br.readLine();
-                if(line!=null) {
-                	lineNumber++;
+            while (line != null && line.length() > 1 && line.charAt(line.length() - 1) == '\\') {
+                buffer.setLength(buffer.length() - 1); // remove the backslash
+                line = br.readLine();
+                if (line != null) {
+                    lineNumber++;
                     int new_start = 0;
                     len = line.length();
                     // find first non-whitespace char
 
-                    for(;new_start < len &&
-                            whitespace.indexOf(line.charAt(new_start))!=-1;
-                        new_start++);
+                    for (; new_start < len &&
+                            whitespace.indexOf(line.charAt(new_start)) != -1;
+                         new_start++)
+                        ;
 
                     // add to buffer
                     buffer.append(line.substring(new_start));
                 }
             }
 
-	        String propLine = buffer.toString();
+            String propLine = buffer.toString();
             String com_key = loadProperty(propLine, lineNumber);
 
-            if(comment_length!=0 && com_key != null) {
+            if (comment_length != 0 && com_key != null) {
                 //comment_blocks.put(com_key, comment);
                 //comment=null;
-                comment_length=0;
+                comment_length = 0;
             }
 
             buffer.setLength(0);
@@ -426,8 +418,8 @@ public class OrderedProperties extends Properties implements Serializable
             out.println("#" + new Date().toString());
         }
 
-        for(Enumeration<Object> ke = keys.elements();
-            ke.hasMoreElements();) {
+        for (Enumeration<Object> ke = keys.elements();
+             ke.hasMoreElements(); ) {
             String key = (String) ke.nextElement();
             String value = (String) super.get(key);
             //String comment = (String) comment_blocks.get(key);
@@ -442,70 +434,71 @@ public class OrderedProperties extends Properties implements Serializable
     }
 
     // parse a property line
-    private String loadProperty(String prop, int lineNumber)
-    {
+    private String loadProperty(String prop, int lineNumber) {
         String key;
         String value;
-        int prop_len=prop.length();
-        int prop_index=0;
+        int prop_len = prop.length();
+        int prop_index = 0;
 
         // key
-        for(; prop_index<prop_len; prop_index++) {
+        for (; prop_index < prop_len; prop_index++) {
             char current = prop.charAt(prop_index);
-            if(current == '\\')
-                 prop_index++;
-            else if(terminators.indexOf(current) != -1)
+            if (current == '\\')
+                prop_index++;
+            else if (terminators.indexOf(current) != -1)
                 break;
         }
 
-		key = prop.substring(0, prop_index);
-		key = removeBadChars(prop, key, false);
+        key = prop.substring(0, prop_index);
+        key = removeBadChars(prop, key, false);
         key = unescape(key);
-	    key = key.trim();
+        key = key.trim();
 
         // got key now go to first non-whitespace
-        for(; prop_index<prop.length() &&
-                whitespace.indexOf(prop.charAt(prop_index))!=-1;
-            prop_index++);
+        for (; prop_index < prop.length() &&
+                whitespace.indexOf(prop.charAt(prop_index)) != -1;
+             prop_index++)
+            ;
 
-	    try {
-		    // also skip : or =
-		    if(prop.charAt(prop_index)==':' || prop.charAt(prop_index)=='=') {
-			    prop_index++;
-			    // skip any more whitespace
-			    for(; prop_index<prop.length() &&
-					    whitespace.indexOf(prop.charAt(prop_index))!=-1;
-			        prop_index++);
-		    }
-	    } catch (StringIndexOutOfBoundsException ex) {
-		    return null;
-	    }
+        try {
+            // also skip : or =
+            if (prop.charAt(prop_index) == ':' || prop.charAt(prop_index) == '=') {
+                prop_index++;
+                // skip any more whitespace
+                for (; prop_index < prop.length() &&
+                        whitespace.indexOf(prop.charAt(prop_index)) != -1;
+                     prop_index++)
+                    ;
+            }
+        } catch (StringIndexOutOfBoundsException ex) {
+            return null;
+        }
 
-	    int value_start=prop_index;
+        int value_start = prop_index;
 
         // read value
-        for(;prop_index<prop.length(); prop_index++) {
+        for (; prop_index < prop.length(); prop_index++) {
             char current = prop.charAt(prop_index);
-            if(current == '\\')
-                 prop_index++;
-            else if(valterminators.indexOf(current) != -1)
+            if (current == '\\')
+                prop_index++;
+            else if (valterminators.indexOf(current) != -1)
                 break;
         }
 
-		value = prop.substring(value_start,prop_index);
-		value = removeBadChars(prop, value, true);
-		value = unescape(value);
+        value = prop.substring(value_start, prop_index);
+        value = removeBadChars(prop, value, true);
+        value = unescape(value);
 
         //System.out.println("|" + key + "|" + value + "|");
-		
-		if(!super.containsKey(key))
+
+        if (!super.containsKey(key))
             keys.addElement(key);
         super.put(key, value);
         lines.put(key, new Integer(lineNumber));
 
         return key;
     }
-    
+
     /*
      * In Java .properties files, an equal sign, a colon,
      * a space, or a tab can be used to separate the key and value.
@@ -513,11 +506,10 @@ public class OrderedProperties extends Properties implements Serializable
      * PropertyText overrides this method
      * to implement that compatibility logic.
      */
-    protected String getTerminators()
-    {
-    	return "=: \t";
+    protected String getTerminators() {
+        return "=: \t";
     }
-    
+
     /*
      * In Java .properties files, no "bad" characters 
      * are removed from the key or value.
@@ -526,49 +518,52 @@ public class OrderedProperties extends Properties implements Serializable
      * PropertyTest overrides this method
      * to implement that compatibility logic.
      */
-    protected String removeBadChars(String prop, String string, boolean isValue)
-    {
-    	return string;
+    protected String removeBadChars(String prop, String string, boolean isValue) {
+        return string;
     }
 
     // escape some special keys and expand unicodes to \\uXXXX
     // used when writing out the properties
     private String escape(String string) {
 
-    if(string==null)
-        return null;
+        if (string == null)
+            return null;
 
 
-        StringBuilder buffer = new StringBuilder(string.length()+10);
+        StringBuilder buffer = new StringBuilder(string.length() + 10);
 
-        for(int i=0; i<string.length(); i++) {
-            char current=string.charAt(i);
-            switch(current) {
-            case '\\':
-                buffer.append('\\'); buffer.append('\\');
-                break;
-            case '\t':
-                buffer.append('\\'); buffer.append('t');
-                break;
-            case '\n':
-                buffer.append('\\'); buffer.append('n');
-                break;
-            case '\r':
-                buffer.append('\\'); buffer.append('r');
-                break;
-
-            default:
-                if((current < 20) || (current > 127)) {
+        for (int i = 0; i < string.length(); i++) {
+            char current = string.charAt(i);
+            switch (current) {
+                case '\\':
                     buffer.append('\\');
-                    buffer.append('u');
-                    buffer.append(toHex((current >> 12) & 0xF));
-                    buffer.append(toHex((current >> 8) & 0xF));
-                    buffer.append(toHex((current >> 4) & 0xF));
-                    buffer.append(toHex((current) & 0xF));
+                    buffer.append('\\');
+                    break;
+                case '\t':
+                    buffer.append('\\');
+                    buffer.append('t');
+                    break;
+                case '\n':
+                    buffer.append('\\');
+                    buffer.append('n');
+                    break;
+                case '\r':
+                    buffer.append('\\');
+                    buffer.append('r');
+                    break;
+
+                default:
+                    if ((current < 20) || (current > 127)) {
+                        buffer.append('\\');
+                        buffer.append('u');
+                        buffer.append(toHex((current >> 12) & 0xF));
+                        buffer.append(toHex((current >> 8) & 0xF));
+                        buffer.append(toHex((current >> 4) & 0xF));
+                        buffer.append(toHex((current) & 0xF));
 //                  } else if(escapes.indexOf(current) != -1) {
 //                      buffer.append(current);
-                } else
-                    buffer.append(current);
+                    } else
+                        buffer.append(current);
             }
         }
 
@@ -576,85 +571,102 @@ public class OrderedProperties extends Properties implements Serializable
     }
 
     // do opposite of escape, used when reading properties
-    private String unescape(String string)
-    {
-	    if(string==null)
-		    return null;
+    private String unescape(String string) {
+        if (string == null)
+            return null;
 
-	    StringBuilder buffer = new StringBuilder(string.length());
-	    int string_index=0;
+        StringBuilder buffer = new StringBuilder(string.length());
+        int string_index = 0;
 
-	    while(string_index < string.length()) {
-		    char add = string.charAt(string_index++);
-		    if(add == '\\') {
-			    add = string.charAt(string_index++);
-			    // handle unicode chars, else escaped single chars
-			    if(add == 'u') {
-				    // Read the xxxx
-				    int unicode=0;
-				    for (int i=0; i<4; i++) {
-					    add = string.charAt(string_index++);
-					    switch (add) {
-						    case '0': case '1': case '2': case '3': case '4':
-						    case '5': case '6': case '7': case '8': case '9':
-						    unicode = (unicode << 4) + add - '0';
-						    break;
+        while (string_index < string.length()) {
+            char add = string.charAt(string_index++);
+            if (add == '\\') {
+                add = string.charAt(string_index++);
+                // handle unicode chars, else escaped single chars
+                if (add == 'u') {
+                    // Read the xxxx
+                    int unicode = 0;
+                    for (int i = 0; i < 4; i++) {
+                        add = string.charAt(string_index++);
+                        switch (add) {
+                            case '0':
+                            case '1':
+                            case '2':
+                            case '3':
+                            case '4':
+                            case '5':
+                            case '6':
+                            case '7':
+                            case '8':
+                            case '9':
+                                unicode = (unicode << 4) + add - '0';
+                                break;
 
-						    case 'a': case 'b': case 'c':
-						    case 'd': case 'e': case 'f':
-						    unicode = (unicode << 4) + 10 + add - 'a';
-						    break;
+                            case 'a':
+                            case 'b':
+                            case 'c':
+                            case 'd':
+                            case 'e':
+                            case 'f':
+                                unicode = (unicode << 4) + 10 + add - 'a';
+                                break;
 
-						    case 'A': case 'B': case 'C':
-						    case 'D': case 'E': case 'F':
-						    unicode = (unicode << 4) + 10 + add - 'A';
-						    break;
+                            case 'A':
+                            case 'B':
+                            case 'C':
+                            case 'D':
+                            case 'E':
+                            case 'F':
+                                unicode = (unicode << 4) + 10 + add - 'A';
+                                break;
 
-						    default:
-						    {
-							    ThreadLocalToolkit.log(new MalformedEncoding(string));
-						    }
-					    }
-				    }
-				    add = (char) unicode;
-			    } else {
-				    // add escaped char to value
-				    switch(add) {
-					    case 't':
-						    add = '\t';
-						    break;
-					    case 'n':
-						    add = '\n';
-						    break;
-					    case 'r':
-						    add = '\r';
-						    break;
-					    case 'f':
-						    add = '\f';
-						    break;
-				    }
-			    }
-			    buffer.append(add);
-		    } else
-			    buffer.append(add);
-	    }
-	    return buffer.toString();
+                            default: {
+                                ThreadLocalToolkit.log(new MalformedEncoding(string));
+                            }
+                        }
+                    }
+                    add = (char) unicode;
+                } else {
+                    // add escaped char to value
+                    switch (add) {
+                        case 't':
+                            add = '\t';
+                            break;
+                        case 'n':
+                            add = '\n';
+                            break;
+                        case 'r':
+                            add = '\r';
+                            break;
+                        case 'f':
+                            add = '\f';
+                            break;
+                    }
+                }
+                buffer.append(add);
+            } else
+                buffer.append(add);
+        }
+        return buffer.toString();
     }
 
-	/**
+    /**
      * Convert a nibble to a hex character
-     * @param        nibble        the nibble to convert.
+     *
+     * @param nibble the nibble to convert.
      */
     private static char toHex(int nibble) {
         return hexDigit[(nibble & 0xF)];
     }
 
-    /** A table of hex digits */
+    /**
+     * A table of hex digits
+     */
     private static final char[] hexDigit = {
-        '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
     };
 
-    public void save(OutputStream os,String header) {
+    public void save(OutputStream os, String header) {
         store(os);
     }
 
@@ -672,35 +684,31 @@ public class OrderedProperties extends Properties implements Serializable
             p.store(System.out);
             System.out.println("-------");
             props.store(System.out, null);
-        } catch(IOException e) {
+        } catch (IOException e) {
             System.out.println(e);
         }
     }
 
-	public static class MalformedEncoding extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = 5450764640102723202L;
+    public static class MalformedEncoding extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = 5450764640102723202L;
 
-        public MalformedEncoding(String string)
-		{
-			this.string = string;
-			noPath();
-		}
+        public MalformedEncoding(String string) {
+            this.string = string;
+            noPath();
+        }
 
-		public String string;
-	}
+        public String string;
+    }
 
-	public static class RemovedFromProperty extends CompilerMessage.CompilerWarning
-	{
-		private static final long serialVersionUID = 4926793211834428616L;
+    public static class RemovedFromProperty extends CompilerMessage.CompilerWarning {
+        private static final long serialVersionUID = 4926793211834428616L;
 
-        public RemovedFromProperty(String string, String property)
-		{
-			this.string = string;
-			this.property = property;
-		}
+        public RemovedFromProperty(String string, String property) {
+            this.string = string;
+            this.property = property;
+        }
 
-		public String string, property;
-	}
+        public String string, property;
+    }
 
 }

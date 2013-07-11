@@ -36,24 +36,20 @@ import java.util.Iterator;
  *
  * @author Clement Wong
  */
-public class NamespacesConfiguration
-{
+public class NamespacesConfiguration {
     private ConfigurationPathResolver configResolver;
 
-    public void setConfigPathResolver( ConfigurationPathResolver resolver )
-    {
+    public void setConfigPathResolver(ConfigurationPathResolver resolver) {
         this.configResolver = resolver;
     }
 
     private Map<String, List<VirtualFile>> manifestMappings;
 
-    public Map<String, List<VirtualFile>> getManifestMappings()
-    {
+    public Map<String, List<VirtualFile>> getManifestMappings() {
         return manifestMappings;
     }
 
-    public void setManifestMappings(Map<String, List<VirtualFile>> manifestMappings)
-    {
+    public void setManifestMappings(Map<String, List<VirtualFile>> manifestMappings) {
         this.manifestMappings = manifestMappings;
     }
 
@@ -61,21 +57,16 @@ public class NamespacesConfiguration
     // 'compiler.namespaces.namespace' option
     //
 
-    public VirtualFile[] getNamespace()
-    {
-        if (manifestMappings != null)
-        {
+    public VirtualFile[] getNamespace() {
+        if (manifestMappings != null) {
             List<VirtualFile> fileList = new ArrayList<VirtualFile>();
 
             Iterator<List<VirtualFile>> iterator = manifestMappings.values().iterator();
-            while (iterator.hasNext())
-            {
+            while (iterator.hasNext()) {
                 List<VirtualFile> files = iterator.next();
-                if (files != null)
-                {
+                if (files != null) {
                     Iterator<VirtualFile> f = files.iterator();
-                    while ( f.hasNext())
-                    {
+                    while (f.hasNext()) {
                         fileList.add(f.next());
                     }
                 }
@@ -83,59 +74,49 @@ public class NamespacesConfiguration
 
             VirtualFile[] fileArray = new VirtualFile[fileList.size()];
             return fileList.toArray(fileArray);
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
     /**
      * Configures a list of many manifests mapped to a single namespace URI.
-     * 
+     * <p/>
      * <namespace>
-     *     <uri>library:adobe/flex/something</uri>
-     *     <manifest>something-manifest.xml</manifest>
-     *     <manifest>something-else-manifest.xml</manifest>
-     *     ...
+     * <uri>library:adobe/flex/something</uri>
+     * <manifest>something-manifest.xml</manifest>
+     * <manifest>something-else-manifest.xml</manifest>
+     * ...
      * </namespace>
-     *  
+     *
      * @param cfgval The configuration value context.
-     * @param args A List of values for the namespace element, with the first
-     * item expected to be the uri and the remaining are manifest paths.
+     * @param args   A List of values for the namespace element, with the first
+     *               item expected to be the uri and the remaining are manifest paths.
      * @throws ConfigurationException
      */
     public void cfgNamespace(ConfigurationValue cfgval, List<String> args)
-        throws ConfigurationException
-    {
-        if (args == null)
-        {
+            throws ConfigurationException {
+        if (args == null) {
             throw new ConfigurationException.CannotOpen(null, cfgval.getVar(), cfgval.getSource(), cfgval.getLine());
         }
 
-        if (args.size() < 2)
-        {
+        if (args.size() < 2) {
             throw new ConfigurationException.NamespaceMissingManifest("namespace", cfgval.getSource(), cfgval.getLine());
         }
 
         PathResolver resolver = ThreadLocalToolkit.getPathResolver();
-        assert resolver != null && configResolver != null: "Path resolvers must be set before calling this method.";
-        if (resolver == null || configResolver == null)
-        {
-            throw new ConfigurationException.CannotOpen(null, cfgval.getVar(), cfgval.getSource(), cfgval.getLine() );
+        assert resolver != null && configResolver != null : "Path resolvers must be set before calling this method.";
+        if (resolver == null || configResolver == null) {
+            throw new ConfigurationException.CannotOpen(null, cfgval.getVar(), cfgval.getSource(), cfgval.getLine());
         }
 
         String uri = null;
 
         Iterator<String> iterator = args.iterator();
-        while (iterator.hasNext())
-        {
-            if (uri == null)
-            {
+        while (iterator.hasNext()) {
+            if (uri == null) {
                 uri = iterator.next();
-            }
-            else
-            {
+            } else {
                 String manifest = iterator.next();
 
                 VirtualFile file = ConfigurationPathResolver.getVirtualFile(manifest, configResolver, cfgval);
@@ -153,12 +134,9 @@ public class NamespacesConfiguration
         }
     }
 
-    public static ConfigurationInfo getNamespaceInfo()
-    {
-        return new ConfigurationInfo(-1, new String[] {"uri", "manifest"})
-        {
-            public boolean allowMultiple()
-            {
+    public static ConfigurationInfo getNamespaceInfo() {
+        return new ConfigurationInfo(-1, new String[]{"uri", "manifest"}) {
+            public boolean allowMultiple() {
                 return true;
             }
         };

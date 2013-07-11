@@ -80,8 +80,7 @@ import java.util.Iterator;
  *
  * @author Paul Reilly
  */
-public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
-{
+public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator {
     private static final String ADD_EVENT_LISTENER = "addEventListener".intern();
     private static final String BINDABLE = "Bindable".intern();
     private static final String BOOLEAN = "Boolean".intern();
@@ -99,7 +98,7 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
     private static final String LISTENER = "listener".intern();
     private static final String MX_EVENTS = "mx.events".intern();
     private static final String OBJECT = "Object".intern();
-    private static final String OLD_VALUE= "oldValue".intern();
+    private static final String OLD_VALUE = "oldValue".intern();
     private static final String PRIORITY = "priority".intern();
     private static final String PROPERTY_CHANGE = "propertyChange".intern();
     private static final String PROPERTY_CHANGE_EVENT = "PropertyChangeEvent".intern();
@@ -116,175 +115,160 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
     private static final String DOT = ".";
     private static final String SPACE = " ";
 
-	private static final String CODEGEN_TEMPLATE_PATH = "flex2/compiler/as3/binding/";
-	private static final String STATIC_EVENT_DISPATCHER = "staticEventDispatcher";
-	private BindableInfo bindableInfo;
-	private boolean inClass = false;
+    private static final String CODEGEN_TEMPLATE_PATH = "flex2/compiler/as3/binding/";
+    private static final String STATIC_EVENT_DISPATCHER = "staticEventDispatcher";
+    private BindableInfo bindableInfo;
+    private boolean inClass = false;
 
-	public BindableSecondPassEvaluator(CompilationUnit unit, Map<String, ? extends GenerativeClassInfo> classMap,
-									   TypeAnalyzer typeAnalyzer, String generatedOutputDirectory,
-                                       boolean generateAbstractSyntaxTree, boolean processComments)
-	{
-		super(unit, classMap, typeAnalyzer, generatedOutputDirectory, generateAbstractSyntaxTree, processComments);
-	}
+    public BindableSecondPassEvaluator(CompilationUnit unit, Map<String, ? extends GenerativeClassInfo> classMap,
+                                       TypeAnalyzer typeAnalyzer, String generatedOutputDirectory,
+                                       boolean generateAbstractSyntaxTree, boolean processComments) {
+        super(unit, classMap, typeAnalyzer, generatedOutputDirectory, generateAbstractSyntaxTree, processComments);
+    }
 
-    private void addIEventDispatcherImplementation(Context context, ClassDefinitionNode classDefinition)
-    {
+    private void addIEventDispatcherImplementation(Context context, ClassDefinitionNode classDefinition) {
         NodeFactory nodeFactory = context.getNodeFactory();
         MemberExpressionNode memberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, FLASH_EVENTS,
-                                                          I_EVENT_DISPATCHER, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, FLASH_EVENTS,
+                        I_EVENT_DISPATCHER, false);
         classDefinition.interfaces = nodeFactory.list(classDefinition.interfaces, memberExpression);
 
         VariableDefinitionNode variableDefinition = generateBindingEventDispatcherVariable(nodeFactory);
         classDefinition.statements =
-            nodeFactory.statementList(classDefinition.statements, variableDefinition);
+                nodeFactory.statementList(classDefinition.statements, variableDefinition);
 
         DocCommentNode docCommentNode = generateInheritDocComment(context);
         classDefinition.statements =
-            nodeFactory.statementList(classDefinition.statements, docCommentNode);
-        
+                nodeFactory.statementList(classDefinition.statements, docCommentNode);
+
         FunctionDefinitionNode addEventListenerFunctionDefinition =
-            generateAddEventListenerFunctionDefinition(context);
+                generateAddEventListenerFunctionDefinition(context);
         classDefinition.statements =
-            nodeFactory.statementList(classDefinition.statements, addEventListenerFunctionDefinition);
+                nodeFactory.statementList(classDefinition.statements, addEventListenerFunctionDefinition);
 
         docCommentNode = generateInheritDocComment(context);
         classDefinition.statements =
-            nodeFactory.statementList(classDefinition.statements, docCommentNode);
-        
+                nodeFactory.statementList(classDefinition.statements, docCommentNode);
+
         FunctionDefinitionNode dispatchEventFunctionDefinition =
-            generateDispatchEventFunctionDefinition(context);
+                generateDispatchEventFunctionDefinition(context);
         classDefinition.statements =
-            nodeFactory.statementList(classDefinition.statements, dispatchEventFunctionDefinition);
+                nodeFactory.statementList(classDefinition.statements, dispatchEventFunctionDefinition);
 
         docCommentNode = generateInheritDocComment(context);
         classDefinition.statements =
-            nodeFactory.statementList(classDefinition.statements, docCommentNode);
-        
+                nodeFactory.statementList(classDefinition.statements, docCommentNode);
+
         FunctionDefinitionNode hasEventListenerFunctionDefinition =
-            generateHasEventListenerFunctionDefinition(context);
+                generateHasEventListenerFunctionDefinition(context);
         classDefinition.statements =
-            nodeFactory.statementList(classDefinition.statements, hasEventListenerFunctionDefinition);
+                nodeFactory.statementList(classDefinition.statements, hasEventListenerFunctionDefinition);
 
         docCommentNode = generateInheritDocComment(context);
         classDefinition.statements =
-            nodeFactory.statementList(classDefinition.statements, docCommentNode);
-        
+                nodeFactory.statementList(classDefinition.statements, docCommentNode);
+
         FunctionDefinitionNode removeEventListenerFunctionDefinition =
-            generateRemoveEventListenerFunctionDefinition(context);
+                generateRemoveEventListenerFunctionDefinition(context);
         classDefinition.statements =
-            nodeFactory.statementList(classDefinition.statements, removeEventListenerFunctionDefinition);
+                nodeFactory.statementList(classDefinition.statements, removeEventListenerFunctionDefinition);
 
         docCommentNode = generateInheritDocComment(context);
         classDefinition.statements =
-            nodeFactory.statementList(classDefinition.statements, docCommentNode);
-        
+                nodeFactory.statementList(classDefinition.statements, docCommentNode);
+
         FunctionDefinitionNode willTriggerFunctionDefinition =
-            generateWillTriggerFunctionDefinition(context);
+                generateWillTriggerFunctionDefinition(context);
         classDefinition.statements =
-            nodeFactory.statementList(classDefinition.statements, willTriggerFunctionDefinition);
+                nodeFactory.statementList(classDefinition.statements, willTriggerFunctionDefinition);
     }
 
-    private void addStaticEventDispatcherImplementation(Context context, ClassDefinitionNode classDefinition)
-    {
+    private void addStaticEventDispatcherImplementation(Context context, ClassDefinitionNode classDefinition) {
         NodeFactory nodeFactory = context.getNodeFactory();
         VariableDefinitionNode variableDefinition = generateStaticBindingEventDispatcherVariable(nodeFactory);
         classDefinition.statements =
-            nodeFactory.statementList(classDefinition.statements, variableDefinition);
+                nodeFactory.statementList(classDefinition.statements, variableDefinition);
 
-        FunctionDefinitionNode addEventListenerFunctionDefinition = 
-            generateStaticEventDispatcherGetter(context);
+        FunctionDefinitionNode addEventListenerFunctionDefinition =
+                generateStaticEventDispatcherGetter(context);
         classDefinition.statements =
-            nodeFactory.statementList(classDefinition.statements, addEventListenerFunctionDefinition);
+                nodeFactory.statementList(classDefinition.statements, addEventListenerFunctionDefinition);
     }
 
-	/**
-	 *
-	 */
-	public synchronized Value evaluate(Context context, ClassDefinitionNode node)
-	{
-		if (!evaluatedClasses.contains(node))
-		{
-			inClass = true;
+    /**
+     *
+     */
+    public synchronized Value evaluate(Context context, ClassDefinitionNode node) {
+        if (!evaluatedClasses.contains(node)) {
+            inClass = true;
 
-			String className = NodeMagic.getClassName(node);
+            String className = NodeMagic.getClassName(node);
 
-			bindableInfo = (BindableInfo) classMap.get(className);
+            bindableInfo = (BindableInfo) classMap.get(className);
 
-			if (bindableInfo != null)
-			{
-				ClassInfo classInfo = bindableInfo.getClassInfo();
-				if (!classInfo.implementsInterface(StandardDefs.PACKAGE_FLASH_EVENTS,
-												   GenerativeExtension.IEVENT_DISPATCHER))
-				{
-					bindableInfo.setNeedsToImplementIEventDispatcher(true);
+            if (bindableInfo != null) {
+                ClassInfo classInfo = bindableInfo.getClassInfo();
+                if (!classInfo.implementsInterface(StandardDefs.PACKAGE_FLASH_EVENTS,
+                        GenerativeExtension.IEVENT_DISPATCHER)) {
+                    bindableInfo.setNeedsToImplementIEventDispatcher(true);
 
-					MultiName multiName = new MultiName(StandardDefs.PACKAGE_FLASH_EVENTS,
-														GenerativeExtension.IEVENT_DISPATCHER);
-					InterfaceInfo interfaceInfo = typeAnalyzer.analyzeInterface(context, multiName, classInfo);
+                    MultiName multiName = new MultiName(StandardDefs.PACKAGE_FLASH_EVENTS,
+                            GenerativeExtension.IEVENT_DISPATCHER);
+                    InterfaceInfo interfaceInfo = typeAnalyzer.analyzeInterface(context, multiName, classInfo);
 
                     // interfaceInfo will be null if IEventDispatcher was not resolved.
                     // This most likely means that playerglobal.swc was not in the
                     // external-library-path and other errors will be reported, so punt.
-					if ((interfaceInfo == null) || checkForExistingMethods(context, node, classInfo, interfaceInfo))
-					{
-						return null;
-					}
+                    if ((interfaceInfo == null) || checkForExistingMethods(context, node, classInfo, interfaceInfo)) {
+                        return null;
+                    }
 
-					classInfo.addInterfaceMultiName(StandardDefs.PACKAGE_FLASH_EVENTS,
-													GenerativeExtension.IEVENT_DISPATCHER);
-				}
+                    classInfo.addInterfaceMultiName(StandardDefs.PACKAGE_FLASH_EVENTS,
+                            GenerativeExtension.IEVENT_DISPATCHER);
+                }
 
-				if (bindableInfo.getRequiresStaticEventDispatcher() &&
-					(!classInfo.definesVariable(STATIC_EVENT_DISPATCHER) &&
-					 !classInfo.definesGetter(STATIC_EVENT_DISPATCHER, true)))
-				{
-					bindableInfo.setNeedsStaticEventDispatcher(true);
-				}
+                if (bindableInfo.getRequiresStaticEventDispatcher() &&
+                        (!classInfo.definesVariable(STATIC_EVENT_DISPATCHER) &&
+                                !classInfo.definesGetter(STATIC_EVENT_DISPATCHER, true))) {
+                    bindableInfo.setNeedsStaticEventDispatcher(true);
+                }
 
-				postProcessClassInfo(context, bindableInfo);
-				prepClassDef(node);
+                postProcessClassInfo(context, bindableInfo);
+                prepClassDef(node);
 
-				if (node.statements != null)
-				{
-					node.statements.evaluate(context, this);
-					modifySyntaxTree(context, node, bindableInfo);
-				}
+                if (node.statements != null) {
+                    node.statements.evaluate(context, this);
+                    modifySyntaxTree(context, node, bindableInfo);
+                }
 
-				bindableInfo = null;
-			}
+                bindableInfo = null;
+            }
 
-			inClass = false;
+            inClass = false;
 
-			// Make sure we don't process this class again.
-			evaluatedClasses.add(node);
-		}
+            // Make sure we don't process this class again.
+            evaluatedClasses.add(node);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-    private AttributeListNode generateAttributeList(NodeFactory nodeFactory, String attributeString)
-    {
+    private AttributeListNode generateAttributeList(NodeFactory nodeFactory, String attributeString) {
         AttributeListNode result = null;
 
-        if (attributeString.length() > 0)
-        {
+        if (attributeString.length() > 0) {
             int index = attributeString.indexOf(SPACE);
 
-            if (index > -1)
-            {
+            if (index > -1) {
                 IdentifierNode identifier = nodeFactory.identifier(attributeString.substring(index + 1));
                 AttributeListNode attributeList = nodeFactory.attributeList(identifier, null);
                 MemberExpressionNode memberExpression =
-                    AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, attributeString.substring(0, index), true);
+                        AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, attributeString.substring(0, index), true);
                 ListNode list = nodeFactory.list(null, memberExpression);
                 result = nodeFactory.attributeList(list, attributeList);
-            }
-            else
-            {
+            } else {
                 MemberExpressionNode memberExpression =
-                    AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, attributeString, true);
+                        AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, attributeString, true);
                 ListNode list = nodeFactory.list(null, memberExpression);
                 result = nodeFactory.attributeList(list, null);
             }
@@ -293,8 +277,7 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         return result;
     }
 
-    private VariableDefinitionNode generateBindingEventDispatcherVariable(NodeFactory nodeFactory)
-    {
+    private VariableDefinitionNode generateBindingEventDispatcherVariable(NodeFactory nodeFactory) {
         // Equivalent AS:
         //
         //   private var _bindingEventDispatcher:flash.events.EventDispatcher =
@@ -302,33 +285,32 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         AttributeListNode attributeList = AbstractSyntaxTreeUtil.generatePrivateAttribute(nodeFactory);
         IdentifierNode identifier = nodeFactory.identifier(_BINDING_EVENT_DISPATCHER, false);
         QualifiedIdentifierNode eventDispatcherQualifiedIdentifier =
-            AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, FLASH_EVENTS,
-                                                               EVENT_DISPATCHER_CLASS, false);
+                AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, FLASH_EVENTS,
+                        EVENT_DISPATCHER_CLASS, false);
         QualifiedIdentifierNode iEventDispatcherQualifiedIdentifier =
-            AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, FLASH_EVENTS,
-                                                               I_EVENT_DISPATCHER, false);
+                AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, FLASH_EVENTS,
+                        I_EVENT_DISPATCHER, false);
         ThisExpressionNode thisExpression = nodeFactory.thisExpression(0);
         ArgumentListNode castArgumentList = nodeFactory.argumentList(null, thisExpression);
         CallExpressionNode castCallExpression =
-            (CallExpressionNode) nodeFactory.callExpression(iEventDispatcherQualifiedIdentifier,
-                                                            castArgumentList);
+                (CallExpressionNode) nodeFactory.callExpression(iEventDispatcherQualifiedIdentifier,
+                        castArgumentList);
         castCallExpression.setRValue(false);
         MemberExpressionNode innerMemberExpression = nodeFactory.memberExpression(null, castCallExpression);
         ArgumentListNode argumentList = nodeFactory.argumentList(null, innerMemberExpression);
         CallExpressionNode callExpression =
-            (CallExpressionNode) nodeFactory.callExpression(eventDispatcherQualifiedIdentifier,
-                                                            argumentList);
+                (CallExpressionNode) nodeFactory.callExpression(eventDispatcherQualifiedIdentifier,
+                        argumentList);
         callExpression.is_new = true;
         callExpression.setRValue(false);
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(null, callExpression);
         return AbstractSyntaxTreeUtil.generateVariable(nodeFactory, attributeList, identifier,
-                                                       FLASH_EVENTS, EVENT_DISPATCHER_CLASS,
-                                                       false, memberExpression);
+                FLASH_EVENTS, EVENT_DISPATCHER_CLASS,
+                false, memberExpression);
     }
 
     private StatementListNode generateDispatchEventCall(NodeFactory nodeFactory, StatementListNode then,
-                                                        String qualifiedPropertyName)
-    {
+                                                        String qualifiedPropertyName) {
         // Equivalent AS:
         //   if (this.hasEventListener("propertyChange"))
         //       this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "$entry.qualifiedPropertyName", oldValue, value));
@@ -336,7 +318,8 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         IdentifierNode dispatchEventIdentifier = nodeFactory.identifier(DISPATCH_EVENT, false);
 
         MemberExpressionNode propertyChangeEventMemberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, MX_EVENTS, PROPERTY_CHANGE_EVENT, false);;
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, MX_EVENTS, PROPERTY_CHANGE_EVENT, false);
+        ;
         IdentifierNode createUpdateEventIdentifier = nodeFactory.identifier(CREATE_UPDATE_EVENT, false);
         ThisExpressionNode thisExpression = nodeFactory.thisExpression(0);
         ArgumentListNode createUpdateEventArgumentList = nodeFactory.argumentList(null, innerThisExpression);
@@ -344,61 +327,59 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         LiteralStringNode literalString = nodeFactory.literalString(qualifiedPropertyName);
         createUpdateEventArgumentList = nodeFactory.argumentList(createUpdateEventArgumentList, literalString);
 
-        MemberExpressionNode oldValueMemberExpression = 
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, OLD_VALUE, false);
+        MemberExpressionNode oldValueMemberExpression =
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, OLD_VALUE, false);
         createUpdateEventArgumentList =
-            nodeFactory.argumentList(createUpdateEventArgumentList, oldValueMemberExpression);
+                nodeFactory.argumentList(createUpdateEventArgumentList, oldValueMemberExpression);
 
-        MemberExpressionNode valueMemberExpression = 
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, VALUE, false);
+        MemberExpressionNode valueMemberExpression =
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, VALUE, false);
         createUpdateEventArgumentList =
-            nodeFactory.argumentList(createUpdateEventArgumentList, valueMemberExpression);
+                nodeFactory.argumentList(createUpdateEventArgumentList, valueMemberExpression);
 
-        CallExpressionNode createUpdateEventCallExpression = 
-            (CallExpressionNode) nodeFactory.callExpression(createUpdateEventIdentifier, createUpdateEventArgumentList);
+        CallExpressionNode createUpdateEventCallExpression =
+                (CallExpressionNode) nodeFactory.callExpression(createUpdateEventIdentifier, createUpdateEventArgumentList);
         createUpdateEventCallExpression.setRValue(false);
         MemberExpressionNode createUpdateEventMemberExpression =
-            nodeFactory.memberExpression(propertyChangeEventMemberExpression, createUpdateEventCallExpression);
-        ArgumentListNode dispatchEventArgumentList = 
-            nodeFactory.argumentList(null, createUpdateEventMemberExpression);
+                nodeFactory.memberExpression(propertyChangeEventMemberExpression, createUpdateEventCallExpression);
+        ArgumentListNode dispatchEventArgumentList =
+                nodeFactory.argumentList(null, createUpdateEventMemberExpression);
         CallExpressionNode dispatchEventCallExpression =
-            (CallExpressionNode) nodeFactory.callExpression(dispatchEventIdentifier, dispatchEventArgumentList);
+                (CallExpressionNode) nodeFactory.callExpression(dispatchEventIdentifier, dispatchEventArgumentList);
         dispatchEventCallExpression.setRValue(false);
         MemberExpressionNode memberExpression =
-            nodeFactory.memberExpression(thisExpression, dispatchEventCallExpression);
+                nodeFactory.memberExpression(thisExpression, dispatchEventCallExpression);
         ListNode list = nodeFactory.list(null, memberExpression);
         ExpressionStatementNode expressionStatement =
-            nodeFactory.expressionStatement(list);
-        
+                nodeFactory.expressionStatement(list);
+
         // if (this.hasEventListener("propertyChange"))
         ThisExpressionNode ifThisExpression = nodeFactory.thisExpression(0);
         IdentifierNode hasEventListenerIdentifier = nodeFactory.identifier(HAS_EVENT_LISTENER, false);
         LiteralStringNode propChangeLiteralString = nodeFactory.literalString(PROPERTY_CHANGE);
         CallExpressionNode hasEventListenerCallExpression =
-            (CallExpressionNode) nodeFactory.callExpression(hasEventListenerIdentifier, nodeFactory.argumentList(null, propChangeLiteralString));
+                (CallExpressionNode) nodeFactory.callExpression(hasEventListenerIdentifier, nodeFactory.argumentList(null, propChangeLiteralString));
         hasEventListenerCallExpression.setRValue(false);
         MemberExpressionNode ifMemberExpression =
-            nodeFactory.memberExpression(ifThisExpression, hasEventListenerCallExpression);
+                nodeFactory.memberExpression(ifThisExpression, hasEventListenerCallExpression);
         ListNode iftest = nodeFactory.list(null, ifMemberExpression);
         Node ifStatement = nodeFactory.ifStatement(iftest, expressionStatement, null);
-        
+
         return nodeFactory.statementList(then, ifStatement);
     }
 
-    private DocCommentNode generateInheritDocComment(Context context)
-    {
+    private DocCommentNode generateInheritDocComment(Context context) {
         // Equivalent AS:
         //
         //    /**
-    	//     * @inheritDoc
-    	//     */
+        //     * @inheritDoc
+        //     */
         NodeFactory nodeFactory = context.getNodeFactory();
 
         return AbstractSyntaxTreeUtil.generateInheritDocComment(nodeFactory);
     }
-    
-    private FunctionDefinitionNode generateAddEventListenerFunctionDefinition(Context context)
-    {
+
+    private FunctionDefinitionNode generateAddEventListenerFunctionDefinition(Context context) {
         // Equivalent AS:
         //
         //    public function addEventListener(type:String, listener:Function,
@@ -417,66 +398,65 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         FunctionNameNode functionName = nodeFactory.functionName(Tokens.EMPTY_TOKEN, addEventListenerIdentifier);
 
         ParameterNode typeParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, TYPE, STRING, false);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, TYPE, STRING, false);
         ParameterListNode parameterList = nodeFactory.parameterList(null, typeParameter);
         ParameterNode listenerParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, LISTENER, FUNCTION, false);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, LISTENER, FUNCTION, false);
         parameterList = nodeFactory.parameterList(parameterList, listenerParameter);
         LiteralBooleanNode literalBoolean = nodeFactory.literalBoolean(false);
         ParameterNode useCaptureParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, USE_CAPTURE, BOOLEAN,
-                                                     false, literalBoolean);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, USE_CAPTURE, BOOLEAN,
+                        false, literalBoolean);
         parameterList = nodeFactory.parameterList(parameterList, useCaptureParameter);
         LiteralNumberNode literalNumber = nodeFactory.literalNumber(0);
         ParameterNode priorityParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, PRIORITY, INT,
-                                                     false, literalNumber);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, PRIORITY, INT,
+                        false, literalNumber);
         parameterList = nodeFactory.parameterList(parameterList, priorityParameter);
         literalBoolean = nodeFactory.literalBoolean(false);
         ParameterNode weakRefParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, WEAK_REF, BOOLEAN,
-                                                     false, literalBoolean);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, WEAK_REF, BOOLEAN,
+                        false, literalBoolean);
         parameterList = nodeFactory.parameterList(parameterList, weakRefParameter);
         FunctionSignatureNode functionSignature = nodeFactory.functionSignature(parameterList, null);
         functionSignature.void_anno = true;
 
         MemberExpressionNode _bindingEventDispatcherGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, _BINDING_EVENT_DISPATCHER, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, _BINDING_EVENT_DISPATCHER, false);
         IdentifierNode identifier = nodeFactory.identifier(ADD_EVENT_LISTENER, false);
         MemberExpressionNode typeGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, TYPE, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, TYPE, false);
         ArgumentListNode argumentList = nodeFactory.argumentList(null, typeGetterSelector);
         MemberExpressionNode listenerGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, LISTENER, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, LISTENER, false);
         argumentList = nodeFactory.argumentList(argumentList, listenerGetterSelector);
         MemberExpressionNode useCaptureGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, USE_CAPTURE, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, USE_CAPTURE, false);
         argumentList = nodeFactory.argumentList(argumentList, useCaptureGetterSelector);
         MemberExpressionNode priorityGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, PRIORITY, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, PRIORITY, false);
         argumentList = nodeFactory.argumentList(argumentList, priorityGetterSelector);
         MemberExpressionNode weakRefGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WEAK_REF, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, WEAK_REF, false);
         argumentList = nodeFactory.argumentList(argumentList, weakRefGetterSelector);
         CallExpressionNode callExpression =
-            (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
+                (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
         callExpression.setRValue(false);
         MemberExpressionNode memberExpression =
-            nodeFactory.memberExpression(_bindingEventDispatcherGetterSelector, callExpression);
+                nodeFactory.memberExpression(_bindingEventDispatcherGetterSelector, callExpression);
         ListNode list = nodeFactory.list(null, memberExpression);
         ExpressionStatementNode expressionStatement = nodeFactory.expressionStatement(list);
 
         StatementListNode functionStatementList = nodeFactory.statementList(null, expressionStatement);
 
         FunctionCommonNode functionCommon = nodeFactory.functionCommon(context, null, functionSignature,
-                                                                       functionStatementList);
+                functionStatementList);
         functionCommon.setUserDefinedBody(true);
 
         return nodeFactory.functionDefinition(context, attributeList, functionName, functionCommon);
     }
 
-    private FunctionDefinitionNode generateDispatchEventFunctionDefinition(Context context)
-    {
+    private FunctionDefinitionNode generateDispatchEventFunctionDefinition(Context context) {
         // Equivalent AS:
         //
         //    public function dispatchEvent(event:flash.events.Event):Boolean
@@ -491,54 +471,52 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         FunctionNameNode functionName = nodeFactory.functionName(Tokens.EMPTY_TOKEN, dispatchEventIdentifier);
 
         ParameterNode parameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, EVENT_VAR, FLASH_EVENTS, EVENT_CLASS, false);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, EVENT_VAR, FLASH_EVENTS, EVENT_CLASS, false);
         ParameterListNode parameterList = nodeFactory.parameterList(null, parameter);
         MemberExpressionNode returnTypeMemberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, BOOLEAN, true);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, BOOLEAN, true);
         TypeExpressionNode returnType = nodeFactory.typeExpression(returnTypeMemberExpression, true, false, -1);
         FunctionSignatureNode functionSignature = nodeFactory.functionSignature(parameterList, returnType);
 
         MemberExpressionNode _bindingEventDispatcherGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, _BINDING_EVENT_DISPATCHER, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, _BINDING_EVENT_DISPATCHER, false);
         IdentifierNode identifier = nodeFactory.identifier(DISPATCH_EVENT, false);
         MemberExpressionNode eventGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, EVENT_VAR, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, EVENT_VAR, false);
         ArgumentListNode argumentList = nodeFactory.argumentList(null, eventGetterSelector);
         CallExpressionNode callExpression =
-            (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
+                (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
         callExpression.setRValue(false);
 
         MemberExpressionNode memberExpression =
-            nodeFactory.memberExpression(_bindingEventDispatcherGetterSelector, callExpression);
+                nodeFactory.memberExpression(_bindingEventDispatcherGetterSelector, callExpression);
         ListNode returnList = nodeFactory.list(null, memberExpression);
         ReturnStatementNode returnStatement = nodeFactory.returnStatement(returnList);
 
         StatementListNode functionStatementList = nodeFactory.statementList(null, returnStatement);
 
         FunctionCommonNode functionCommon = nodeFactory.functionCommon(context, null, functionSignature,
-                                                                       functionStatementList);
+                functionStatementList);
         functionCommon.setUserDefinedBody(true);
 
         return nodeFactory.functionDefinition(context, attributeList, functionName, functionCommon);
     }
 
-    private ListNode generateEventDispatcherNotNull(NodeFactory nodeFactory)
-    {
+    private ListNode generateEventDispatcherNotNull(NodeFactory nodeFactory) {
         // Equivalent AS:
         //
         //   if (eventDispatcher != null)
-        MemberExpressionNode memberExpression = 
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, EVENT_DISPATCHER_VAR, false);
+        MemberExpressionNode memberExpression =
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, EVENT_DISPATCHER_VAR, false);
         LiteralNullNode literalNull = nodeFactory.literalNull();
         BinaryExpressionNode binaryExpression = nodeFactory.binaryExpression(Tokens.STRICTNOTEQUALS_TOKEN,
-                                                                             memberExpression,
-                                                                             literalNull);
+                memberExpression,
+                literalNull);
         return nodeFactory.list(null, binaryExpression);
     }
 
     private FunctionDefinitionNode generateGetter(Context context, String className,
-                                                  AccessorInfo accessorInfo)
-    {
+                                                  AccessorInfo accessorInfo) {
         // Equivalent AS:
         //
         //  $entry.attributeString function get ${entry.propertyName}():$entry.typeName
@@ -554,30 +532,27 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
 
         ReturnStatementNode returnStatement;
 
-        if (accessorInfo.getIsStatic())
-        {
+        if (accessorInfo.getIsStatic()) {
             // Equivalent AS:
             //
             //  return ${bindableInfo.className}.${entry.qualifiedBackingPropertyName};
             MemberExpressionNode getterSelector =
-                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, className, false);
+                    AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, className, false);
             String qualifiedBackingPropertyName = accessorInfo.getQualifiedBackingPropertyName().intern();
-            IdentifierNode identifer = 
-                AbstractSyntaxTreeUtil.generateIdentifier(nodeFactory, qualifiedBackingPropertyName, false);
+            IdentifierNode identifer =
+                    AbstractSyntaxTreeUtil.generateIdentifier(nodeFactory, qualifiedBackingPropertyName, false);
             GetExpressionNode getExpression = nodeFactory.getExpression(identifer);
             MemberExpressionNode memberExpression = nodeFactory.memberExpression(getterSelector, getExpression);
             ListNode returnList = nodeFactory.list(null, memberExpression);
             returnStatement = nodeFactory.returnStatement(returnList);
-        }
-        else
-        {
+        } else {
             // Equivalent AS:
             //
             //  return this.${entry.qualifiedBackingPropertyName};
             ThisExpressionNode thisExpression = nodeFactory.thisExpression(0);
             String qualifiedBackingPropertyName = accessorInfo.getQualifiedBackingPropertyName().intern();
             IdentifierNode identifer =
-                AbstractSyntaxTreeUtil.generateIdentifier(nodeFactory, qualifiedBackingPropertyName, false);
+                    AbstractSyntaxTreeUtil.generateIdentifier(nodeFactory, qualifiedBackingPropertyName, false);
             GetExpressionNode getExpression = nodeFactory.getExpression(identifer);
             MemberExpressionNode memberExpression = nodeFactory.memberExpression(thisExpression, getExpression);
             ListNode returnList = nodeFactory.list(null, memberExpression);
@@ -587,14 +562,13 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         StatementListNode functionStatementList = nodeFactory.statementList(null, returnStatement);
 
         FunctionCommonNode functionCommon = nodeFactory.functionCommon(context, null, functionSignature,
-                                                                       functionStatementList, position);
+                functionStatementList, position);
         functionCommon.setUserDefinedBody(true);
 
         return nodeFactory.functionDefinition(context, attributeList, functionName, functionCommon);
     }
 
-    private FunctionDefinitionNode generateHasEventListenerFunctionDefinition(Context context)
-    {
+    private FunctionDefinitionNode generateHasEventListenerFunctionDefinition(Context context) {
         // Equivalent AS:
         //
         //    public function hasEventListener(type:String):Boolean
@@ -609,67 +583,64 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         FunctionNameNode functionName = nodeFactory.functionName(Tokens.EMPTY_TOKEN, hasEventListenerIdentifier);
 
         ParameterNode typeParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, TYPE, STRING, false);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, TYPE, STRING, false);
         ParameterListNode parameterList = nodeFactory.parameterList(null, typeParameter);
         MemberExpressionNode returnTypeMemberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, BOOLEAN, true);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, BOOLEAN, true);
         TypeExpressionNode returnType = nodeFactory.typeExpression(returnTypeMemberExpression, true, false, -1);
         FunctionSignatureNode functionSignature = nodeFactory.functionSignature(parameterList, returnType);
 
         MemberExpressionNode _bindingEventDispatcherGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, _BINDING_EVENT_DISPATCHER, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, _BINDING_EVENT_DISPATCHER, false);
         IdentifierNode identifier = nodeFactory.identifier(HAS_EVENT_LISTENER, false);
         MemberExpressionNode typeGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, TYPE, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, TYPE, false);
         ArgumentListNode argumentList = nodeFactory.argumentList(null, typeGetterSelector);
         CallExpressionNode callExpression =
-            (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
+                (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
         callExpression.setRValue(false);
         MemberExpressionNode memberExpression =
-            nodeFactory.memberExpression(_bindingEventDispatcherGetterSelector, callExpression);
+                nodeFactory.memberExpression(_bindingEventDispatcherGetterSelector, callExpression);
         ListNode returnList = nodeFactory.list(null, memberExpression);
         ReturnStatementNode returnStatement = nodeFactory.returnStatement(returnList);
 
         StatementListNode functionStatementList = nodeFactory.statementList(null, returnStatement);
 
         FunctionCommonNode functionCommon = nodeFactory.functionCommon(context, null, functionSignature,
-                                                                       functionStatementList);
+                functionStatementList);
         functionCommon.setUserDefinedBody(true);
 
         return nodeFactory.functionDefinition(context, attributeList, functionName, functionCommon);
     }
 
-    private ListNode generateOldValueStrictlyNotEqualsValueText(NodeFactory nodeFactory)
-    {
+    private ListNode generateOldValueStrictlyNotEqualsValueText(NodeFactory nodeFactory) {
         // Equivalent AS:
         //
         // if (oldValue !== value)
-        MemberExpressionNode oldValueMemberExpression = 
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, OLD_VALUE, false);
-        MemberExpressionNode valueMemberExpression = 
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, VALUE, false);
+        MemberExpressionNode oldValueMemberExpression =
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, OLD_VALUE, false);
+        MemberExpressionNode valueMemberExpression =
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, VALUE, false);
         BinaryExpressionNode binaryExpression = nodeFactory.binaryExpression(Tokens.STRICTNOTEQUALS_TOKEN,
-                                                                             oldValueMemberExpression,
-                                                                             valueMemberExpression);
+                oldValueMemberExpression,
+                valueMemberExpression);
         return nodeFactory.list(null, binaryExpression);
     }
 
     private VariableDefinitionNode generateOldValueVariable(NodeFactory nodeFactory,
-                                                            String setterAccessPropertyName)
-    {
+                                                            String setterAccessPropertyName) {
         // Equivalent AS:
         //
         //   var oldValue:Object = this.$setterAccessPropertyName;
         ThisExpressionNode thisExpression = nodeFactory.thisExpression(0);
         IdentifierNode identifer =
-            AbstractSyntaxTreeUtil.generateIdentifier(nodeFactory, setterAccessPropertyName, false);
+                AbstractSyntaxTreeUtil.generateIdentifier(nodeFactory, setterAccessPropertyName, false);
         GetExpressionNode getExpression = nodeFactory.getExpression(identifer);
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(thisExpression, getExpression);
         return AbstractSyntaxTreeUtil.generateVariable(nodeFactory, OLD_VALUE, OBJECT, false, memberExpression);
     }
 
-    private FunctionDefinitionNode generateRemoveEventListenerFunctionDefinition(Context context)
-    {
+    private FunctionDefinitionNode generateRemoveEventListenerFunctionDefinition(Context context) {
         // Equivalent AS:
         //
         //    public function removeEventListener(type:String,
@@ -686,67 +657,63 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         FunctionNameNode functionName = nodeFactory.functionName(Tokens.EMPTY_TOKEN, removeEventListenerIdentifier);
 
         ParameterNode typeParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, TYPE, STRING, false);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, TYPE, STRING, false);
         ParameterListNode parameterList = nodeFactory.parameterList(null, typeParameter);
         ParameterNode listenerParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, LISTENER, FUNCTION, false);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, LISTENER, FUNCTION, false);
         parameterList = nodeFactory.parameterList(parameterList, listenerParameter);
         LiteralBooleanNode literalBoolean = nodeFactory.literalBoolean(false);
         ParameterNode useCaptureParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, USE_CAPTURE, BOOLEAN,
-                                                     false, literalBoolean);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, USE_CAPTURE, BOOLEAN,
+                        false, literalBoolean);
         parameterList = nodeFactory.parameterList(parameterList, useCaptureParameter);
         FunctionSignatureNode functionSignature = nodeFactory.functionSignature(parameterList, null);
         functionSignature.void_anno = true;
 
         MemberExpressionNode _bindingEventDispatcherGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, _BINDING_EVENT_DISPATCHER, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, _BINDING_EVENT_DISPATCHER, false);
         IdentifierNode identifier = nodeFactory.identifier(REMOVE_EVENT_LISTENER, false);
         MemberExpressionNode typeGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, TYPE, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, TYPE, false);
         ArgumentListNode argumentList = nodeFactory.argumentList(null, typeGetterSelector);
         MemberExpressionNode listenerGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, LISTENER, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, LISTENER, false);
         argumentList = nodeFactory.argumentList(argumentList, listenerGetterSelector);
         MemberExpressionNode useCaptureGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, USE_CAPTURE, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, USE_CAPTURE, false);
         argumentList = nodeFactory.argumentList(argumentList, useCaptureGetterSelector);
         CallExpressionNode callExpression =
-            (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
+                (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
         callExpression.setRValue(false);
         MemberExpressionNode memberExpression =
-            nodeFactory.memberExpression(_bindingEventDispatcherGetterSelector, callExpression);
+                nodeFactory.memberExpression(_bindingEventDispatcherGetterSelector, callExpression);
         ListNode list = nodeFactory.list(null, memberExpression);
         ExpressionStatementNode expressionStatement = nodeFactory.expressionStatement(list);
 
         StatementListNode functionStatementList = nodeFactory.statementList(null, expressionStatement);
 
         FunctionCommonNode functionCommon = nodeFactory.functionCommon(context, null, functionSignature,
-                                                                       functionStatementList);
+                functionStatementList);
         functionCommon.setUserDefinedBody(true);
 
         return nodeFactory.functionDefinition(context, attributeList, functionName, functionCommon);
     }
 
-    private FunctionDefinitionNode generateSetter(Context context, String className, AccessorInfo accessorInfo)
-    {
+    private FunctionDefinitionNode generateSetter(Context context, String className, AccessorInfo accessorInfo) {
         // Equivalent AS:
         //
         //   $entry.attributeString function set ${entry.propertyName}(value:${entry.typeName}):void
         NodeFactory nodeFactory = context.getNodeFactory();
         int position = -1;
 
-        if (accessorInfo instanceof VariableInfo)
-        {
+        if (accessorInfo instanceof VariableInfo) {
             position = ((VariableInfo) accessorInfo).getPosition();
-        }
-        else if (accessorInfo instanceof GetterSetterInfo)
-        {
+        } else if (accessorInfo instanceof GetterSetterInfo) {
             position = ((GetterSetterInfo) accessorInfo).getSetterPosition();
         }
 
         ParameterNode parameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, VALUE, accessorInfo.getTypeName(), true, position);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, VALUE, accessorInfo.getTypeName(), true, position);
         ParameterListNode parameterList = nodeFactory.parameterList(null, parameter);
         FunctionSignatureNode functionSignature = nodeFactory.functionSignature(parameterList, null);
         functionSignature.void_anno = true;
@@ -757,31 +724,25 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         String qualifiedBackingPropertyName = accessorInfo.getQualifiedBackingPropertyName().intern();
         String setterAccessPropertyName;
 
-        if (accessorInfo.getIsFunction())
-        {
+        if (accessorInfo.getIsFunction()) {
             setterAccessPropertyName = accessorInfo.getQualifiedPropertyName().intern();
-        }
-        else
-        {
+        } else {
             setterAccessPropertyName = qualifiedBackingPropertyName;
         }
 
-        if (accessorInfo.getIsStatic())
-        {
+        if (accessorInfo.getIsStatic()) {
             VariableDefinitionNode variableDefinition =
-                generateStaticOldValueVariable(nodeFactory, className, setterAccessPropertyName);
+                    generateStaticOldValueVariable(nodeFactory, className, setterAccessPropertyName);
             functionStatementList = nodeFactory.statementList(null, variableDefinition);
 
             ListNode test = generateOldValueStrictlyNotEqualsValueText(nodeFactory);
             StatementListNode then =
-                generateStaticSetterAssignment(nodeFactory, className, qualifiedBackingPropertyName);
+                    generateStaticSetterAssignment(nodeFactory, className, qualifiedBackingPropertyName);
             then = generateStaticDispatchEventCall(nodeFactory, then, className, accessorInfo.getQualifiedPropertyName());
 
             Node ifStatement = nodeFactory.ifStatement(test, then, null);
             functionStatementList = nodeFactory.statementList(functionStatementList, ifStatement);
-        }
-        else
-        {
+        } else {
             VariableDefinitionNode variableDefinition = generateOldValueVariable(nodeFactory, setterAccessPropertyName);
             functionStatementList = nodeFactory.statementList(null, variableDefinition);
 
@@ -789,39 +750,38 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
             StatementListNode then = generateSetterAssignment(nodeFactory, qualifiedBackingPropertyName);
             then = generateDispatchEventCall(nodeFactory, then, accessorInfo.getQualifiedPropertyName());
 
-            Node ifStatement = nodeFactory.ifStatement(test, then, null);;
+            Node ifStatement = nodeFactory.ifStatement(test, then, null);
+            ;
             functionStatementList = nodeFactory.statementList(functionStatementList, ifStatement);
         }
 
         FunctionCommonNode functionCommon = nodeFactory.functionCommon(context, null, functionSignature,
-                                                                       functionStatementList);
+                functionStatementList);
         functionCommon.setUserDefinedBody(true);
 
         return nodeFactory.functionDefinition(context, attributeList, functionName, functionCommon);
     }
 
     private StatementListNode generateSetterAssignment(NodeFactory nodeFactory,
-                                                       String qualifiedBackingPropertyName)
-    {
+                                                       String qualifiedBackingPropertyName) {
         // Equivalent AS:
         //
         //   this.${entry.qualifiedBackingPropertyName} = value;
         ThisExpressionNode outerThisExpression = nodeFactory.thisExpression(0);
         IdentifierNode identifier =
-            AbstractSyntaxTreeUtil.generateIdentifier(nodeFactory, qualifiedBackingPropertyName, false);
+                AbstractSyntaxTreeUtil.generateIdentifier(nodeFactory, qualifiedBackingPropertyName, false);
         MemberExpressionNode getterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, VALUE, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, VALUE, false);
         ArgumentListNode argumentList = nodeFactory.argumentList(null, getterSelector);
         SetExpressionNode setExpression = nodeFactory.setExpression(identifier, argumentList, false);
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(outerThisExpression, setExpression);
         ListNode list = nodeFactory.list(null, memberExpression);
         ExpressionStatementNode expressionStatement =
-            nodeFactory.expressionStatement(list);
+                nodeFactory.expressionStatement(list);
         return nodeFactory.statementList(null, expressionStatement);
     }
 
-    private VariableDefinitionNode generateStaticBindingEventDispatcherVariable(NodeFactory nodeFactory)
-    {
+    private VariableDefinitionNode generateStaticBindingEventDispatcherVariable(NodeFactory nodeFactory) {
         // Equivalent AS:
         //
         //    private static var _staticBindingEventDispatcher:flash.events.EventDispatcher =
@@ -829,23 +789,22 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         AttributeListNode attributeList = AbstractSyntaxTreeUtil.generatePrivateStaticAttribute(nodeFactory);
         IdentifierNode _staticBindingEventDispatcherIdentifier = nodeFactory.identifier(_STATIC_BINDING_EVENT_DISPATCHER, false);
         QualifiedIdentifierNode qualifiedIdentifier =
-            AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, FLASH_EVENTS,
-                                                               EVENT_DISPATCHER_CLASS, false);
+                AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, FLASH_EVENTS,
+                        EVENT_DISPATCHER_CLASS, false);
         CallExpressionNode callExpression =
-            (CallExpressionNode) nodeFactory.callExpression(qualifiedIdentifier, null);
+                (CallExpressionNode) nodeFactory.callExpression(qualifiedIdentifier, null);
         callExpression.is_new = true;
         callExpression.setRValue(false);
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(null, callExpression);
         return AbstractSyntaxTreeUtil.generateVariable(nodeFactory, attributeList,
-                                                       _staticBindingEventDispatcherIdentifier,
-                                                       FLASH_EVENTS, EVENT_DISPATCHER_CLASS,
-                                                       false, memberExpression);
+                _staticBindingEventDispatcherIdentifier,
+                FLASH_EVENTS, EVENT_DISPATCHER_CLASS,
+                false, memberExpression);
 
     }
 
     private StatementListNode generateStaticDispatchEventCall(NodeFactory nodeFactory, StatementListNode outerThen,
-                                                              String className, String qualifiedPropertyName)
-    {
+                                                              String className, String qualifiedPropertyName) {
         // Equivalent AS:
         //
         //   var eventDispatcher:IEventDispatcher = ${bindableInfo.className}.staticEventDispatcher;
@@ -854,11 +813,11 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         GetExpressionNode selector = nodeFactory.getExpression(staticEventDispatcherIdentifier);
         MemberExpressionNode rvalue = nodeFactory.memberExpression(base, selector);
         VariableDefinitionNode variableDefinition =
-            AbstractSyntaxTreeUtil.generateVariable(nodeFactory, EVENT_DISPATCHER_VAR,
-                                                    FLASH_EVENTS, I_EVENT_DISPATCHER,
-                                                    false, rvalue);
+                AbstractSyntaxTreeUtil.generateVariable(nodeFactory, EVENT_DISPATCHER_VAR,
+                        FLASH_EVENTS, I_EVENT_DISPATCHER,
+                        false, rvalue);
         outerThen = nodeFactory.statementList(outerThen, variableDefinition);
-        
+
         ListNode test = generateEventDispatcherNotNull(nodeFactory);
 
         // Equivalent AS:
@@ -867,50 +826,50 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         IdentifierNode dispatchEventIdentifier = nodeFactory.identifier(DISPATCH_EVENT, false);
 
         MemberExpressionNode propertyChangeEventMemberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, MX_EVENTS, PROPERTY_CHANGE_EVENT, false);;
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, MX_EVENTS, PROPERTY_CHANGE_EVENT, false);
+        ;
         IdentifierNode createUpdateEventIdentifier = nodeFactory.identifier(CREATE_UPDATE_EVENT, false);
         MemberExpressionNode getterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, className, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, className, false);
         ArgumentListNode createUpdateEventArgumentList = nodeFactory.argumentList(null, getterSelector);
 
         LiteralStringNode literalString = nodeFactory.literalString(qualifiedPropertyName);
         createUpdateEventArgumentList = nodeFactory.argumentList(createUpdateEventArgumentList, literalString);
 
-        MemberExpressionNode oldValueMemberExpression = 
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, OLD_VALUE, false);
+        MemberExpressionNode oldValueMemberExpression =
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, OLD_VALUE, false);
         createUpdateEventArgumentList =
-            nodeFactory.argumentList(createUpdateEventArgumentList, oldValueMemberExpression);
+                nodeFactory.argumentList(createUpdateEventArgumentList, oldValueMemberExpression);
 
-        MemberExpressionNode valueMemberExpression = 
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, VALUE, false);
+        MemberExpressionNode valueMemberExpression =
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, VALUE, false);
         createUpdateEventArgumentList =
-            nodeFactory.argumentList(createUpdateEventArgumentList, valueMemberExpression);
+                nodeFactory.argumentList(createUpdateEventArgumentList, valueMemberExpression);
 
-        CallExpressionNode createUpdateEventCallExpression = 
-            (CallExpressionNode) nodeFactory.callExpression(createUpdateEventIdentifier, createUpdateEventArgumentList);
+        CallExpressionNode createUpdateEventCallExpression =
+                (CallExpressionNode) nodeFactory.callExpression(createUpdateEventIdentifier, createUpdateEventArgumentList);
         createUpdateEventCallExpression.setRValue(false);
         MemberExpressionNode createUpdateEventMemberExpression =
-            nodeFactory.memberExpression(propertyChangeEventMemberExpression, createUpdateEventCallExpression);
-        ArgumentListNode dispatchEventArgumentList = 
-            nodeFactory.argumentList(null, createUpdateEventMemberExpression);
+                nodeFactory.memberExpression(propertyChangeEventMemberExpression, createUpdateEventCallExpression);
+        ArgumentListNode dispatchEventArgumentList =
+                nodeFactory.argumentList(null, createUpdateEventMemberExpression);
         CallExpressionNode dispatchEventCallExpression =
-            (CallExpressionNode) nodeFactory.callExpression(dispatchEventIdentifier, dispatchEventArgumentList);
+                (CallExpressionNode) nodeFactory.callExpression(dispatchEventIdentifier, dispatchEventArgumentList);
         dispatchEventCallExpression.setRValue(false);
         MemberExpressionNode eventDispatcherMemberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, EVENT_DISPATCHER_VAR, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, EVENT_DISPATCHER_VAR, false);
         MemberExpressionNode memberExpression =
-            nodeFactory.memberExpression(eventDispatcherMemberExpression, dispatchEventCallExpression);
+                nodeFactory.memberExpression(eventDispatcherMemberExpression, dispatchEventCallExpression);
         ListNode list = nodeFactory.list(null, memberExpression);
         ExpressionStatementNode expressionStatement =
-            nodeFactory.expressionStatement(list);
+                nodeFactory.expressionStatement(list);
         StatementListNode then = nodeFactory.statementList(null, expressionStatement);
 
         Node ifStatement = nodeFactory.ifStatement(test, then, null);
         return nodeFactory.statementList(outerThen, ifStatement);
     }
 
-    private FunctionDefinitionNode generateStaticEventDispatcherGetter(Context context)
-    {
+    private FunctionDefinitionNode generateStaticEventDispatcherGetter(Context context) {
         // Equivalent AS:
         //
         //    public static function get staticEventDispatcher():IEventDispatcher
@@ -919,27 +878,26 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         //    }
         NodeFactory nodeFactory = context.getNodeFactory();
         MemberExpressionNode returnTypeMemberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, I_EVENT_DISPATCHER, true);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, I_EVENT_DISPATCHER, true);
         TypeExpressionNode returnType = nodeFactory.typeExpression(returnTypeMemberExpression, true, false, -1);
         FunctionSignatureNode functionSignature = nodeFactory.functionSignature(null, returnType);
         AttributeListNode attributeList = AbstractSyntaxTreeUtil.generatePublicStaticAttribute(nodeFactory);
         IdentifierNode staticEventDispatcherIdentifier = nodeFactory.identifier(STATIC_EVENT_DISPATCHER, false);
         FunctionNameNode functionName = nodeFactory.functionName(Tokens.GET_TOKEN, staticEventDispatcherIdentifier);
         MemberExpressionNode memberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, _STATIC_BINDING_EVENT_DISPATCHER, false); 
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, _STATIC_BINDING_EVENT_DISPATCHER, false);
         ListNode returnList = nodeFactory.list(null, memberExpression);
         ReturnStatementNode returnStatement = nodeFactory.returnStatement(returnList);
         StatementListNode functionStatementList = nodeFactory.statementList(null, returnStatement);
         FunctionCommonNode functionCommon = nodeFactory.functionCommon(context, null, functionSignature,
-                                                                       functionStatementList);
+                functionStatementList);
         functionCommon.setUserDefinedBody(true);
         return nodeFactory.functionDefinition(context, attributeList, functionName, functionCommon);
     }
 
     private VariableDefinitionNode generateStaticOldValueVariable(NodeFactory nodeFactory,
                                                                   String className,
-                                                                  String qualifiedBackingPropertyName)
-    {
+                                                                  String qualifiedBackingPropertyName) {
         // Equivalent AS:
         //
         //   var oldValue:Object = ${bindableInfo.className}.$setterAccessPropertyName;
@@ -951,27 +909,25 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
     }
 
     private StatementListNode generateStaticSetterAssignment(NodeFactory nodeFactory, String className,
-                                                             String qualifiedBackingPropertyName)
-    {
+                                                             String qualifiedBackingPropertyName) {
         // Equivalent AS:
         //
         //   ${bindableInfo.className}.${entry.qualifiedBackingPropertyName} = value;
-        MemberExpressionNode base = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, className, false);        
+        MemberExpressionNode base = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, className, false);
         IdentifierNode identifier =
-            AbstractSyntaxTreeUtil.generateIdentifier(nodeFactory, qualifiedBackingPropertyName, false);
+                AbstractSyntaxTreeUtil.generateIdentifier(nodeFactory, qualifiedBackingPropertyName, false);
         MemberExpressionNode getterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, VALUE, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, VALUE, false);
         ArgumentListNode argumentList = nodeFactory.argumentList(null, getterSelector);
         SetExpressionNode setExpression = nodeFactory.setExpression(identifier, argumentList, false);
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(base, setExpression);
         ListNode list = nodeFactory.list(null, memberExpression);
         ExpressionStatementNode expressionStatement =
-            nodeFactory.expressionStatement(list);
+                nodeFactory.expressionStatement(list);
         return nodeFactory.statementList(null, expressionStatement);
     }
 
-    private FunctionDefinitionNode generateWillTriggerFunctionDefinition(Context context)
-    {
+    private FunctionDefinitionNode generateWillTriggerFunctionDefinition(Context context) {
         // Equivalent AS:
         //
         //    public function willTrigger(type:String):Boolean
@@ -985,94 +941,84 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         FunctionNameNode functionName = nodeFactory.functionName(Tokens.EMPTY_TOKEN, willTriggerIdentifier);
 
         ParameterNode typeParameter =
-            AbstractSyntaxTreeUtil.generateParameter(nodeFactory, TYPE, STRING, false);
+                AbstractSyntaxTreeUtil.generateParameter(nodeFactory, TYPE, STRING, false);
         ParameterListNode parameterList = nodeFactory.parameterList(null, typeParameter);
         MemberExpressionNode returnTypeMemberExpression =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, BOOLEAN, true);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, BOOLEAN, true);
         TypeExpressionNode returnType = nodeFactory.typeExpression(returnTypeMemberExpression, true, false, -1);
         FunctionSignatureNode functionSignature = nodeFactory.functionSignature(parameterList, returnType);
 
         MemberExpressionNode _bindingEventDispatcherGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, _BINDING_EVENT_DISPATCHER, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, _BINDING_EVENT_DISPATCHER, false);
         IdentifierNode identifier = nodeFactory.identifier(WILL_TRIGGER, false);
         MemberExpressionNode typeGetterSelector =
-            AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, TYPE, false);
+                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, TYPE, false);
         ArgumentListNode argumentList = nodeFactory.argumentList(null, typeGetterSelector);
         CallExpressionNode callExpression =
-            (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
+                (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
         callExpression.setRValue(false);
 
         MemberExpressionNode memberExpression =
-            nodeFactory.memberExpression(_bindingEventDispatcherGetterSelector, callExpression);
+                nodeFactory.memberExpression(_bindingEventDispatcherGetterSelector, callExpression);
         ListNode returnList = nodeFactory.list(null, memberExpression);
         ReturnStatementNode returnStatement = nodeFactory.returnStatement(returnList);
 
         StatementListNode functionStatementList = nodeFactory.statementList(null, returnStatement);
 
         FunctionCommonNode functionCommon = nodeFactory.functionCommon(context, null, functionSignature,
-                                                                       functionStatementList);
+                functionStatementList);
         functionCommon.setUserDefinedBody(true);
 
         return nodeFactory.functionDefinition(context, attributeList, functionName, functionCommon);
     }
 
-	protected void modifySyntaxTree(Context context, ClassDefinitionNode classDefinition,
-                                    BindableInfo bindableInfo)
-	{
-        if (generateAbstractSyntaxTree)
-        {
+    protected void modifySyntaxTree(Context context, ClassDefinitionNode classDefinition,
+                                    BindableInfo bindableInfo) {
+        if (generateAbstractSyntaxTree) {
             Map<QName, AccessorInfo> accessors = bindableInfo.getAccessors();
 
-            if (accessors != null)
-            {
-                for (AccessorInfo accessorInfo : accessors.values())
-                {
+            if (accessors != null) {
+                for (AccessorInfo accessorInfo : accessors.values()) {
                     NodeFactory nodeFactory = context.getNodeFactory();
                     String className = bindableInfo.getClassName().intern();
                     StatementListNode statementList = classDefinition.statements;
 
-                    if (!accessorInfo.getIsFunction())
-                    {
+                    if (!accessorInfo.getIsFunction()) {
                         FunctionDefinitionNode getter = generateGetter(context, className, accessorInfo);
 
                         moveMetaDataToNewDefinition(nodeFactory, accessorInfo.getDefinitionNode(),
-                                                    getter, statementList, true);
+                                getter, statementList, true);
 
                         nodeFactory.statementList(statementList, getter);
                     }
 
                     FunctionDefinitionNode setter = generateSetter(context, className, accessorInfo);
 
-                    if (accessorInfo.getIsFunction())
-                    {
+                    if (accessorInfo.getIsFunction()) {
                         GetterSetterInfo getterSetterInfo = (GetterSetterInfo) accessorInfo;
                         boolean processedBindable =
-                            processGetterMetaData(nodeFactory,
-                                                  getterSetterInfo.getGetterFunctionDefinition());
+                                processGetterMetaData(nodeFactory,
+                                        getterSetterInfo.getGetterFunctionDefinition());
                         moveMetaDataToNewDefinition(nodeFactory,
-                                                    getterSetterInfo.getSetterFunctionDefinition(),
-                                                    setter, statementList, !processedBindable);
+                                getterSetterInfo.getSetterFunctionDefinition(),
+                                setter, statementList, !processedBindable);
                     }
 
                     nodeFactory.statementList(statementList, setter);
                 }
             }
 
-            if (bindableInfo.getNeedsToImplementIEventDispatcher())
-            {
+            if (bindableInfo.getNeedsToImplementIEventDispatcher()) {
                 addIEventDispatcherImplementation(context, classDefinition);
             }
 
-            if (bindableInfo.getNeedsStaticEventDispatcher())
-            {
+            if (bindableInfo.getNeedsStaticEventDispatcher()) {
                 addStaticEventDispatcherImplementation(context, classDefinition);
             }
-        }
-        else
-        {
+        } else {
             super.modifySyntaxTree(context, classDefinition, bindableInfo);
         }
-	}
+    }
 
     /**
      * Moves metadata from the initial definition to the new
@@ -1083,20 +1029,16 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
                                              DefinitionNode fromDefinition,
                                              DefinitionNode toDefinition,
                                              StatementListNode classDefinitionStatementList,
-                                             boolean addBindableMetaData)
-    {
+                                             boolean addBindableMetaData) {
         boolean processedBindableMetaData = false;
 
-        if ((fromDefinition != null) && (fromDefinition.metaData != null))
-        {
-            for (Node node : fromDefinition.metaData.items)
-            {
+        if ((fromDefinition != null) && (fromDefinition.metaData != null)) {
+            for (Node node : fromDefinition.metaData.items) {
                 MetaDataNode metaData = (MetaDataNode) node;
 
                 if ((metaData.getId() != null) &&
-                    metaData.getId().equals(StandardDefs.MD_BINDABLE) &&
-                    metaData.count() == 0)
-                {
+                        metaData.getId().equals(StandardDefs.MD_BINDABLE) &&
+                        metaData.count() == 0) {
                     processBindableMetaData(nodeFactory, metaData);
                     processedBindableMetaData = true;
                 }
@@ -1110,12 +1052,11 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
             fromDefinition.metaData = null;
         }
 
-        if (addBindableMetaData && !processedBindableMetaData)
-        {
+        if (addBindableMetaData && !processedBindableMetaData) {
             MetaDataNode bindableMetaData =
-                AbstractSyntaxTreeUtil.generateMetaData(nodeFactory, BINDABLE,
-                                                        EVENT_VAR, PROPERTY_CHANGE);
-            nodeFactory.statementList(classDefinitionStatementList, bindableMetaData);            
+                    AbstractSyntaxTreeUtil.generateMetaData(nodeFactory, BINDABLE,
+                            EVENT_VAR, PROPERTY_CHANGE);
+            nodeFactory.statementList(classDefinitionStatementList, bindableMetaData);
             prepMetaDataNode(nodeFactory.getContext(), bindableMetaData);
         }
     }
@@ -1123,11 +1064,10 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
     /**
      * Added an event attribute to Bindable metadata.
      */
-    private void processBindableMetaData(NodeFactory nodeFactory, MetaDataNode metaData)
-    {
+    private void processBindableMetaData(NodeFactory nodeFactory, MetaDataNode metaData) {
         assert metaData.count() == 0;
 
-        Value[] vals =  new Value[1];
+        Value[] vals = new Value[1];
         vals[0] = new macromedia.asc.parser.MetaDataEvaluator.KeyValuePair(EVENT_VAR, PROPERTY_CHANGE);
         metaData.setValues(vals);
         prepMetaDataNode(nodeFactory.getContext(), metaData);
@@ -1136,20 +1076,16 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
     /**
      * Looks for empty Bindable metadata and if found, adds an event attribute to it.
      */
-    private boolean processGetterMetaData(NodeFactory nodeFactory, FunctionDefinitionNode getter)
-    {
-        boolean processedBindableMetaData = false;        
+    private boolean processGetterMetaData(NodeFactory nodeFactory, FunctionDefinitionNode getter) {
+        boolean processedBindableMetaData = false;
 
-        if ((getter != null) && (getter.metaData != null))
-        {
-            for (Node node : getter.metaData.items)
-            {
+        if ((getter != null) && (getter.metaData != null)) {
+            for (Node node : getter.metaData.items) {
                 MetaDataNode metaData = (MetaDataNode) node;
 
                 if ((metaData.getId() != null) &&
-                    metaData.getId().equals(StandardDefs.MD_BINDABLE) &&
-                    metaData.count() == 0)
-                {
+                        metaData.getId().equals(StandardDefs.MD_BINDABLE) &&
+                        metaData.count() == 0) {
                     processBindableMetaData(nodeFactory, metaData);
                     processedBindableMetaData = true;
                 }
@@ -1159,121 +1095,101 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
         return processedBindableMetaData;
     }
 
-	/**
-	 * prepare class def node for augmentation. Currently, all we need to do is strip class-level [Bindable] md.
-	 */
-	private void prepClassDef(ClassDefinitionNode node)
-	{
-		if (node.metaData != null && node.metaData.items != null)
-		{
-			for (Iterator iter = node.metaData.items.iterator(); iter.hasNext(); )
-			{
-				MetaDataNode md = (MetaDataNode)iter.next();
-				if (StandardDefs.MD_BINDABLE.equals(md.getId()) && md.count() == 0)
-				{
-					iter.remove();
-				}
-			}
-		}
-	}
+    /**
+     * prepare class def node for augmentation. Currently, all we need to do is strip class-level [Bindable] md.
+     */
+    private void prepClassDef(ClassDefinitionNode node) {
+        if (node.metaData != null && node.metaData.items != null) {
+            for (Iterator iter = node.metaData.items.iterator(); iter.hasNext(); ) {
+                MetaDataNode md = (MetaDataNode) iter.next();
+                if (StandardDefs.MD_BINDABLE.equals(md.getId()) && md.count() == 0) {
+                    iter.remove();
+                }
+            }
+        }
+    }
 
-	/**
-	 * Hide *setters* which have had bindable versions generated. Getters are not wrapped.
-	 *
-	 * In BindableFirstPassEvaluator we visited the interior of a function definition, in order to generate errors on
-	 * [Bindable] metadata we found there. Here we avoid FunctionDefinitionNodes because the VariableDefinitionNodes
-	 * within them might otherwise be spuriously renamed.
-	 */
-	public synchronized Value evaluate(Context context, FunctionDefinitionNode node)
-	{
-		if (inClass)
-		{
-			QName qname = new QName(NodeMagic.getUserNamespace(node), NodeMagic.getFunctionName(node));
-			GenerativeClassInfo.AccessorInfo accessorInfo = bindableInfo.getAccessor(qname);
+    /**
+     * Hide *setters* which have had bindable versions generated. Getters are not wrapped.
+     * <p/>
+     * In BindableFirstPassEvaluator we visited the interior of a function definition, in order to generate errors on
+     * [Bindable] metadata we found there. Here we avoid FunctionDefinitionNodes because the VariableDefinitionNodes
+     * within them might otherwise be spuriously renamed.
+     */
+    public synchronized Value evaluate(Context context, FunctionDefinitionNode node) {
+        if (inClass) {
+            QName qname = new QName(NodeMagic.getUserNamespace(node), NodeMagic.getFunctionName(node));
+            GenerativeClassInfo.AccessorInfo accessorInfo = bindableInfo.getAccessor(qname);
 
-			if (accessorInfo instanceof GetterSetterInfo)
-			{
-				if (NodeMagic.functionIsSetter(node))
-				{
-					hideFunction(node, accessorInfo);
-					registerRenamedAccessor(accessorInfo);
+            if (accessorInfo instanceof GetterSetterInfo) {
+                if (NodeMagic.functionIsSetter(node)) {
+                    hideFunction(node, accessorInfo);
+                    registerRenamedAccessor(accessorInfo);
                     ((GetterSetterInfo) accessorInfo).setSetterInfo(node);
-				}
-                else
-                {
+                } else {
                     ((GetterSetterInfo) accessorInfo).setGetterInfo(node);
 
-                    if (!bindableInfo.getClassInfo().definesSetter(qname.getLocalPart(), false))
-                    {
+                    if (!bindableInfo.getClassInfo().definesSetter(qname.getLocalPart(), false)) {
                         context.localizedError2(node.pos(), new MissingNonInheritedSetter(qname.getLocalPart()));
                     }
                 }
-			}
-		}
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * visits all variable definitions that occur inside class definitions, outside function definitions, and mangles
-	 * their names if they've been marked for [Bindable] codegen.
-	 */
-	public synchronized Value evaluate(Context context, VariableDefinitionNode node)
-	{
-		if (inClass)
-		{
-			QName qname = new QName(NodeMagic.getUserNamespace(node), NodeMagic.getVariableName(node));
-			GenerativeClassInfo.AccessorInfo accessorInfo = bindableInfo.getAccessor(qname);
-			if (accessorInfo != null)
-			{
-				hideVariable(node, accessorInfo);
-				registerRenamedAccessor(accessorInfo);
-			}
-		}
+    /**
+     * visits all variable definitions that occur inside class definitions, outside function definitions, and mangles
+     * their names if they've been marked for [Bindable] codegen.
+     */
+    public synchronized Value evaluate(Context context, VariableDefinitionNode node) {
+        if (inClass) {
+            QName qname = new QName(NodeMagic.getUserNamespace(node), NodeMagic.getVariableName(node));
+            GenerativeClassInfo.AccessorInfo accessorInfo = bindableInfo.getAccessor(qname);
+            if (accessorInfo != null) {
+                hideVariable(node, accessorInfo);
+                registerRenamedAccessor(accessorInfo);
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 *
-	 */
-	protected String getTemplateName()
-	{
-		return standardDefs.getBindablePropertyTemplate();
-	}
+    /**
+     *
+     */
+    protected String getTemplateName() {
+        return standardDefs.getBindablePropertyTemplate();
+    }
 
-	protected String getTemplatePath()
-	{
-		return CODEGEN_TEMPLATE_PATH;
-	}
+    protected String getTemplatePath() {
+        return CODEGEN_TEMPLATE_PATH;
+    }
 
-	/**
-	 *
-	 */
-	protected Map<String, BindableInfo> getTemplateVars()
-	{
-		Map<String, BindableInfo> vars = new HashMap<String, BindableInfo>();
-		vars.put("bindableInfo", bindableInfo);
+    /**
+     *
+     */
+    protected Map<String, BindableInfo> getTemplateVars() {
+        Map<String, BindableInfo> vars = new HashMap<String, BindableInfo>();
+        vars.put("bindableInfo", bindableInfo);
 
-		return vars;
-	}
+        return vars;
+    }
 
-	/**
-	 *
-	 */
-	protected String getGeneratedSuffix()
-	{
-		return "-binding-generated.as";
-	}
+    /**
+     *
+     */
+    protected String getGeneratedSuffix() {
+        return "-binding-generated.as";
+    }
 
-	public static class MissingNonInheritedSetter extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = -1787062656834309810L;
+    public static class MissingNonInheritedSetter extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = -1787062656834309810L;
         public String getter;
 
-		public MissingNonInheritedSetter(String getter)
-		{
-			this.getter = getter;
-		}
-	}
+        public MissingNonInheritedSetter(String getter) {
+            this.getter = getter;
+        }
+    }
 }

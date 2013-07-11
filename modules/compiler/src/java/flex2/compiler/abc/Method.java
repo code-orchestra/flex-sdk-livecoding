@@ -20,6 +20,7 @@
 package flex2.compiler.abc;
 
 import flex2.compiler.util.QName;
+
 import java.util.List;
 
 /**
@@ -31,8 +32,7 @@ import java.util.List;
  * @see flex2.compiler.abc.AbcClass#getMethod(String[], String, boolean)
  * @see flex2.compiler.abc.AbcClass#getSetter(String[], String, boolean)
  */
-public interface Method
-{
+public interface Method {
     QName getQName();
 
     String getReturnTypeName();
@@ -46,7 +46,7 @@ public interface Method
     List<MetaData> getMetaData(String name);
 
     boolean isStatic();
-    
+
     boolean isPublic();
-    
+
 }

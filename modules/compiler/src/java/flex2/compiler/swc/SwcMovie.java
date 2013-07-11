@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import flash.swf.Frame;
 import flash.swf.tags.FrameLabel;
 
@@ -49,92 +50,78 @@ import flash.swf.tags.FrameLabel;
  *
  * @author Roger Gonzalez
  */
-public class SwcMovie extends SimpleMovie
-{
+public class SwcMovie extends SimpleMovie {
     private Set<String> externs;
-	private Set<String> includes;
+    private Set<String> includes;
     private Set<String> unresolved;
-	private SortedSet<String> resourceBundles;
+    private SortedSet<String> resourceBundles;
 
-    public SwcMovie( LinkerConfiguration linkerConfiguration )
-    {
-        super( linkerConfiguration );
+    public SwcMovie(LinkerConfiguration linkerConfiguration) {
+        super(linkerConfiguration);
 
         // C: SwcMovie should keep its own copy of externs, includes, unresolved and resourceBundles
         //    so that incremental compilation can do the single-compile-multiple-link scenario.
         externs = new HashSet<String>(linkerConfiguration.getExterns());
-	    includes = new LinkedHashSet<String>(linkerConfiguration.getIncludes());
+        includes = new LinkedHashSet<String>(linkerConfiguration.getIncludes());
         unresolved = new HashSet<String>(linkerConfiguration.getUnresolved());
         generateLinkReport = linkerConfiguration.generateLinkReport();
         generateRBList = linkerConfiguration.generateRBList();
 
-	    resourceBundles = new TreeSet<String>(linkerConfiguration.getResourceBundles());
+        resourceBundles = new TreeSet<String>(linkerConfiguration.getResourceBundles());
     }
-    public void generate( List<CompilationUnit> units ) throws LinkerException
-    {
+
+    public void generate(List<CompilationUnit> units) throws LinkerException {
         List<CULinkable> linkables = new LinkedList<CULinkable>();
 
-        for (Iterator<CompilationUnit> it = units.iterator(); it.hasNext();)
-        {
-            linkables.add( new CULinkable( it.next() ) );
+        for (Iterator<CompilationUnit> it = units.iterator(); it.hasNext(); ) {
+            linkables.add(new CULinkable(it.next()));
         }
 
         frames = new ArrayList<Frame>();
 
-        try
-        {
+        try {
             // If only linking in inheritance dependencies then add the root class to includes
             // so it ends up in the swc.
             if (getInheritanceDependenciesOnly() && rootClassName != null)
                 includes.add(rootClassName);
-                
-            DependencyWalker.LinkState state = new DependencyWalker.LinkState( linkables, externs, includes, unresolved );
+
+            DependencyWalker.LinkState state = new DependencyWalker.LinkState(linkables, externs, includes, unresolved);
             final Frame frame = new Frame();
 
-            DependencyWalker.traverse( null, state, true, true, getInheritanceDependenciesOnly(),
-                                       new Visitor<Linkable>()
-                                       {
-                                           public void visit( Linkable o )
-                                           {
-                                               CULinkable l = (CULinkable) o;
-                                               exportUnitOnFrame( l.getUnit(), frame, true );
-                                           }
-                                       } );
+            DependencyWalker.traverse(null, state, true, true, getInheritanceDependenciesOnly(),
+                    new Visitor<Linkable>() {
+                        public void visit(Linkable o) {
+                            CULinkable l = (CULinkable) o;
+                            exportUnitOnFrame(l.getUnit(), frame, true);
+                        }
+                    });
 
-            frames.add( frame );
-            if (Swc.FNORD)
-            {
+            frames.add(frame);
+            if (Swc.FNORD) {
                 // add some magic simpleminded tamperproofing to the SWC.  Alpha code won't add this, release will refuse to run without it.
                 frame.label = new FrameLabel();
-                frame.label.label = Integer.toString( SimpleMovie.getCodeHash( frame ) );
+                frame.label.label = Integer.toString(SimpleMovie.getCodeHash(frame));
             }
 
-            if (generateLinkReport)
-            {
-            	linkReport = DependencyWalker.dump( state );
+            if (generateLinkReport) {
+                linkReport = DependencyWalker.dump(state);
             }
-            if (generateRBList)
-            {
-            	rbList = FlexMovie.dumpRBList(resourceBundles);
+            if (generateRBList) {
+                rbList = FlexMovie.dumpRBList(resourceBundles);
             }
 
-            if (unresolved.size() != 0)
-            {
-                for (Iterator<String> it = unresolved.iterator(); it.hasNext();)
-                {
+            if (unresolved.size() != 0) {
+                for (Iterator<String> it = unresolved.iterator(); it.hasNext(); ) {
                     String u = it.next();
-                    if (!externs.contains( u ))
-                    {
-                        ThreadLocalToolkit.log(  new LinkerException.UndefinedSymbolException( u ) );
+                    if (!externs.contains(u)) {
+                        ThreadLocalToolkit.log(new LinkerException.UndefinedSymbolException(u));
                     }
                 }
             }
-            topLevelClass = formatSymbolClassName( rootClassName );
-            
-        }
-        catch (LinkerException e)
-        {
-            ThreadLocalToolkit.log( e );
+            topLevelClass = formatSymbolClassName(rootClassName);
+
+        } catch (LinkerException e) {
+            ThreadLocalToolkit.log(e);
         }
     }
 }

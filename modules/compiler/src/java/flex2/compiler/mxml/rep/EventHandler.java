@@ -37,7 +37,7 @@ public class EventHandler implements LineNumberMapped {
         this.event = event;
         this.eventHandlerText = eventHandlerText;
     }
-    
+
     public EventHandler(Model model, Event event, String eventHandlerText, String state) {
         this.model = model;
         this.event = event;
@@ -62,8 +62,7 @@ public class EventHandler implements LineNumberMapped {
     }
 
     public String getDocumentFunctionName() {
-        if (documentFunctionName == null)
-        {
+        if (documentFunctionName == null) {
             StringBuilder buf = new StringBuilder();
             buf.append("__");
             buildNameChain(buf, model);
@@ -75,19 +74,13 @@ public class EventHandler implements LineNumberMapped {
         return documentFunctionName;
     }
 
-    private boolean buildNameChain(StringBuilder buf, Model mod)
-    {
-        if (mod != null)
-        {
-            if (mod.getId() != null)
-            {
+    private boolean buildNameChain(StringBuilder buf, Model mod) {
+        if (mod != null) {
+            if (mod.getId() != null) {
                 buf.append(mod.getId());
-            }
-            else
-            {
+            } else {
                 boolean needSep = buildNameChain(buf, mod.getParent());
-                if (needSep)
-                {
+                if (needSep) {
                     buf.append("_");
                 }
                 assert mod.getParentIndex() != null;

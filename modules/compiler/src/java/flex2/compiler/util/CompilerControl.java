@@ -24,39 +24,33 @@ package flex2.compiler.util;
  * when an IDE wants to abort a compilation and start over after a
  * file has changed.
  *
- * @version 2.0.1
  * @author Clement Wong
+ * @version 2.0.1
  */
-public class CompilerControl
-{
-	public static final int RUN = 1;
-	public static final int PAUSE = 2;
-	public static final int STOP = 4;
-	
-	public CompilerControl()
-	{
-		run();
-	}
-	
-	private int status;
-	
-	public void run()
-	{
-		status = RUN;
-	}
-	
-	public void pause()
-	{
-		status = PAUSE;
-	}
-	
-	public void stop()
-	{
-		status = STOP;
-	}
-	
-	public int getStatus()
-	{
-		return status;
-	}
+public class CompilerControl {
+    public static final int RUN = 1;
+    public static final int PAUSE = 2;
+    public static final int STOP = 4;
+
+    public CompilerControl() {
+        run();
+    }
+
+    private int status;
+
+    public void run() {
+        status = RUN;
+    }
+
+    public void pause() {
+        status = PAUSE;
+    }
+
+    public void stop() {
+        status = STOP;
+    }
+
+    public int getStatus() {
+        return status;
+    }
 }

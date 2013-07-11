@@ -26,27 +26,22 @@ package flex2.compiler.as3.binding;
  * @author Paul Reilly
  * @see flex2.compiler.as3.binding.Watcher
  */
-public class ChangeEvent
-{
+public class ChangeEvent {
     private String name;
     private boolean committing;
 
-    public ChangeEvent(String name, boolean committing)
-    {
+    public ChangeEvent(String name, boolean committing) {
         this.name = name;
         this.committing = committing;
     }
 
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         boolean result = false;
 
-        if (object instanceof ChangeEvent)
-        {
+        if (object instanceof ChangeEvent) {
             ChangeEvent changeEvent = (ChangeEvent) object;
 
-            if (name.equals(changeEvent.getName()) && (committing == changeEvent.getCommitting()))
-            {
+            if (name.equals(changeEvent.getName()) && (committing == changeEvent.getCommitting())) {
                 result = true;
             }
         }
@@ -54,18 +49,15 @@ public class ChangeEvent
         return result;
     }
 
-    public boolean getCommitting()
-    {
+    public boolean getCommitting() {
         return committing;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public int hashCode()
-    {
+    public int hashCode() {
         return name.hashCode();
     }
 }

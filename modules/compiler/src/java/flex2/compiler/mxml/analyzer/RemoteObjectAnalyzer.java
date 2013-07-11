@@ -34,63 +34,51 @@ import flex2.compiler.util.CompilerMessage;
  *
  * @author Clement Wong
  */
-public class RemoteObjectAnalyzer extends AnalyzerAdapter
-{
+public class RemoteObjectAnalyzer extends AnalyzerAdapter {
     private MxmlDocument document;
 
-    public RemoteObjectAnalyzer(CompilationUnit unit, MxmlConfiguration mxmlConfiguration, MxmlDocument document)
-    {
+    public RemoteObjectAnalyzer(CompilationUnit unit, MxmlConfiguration mxmlConfiguration, MxmlDocument document) {
         super(unit, mxmlConfiguration);
         this.document = document;
-	}
+    }
 
-	public void analyze(MethodNode node)
-	{
-		if (node.getAttributeValue("name") == null)
-		{
-			log(node, new MethodRequiresName());
-		}
-		super.analyze(node);
-	}
-
-    public void analyze(ArgumentsNode node)
-    {
-        if (node.getAttributeCount() > 0)
-        {
-	        log(node, new ArgumentsNoAttributes());
+    public void analyze(MethodNode node) {
+        if (node.getAttributeValue("name") == null) {
+            log(node, new MethodRequiresName());
         }
         super.analyze(node);
     }
 
-    protected int getDocumentVersion()
-    {
+    public void analyze(ArgumentsNode node) {
+        if (node.getAttributeCount() > 0) {
+            log(node, new ArgumentsNoAttributes());
+        }
+        super.analyze(node);
+    }
+
+    protected int getDocumentVersion() {
         return document.getVersion();
     }
 
-    protected String getLanguageNamespace()
-    {
+    protected String getLanguageNamespace() {
         return document.getLanguageNamespace();
     }
 
-	// error messages
+    // error messages
 
-	public static class MethodRequiresName extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = -1993485855814744142L;
+    public static class MethodRequiresName extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = -1993485855814744142L;
 
-        public MethodRequiresName()
-		{
-			super();
-		}
-	}
+        public MethodRequiresName() {
+            super();
+        }
+    }
 
-	public static class ArgumentsNoAttributes extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = -1790969989441708094L;
+    public static class ArgumentsNoAttributes extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = -1790969989441708094L;
 
-        public ArgumentsNoAttributes()
-		{
-			super();
-		}
-	}
+        public ArgumentsNoAttributes() {
+            super();
+        }
+    }
 }

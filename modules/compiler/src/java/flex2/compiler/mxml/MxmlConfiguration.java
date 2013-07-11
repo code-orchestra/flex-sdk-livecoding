@@ -32,34 +32,33 @@ import java.util.Set;
  *
  * @author Clement Wong
  */
-public interface MxmlConfiguration
-{
-	/**
-	 * Generate SWFs for debugging.
-	 */
-	boolean debug();
+public interface MxmlConfiguration {
+    /**
+     * Generate SWFs for debugging.
+     */
+    boolean debug();
 
-	/**
-	 * Generate accessible SWFs.
-	 */
-	boolean accessible();
+    /**
+     * Generate accessible SWFs.
+     */
+    boolean accessible();
 
-	/**
-	 * Write xxx-generated.as to disk.
-	 */
-	boolean keepGeneratedActionScript();
+    /**
+     * Write xxx-generated.as to disk.
+     */
+    boolean keepGeneratedActionScript();
 
-	/**
-	 * Enable runtime DesignLayer support.
-	 */
-	boolean enableRuntimeDesignLayers();
-	
-	/**
-	 * Enable swc version filtering (filer out swcs with 
-	 * minimumSupportedVersion > compatibility-version)
-	 */
-	boolean enableSwcVersionFiltering();
-	
+    /**
+     * Enable runtime DesignLayer support.
+     */
+    boolean enableRuntimeDesignLayers();
+
+    /**
+     * Enable swc version filtering (filer out swcs with
+     * minimumSupportedVersion > compatibility-version)
+     */
+    boolean enableSwcVersionFiltering();
+
     /**
      * Controls whether unused type selectors are processed.
      */
@@ -73,10 +72,10 @@ public interface MxmlConfiguration
      */
     boolean reportInvalidStylesAsWarnings();
 
-	/**
-	 * Controls whether warnings are displayed when a deprecated API is used.
-	 */
-	boolean showDeprecationWarnings();
+    /**
+     * Controls whether warnings are displayed when a deprecated API is used.
+     */
+    boolean showDeprecationWarnings();
 
     /**
      * Controls whether warnings are displayed when a deprecated API is used.
@@ -99,7 +98,7 @@ public interface MxmlConfiguration
      * Toggles whether warnings generated from unused type selectors are displayed.
      */
     boolean showUnusedTypeSelectorWarnings();
-    
+
     /**
      * Context path used to resolve {context.root} tokens in flex-enterprise-services.xml config file
      */
@@ -110,73 +109,74 @@ public interface MxmlConfiguration
      */
     ServicesDependenciesWrapper getServicesDependencies();
 
-	/**
-	 * The compatibility version as a String.
-	 */
-	String getCompatibilityVersionString();
+    /**
+     * The compatibility version as a String.
+     */
+    String getCompatibilityVersionString();
 
-	/**
-	 * The compatibility version as a uint.
-	 */
-	int getCompatibilityVersion();
+    /**
+     * The compatibility version as a uint.
+     */
+    int getCompatibilityVersion();
 
-	/**
-	 * Determines whether CSS type selectors need to be qualified.
-	 */
-	boolean getQualifiedTypeSelectors();
+    /**
+     * Determines whether CSS type selectors need to be qualified.
+     */
+    boolean getQualifiedTypeSelectors();
 
-	/**
-	 * Location of defaults.css stylesheet.
-	 */
-	VirtualFile getDefaultsCssUrl();
+    /**
+     * Location of defaults.css stylesheet.
+     */
+    VirtualFile getDefaultsCssUrl();
 
-	/**
-	 * Location of SWC defaults.css stylesheets.
-	 */
-	List<VirtualFile> getDefaultsCssFiles();
+    /**
+     * Location of SWC defaults.css stylesheets.
+     */
+    List<VirtualFile> getDefaultsCssFiles();
 
-	/**
-	 * Location of theme stylesheets.
-	 */
-	List<VirtualFile> getThemeCssFiles();
+    /**
+     * Location of theme stylesheets.
+     */
+    List<VirtualFile> getThemeCssFiles();
 
-	/**
-	 * Path locations of source files.
-	 */
-	VirtualFile[] getSourcePath();
+    /**
+     * Path locations of source files.
+     */
+    VirtualFile[] getSourcePath();
 
-	/**
-	 * Path locations of component libraries, including swcs, mxml, and as components.
-	 * Note: all SWCs found in the lib-path are merged together and resolved via priority and version.
-	 * The order is ignored.
-	 */
-	VirtualFile[] getLibraryPath();
+    /**
+     * Path locations of component libraries, including swcs, mxml, and as components.
+     * Note: all SWCs found in the lib-path are merged together and resolved via priority and version.
+     * The order is ignored.
+     */
+    VirtualFile[] getLibraryPath();
 
-	/**
-	 * True if we are compiling against airglobal.swc.
-	 */
-	boolean getCompilingForAIR();
+    /**
+     * True if we are compiling against airglobal.swc.
+     */
+    boolean getCompilingForAIR();
 
-	/**
-	 * Provides settings for the Font Managers, their caches, and aliases for character
-	 * ranges to embed for font face.
-	 */
-	FontsConfiguration getFontsConfiguration();
+    /**
+     * Provides settings for the Font Managers, their caches, and aliases for character
+     * ranges to embed for font face.
+     */
+    FontsConfiguration getFontsConfiguration();
+
     void setFontsConfiguration(FontsConfiguration fc);
 
-	boolean getGenerateAbstractSyntaxTree();
+    boolean getGenerateAbstractSyntaxTree();
 
     Set<String> getThemeNames();
-	
+
     /**
      * Allow a style manager to have the same style declarations as
      * their parent.
      */
-	boolean getAllowDuplicateDefaultStyleDeclarations();
+    boolean getAllowDuplicateDefaultStyleDeclarations();
 
     /**
      * Whether a missing required skin part should be considered an error or
      * just be a warning.
      */
-	boolean reportMissingRequiredSkinPartsAsWarnings();
+    boolean reportMissingRequiredSkinPartsAsWarnings();
 }

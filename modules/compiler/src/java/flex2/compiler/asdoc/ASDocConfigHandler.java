@@ -36,109 +36,87 @@ import flex2.tools.ASDocConfiguration;
  *
  * @author Brian Deitte
  */
-public class ASDocConfigHandler extends DefaultHandler
-{
-	private BufferedWriter writer;
-	private Map<String, String> configMap = new HashMap<String, String>();
-	private boolean skipCharacters;
+public class ASDocConfigHandler extends DefaultHandler {
+    private BufferedWriter writer;
+    private Map<String, String> configMap = new HashMap<String, String>();
+    private boolean skipCharacters;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param w
-	 * @param config
-	 */
-	public ASDocConfigHandler(BufferedWriter w, ASDocConfiguration config)
-	{
-		writer = w;
+    /**
+     * Constructor
+     *
+     * @param w
+     * @param config
+     */
+    public ASDocConfigHandler(BufferedWriter w, ASDocConfiguration config) {
+        writer = w;
 
-		// store all config values but packages in a map, with the key as the ASDoc_Config.xml element
-		if (config.getMainTitle() != null) configMap.put("title", config.getMainTitle());
-		if (config.getWindowTitle() != null) configMap.put("windowTitle", config.getWindowTitle());
-		if (config.getFooter() != null) configMap.put("footer", config.getFooter());
-		if (config.getExamplesPath() != null) configMap.put("includeExamplesDirectory", config.getExamplesPath());
+        // store all config values but packages in a map, with the key as the ASDoc_Config.xml element
+        if (config.getMainTitle() != null) configMap.put("title", config.getMainTitle());
+        if (config.getWindowTitle() != null) configMap.put("windowTitle", config.getWindowTitle());
+        if (config.getFooter() != null) configMap.put("footer", config.getFooter());
+        if (config.getExamplesPath() != null) configMap.put("includeExamplesDirectory", config.getExamplesPath());
 
-		configMap.put("dateInFooter", String.valueOf(config.getDateInFooter()));
-	}
+        configMap.put("dateInFooter", String.valueOf(config.getDateInFooter()));
+    }
 
-	/**
-	 * implementation for Default Handler method 
-	 */
-	public void startElement (String uri, String localName,
-	                          String qName, Attributes attributes)
-			throws SAXException
-	{
-		try
-		{
-			// if this element was added as a parameter, we use the parameter value
-			if (! configMap.containsKey(qName))
-			{
-				skipCharacters = false;
-				writer.newLine();
-				writer.write("<" + qName);
-				for (int i = 0; i < attributes.getLength(); i++)
-				{
-					writer.write(" " + attributes.getQName(i) + "=\"" + attributes.getValue(i) + "\"");
-				}
-				writer.write(">");
-			}
-			else
-			{
-				skipCharacters = true;
-			}
-		}
-		catch(IOException ioe)
-		{
-			throw new SAXException(ioe);
-		}
-	}
+    /**
+     * implementation for Default Handler method
+     */
+    public void startElement(String uri, String localName,
+                             String qName, Attributes attributes)
+            throws SAXException {
+        try {
+            // if this element was added as a parameter, we use the parameter value
+            if (!configMap.containsKey(qName)) {
+                skipCharacters = false;
+                writer.newLine();
+                writer.write("<" + qName);
+                for (int i = 0; i < attributes.getLength(); i++) {
+                    writer.write(" " + attributes.getQName(i) + "=\"" + attributes.getValue(i) + "\"");
+                }
+                writer.write(">");
+            } else {
+                skipCharacters = true;
+            }
+        } catch (IOException ioe) {
+            throw new SAXException(ioe);
+        }
+    }
 
 
-	/**
-	 * implementation for Default Handler method 
-	 */
-	public void endElement (String uri, String localName, String qName)
-			throws SAXException
-	{
-		try
-		{
-			if (qName.equals("asDocConfig"))
-			{
-				// if we're at the end of the document, write out all the config values
-				for (Iterator iterator = configMap.entrySet().iterator(); iterator.hasNext();)
-				{
-					Map.Entry entry = (Map.Entry)iterator.next();
-					writer.newLine();
-					writer.write("<" + entry.getKey() + ">" + entry.getValue() + "</" + entry.getKey() + ">");
-				}
-			}
-			if (configMap.get(qName) == null)
-			{
-				writer.write("</" + qName + ">");
-			}
-		}
-		catch(IOException ioe)
-		{
-			throw new SAXException(ioe);
-		}
-	}
+    /**
+     * implementation for Default Handler method
+     */
+    public void endElement(String uri, String localName, String qName)
+            throws SAXException {
+        try {
+            if (qName.equals("asDocConfig")) {
+                // if we're at the end of the document, write out all the config values
+                for (Iterator iterator = configMap.entrySet().iterator(); iterator.hasNext(); ) {
+                    Map.Entry entry = (Map.Entry) iterator.next();
+                    writer.newLine();
+                    writer.write("<" + entry.getKey() + ">" + entry.getValue() + "</" + entry.getKey() + ">");
+                }
+            }
+            if (configMap.get(qName) == null) {
+                writer.write("</" + qName + ">");
+            }
+        } catch (IOException ioe) {
+            throw new SAXException(ioe);
+        }
+    }
 
-	/**
-	 * implementation for Default Handler method 
-	 */
-	public void characters (char ch[], int start, int length)
-			throws SAXException
-	{
-		if (! skipCharacters)
-		{
-			try
-			{
-				writer.write(new String(ch, start, length));
-			}
-			catch(IOException ioe)
-			{
-				throw new SAXException(ioe);
-			}
-		}
-	}
+    /**
+     * implementation for Default Handler method
+     */
+    public void characters(char ch[], int start, int length)
+            throws SAXException {
+        if (!skipCharacters) {
+            try {
+                writer.write(new String(ch, start, length));
+            } catch (IOException ioe) {
+                throw new SAXException(ioe);
+            }
+        }
+    }
 }

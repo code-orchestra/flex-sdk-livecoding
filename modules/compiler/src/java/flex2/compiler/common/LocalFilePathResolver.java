@@ -35,48 +35,42 @@ import java.io.File;
  * like @Embed assets and we don't want paths which are relative to
  * the current working directory and not relative to the containing
  * Mxml document to be resolved.  For example, if we have:
- *
- *   C:/foo/bar.mxml
- *
+ * <p/>
+ * C:/foo/bar.mxml
+ * <p/>
  * with:
- *
- *   <mx:Image source="@Embed(source='image.jpg')"/>
- *
+ * <p/>
+ * <mx:Image source="@Embed(source='image.jpg')"/>
+ * <p/>
  * and:
- *
- *   C:/foo/image.jpg
- *   C:/image.jpg
- *
+ * <p/>
+ * C:/foo/image.jpg
+ * C:/image.jpg
+ * <p/>
  * When the current working directory is C:/, we don't want resolve() to return
  * C:/image.jpg.
- * 
+ *
  * @author Brian Deitte
  */
-public class LocalFilePathResolver implements SinglePathResolver
-{
+public class LocalFilePathResolver implements SinglePathResolver {
     private static final LocalFilePathResolver singleton = new LocalFilePathResolver();
 
-    private LocalFilePathResolver()
-    {
+    private LocalFilePathResolver() {
     }
 
-    public static LocalFilePathResolver getSingleton()
-    {
+    public static LocalFilePathResolver getSingleton() {
         return singleton;
     }
 
-    public VirtualFile resolve( String pathStr )
-    {
+    public VirtualFile resolve(String pathStr) {
         File path = FileUtil.openFile(pathStr);
         VirtualFile virt = null;
 
-        if (path != null && FileUtils.exists(path) && FileUtils.isAbsolute(path))
-        {
+        if (path != null && FileUtils.exists(path) && FileUtils.isAbsolute(path)) {
             virt = new LocalFile(path);
         }
 
-        if ((virt != null) && Trace.pathResolver)
-        {
+        if ((virt != null) && Trace.pathResolver) {
             Trace.trace("LocalFilePathResolver.resolve: resolved " + pathStr + " to " + virt.getName());
         }
 

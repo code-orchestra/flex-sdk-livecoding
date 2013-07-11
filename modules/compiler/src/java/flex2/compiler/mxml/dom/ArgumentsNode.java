@@ -29,23 +29,19 @@ import flex2.compiler.util.QName;
  *
  * @author Clement Wong
  */
-public class ArgumentsNode extends Node
-{
-	public static final Set<QName> attributes;
+public class ArgumentsNode extends Node {
+    public static final Set<QName> attributes;
 
-	static
-	{
-		attributes = new HashSet<QName>();
-	}
+    static {
+        attributes = new HashSet<QName>();
+    }
 
-	ArgumentsNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
+    ArgumentsNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
 
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 }

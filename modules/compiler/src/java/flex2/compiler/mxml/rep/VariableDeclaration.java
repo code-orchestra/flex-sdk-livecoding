@@ -29,20 +29,29 @@ package flex2.compiler.mxml.rep;
 /*
  * TODO break out quals, if they need to be introspected
  */
-public class VariableDeclaration
-{
-	private String namespace, name, type, initializer;
+public class VariableDeclaration {
+    private String namespace, name, type, initializer;
 
-	public VariableDeclaration(String namespace, String name, String type, String initializer)
-	{
-		this.namespace = namespace;
-		this.name = name;
-		this.type = type;
+    public VariableDeclaration(String namespace, String name, String type, String initializer) {
+        this.namespace = namespace;
+        this.name = name;
+        this.type = type;
         this.initializer = initializer;
-	}
+    }
 
-	public final String getNamespace() { return namespace; }
-	public final String getName() { return name; }
-	public final String getType() { return type; }
-    public final String getInitializer() { return initializer; }
+    public final String getNamespace() {
+        return namespace;
+    }
+
+    public final String getName() {
+        return name;
+    }
+
+    public final String getType() {
+        return type;
+    }
+
+    public final String getInitializer() {
+        return initializer;
+    }
 }

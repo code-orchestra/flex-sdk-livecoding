@@ -32,8 +32,7 @@ import java.util.Iterator;
  * <p>Note: language nodes (script, etc.) are not recognized. Up to
  * implementer to deal with 'em.
  */
-public abstract class ChildNodeHandler extends DeclarationHandler
-{
+public abstract class ChildNodeHandler extends DeclarationHandler {
     protected final TypeTable typeTable;
     protected final boolean isFXG;
     protected final NodeTypeResolver nodeTypeResolver;
@@ -44,8 +43,7 @@ public abstract class ChildNodeHandler extends DeclarationHandler
     protected Node child;
     protected int state;
 
-    public ChildNodeHandler(TypeTable typeTable, boolean isFXG)
-    {
+    public ChildNodeHandler(TypeTable typeTable, boolean isFXG) {
         this.typeTable = typeTable;
         this.isFXG = isFXG;
         this.nodeTypeResolver = new NodeTypeResolver(typeTable);
@@ -55,6 +53,7 @@ public abstract class ChildNodeHandler extends DeclarationHandler
     /**
      * child node resolves to default property initializer node. valueCount indicates this node's position in the
      * sequence of default property initializer nodes under our parent.
+     *
      * @param locError
      */
     protected abstract void defaultPropertyElement(boolean locError);
@@ -79,12 +78,10 @@ public abstract class ChildNodeHandler extends DeclarationHandler
     /**
      * public entry point for scanning children - must all be done in one pass to properly enforce regional constraints
      */
-    public void scanChildNodes(Node node, Type type)
-    {
+    public void scanChildNodes(Node node, Type type) {
         resetState();
-        for (Iterator iter = node.getChildIterator(); iter.hasNext(); )
-        {
-            invoke(node, type, (Node)iter.next());
+        for (Iterator iter = node.getChildIterator(); iter.hasNext(); ) {
+            invoke(node, type, (Node) iter.next());
         }
     }
 
@@ -113,62 +110,48 @@ public abstract class ChildNodeHandler extends DeclarationHandler
      * For backwards compatibility, this must always be interpreted as setting a binding on App.comp, rather than on
      * App.comp.defaultProperty.
      */
-    protected void invoke(Node parent, Type parentType, Node child)
-    {
+    protected void invoke(Node parent, Type parentType, Node child) {
         //  String msg = "ChildNodeHandler[" + parent.image + "/" + parent.beginLine + ":" + parentType.getName() + "].invoke(" + child.image + "/" + child.beginLine + "): ";
 
         this.parent = parent;
         this.parentType = parentType;
         this.child = child;
 
-        if (child instanceof CDATANode)
-        {
-            if (parentType.getDefaultProperty() != null)
-            {
+        if (child instanceof CDATANode) {
+            if (parentType.getDefaultProperty() != null) {
                 transition(INPUT_DP_CHILD);
                 defaultPropertyElement(getError() == ERR_DP_LOCATION);
-            }
-            else
-            {
+            } else {
                 transition(INPUT_NON_DP_CHILD);
                 textContent();
             }
-        }
-        else if (NodeTypeResolver.isValueNode(child))
-        {
+        } else if (NodeTypeResolver.isValueNode(child)) {
             String namespace = child.getNamespace();
             String localPart = child.getLocalPart();
 
-            if (child.getAttributeCount() == 0 && namespace.equals(this.parent.getNamespace()))
-            {
+            if (child.getAttributeCount() == 0 && namespace.equals(this.parent.getNamespace())) {
                 // We will treat state-specific value nodes separately during generation.
-                if (TextParser.isScopedName(localPart))
-                {
+                if (TextParser.isScopedName(localPart)) {
                     String[] statefulName = TextParser.analyzeScopedName(localPart);
                     localPart = (statefulName != null) ? statefulName[0] : localPart;
                 }
 
                 coreDeclarationHandler.invoke(this.parentType, namespace, localPart);
-            }
-            else
-            {
+            } else {
                 // System.out.println(msg + "unknown()");
                 // WARNING: passing null is only okay as long as name remains unused in the implementation of unknown()...
                 //     if you're not sure, use this: unknown(new QName(namespace, localPart).toString());
                 unknown(namespace, localPart);
             }
-        }
-        else
-        {
+        } else {
             languageNode();
         }
     }
-    
-   /**
-    * Defer to our core declaration handler for state-centric invocations as well.
-    */
-    protected void invoke(Type type, String namespace, String localPart, String state)
-    {
+
+    /**
+     * Defer to our core declaration handler for state-centric invocations as well.
+     */
+    protected void invoke(Type type, String namespace, String localPart, String state) {
         coreDeclarationHandler.invoke(type, namespace, localPart, state);
     }
 
@@ -176,17 +159,13 @@ public abstract class ChildNodeHandler extends DeclarationHandler
      * try our additional cases.
      * NOTE: the "visual child of visual container" special case is implemented in nestedDeclaration()
      */
-    protected final void unknown(String namespace, String localPart)
-    {
+    protected final void unknown(String namespace, String localPart) {
         //  String msg = "\tChildNodeHandler[" + parent.image + "/" + parent.beginLine + ":" + parentType.getName() + "].unknown(" + localPart + "/" + child.beginLine + "): ";
-        if (parentType.getDefaultProperty() != null)
-        {
+        if (parentType.getDefaultProperty() != null) {
             //  System.out.println(msg + "defaultPropertyElement()");
             transition(INPUT_DP_CHILD);
             defaultPropertyElement(getError() == ERR_DP_LOCATION);
-        }
-        else
-        {
+        } else {
             //  System.out.println(msg + "nestedDeclaration()");
             transition(INPUT_NON_DP_CHILD);
             nestedDeclaration();
@@ -196,51 +175,42 @@ public abstract class ChildNodeHandler extends DeclarationHandler
     /**
      *
      */
-    protected final class CoreDeclarationHandler extends DeclarationHandler
-    {
-        protected void event(Event event)
-        {
+    protected final class CoreDeclarationHandler extends DeclarationHandler {
+        protected void event(Event event) {
             transition(INPUT_NON_DP_CHILD);
             ChildNodeHandler.this.event(event);
         }
 
-        protected void states(Property property)
-        {
+        protected void states(Property property) {
             transition(INPUT_NON_DP_CHILD);
             ChildNodeHandler.this.states(property);
         }
-        
-        protected void property(Property property)
-        {
+
+        protected void property(Property property) {
             transition(INPUT_NON_DP_CHILD);
             ChildNodeHandler.this.property(property);
         }
 
-        protected void effect(Effect effect)
-        {
+        protected void effect(Effect effect) {
             transition(INPUT_NON_DP_CHILD);
             ChildNodeHandler.this.effect(effect);
         }
 
-        protected void style(Style style)
-        {
+        protected void style(Style style) {
             transition(INPUT_NON_DP_CHILD);
             ChildNodeHandler.this.style(style);
         }
 
-        protected void dynamicProperty(String name, String state)
-        {
+        protected void dynamicProperty(String name, String state) {
             transition(INPUT_NON_DP_CHILD);
             ChildNodeHandler.this.dynamicProperty(name, state);
         }
 
-        protected void unknown(String namespace, String localPart)
-        {
+        protected void unknown(String namespace, String localPart) {
             ChildNodeHandler.this.unknown(namespace, localPart);
         }
 
-        public void invoke(Type type, String namespace, String localPart)
-        {
+        public void invoke(Type type, String namespace, String localPart) {
             invoke(type, namespace, localPart, (String) null);
         }
     }
@@ -263,20 +233,19 @@ public abstract class ChildNodeHandler extends DeclarationHandler
 
     //  transitions - state x input -> state | error
     protected final static int TRAN[] =
-    {
-        STATE_BEFORE_DP_CHILDREN,                  //   ST_BEFORE_DP_CHILDREN x AT_NON_DP_CHILD,
-        STATE_IN_DP_CHILDREN,                       //  ST_BEFORE_DP_CHILDREN x AT_DP_CHILD,
+            {
+                    STATE_BEFORE_DP_CHILDREN,                  //   ST_BEFORE_DP_CHILDREN x AT_NON_DP_CHILD,
+                    STATE_IN_DP_CHILDREN,                       //  ST_BEFORE_DP_CHILDREN x AT_DP_CHILD,
 
-        STATE_AFTER_DP_CHILDREN,                    //  ST_IN_DP_CHILDREN x AT_NON_DP_CHILD,
-        STATE_IN_DP_CHILDREN,                       //  ST_IN_DP_CHILDREN x AT_DP_CHILD,
+                    STATE_AFTER_DP_CHILDREN,                    //  ST_IN_DP_CHILDREN x AT_NON_DP_CHILD,
+                    STATE_IN_DP_CHILDREN,                       //  ST_IN_DP_CHILDREN x AT_DP_CHILD,
 
-        STATE_AFTER_DP_CHILDREN,                    //  ST_AFTER_DP_CHILDREN x AT_NON_DP_CHILD,
-        STATE_AFTER_DP_CHILDREN | ERR_DP_LOCATION   //  ST_AFTER_DP_CHILDREN x AT_DP_CHILD,
-    };
+                    STATE_AFTER_DP_CHILDREN,                    //  ST_AFTER_DP_CHILDREN x AT_NON_DP_CHILD,
+                    STATE_AFTER_DP_CHILDREN | ERR_DP_LOCATION   //  ST_AFTER_DP_CHILDREN x AT_DP_CHILD,
+            };
 
     //  drift checks
-    static
-    {
+    static {
         assert NUM_STATES <= STATE_BITS;
         assert TRAN.length == NUM_STATES * NUM_INPUTS;
     }
@@ -284,32 +253,28 @@ public abstract class ChildNodeHandler extends DeclarationHandler
     /**
      *
      */
-    protected int getState()
-    {
+    protected int getState() {
         return state & STATE_BITS;
     }
 
     /**
      *
      */
-    protected int getError()
-    {
+    protected int getError() {
         return state & ~STATE_BITS;
     }
 
     /**
      *
      */
-    protected void resetState()
-    {
+    protected void resetState() {
         state = STATE_BEFORE_DP_CHILDREN;
     }
 
     /**
      *
      */
-    protected void transition(int input)
-    {
+    protected void transition(int input) {
         state = TRAN[(getState() * NUM_INPUTS) + input];
     }
 }

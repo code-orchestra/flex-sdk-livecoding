@@ -26,8 +26,8 @@ package flex2.compiler.mxml.rep;
  *
  * @author Paul Reilly
  */
-interface LineNumberMapped
-{
-	public int getXmlLineNumber();
-	public void setXmlLineNumber(int xmlLineNumber);
+interface LineNumberMapped {
+    public int getXmlLineNumber();
+
+    public void setXmlLineNumber(int xmlLineNumber);
 }

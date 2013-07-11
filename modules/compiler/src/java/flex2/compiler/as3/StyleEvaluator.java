@@ -36,90 +36,72 @@ import flash.util.Trace;
  *
  * @author Paul Reilly
  */
-class StyleEvaluator extends EvaluatorAdapter
-{
-	private CompilationUnit unit;
+class StyleEvaluator extends EvaluatorAdapter {
+    private CompilationUnit unit;
 
-	StyleEvaluator(CompilationUnit unit)
-	{
-		this.unit = unit;
-	}
-
-	public synchronized Value evaluate(Context context, MetaDataNode node)
-	{
-		if ("Style".equals(node.getId()))
-		{
-			if (NodeMagic.isClassDefinition(node))
-			{
-				processStyle(context, node);
-			}
-			else
-			{
-				context.localizedError2(node.pos(), new StyleMustAnnotateAClass());
-			}
-		}
-
-		return null;
-	}
-
-    private void processStyle(Context context, MetaDataNode metaDataNode)
-    {
-        MetaData metaData = new MetaData(metaDataNode);
-        String styleName = metaData.getValue("name");
-	    String typeName = metaData.getValue("type");
-
-        if (styleName == null)
-        {
-            // preilly: we should report this earlier in the process.
-	        context.localizedError2(metaDataNode.pos(), new StyleHasMissingName());
-        }
-
-	    if (typeName != null)
-	    {
-		    unit.expressions.add(NameFormatter.toMultiName(typeName));
-	    }
-
-		registerStyle(context, metaDataNode, styleName, metaData);
+    StyleEvaluator(CompilationUnit unit) {
+        this.unit = unit;
     }
 
-	/**
-	 * add style into unit-wide list
-	 */
-	private void registerStyle(Context context, MetaDataNode metaDataNode, String name, MetaData md)
-	{
-		try
-		{
-			unit.styles.addStyle(name, md, unit.getSource());
-		}
-		catch (StyleConflictException e)
-		{
-			context.localizedWarning2(metaDataNode.pos(), e);
+    public synchronized Value evaluate(Context context, MetaDataNode node) {
+        if ("Style".equals(node.getId())) {
+            if (NodeMagic.isClassDefinition(node)) {
+                processStyle(context, node);
+            } else {
+                context.localizedError2(node.pos(), new StyleMustAnnotateAClass());
+            }
+        }
 
-			if (Trace.error)
-				e.printStackTrace();
-		}
+        return null;
+    }
 
-	}
+    private void processStyle(Context context, MetaDataNode metaDataNode) {
+        MetaData metaData = new MetaData(metaDataNode);
+        String styleName = metaData.getValue("name");
+        String typeName = metaData.getValue("type");
 
-	// error messages
+        if (styleName == null) {
+            // preilly: we should report this earlier in the process.
+            context.localizedError2(metaDataNode.pos(), new StyleHasMissingName());
+        }
 
-	public static class StyleMustAnnotateAClass extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = 3387534813786226571L;
+        if (typeName != null) {
+            unit.expressions.add(NameFormatter.toMultiName(typeName));
+        }
 
-        public StyleMustAnnotateAClass()
-		{
-			super();
-		}
-	}
+        registerStyle(context, metaDataNode, styleName, metaData);
+    }
 
-	public static class StyleHasMissingName extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = -1027238030094127129L;
+    /**
+     * add style into unit-wide list
+     */
+    private void registerStyle(Context context, MetaDataNode metaDataNode, String name, MetaData md) {
+        try {
+            unit.styles.addStyle(name, md, unit.getSource());
+        } catch (StyleConflictException e) {
+            context.localizedWarning2(metaDataNode.pos(), e);
 
-        public StyleHasMissingName()
-		{
-			super();
-		}
-	}
+            if (Trace.error)
+                e.printStackTrace();
+        }
+
+    }
+
+    // error messages
+
+    public static class StyleMustAnnotateAClass extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = 3387534813786226571L;
+
+        public StyleMustAnnotateAClass() {
+            super();
+        }
+    }
+
+    public static class StyleHasMissingName extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = -1027238030094127129L;
+
+        public StyleHasMissingName() {
+            super();
+        }
+    }
 }

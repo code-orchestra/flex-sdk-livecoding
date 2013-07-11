@@ -35,102 +35,83 @@ import flex2.tools.ASDocConfiguration;
  *
  * @author Brian Deitte
  */
-public class OverviewsHandler extends DefaultHandler
-{
-	private BufferedWriter writer;
-	private List packages;
+public class OverviewsHandler extends DefaultHandler {
+    private BufferedWriter writer;
+    private List packages;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param w
-	 * @param config
-	 */
-	public OverviewsHandler(BufferedWriter w, ASDocConfiguration config)
-	{
-		writer = w;
-		packages = config.getPackagesConfiguration().getPackages();
-	}
-	
-	/**
-	 * implementation for Default Handler method 
-	 */
-	public void startElement (String uri, String localName,
-	                          String qName, Attributes attributes)
-			throws SAXException
-	{
-		try
-		{
-			if (qName.equals("packages") && packages.size() > 0)
-			{
-				throw new RuntimeException("packages can not be specified in ASDoc_Config.xml and as a Flex parameter");
-			}
-			// if this element was added as a parameter, we use the parameter value
-			writer.newLine();
-			writer.write("<" + qName);
-			for (int i = 0; i < attributes.getLength(); i++)
-			{
-				writer.write(" " + attributes.getQName(i) + "=\"" + attributes.getValue(i) + "\"");
-			}
-			writer.write(">");
-		}
-		catch(IOException ioe)
-		{
-			throw new SAXException(ioe);
-		}
-	}
+    /**
+     * Constructor
+     *
+     * @param w
+     * @param config
+     */
+    public OverviewsHandler(BufferedWriter w, ASDocConfiguration config) {
+        writer = w;
+        packages = config.getPackagesConfiguration().getPackages();
+    }
 
-	/**
-	 * implementation for Default Handler method 
-	 */
-	public void endElement (String uri, String localName, String qName)
-			throws SAXException
-	{
-		try
-		{
-			if (qName.equals("overviews"))
-			{
-				if (packages.size() > 0)
-				{
-					writer.newLine();
-					writer.write("<packages>");
-					for (Iterator iterator = packages.iterator(); iterator.hasNext();)
-					{
-						PackageInfo info = (PackageInfo)iterator.next();
-						writer.newLine();
-						writer.write("<package name=\"" + info.name + "\">");
-						writer.newLine();
-						writer.write("<shortDescription>" + info.description + "</shortDescription>");
-						writer.write("<longDescription>" + info.description + "</longDescription>");
+    /**
+     * implementation for Default Handler method
+     */
+    public void startElement(String uri, String localName,
+                             String qName, Attributes attributes)
+            throws SAXException {
+        try {
+            if (qName.equals("packages") && packages.size() > 0) {
+                throw new RuntimeException("packages can not be specified in ASDoc_Config.xml and as a Flex parameter");
+            }
+            // if this element was added as a parameter, we use the parameter value
+            writer.newLine();
+            writer.write("<" + qName);
+            for (int i = 0; i < attributes.getLength(); i++) {
+                writer.write(" " + attributes.getQName(i) + "=\"" + attributes.getValue(i) + "\"");
+            }
+            writer.write(">");
+        } catch (IOException ioe) {
+            throw new SAXException(ioe);
+        }
+    }
 
-						writer.newLine();
-						writer.write("</package>");
-					}
-					writer.newLine();
-					writer.write("</packages>");
-				}
-			}
-			writer.write("</" + qName + ">");
-		}
-		catch(IOException ioe)
-		{
-			throw new SAXException(ioe);
-		}
-	}
+    /**
+     * implementation for Default Handler method
+     */
+    public void endElement(String uri, String localName, String qName)
+            throws SAXException {
+        try {
+            if (qName.equals("overviews")) {
+                if (packages.size() > 0) {
+                    writer.newLine();
+                    writer.write("<packages>");
+                    for (Iterator iterator = packages.iterator(); iterator.hasNext(); ) {
+                        PackageInfo info = (PackageInfo) iterator.next();
+                        writer.newLine();
+                        writer.write("<package name=\"" + info.name + "\">");
+                        writer.newLine();
+                        writer.write("<shortDescription>" + info.description + "</shortDescription>");
+                        writer.write("<longDescription>" + info.description + "</longDescription>");
 
-	/**
-	 * implementation for Default Handler method 
-	 */
-	public void characters (char ch[], int start, int length)
-			throws SAXException
-	{
-		try
-		{
-			writer.write(new String(ch, start, length));
-		}
-		catch(IOException ioe)
-		{
-			throw new SAXException(ioe);
-		}
-	}
+                        writer.newLine();
+                        writer.write("</package>");
+                    }
+                    writer.newLine();
+                    writer.write("</packages>");
+                }
+            }
+            writer.write("</" + qName + ">");
+        } catch (IOException ioe) {
+            throw new SAXException(ioe);
+        }
+    }
+
+    /**
+     * implementation for Default Handler method
+     */
+    public void characters(char ch[], int start, int length)
+            throws SAXException {
+        try {
+            writer.write(new String(ch, start, length));
+        } catch (IOException ioe) {
+            throw new SAXException(ioe);
+        }
+    }
 }

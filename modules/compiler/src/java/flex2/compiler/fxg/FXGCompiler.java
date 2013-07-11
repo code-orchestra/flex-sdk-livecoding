@@ -75,17 +75,17 @@ import flex2.compiler.util.ThreadLocalToolkit;
  * generated ActionScript class using SymbolClass. A two-pass compile
  * is still required to resolve dependent types and participate in the
  * top level driver, i.e. CompilerAPI.
- * 
+ * <p/>
  * <p>
- * Since &lt;TextGraphic&gt; cannot be fully represented using SWF tags, 
- * additional ActionScript classes will be generated to programmatically 
+ * Since &lt;TextGraphic&gt; cannot be fully represented using SWF tags,
+ * additional ActionScript classes will be generated to programmatically
  * instantiate instances of RichText and link them to a DefineSprite in the
  * appropriate location in the SWF primitive display list.
  * </p>
+ *
  * @author Pete Farland
  */
-public class FXGCompiler extends AbstractSubCompiler
-{
+public class FXGCompiler extends AbstractSubCompiler {
     private static final String COMPILER_NAME = "fxg";
 
     /**
@@ -111,17 +111,15 @@ public class FXGCompiler extends AbstractSubCompiler
 
     /**
      * Construct a new FXGCompiler.
-     * 
+     *
      * @param configuration - a CompilerConfiguration is required to construct
-     * a delegate As3Compiler to compile any generated ActionScript and to
-     * determine if generated code should be written to disk.
-     * 
-     * @param nameMappings - NameMappings are used to construct a TypeTable
-     * so that the ActionScript text APIs can be queried to determine if an
-     * FXG attribute applies to a property or a style.
+     *                      a delegate As3Compiler to compile any generated ActionScript and to
+     *                      determine if generated code should be written to disk.
+     * @param nameMappings  - NameMappings are used to construct a TypeTable
+     *                      so that the ActionScript text APIs can be queried to determine if an
+     *                      FXG attribute applies to a property or a style.
      */
-    public FXGCompiler(CompilerConfiguration configuration, NameMappings nameMappings)
-    {
+    public FXGCompiler(CompilerConfiguration configuration, NameMappings nameMappings) {
         mimeTypes = new String[]{MimeMappings.FXG};
         this.nameMappings = nameMappings;
         generatedOutputDir = configuration.keepGeneratedActionScript() ? configuration.getGeneratedDirectory() : null;
@@ -132,14 +130,13 @@ public class FXGCompiler extends AbstractSubCompiler
         // Honor the compiler's mobile profile flag
         boolean mobile = configuration.getMobile();
         if (mobile)
-        	profile = FXG_PROFILE_MOBILE;
+            profile = FXG_PROFILE_MOBILE;
 
         // Bridge the compiler's Locale to fxgutils' localization system
         LocalizationManager lm = ThreadLocalToolkit.getLocalizationManager();
-        if (lm != null)
-        {
-        	Locale locale = lm.getLocale();
-        	FXGLocalizationUtil.setDefaultLocale(locale);
+        if (lm != null) {
+            Locale locale = lm.getLocale();
+            FXGLocalizationUtil.setDefaultLocale(locale);
             FXGLocalizationUtil.setLocale(locale);
         }
     }
@@ -153,8 +150,7 @@ public class FXGCompiler extends AbstractSubCompiler
     /**
      * @return the name of this compiler.
      */
-    public String getName()
-    {
+    public String getName() {
         return COMPILER_NAME;
     }
 
@@ -162,10 +158,8 @@ public class FXGCompiler extends AbstractSubCompiler
      * @param mimeType The MIME type to check.
      * @return true if the MIME type is supported by the FXG compiler.
      */
-    public boolean isSupported(String mimeType)
-    {
-        for (int i = 0; i < mimeTypes.length; i++)
-        {
+    public boolean isSupported(String mimeType) {
+        for (int i = 0; i < mimeTypes.length; i++) {
             if (mimeTypes[i].equals(mimeType))
                 return true;
         }
@@ -174,10 +168,9 @@ public class FXGCompiler extends AbstractSubCompiler
 
     /**
      * @return The list of supported MIME types for the FXG compiler. Currently
-     * this is *.fxg files. 
+     *         this is *.fxg files.
      */
-    public String[] getSupportedMimeTypes()
-    {
+    public String[] getSupportedMimeTypes() {
         return mimeTypes;
     }
 
@@ -185,15 +178,13 @@ public class FXGCompiler extends AbstractSubCompiler
     // Compilation Phases  
     //---------------------
 
-    public Source preprocess(Source source)
-    {
+    public Source preprocess(Source source) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.PREPROCESS, source.getNameForReporting());
 
         // Check the source name is a valid component name.
         String componentName = source.getShortName();
-        if (!TextParser.isValidIdentifier(componentName))
-        {
+        if (!TextParser.isValidIdentifier(componentName)) {
             CompilerMessage m = new InvalidComponentName(componentName);
             m.setPath(source.getNameForReporting());
             ThreadLocalToolkit.log(m);
@@ -205,41 +196,31 @@ public class FXGCompiler extends AbstractSubCompiler
         return source;
     }
 
-    public CompilationUnit parse1(Source source, SymbolTable symbolTable)
-    {
+    public CompilationUnit parse1(Source source, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.PARSE1, source.getNameForReporting());
 
         CompilationUnit unit = source.getCompilationUnit();
 
-        if (unit != null && unit.hasTypeInfo)
-        {
+        if (unit != null && unit.hasTypeInfo) {
             return unit;
         }
 
         // If no compilation unit is associated with the Source then this is
         // our first pass for our two-pass compiler.
-        if (unit == null)
-        {
+        if (unit == null) {
             unit = skeletonCompiler.parse1(source, symbolTable);
-            if (unit != null)
-            {
+            if (unit != null) {
                 setCompileState(unit, STATE_SKELETON_PARSED);
             }
-        }
-        else
-        {
+        } else {
             // We're starting our second pass.
-            if (getCompileState(unit) == STATE_SKELETON_GENERATED)
-            {
+            if (getCompileState(unit) == STATE_SKELETON_GENERATED) {
                 unit = implementationCompiler.parse1(source, symbolTable);
-                if (unit != null)
-                {
+                if (unit != null) {
                     advanceCompilationState(unit);
                 }
-            }
-            else
-            {
+            } else {
                 //  no-op
             }
         }
@@ -250,13 +231,11 @@ public class FXGCompiler extends AbstractSubCompiler
         return unit;
     }
 
-    public void parse2(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void parse2(CompilationUnit unit, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.PARSE2, unit.getSource().getNameForReporting());
 
-        if (unit != null && unit.hasTypeInfo)
-        {
+        if (unit != null && unit.hasTypeInfo) {
             return;
         }
 
@@ -266,13 +245,11 @@ public class FXGCompiler extends AbstractSubCompiler
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.PARSE2);
     }
 
-    public void analyze1(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void analyze1(CompilationUnit unit, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.ANALYZE1, unit.getSource().getNameForReporting());
 
-        if (unit != null && unit.hasTypeInfo)
-        {
+        if (unit != null && unit.hasTypeInfo) {
             return;
         }
 
@@ -282,13 +259,11 @@ public class FXGCompiler extends AbstractSubCompiler
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.ANALYZE1);
     }
 
-    public void analyze2(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void analyze2(CompilationUnit unit, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.ANALYZE2, unit.getSource().getNameForReporting());
 
-        if (unit != null && unit.hasTypeInfo)
-        {
+        if (unit != null && unit.hasTypeInfo) {
             return;
         }
 
@@ -298,13 +273,11 @@ public class FXGCompiler extends AbstractSubCompiler
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.ANALYZE2);
     }
 
-    public void analyze3(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void analyze3(CompilationUnit unit, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.ANALYZE3, unit.getSource().getNameForReporting());
 
-        if (unit != null && unit.hasTypeInfo)
-        {
+        if (unit != null && unit.hasTypeInfo) {
             return;
         }
 
@@ -314,35 +287,30 @@ public class FXGCompiler extends AbstractSubCompiler
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.ANALYZE3);
     }
 
-    public void analyze4(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void analyze4(CompilationUnit unit, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.ANALYZE4, unit.getSource().getNameForReporting());
 
-		if (unit != null && unit.hasTypeInfo)
-		{
+        if (unit != null && unit.hasTypeInfo) {
             flex2.compiler.as3.reflect.TypeTable typeTable = null;
 
-            if (symbolTable != null)
-            {
+            if (symbolTable != null) {
                 typeTable = (flex2.compiler.as3.reflect.TypeTable) symbolTable.getContext().getAttribute(As3Compiler.AttrTypeTable);
 
-                if (typeTable == null)
-                {
+                if (typeTable == null) {
                     typeTable = new flex2.compiler.as3.reflect.TypeTable(symbolTable);
                     symbolTable.getContext().setAttribute(As3Compiler.AttrTypeTable, typeTable);
                 }
             }
 
-            for (Map.Entry<String, AbcClass> entry : unit.classTable.entrySet())
-            {
+            for (Map.Entry<String, AbcClass> entry : unit.classTable.entrySet()) {
                 AbcClass c = entry.getValue();
                 c.setTypeTable(typeTable);
                 symbolTable.registerClass(entry.getKey(), c);
             }
 
-			return;
-		}
+            return;
+        }
 
         getCompilerForCompileState(unit).analyze4(unit, symbolTable);
 
@@ -350,13 +318,11 @@ public class FXGCompiler extends AbstractSubCompiler
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.ANALYZE4);
     }
 
-    public void generate(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void generate(CompilationUnit unit, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.GENERATE, unit.getSource().getNameForReporting());
 
-        if (unit != null && unit.hasTypeInfo)
-        {
+        if (unit != null && unit.hasTypeInfo) {
             return;
         }
 
@@ -367,16 +333,14 @@ public class FXGCompiler extends AbstractSubCompiler
             benchmarkHelper.endPhase(CompilerBenchmarkHelper.GENERATE);
     }
 
-    public void postprocess(CompilationUnit unit, SymbolTable symbolTable)
-    {
+    public void postprocess(CompilationUnit unit, SymbolTable symbolTable) {
         if (benchmarkHelper != null)
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.POSTPROCESS, unit.getSource().getNameForReporting());
 
-        if (unit != null && unit.hasTypeInfo)
-        {
+        if (unit != null && unit.hasTypeInfo) {
             return;
         }
-        
+
         getCompilerForCompileState(unit).postprocess(unit, symbolTable);
 
         if (benchmarkHelper != null)
@@ -392,8 +356,7 @@ public class FXGCompiler extends AbstractSubCompiler
     /**
      * Moves the given CompilationUnit's compile state one step forward.
      */
-    private void advanceCompilationState(CompilationUnit unit)
-    {
+    private void advanceCompilationState(CompilationUnit unit) {
         int state = getCompileState(unit);
         assert state < STATE_IMPLEMENTATION_GENERATED : "FXGCompiler advanceState called with state == " + state;
         setCompileState(unit, state + 1);
@@ -401,33 +364,30 @@ public class FXGCompiler extends AbstractSubCompiler
 
     /**
      * Gets the compile state of the given CompilationUnit.
-     * 
+     *
      * @param unit - the CompilationUnit to query for compilation state.
      * @return the current compile state as an int
      */
-    private int getCompileState(CompilationUnit unit)
-    {
+    private int getCompileState(CompilationUnit unit) {
         assert unit.getContext().getAttribute(COMPILATION_STATE) != null : "FXGCompiler: CompilationUnit lacks " + COMPILATION_STATE + " attribute.";
-        return ((Integer)unit.getContext().getAttribute(COMPILATION_STATE)).intValue();
+        return ((Integer) unit.getContext().getAttribute(COMPILATION_STATE)).intValue();
     }
 
     /**
      * Sets the compiler state of the CompilationUnit.
-     * 
-     * @param unit - the CompilationUnit to be updated with the given
-     * compilation state.
+     *
+     * @param unit  - the CompilationUnit to be updated with the given
+     *              compilation state.
      * @param state - the new compile state
      */
-    private void setCompileState(CompilationUnit unit, int state)
-    {
+    private void setCompileState(CompilationUnit unit, int state) {
         unit.getContext().setAttribute(COMPILATION_STATE, new Integer(state));
     }
 
     /**
      * @return an inner compiler based the compilation state
      */
-    private SubCompiler getCompilerForCompileState(CompilationUnit unit)
-    {
+    private SubCompiler getCompilerForCompileState(CompilationUnit unit) {
         return getCompileState(unit) < STATE_IMPLEMENTATION_PARSED ? skeletonCompiler : implementationCompiler;
     }
 
@@ -439,12 +399,11 @@ public class FXGCompiler extends AbstractSubCompiler
 
     /**
      * Package and class is derived from Source name and location.
-     * 
-     * @param source - the given Source 
+     *
+     * @param source - the given Source
      * @return the QName representing the package and class name.
      */
-    private static QName getQNameFromSource(Source source)
-    {
+    private static QName getQNameFromSource(Source source) {
         String className = source.getShortName();
         String packageName = source.getRelativePath().replace('/', '.');
         return new QName(packageName, className);
@@ -452,18 +411,16 @@ public class FXGCompiler extends AbstractSubCompiler
 
     /**
      * @param packageName - the package name to be interpreted as
-     * sub-directories under the generated output directory. 
-     * @param className - the class name to be used as the file name.
-     * @param suffix - to be appended after the file name and provide the file
-     * type extension.
+     *                    sub-directories under the generated output directory.
+     * @param className   - the class name to be used as the file name.
+     * @param suffix      - to be appended after the file name and provide the file
+     *                    type extension.
      * @return a file name for the given package and class name in the
-     * generated output directory.
+     *         generated output directory.
      */
-    private String getGeneratedFileName(String packageName, String className, String suffix)
-    {
+    private String getGeneratedFileName(String packageName, String className, String suffix) {
         String dir = generatedOutputDir;
-        if (packageName != null && packageName.length() > 0)
-        {
+        if (packageName != null && packageName.length() > 0) {
             dir = FileUtils.addPathComponents(dir, packageName.replace('.', File.separatorChar), File.separatorChar);
         }
 
@@ -474,14 +431,11 @@ public class FXGCompiler extends AbstractSubCompiler
      * Initializes a Flex specific logger to bridge FXG messages back to the
      * Flex compiler's logging system.
      */
-    private void setupLogger()
-    {
+    private void setupLogger() {
         Logger logger = ThreadLocalToolkit.getLogger();
-        if (logger != null)
-        {
+        if (logger != null) {
             FXGLogger fxgLogger = FXGLog.getLogger();
-            if (!(fxgLogger instanceof FlexLoggerAdapter))
-            {
+            if (!(fxgLogger instanceof FlexLoggerAdapter)) {
                 fxgLogger = new FlexLoggerAdapter(FXGLogger.ALL);
                 FXGLog.setLogger(fxgLogger);
             }
@@ -499,28 +453,23 @@ public class FXGCompiler extends AbstractSubCompiler
      * dependencies on types that must be compiled before we generate the
      * concrete ActionScript implementation.
      */
-    private final class SkeletonCompiler extends AbstractDelegatingSubCompiler
-    {
-        private SkeletonCompiler(CompilerConfiguration config)
-        {
+    private final class SkeletonCompiler extends AbstractDelegatingSubCompiler {
+        private SkeletonCompiler(CompilerConfiguration config) {
             // Create an As3Compiler as our delegate sub-compiler for
             // generated ActionScript.
             As3Compiler asc = new As3Compiler(config);
             delegateSubCompiler = asc;
         }
 
-        public String getName()
-        {
+        public String getName() {
             return FXGCompiler.COMPILER_NAME;
         }
 
-        public boolean isSupported(String mimeType)
-        {
+        public boolean isSupported(String mimeType) {
             return FXGCompiler.this.isSupported(mimeType);
         }
 
-        public String[] getSupportedMimeTypes()
-        {
+        public String[] getSupportedMimeTypes() {
             return FXGCompiler.this.getSupportedMimeTypes();
         }
 
@@ -534,8 +483,7 @@ public class FXGCompiler extends AbstractSubCompiler
          * later phases).
          * </p>
          */
-        public CompilationUnit parse1(Source source, SymbolTable symbolTable)
-        {
+        public CompilationUnit parse1(Source source, SymbolTable symbolTable) {
             CompilerContext context = new CompilerContext();
             CompilationUnit unit = source.newCompilationUnit(null, context);
 
@@ -545,9 +493,9 @@ public class FXGCompiler extends AbstractSubCompiler
             // Setup the FXG Parser using either the mobile or desktop profile
             FXGParser parser;
             if (FXG_PROFILE_MOBILE.equals(profile))
-            	parser = FXGParserFactory.createDefaultParserForMobile();
+                parser = FXGParserFactory.createDefaultParserForMobile();
             else
-            	parser = FXGParserFactory.createDefaultParser();
+                parser = FXGParserFactory.createDefaultParser();
 
             // Register Flex specific FXG nodes
             parser.registerElementNode(1.0, FXG_NAMESPACE, FXG_GRAPHIC_ELEMENT, FlexGraphicNode.class);
@@ -557,8 +505,7 @@ public class FXGCompiler extends AbstractSubCompiler
             parser.registerElementNode(2.0, FXG_NAMESPACE, FXG_GRAPHIC_ELEMENT, FlexGraphicNode.class);
             parser.registerElementNode(2.0, FXG_NAMESPACE, FXG_RICHTEXT_ELEMENT, FlexRichTextNode.class);
 
-            try
-            {
+            try {
                 // Parse FXG to a DOM
                 FXGNode node = parser.parse(source.getInputStream(), source.getNameForReporting());
                 context.setAttribute(FXG_DOM_ROOT, node);
@@ -567,38 +514,31 @@ public class FXGCompiler extends AbstractSubCompiler
                 unit.topLevelDefinitions.add(topLevelQName);
 
                 MultiName baseMultiName = MULTINAME_SPRITEVISUALELEMENT;
-                if (node instanceof GraphicNode)
-                {
-                	GraphicNode graphicNode = (GraphicNode)node;
-                	if (graphicNode.baseClassName != null)
-                	{
-                		String pkg = "";
-                		String baseClassName = graphicNode.baseClassName;
-                		String className = baseClassName;
-                		int lastDot = baseClassName.lastIndexOf(".");
-                		if (lastDot > -1)
-                		{
-                			pkg = baseClassName.substring(0, lastDot);
-                			className = baseClassName.substring(lastDot + 1);
-                		}
-                		baseMultiName = new MultiName(NameFormatter.toColon(pkg, className));
-                	}
+                if (node instanceof GraphicNode) {
+                    GraphicNode graphicNode = (GraphicNode) node;
+                    if (graphicNode.baseClassName != null) {
+                        String pkg = "";
+                        String baseClassName = graphicNode.baseClassName;
+                        String className = baseClassName;
+                        int lastDot = baseClassName.lastIndexOf(".");
+                        if (lastDot > -1) {
+                            pkg = baseClassName.substring(0, lastDot);
+                            className = baseClassName.substring(lastDot + 1);
+                        }
+                        baseMultiName = new MultiName(NameFormatter.toColon(pkg, className));
+                    }
                 }
                 // We add the base class for our generated skeleton here so that
                 // the type will be resolved after returning from parse1() and
                 // before we get to analyze2().
                 unit.inheritance.add(baseMultiName);
-            }
-            catch (FXGException ex)
-            {
+            } catch (FXGException ex) {
                 ThreadLocalToolkit.log(new FXGParseException(ex),
                         source, ex.getLineNumber(), ex.getColumnNumber());
                 unit = null;
-            }
-            catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 ThreadLocalToolkit.log(new FXGParseException(ex),
-                		source);
+                        source);
                 unit = null;
             }
 
@@ -609,35 +549,30 @@ public class FXGCompiler extends AbstractSubCompiler
          * We now generate the skeleton class and introduce additional
          * dependencies on ActionScript types needed before our second pass
          * compilation, such as our implementation of &lt;TextGraphic&gt; and
-         * any of it child tags (if the FXG DOM says that they're needed). 
+         * any of it child tags (if the FXG DOM says that they're needed).
          */
         @Override
-        public void parse2(CompilationUnit unit, SymbolTable symbolTable)
-        {
+        public void parse2(CompilationUnit unit, SymbolTable symbolTable) {
             Source generatedSource = null;
             Source originalSource = unit.getSource();
 
             // Determine whether we need to introduce text class dependencies
-            FXGNode rootNode = (FXGNode)unit.getContext().getAttribute(FXG_DOM_ROOT);
+            FXGNode rootNode = (FXGNode) unit.getContext().getAttribute(FXG_DOM_ROOT);
             boolean hasTextGraphic = false;
             String baseClassName = null;
             double version = 1.0;
 
-            if (rootNode instanceof FlexGraphicNode)
-            {
-                FlexGraphicNode graphicNode = (FlexGraphicNode)rootNode;
+            if (rootNode instanceof FlexGraphicNode) {
+                FlexGraphicNode graphicNode = (FlexGraphicNode) rootNode;
                 FXGVersion v = graphicNode.getVersion();
                 version = v != null ? v.asDouble() : 1.0;
                 hasTextGraphic = graphicNode.hasText;
                 baseClassName = graphicNode.baseClassName;
             }
 
-            try
-            {
+            try {
                 generatedSource = generateSource(originalSource, symbolTable, version, hasTextGraphic, baseClassName);
-            }
-            catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 ThreadLocalToolkit.log(new SourceGenerationException(ex), originalSource);
                 return;
             }
@@ -645,8 +580,7 @@ public class FXGCompiler extends AbstractSubCompiler
             // Compile our generated source with ASC 
             CompilationUnit interfaceUnit = delegateSubCompiler.parse1(generatedSource, symbolTable);
 
-            if (interfaceUnit != null)
-            {
+            if (interfaceUnit != null) {
                 unit.getSource().addFileIncludes(interfaceUnit.getSource());
                 unit.getContext().setAttribute(DELEGATE_UNIT, interfaceUnit);
 
@@ -654,9 +588,7 @@ public class FXGCompiler extends AbstractSubCompiler
                 //unit.getContext().setAttribute(LINE_NUMBER_MAP, lineNumberMap);
 
                 Source.transferMetaData(interfaceUnit, unit);
-            }
-            else
-            {
+            } else {
                 return;
             }
 
@@ -669,8 +601,7 @@ public class FXGCompiler extends AbstractSubCompiler
          * to do our second-pass and create a concrete implementation.
          */
         @Override
-        public void generate(CompilationUnit unit, SymbolTable symbolTable)
-        {
+        public void generate(CompilationUnit unit, SymbolTable symbolTable) {
             // No-op.
         }
 
@@ -679,91 +610,82 @@ public class FXGCompiler extends AbstractSubCompiler
          * '[packageName]/[className]-interface.as' to introduce class
          * dependencies to ensure they are compiled before the concrete
          * implementation in generated in the second pass.
-         *
+         * <p/>
          * <p>For example, given a document '/assets/SampleGraphic.fxg' that
          * made use of &lt;TextGraphic&gt;, the following skeleton class would
          * be generated:</p>
          * <pre>
          * package assets
          * {
-         * 
+         *
          * import flashx.textLayout.elements.ParagraphElement;
          * import flashx.textLayout.elements.SpanElement;
          * import spark.components.RichText;
          * import spark.core.SpriteVisualElement;
-         * 
+         *
          * public class SampleGraphic extends SpriteVisualElement
          * {
          *     public function SampleGraphic()
          *     {
          *         super();
          *     }
-         * 
+         *
          *     private static var _temp0:ParagraphElement;
          *     private static var _temp1:SpanElement;
          *     private static var _temp2:RichText;
          * }
          * }
          * </pre>
+         *
          * @param originalSource - the .fxg source file
-         * @param symbolTable - the symbol table of ActionScript types
-         * @param version - the FXG version
-         * @param hasText - whether the document made use of text 
+         * @param symbolTable    - the symbol table of ActionScript types
+         * @param version        - the FXG version
+         * @param hasText        - whether the document made use of text
          */
         private Source generateSource(Source originalSource, SymbolTable symbolTable,
-                double version, boolean hasText, String baseClassName) throws IOException
-        {
+                                      double version, boolean hasText, String baseClassName) throws IOException {
             // Derive package/class names from source name and location
             String className = originalSource.getShortName();
-            String packageName = originalSource.getRelativePath().replace('/','.');
+            String packageName = originalSource.getRelativePath().replace('/', '.');
             String generatedName = getGeneratedFileName(packageName, className, "-interface.as");
 
             // Generate ActionScript source code for our skeleton class
             StringBuilder buf = new StringBuilder(384);
             buf.append("package ").append(packageName).append("\n{\n\n");
 
-            if (hasText)
-            {
-                if (version >= 2.0)
-                {
+            if (hasText) {
+                if (version >= 2.0) {
                     buf.append("import flashx.textLayout.elements.*;\n");
                     buf.append("import flashx.textLayout.formats.TextLayoutFormat;\n");
-                }
-                else
-                {
-                    buf.append("import flashx.textLayout.elements.ParagraphElement;\n");   
+                } else {
+                    buf.append("import flashx.textLayout.elements.ParagraphElement;\n");
                     buf.append("import flashx.textLayout.elements.SpanElement;\n");
                 }
                 buf.append("import spark.components.RichText;\n");
             }
 
-            if (baseClassName != null)
-            {
+            if (baseClassName != null) {
                 buf.append("import ");
                 buf.append(baseClassName);
                 buf.append(";\n\n");
                 buf.append("public class ").append(className).append(" extends ");
                 buf.append(baseClassName);
-                buf.append("\n{\n");            	
-            }
-            else
-            {
+                buf.append("\n{\n");
+            } else {
                 buf.append("import spark.core.SpriteVisualElement;\n\n");
-                buf.append("public class ").append(className).append(" extends SpriteVisualElement\n{\n");            	
+                buf.append("public class ").append(className).append(" extends SpriteVisualElement\n{\n");
             }
             buf.append("    public function ").append(className).append("()\n");
             buf.append("    {\n");
             buf.append("        super();\n");
             buf.append("    }\n\n");
 
-            if (hasText)
-            {
+            if (hasText) {
                 buf.append("    private static var _temp0:ParagraphElement;\n");
                 buf.append("    private static var _temp1:SpanElement;\n");
                 buf.append("    private static var _temp2:RichText;\n");
 
-                if (version >= 2.0)
-                {
+                if (version >= 2.0) {
                     buf.append("    private static var _temp3:DivElement;\n");
                     buf.append("    private static var _temp4:InlineGraphicElement;\n");
                     buf.append("    private static var _temp5:LinkElement;\n");
@@ -783,8 +705,7 @@ public class FXGCompiler extends AbstractSubCompiler
                     originalSource.getParent(), MimeMappings.AS,
                     originalSource.getLastModified());
 
-            if (generatedOutputDir != null)
-            {
+            if (generatedOutputDir != null) {
                 new File(generatedName).getParentFile().mkdirs();
                 FileUtil.writeFile(generatedName, generatedCode);
             }
@@ -795,34 +716,29 @@ public class FXGCompiler extends AbstractSubCompiler
 
             return generatedSource;
         }
-       
+
     }
 
     /**
      * Generates the concrete ActionScript implementation and associated
      * SWF DefineSprite based transcoded asset.
      */
-    private final class ImplementationCompiler extends AbstractDelegatingSubCompiler
-    {
-        private ImplementationCompiler(CompilerConfiguration config)
-        {
+    private final class ImplementationCompiler extends AbstractDelegatingSubCompiler {
+        private ImplementationCompiler(CompilerConfiguration config) {
             // Create an As3Compiler as our delegate sub-compiler.
             As3Compiler asc = new As3Compiler(config);
             delegateSubCompiler = asc;
         }
 
-        public String getName()
-        {
+        public String getName() {
             return FXGCompiler.COMPILER_NAME;
         }
 
-        public boolean isSupported(String mimeType)
-        {
+        public boolean isSupported(String mimeType) {
             return FXGCompiler.this.isSupported(mimeType);
         }
 
-        public String[] getSupportedMimeTypes()
-        {
+        public String[] getSupportedMimeTypes() {
             return FXGCompiler.this.getSupportedMimeTypes();
         }
 
@@ -830,23 +746,20 @@ public class FXGCompiler extends AbstractSubCompiler
          * Transcode our DOM to SWF graphics primitives and generate the
          * concrete ActionScript source for ASC compilation.
          */
-        public CompilationUnit parse1(Source source, SymbolTable symbolTable)
-        {
+        public CompilationUnit parse1(Source source, SymbolTable symbolTable) {
             CompilationUnit unit = source.getCompilationUnit();
 
             // Now we can generate the concrete implementation for the FXG DOM
             // saved in the CompilationUnit's context from the parse1() phase
             // of SkeletonCompiler.
-            try
-            {
+            try {
                 Source generatedSource = generateSource(unit, symbolTable);
                 if (generatedSource != null)
                     generatedSource.addFileIncludes(source);
 
                 // Then we delegate to ASC to process our generated source.
                 CompilationUnit implementationUnit = delegateSubCompiler.parse1(generatedSource, symbolTable);
-                if (implementationUnit != null)
-                {
+                if (implementationUnit != null) {
                     // Transfer includes from the ASC unit to the FXG unit
                     unit.getSource().addFileIncludes(implementationUnit.getSource());
                     unit.getContext().setAttribute(DELEGATE_UNIT, implementationUnit);
@@ -855,20 +768,14 @@ public class FXGCompiler extends AbstractSubCompiler
                     Source.transferGeneratedSources(implementationUnit, unit);
                     Source.transferDefinitions(implementationUnit, unit);
                     Source.transferInheritance(implementationUnit, unit);
-                }
-                else
-                {
+                } else {
                     unit = null;
                 }
-            }
-            catch (FXGException ex)
-            {
+            } catch (FXGException ex) {
                 ThreadLocalToolkit.log(new SourceGenerationException(ex),
                         source, ex.getLineNumber(), ex.getColumnNumber());
                 unit = null;
-            }
-            catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 ThreadLocalToolkit.log(new SourceGenerationException(ex), source);
                 unit = null;
             }
@@ -890,19 +797,18 @@ public class FXGCompiler extends AbstractSubCompiler
          * CompilationUnit. Additional symbols will be generated for child
          * sprites corresponding to &lt;TextGraphic&gt; nodes.
          */
-        private Source generateSource(CompilationUnit unit, SymbolTable symbolTable) throws IOException
-        {
+        private Source generateSource(CompilationUnit unit, SymbolTable symbolTable) throws IOException {
             Source originalSource = unit.getSource();
 
             // package/class is derived from source name and location
             String className = originalSource.getShortName();
-            String packageName = originalSource.getRelativePath().replace('/','.');
+            String packageName = originalSource.getRelativePath().replace('/', '.');
 
             // TypeTable will be used to determine if an text related FXG
             // attribute apply to a property or style of the associated
             // ActionScript API.
             TypeTable typeTable = new TypeTable(symbolTable, nameMappings, unit.getStandardDefs(),
-                                                themeNames);
+                    themeNames);
 
             // Transcode the FXG DOM to SWF graphics primitives
             FXGSymbolClass asset = transcodeFXG(unit, packageName, className, typeTable);
@@ -912,17 +818,13 @@ public class FXGCompiler extends AbstractSubCompiler
 
             // Handle any additional generated child sprite classes
             List<FXGSymbolClass> additionalAssets = asset.getAdditionalSymbolClasses();
-            if (additionalAssets != null && additionalAssets.size() > 0)
-            {
+            if (additionalAssets != null && additionalAssets.size() > 0) {
                 Map<QName, Source> additionalSources = new HashMap<QName, Source>(additionalAssets.size());
-                for (FXGSymbolClass additionalAsset : additionalAssets)
-                {
-                    if (additionalAsset.getSymbol() != null)
-                    {
+                for (FXGSymbolClass additionalAsset : additionalAssets) {
+                    if (additionalAsset.getSymbol() != null) {
                         Source additionalSource = generateAdditionalSource(unit, additionalAsset);
-                        if (additionalSource != null)
-                        {
-                            QName additionalQName = new QName(additionalAsset.getPackageName(), additionalAsset.getClassName()); 
+                        if (additionalSource != null) {
+                            QName additionalQName = new QName(additionalAsset.getPackageName(), additionalAsset.getClassName());
                             additionalSources.put(additionalQName, additionalSource);
                         }
                     }
@@ -936,23 +838,21 @@ public class FXGCompiler extends AbstractSubCompiler
         /**
          * Generates the concrete ActionScript implementation for our FXG
          * symbol and associate the DefineSprite asset with the CompilationUnit.
-         * 
-         * @param unit - the CompilationUnit for the FXG component.
+         *
+         * @param unit        - the CompilationUnit for the FXG component.
          * @param packageName - the package of the FXG component.
-         * @param className - the className of the FXG component.
-         * @param asset - the result of transcoding the FXG document.
+         * @param className   - the className of the FXG component.
+         * @param asset       - the result of transcoding the FXG document.
          * @return the generated source.
          * @throws IOException
          */
         private Source generateMainSource(CompilationUnit unit,
-                String packageName, String className, FXGSymbolClass asset) throws IOException
-        {
+                                          String packageName, String className, FXGSymbolClass asset) throws IOException {
             Source originalSource = unit.getSource();
 
             String generatedName = getGeneratedFileName(packageName, className, "-generated.as");
 
-            if (generatedOutputDir != null)
-            {
+            if (generatedOutputDir != null) {
                 new File(generatedName).getParentFile().mkdirs();
                 FileUtil.writeFile(generatedName, asset.getGeneratedSource());
             }
@@ -980,24 +880,22 @@ public class FXGCompiler extends AbstractSubCompiler
          * mimics mxmlc DefineSprite-based asset transcoding by generating a
          * source and associates the DefineSprite using an AssetInfo with the
          * CompilationUnit.
-         * 
-         * @param unit - the CompilationUnit for the FXG component.
+         *
+         * @param unit  - the CompilationUnit for the FXG component.
          * @param asset - an additional asset created while transcoded the
-         * FXG document.
+         *              FXG document.
          * @return the generated source.
          * @throws IOException
          */
         private Source generateAdditionalSource(CompilationUnit unit,
-                FXGSymbolClass asset) throws IOException
-        {
+                                                FXGSymbolClass asset) throws IOException {
             Source originalSource = unit.getSource();
 
             String packageName = asset.getPackageName();
             String className = asset.getClassName();
             String generatedName = getGeneratedFileName(packageName, className, ".as");
 
-            if (generatedOutputDir != null)
-            {
+            if (generatedOutputDir != null) {
                 new File(generatedName).getParentFile().mkdirs();
                 FileUtil.writeFile(generatedName, asset.getGeneratedSource());
             }
@@ -1013,9 +911,8 @@ public class FXGCompiler extends AbstractSubCompiler
             unit.getAssets().add(asset.getQualifiedClassName(), assetInfo);
 
             String relativePath = "";
-            if (packageName != null)
-            {
-                relativePath = packageName.replace( '.', '/' );
+            if (packageName != null) {
+                relativePath = packageName.replace('.', '/');
             }
 
             // Create a Source and associate our symbol's AssetInfo 
@@ -1030,20 +927,19 @@ public class FXGCompiler extends AbstractSubCompiler
         /**
          * Transcodes an FXG DOM to a DefineSprite hierarchy and associated
          * symbol classes.
-         * 
-         * @param unit - the CompilationUnit for the FXG component.
+         *
+         * @param unit        - the CompilationUnit for the FXG component.
          * @param packageName - the package of the FXG component.
-         * @param className - the className of the FXG component.
-         * @param typeTable - the TypeTable to resolve type information from
-         * the ActionScript text classes.
+         * @param className   - the className of the FXG component.
+         * @param typeTable   - the TypeTable to resolve type information from
+         *                    the ActionScript text classes.
          * @return the SWF asset information for the transcoded FXG (potentially
-         * several symbol classes and DefineSprites if &lt;TextGraphic&gt; was
-         * used in the document). 
+         *         several symbol classes and DefineSprites if &lt;TextGraphic&gt; was
+         *         used in the document).
          */
         private FXGSymbolClass transcodeFXG(CompilationUnit unit,
-                String packageName, String className, TypeTable typeTable)
-        {
-            FXGNode rootNode = (FXGNode)unit.getContext().getAttribute(FXG_DOM_ROOT);
+                                            String packageName, String className, TypeTable typeTable) {
+            FXGNode rootNode = (FXGNode) unit.getContext().getAttribute(FXG_DOM_ROOT);
 
             FlexFXG2SWFTranscoder transcoder = new FlexFXG2SWFTranscoder(typeTable);
             PathResolver pathResolver = unit.getSource().getPathResolver();
@@ -1062,34 +958,29 @@ public class FXGCompiler extends AbstractSubCompiler
     //--------------------------------------------------------------------------
 
     // Invalid component name '${name}': component name must be legal ActionScript class name.
-    public static class InvalidComponentName extends CompilerMessage.CompilerError
-    {
+    public static class InvalidComponentName extends CompilerMessage.CompilerError {
         private static final long serialVersionUID = 4116465034363649658L;
         public final String name;
-        public InvalidComponentName(String name)
-        {
+
+        public InvalidComponentName(String name) {
             this.name = name;
         }
     }
 
     // FXG parse exception
-    public static class FXGParseException extends CompilerMessage.CompilerError
-    {
+    public static class FXGParseException extends CompilerMessage.CompilerError {
         private static final long serialVersionUID = 4714330790773345898L;
 
-        public FXGParseException(Throwable rootCause)
-        {
+        public FXGParseException(Throwable rootCause) {
             super(rootCause);
         }
     }
 
     // FXG source generation exception
-    public static class SourceGenerationException extends CompilerMessage.CompilerError
-    {
+    public static class SourceGenerationException extends CompilerMessage.CompilerError {
         private static final long serialVersionUID = -395170674941663888L;
 
-        public SourceGenerationException(Throwable rootCause)
-        {
+        public SourceGenerationException(Throwable rootCause) {
             super(rootCause);
         }
     }

@@ -23,28 +23,25 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This interface defines methods for retrieving info based on packages and classes. 
- *
+ * This interface defines methods for retrieving info based on packages and classes.
  */
-public interface DocCommentTable
-{
+public interface DocCommentTable {
     /**
      * @return Map of all packages where key = package name, value = DocComment.
      */
     public Map getPackages();
-    
+
     /**
      * Useful to retrieve all the class names from a package (since they must be unique
      * within a package).
-     * 
+     *
      * @param packageName
      * @return Map of all classes and interfaces in a specific package where
-     * key = class or interface name, value = DocComment.
-     *
+     *         key = class or interface name, value = DocComment.
      */
     public Map getClassesAndInterfaces(String packageName);
-    
-    
+
+
     /**
      * @param className
      * @param packageName

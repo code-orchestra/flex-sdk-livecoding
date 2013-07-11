@@ -30,25 +30,20 @@ import macromedia.asc.parser.ArgumentListNode;
  *
  * @author Paul Reilly
  */
-public class ArrayElementWatcher extends EvaluationWatcher
-{
-    public ArrayElementWatcher(int id, BindingExpression bindingExpression, ArgumentListNode args)
-    {
+public class ArrayElementWatcher extends EvaluationWatcher {
+    public ArrayElementWatcher(int id, BindingExpression bindingExpression, ArgumentListNode args) {
         super(id, bindingExpression, args);
     }
 
-    public boolean shouldWriteChildren()
-    {
+    public boolean shouldWriteChildren() {
         return shouldWriteSelf();
     }
 
-    public boolean shouldWriteSelf()
-    {
+    public boolean shouldWriteSelf() {
         boolean result = true;
         Watcher parent = getParent();
 
-        if ((parent != null) && ((parent instanceof XMLWatcher) || !parent.shouldWriteSelf()))
-        {
+        if ((parent != null) && ((parent instanceof XMLWatcher) || !parent.shouldWriteSelf())) {
             result = false;
         }
 

@@ -23,7 +23,9 @@ import flex2.compiler.mxml.gen.TextGen;
 import flex2.compiler.mxml.lang.StandardDefs;
 import flex2.compiler.mxml.reflect.Effect;
 import flex2.compiler.mxml.reflect.Type;
+
 import java.util.HashSet;
+
 import macromedia.asc.parser.ArgumentListNode;
 import macromedia.asc.parser.CallExpressionNode;
 import macromedia.asc.parser.ExpressionStatementNode;
@@ -38,35 +40,29 @@ import macromedia.asc.parser.StatementListNode;
 /**
  * This class represents an initializer for an effect.
  */
-public class EffectInitializer extends NamedInitializer
-{
+public class EffectInitializer extends NamedInitializer {
     protected final Effect effect;
     protected final Type type;
 
-    public EffectInitializer(Effect effect, Object value, Type type, int line, StandardDefs defs)
-    {
+    public EffectInitializer(Effect effect, Object value, Type type, int line, StandardDefs defs) {
         super(value, line, defs);
         this.effect = effect;
         this.type = type;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return effect.getName();
     }
 
-    public Type getLValueType()
-    {
+    public Type getLValueType() {
         return type;
     }
 
-    public String getEventName()
-    {
+    public String getEventName() {
         return effect.getEvent();
     }
 
-    public String getAssignExpr(String lvalueBase)
-    {
+    public String getAssignExpr(String lvalueBase) {
         return lvalueBase + ".setStyle(" + TextGen.quoteWord(getName()) + ", " + getValueExpr() + ")";
     }
 
@@ -77,15 +73,14 @@ public class EffectInitializer extends NamedInitializer
                                                 HashSet<String> configNamespaces,
                                                 boolean generateDocComments,
                                                 StatementListNode statementList,
-                                                Node lvalueBase)
-    {
+                                                Node lvalueBase) {
         IdentifierNode identifier = nodeFactory.identifier(SET_STYLE, false);
         LiteralStringNode literalString = nodeFactory.literalString(getName());
         ArgumentListNode argumentList = nodeFactory.argumentList(null, literalString);
         Node valueExpr = generateValueExpr(nodeFactory, configNamespaces, generateDocComments);
         argumentList = nodeFactory.argumentList(argumentList, valueExpr);
         CallExpressionNode callExpression =
-            (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
+                (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
         callExpression.setRValue(false);
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(lvalueBase, callExpression);
         ListNode list = nodeFactory.list(null, memberExpression);

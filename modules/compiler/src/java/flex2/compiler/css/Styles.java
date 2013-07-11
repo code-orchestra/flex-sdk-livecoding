@@ -46,96 +46,80 @@ import java.util.Set;
  * @author Paul Reilly
  * @author Pete Farland
  */
-public class Styles
-{
+public class Styles {
     private static final String FORMAT = "format";
     private static final String COLOR = "Color";
     private static final String INHERIT = "inherit";
     private static final String YES = "yes";
 
-	private Map<String, MetaData> declMap;
-	private Map<String, Source> locationMap;
+    private Map<String, MetaData> declMap;
+    private Map<String, Source> locationMap;
 
-	public Styles(int preferredSize)
-	{
-		declMap = new HashMap<String, MetaData>(preferredSize);
-		locationMap = new HashMap<String, Source>(preferredSize);
-	}
+    public Styles(int preferredSize) {
+        declMap = new HashMap<String, MetaData>(preferredSize);
+        locationMap = new HashMap<String, Source>(preferredSize);
+    }
 
-	public Styles()
-    {
-		this(16);
-	}
+    public Styles() {
+        this(16);
+    }
 
-	public int size()
-	{
-		return declMap.size();
-	}
+    public int size() {
+        return declMap.size();
+    }
 
-	public void addStyle(String name, MetaData md, Source source)
-			throws StyleConflictException
-    {
-		if (isInherit(md) ? isNonInheritingStyle(name) : isInheritingStyle(name))
-			throw new StyleConflictException(name, locationMap.get(name));
-		declMap.put(name, md);
+    public void addStyle(String name, MetaData md, Source source)
+            throws StyleConflictException {
+        if (isInherit(md) ? isNonInheritingStyle(name) : isInheritingStyle(name))
+            throw new StyleConflictException(name, locationMap.get(name));
+        declMap.put(name, md);
         locationMap.put(name, source);
-	}
+    }
 
-	public void addStyles(Styles styles)
-			throws StyleConflictException
-    {
-		for (Iterator i = styles.declMap.entrySet().iterator(); i.hasNext();)
-        {
-			Map.Entry e = (Map.Entry) i.next();
-			String name = (String) e.getKey();
-			addStyle(name, (MetaData) e.getValue(), styles.getLocation(name));
-		}
-	}
+    public void addStyles(Styles styles)
+            throws StyleConflictException {
+        for (Iterator i = styles.declMap.entrySet().iterator(); i.hasNext(); ) {
+            Map.Entry e = (Map.Entry) i.next();
+            String name = (String) e.getKey();
+            addStyle(name, (MetaData) e.getValue(), styles.getLocation(name));
+        }
+    }
 
-	public Source getLocation(String name)
-    {
-		return locationMap.get(name);
-	}
+    public Source getLocation(String name) {
+        return locationMap.get(name);
+    }
 
-	public MetaData getStyle(String name)
-    {
-		return declMap.get(name);
-	}
+    public MetaData getStyle(String name) {
+        return declMap.get(name);
+    }
 
-	public boolean isInheritingStyle(String name)
-    {
-		MetaData md = getStyle(name);
-		return md != null && isInherit(md);
-	}
+    public boolean isInheritingStyle(String name) {
+        MetaData md = getStyle(name);
+        return md != null && isInherit(md);
+    }
 
-	public boolean isNonInheritingStyle(String name)
-    {
-		MetaData md = getStyle(name);
-		return md != null && !isInherit(md);
-	}
+    public boolean isNonInheritingStyle(String name) {
+        MetaData md = getStyle(name);
+        return md != null && !isInherit(md);
+    }
 
-	private static boolean isInherit(MetaData md)
-    {
-		String inherit = md.getValue(INHERIT);
-		return inherit != null && YES.equals(inherit);
-	}
+    private static boolean isInherit(MetaData md) {
+        String inherit = md.getValue(INHERIT);
+        return inherit != null && YES.equals(inherit);
+    }
 
-	public Iterator<String> getStyleNames()
-	{
-		return declMap.keySet().iterator();
-	}
+    public Iterator<String> getStyleNames() {
+        return declMap.keySet().iterator();
+    }
 
-    public Set<String> getInheritingStyles()
-    {
+    public Set<String> getInheritingStyles() {
         Set<String> result = new HashSet<String>();
         Iterator<String> iterator = getStyleNames();
 
-        while ( iterator.hasNext() )
-        {
+        while (iterator.hasNext()) {
             String styleName = iterator.next();
 
-            if (isInheritingStyle(styleName))
-            {
+            if (isInheritingStyle(styleName)) {
                 result.add(styleName);
             }
         }
@@ -143,8 +127,7 @@ public class Styles
         return result;
     }
 
-	public void clear()
-	{
-		declMap.clear();
-	}
+    public void clear() {
+        declMap.clear();
+    }
 }

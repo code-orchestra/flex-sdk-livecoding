@@ -32,59 +32,45 @@ import flash.util.Trace;
  *
  * @author Brian Deitte
  */
-public class ZipFileHolder
-{
-	private ZipFile file;
-	private String path;
+public class ZipFileHolder {
+    private ZipFile file;
+    private String path;
 
-	public ZipFileHolder(ZipFile file, String path)
-	{
-		this.file = file;
-		this.path = path;
-	}
+    public ZipFileHolder(ZipFile file, String path) {
+        this.file = file;
+        this.path = path;
+    }
 
-	public ZipFile getZipFile()
-	{
-		if (file == null)
-		{
-			try
-			{
-				file = new ZipFile(path);
-			}
-			catch (IOException ioe)
-			{
-				// this should never happen
-				throw new RuntimeException("An unexpected error occured when accessing " + path, ioe);
-			}
-		}
-		return file;
-	}
+    public ZipFile getZipFile() {
+        if (file == null) {
+            try {
+                file = new ZipFile(path);
+            } catch (IOException ioe) {
+                // this should never happen
+                throw new RuntimeException("An unexpected error occured when accessing " + path, ioe);
+            }
+        }
+        return file;
+    }
 
-	public ZipEntry getEntry(String name)
-	{
-		return getZipFile().getEntry(name);
-	}
+    public ZipEntry getEntry(String name) {
+        return getZipFile().getEntry(name);
+    }
 
-	public String getPath()
-	{
-		return path;
-	}
+    public String getPath() {
+        return path;
+    }
 
-	public void close()
-	{
-		if (file != null)
-		{
-			try
-			{
-				file.close();
-			}
-			catch(IOException ioe)
-			{
-				// normally ignore issues with close
-				if (Trace.error)
-				    ioe.printStackTrace();
-			}
-			file = null;
-		}
-	}
+    public void close() {
+        if (file != null) {
+            try {
+                file.close();
+            } catch (IOException ioe) {
+                // normally ignore issues with close
+                if (Trace.error)
+                    ioe.printStackTrace();
+            }
+            file = null;
+        }
+    }
 }

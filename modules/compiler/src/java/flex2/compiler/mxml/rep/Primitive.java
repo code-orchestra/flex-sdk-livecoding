@@ -25,41 +25,34 @@ import flex2.compiler.mxml.reflect.Type;
  * This class represents a String, Number, int, uint, Boolean, Class,
  * or Function node in an Mxml document.
  */
-public class Primitive extends Model
-{
+public class Primitive extends Model {
     private Object value;
 
-    public Primitive(MxmlDocument document, Type type, int line)
-    {
+    public Primitive(MxmlDocument document, Type type, int line) {
         super(document, type, line);
     }
-    
-    public Primitive(MxmlDocument document, Type type, Model parent, int line)
-    {
+
+    public Primitive(MxmlDocument document, Type type, Model parent, int line) {
         super(document, type, parent, line);
     }
 
-    public Primitive(MxmlDocument document, Type type, Object value, int line)
-    {
+    public Primitive(MxmlDocument document, Type type, Object value, int line) {
         super(document, type, line);
         setValue(value.toString());
     }
 
-    public Object getValue()
-    {
+    public Object getValue() {
         return value;
     }
 
-    public void setValue(Object value)
-    {
+    public void setValue(Object value) {
         this.value = value;
     }
 
     /**
      * override hasBindings to check value
      */
-    public boolean hasBindings()
-    {
+    public boolean hasBindings() {
         return value instanceof BindingExpression;
     }
 

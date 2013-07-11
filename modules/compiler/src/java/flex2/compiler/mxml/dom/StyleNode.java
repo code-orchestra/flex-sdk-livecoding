@@ -30,36 +30,30 @@ import java.util.Set;
  *
  * @author Clement Wong
  */
-public class StyleNode extends Node
-{
-	public static final Set<QName> attributes;
+public class StyleNode extends Node {
+    public static final Set<QName> attributes;
 
-	static
-	{
-		attributes = new HashSet<QName>();
-		attributes.add(new QName("", "source"));
-	}
+    static {
+        attributes = new HashSet<QName>();
+        attributes.add(new QName("", "source"));
+    }
 
-	private StyleSheet styleSheet;
+    private StyleSheet styleSheet;
 
-	StyleNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
+    StyleNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
 
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 
-    public StyleSheet getStyleSheet()
-    {
+    public StyleSheet getStyleSheet() {
         return styleSheet;
     }
 
-    public void setStyleSheet(StyleSheet styleSheet)
-    {
+    public void setStyleSheet(StyleSheet styleSheet) {
         this.styleSheet = styleSheet;
     }
 }

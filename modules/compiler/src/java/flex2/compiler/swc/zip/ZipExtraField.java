@@ -21,7 +21,7 @@ import flex2.compiler.swc.SwcException;
 
 /**
  * General format of extra field data.
- *
+ * <p/>
  * <p>Extra fields usually appear twice per file, once in the local
  * file data and once in the central directory.  Usually they are the
  * same, but they don't have to be.  {@link
@@ -78,5 +78,5 @@ public interface ZipExtraField {
      * @since 1.1
      */
     void parseFromLocalFileData(byte[] data, int offset, int length)
-        throws SwcException;
+            throws SwcException;
 }

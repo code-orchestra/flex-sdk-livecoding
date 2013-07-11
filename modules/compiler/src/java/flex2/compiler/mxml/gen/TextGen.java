@@ -24,72 +24,62 @@ import java.util.Iterator;
 /**
  * This class contains a bunch of text generation utility methods.
  */
-public class TextGen
-{
-	/**
-	 * Enclose a string in double quotes. NOTE: does not encode embedded double quotes, hence the name.
-	 */
-	public static String quoteWord(String s)
-	{
-		return '\"' + s + '\"';
-	}
+public class TextGen {
+    /**
+     * Enclose a string in double quotes. NOTE: does not encode embedded double quotes, hence the name.
+     */
+    public static String quoteWord(String s) {
+        return '\"' + s + '\"';
+    }
 
-	/**
-	 * Takes iterator over String, and separator string, and returns a separated list as String, e.g.
-	 * ["a","b","c"] and ", " -> "a, b, c"
-	 */
-	public static String toSepList(Iterator stringIter, String sep)
-	{
-		StringBuilder sb = new StringBuilder();
+    /**
+     * Takes iterator over String, and separator string, and returns a separated list as String, e.g.
+     * ["a","b","c"] and ", " -> "a, b, c"
+     */
+    public static String toSepList(Iterator stringIter, String sep) {
+        StringBuilder sb = new StringBuilder();
 
-		if (stringIter.hasNext())
-		{
-			sb.append((String)stringIter.next());
-		}
+        if (stringIter.hasNext()) {
+            sb.append((String) stringIter.next());
+        }
 
-		while (stringIter.hasNext())
-		{
-			sb.append(sep);
-			sb.append((String)stringIter.next());
-		}
+        while (stringIter.hasNext()) {
+            sb.append(sep);
+            sb.append((String) stringIter.next());
+        }
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 
-	/**
-	 * ["a","b","c"] and ", " -> "a, b, c"
-	 */
-	public static String toCommaList(Iterator stringIter)
-	{
-		return toSepList(stringIter, ", ");
-	}
+    /**
+     * ["a","b","c"] and ", " -> "a, b, c"
+     */
+    public static String toCommaList(Iterator stringIter) {
+        return toSepList(stringIter, ", ");
+    }
 
-	/**
-	 * ["a","b","c"] and "<prefix>" -> "<prefix>a<prefix>b<prefix>c"
-	 */
-	public static String prefix(Iterator stringIter, String prefix)
-	{
-		StringBuilder sb = new StringBuilder();
+    /**
+     * ["a","b","c"] and "<prefix>" -> "<prefix>a<prefix>b<prefix>c"
+     */
+    public static String prefix(Iterator stringIter, String prefix) {
+        StringBuilder sb = new StringBuilder();
 
-		while (stringIter.hasNext())
-		{
-			sb.append(prefix);
-			sb.append((String)stringIter.next());
-		}
+        while (stringIter.hasNext()) {
+            sb.append(prefix);
+            sb.append((String) stringIter.next());
+        }
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 
-	/**
-	 * "(s)" -> "s", others unchanged
-	 */
-	public static String stripParens(String sourceExpression)
-	{
-		if (sourceExpression.startsWith("(") && sourceExpression.endsWith(")"))
-		{
-			sourceExpression = sourceExpression.substring(1, sourceExpression.length() - 1);
-		}
-		return sourceExpression;
-	}
+    /**
+     * "(s)" -> "s", others unchanged
+     */
+    public static String stripParens(String sourceExpression) {
+        if (sourceExpression.startsWith("(") && sourceExpression.endsWith(")")) {
+            sourceExpression = sourceExpression.substring(1, sourceExpression.length() - 1);
+        }
+        return sourceExpression;
+    }
 
 }

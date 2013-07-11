@@ -28,23 +28,19 @@ import java.util.Set;
 /**
  * Represents a &lt;XMLList&gt; tag in the MXML language namespace.
  */
-public class XMLListNode extends Node
-{
+public class XMLListNode extends Node {
     public static final Set<QName> attributes;
 
-    static
-    {
+    static {
         attributes = new HashSet<QName>();
         attributes.add(new QName("", StandardDefs.PROP_ID));
     }
 
-    XMLListNode(String uri, String localName, int size)
-    {
+    XMLListNode(String uri, String localName, int size) {
         super(uri, localName, size);
     }
-    
-    public void analyze(Analyzer analyzer)
-    {
+
+    public void analyze(Analyzer analyzer) {
         analyzer.prepare(this);
         analyzer.analyze(this);
     }

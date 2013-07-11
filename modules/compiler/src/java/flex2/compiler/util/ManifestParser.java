@@ -39,62 +39,44 @@ import java.io.InputStream;
  * @author Brian Deitte
  * @author Clement Wong
  */
-public class ManifestParser
-{
-    public synchronized static void parse(String namespaceURI, VirtualFile file, NameMappings mappings)
-    {
-        if (file == null)
-        {
+public class ManifestParser {
+    public synchronized static void parse(String namespaceURI, VirtualFile file, NameMappings mappings) {
+        if (file == null) {
             return;
         }
 
         InputStream in = null;
 
-        try
-        {
+        try {
             in = new BufferedInputStream(file.getInputStream());
-        }
-        catch (FileNotFoundException ex)
-        {
+        } catch (FileNotFoundException ex) {
             // manifest is not found.
             return;
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ThreadLocalToolkit.logError(file.getNameForReporting(), ex.getMessage());
             return;
         }
 
-        try
-        {
+        try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setNamespaceAware(true);
             SAXParser parser = factory.newSAXParser();
             parser.parse(in, new Parser(file.getName(), mappings, namespaceURI));
-        }
-        catch (Exception ex) // ParserConfigurationException, SAXException, IOException
+        } catch (Exception ex) // ParserConfigurationException, SAXException, IOException
         {
             ThreadLocalToolkit.logError(file.getNameForReporting(), ex.getMessage());
-        }
-        finally
-        {
-            if (in != null)
-            {
-                try
-                {
+        } finally {
+            if (in != null) {
+                try {
                     in.close();
-                }
-                catch (IOException ex)
-                {
+                } catch (IOException ex) {
                 }
             }
         }
     }
 
-    private static class Parser extends DefaultHandler
-    {
-        Parser(String fileName, NameMappings mappings, String namespaceURI)
-        {
+    private static class Parser extends DefaultHandler {
+        Parser(String fileName, NameMappings mappings, String namespaceURI) {
             this.fileName = fileName;
             this.mappings = mappings;
             this.namespaceURI = namespaceURI;
@@ -106,29 +88,21 @@ public class ManifestParser
         private Locator locator;
 
         public void startElement(String uri, String localName, String qName, Attributes attributes)
-                throws SAXException
-        {
-            if (localName.equals("component"))
-            {
+                throws SAXException {
+            if (localName.equals("component")) {
                 String id = attributes.getValue("id");
                 String className = attributes.getValue("class");
-                if (className == null)
-                {
-	                ThreadLocalToolkit.log(new UndefinedClass(fileName, locator.getLineNumber(), id));
+                if (className == null) {
+                    ThreadLocalToolkit.log(new UndefinedClass(fileName, locator.getLineNumber(), id));
                     return;
-                }
-                else if ("*".equals(className))
-                {
-	                ThreadLocalToolkit.log(new InvalidClassName(fileName, locator.getLineNumber(), id));
-                }
-	            else
-                {
-	                assert className.indexOf(':') == -1 && className.indexOf('/') == -1 : fileName + ": " + className;
-	                className = NameFormatter.toColon(className);
+                } else if ("*".equals(className)) {
+                    ThreadLocalToolkit.log(new InvalidClassName(fileName, locator.getLineNumber(), id));
+                } else {
+                    assert className.indexOf(':') == -1 && className.indexOf('/') == -1 : fileName + ": " + className;
+                    className = NameFormatter.toColon(className);
                 }
 
-                if (id == null)
-                {
+                if (id == null) {
                     id = NameFormatter.retrieveClassName(className);
                 }
 
@@ -137,105 +111,95 @@ public class ManifestParser
 
                 boolean added = mappings.addClass(namespaceURI, id, className);
 
-                if (! added)
-                {
-	                ThreadLocalToolkit.log(new DuplicateComponentDefinition(fileName, locator.getLineNumber(), id));
+                if (!added) {
+                    ThreadLocalToolkit.log(new DuplicateComponentDefinition(fileName, locator.getLineNumber(), id));
                     return;
                 }
 
-                if (lookupOnly)
-                {
+                if (lookupOnly) {
                     mappings.addLookupOnly(namespaceURI, className);
                 }
             }
         }
 
-        public void warning(SAXParseException e)
-        {
-	        ThreadLocalToolkit.log(new ManifestError(fileName, e.getLineNumber(), e.getMessage()));
+        public void warning(SAXParseException e) {
+            ThreadLocalToolkit.log(new ManifestError(fileName, e.getLineNumber(), e.getMessage()));
         }
 
-        public void error(SAXParseException e)
-        {
-	        ThreadLocalToolkit.log(new ManifestError(fileName, e.getLineNumber(), e.getMessage()));
+        public void error(SAXParseException e) {
+            ThreadLocalToolkit.log(new ManifestError(fileName, e.getLineNumber(), e.getMessage()));
         }
 
         public void fatalError(SAXParseException e)
-                throws SAXParseException
-        {
-	        ThreadLocalToolkit.log(new ManifestError(fileName, e.getLineNumber(), e.getMessage()));
+                throws SAXParseException {
+            ThreadLocalToolkit.log(new ManifestError(fileName, e.getLineNumber(), e.getMessage()));
             throw e;
         }
 
-        public void setDocumentLocator(Locator locator)
-        {
+        public void setDocumentLocator(Locator locator) {
             this.locator = locator;
         }
     }
 
-	// error messages
+    // error messages
 
-	public static class UndefinedClass extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = 982393613817885400L;
-        public UndefinedClass(String fileName, int line, String tag)
-		{
-			super();
-			this.fileName = fileName;
-			this.line = line;
-			this.tag = tag;
-		}
+    public static class UndefinedClass extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = 982393613817885400L;
 
-		public final String fileName;
-		public final int line;
-		public final String tag;
-	}
+        public UndefinedClass(String fileName, int line, String tag) {
+            super();
+            this.fileName = fileName;
+            this.line = line;
+            this.tag = tag;
+        }
 
-	public static class InvalidClassName extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = -1805088670961745449L;
-        public InvalidClassName(String fileName, int line, String tag)
-		{
-			super();
-			this.fileName = fileName;
-			this.line = line;
-			this.tag = tag;
-		}
+        public final String fileName;
+        public final int line;
+        public final String tag;
+    }
 
-		public final String fileName;
-		public final int line;
-		public final String tag;
-	}
+    public static class InvalidClassName extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = -1805088670961745449L;
 
-	public static class DuplicateComponentDefinition extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = -1072579721984054648L;
-        public DuplicateComponentDefinition(String fileName, int line, String tag)
-		{
-			super();
-			this.fileName = fileName;
-			this.line = line;
-			this.tag = tag;
-		}
+        public InvalidClassName(String fileName, int line, String tag) {
+            super();
+            this.fileName = fileName;
+            this.line = line;
+            this.tag = tag;
+        }
 
-		public final String fileName;
-		public final int line;
-		public final String tag;
-	}
+        public final String fileName;
+        public final int line;
+        public final String tag;
+    }
 
-	public static class ManifestError extends CompilerMessage.CompilerError
-	{
-		private static final long serialVersionUID = 7519143031979293680L;
-        public ManifestError(String fileName, int line, String message)
-		{
-			super();
-			this.fileName = fileName;
-			this.line = line;
-			this.message = message;
-		}
+    public static class DuplicateComponentDefinition extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = -1072579721984054648L;
 
-		public final String fileName;
-		public final int line;
-		public final String message;
-	}
+        public DuplicateComponentDefinition(String fileName, int line, String tag) {
+            super();
+            this.fileName = fileName;
+            this.line = line;
+            this.tag = tag;
+        }
+
+        public final String fileName;
+        public final int line;
+        public final String tag;
+    }
+
+    public static class ManifestError extends CompilerMessage.CompilerError {
+        private static final long serialVersionUID = 7519143031979293680L;
+
+        public ManifestError(String fileName, int line, String message) {
+            super();
+            this.fileName = fileName;
+            this.line = line;
+            this.message = message;
+        }
+
+        public final String fileName;
+        public final int line;
+        public final String message;
+    }
 }

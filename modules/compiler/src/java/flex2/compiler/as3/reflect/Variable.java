@@ -25,17 +25,15 @@ import flex2.compiler.util.QName;
 
 public class Variable extends SlotReflect implements flex2.compiler.abc.Variable {
 
-    public Variable(Slot s, ObjectValue ns, String name)
-    {
+    public Variable(Slot s, ObjectValue ns, String name) {
         super(s, ns, name);
     }
 
-    public QName getQName()
-    {
+    public QName getQName() {
         return new QName(this.namespace.name, this.name);
     }
 
-	public String getDeclaringClassName(){
-		return slot.declaredBy.builder.classname.name;
-	}
+    public String getDeclaringClassName() {
+        return slot.declaredBy.builder.classname.name;
+    }
 }

@@ -31,48 +31,54 @@ import java.util.List;
  * @author Clement Wong
  * @see flex2.compiler.as3.reflect.TypeTable
  */
-public interface AbcClass
-{
-	Variable getVariable(String[] namespaces, String name, boolean inherited);
+public interface AbcClass {
+    Variable getVariable(String[] namespaces, String name, boolean inherited);
+
     Variable getVariable(Namespaces namespaces, String name, boolean inherited);
 
-	Method getMethod(String[] namespaces, String name, boolean inherited);
+    Method getMethod(String[] namespaces, String name, boolean inherited);
+
     Method getMethod(Namespaces namespaces, String name, boolean inherited);
 
-	Method getGetter(String[] namespaces, String name, boolean inherited);
+    Method getGetter(String[] namespaces, String name, boolean inherited);
+
     Method getGetter(Namespaces namespaces, String name, boolean inherited);
 
-	Method getSetter(String[] namespaces, String name, boolean inherited);
+    Method getSetter(String[] namespaces, String name, boolean inherited);
+
     Method getSetter(Namespaces namespaces, String name, boolean inherited);
 
-	String getName();
+    String getName();
 
-	String getSuperTypeName();
+    String getSuperTypeName();
 
-	String[] getInterfaceNames();
+    String[] getInterfaceNames();
 
     /**
-	 * all metadata [name] defined on this class. superclasses are scanned if (inherited)
-	 */
-	List<MetaData> getMetaData(String name, boolean inherited);
+     * all metadata [name] defined on this class. superclasses are scanned if (inherited)
+     */
+    List<MetaData> getMetaData(String name, boolean inherited);
 
-	/**
-	 * Super classes are scanned.
-	 */
+    /**
+     * Super classes are scanned.
+     */
     boolean implementsInterface(String interfaceName);
 
     boolean isSubclassOf(String baseName);
 
-	boolean isInterface();
+    boolean isInterface();
 
     boolean isDynamic();
 
-	// C: bad design. will revisit when i get a chance...
-	void setTypeTable(Object obj);
-    
+    // C: bad design. will revisit when i get a chance...
+    void setTypeTable(Object obj);
+
     Iterator<Variable> getVarIterator();
+
     Iterator<Method> getMethodIterator();
+
     Iterator<Method> getGetterIterator();
+
     Iterator<Method> getSetterIterator();
 
     void freeze();

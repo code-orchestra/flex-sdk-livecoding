@@ -43,19 +43,16 @@ import java.util.HashMap;
  * @author Peter Farland
  */
 @SuppressWarnings("unchecked")
-public class FontsConfiguration
-{
- 	private CompilerConfiguration compilerConfig;
+public class FontsConfiguration {
+    private CompilerConfiguration compilerConfig;
 
-	public void setCompilerConfiguration(CompilerConfiguration compilerConfig)
-	{
-		this.compilerConfig = compilerConfig;
-	}
-	
+    public void setCompilerConfiguration(CompilerConfiguration compilerConfig) {
+        this.compilerConfig = compilerConfig;
+    }
+
     private ConfigurationPathResolver configResolver;
 
-    public void setConfigPathResolver( ConfigurationPathResolver resolver )
-    {
+    public void setConfigPathResolver(ConfigurationPathResolver resolver) {
         this.configResolver = resolver;
     }
 
@@ -66,17 +63,15 @@ public class FontsConfiguration
      *
      * @return the last of potentially several FontManagers in the manager list
      */
-    public FontManager getTopLevelManager()
-    {
-        if (topLevelManager == null)
-        {
+    public FontManager getTopLevelManager() {
+        if (topLevelManager == null) {
             Map map = new HashMap();
             map.put(CachedFontManager.MAX_CACHED_FONTS_KEY, max_cached_fonts);
             map.put(CachedFontManager.MAX_GLYPHS_PER_FACE_KEY, max_glyphs_per_face);
             map.put(CachedFontManager.COMPATIBILITY_VERSION, compilerConfig.getCompatibilityVersionString());
 
             if (localFontsSnapshot != null)
-		        map.put(JREFontManager.LOCAL_FONTS_SNAPSHOT, localFontsSnapshot.getName());
+                map.put(JREFontManager.LOCAL_FONTS_SNAPSHOT, localFontsSnapshot.getName());
 
             if (resolvedLocalFontPaths != null)
                 map.put(FontManager.LOCAL_FONT_PATHS, resolvedLocalFontPaths);
@@ -87,8 +82,7 @@ public class FontsConfiguration
         return topLevelManager;
     }
 
-    public void setTopLevelManager(FontManager manager)
-    {
+    public void setTopLevelManager(FontManager manager) {
         topLevelManager = manager;
     }
 
@@ -96,44 +90,36 @@ public class FontsConfiguration
     // 'compiler.fonts.flash-type' option
     //
 
-	private boolean flashType = true;
+    private boolean flashType = true;
 
-	public boolean getFlashType()
-	{
-		return flashType;
-	}
+    public boolean getFlashType() {
+        return flashType;
+    }
 
-	public void cfgFlashType(ConfigurationValue cv, boolean val)
-	{
-	    this.flashType = val;
-	}
+    public void cfgFlashType(ConfigurationValue cv, boolean val) {
+        this.flashType = val;
+    }
 
-	public static ConfigurationInfo getFlashTypeInfo()
-	{
-	    return new ConfigurationInfo()
-	    {
-	        public boolean isDeprecated()
-	        {
-	        	return true;
-	        }
-	        
-	        public String getDeprecatedReplacement()
-	        {
-	        	return "compiler.fonts.advanced-anti-aliasing";
-	        }
-	        
-	        public String getDeprecatedSince()
-	        {
-	        	//C: Don't change this to VersionInfo.getFlexVersion().
-	        	return "3.0";
-	        }
-	    };
-	}
+    public static ConfigurationInfo getFlashTypeInfo() {
+        return new ConfigurationInfo() {
+            public boolean isDeprecated() {
+                return true;
+            }
 
-	public void cfgAdvancedAntiAliasing(ConfigurationValue cv, boolean val)
-	{
-	    cfgFlashType(cv, val);
-	}
+            public String getDeprecatedReplacement() {
+                return "compiler.fonts.advanced-anti-aliasing";
+            }
+
+            public String getDeprecatedSince() {
+                //C: Don't change this to VersionInfo.getFlexVersion().
+                return "3.0";
+            }
+        };
+    }
+
+    public void cfgAdvancedAntiAliasing(ConfigurationValue cv, boolean val) {
+        cfgFlashType(cv, val);
+    }
 
     //
     // 'compiler.fonts.languages.language-range' option
@@ -141,8 +127,7 @@ public class FontsConfiguration
 
     private Languages languages = new Languages();
 
-    public Languages getLanguagesConfiguration()
-    {
+    public Languages getLanguagesConfiguration() {
         return languages;
     }
 
@@ -150,26 +135,20 @@ public class FontsConfiguration
      * Defines a subconfiguration for font languages.  It contains
      * only a single option, -compiler.fonts.languages.language-range.
      */
-    public static class Languages extends Properties
-    {
+    public static class Languages extends Properties {
         private static final long serialVersionUID = 7123498355710868760L;
 
-        public void cfgLanguageRange(ConfigurationValue cv, String lang, String range)
-        {
+        public void cfgLanguageRange(ConfigurationValue cv, String lang, String range) {
             setProperty(lang, range);
         }
 
-        public static ConfigurationInfo getLanguageRangeInfo()
-        {
-            return new ConfigurationInfo(new String[]{"lang", "range"})
-            {
-                public boolean allowMultiple()
-                {
+        public static ConfigurationInfo getLanguageRangeInfo() {
+            return new ConfigurationInfo(new String[]{"lang", "range"}) {
+                public boolean allowMultiple() {
                     return true;
                 }
 
-                public boolean isAdvanced()
-                {
+                public boolean isAdvanced() {
                     return true;
                 }
             };
@@ -181,19 +160,17 @@ public class FontsConfiguration
     //
 
     private VirtualFile localFontsSnapshot = null;
-    
-    public VirtualFile getLocalFontsSnapshot()
-    {
-    	return localFontsSnapshot;
+
+    public VirtualFile getLocalFontsSnapshot() {
+        return localFontsSnapshot;
     }
 
     public void cfgLocalFontsSnapshot(ConfigurationValue cv, String localFontsSnapshotPath)
-            throws ConfigurationException
-    {
+            throws ConfigurationException {
         localFontsSnapshot = ConfigurationPathResolver.getVirtualFile(localFontsSnapshotPath, configResolver, cv);
     }
-    public static ConfigurationInfo getLocalFontsSnapshotInfo()
-    {
+
+    public static ConfigurationInfo getLocalFontsSnapshotInfo() {
         return new AdvancedConfigurationInfo();
     }
 
@@ -204,67 +181,52 @@ public class FontsConfiguration
 
     private List<String> resolvedLocalFontPaths;
 
-    public List getLocalFontPaths()
-    {
+    public List getLocalFontPaths() {
         return resolvedLocalFontPaths;
     }
 
-    public void cfgLocalFontPaths(ConfigurationValue cv, List list)
-    {
+    public void cfgLocalFontPaths(ConfigurationValue cv, List list) {
         resolvedLocalFontPaths = new ArrayList<String>();
-        if (list != null)
-        {
+        if (list != null) {
             Iterator iterator = list.iterator();
-            while (iterator.hasNext())
-            {
-                String path = (String)iterator.next();
-                try
-                {
+            while (iterator.hasNext()) {
+                String path = (String) iterator.next();
+                try {
                     VirtualFile file = ConfigurationPathResolver.getVirtualFile(path, configResolver, cv);
                     resolvedLocalFontPaths.add(file.getName());
-                }
-                catch (ConfigurationException ex)
-                {
+                } catch (ConfigurationException ex) {
                     // Invalid local font paths are ignored
                 }
             }
         }
     }
 
-    public static ConfigurationInfo getLocalFontPathsInfo()
-    {
-        return new ConfigurationInfo(-1, "path-element")
-        {
-            public boolean isAdvanced()
-            {
+    public static ConfigurationInfo getLocalFontPathsInfo() {
+        return new ConfigurationInfo(-1, "path-element") {
+            public boolean isAdvanced() {
                 return true;
             }
         };
     }
 
-    
+
     //
     // 'compiler.fonts.managers' option
     //
-    
+
     private List managers;
 
-    public List getManagers()
-    {
+    public List getManagers() {
         return managers;
     }
 
-    public void cfgManagers(ConfigurationValue cv, List l)
-    {
+    public void cfgManagers(ConfigurationValue cv, List l) {
         managers = l;
     }
 
-    public static ConfigurationInfo getManagersInfo()
-    {
-        return new ConfigurationInfo(-1, "manager-class")
-        {
-            public boolean isAdvanced()
-            {
+    public static ConfigurationInfo getManagersInfo() {
+        return new ConfigurationInfo(-1, "manager-class") {
+            public boolean isAdvanced() {
                 return true;
             }
         };
@@ -276,18 +238,15 @@ public class FontsConfiguration
 
     private String max_cached_fonts;
 
-    public String getMaxCachedFonts()
-    {
+    public String getMaxCachedFonts() {
         return max_cached_fonts;
     }
 
-    public void cfgMaxCachedFonts(ConfigurationValue cv, String val)
-    {
+    public void cfgMaxCachedFonts(ConfigurationValue cv, String val) {
         this.max_cached_fonts = val;
     }
 
-    public static ConfigurationInfo getMaxCachedFontsInfo()
-    {
+    public static ConfigurationInfo getMaxCachedFontsInfo() {
         return new AdvancedConfigurationInfo();
     }
 
@@ -297,13 +256,11 @@ public class FontsConfiguration
 
     private String max_glyphs_per_face;
 
-    public String getMaxGlyphsPerFace()
-    {
+    public String getMaxGlyphsPerFace() {
         return max_glyphs_per_face;
     }
 
-    public void cfgMaxGlyphsPerFace(ConfigurationValue cv, String val)
-    {
+    public void cfgMaxGlyphsPerFace(ConfigurationValue cv, String val) {
         this.max_glyphs_per_face = val;
     }
 }

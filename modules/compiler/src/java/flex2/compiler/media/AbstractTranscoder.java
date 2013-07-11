@@ -53,8 +53,7 @@ import org.apache.flex.forks.velocity.VelocityContext;
  *
  * @author Brian Deitte
  */
-public abstract class AbstractTranscoder implements Transcoder
-{
+public abstract class AbstractTranscoder implements Transcoder {
     private static final String CODEGEN_TEMPLATE_PATH = "flex2/compiler/as3/";
 
     // TODO - move these once ImageTranscoder gets refactored
@@ -75,20 +74,16 @@ public abstract class AbstractTranscoder implements Transcoder
     protected Map<String, TranscodingResults> transcodingCache = new HashMap<String, TranscodingResults>();
 
     public static final String ASSET_TYPE = StandardDefs.PACKAGE_FLASH_DISPLAY + ".DisplayObject";
-    
-    public AbstractTranscoder(String[] mimeTypes, Class defineTag, boolean cacheTags)
-    {
+
+    public AbstractTranscoder(String[] mimeTypes, Class defineTag, boolean cacheTags) {
         this.mimeTypes = mimeTypes;
         this.defineTag = defineTag;
         this.cacheTags = cacheTags;
     }
 
-    public boolean isSupported(String mimeType)
-    {
-        for (int i = 0; i < mimeTypes.length; i++)
-        {
-            if (mimeTypes[i].equalsIgnoreCase(mimeType))
-            {
+    public boolean isSupported(String mimeType) {
+        for (int i = 0; i < mimeTypes.length; i++) {
+            if (mimeTypes[i].equalsIgnoreCase(mimeType)) {
                 return true;
             }
         }
@@ -96,20 +91,16 @@ public abstract class AbstractTranscoder implements Transcoder
     }
 
     public TranscodingResults transcode(PathResolver context, SymbolTable symbolTable,
-                                         Map<String, Object> args, String className,
-                                         boolean generateSource)
-            throws TranscoderException
-    {
-        for (Iterator<String> it = args.keySet().iterator(); it.hasNext();)
-        {
+                                        Map<String, Object> args, String className,
+                                        boolean generateSource)
+            throws TranscoderException {
+        for (Iterator<String> it = args.keySet().iterator(); it.hasNext(); ) {
             String attr = it.next();
-            if (attr.startsWith( "_") || Transcoder.SOURCE.equalsIgnoreCase( attr ) || Transcoder.MIMETYPE.equalsIgnoreCase( attr ) || Transcoder.NEWNAME.equalsIgnoreCase( attr ))
-            {
+            if (attr.startsWith("_") || Transcoder.SOURCE.equalsIgnoreCase(attr) || Transcoder.MIMETYPE.equalsIgnoreCase(attr) || Transcoder.NEWNAME.equalsIgnoreCase(attr)) {
                 continue;
             }
-            if (!Transcoder.ORIGINAL.equals(attr) && !isSupportedAttribute( attr ))
-            {
-                throw new UnsupportedAttribute( attr, getClass().getName() );
+            if (!Transcoder.ORIGINAL.equals(attr) && !isSupportedAttribute(attr)) {
+                throw new UnsupportedAttribute(attr, getClass().getName());
             }
         }
 
@@ -117,98 +108,82 @@ public abstract class AbstractTranscoder implements Transcoder
 
         TranscodingResults results = null;
 
-        if (cacheTags)
-        {
-            cacheKey = getCacheKey( args );
-            results = transcodingCache.get( cacheKey );
+        if (cacheTags) {
+            cacheKey = getCacheKey(args);
+            results = transcodingCache.get(cacheKey);
         }
 
-        if (results == null)
-        {
+        if (results == null) {
             results = doTranscode(context, symbolTable, args, className, generateSource);
 
-            if (cacheTags)
-            {
-	            // reget the cacheKey, since RESOLVED_SOURCE could have been added to the args
-	            cacheKey = getCacheKey( args );
+            if (cacheTags) {
+                // reget the cacheKey, since RESOLVED_SOURCE could have been added to the args
+                cacheKey = getCacheKey(args);
                 transcodingCache.put(cacheKey, results);
             }
-        }
-        else if (Trace.embed)
-        {
+        } else if (Trace.embed) {
             Trace.trace("Found cached DefineTag for " + cacheKey);
         }
 
         return results;
     }
 
-    private String getCacheKey(Map<String, Object> args)
-    {
-        TreeMap<String, Object> m = new TreeMap<String, Object>( args );
+    private String getCacheKey(Map<String, Object> args) {
+        TreeMap<String, Object> m = new TreeMap<String, Object>(args);
         String key = "" + m.hashCode();
 
-        if (Trace.embed)
-        {
+        if (Trace.embed) {
             key += "_" + m.toString();  // TODO: don't hard-code key
         }
 
         return key;
     }
 
-    public VirtualFile resolve( PathResolver context, String path ) throws TranscoderException
-    {
+    public VirtualFile resolve(PathResolver context, String path) throws TranscoderException {
         String p = path;
-        if (path.startsWith( "file:"))
-            p = p.substring( "file:".length() );    // hate hate hate hate
+        if (path.startsWith("file:"))
+            p = p.substring("file:".length());    // hate hate hate hate
 
-        VirtualFile f = context.resolve( p );
-        if (f == null)
-        {
-            throw new UnableToResolve( path );
+        VirtualFile f = context.resolve(p);
+        if (f == null) {
+            throw new UnableToResolve(path);
         }
-        if (f instanceof NetworkFile)
-        {
-            throw new NetworkTranscodingSource( path );
+        if (f instanceof NetworkFile) {
+            throw new NetworkTranscodingSource(path);
         }
         return f;
     }
 
-    public VirtualFile resolveSource( PathResolver context, Map args ) throws TranscoderException
-    {
+    public VirtualFile resolveSource(PathResolver context, Map args) throws TranscoderException {
         VirtualFile result = null;
-        String resolvedSource = (String) args.get( Transcoder.RESOLVED_SOURCE );
+        String resolvedSource = (String) args.get(Transcoder.RESOLVED_SOURCE);
 
-        if (resolvedSource != null)
-        {
+        if (resolvedSource != null) {
             result = ThreadLocalToolkit.getResolvedPath(resolvedSource);
         }
 
-        if (result == null)
-        {
-            String source = (String) args.get( Transcoder.SOURCE );
+        if (result == null) {
+            String source = (String) args.get(Transcoder.SOURCE);
 
-            if (source == null)
-            {
+            if (source == null) {
                 throw new MissingSource();
             }
 
-            result = resolve( context, source );
+            result = resolve(context, source);
         }
 
         return result;
     }
 
     public abstract TranscodingResults doTranscode(PathResolver context, SymbolTable symbolTable,
-                                                    Map<String, Object> args, String className,
-                                                    boolean generateSource)
-        throws TranscoderException;
+                                                   Map<String, Object> args, String className,
+                                                   boolean generateSource)
+            throws TranscoderException;
 
     public abstract boolean isSupportedAttribute(String attr);
 
-    public String getAssociatedClass(DefineTag tag)
-    {
-        if (tag == null)
-        {
+    public String getAssociatedClass(DefineTag tag) {
+        if (tag == null) {
             return null;
         }
 
@@ -230,84 +205,69 @@ public abstract class AbstractTranscoder implements Transcoder
         else if (tag instanceof DefineSprite)
             cls = standardDefs.getCorePackage() + ".SpriteAsset";
 
-        if (cls != null && (defineTag == null || defineTag.isAssignableFrom(tag.getClass())))
-        {
-            if (((tag instanceof DefineSprite) && ((DefineSprite)tag).framecount > 1) && (cls.equals( SKIN_SPRITE )))
-            {
+        if (cls != null && (defineTag == null || defineTag.isAssignableFrom(tag.getClass()))) {
+            if (((tag instanceof DefineSprite) && ((DefineSprite) tag).framecount > 1) && (cls.equals(SKIN_SPRITE))) {
                 cls = standardDefs.getCorePackage() + ".MovieClipAsset";
             }
             return cls;
         }
 
-        if (defineTag == null)
-        {
-            if (Trace.embed)
-            {
+        if (defineTag == null) {
+            if (Trace.embed) {
                 Trace.trace("Couldn't find a matching class, so associating " + tag + " with " + SKIN_SPRITE);
             }
             return SKIN_SPRITE;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
-    public void clear()
-    {
-        if (transcodingCache.size() != 0)
-        {
+    public void clear() {
+        if (transcodingCache.size() != 0) {
             transcodingCache = new HashMap<String, TranscodingResults>();
         }
     }
-    
+
     public void generateSource(TranscodingResults asset, String fullClassName, Map<String, Object> embedMap)
-    		throws TranscoderException
-    {
-    	generateSource(asset, fullClassName, embedMap, new HashMap());
+            throws TranscoderException {
+        generateSource(asset, fullClassName, embedMap, new HashMap());
     }
 
     public void generateSource(TranscodingResults asset, String fullClassName, Map<String, Object> embedMap, Map embedProps)
-            throws TranscoderException
-    {
+            throws TranscoderException {
         String baseClassName = getAssociatedClass(asset.defineTag);
         String packageName = "";
         String className = fullClassName;
-        int dot = fullClassName.lastIndexOf( '.' );
-        if (dot != -1)
-        {
-            packageName = fullClassName.substring( 0, dot );
-            className = fullClassName.substring( dot + 1 );
+        int dot = fullClassName.lastIndexOf('.');
+        if (dot != -1) {
+            packageName = fullClassName.substring(0, dot);
+            className = fullClassName.substring(dot + 1);
         }
 
-	    if (asset.assetSource != null)
-	    {
+        if (asset.assetSource != null) {
             String path = asset.assetSource.getName().replace('\\', '/');
             embedMap.put(Transcoder.RESOLVED_SOURCE, path);
             ThreadLocalToolkit.addResolvedPath(path, asset.assetSource);
-	    }
+        }
 
-        try
-        {
+        try {
             StandardDefs standardDefs = ThreadLocalToolkit.getStandardDefs();
 
             String templateName = standardDefs.getEmbedClassTemplate();
             Template template = VelocityManager.getTemplate(CODEGEN_TEMPLATE_PATH + templateName);
-            if (template == null)
-            {
-                throw new TemplateException( templateName );
+            if (template == null) {
+                throw new TemplateException(templateName);
             }
 
             VelocityContext velocityContext = VelocityManager.getCodeGenContext();
-            velocityContext.put( "packageName", packageName );
-            velocityContext.put( "baseClass", baseClassName );
-            if (embedProps.size() != 0)
-            {
-            	velocityContext.put("assetType", ASSET_TYPE );
+            velocityContext.put("packageName", packageName);
+            velocityContext.put("baseClass", baseClassName);
+            if (embedProps.size() != 0) {
+                velocityContext.put("assetType", ASSET_TYPE);
             }
-            velocityContext.put( "embedClass", className );
-            velocityContext.put( "embedMap", embedMap );
-        	velocityContext.put( "embedProps", embedProps );
+            velocityContext.put("embedClass", className);
+            velocityContext.put("embedMap", embedMap);
+            velocityContext.put("embedProps", embedProps);
 
             StringWriter stringWriter = new StringWriter();
 
@@ -321,133 +281,121 @@ public abstract class AbstractTranscoder implements Transcoder
 
             asset.generatedCode = stringWriter.toString();
 
-        }
-        catch (Exception e)
-        {
-            if (Trace.error)
-            {
+        } catch (Exception e) {
+            if (Trace.error) {
                 e.printStackTrace();
             }
-            throw new UnableToGenerateSource( fullClassName );
+            throw new UnableToGenerateSource(fullClassName);
         }
     }
 
-    public static class TemplateException extends TranscoderException
-    {
+    public static class TemplateException extends TranscoderException {
         private static final long serialVersionUID = 5180630712564309116L;
-        
-        public TemplateException( String templateName )
-        {
+
+        public TemplateException(String templateName) {
             this.templateName = templateName;
         }
+
         public String templateName;
     }
-    public static class SourceException extends TranscoderException
-    {
+
+    public static class SourceException extends TranscoderException {
         private static final long serialVersionUID = -6720698044756027846L;
-        
-        public SourceException( String className )
-        {
+
+        public SourceException(String className) {
             this.className = className;
         }
+
         public String className;
     }
 
-    public static class UnsupportedAttribute extends TranscoderException
-    {
+    public static class UnsupportedAttribute extends TranscoderException {
         private static final long serialVersionUID = -5367245871779383272L;
-        
-        public UnsupportedAttribute( String attribute, String className )
-        {
+
+        public UnsupportedAttribute(String attribute, String className) {
             this.attribute = attribute;
             this.className = className;
         }
+
         public String attribute;
         public String mimeType;
         public String className;
     }
 
-    public static class UnableToResolve extends TranscoderException
-    {
+    public static class UnableToResolve extends TranscoderException {
         private static final long serialVersionUID = 3955870312641262226L;
-        
-        public UnableToResolve( String source )
-        {
+
+        public UnableToResolve(String source) {
             this.source = source;
         }
+
         public String source;
     }
-    public static class NetworkTranscodingSource extends TranscoderException
-    {
+
+    public static class NetworkTranscodingSource extends TranscoderException {
         private static final long serialVersionUID = 1258842409489634129L;
-        
-        public NetworkTranscodingSource( String url )
-        {
+
+        public NetworkTranscodingSource(String url) {
             this.url = url;
         }
+
         public String url;
     }
 
-    public static class MissingSource extends TranscoderException
-    {
+    public static class MissingSource extends TranscoderException {
         private static final long serialVersionUID = -3672019858278058644L;
     }
 
-    public static class UnableToGenerateSource extends TranscoderException
-    {
+    public static class UnableToGenerateSource extends TranscoderException {
         private static final long serialVersionUID = 5252588163882319246L;
 
-        public UnableToGenerateSource( String className )
-        {
+        public UnableToGenerateSource(String className) {
             this.className = className;
         }
+
         public String className;
     }
 
-    public static class UnableToReadSource extends TranscoderException
-    {
+    public static class UnableToReadSource extends TranscoderException {
         private static final long serialVersionUID = 157159356418747799L;
-        
-        public UnableToReadSource( String source )
-        {
+
+        public UnableToReadSource(String source) {
             this.source = source;
         }
+
         public String source;
     }
 
-    public static class ExceptionWhileTranscoding extends TranscoderException
-    {
+    public static class ExceptionWhileTranscoding extends TranscoderException {
         private static final long serialVersionUID = 3747245123304883388L;
-        
-        public ExceptionWhileTranscoding( Exception exception )
-        {
+
+        public ExceptionWhileTranscoding(Exception exception) {
             this.exception = exception.getMessage();
         }
+
         public String exception;
     }
 
-    public static class EmbedRequiresCodegen extends TranscoderException
-    {
+    public static class EmbedRequiresCodegen extends TranscoderException {
         private static final long serialVersionUID = -1154861048587818696L;
-        
-        public EmbedRequiresCodegen( String source, String className )
-        {
+
+        public EmbedRequiresCodegen(String source, String className) {
             this.source = source;
             this.className = className;
         }
+
         public String source;
         public String className;
     }
 
-    public static final class IncompatibleTranscoderParameters extends TranscoderException
-    {
+    public static final class IncompatibleTranscoderParameters extends TranscoderException {
         private static final long serialVersionUID = 5674351726161323512L;
-        
-        public IncompatibleTranscoderParameters( String param1, String param2 )
-        {
+
+        public IncompatibleTranscoderParameters(String param1, String param2) {
             this.param1 = param1;
             this.param2 = param2;
         }
+
         public String param1;
         public String param2;
     }

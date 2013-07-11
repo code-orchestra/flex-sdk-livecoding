@@ -32,28 +32,23 @@ import java.util.Map;
  *
  * @author Brian Deitte
  */
-public class SwcPathResolver implements SinglePathResolver
-{
+public class SwcPathResolver implements SinglePathResolver {
     private SwcGroup swcGroup;
 
-    public SwcPathResolver(SwcGroup swcGroup)
-    {
+    public SwcPathResolver(SwcGroup swcGroup) {
         this.swcGroup = swcGroup;
     }
 
-    public VirtualFile resolve( String pathStr )
-    {
+    public VirtualFile resolve(String pathStr) {
         // Handles the case when pathStr is something like "foo.css".
         VirtualFile virt = swcGroup.getFiles().get(pathStr);
 
-	    if (virt == null)
-	    {
+        if (virt == null) {
             // Handles the case when pathStr is something like "foo.swc$bar.css".
             virt = swcGroup.getFile(pathStr);
-	    }
+        }
 
-        if ((virt != null) && Trace.pathResolver)
-        {
+        if ((virt != null) && Trace.pathResolver) {
             Trace.trace("SwcPathResolver.resolve: resolved " + pathStr + " to " + virt.getName());
         }
 

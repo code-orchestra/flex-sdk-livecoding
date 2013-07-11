@@ -33,10 +33,8 @@ import macromedia.asc.util.Context;
  * @author Greg Burch
  * @see flex2.compiler.as3.SkinPartEvaluator
  */
-public final class SkinPartExtension implements Extension
-{
-    public void parse2(CompilationUnit unit, TypeTable typeTable)
-    {
+public final class SkinPartExtension implements Extension {
+    public void parse2(CompilationUnit unit, TypeTable typeTable) {
         SkinPartEvaluator spEvaluator = new SkinPartEvaluator(typeTable.getSymbolTable());
         spEvaluator.setLocalizationManager(ThreadLocalToolkit.getLocalizationManager());
         Node node = (Node) unit.getSyntaxTree();
@@ -45,27 +43,21 @@ public final class SkinPartExtension implements Extension
         node.evaluate(cx, spEvaluator);
     }
 
-    public void parse1(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void parse1(CompilationUnit unit, TypeTable typeTable) {
     }
 
-    public void analyze1(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze1(CompilationUnit unit, TypeTable typeTable) {
     }
 
-    public void analyze2(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze2(CompilationUnit unit, TypeTable typeTable) {
     }
 
-    public void analyze3(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze3(CompilationUnit unit, TypeTable typeTable) {
     }
 
-    public void analyze4(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void analyze4(CompilationUnit unit, TypeTable typeTable) {
     }
 
-    public void generate(CompilationUnit unit, TypeTable typeTable)
-    {
+    public void generate(CompilationUnit unit, TypeTable typeTable) {
     }
 }

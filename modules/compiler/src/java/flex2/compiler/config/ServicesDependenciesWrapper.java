@@ -37,215 +37,159 @@ import java.util.Set;
  *
  * @exclude
  */
-public class ServicesDependenciesWrapper
-{
-	private Object servicesDependenciesInstance;
-	private Class servicesDependenciesClass;
-	
-    public ServicesDependenciesWrapper(String path, String parserClass, String contextRoot)
-    {
-    	try 
-    	{
-    		servicesDependenciesClass = Class.forName("flex.messaging.config.ServicesDependencies");
-    	}
-    	catch (ClassNotFoundException e)
-    	{
-    		return;
-    	}
-		Class partypes[] = new Class[3];
+public class ServicesDependenciesWrapper {
+    private Object servicesDependenciesInstance;
+    private Class servicesDependenciesClass;
+
+    public ServicesDependenciesWrapper(String path, String parserClass, String contextRoot) {
+        try {
+            servicesDependenciesClass = Class.forName("flex.messaging.config.ServicesDependencies");
+        } catch (ClassNotFoundException e) {
+            return;
+        }
+        Class partypes[] = new Class[3];
         partypes[0] = String.class;
         partypes[1] = String.class;
         partypes[2] = String.class;
-        try
-        {
-            Constructor ct = servicesDependenciesClass.getConstructor(partypes);        	
+        try {
+            Constructor ct = servicesDependenciesClass.getConstructor(partypes);
             Object arglist[] = new Object[3];
             arglist[0] = path;
             arglist[1] = parserClass;
             arglist[2] = contextRoot;
-            try 
-            {
-                servicesDependenciesInstance = ct.newInstance(arglist);            	
+            try {
+                servicesDependenciesInstance = ct.newInstance(arglist);
+            } catch (Throwable e3) {
+                System.err.println(e3);
             }
-            catch (Throwable e3)
-            {
-            	System.err.println(e3);
-            }
-        }
-        catch (NoSuchMethodException e2)
-        {
-        	
+        } catch (NoSuchMethodException e2) {
+
         }
     }
 
-    public Set getLazyAssociations(String destination)
-    {
-    	if (servicesDependenciesClass != null)
-    	{
-    		try
-    		{
-    			Method method = servicesDependenciesClass.getMethod("getLazyAssociations", new Class[] {String.class});
-    			Object arglist[] = new Object[1];
+    public Set getLazyAssociations(String destination) {
+        if (servicesDependenciesClass != null) {
+            try {
+                Method method = servicesDependenciesClass.getMethod("getLazyAssociations", new Class[]{String.class});
+                Object arglist[] = new Object[1];
                 arglist[0] = destination;
-                return (Set)method.invoke(servicesDependenciesInstance, arglist);   			
-    		}
-    		catch (Throwable e)
-    		{
-    			
-    		}
-    	}
-    	
-    	return null;
+                return (Set) method.invoke(servicesDependenciesInstance, arglist);
+            } catch (Throwable e) {
+
+            }
+        }
+
+        return null;
     }
 
-    public void addLazyAssociation(String destination, String associationProp)
-    {
-    	if (servicesDependenciesClass != null)
-    	{
-    		try
-    		{
-    			Method method = servicesDependenciesClass.getMethod("getLazyAssociations", new Class[] {String.class});
-    			Object arglist[] = new Object[2];
+    public void addLazyAssociation(String destination, String associationProp) {
+        if (servicesDependenciesClass != null) {
+            try {
+                Method method = servicesDependenciesClass.getMethod("getLazyAssociations", new Class[]{String.class});
+                Object arglist[] = new Object[2];
                 arglist[0] = destination;
                 arglist[1] = associationProp;
-                method.invoke(servicesDependenciesInstance, arglist);   			
-    		}
-    		catch (Throwable e)
-    		{
-    			
-    		}
-    	}
+                method.invoke(servicesDependenciesInstance, arglist);
+            } catch (Throwable e) {
+
+            }
+        }
     }
 
-    public String getServerConfigXmlInit()
-    {
-    	if (servicesDependenciesClass != null)
-    	{
-    		try
-    		{
-    			Method method = servicesDependenciesClass.getMethod("getServerConfigXmlInit", new Class[] {} );
-    			Object arglist[] = new Object[0];
-                return (String)method.invoke(servicesDependenciesInstance, arglist);   			
-    		}
-    		catch (Throwable e)
-    		{
-    			
-    		}
-    	}
-    	
-    	return null;
+    public String getServerConfigXmlInit() {
+        if (servicesDependenciesClass != null) {
+            try {
+                Method method = servicesDependenciesClass.getMethod("getServerConfigXmlInit", new Class[]{});
+                Object arglist[] = new Object[0];
+                return (String) method.invoke(servicesDependenciesInstance, arglist);
+            } catch (Throwable e) {
+
+            }
+        }
+
+        return null;
     }
 
-    public String getImports()
-    {
-    	if (servicesDependenciesClass != null)
-    	{
-    		try
-    		{
-    			Method method = servicesDependenciesClass.getMethod("getImports", new Class[] {} );
-    			Object arglist[] = new Object[0];
-                return (String)method.invoke(servicesDependenciesInstance, arglist);   			
-    		}
-    		catch (Throwable e)
-    		{
-    			
-    		}
-    	}
-    	
-    	return null;
+    public String getImports() {
+        if (servicesDependenciesClass != null) {
+            try {
+                Method method = servicesDependenciesClass.getMethod("getImports", new Class[]{});
+                Object arglist[] = new Object[0];
+                return (String) method.invoke(servicesDependenciesInstance, arglist);
+            } catch (Throwable e) {
+
+            }
+        }
+
+        return null;
     }
 
-    public String getReferences()
-    {
-    	if (servicesDependenciesClass != null)
-    	{
-    		try
-    		{
-    			Method method = servicesDependenciesClass.getMethod("getReferences", new Class[] {} );
-    			Object arglist[] = new Object[0];
-                return (String)method.invoke(servicesDependenciesInstance, arglist);   			
-    		}
-    		catch (Throwable e)
-    		{
-    			
-    		}
-    	}
-    	
-    	return null;
+    public String getReferences() {
+        if (servicesDependenciesClass != null) {
+            try {
+                Method method = servicesDependenciesClass.getMethod("getReferences", new Class[]{});
+                Object arglist[] = new Object[0];
+                return (String) method.invoke(servicesDependenciesInstance, arglist);
+            } catch (Throwable e) {
+
+            }
+        }
+
+        return null;
     }
 
-    public List getChannelClasses()
-    {
-    	if (servicesDependenciesClass != null)
-    	{
-    		try
-    		{
-    			Method method = servicesDependenciesClass.getMethod("getChannelClasses", new Class[] {} );
-    			Object arglist[] = new Object[0];
-                return (List)method.invoke(servicesDependenciesInstance, arglist);   			
-    		}
-    		catch (Throwable e)
-    		{
-    			
-    		}
-    	}
-    	
-    	return null;
+    public List getChannelClasses() {
+        if (servicesDependenciesClass != null) {
+            try {
+                Method method = servicesDependenciesClass.getMethod("getChannelClasses", new Class[]{});
+                Object arglist[] = new Object[0];
+                return (List) method.invoke(servicesDependenciesInstance, arglist);
+            } catch (Throwable e) {
+
+            }
+        }
+
+        return null;
     }
 
-    public void addChannelClass(String className)
-    {
-    	if (servicesDependenciesClass != null)
-    	{
-    		try
-    		{
-    			Method method = servicesDependenciesClass.getMethod("addChannelClass", new Class[] {} );
-    			Object arglist[] = new Object[0];
-                method.invoke(servicesDependenciesInstance, arglist);   			
-    		}
-    		catch (Throwable e)
-    		{
-    			
-    		}
-    	}
+    public void addChannelClass(String className) {
+        if (servicesDependenciesClass != null) {
+            try {
+                Method method = servicesDependenciesClass.getMethod("addChannelClass", new Class[]{});
+                Object arglist[] = new Object[0];
+                method.invoke(servicesDependenciesInstance, arglist);
+            } catch (Throwable e) {
+
+            }
+        }
     }
 
-    public void addConfigPath(String path, long modified)
-    {
-    	if (servicesDependenciesClass != null)
-    	{
-    		try
-    		{
-    			Method method = servicesDependenciesClass.getMethod("addConfigPath", new Class[] { String.class, Long.TYPE } );
-    			Object arglist[] = new Object[2];
-    			arglist[0] = path;
-    			arglist[1] = modified;
-                method.invoke(servicesDependenciesInstance, arglist);   			
-    		}
-    		catch (Throwable e)
-    		{
-    			
-    		}
-    	}
+    public void addConfigPath(String path, long modified) {
+        if (servicesDependenciesClass != null) {
+            try {
+                Method method = servicesDependenciesClass.getMethod("addConfigPath", new Class[]{String.class, Long.TYPE});
+                Object arglist[] = new Object[2];
+                arglist[0] = path;
+                arglist[1] = modified;
+                method.invoke(servicesDependenciesInstance, arglist);
+            } catch (Throwable e) {
+
+            }
+        }
     }
 
-    public Map getConfigPaths()
-    {
-    	if (servicesDependenciesClass != null)
-    	{
-    		try
-    		{
-    			Method method = servicesDependenciesClass.getMethod("getConfigPaths", new Class[] {} );
-    			Object arglist[] = new Object[0];
-                return (Map)method.invoke(servicesDependenciesInstance, arglist);   			
-    		}
-    		catch (Throwable e)
-    		{
-    			
-    		}
-    	}
-    	
-    	return null;
+    public Map getConfigPaths() {
+        if (servicesDependenciesClass != null) {
+            try {
+                Method method = servicesDependenciesClass.getMethod("getConfigPaths", new Class[]{});
+                Object arglist[] = new Object[0];
+                return (Map) method.invoke(servicesDependenciesInstance, arglist);
+            } catch (Throwable e) {
+
+            }
+        }
+
+        return null;
     }
 
     /*
@@ -359,30 +303,30 @@ public class ServicesDependenciesWrapper
     }
 
 	 */
-    
+
 
     /**
      *
-    public void codegenServiceAssociations(ConfigMap metadata, StringBuffer e4x, String destination, String relation)
-    {
-    	if (servicesDependenciesClass != null)
-    	{
-    		try
-    		{
-    			Method method = servicesDependenciesClass.getMethod("getConfigPaths", new Class[] { ConfigMap.class, StringBuffer.class, String.class, String.class } );
-    			Object arglist[] = new Object[4];
-    			arglist[0] = metadata;
-    			arglist[1] = e4x;
-    			arglist[2] = destination;
-    			arglist[3] = relation;
-                method.invoke(servicesDependenciesInstance, arglist);   			
-    		}
-    		catch (Throwable e)
-    		{
-    			
-    		}
-    	}
-    }
+     public void codegenServiceAssociations(ConfigMap metadata, StringBuffer e4x, String destination, String relation)
+     {
+     if (servicesDependenciesClass != null)
+     {
+     try
+     {
+     Method method = servicesDependenciesClass.getMethod("getConfigPaths", new Class[] { ConfigMap.class, StringBuffer.class, String.class, String.class } );
+     Object arglist[] = new Object[4];
+     arglist[0] = metadata;
+     arglist[1] = e4x;
+     arglist[2] = destination;
+     arglist[3] = relation;
+     method.invoke(servicesDependenciesInstance, arglist);
+     }
+     catch (Throwable e)
+     {
+
+     }
+     }
+     }
      */
 
     /**
@@ -393,23 +337,23 @@ public class ServicesDependenciesWrapper
      * @param references StringBuffer of the required references so that these classes will be linked in.
     public static void codegenServiceImportsAndReferences(Map map, StringBuffer imports, StringBuffer references)
     {
-        String channelSetImplType = (String)map.remove("ChannelSetImpl");
-        String type;
-        imports.append("import mx.messaging.config.ServerConfig;\n");
-        references.append("   // static references for configured channels\n");
-        for (Iterator chanIter = map.values().iterator(); chanIter.hasNext();)
-        {
-            type = (String)chanIter.next();
-            imports.append("import ");
-            imports.append(type);
-            imports.append(";\n");
-            references.append("   private static var ");
-            references.append(type.replace('.', '_'));
-            references.append("_ref:");
-            references.append(type.substring(type.lastIndexOf(".") +1) +";\n");
-        }
-        if (channelSetImplType != null)
-            imports.append("import mx.messaging.AdvancedChannelSet;\nimport mx.messaging.messages.ReliabilityMessage;\n");
+    String channelSetImplType = (String)map.remove("ChannelSetImpl");
+    String type;
+    imports.append("import mx.messaging.config.ServerConfig;\n");
+    references.append("   // static references for configured channels\n");
+    for (Iterator chanIter = map.values().iterator(); chanIter.hasNext();)
+    {
+    type = (String)chanIter.next();
+    imports.append("import ");
+    imports.append(type);
+    imports.append(";\n");
+    references.append("   private static var ");
+    references.append(type.replace('.', '_'));
+    references.append("_ref:");
+    references.append(type.substring(type.lastIndexOf(".") +1) +";\n");
+    }
+    if (channelSetImplType != null)
+    imports.append("import mx.messaging.AdvancedChannelSet;\nimport mx.messaging.messages.ReliabilityMessage;\n");
     }
      */
 }

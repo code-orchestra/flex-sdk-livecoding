@@ -33,28 +33,28 @@ import java.util.zip.InflaterInputStream;
 
 /**
  * Replacement for <code>java.util.ZipFile</code>.
- *
+ * <p/>
  * <p>This class adds support for file name encodings other than UTF-8
  * (which is required to work on ZIP files created by native zip tools
  * and is able to skip a preamble like the one found in self
  * extracting archives.  Furthermore it returns instances of
  * <code>org.apache.tools.zip.ZipEntry</code> instead of
  * <code>java.util.zip.ZipEntry</code>.</p>
- *
+ * <p/>
  * <p>It doesn't extend <code>java.util.zip.ZipFile</code> as it would
  * have to reimplement all methods anyway.  Like
  * <code>java.util.ZipFile</code>, it uses RandomAccessFile under the
  * covers and supports compressed and uncompressed entries.</p>
- *
+ * <p/>
  * <p>The method signatures mimic the ones of
  * <code>java.util.zip.ZipFile</code>, with a couple of exceptions:
- *
+ * <p/>
  * <ul>
- *   <li>There is no getName method.</li>
- *   <li>entries has been renamed to getEntries.</li>
- *   <li>getEntries and getEntry return
- *   <code>org.apache.tools.zip.ZipEntry</code> instances.</li>
- *   <li>close is allowed to throw IOException.</li>
+ * <li>There is no getName method.</li>
+ * <li>entries has been renamed to getEntries.</li>
+ * <li>getEntries and getEntry return
+ * <code>org.apache.tools.zip.ZipEntry</code> instances.</li>
+ * <li>close is allowed to throw IOException.</li>
  * </ul>
  *
  * @author Stefan Bodewig
@@ -80,7 +80,7 @@ public class ZipFile {
 
     /**
      * The encoding to use for filenames and the file comment.
-     *
+     * <p/>
      * <p>For a list of possible values see <a
      * href="http://java.sun.com/products/jdk/1.2/docs/guide/internat/encoding.doc.html">http://java.sun.com/products/jdk/1.2/docs/guide/internat/encoding.doc.html</a>.
      * Defaults to the platform's default character encoding.</p>
@@ -97,7 +97,6 @@ public class ZipFile {
      * native encoding for file names.
      *
      * @param f the archive.
-     *
      * @throws IOException if an error occurs while reading the file.
      */
     public ZipFile(File f) throws IOException {
@@ -109,7 +108,6 @@ public class ZipFile {
      * native encoding for file names.
      *
      * @param name name of the archive.
-     *
      * @throws IOException if an error occurs while reading the file.
      */
     public ZipFile(String name) throws IOException {
@@ -120,9 +118,8 @@ public class ZipFile {
      * Opens the given file for reading, assuming the specified
      * encoding for file names.
      *
-     * @param name name of the archive.
+     * @param name     name of the archive.
      * @param encoding the encoding to use for file names
-     *
      * @throws IOException if an error occurs while reading the file.
      */
     public ZipFile(String name, String encoding) throws IOException {
@@ -133,9 +130,8 @@ public class ZipFile {
      * Opens the given file for reading, assuming the specified
      * encoding for file names.
      *
-     * @param f the archive.
+     * @param f        the archive.
      * @param encoding the encoding to use for file names
-     *
      * @throws IOException if an error occurs while reading the file.
      */
     public ZipFile(File f, String encoding) throws IOException {
@@ -156,6 +152,7 @@ public class ZipFile {
 
     /**
      * Closes the archive.
+     *
      * @throws IOException if an error occurs closing the archive.
      */
     public void close() throws IOException {
@@ -172,9 +169,10 @@ public class ZipFile {
     /**
      * Returns a named entry - or <code>null</code> if no entry by
      * that name exists.
+     *
      * @param name name of the entry.
      * @return the ZipEntry corresponding to the given name - or
-     * <code>null</code> if not present.
+     *         <code>null</code> if not present.
      */
     public ZipEntry getEntry(String name) {
         return nameMap.get(name);
@@ -182,17 +180,18 @@ public class ZipFile {
 
     /**
      * Returns an InputStream for reading the contents of the given entry.
+     *
      * @param ze the entry to get the stream for.
      * @return a stream to read the entry from.
      */
     public InputStream getInputStream(ZipEntry ze)
-        throws IOException, SwcException {
+            throws IOException, SwcException {
         Long start = dataOffsets.get(ze);
         if (start == null) {
             return null;
         }
         BoundedInputStream bis =
-            new BoundedInputStream(start.longValue(), ze.getCompressedSize());
+                new BoundedInputStream(start.longValue(), ze.getCompressedSize());
         switch (ze.getMethod()) {
             case ZipEntry.STORED:
                 return bis;
@@ -225,13 +224,13 @@ public class ZipFile {
     /**
      * Reads the central directory of the given archive and populates
      * the internal tables with ZipEntry instances.
-     *
+     * <p/>
      * <p>The ZipEntrys will know all data that can be obtained from
      * the central directory alone, but not the data that requires the
      * local file header or additional data to be read.</p>
      */
     private void populateFromCentralDirectory()
-        throws IOException {
+            throws IOException {
         positionAtCentralDirectory();
 
         byte[] cfh = new byte[CFH_LEN];
@@ -334,7 +333,7 @@ public class ZipFile {
      * record.
      */
     private void positionAtCentralDirectory()
-        throws IOException {
+            throws IOException {
         long off = archive.length() - MIN_EOCD_SIZE;
         archive.seek(off);
         byte[] sig = ZipOutputStream.EOCD_SIG.getBytes();
@@ -354,10 +353,9 @@ public class ZipFile {
                     }
                 }
             }
-            
-            if (off <= 0) 
-            {
-            	break;
+
+            if (off <= 0) {
+                break;
             }
             archive.seek(--off);
             curr = archive.read();
@@ -389,12 +387,12 @@ public class ZipFile {
     /**
      * Walks through all recorded entries and adds the data available
      * from the local file header.
-     *
+     * <p/>
      * <p>Also records the offsets for the data to read from the
      * entries.</p>
      */
     private void resolveLocalFileHeaderData()
-        throws IOException {
+            throws IOException {
         Enumeration<ZipEntry> e = getEntries();
         while (e.hasMoreElements()) {
             ZipEntry ze = e.nextElement();
@@ -410,8 +408,8 @@ public class ZipFile {
             archive.readFully(localExtraData);
             ze.setExtra(localExtraData);
             dataOffsets.put(ze,
-                            new Long(offset + LFH_OFFSET_FOR_FILENAME_LENGTH
-                                     + 2 + 2 + fileNameLen + extraFieldLen));
+                    new Long(offset + LFH_OFFSET_FOR_FILENAME_LENGTH
+                            + 2 + 2 + fileNameLen + extraFieldLen));
         }
     }
 

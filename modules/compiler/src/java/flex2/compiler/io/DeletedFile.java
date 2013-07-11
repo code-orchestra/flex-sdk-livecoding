@@ -30,98 +30,77 @@ import flex2.compiler.util.MimeMappings;
  *
  * @author Clement Wong
  */
-public class DeletedFile implements VirtualFile
-{
-	public DeletedFile(String name)
-	{
-		this.name = name;
-	}
+public class DeletedFile implements VirtualFile {
+    public DeletedFile(String name) {
+        this.name = name;
+    }
 
-	private String name;
-	private String mimeType;
-	         
-	public String getName()
-	{
-		return name;
-	}
+    private String name;
+    private String mimeType;
 
-	public String getNameForReporting()
-	{
-		return getName();
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getURL()
-	{
-		return null;
-	}
+    public String getNameForReporting() {
+        return getName();
+    }
 
-	public String getParent()
-	{
-		return null;
-	}
+    public String getURL() {
+        return null;
+    }
 
-	public long size()
-	{
-		return 0;
-	}
+    public String getParent() {
+        return null;
+    }
 
-    public boolean isDirectory()
-    {
+    public long size() {
+        return 0;
+    }
+
+    public boolean isDirectory() {
         return false;
     }
 
-    public String getMimeType()
-	{
-		if (mimeType == null)
-		{
+    public String getMimeType() {
+        if (mimeType == null) {
             mimeType = MimeMappings.getMimeType(getName());
-		}
-		return mimeType;
-	}
+        }
+        return mimeType;
+    }
 
-	public InputStream getInputStream() throws IOException
-	{
-		return null;
-	}
+    public InputStream getInputStream() throws IOException {
+        return null;
+    }
 
-	public byte[] toByteArray() throws IOException
-	{
-		throw new UnsupportedOperationException("toByteArray() not supported in " + this.getClass().getName());
-	}
+    public byte[] toByteArray() throws IOException {
+        throw new UnsupportedOperationException("toByteArray() not supported in " + this.getClass().getName());
+    }
 
-	public long getLastModified()
-	{
-		return -1;
-	}
+    public long getLastModified() {
+        return -1;
+    }
 
-	public void close()
-	{
-	}
+    public void close() {
+    }
 
-	public boolean equals(Object obj)
-	{
-		if (obj instanceof DeletedFile)
-		{
-			return (this == obj) || getName().equals(((DeletedFile) obj).getName());
-		}
-		else
-		{
-			return false;
-		}
-	}
+    public boolean equals(Object obj) {
+        if (obj instanceof DeletedFile) {
+            return (this == obj) || getName().equals(((DeletedFile) obj).getName());
+        } else {
+            return false;
+        }
+    }
 
-	public int hashCode()
-	{
-		return getName().hashCode();
-	}
+    public int hashCode() {
+        return getName().hashCode();
+    }
 
-	public VirtualFile resolve(String relative)
-	{
-		return null;
-	}
+    public VirtualFile resolve(String relative) {
+        return null;
+    }
 
-	public boolean isTextBased()
-	{
-		return false;
-	}
+    public boolean isTextBased() {
+        return false;
+    }
 }

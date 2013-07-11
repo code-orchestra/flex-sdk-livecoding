@@ -29,17 +29,22 @@ import java.util.Map;
  *
  * @author Roger Gonzalez
  */
-public interface SwcArchive
-{
+public interface SwcArchive {
     public String getLocation();
+
     public void load();
+
     public void save() throws Exception;
-	public void close();
+
+    public void close();
 
     public Map<String, VirtualFile> getFiles();
-    public VirtualFile getFile( String path );
-    public void putFile( VirtualFile file );
-    public void putFile( String path, byte[] data, long lastModified );
+
+    public VirtualFile getFile(String path);
+
+    public void putFile(VirtualFile file);
+
+    public void putFile(String path, byte[] data, long lastModified);
 
     public long getLastModified();
 }

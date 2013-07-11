@@ -28,18 +28,15 @@ import flash.swf.tools.as3.EvaluatorAdapter;
  * postition of a subtree of AST nodes.  This is necessary when moving
  * a subtree from one AST to another.
  */
-class PositionResetEvaluator extends EvaluatorAdapter
-{
+class PositionResetEvaluator extends EvaluatorAdapter {
     private int position;
 
-	public PositionResetEvaluator(int position)
-	{
+    public PositionResetEvaluator(int position) {
         this.position = position;
-	}
+    }
 
-	public boolean checkFeature(Context cx, Node node)
-	{
+    public boolean checkFeature(Context cx, Node node) {
         node.pos(position);
-		return true;
-	}
+        return true;
+    }
 }

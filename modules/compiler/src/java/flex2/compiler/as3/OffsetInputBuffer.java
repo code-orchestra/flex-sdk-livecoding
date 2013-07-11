@@ -28,10 +28,8 @@ import macromedia.asc.parser.InputBuffer;
  *
  * @author Paul Reilly
  */
-class OffsetInputBuffer extends InputBuffer
-{   
-    public OffsetInputBuffer(String in, String origin, int offset)
-    {
+class OffsetInputBuffer extends InputBuffer {
+    public OffsetInputBuffer(String in, String origin, int offset) {
         super(in, origin, offset, 0);
     }
 

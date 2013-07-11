@@ -28,17 +28,16 @@ package flex2.compiler.mxml.reflect;
  *
  * @author Clement Wong
  */
-public interface Style extends Assignable
-{
-	String[] getEnumeration();
+public interface Style extends Assignable {
+    String[] getEnumeration();
 
-	String getFormat();
+    String getFormat();
 
-	boolean isInherit();
-	
-	String getDeprecatedMessage();
-	
-	String getDeprecatedReplacement();
-	
-	String getDeprecatedSince();
+    boolean isInherit();
+
+    String getDeprecatedMessage();
+
+    String getDeprecatedReplacement();
+
+    String getDeprecatedSince();
 }

@@ -30,11 +30,10 @@ import org.w3c.dom.Document;
  * This class reads the toplevel.xml and passes the Dom tree to classes
  * responsible for generating
  * dita based xml files.
- * 
+ *
  * @author gauravj
  */
-public class AsDocHelper
-{
+public class AsDocHelper {
     private String topLevelXmlPath = "toplevel.xml";
     private String ditaOutputDir = "tempdita";
     private String outputDir = "";
@@ -42,14 +41,13 @@ public class AsDocHelper
 
     /**
      * Constructor
-     * 
+     *
      * @param topLevelXmlPath path to toplevel.xml
-     * @param outputDir output location for xml files
+     * @param outputDir       output location for xml files
      * @param asDocConfigPath location of ASDoc_Config.xml
      */
     public AsDocHelper(String topLevelXmlPath, String ditaOutputDir,
-            String outputDir, String asDocConfigPath)
-    {
+                       String outputDir, String asDocConfigPath) {
         this.topLevelXmlPath = topLevelXmlPath;
         this.ditaOutputDir = ditaOutputDir;
         this.outputDir = outputDir;
@@ -58,12 +56,11 @@ public class AsDocHelper
 
     /**
      * Create xml files for each package using toplevel.xml and ASDoc_Config.xml
-     * 
+     *
      * @param lenient
      * @throws Exception
      */
-    public void createTopLevelClasses(boolean lenient) throws Exception
-    {
+    public void createTopLevelClasses(boolean lenient) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder parser = factory.newDocumentBuilder();
 

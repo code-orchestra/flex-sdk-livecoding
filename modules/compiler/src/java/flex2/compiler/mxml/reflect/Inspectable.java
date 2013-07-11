@@ -25,67 +25,66 @@ package flex2.compiler.mxml.reflect;
  *
  * @author Clement Wong
  */
-public interface Inspectable
-{
-	String INSPECTABLE      = "Inspectable";
-	String ENUMERATION      = "enumeration";
-	String IS_DEFAULT       = "isDefault";
-	String CATEGORY         = "category";
-	String IS_VERBOSE       = "isVerbose";
-	String TYPE             = "type";
-	String ARRAY_TYPE       = "arrayType";
-	String OBJECT_TYPE      = "objectType";
-	String ENVIRONMENT      = "environment";
-	String FORMAT           = "format";
-	String DEFAULT_VALUE    = "defaultValue";
+public interface Inspectable {
+    String INSPECTABLE = "Inspectable";
+    String ENUMERATION = "enumeration";
+    String IS_DEFAULT = "isDefault";
+    String CATEGORY = "category";
+    String IS_VERBOSE = "isVerbose";
+    String TYPE = "type";
+    String ARRAY_TYPE = "arrayType";
+    String OBJECT_TYPE = "objectType";
+    String ENVIRONMENT = "environment";
+    String FORMAT = "format";
+    String DEFAULT_VALUE = "defaultValue";
 
-	/**
-	 * enumeration
-	 */
-	String[] getEnumeration();
+    /**
+     * enumeration
+     */
+    String[] getEnumeration();
 
-	/**
-	 * default value
-	 */
-	String getDefaultValue();
+    /**
+     * default value
+     */
+    String getDefaultValue();
 
-	/**
-	 * default?
-	 */
-	boolean isDefault();
+    /**
+     * default?
+     */
+    boolean isDefault();
 
-	/**
-	 * category
-	 */
-	String getCategory();
+    /**
+     * category
+     */
+    String getCategory();
 
-	/**
-	 * verbose?
-	 */
-	boolean isVerbose();
+    /**
+     * verbose?
+     */
+    boolean isVerbose();
 
-	/**
-	 * type
-	 */
+    /**
+     * type
+     */
     String getType();
 
-	/**
-	 * object type
-	 */
-	String getObjectType();
+    /**
+     * object type
+     */
+    String getObjectType();
 
-	/**
-	 * array type
-	 */
-	String getArrayType();
+    /**
+     * array type
+     */
+    String getArrayType();
 
-	/**
-	 * environment
-	 */ 
-	String getEnvironment();
+    /**
+     * environment
+     */
+    String getEnvironment();
 
-	/**
-	 * format
-	 */ 
-	String getFormat();
+    /**
+     * format
+     */
+    String getFormat();
 }

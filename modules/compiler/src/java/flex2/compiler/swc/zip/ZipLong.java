@@ -42,7 +42,7 @@ public final class ZipLong implements Cloneable {
      *
      * @since 1.1
      */
-    public ZipLong (byte[] bytes) {
+    public ZipLong(byte[] bytes) {
         this(bytes, 0);
     }
 
@@ -51,7 +51,7 @@ public final class ZipLong implements Cloneable {
      *
      * @since 1.1
      */
-    public ZipLong (byte[] bytes, int offset) {
+    public ZipLong(byte[] bytes, int offset) {
         value = (bytes[offset + 3] << 24) & 0xFF000000L;
         value += (bytes[offset + 2] << 16) & 0xFF0000;
         value += (bytes[offset + 1] << 8) & 0xFF00;

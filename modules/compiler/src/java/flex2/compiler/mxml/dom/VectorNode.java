@@ -31,30 +31,26 @@ import java.util.Set;
  *
  * @author Paul Reilly
  */
-public class VectorNode extends Node
-{
-	public static final Set<QName> attributes;
+public class VectorNode extends Node {
+    public static final Set<QName> attributes;
 
-	static
-	{
-		attributes = new HashSet<QName>();
-		attributes.add(new QName("", StandardDefs.PROP_ID));
-		attributes.add(new QName("", StandardDefs.PROP_TYPE));
-		attributes.add(new QName("", StandardDefs.PROP_FIXED));
-		attributes.add(new QName("", StandardDefs.PROP_INCLUDE_STATES));
-		attributes.add(new QName("", StandardDefs.PROP_EXCLUDE_STATES));
-		attributes.add(new QName("", StandardDefs.PROP_ITEM_CREATION_POLICY));
-		attributes.add(new QName("", StandardDefs.PROP_ITEM_DESTRUCTION_POLICY));
-	}
+    static {
+        attributes = new HashSet<QName>();
+        attributes.add(new QName("", StandardDefs.PROP_ID));
+        attributes.add(new QName("", StandardDefs.PROP_TYPE));
+        attributes.add(new QName("", StandardDefs.PROP_FIXED));
+        attributes.add(new QName("", StandardDefs.PROP_INCLUDE_STATES));
+        attributes.add(new QName("", StandardDefs.PROP_EXCLUDE_STATES));
+        attributes.add(new QName("", StandardDefs.PROP_ITEM_CREATION_POLICY));
+        attributes.add(new QName("", StandardDefs.PROP_ITEM_DESTRUCTION_POLICY));
+    }
 
-	VectorNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
+    VectorNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
 
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 }

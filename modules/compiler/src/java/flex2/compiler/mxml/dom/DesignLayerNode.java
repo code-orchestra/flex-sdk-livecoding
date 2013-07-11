@@ -31,26 +31,22 @@ import flex2.compiler.util.QName;
  *
  * @author Paul Reilly
  */
-public class DesignLayerNode extends LayeredNode
-{
-	public static final Set<QName> attributes;
+public class DesignLayerNode extends LayeredNode {
+    public static final Set<QName> attributes;
 
-	static
-	{
-		attributes = new HashSet<QName>();
-		attributes.add(new QName("", StandardDefs.PROP_ID));
-		attributes.add(new QName("", "visible"));
-		attributes.add(new QName("", "alpha"));
-	}
+    static {
+        attributes = new HashSet<QName>();
+        attributes.add(new QName("", StandardDefs.PROP_ID));
+        attributes.add(new QName("", "visible"));
+        attributes.add(new QName("", "alpha"));
+    }
 
-	DesignLayerNode(String uri, String localName, int size, DesignLayerNode parent)
-	{
-		super(uri, localName, size, parent);
-	}
+    DesignLayerNode(String uri, String localName, int size, DesignLayerNode parent) {
+        super(uri, localName, size, parent);
+    }
 
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 }

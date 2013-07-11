@@ -30,25 +30,21 @@ import flex2.compiler.util.QName;
  * Represents a &lt;Library&gt; tag in the MXML 2009 language
  * namespace.  It contains special child &lt;Definition/&gt; tags.  It
  * may have zero or more children.
- * 
+ *
  * @author Peter Farland
  */
-public class LibraryNode extends Node
-{
+public class LibraryNode extends Node {
     public static final Set<QName> attributes;
 
-    static
-    {
+    static {
         attributes = new HashSet<QName>();
     }
 
-    public LibraryNode(String uri, String localName, int size)
-    {
+    public LibraryNode(String uri, String localName, int size) {
         super(uri, localName, size);
     }
 
-    public void analyze(Analyzer analyzer)
-    {
+    public void analyze(Analyzer analyzer) {
         analyzer.prepare(this);
         analyzer.analyze(this);
     }

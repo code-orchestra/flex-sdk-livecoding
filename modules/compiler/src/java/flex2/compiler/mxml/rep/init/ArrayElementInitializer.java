@@ -21,7 +21,9 @@ package flex2.compiler.mxml.rep.init;
 
 import flex2.compiler.mxml.lang.StandardDefs;
 import flex2.compiler.mxml.reflect.Type;
+
 import java.util.HashSet;
+
 import macromedia.asc.parser.ArgumentListNode;
 import macromedia.asc.parser.ExpressionStatementNode;
 import macromedia.asc.parser.ListNode;
@@ -36,40 +38,35 @@ import macromedia.asc.parser.Tokens;
 /**
  * This class represents an Array element initializer.
  */
-public class ArrayElementInitializer extends ValueInitializer
-{
-	final Type type;
-	final int index;
+public class ArrayElementInitializer extends ValueInitializer {
+    final Type type;
+    final int index;
 
-	public ArrayElementInitializer(Type type, int index, Object value, int line, StandardDefs defs)
-	{
-		super(value, line, defs);
-		this.type = type;
-		this.index = index;
-	}
+    public ArrayElementInitializer(Type type, int index, Object value, int line, StandardDefs defs) {
+        super(value, line, defs);
+        this.type = type;
+        this.index = index;
+    }
 
-	public Type getLValueType()
-	{
-		return type;
-	}
+    public Type getLValueType() {
+        return type;
+    }
 
-	public String getAssignExpr(String lvalueBase)
-	{
-		return lvalueBase + "[" + index + "] = " + getValueExpr();
-	}
+    public String getAssignExpr(String lvalueBase) {
+        return lvalueBase + "[" + index + "] = " + getValueExpr();
+    }
 
-	public StatementListNode generateAssignExpr(NodeFactory nodeFactory,
+    public StatementListNode generateAssignExpr(NodeFactory nodeFactory,
                                                 HashSet<String> configNamespaces,
-                                                boolean generateDocComments, 
+                                                boolean generateDocComments,
                                                 StatementListNode statementList,
-                                                Node lvalueBase)
-    {
+                                                Node lvalueBase) {
         LiteralNumberNode literalNumber = nodeFactory.literalNumber(index);
         ArgumentListNode expr = nodeFactory.argumentList(null, literalNumber);
         Node value = generateValueExpr(nodeFactory, configNamespaces, generateDocComments);
         ArgumentListNode argumentList = nodeFactory.argumentList(null, value);
         SetExpressionNode setExpression = nodeFactory.setExpression(expr, argumentList, false);
-		setExpression.setMode(Tokens.LEFTBRACKET_TOKEN);
+        setExpression.setMode(Tokens.LEFTBRACKET_TOKEN);
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(lvalueBase, setExpression);
         ListNode list = nodeFactory.list(null, memberExpression);
         ExpressionStatementNode expressionStatement = nodeFactory.expressionStatement(list);

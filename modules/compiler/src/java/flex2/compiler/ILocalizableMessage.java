@@ -25,11 +25,14 @@ package flex2.compiler;
  *
  * @author Roger Gonzalez
  */
-public interface ILocalizableMessage extends flex2.tools.oem.Message
-{
+public interface ILocalizableMessage extends flex2.tools.oem.Message {
     void setPath(String path);
-    void setLine(int line); 
+
+    void setLine(int line);
+
     void setColumn(int column);
+
     Exception getExceptionDetail();
+
     boolean isPathAvailable();
 }

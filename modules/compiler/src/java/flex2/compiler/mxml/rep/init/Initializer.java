@@ -32,63 +32,62 @@ import java.util.Iterator;
 /**
  * This is the base interface for all initializers.
  */
-public interface Initializer
-{
-	/**
-	 *
-	 */
-	int getLineRef();
+public interface Initializer {
+    /**
+     *
+     */
+    int getLineRef();
 
-	/**
-	 *
-	 */
-	boolean isBinding();
+    /**
+     *
+     */
+    boolean isBinding();
 
-	/**
-	 *
-	 */
-	Type getLValueType();
+    /**
+     *
+     */
+    Type getLValueType();
 
-	/**
-	 *
-	 */
-	String getValueExpr();
+    /**
+     *
+     */
+    String getValueExpr();
 
-	/**
-	 *
-	 */
-	Node generateValueExpr(NodeFactory nodeFactory, HashSet<String> configNamespaces, boolean generateDocComments);
+    /**
+     *
+     */
+    Node generateValueExpr(NodeFactory nodeFactory, HashSet<String> configNamespaces, boolean generateDocComments);
 
-	/**
-	 *
-	 */
-	String getAssignExpr(String lvalueBase);
+    /**
+     *
+     */
+    String getAssignExpr(String lvalueBase);
 
-	/**
-	 *
-	 */
-	StatementListNode generateAssignExpr(NodeFactory nodeFactory, HashSet<String> configNamespaces,
+    /**
+     *
+     */
+    StatementListNode generateAssignExpr(NodeFactory nodeFactory, HashSet<String> configNamespaces,
                                          boolean generateDocComments, StatementListNode statementList,
                                          Node lvalueBase);
 
-	/**
-	 *
-	 */
-	boolean hasDefinition();
-	
-	/**
-	 *
-	 */
-	boolean isStateSpecific();
+    /**
+     *
+     */
+    boolean hasDefinition();
 
-	/**
-	 *
-	 */
-	Iterator getDefinitionsIterator();
+    /**
+     *
+     */
+    boolean isStateSpecific();
 
-	/**
-	 *
-	 */
+    /**
+     *
+     */
+    Iterator getDefinitionsIterator();
+
+    /**
+     *
+     */
     StatementListNode generateDefinitions(Context context, HashSet<String> configNamespaces,
                                           boolean generateDocComments, StatementListNode statementList);
 }

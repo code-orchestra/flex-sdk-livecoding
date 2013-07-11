@@ -24,29 +24,24 @@ package flex2.compiler.swc;
  *
  * @author Brian Deitte
  */
-public class SwcFeatures
-{
+public class SwcFeatures {
     private boolean debug;
     private boolean externalDeps = false;
     private boolean scriptDeps = true;
 
-    public boolean isComponents()
-    {
+    public boolean isComponents() {
         return components;
     }
 
-    public void setComponents( boolean components )
-    {
+    public void setComponents(boolean components) {
         this.components = components;
     }
 
-    public boolean isFiles()
-    {
+    public boolean isFiles() {
         return files;
     }
 
-    public void setFiles( boolean files )
-    {
+    public void setFiles(boolean files) {
         this.files = files;
     }
 
@@ -54,33 +49,27 @@ public class SwcFeatures
     private boolean components = false;
     //private boolean methodDeps;
 
-    public boolean isDebug()
-    {
+    public boolean isDebug() {
         return debug;
     }
 
-    public void setDebug(boolean debug)
-    {
+    public void setDebug(boolean debug) {
         this.debug = debug;
     }
 
-    public boolean hasExternalDeps()
-    {
+    public boolean hasExternalDeps() {
         return externalDeps;
     }
 
-    public void setExternalDeps(boolean externalDeps)
-    {
+    public void setExternalDeps(boolean externalDeps) {
         this.externalDeps = externalDeps;
     }
 
-    public boolean isScriptDeps()
-    {
+    public boolean isScriptDeps() {
         return scriptDeps;
     }
 
-    public void setScriptDeps(boolean scriptDeps)
-    {
+    public void setScriptDeps(boolean scriptDeps) {
         this.scriptDeps = scriptDeps;
     }
 

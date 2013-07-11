@@ -23,7 +23,9 @@ import macromedia.asc.parser.ExpressionStatementNode;
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.NodeFactory;
 import macromedia.asc.parser.StatementListNode;
+
 import java.util.HashSet;
+
 import flex2.compiler.as3.AbstractSyntaxTreeUtil;
 import flex2.compiler.mxml.gen.TextGen;
 import flex2.compiler.mxml.lang.StandardDefs;
@@ -33,49 +35,42 @@ import flex2.compiler.mxml.lang.TextParser;
  * This class represents an initializer for a named lvalue -
  * e.g. property or style, but not array element or visual child
  */
-public abstract class NamedInitializer extends ValueInitializer
-{
-	NamedInitializer(Object value, int line, StandardDefs defs)
-	{
-		super(value, line, defs);
-	}
+public abstract class NamedInitializer extends ValueInitializer {
+    NamedInitializer(Object value, int line, StandardDefs defs) {
+        super(value, line, defs);
+    }
 
-	/**
-	 *
-	 */
-	public abstract String getName();
+    /**
+     *
+     */
+    public abstract String getName();
 
-	/**
-	 *
-	 */
-	public String getAssignExpr(String lvalueBase)
-	{
-		String name = getName();
-		
-		String lvalue = TextParser.isValidIdentifier(name) ?
-				lvalueBase + '.' + name :
-				lvalueBase + "[" + TextGen.quoteWord(name) + "]";
+    /**
+     *
+     */
+    public String getAssignExpr(String lvalueBase) {
+        String name = getName();
 
-		return lvalue + " = " + getValueExpr();
-	}
+        String lvalue = TextParser.isValidIdentifier(name) ?
+                lvalueBase + '.' + name :
+                lvalueBase + "[" + TextGen.quoteWord(name) + "]";
 
-	public StatementListNode generateAssignExpr(NodeFactory nodeFactory,
+        return lvalue + " = " + getValueExpr();
+    }
+
+    public StatementListNode generateAssignExpr(NodeFactory nodeFactory,
                                                 HashSet<String> configNamespaces,
-                                                boolean generateDocComments, 
+                                                boolean generateDocComments,
                                                 StatementListNode statementList,
-                                                Node lvalueBase)
-    {
-		String name = getName();
+                                                Node lvalueBase) {
+        String name = getName();
 
-		if (TextParser.isValidIdentifier(name))
-        {
+        if (TextParser.isValidIdentifier(name)) {
             Node valueExpr = generateValueExpr(nodeFactory, configNamespaces, generateDocComments);
             ExpressionStatementNode expressionStatement =
-                AbstractSyntaxTreeUtil.generateAssignment(nodeFactory, lvalueBase, name, valueExpr);
+                    AbstractSyntaxTreeUtil.generateAssignment(nodeFactory, lvalueBase, name, valueExpr);
             return nodeFactory.statementList(statementList, expressionStatement);
-        }
-        else
-        {
+        } else {
             assert false;
             return null;
         }

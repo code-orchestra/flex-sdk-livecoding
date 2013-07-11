@@ -31,46 +31,38 @@ import java.util.Iterator;
  *
  * @author Roger Gonzalez
  */
-public class SwcDependencySet
-{
+public class SwcDependencySet {
     public final static String INHERITANCE = "i";
     public final static String NAMESPACE = "n";
     public final static String SIGNATURE = "s";
     public final static String EXPRESSION = "e";
 
-    public void addDependency( String type, String dep )
-    {
-        Set<String> deps = depTypeMap.get( type );
+    public void addDependency(String type, String dep) {
+        Set<String> deps = depTypeMap.get(type);
 
-        if (deps == null)
-        {
+        if (deps == null) {
             deps = new HashSet<String>();
-            depTypeMap.put( type, deps );
+            depTypeMap.put(type, deps);
         }
-        deps.add( dep );
+        deps.add(dep);
     }
 
-    public void addDependencies( String type, Iterator<String> deps )
-    {
-        while (deps.hasNext())
-        {
-            addDependency( type, deps.next());
+    public void addDependencies(String type, Iterator<String> deps) {
+        while (deps.hasNext()) {
+            addDependency(type, deps.next());
         }
     }
 
-    private Set<String> getDependencies( String type )
-    {
-        return depTypeMap.get( type );
+    private Set<String> getDependencies(String type) {
+        return depTypeMap.get(type);
     }
 
-    public Iterator<String> getDependencyIterator( String type )
-    {
-        Set<String> deps = getDependencies( type );
-        return (deps == null)? null : deps.iterator();
+    public Iterator<String> getDependencyIterator(String type) {
+        Set<String> deps = getDependencies(type);
+        return (deps == null) ? null : deps.iterator();
     }
 
-    public Iterator<String> getTypeIterator()
-    {
+    public Iterator<String> getTypeIterator() {
         return depTypeMap.keySet().iterator();
     }
 

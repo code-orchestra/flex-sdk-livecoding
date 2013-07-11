@@ -55,23 +55,21 @@ import java.util.Stack;
 /*
  * TODO haven't converted the text value parsing here. CDATANode.inCDATA is being ignored; don't know if there are other issues.
  */
+
 /**
  * This builder handles building an XML instance from an XMLNode and
  * it's children.
  *
  * @author Clement Wong
  */
-class XMLBuilder extends AbstractBuilder
-{
-    XMLBuilder(CompilationUnit unit, TypeTable typeTable, MxmlConfiguration mxmlConfiguration, MxmlDocument document)
-    {
+class XMLBuilder extends AbstractBuilder {
+    XMLBuilder(CompilationUnit unit, TypeTable typeTable, MxmlConfiguration mxmlConfiguration, MxmlDocument document) {
         this(unit, typeTable, mxmlConfiguration, document, null);
         allowTopLevelBinding = true;
         allowTwoWayBind = true;
     }
 
-    XMLBuilder(CompilationUnit unit, TypeTable typeTable, MxmlConfiguration mxmlConfiguration, MxmlDocument document, Model parent)
-    {
+    XMLBuilder(CompilationUnit unit, TypeTable typeTable, MxmlConfiguration mxmlConfiguration, MxmlDocument document, Model parent) {
         super(unit, typeTable, mxmlConfiguration, document);
         this.parent = parent;
         allowTopLevelBinding = false;
@@ -84,71 +82,49 @@ class XMLBuilder extends AbstractBuilder
     private boolean allowTwoWayBind;
     XML xml;
 
-    public void analyze(XMLNode node)
-    {
-        id = (String)getLanguageAttributeValue(node, StandardDefs.PROP_ID);
+    public void analyze(XMLNode node) {
+        id = (String) getLanguageAttributeValue(node, StandardDefs.PROP_ID);
         boolean e4x = node.isE4X();
         Type t = typeTable.getType(standardDefs.getXmlBackingClassName(e4x));
         xml = new XML(document, t, parent, e4x, node.beginLine);
-        if (id != null)
-        {
+        if (id != null) {
             xml.setId(id, false);
         }
 
         StringWriter writer = new StringWriter();
 
-        if (node.getChildCount() > 1)
-        {
+        if (node.getChildCount() > 1) {
             log(node, new OnlyOneRootTag());
-        }
-        else if (node.getChildCount() == 0)
-        {
+        } else if (node.getChildCount() == 0) {
             writer.write("null");
-        }
-        else if ((node.getChildCount() == 1) && (node.getChildAt(0) instanceof CDATANode))
-        {
+        } else if ((node.getChildCount() == 1) && (node.getChildAt(0) instanceof CDATANode)) {
             /**
              * <mx:XML>{binding_expression}</mx:XML>
              */
-            CDATANode cdata = (CDATANode)node.getChildAt(0);
+            CDATANode cdata = (CDATANode) node.getChildAt(0);
 
-            if (cdata.image.length() > 0)
-            {
+            if (cdata.image.length() > 0) {
                 BindingExpression be = textParser.parseBindingExpression(cdata.image, cdata.beginLine);
 
-                if (be != null)
-                {
-                    if (allowTopLevelBinding)
-                    {
-                        if (!be.isTwoWayPrimary() || allowTwoWayBind)
-                        {
+                if (be != null) {
+                    if (allowTopLevelBinding) {
+                        if (!be.isTwoWayPrimary() || allowTwoWayBind) {
                             be.setDestination(xml);
                             writer.write("null");
-                        }
-                        else
-                        {
+                        } else {
                             log(cdata, new AbstractBuilder.TwoWayBindingNotAllowed());
                         }
-                    }
-                    else
-                    {
+                    } else {
                         log(cdata, new AbstractBuilder.BindingNotAllowed());
                     }
-                }
-                else
-                {
+                } else {
                     log(node, new RequireXMLContent());
                 }
             }
-        }
-        else
-        {
-            if (e4x)
-            {
+        } else {
+            if (e4x) {
                 processChildren(e4x, node, writer, null, new Stack<String>(), new Stack<PrefixMapping>());
-            }
-            else
-            {
+            } else {
                 processChildren(e4x, node, new XMLStringSerializer(writer), null, new Stack<String>(), null);
             }
         }
@@ -164,47 +140,35 @@ class XMLBuilder extends AbstractBuilder
                              Object serializer,
                              String getElementsByLocalName,
                              Stack<String> destinationPropertyStack,
-                             Stack<PrefixMapping> namespaces)
-    {
+                             Stack<PrefixMapping> namespaces) {
         QNameMap<BindingExpression> attributeBindings = processAttributes(node);
 
-        if (attributeBindings != null)
-        {
+        if (attributeBindings != null) {
             String destinationProperty = createExpression(destinationPropertyStack);
 
-            for (Iterator<QName> i = attributeBindings.keySet().iterator(); i.hasNext();)
-            {
+            for (Iterator<QName> i = attributeBindings.keySet().iterator(); i.hasNext(); ) {
                 flex2.compiler.util.QName attrName = i.next();
 
                 String attrExpr, nsUri = null;
                 int nsId = 0;
-                if (e4x)
-                {
+                if (e4x) {
                     // If the attribute node has a namespace use that.  Otherwise 
                     // use the namespace of the element node.
                     nsUri = attrName.getNamespace();
-                    if (nsUri.length() > 0)
-                    {
-                        nsId = PrefixMapping.getNamespaceId(nsUri, namespaces);                        
-                    }
-                    else
-                    {
+                    if (nsUri.length() > 0) {
+                        nsId = PrefixMapping.getNamespaceId(nsUri, namespaces);
+                    } else {
                         PrefixMapping pm = (PrefixMapping) namespaces.peek();
                         nsUri = pm.getUri();
                         nsId = pm.getNs();
                     }
-                    
-                    if (nsId > 0)
-                    {
+
+                    if (nsId > 0) {
                         attrExpr = getElementsByLocalName + ".@ns" + nsId + "::" + attrName.getLocalPart();
-                    }
-                    else
-                    {
+                    } else {
                         attrExpr = getElementsByLocalName + ".@" + attrName.getLocalPart();
                     }
-                }
-                else
-                {
+                } else {
                     attrExpr = getElementsByLocalName + ".attributes[\"" + attrName.getLocalPart() + "\"]";
                 }
 
@@ -218,58 +182,40 @@ class XMLBuilder extends AbstractBuilder
 
                 xml.setHasBindings(true);
 
-                if (e4x)
-                {
+                if (e4x) {
                     PrefixMapping.pushNamespaces(be, namespaces);
-                    if (nsUri.length() > 0)
-                    {
+                    if (nsUri.length() > 0) {
                         be.addNamespace(nsUri, nsId);
                     }
                 }
             }
         }
 
-        try
-        {
-            if (e4x)
-            {
+        try {
+            if (e4x) {
                 node.toStartElement((StringWriter) serializer);
-            }
-            else
-            {
+            } else {
                 QName qname = new QName(node.getNamespace(), node.getLocalPart(), node.getPrefix());
                 ((XMLStringSerializer) serializer).startElement(qname, new AttributesHelper(node));
             }
 
-            if (node.getChildCount() == 1 && node.getChildAt(0) instanceof CDATANode)
-            {
+            if (node.getChildCount() == 1 && node.getChildAt(0) instanceof CDATANode) {
                 CDATANode cdata = (CDATANode) node.getChildAt(0);
-                if (cdata.image.length() > 0)
-                {
-                    if (cdata.inCDATA)
-                    {
+                if (cdata.image.length() > 0) {
+                    if (cdata.inCDATA) {
                         //in CDATA Section, leave exactly as is
-                        if (e4x)
-                        {
+                        if (e4x) {
                             ((StringWriter) serializer).write("<![CDATA[" + cdata.image + "]]>");
-                        }
-                        else
-                        {
+                        } else {
                             ((XMLStringSerializer) serializer).writeString(cdata.image);
-                        }                        
-                    }
-                    else
-                    {
+                        }
+                    } else {
                         //not in CDATA section so extract bindings and cleanup binding escapes 
                         BindingExpression be = textParser.parseBindingExpression(cdata.image, cdata.beginLine);
-                        if (be != null)
-                        {
-                            if (be.isTwoWayPrimary() && !allowTwoWayBind)
-                            {
+                        if (be != null) {
+                            if (be.isTwoWayPrimary() && !allowTwoWayBind) {
                                 log(cdata, new AbstractBuilder.TwoWayBindingNotAllowed());
-                            }
-                            else
-                            {
+                            } else {
                                 String destinationProperty = createExpression(destinationPropertyStack);
 
                                 be.setDestinationLValue(getElementsByLocalName);
@@ -279,42 +225,30 @@ class XMLBuilder extends AbstractBuilder
 
                                 xml.setHasBindings(true);
 
-                                if (e4x)
-                                {
+                                if (e4x) {
                                     be.setDestinationE4X(true);
                                     PrefixMapping.pushNamespaces(be, namespaces);
                                 }
                             }
-                        }
-                        else if (e4x)
-                        {
+                        } else if (e4x) {
                             ((StringWriter) serializer).write(TextParser.replaceBindingEscapesForE4X(cdata.image));
-                        }
-                        else
-                        {
+                        } else {
                             String text = TextParser.cleanupBindingEscapes(cdata.image);
                             text = TextParser.cleanupAtFunctionEscapes(text);
                             ((XMLStringSerializer) serializer).writeString(text);
-                        }                        
-                    }                    
+                        }
+                    }
                 }
-            }
-            else
-            {
+            } else {
                 processChildren(e4x, node, serializer, getElementsByLocalName, destinationPropertyStack, namespaces);
             }
 
-            if (e4x)
-            {
+            if (e4x) {
                 node.toEndElement((StringWriter) serializer);
-            }
-            else
-            {
+            } else {
                 ((XMLStringSerializer) serializer).endElement();
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             logError(node, e.getLocalizedMessage());
         }
     }
@@ -324,101 +258,72 @@ class XMLBuilder extends AbstractBuilder
                                  Object serializer,
                                  String getElementsByLocalName,
                                  Stack<String> destinationProperty,
-                                 Stack<PrefixMapping> namespaces)
-    {
+                                 Stack<PrefixMapping> namespaces) {
         assignIndices(node);
 
         int numCData = 0;
-        
-        for (int i = 0, count = node.getChildCount(); i < count; i++)
-        {
+
+        for (int i = 0, count = node.getChildCount(); i < count; i++) {
             Node child = (Node) node.getChildAt(i);
-            if (child instanceof CDATANode)
-            {
-            	numCData++;
+            if (child instanceof CDATANode) {
+                numCData++;
                 CDATANode cdata = (CDATANode) child;
-                
-                if (cdata.image.length() > 0)
-                {
-                    if (cdata.inCDATA)
-                    {
+
+                if (cdata.image.length() > 0) {
+                    if (cdata.inCDATA) {
                         //in CDATA Section, leave exactly as is
-                        if (e4x)
-                        {
+                        if (e4x) {
                             ((StringWriter) serializer).write("<![CDATA[" + cdata.image + "]]>");
-                        }
-                        else
-                        {
-                        	try
-                        	{
-                        		((XMLStringSerializer) serializer).writeString(cdata.image);
-                        	}
-                        	catch (IOException e)
-                            {
+                        } else {
+                            try {
+                                ((XMLStringSerializer) serializer).writeString(cdata.image);
+                            } catch (IOException e) {
                                 logError(cdata, e.getLocalizedMessage());
                             }
-                        }                        
-                    }
-                    else
-                    {
+                        }
+                    } else {
                         // We're not in CDATA section so extract bindings and cleanup binding escapes 
                         BindingExpression be = textParser.parseBindingExpression(cdata.image, cdata.beginLine);
-                        if (be != null)
-                        {
-                            if (be.isTwoWayPrimary() && !allowTwoWayBind)
-                            {
+                        if (be != null) {
+                            if (be.isTwoWayPrimary() && !allowTwoWayBind) {
                                 log(cdata, new AbstractBuilder.TwoWayBindingNotAllowed());
-                            }
-                            else
-                            {
+                            } else {
                                 be.setDestinationLValue(getElementsByLocalName + ".text()[" + (numCData - 1) + "]");
-                                be.setDestinationProperty(destinationProperty + "[" + node.getIndex() + "]" + ".text()[" + i + "]" );
+                                be.setDestinationProperty(destinationProperty + "[" + node.getIndex() + "]" + ".text()[" + i + "]");
                                 be.setDestination(xml);
                                 be.setDestinationXMLNode(true);
 
                                 xml.setHasBindings(true);
 
-                                if (e4x)
-                                {
+                                if (e4x) {
                                     be.setDestinationE4X(true);
                                     PrefixMapping.pushNamespaces(be, namespaces);
                                 }
-                                
+
                                 // Inject placeholder cdata child so we can target it 
                                 // with binding.
-                                ((StringWriter) serializer).write("<![CDATA[" +  "]]>");
+                                ((StringWriter) serializer).write("<![CDATA[" + "]]>");
                             }
-                        }
-                        else if (e4x)
-                        {
+                        } else if (e4x) {
                             ((StringWriter) serializer).write(TextParser.replaceBindingEscapesForE4X(cdata.image));
-                        }
-                        else
-                        {
+                        } else {
                             String text = TextParser.cleanupBindingEscapes(cdata.image);
                             text = TextParser.cleanupAtFunctionEscapes(text);
-                            try
-                            {
-                            	((XMLStringSerializer) serializer).writeString(text);
-                            }
-                            catch (IOException e)
-                            {
+                            try {
+                                ((XMLStringSerializer) serializer).writeString(text);
+                            } catch (IOException e) {
                                 logError(cdata, e.getLocalizedMessage());
                             }
-                        }                        
-                    }                    
+                        }
+                    }
                 }
-            }
-            else if (e4x)
-            {
+            } else if (e4x) {
                 PrefixMapping.pushNodeNamespace(child, namespaces);
-                
-                if (getElementsByLocalName != null)
-                {
+
+                if (getElementsByLocalName != null) {
                     StringBuilder e4xbuffer = new StringBuilder(getElementsByLocalName);
                     String destProp = child.getLocalPart();
-                    if (child.getNamespace().length() > 0)
-                    {
+                    if (child.getNamespace().length() > 0) {
                         PrefixMapping pm = namespaces.peek();
                         destProp = "ns" + pm.getNs() + "::" + destProp;
                     }
@@ -427,16 +332,12 @@ class XMLBuilder extends AbstractBuilder
                     destinationProperty.push(destProp);
                     processNode(e4x, child, serializer, e4xbuffer.toString(), destinationProperty, namespaces);
                     destinationProperty.pop();
-                }
-                else
-                {
+                } else {
                     processNode(e4x, child, serializer, xml.getId(), destinationProperty, namespaces);
                 }
-                
+
                 PrefixMapping.popNodeNamespace(namespaces);
-            }
-            else
-            {
+            } else {
                 String classNamespaceUtil = NameFormatter.toDot(standardDefs.CLASS_NAMESPACEUTIL);
                 document.addImport(classNamespaceUtil, node.beginLine);
 
@@ -451,30 +352,25 @@ class XMLBuilder extends AbstractBuilder
         }
     }
 
-    private QNameMap<BindingExpression> processAttributes(Node node)
-    {
+    private QNameMap<BindingExpression> processAttributes(Node node) {
         QNameMap<BindingExpression> attributeBindings = null;
 
-        for (Iterator<QName> i = node.getAttributeNames(); i != null && i.hasNext();)
-        {
+        for (Iterator<QName> i = node.getAttributeNames(); i != null && i.hasNext(); ) {
             QName qname = i.next();
             String value = (String) node.getAttributeValue(qname);
 
             BindingExpression be = textParser.parseBindingExpression(value, node.beginLine);
 
-            if (be != null)
-            {
-                if (be.isTwoWayPrimary() && !allowTwoWayBind)
-                {
+            if (be != null) {
+                if (be.isTwoWayPrimary() && !allowTwoWayBind) {
                     log(node, new AbstractBuilder.TwoWayBindingNotAllowed());
                     continue;
                 }
-                                        
-                if (attributeBindings == null)
-                {
+
+                if (attributeBindings == null) {
                     attributeBindings = new QNameMap<BindingExpression>();
                 }
-                
+
                 // C: only localPart as the key?
                 attributeBindings.put(qname, be);
                 i.remove();
@@ -486,27 +382,21 @@ class XMLBuilder extends AbstractBuilder
 
     // C: The implementation of this method depends on the implementation of app model's
     //    NamespaceUtil.getElementsByLocalName()...
-    private void assignIndices(Node parent)
-    {
+    private void assignIndices(Node parent) {
         Map<String, Integer> counts = new HashMap<String, Integer>();
 
         Integer zero = IntegerPool.getNumber(0);
 
-        for (int i = 0, count = parent.getChildCount(); i < count; i++)
-        {
+        for (int i = 0, count = parent.getChildCount(); i < count; i++) {
             Node child = (Node) parent.getChildAt(i);
-            if (child instanceof CDATANode)
-            {
+            if (child instanceof CDATANode) {
                 continue;
             }
 
-            if (!counts.containsKey(child.image))
-            {
+            if (!counts.containsKey(child.image)) {
                 counts.put(child.image, zero);
                 child.setIndex(0);
-            }
-            else
-            {
+            } else {
                 int num = counts.get(child.image).intValue() + 1;
                 counts.put(child.image, IntegerPool.getNumber(num));
                 child.setIndex(num);
@@ -514,15 +404,12 @@ class XMLBuilder extends AbstractBuilder
         }
     }
 
-    private String createExpression(Stack<String> stack)
-    {
+    private String createExpression(Stack<String> stack) {
         StringBuilder buffer = new StringBuilder();
 
-        for (int i = 0, count = stack.size(); i < count; i++)
-        {
+        for (int i = 0, count = stack.size(); i < count; i++) {
             buffer.append(stack.get(i));
-            if (i < count - 1)
-            {
+            if (i < count - 1) {
                 buffer.append(".");
             }
         }
@@ -532,17 +419,14 @@ class XMLBuilder extends AbstractBuilder
 
     // C: Not efficient... flex2.compiler.mxml.Element needs a better data structure to support
     //    SAX-style Attributes.
-    class AttributesHelper implements Attributes
-    {
-        AttributesHelper(Node node)
-        {
+    class AttributesHelper implements Attributes {
+        AttributesHelper(Node node) {
             namespaces = new String[node.getAttributeCount()];
             localParts = new String[node.getAttributeCount()];
             values = new Object[node.getAttributeCount()];
 
             Iterator names = node.getAttributeNames();
-            for (int i = 0; names != null && names.hasNext(); i++)
-            {
+            for (int i = 0; names != null && names.hasNext(); i++) {
                 flex2.compiler.util.QName qname = (flex2.compiler.util.QName) names.next();
                 namespaces[i] = qname.getNamespace();
                 localParts[i] = qname.getLocalPart();
@@ -554,49 +438,37 @@ class XMLBuilder extends AbstractBuilder
         private String[] localParts;
         private Object[] values;
 
-        public int getLength ()
-        {
+        public int getLength() {
             return values.length;
         }
 
-        public String getURI (int index)
-        {
+        public String getURI(int index) {
             return namespaces[index];
         }
 
-        public String getLocalName (int index)
-        {
+        public String getLocalName(int index) {
             return localParts[index];
         }
 
-        public String getQName (int index)
-        {
-            if ((namespaces[index] == null) || (namespaces[index].equals("")))
-            {
+        public String getQName(int index) {
+            if ((namespaces[index] == null) || (namespaces[index].equals(""))) {
                 return localParts[index];
-            }
-            else
-            {
+            } else {
                 return namespaces[index] + ":" + localParts[index];
             }
         }
 
-        public String getType (int index)
-        {
+        public String getType(int index) {
             return "CDATA";
         }
 
-        public String getValue (int index)
-        {
+        public String getValue(int index) {
             return (String) values[index];
         }
 
-        public int getIndex (String uri, String localName)
-        {
-            for (int i = 0, count = namespaces.length; i < count; i++)
-            {
-                if (namespaces[i].equals(uri) && localParts[i].equals(localName))
-                {
+        public int getIndex(String uri, String localName) {
+            for (int i = 0, count = namespaces.length; i < count; i++) {
+                if (namespaces[i].equals(uri) && localParts[i].equals(localName)) {
                     return i;
                 }
             }
@@ -604,12 +476,9 @@ class XMLBuilder extends AbstractBuilder
             return -1;
         }
 
-        public int getIndex (String qName)
-        {
-            for (int i = 0, count = namespaces.length; i < count; i++)
-            {
-                if (getQName(i).equals(qName))
-                {
+        public int getIndex(String qName) {
+            for (int i = 0, count = namespaces.length; i < count; i++) {
+                if (getQName(i).equals(qName)) {
                     return i;
                 }
             }
@@ -617,22 +486,17 @@ class XMLBuilder extends AbstractBuilder
             return -1;
         }
 
-        public String getType (String uri, String localName)
-        {
+        public String getType(String uri, String localName) {
             return "CDATA";
         }
 
-        public String getType (String qName)
-        {
+        public String getType(String qName) {
             return "CDATA";
         }
 
-        public String getValue (String uri, String localName)
-        {
-            for (int i = 0, count = namespaces.length; i < count; i++)
-            {
-                if (namespaces[i].equals(uri) && localParts[i].equals(localName))
-                {
+        public String getValue(String uri, String localName) {
+            for (int i = 0, count = namespaces.length; i < count; i++) {
+                if (namespaces[i].equals(uri) && localParts[i].equals(localName)) {
                     return (String) values[i];
                 }
             }
@@ -640,12 +504,9 @@ class XMLBuilder extends AbstractBuilder
             return null;
         }
 
-        public String getValue (String qName)
-        {
-            for (int i = 0, count = namespaces.length; i < count; i++)
-            {
-                if (getQName(i).equals(qName))
-                {
+        public String getValue(String qName) {
+            for (int i = 0, count = namespaces.length; i < count; i++) {
+                if (getQName(i).equals(qName)) {
                     return (String) values[i];
                 }
             }
@@ -654,33 +515,27 @@ class XMLBuilder extends AbstractBuilder
         }
     }
 
-    public static class MixedContent extends CompilerWarning
-    {
+    public static class MixedContent extends CompilerWarning {
         private static final long serialVersionUID = 8086425515879147830L;
         public String image;
 
-        public MixedContent(String image)
-        {
+        public MixedContent(String image) {
             this.image = image;
         }
     }
 
-    public static class OnlyOneRootTag extends CompilerError
-    {
+    public static class OnlyOneRootTag extends CompilerError {
         private static final long serialVersionUID = 5956735990753539012L;
 
-        public OnlyOneRootTag()
-        {
+        public OnlyOneRootTag() {
             super();
         }
     }
 
-    public static class RequireXMLContent extends CompilerError
-    {
+    public static class RequireXMLContent extends CompilerError {
         private static final long serialVersionUID = -2844205717905239917L;
 
-        public RequireXMLContent()
-        {
+        public RequireXMLContent() {
             super();
         }
     }

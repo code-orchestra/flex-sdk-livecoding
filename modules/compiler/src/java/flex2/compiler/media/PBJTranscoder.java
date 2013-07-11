@@ -31,24 +31,21 @@ import flex2.compiler.util.NameFormatter;
 
 /**
  * Transcodes a compiled PBJ shader file to an ActionScript class.
- * 
+ *
  * @author Peter Farland
  */
-public class PBJTranscoder extends AbstractTranscoder
-{
+public class PBJTranscoder extends AbstractTranscoder {
     private DataTranscoder dataTranscoder = new DataTranscoder();
 
-    public PBJTranscoder()
-    {
+    public PBJTranscoder() {
         super(new String[]{MimeMappings.PBJ}, null, true);
     }
 
     @Override
     public TranscodingResults doTranscode(PathResolver context,
-            SymbolTable symbolTable, Map<String, Object> args,
-            String className, boolean generateSource)
-            throws TranscoderException
-    {
+                                          SymbolTable symbolTable, Map<String, Object> args,
+                                          String className, boolean generateSource)
+            throws TranscoderException {
         VirtualFile source = resolveSource(context, args);
 
         // Create ByteArray subclass
@@ -72,8 +69,7 @@ public class PBJTranscoder extends AbstractTranscoder
     }
 
     @Override
-    public boolean isSupportedAttribute(String attr)
-    {
+    public boolean isSupportedAttribute(String attr) {
         return false;
     }
 
@@ -82,12 +78,12 @@ public class PBJTranscoder extends AbstractTranscoder
      * <pre>
      * package mypackage
      * {
-     * 
+     *
      * import flash.display.Shader;
      * import flash.utils.ByteArray;
      * import mx.core.IFlexAsset;
      * import mypackage.MyShaderAssetByteArray;
-     * 
+     *
      * public class MyShaderAsset extends Shader implements IFlexAsset
      * {
      *     public function MyShaderAsset()
@@ -98,12 +94,11 @@ public class PBJTranscoder extends AbstractTranscoder
      * }
      * }
      * </pre>
-     * 
+     *
      * @param className
      * @param results
      */
-    private String generateSource(String fullClassName, String byteArrayClassName)
-    {
+    private String generateSource(String fullClassName, String byteArrayClassName) {
         String packageName = NameFormatter.retrievePackageName(fullClassName);
         String className = NameFormatter.retrieveClassName(fullClassName);
 

@@ -32,41 +32,36 @@ import java.util.HashSet;
  * namespace.  It is commonly contained within a &lt;Library&gt; tag
  * and has one attribute 'name' as an identifier.  At most, one child
  * may be specified (enforced downstream).
- * 
+ *
  * @author Peter Farland
  */
-public class DefinitionNode extends Node
-{
+public class DefinitionNode extends Node {
     public static final String DEFINITION_NAME_ATTR = "name";
-    
+
     public static final Set<QName> attributes;
-    static
-    {
+
+    static {
         attributes = new HashSet<QName>();
         attributes.add(new QName("", DEFINITION_NAME_ATTR));
     }
 
     private QName name;
 
-    public DefinitionNode(String uri, String localName, int size)
-    {
+    public DefinitionNode(String uri, String localName, int size) {
         super(uri, localName, size);
     }
 
-    public void analyze(Analyzer analyzer)
-    {
+    public void analyze(Analyzer analyzer) {
         analyzer.prepare(this);
         analyzer.analyze(this);
     }
 
-    public void setName(QName name)
-    {
+    public void setName(QName name) {
         assert this.name == null;
         this.name = name;
     }
 
-    public QName getName()
-    {
+    public QName getName() {
         assert this.name != null;
         return name;
     }

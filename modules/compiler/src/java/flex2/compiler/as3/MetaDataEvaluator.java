@@ -28,20 +28,16 @@ import macromedia.asc.util.Context;
 /**
  * This class handles reporting an error for misplaced metadata.
  */
-public class MetaDataEvaluator extends EvaluatorAdapter
-{
-	public synchronized Value evaluate(Context context, MetaDataNode metaDataNode)
-	{
-        if (metaDataNode.def == null)
-        {
+public class MetaDataEvaluator extends EvaluatorAdapter {
+    public synchronized Value evaluate(Context context, MetaDataNode metaDataNode) {
+        if (metaDataNode.def == null) {
             context.localizedError2(metaDataNode.pos(), new MetaDataRequiresDefinition());
         }
 
         return null;
     }
 
-    public static class MetaDataRequiresDefinition extends CompilerError
-    {
+    public static class MetaDataRequiresDefinition extends CompilerError {
         private static final long serialVersionUID = -3769488225390575289L;
     }
 }

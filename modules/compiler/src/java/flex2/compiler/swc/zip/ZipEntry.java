@@ -33,7 +33,7 @@ import java.util.Vector;
 public class ZipEntry extends java.util.zip.ZipEntry implements Cloneable {
 
     private static final int PLATFORM_UNIX = 3;
-    private static final int PLATFORM_FAT  = 0;
+    private static final int PLATFORM_FAT = 0;
 
     private int internalAttributes = 0;
     private int platform = PLATFORM_FAT;
@@ -137,7 +137,7 @@ public class ZipEntry extends java.util.zip.ZipEntry implements Cloneable {
             @SuppressWarnings("unchecked")
             final Vector<ZipExtraField> tmpExtraFields = (Vector<ZipExtraField>) extraFields.clone();
             e.extraFields = tmpExtraFields;
-            
+
             e.setInternalAttributes(getInternalAttributes());
             e.setExternalAttributes(getExternalAttributes());
             e.setExtraFields(getExtraFields());
@@ -194,10 +194,10 @@ public class ZipEntry extends java.util.zip.ZipEntry implements Cloneable {
      */
     public void setUnixMode(int mode) {
         setExternalAttributes((mode << 16)
-                              // MS-DOS read-only attribute
-                              | ((mode & 0200) == 0 ? 1 : 0)
-                              // MS-DOS directory flag
-                              | (isDirectory() ? 0x10 : 0));
+                // MS-DOS read-only attribute
+                | ((mode & 0200) == 0 ? 1 : 0)
+                // MS-DOS directory flag
+                | (isDirectory() ? 0x10 : 0));
         platform = PLATFORM_UNIX;
     }
 
@@ -215,8 +215,7 @@ public class ZipEntry extends java.util.zip.ZipEntry implements Cloneable {
      * by&quot; part of the central file header.
      *
      * @return 0 (MS-DOS FAT) unless {@link #setUnixMode setUnixMode}
-     * has been called, in which case 3 (Unix) will be returned.
-     *
+     *         has been called, in which case 3 (Unix) will be returned.
      * @since Ant 1.5.2
      */
     public int getPlatform() {
@@ -347,7 +346,7 @@ public class ZipEntry extends java.util.zip.ZipEntry implements Cloneable {
 
     /**
      * Make this class work in JDK 1.1 like a 1.2 class.
-     *
+     * <p/>
      * <p>This either stores the size for later usage or invokes
      * setCompressedSize via reflection.</p>
      *
@@ -434,7 +433,7 @@ public class ZipEntry extends java.util.zip.ZipEntry implements Cloneable {
             Throwable nested = ite.getTargetException();
             throw new SwcException.CouldNotSetZipSize(ze.getName(), nested.getMessage());
         } catch (Throwable other) {
-	        throw new SwcException.CouldNotSetZipSize(ze.getName(), other.getMessage());
+            throw new SwcException.CouldNotSetZipSize(ze.getName(), other.getMessage());
         }
     }
 
@@ -449,8 +448,8 @@ public class ZipEntry extends java.util.zip.ZipEntry implements Cloneable {
                 triedToGetMethod = true;
                 try {
                     setCompressedSizeMethod =
-                        java.util.zip.ZipEntry.class.getMethod("setCompressedSize",
-                                                               new Class[] {Long.TYPE});
+                            java.util.zip.ZipEntry.class.getMethod("setCompressedSize",
+                                    new Class[]{Long.TYPE});
                 } catch (NoSuchMethodException nse) {
                 }
             }

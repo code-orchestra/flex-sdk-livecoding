@@ -32,8 +32,7 @@ import flash.swf.tags.DefineTag;
  *
  * @author Pete Farland
  */
-public class FXGSymbolClass
-{
+public class FXGSymbolClass {
     private static final String DEFAULT_PACKAGE = "";
     private static final char PACKAGE_SEPARATOR = '.';
 
@@ -48,11 +47,10 @@ public class FXGSymbolClass
      * An FXG node may have child nodes that also require a symbol class
      * mapping that will be included along with the parent symbol for the
      * compilation unit.
-     * 
+     *
      * @param spriteClass - an additional symbol class
      */
-    public void addAdditionalSymbolClass(FXGSymbolClass symbolClass)
-    {
+    public void addAdditionalSymbolClass(FXGSymbolClass symbolClass) {
         if (additionalSymbolClasses == null)
             additionalSymbolClasses = new ArrayList<FXGSymbolClass>();
 
@@ -61,18 +59,16 @@ public class FXGSymbolClass
 
     /**
      * @return the list of additional symbol classes to be included with this
-     * symbol class
+     *         symbol class
      */
-    public List<FXGSymbolClass> getAdditionalSymbolClasses()
-    {
+    public List<FXGSymbolClass> getAdditionalSymbolClasses() {
         return additionalSymbolClasses;
     }
 
     /**
      * @return the qualified class name of the generated ActionScript class
      */
-    public String getQualifiedClassName()
-    {
+    public String getQualifiedClassName() {
         if (packageName != null && packageName != DEFAULT_PACKAGE)
             return packageName + PACKAGE_SEPARATOR + className;
 
@@ -82,8 +78,7 @@ public class FXGSymbolClass
     /**
      * @return the package name of the generated ActionScript class
      */
-    public String getPackageName()
-    {
+    public String getPackageName() {
         if (packageName == null)
             return DEFAULT_PACKAGE;
 
@@ -93,56 +88,49 @@ public class FXGSymbolClass
     /**
      * @param packageName - the package name of the generated ActionScript class
      */
-    public void setPackageName(String value)
-    {
+    public void setPackageName(String value) {
         packageName = value;
     }
 
     /**
      * @return the class name of the generated ActionScript class
      */
-    public String getClassName()
-    {
+    public String getClassName() {
         return className;
     }
 
     /**
      * @param value - the class name of the generated ActionScript class
      */
-    public void setClassName(String value)
-    {
+    public void setClassName(String value) {
         className = value;
     }
 
     /**
      * @return - the source code of the generated ActionScript class
      */
-    public String getGeneratedSource()
-    {
+    public String getGeneratedSource() {
         return generatedSource;
     }
 
     /**
      * @param value - the source code of the generated ActionScript class
      */
-    public void setGeneratedSource(String value)
-    {
+    public void setGeneratedSource(String value) {
         this.generatedSource = value;
     }
 
     /**
      * @return the SWF symbol
      */
-    public DefineTag getSymbol()
-    {
+    public DefineTag getSymbol() {
         return symbol;
     }
 
     /**
      * @param value - the SWF symbol
      */
-    public void setSymbol(DefineTag value)
-    {
+    public void setSymbol(DefineTag value) {
         this.symbol = value;
     }
 

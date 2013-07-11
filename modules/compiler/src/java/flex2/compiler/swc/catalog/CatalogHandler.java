@@ -28,53 +28,45 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author Brian Deitte
  */
-public class CatalogHandler extends DefaultHandler
-{
+public class CatalogHandler extends DefaultHandler {
     private ReadContext readContext = new ReadContext();
     private CatalogReader reader;
 
-    public CatalogHandler(CatalogReader reader)
-    {
+    public CatalogHandler(CatalogReader reader) {
         this.reader = reader;
     }
 
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
-    {
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         readContext.setCurrent(qName, attributes);
 
         CatalogReadElement current = readContext.getCurrentParent();
-        if (current == null)
-        {
+        if (current == null) {
             current = reader.defaultReadElement;
         }
         current = current.readElement(readContext);
-        if (current != null)
-        {
+        if (current != null) {
             readContext.setCurrentParent(current, localName);
         }
     }
 
-    public void endElement( String uri, String localName, String qName )
-        throws SAXException
-    {
-        readContext.setCurrent(qName, null);        
+    public void endElement(String uri, String localName, String qName)
+            throws SAXException {
+        readContext.setCurrent(qName, null);
         CatalogReadElement current = readContext.getCurrentParent();
-        if (current != null)
-        {
+        if (current != null) {
             current.endElement(readContext);
         }
         readContext.clearCurrentParent(qName);
     }
 
-    public void clear()
-    {
+    public void clear() {
         readContext.clear();
     }
 
     // TODO: use below?
 
     /*public void warning (SAXParseException e)
-	throws SAXException
+    throws SAXException
     {
         System.err.println("WARNING: " + e);
         e.printStackTrace();

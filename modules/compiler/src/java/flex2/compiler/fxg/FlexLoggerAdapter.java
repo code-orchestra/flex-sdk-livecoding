@@ -27,39 +27,28 @@ import flex2.compiler.util.ThreadLocalToolkit;
 
 /**
  * An adapter to bridge the FXGUtils and Flex compiler logging systems.
- * 
+ *
  * @author Peter Farland
  */
-public class FlexLoggerAdapter extends AbstractLogger
-{
-    public FlexLoggerAdapter(int level)
-    {
+public class FlexLoggerAdapter extends AbstractLogger {
+    public FlexLoggerAdapter(int level) {
         super(level);
     }
 
-    public void log(int level, Object message, Throwable t, String location, int line, int column, Object... arguments)
-    {
+    public void log(int level, Object message, Throwable t, String location, int line, int column, Object... arguments) {
         Logger delegateLogger = ThreadLocalToolkit.getLogger();
-        if (delegateLogger != null)
-        {
+        if (delegateLogger != null) {
             String messageString = null;
             if (message != null)
                 messageString = getLocalizedMessage(message.toString(), arguments);
 
-            if (level == FXGLogger.ERROR)
-            {
+            if (level == FXGLogger.ERROR) {
                 delegateLogger.logError(location, line, column, messageString);
-            }
-            else if (level == FXGLogger.WARN)
-            {
+            } else if (level == FXGLogger.WARN) {
                 delegateLogger.logWarning(location, line, column, messageString);
-            }
-            else if (level == FXGLogger.INFO)
-            {
+            } else if (level == FXGLogger.INFO) {
                 delegateLogger.logInfo(location, line, column, messageString);
-            }
-            else if (level == FXGLogger.DEBUG)
-            {
+            } else if (level == FXGLogger.DEBUG) {
                 delegateLogger.logDebug(location, line, column, messageString);
             }
         }

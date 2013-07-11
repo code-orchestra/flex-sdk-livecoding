@@ -22,6 +22,7 @@ package flex2.compiler.mxml;
 import flex2.compiler.ILocalizableMessage;
 import flex2.compiler.Logger;
 import flex2.compiler.util.AbstractLogAdapter;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,8 +35,7 @@ import java.util.Map;
  *
  * @author Paul Reilly
  */
-public class AbstractSyntaxTreeLogAdapter extends AbstractLogAdapter
-{
+public class AbstractSyntaxTreeLogAdapter extends AbstractLogAdapter {
     /**
      * Some ASC errors and warnings, like those caused by data binding
      * expressions, will get reported twice, so we store them in the
@@ -44,77 +44,63 @@ public class AbstractSyntaxTreeLogAdapter extends AbstractLogAdapter
      */
     private Map<String, String> messages = new HashMap<String, String>();
 
-    public AbstractSyntaxTreeLogAdapter(Logger original)
-    {
+    public AbstractSyntaxTreeLogAdapter(Logger original) {
         super(original);
     }
 
-    public void log(ILocalizableMessage m, String source)
-    {
+    public void log(ILocalizableMessage m, String source) {
         original.log(m);
     }
 
-    public void logWarning(String path, int line, String warning, int errorCode)
-    {
+    public void logWarning(String path, int line, String warning, int errorCode) {
         String key = path + line;
 
-        if (!warning.equals(messages.get(key)))
-        {
+        if (!warning.equals(messages.get(key))) {
             original.logWarning(path, line, warning, errorCode);
             messages.put(key, warning);
         }
     }
 
-    public void logWarning(String path, int line, int col, String warning, String source)
-    {
+    public void logWarning(String path, int line, int col, String warning, String source) {
         String key = path + line;
 
-        if (!warning.equals(messages.get(key)))
-        {
+        if (!warning.equals(messages.get(key))) {
             original.logWarning(path, line, warning);
             messages.put(key, warning);
         }
     }
 
-    public void logWarning(String path, int line, int col, String warning, String source, int errorCode)
-    {
+    public void logWarning(String path, int line, int col, String warning, String source, int errorCode) {
         String key = path + line;
 
-        if (!warning.equals(messages.get(key)))
-        {
+        if (!warning.equals(messages.get(key))) {
             original.logWarning(path, line, warning, errorCode);
             messages.put(key, warning);
         }
     }
 
-    public void logError(String path, int line, String error, int errorCode)
-    {
+    public void logError(String path, int line, String error, int errorCode) {
         String key = path + line;
 
-        if (!error.equals(messages.get(key)))
-        {
+        if (!error.equals(messages.get(key))) {
             original.logError(path, line, error, errorCode);
             messages.put(key, error);
         }
     }
 
-    public void logError(String path, int line, int col, String error, String source)
-    {
+    public void logError(String path, int line, int col, String error, String source) {
         String key = path + line;
 
-        if (!error.equals(messages.get(key)))
-        {
+        if (!error.equals(messages.get(key))) {
             original.logError(path, line, error);
             messages.put(key, error);
         }
     }
 
-    public void logError(String path, int line, int col, String error, String source, int errorCode)
-    {
+    public void logError(String path, int line, int col, String error, String source, int errorCode) {
         String key = path + line;
 
-        if (!error.equals(messages.get(key)))
-        {
+        if (!error.equals(messages.get(key))) {
             original.logError(path, line, error, errorCode);
             messages.put(key, error);
         }

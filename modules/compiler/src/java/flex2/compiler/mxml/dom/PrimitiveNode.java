@@ -34,50 +34,42 @@ import java.util.Set;
  *
  * @author Clement Wong
  */
-public abstract class PrimitiveNode extends Node
-{
-	public static final Set<QName> attributes;
+public abstract class PrimitiveNode extends Node {
+    public static final Set<QName> attributes;
 
-	static
-	{
-		attributes = new HashSet<QName>();
-		attributes.add(new QName("", StandardDefs.PROP_ID));
-		attributes.add(new QName("", StandardDefs.PROP_SOURCE));
-		attributes.add(new QName("", StandardDefs.PROP_INCLUDE_STATES));
-		attributes.add(new QName("", StandardDefs.PROP_EXCLUDE_STATES));
-		attributes.add(new QName("", StandardDefs.PROP_ITEM_CREATION_POLICY));
-		attributes.add(new QName("", StandardDefs.PROP_ITEM_DESTRUCTION_POLICY));
-	}
+    static {
+        attributes = new HashSet<QName>();
+        attributes.add(new QName("", StandardDefs.PROP_ID));
+        attributes.add(new QName("", StandardDefs.PROP_SOURCE));
+        attributes.add(new QName("", StandardDefs.PROP_INCLUDE_STATES));
+        attributes.add(new QName("", StandardDefs.PROP_EXCLUDE_STATES));
+        attributes.add(new QName("", StandardDefs.PROP_ITEM_CREATION_POLICY));
+        attributes.add(new QName("", StandardDefs.PROP_ITEM_DESTRUCTION_POLICY));
+    }
 
-	PrimitiveNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
+    PrimitiveNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
 
-	private CDATANode sourceFile;
+    private CDATANode sourceFile;
 
-	public void setSourceFile(CDATANode cdata)
-	{
-		sourceFile = cdata;
-	}
+    public void setSourceFile(CDATANode cdata) {
+        sourceFile = cdata;
+    }
 
-	public CDATANode getSourceFile()
-	{
-		return sourceFile;
-	}
+    public CDATANode getSourceFile() {
+        return sourceFile;
+    }
 
-	public int getChildCount()
-	{
-		return sourceFile != null ? 1 : super.getChildCount();
-	}
+    public int getChildCount() {
+        return sourceFile != null ? 1 : super.getChildCount();
+    }
 
-	public Token getChildAt(int index)
-	{
-		return sourceFile != null && index == 0 ? sourceFile : super.getChildAt(index);
-	}
+    public Token getChildAt(int index) {
+        return sourceFile != null && index == 0 ? sourceFile : super.getChildAt(index);
+    }
 
-	public List<Token> getChildren()
-	{
-		return sourceFile != null ? Collections.<Token>singletonList(sourceFile) : super.getChildren();
-	}
+    public List<Token> getChildren() {
+        return sourceFile != null ? Collections.<Token>singletonList(sourceFile) : super.getChildren();
+    }
 }

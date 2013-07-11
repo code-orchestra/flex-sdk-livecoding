@@ -26,25 +26,21 @@ import flex2.compiler.mxml.reflect.Type;
  * This class represents an initializer for a property on a dynamic
  * object.
  */
-public class DynamicPropertyInitializer extends NamedInitializer
-{
-	protected final Type type;
-	protected final String name;
+public class DynamicPropertyInitializer extends NamedInitializer {
+    protected final Type type;
+    protected final String name;
 
-	public DynamicPropertyInitializer(Type type, String name, Object value, int line, StandardDefs defs)
-	{
-		super(value, line, defs);
-		this.type = type;
-		this.name = name;
-	}
+    public DynamicPropertyInitializer(Type type, String name, Object value, int line, StandardDefs defs) {
+        super(value, line, defs);
+        this.type = type;
+        this.name = name;
+    }
 
-	public String getName()
-	{
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Type getLValueType()
-	{
-		return type;
-	}
+    public Type getLValueType() {
+        return type;
+    }
 }

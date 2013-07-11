@@ -26,13 +26,11 @@ import flex2.compiler.util.CompilerMessage.CompilerWarning;
  *
  * @author Paul Reilly
  */
-public class SelectorTypeNotSupported extends CompilerWarning
-{
+public class SelectorTypeNotSupported extends CompilerWarning {
     private static final long serialVersionUID = 4435310784163638098L;
     public String selector;
 
-    public SelectorTypeNotSupported(String path, int line, String selector)
-    {
+    public SelectorTypeNotSupported(String path, int line, String selector) {
         this.path = path;
         this.line = line;
         this.selector = selector;

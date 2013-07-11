@@ -33,17 +33,16 @@ import java.util.Map;
  * @see flex2.compiler.abc.Variable#getMetaData()
  * @see flex2.compiler.abc.Variable#getMetaData(String)
  */
-public interface MetaData
-{
-	String getID();
+public interface MetaData {
+    String getID();
 
-	String getKey(int index);
+    String getKey(int index);
 
-	String getValue(int index);
+    String getValue(int index);
 
-	String getValue(String name);
+    String getValue(String name);
 
     Map getValueMap();
 
-	int count();
+    int count();
 }

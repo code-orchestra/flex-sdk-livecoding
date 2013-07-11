@@ -22,8 +22,7 @@ package flex2.compiler.mxml.rep;
 /**
  * This class represents a method instance.
  */
-public class Method
-{
+public class Method {
     public String name;
     public EventHandler faultHandler;
     public EventHandler resultHandler;
@@ -34,18 +33,15 @@ public class Method
 
     public Method(String name, String faultHandlerText, String resultHandlerText,
                   int concurrency, int xmlLineNumber, String showBusyCursor,
-                  boolean makeObjectsBindable)
-    {
+                  boolean makeObjectsBindable) {
         this.name = name;
 
-        if (faultHandlerText != null)
-        {
+        if (faultHandlerText != null) {
             faultHandler = new EventHandler(null, null, faultHandlerText);
             faultHandler.setXmlLineNumber(xmlLineNumber);
         }
 
-        if (resultHandlerText != null)
-        {
+        if (resultHandlerText != null) {
             resultHandler = new EventHandler(null, null, resultHandlerText);
             resultHandler.setXmlLineNumber(xmlLineNumber);
         }

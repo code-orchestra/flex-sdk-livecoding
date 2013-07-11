@@ -37,81 +37,69 @@ import java.util.List;
 /**
  * This class represents an initializer for an event.
  */
-public class EventInitializer implements Initializer
-{
+public class EventInitializer implements Initializer {
     private static final String EVENT = "event".intern();
 
-	private final EventHandler handler;
+    private final EventHandler handler;
 
-	public EventInitializer(EventHandler handler)
-	{
-		this.handler = handler;
-	}
-
-	public String getName()
-	{
-		return handler.getName();
-	}
-
-	public Type getLValueType()
-	{
-		return handler.getType();
-	}
-
-	public int getLineRef()
-	{
-		return handler.getXmlLineNumber();
-	}
-	
-	public String getHandlerText()
-	{
-		return handler.getEventHandlerText();
-	}
-
-	public boolean isBinding()
-	{
-		return false;
-	}
-	
-	public boolean isStateSpecific()
-	{
-		return false;
-	}
-
-	public String getValueExpr()
-	{
-		return handler.getDocumentFunctionName();
-	}
-
-	/**
-	 *
-	 */
-	public Node generateValueExpr(NodeFactory nodeFactory, HashSet<String> configNamespaces, boolean generateDocComments)
-    {
-        return AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory,
-                                                             handler.getDocumentFunctionName(),
-                                                             true);
+    public EventInitializer(EventHandler handler) {
+        this.handler = handler;
     }
 
-	public String getAssignExpr(String lvalueBase)
-	{
-		return lvalueBase + ".addEventListener(" + TextGen.quoteWord(getName()) + ", " + getValueExpr() + ")";
-	}
+    public String getName() {
+        return handler.getName();
+    }
+
+    public Type getLValueType() {
+        return handler.getType();
+    }
+
+    public int getLineRef() {
+        return handler.getXmlLineNumber();
+    }
+
+    public String getHandlerText() {
+        return handler.getEventHandlerText();
+    }
+
+    public boolean isBinding() {
+        return false;
+    }
+
+    public boolean isStateSpecific() {
+        return false;
+    }
+
+    public String getValueExpr() {
+        return handler.getDocumentFunctionName();
+    }
+
+    /**
+     *
+     */
+    public Node generateValueExpr(NodeFactory nodeFactory, HashSet<String> configNamespaces, boolean generateDocComments) {
+        return AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory,
+                handler.getDocumentFunctionName(),
+                true);
+    }
+
+    public String getAssignExpr(String lvalueBase) {
+        return lvalueBase + ".addEventListener(" + TextGen.quoteWord(getName()) + ", " + getValueExpr() + ")";
+    }
 
     // intern all identifier constants
     private static final String ADD_EVENT_LISTENER = "addEventListener".intern();
 
-	public StatementListNode generateAssignExpr(NodeFactory nodeFactory, HashSet<String> configNamespaces,
+    public StatementListNode generateAssignExpr(NodeFactory nodeFactory, HashSet<String> configNamespaces,
                                                 boolean generateDocComments, StatementListNode statementList,
-                                                Node lvalueBase)
-    {
+                                                Node lvalueBase) {
         IdentifierNode identifier = nodeFactory.identifier(ADD_EVENT_LISTENER, false);
         LiteralStringNode literalString = nodeFactory.literalString(getName());
         ArgumentListNode argumentList = nodeFactory.argumentList(null, literalString);
         argumentList = nodeFactory.argumentList(argumentList, generateValueExpr(nodeFactory, configNamespaces,
-                                                                                generateDocComments));
+                generateDocComments));
         CallExpressionNode callExpression =
-            (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
+                (CallExpressionNode) nodeFactory.callExpression(identifier, argumentList);
         callExpression.setRValue(false);
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(lvalueBase, callExpression);
         ListNode list = nodeFactory.list(null, memberExpression);
@@ -119,44 +107,39 @@ public class EventInitializer implements Initializer
         return nodeFactory.statementList(statementList, expressionStatement);
     }
 
-	public boolean hasDefinition()
-	{
-		return true;
-	}
+    public boolean hasDefinition() {
+        return true;
+    }
 
-	public Iterator getDefinitionsIterator()
-	{
-		return new SingletonIterator(getDefinitionBody());
-	}
+    public Iterator getDefinitionsIterator() {
+        return new SingletonIterator(getDefinitionBody());
+    }
 
-	private CodeFragmentList getDefinitionBody()
-	{
-		int line = getLineRef();
-		CodeFragmentList list = new CodeFragmentList();
+    private CodeFragmentList getDefinitionBody() {
+        int line = getLineRef();
+        CodeFragmentList list = new CodeFragmentList();
 
-		//	TODO public only for UIObjectDescriptor, which takes names rather than function refs
-		list.add("/**", line);
-		list.add(" * @private", line);
-		list.add(" **/", line);
-		list.add("public function ", handler.getDocumentFunctionName(), "(event:", NameFormatter.toDot(handler.getType().getName()), "):void", line);
-		list.add("{", line);
-		list.add("\t", handler.getEventHandlerText(), line);
-		list.add("}", line);
+        //	TODO public only for UIObjectDescriptor, which takes names rather than function refs
+        list.add("/**", line);
+        list.add(" * @private", line);
+        list.add(" **/", line);
+        list.add("public function ", handler.getDocumentFunctionName(), "(event:", NameFormatter.toDot(handler.getType().getName()), "):void", line);
+        list.add("{", line);
+        list.add("\t", handler.getEventHandlerText(), line);
+        list.add("}", line);
 
-		return list;
-	}
+        return list;
+    }
 
-	/**
-	 *
-	 */
+    /**
+     *
+     */
     public StatementListNode generateDefinitions(Context context, HashSet<String> configNamespaces,
-                                                 boolean generateDocComments, StatementListNode statementList)
-    {
+                                                 boolean generateDocComments, StatementListNode statementList) {
         StatementListNode result = statementList;
         NodeFactory nodeFactory = context.getNodeFactory();
 
-        if (generateDocComments)
-        {
+        if (generateDocComments) {
             DocCommentNode docComment = AbstractSyntaxTreeUtil.generatePrivateDocComment(nodeFactory);
             result = nodeFactory.statementList(result, docComment);
         }
@@ -176,30 +159,28 @@ public class EventInitializer implements Initializer
         String text = handler.getEventHandlerText();
         int xmlLineNumber = handler.getXmlLineNumber();
         List<Node> list =
-            AbstractSyntaxTreeUtil.parseExpression(context, configNamespaces, text,
-                                                   xmlLineNumber, generateDocComments);
+                AbstractSyntaxTreeUtil.parseExpression(context, configNamespaces, text,
+                        xmlLineNumber, generateDocComments);
         Iterator<Node> nodeIterator = list.iterator();
 
-        while (nodeIterator.hasNext())
-        {
+        while (nodeIterator.hasNext()) {
             Node node = nodeIterator.next();
             functionStatementList = nodeFactory.statementList(functionStatementList, node);
         }
 
         int position = AbstractSyntaxTreeUtil.lineNumberToPosition(nodeFactory, getLineRef());
-        
+
         FunctionCommonNode functionCommon = nodeFactory.functionCommon(context, null, functionSignature,
-                                                                       functionStatementList, position);
+                functionStatementList, position);
         functionCommon.setUserDefinedBody(true);
 
-        if (functionStatementList != null)
-        {
+        if (functionStatementList != null) {
             ReturnStatementNode returnStatement = (ReturnStatementNode) functionStatementList.items.last();
             returnStatement.setPositionTerminal(position);
         }
 
         FunctionDefinitionNode functionDefinition =
-            nodeFactory.functionDefinition(context, attributeList, functionName, functionCommon);
+                nodeFactory.functionDefinition(context, attributeList, functionName, functionCommon);
         result = nodeFactory.statementList(result, functionDefinition);
 
         return result;

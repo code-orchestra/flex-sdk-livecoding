@@ -20,11 +20,13 @@
 package flex2.compiler.as3.binding;
 
 import flex2.compiler.mxml.rep.BindingExpression;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
 import macromedia.asc.parser.ArgumentListNode;
 
 /**
@@ -32,30 +34,26 @@ import macromedia.asc.parser.ArgumentListNode;
  *
  * @author Paul Reilly
  */
-public abstract class EvaluationWatcher extends Watcher
-{
+public abstract class EvaluationWatcher extends Watcher {
     private ArgumentListNode args;
     private BindingExpression bindingExpression;
     private Watcher parentWatcher;
 
-    public EvaluationWatcher(int id, BindingExpression bindingExpression, ArgumentListNode args)
-    {
+    public EvaluationWatcher(int id, BindingExpression bindingExpression, ArgumentListNode args) {
         super(id);
         this.bindingExpression = bindingExpression;
-        this.args = args;        
+        this.args = args;
     }
 
-    public String getEvaluationPart()
-    {
+    public String getEvaluationPart() {
         String result = "";
 
-        if (args != null)
-        {
+        if (args != null) {
             StringWriter stringWriter = new StringWriter();
             PrintWriter printWriter = new PrintWriter(stringWriter);
 
             PrefixedPrettyPrinter prettyPrinter = new PrefixedPrettyPrinter("target", printWriter);
-        
+
             prettyPrinter.evaluate(null, args);
             result = stringWriter.toString();
         }
@@ -63,23 +61,19 @@ public abstract class EvaluationWatcher extends Watcher
         return result;
     }
 
-    public boolean shouldWriteSelf()
-    {
+    public boolean shouldWriteSelf() {
         return getChildren().size() > 0;
     }
 
-    public BindingExpression getBindingExpression()
-    {
+    public BindingExpression getBindingExpression() {
         return bindingExpression;
     }
 
-    public Watcher getParentWatcher()
-    {
+    public Watcher getParentWatcher() {
         return parentWatcher;
     }
 
-    public void setParentWatcher(Watcher parentWatcher)
-    {
+    public void setParentWatcher(Watcher parentWatcher) {
         this.parentWatcher = parentWatcher;
     }
 }

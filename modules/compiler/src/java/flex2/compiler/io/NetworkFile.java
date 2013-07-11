@@ -30,121 +30,101 @@ import java.net.URLConnection;
  *
  * @author Clement Wong
  */
-public class NetworkFile implements VirtualFile
-{
-	public NetworkFile(URL u) throws IOException
-	{
-		name = u.toExternalForm();
-		conn = u.openConnection();
-	}
+public class NetworkFile implements VirtualFile {
+    public NetworkFile(URL u) throws IOException {
+        name = u.toExternalForm();
+        conn = u.openConnection();
+    }
 
-	private String name;
-	private URLConnection conn;
+    private String name;
+    private URLConnection conn;
 
-	/**
-	 * Return name... It could be canonical path name, URL, etc. But it must be unique among all the files
-	 * processed by the compiler...
-	 *
-	 * The compiler should not use this to get... e.g. parent path... There is no guarantee that this returns
-	 * a pathname even though the underlying implementation deals with files...
-	 */
-	public String getName()
-	{
-		return name;
-	}
+    /**
+     * Return name... It could be canonical path name, URL, etc. But it must be unique among all the files
+     * processed by the compiler...
+     * <p/>
+     * The compiler should not use this to get... e.g. parent path... There is no guarantee that this returns
+     * a pathname even though the underlying implementation deals with files...
+     */
+    public String getName() {
+        return name;
+    }
 
-	public String getNameForReporting()
-	{
-		return getName();
-	}
+    public String getNameForReporting() {
+        return getName();
+    }
 
-	public String getURL()
-	{
-		return name;
-	}
+    public String getURL() {
+        return name;
+    }
 
-	public String getParent()
-	{
-		return null;
-	}
+    public String getParent() {
+        return null;
+    }
 
-    public boolean isDirectory()
-    {
+    public boolean isDirectory() {
         return false;
     }
 
     /**
-	 * Return file size...
-	 */
-	public long size()
-	{
-		return conn.getContentLength();
-	}
+     * Return file size...
+     */
+    public long size() {
+        return conn.getContentLength();
+    }
 
-	/**
-	 * Return mime type
-	 */
-	public String getMimeType()
-	{
-		return conn.getContentType();
-	}
+    /**
+     * Return mime type
+     */
+    public String getMimeType() {
+        return conn.getContentType();
+    }
 
-	/**
-	 * Return input stream...
-	 */
-	public InputStream getInputStream() throws IOException
-	{
-		return conn.getInputStream();
-	}
+    /**
+     * Return input stream...
+     */
+    public InputStream getInputStream() throws IOException {
+        return conn.getInputStream();
+    }
 
-	public byte[] toByteArray() throws IOException
-	{
-		throw new UnsupportedOperationException("toByteArray() not supported in " + this.getClass().getName());
-	}
-	
-	/**
-	 * Return last time the underlying source is modified.
-	 */
-	public long getLastModified()
-	{
-		return conn.getLastModified();
-	}
+    public byte[] toByteArray() throws IOException {
+        throw new UnsupportedOperationException("toByteArray() not supported in " + this.getClass().getName());
+    }
 
-	/**
-	 * Return an instance of this interface which represents the specified relative path.
-	 */
-	public VirtualFile resolve(String relative)
-	{
-		return null;
-	}
+    /**
+     * Return last time the underlying source is modified.
+     */
+    public long getLastModified() {
+        return conn.getLastModified();
+    }
 
-	/**
-	 * Signal the hosting environment that this instance is no longer used.
-	 */
-	public void close()
-	{
-	}
+    /**
+     * Return an instance of this interface which represents the specified relative path.
+     */
+    public VirtualFile resolve(String relative) {
+        return null;
+    }
+
+    /**
+     * Signal the hosting environment that this instance is no longer used.
+     */
+    public void close() {
+    }
 
 
-	public boolean equals(Object obj)
-	{
-		if (obj instanceof NetworkFile)
-		{
-			return (this == obj) || name.equals(((NetworkFile) obj).name);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    public boolean equals(Object obj) {
+        if (obj instanceof NetworkFile) {
+            return (this == obj) || name.equals(((NetworkFile) obj).name);
+        } else {
+            return false;
+        }
+    }
 
-	public int hashCode()
-	{
-		return name.hashCode();
-	}
+    public int hashCode() {
+        return name.hashCode();
+    }
 
-	public boolean isTextBased()
-	{
-		return false;
-	}
+    public boolean isTextBased() {
+        return false;
+    }
 }

@@ -1,4 +1,3 @@
-
 #*
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -28,95 +27,95 @@ import mx.utils.NameUtil;
 
 [ExcludeClass]
 public class $className extends $baseClassName
-    implements IBorder, IFlexAsset, IFlexDisplayObject
+implements IBorder, IFlexAsset, IFlexDisplayObject
 {
-    public function ${className}()
-    {
-        super();
+public function ${className}()
+{
+super();
 
 #if ($needsName)
-        try
-        {
-            name = NameUtil.createUniqueName(this);
-        }
-        catch(e:Error)
-        {
-        }
+try
+{
+name = NameUtil.createUniqueName(this);
+}
+catch(e:Error)
+{
+}
 #end
 
 #if ($needsMeasuredWidth)
-        _measuredWidth = width;
+_measuredWidth = width;
 #end
 #if ($needsMeasuredHeight)
-        _measuredHeight = height;
+_measuredHeight = height;
 #end
-    }
+}
 
 #if ($needsIBorder && $needsBorderMetrics)
-    public function get borderMetrics():EdgeMetrics
-    {
-        if (scale9Grid == null)
-        {
-            return EdgeMetrics.EMPTY;
-        }
-        else
-        {
-            return new EdgeMetrics(scale9Grid.left,
-                                   scale9Grid.top,
-                                   Math.ceil(measuredWidth - scale9Grid.right),
-                                   Math.ceil(measuredHeight - scale9Grid.bottom));
-        }
-    }
+public function get borderMetrics():EdgeMetrics
+{
+if (scale9Grid == null)
+{
+return EdgeMetrics.EMPTY;
+}
+else
+{
+return new EdgeMetrics(scale9Grid.left,
+scale9Grid.top,
+Math.ceil(measuredWidth - scale9Grid.right),
+Math.ceil(measuredHeight - scale9Grid.bottom));
+}
+}
 #end
 
 #if ($needsIFlexDisplayObject)
-#if ($needsMeasuredHeight)
+    #if ($needsMeasuredHeight)
     private var _measuredHeight:Number;
 
     public function get measuredHeight():Number
     {
-        return _measuredHeight;
+    return _measuredHeight;
     }
-#end
+    #end
 
-#if ($needsMeasuredWidth)
+    #if ($needsMeasuredWidth)
     private var _measuredWidth:Number;
 
     public function get measuredWidth():Number
     {
-        return _measuredWidth;
+    return _measuredWidth;
     }
-#end
+    #end
 
-#if ($needsMove)
+    #if ($needsMove)
     public function move(x:Number, y:Number):void
     {
-        this.x = x;
-        this.y = y;
+    this.x = x;
+    this.y = y;
     }
-#end
+    #end
 
-#if ($needsSetActualSize)
+    #if ($needsSetActualSize)
     public function setActualSize(newWidth:Number, newHeight:Number):void
     {
-        if (width != newWidth)
-        {
-            width = newWidth;
-        }
-
-        if (height != newHeight)
-        {
-            height = newHeight;
-        }
+    if (width != newWidth)
+    {
+    width = newWidth;
     }
-#end
+
+    if (height != newHeight)
+    {
+    height = newHeight;
+    }
+    }
+    #end
 #end
 
 #if ($needsToString)
-    override public function toString():String
-    {
-        return NameUtil.displayObjectToString(this);
-    }
+override public function toString():String
+{
+return NameUtil.displayObjectToString(this);
+}
 #end
 }
 }

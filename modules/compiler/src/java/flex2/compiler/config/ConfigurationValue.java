@@ -28,13 +28,11 @@ import java.util.LinkedList;
  *
  * @author Roger Gonzalez
  */
-public class ConfigurationValue
-{
-    protected ConfigurationValue( ConfigurationBuffer buffer, String var, List<String> args, String source, int line, String context )
-    {
+public class ConfigurationValue {
+    protected ConfigurationValue(ConfigurationBuffer buffer, String var, List<String> args, String source, int line, String context) {
         this.buffer = buffer;
         this.var = var;
-        this.args = new LinkedList<String>( args );
+        this.args = new LinkedList<String>(args);
         this.source = source;
         this.line = line;
         this.context = context;
@@ -45,8 +43,7 @@ public class ConfigurationValue
      *
      * @return list of values provided, in schema order
      */
-    public final List<String> getArgs()
-    {
+    public final List<String> getArgs() {
         return args;
     }
 
@@ -55,8 +52,7 @@ public class ConfigurationValue
      *
      * @return a handle to the associated buffer holding this value
      */
-    public final ConfigurationBuffer getBuffer()
-    {
+    public final ConfigurationBuffer getBuffer() {
         return buffer;
     }
 
@@ -65,8 +61,7 @@ public class ConfigurationValue
      *
      * @return a string representing the origin of this value, or null if unknown
      */
-    public final String getSource()
-    {
+    public final String getSource() {
         return source;
     }
 
@@ -75,8 +70,7 @@ public class ConfigurationValue
      *
      * @return the line number of the origin of this value, or -1 if unknown
      */
-    public final int getLine()
-    {
+    public final int getLine() {
         return line;
     }
 
@@ -85,8 +79,7 @@ public class ConfigurationValue
      *
      * @return the full name of this configuration variable in the hierarchy
      */
-    public final String getVar()
-    {
+    public final String getVar() {
         return var;
     }
 
@@ -94,10 +87,9 @@ public class ConfigurationValue
      * getContext
      *
      * @return the path of the enclosing context where the variable was set
-     * (i.e. the directory where the config file was found)
+     *         (i.e. the directory where the config file was found)
      */
-    public final String getContext()
-    {
+    public final String getContext() {
         return context;
     }
 

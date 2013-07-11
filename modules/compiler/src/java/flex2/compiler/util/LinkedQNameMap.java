@@ -26,40 +26,34 @@ import java.util.LinkedHashMap;
  *
  * @author Clement Wong
  */
-public class LinkedQNameMap<V extends Object> extends LinkedHashMap<QName, V>
-{
-	private static final long serialVersionUID = 3204095789256503873L;
+public class LinkedQNameMap<V extends Object> extends LinkedHashMap<QName, V> {
+    private static final long serialVersionUID = 3204095789256503873L;
 
-    public LinkedQNameMap()
-	{
-		super();
-		key = new QName();
-	}
+    public LinkedQNameMap() {
+        super();
+        key = new QName();
+    }
 
-	public LinkedQNameMap(int size)
-	{
-		super(size);
-		key = new QName();
-	}
+    public LinkedQNameMap(int size) {
+        super(size);
+        key = new QName();
+    }
 
-	private QName key;
+    private QName key;
 
-	public boolean containsKey(String ns, String name)
-	{
-		key.setNamespace(ns);
-		key.setLocalPart(name);
-		return containsKey(key);
-	}
+    public boolean containsKey(String ns, String name) {
+        key.setNamespace(ns);
+        key.setLocalPart(name);
+        return containsKey(key);
+    }
 
-	public V get(String ns, String name)
-	{
-		key.setNamespace(ns);
-		key.setLocalPart(name);
-		return get(key);
-	}
+    public V get(String ns, String name) {
+        key.setNamespace(ns);
+        key.setLocalPart(name);
+        return get(key);
+    }
 
-	public V put(String ns, String name, V value)
-	{
-		return put(new QName(ns, name), value);
-	}
+    public V put(String ns, String name, V value) {
+        return put(new QName(ns, name), value);
+    }
 }

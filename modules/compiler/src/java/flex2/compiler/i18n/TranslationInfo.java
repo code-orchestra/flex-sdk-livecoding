@@ -26,11 +26,10 @@ import java.util.Set;
  *
  * @author Brian Deitte
  */
-public interface TranslationInfo
-{
-	Set getTranslationSet();
-	
-	Set getClassReferences();
-	
-	Set getEmeds();
+public interface TranslationInfo {
+    Set getTranslationSet();
+
+    Set getClassReferences();
+
+    Set getEmeds();
 }

@@ -29,57 +29,48 @@ import java.util.Stack;
  *
  * @author Brian Deitte
  */
-public class ReadContext
-{
+public class ReadContext {
     private String currentName;
     private Attributes currentAttributes;
     private Stack<CatalogReadElement> parents = new Stack<CatalogReadElement>();
     private Stack<String> parentNames = new Stack<String>();
 
-    public String getCurrentName()
-    {
+    public String getCurrentName() {
         return currentName;
     }
 
-    public Attributes getCurrentAttributes()
-    {
+    public Attributes getCurrentAttributes() {
         return currentAttributes;
     }
 
-    public CatalogReadElement getCurrentParent()
-    {
+    public CatalogReadElement getCurrentParent() {
         return parents.size() == 0 ? null : parents.peek();
     }
 
-    public void setCurrent(String element, Attributes attributes)
-    {
+    public void setCurrent(String element, Attributes attributes) {
         currentName = element;
         currentAttributes = attributes;
     }
 
-    public void setCurrentParent(CatalogReadElement currentParent, String element)
-    {
+    public void setCurrentParent(CatalogReadElement currentParent, String element) {
         parents.push(currentParent);
         parentNames.push(element);
     }
 
-    public void clearCurrentParent(String element)
-    {
+    public void clearCurrentParent(String element) {
         String name = parentNames.size() == 0 ? null : parentNames.peek();
-        if (element.equals(name))
-        {
+        if (element.equals(name)) {
             parents.pop();
             parentNames.pop();
         }
     }
 
-    public void clear()
-    {
+    public void clear() {
         currentName = null;
         currentAttributes = null;
 
-        assert(parents.size() == 0);
-        assert(parentNames.size() == 0);
+        assert (parents.size() == 0);
+        assert (parentNames.size() == 0);
 
         parents.clear();
         parentNames.clear();

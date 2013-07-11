@@ -21,6 +21,7 @@ package flex2.compiler;
 
 import flash.swf.tags.DefineTag;
 import flex2.compiler.io.VirtualFile;
+
 import java.util.Map;
 
 /**
@@ -28,51 +29,43 @@ import java.util.Map;
  *
  * @see flex2.compiler.Assets
  */
-public final class AssetInfo
-{
+public final class AssetInfo {
     private DefineTag defineTag;
     private VirtualFile path;
     private long creationTime;
     private Map<String, Object> args;
-    
-    public AssetInfo(DefineTag defineTag, VirtualFile path, long creationTime, Map<String, Object> args)
-    {
+
+    public AssetInfo(DefineTag defineTag, VirtualFile path, long creationTime, Map<String, Object> args) {
         this.defineTag = defineTag;
         this.path = path;
         this.creationTime = creationTime;
         this.args = args;
     }
 
-    AssetInfo(DefineTag defineTag)
-    {
+    AssetInfo(DefineTag defineTag) {
         this.defineTag = defineTag;
     }
 
-    public Map<String, Object> getArgs()
-    {
+    public Map<String, Object> getArgs() {
         return args;
     }
 
-    public long getCreationTime()
-    {
+    public long getCreationTime() {
         return creationTime;
     }
 
-    public DefineTag getDefineTag()
-    {
+    public DefineTag getDefineTag() {
         return defineTag;
     }
 
     /**
      * This is used by the webtier compiler.
      */
-    public VirtualFile getPath()
-    {
+    public VirtualFile getPath() {
         return path;
     }
 
-    void setDefineTag(DefineTag defineTag)
-    {
+    void setDefineTag(DefineTag defineTag) {
         this.defineTag = defineTag;
     }
 }

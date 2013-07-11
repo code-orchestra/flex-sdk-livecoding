@@ -30,52 +30,43 @@ import java.util.*;
  *
  * @author Clement Wong
  */
-public class ModelNode extends Node
-{
-	public static final Set<QName> attributes;
+public class ModelNode extends Node {
+    public static final Set<QName> attributes;
 
-	static
-	{
-		attributes = new HashSet<QName>();
-		attributes.add(new QName("", StandardDefs.PROP_ID));
-		attributes.add(new QName("", StandardDefs.PROP_SOURCE));
-	}
+    static {
+        attributes = new HashSet<QName>();
+        attributes.add(new QName("", StandardDefs.PROP_ID));
+        attributes.add(new QName("", StandardDefs.PROP_SOURCE));
+    }
 
-	ModelNode(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-	}
+    ModelNode(String uri, String localName, int size) {
+        super(uri, localName, size);
+    }
 
-	private Node[] sourceFile;
+    private Node[] sourceFile;
 
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 
-	public void setSourceFile(Node[] nodes)
-	{
-		sourceFile = nodes;
-	}
+    public void setSourceFile(Node[] nodes) {
+        sourceFile = nodes;
+    }
 
-	public Node[] getSourceFile()
-	{
-		return sourceFile;
-	}
+    public Node[] getSourceFile() {
+        return sourceFile;
+    }
 
-	public int getChildCount()
-	{
-		return sourceFile != null ? sourceFile.length : super.getChildCount();
-	}
+    public int getChildCount() {
+        return sourceFile != null ? sourceFile.length : super.getChildCount();
+    }
 
-	public Token getChildAt(int index)
-	{
-		return sourceFile != null ? sourceFile[index] : super.getChildAt(index);
-	}
+    public Token getChildAt(int index) {
+        return sourceFile != null ? sourceFile[index] : super.getChildAt(index);
+    }
 
-	public List<Token> getChildren()
-	{
-		return sourceFile != null ? Collections.<Token>unmodifiableList(Arrays.<Token>asList(sourceFile)) : super.getChildren();
-	}
+    public List<Token> getChildren() {
+        return sourceFile != null ? Collections.<Token>unmodifiableList(Arrays.<Token>asList(sourceFile)) : super.getChildren();
+    }
 }

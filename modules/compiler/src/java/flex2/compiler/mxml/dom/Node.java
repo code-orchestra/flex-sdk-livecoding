@@ -30,65 +30,52 @@ import flex2.compiler.mxml.Token;
  *
  * @author Clement Wong
  */
-public class Node extends Element
-{
-	public Node(String uri, String localName)
-	{
-		this(uri, localName, 0);
-	}
+public class Node extends Element {
+    public Node(String uri, String localName) {
+        this(uri, localName, 0);
+    }
 
-	public Node(String uri, String localName, int size)
-	{
-		super(uri, localName, size);
-		index = 0;
-	}
+    public Node(String uri, String localName, int size) {
+        super(uri, localName, size);
+        index = 0;
+    }
 
-	private int index;
+    private int index;
 
-	public void setIndex(int index)
-	{
-		this.index = index;
-	}
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
-	public int getIndex()
-	{
-		return index;
-	}
+    public int getIndex() {
+        return index;
+    }
 
-	public void analyze(Analyzer analyzer)
-	{
-		analyzer.prepare(this);
-		analyzer.analyze(this);
-	}
+    public void analyze(Analyzer analyzer) {
+        analyzer.prepare(this);
+        analyzer.analyze(this);
+    }
 
-	public String toString()
-	{
-		return image + " " + beginLine;
-	}
-
-	@Override
-    public void addChild(Token child)
-    {
-	    if (processChildrenIndividually && !preserveWhitespace)
-	    {
-	        if (child instanceof CDATANode)
-	        {
-	            CDATANode cdata = (CDATANode)child;
-	            if (cdata.isWhitespace())
-	                return;
-	        }
-	    }
-
-	    super.addChild(child);
+    public String toString() {
+        return image + " " + beginLine;
     }
 
     @Override
-    public void addChildren(List<Token> children)
-    {
-        if (processChildrenIndividually && children != null)
-        {
-            for (Token child : children)
-            {
+    public void addChild(Token child) {
+        if (processChildrenIndividually && !preserveWhitespace) {
+            if (child instanceof CDATANode) {
+                CDATANode cdata = (CDATANode) child;
+                if (cdata.isWhitespace())
+                    return;
+            }
+        }
+
+        super.addChild(child);
+    }
+
+    @Override
+    public void addChildren(List<Token> children) {
+        if (processChildrenIndividually && children != null) {
+            for (Token child : children) {
                 addChild(child);
             }
             return;
@@ -102,13 +89,13 @@ public class Node extends Element
     /**
      * As part of a workaround for SDK-22601 this flag controls whether a
      * collection of child nodes should be processed individually to allow
-     * custom processing on each node. 
+     * custom processing on each node.
      */
     boolean processChildrenIndividually;
 
-	/**
-	 * As part of a workaround for SDK-22601 this flag controls whether
-	 * pure-whitespace CDATA should be preserved.
-	 */
+    /**
+     * As part of a workaround for SDK-22601 this flag controls whether
+     * pure-whitespace CDATA should be preserved.
+     */
     boolean preserveWhitespace;
 }

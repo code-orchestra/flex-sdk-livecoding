@@ -2464,32 +2464,26 @@ public final class CompilerAPI {
             units.add(null);
         }
 
-        //todo: падает с ошибкой
         for (int i = start; i < end; i++) {
             final int finalI = i;
             CompillerThreadPoolUtil.addCommand(new Runnable() {
                 @Override
                 public void run() {
                     Source s = sources.get(finalI);
-                    parse1(s, compilers, symbolTable);
+                    CompilationUnit u;
+
+                    u = parse1(s, compilers, symbolTable);
+
+                    if (u == null) {
+                        result[0] = false;
+                        s.disconnectLogger();
+                    } else {
+                        units.set(finalI, u);
+                        addVertexToGraphs(s, u, igraph, dgraph);
+                        calculateProgress(sources, symbolTable);
+                    }
                 }
             });
-        }
-
-        for (int i = start; i < end; i++) {
-            Source s = sources.get(i);
-            CompilationUnit u;
-
-            u = parse1(s, compilers, symbolTable);
-
-            if (u == null) {
-                result[0] = false;
-                s.disconnectLogger();
-            } else {
-                units.set(i, u);
-                addVertexToGraphs(s, u, igraph, dgraph);
-                calculateProgress(sources, symbolTable);
-            }
         }
 
         CompillerThreadPoolUtil.logCommands("parce1");

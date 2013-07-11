@@ -614,26 +614,26 @@ public class ActionBlockEmitter extends Emitter
 
     int makeNamespaceSet( ObjectList<ObjectValue> namespaces )
     {
-        Set<Integer> namespace_set = new TreeSet<Integer>();
+        ArrayList<Integer> namespace_list = new ArrayList<Integer>();
         for( ObjectValue ns : namespaces )
         {
             if( ns != null )
             {
                 int ns_index = addNamespace(ns);
-                namespace_set.add(IntegerPool.getNumber(ns_index));
+                namespace_list.add(IntegerPool.getNumber(ns_index));
             }
             else
             {
                 cx.internalError("internal error: non object value for namespace");
             }
         }
-        int ns_set_index = ab.addNsSetConstant(bytecodeFactory.ConstantNamespaceSet(namespace_set));
-        return ns_set_index;
+        Collections.sort(namespace_list);
+        return ab.addNsSetConstant(bytecodeFactory.ConstantNamespaceSet(namespace_list));
     }
 
     int makeVersionedNamespaceSet(ObjectValue ns, TreeSet<Integer> versions)
     {
-        Set<Integer> namespace_set = new TreeSet<Integer>();
+        ArrayList<Integer> namespace_list = new ArrayList<Integer>();
 		if (versions.size() == 0)
         {
             cx.internalError("internal error: empty versions set");
@@ -644,15 +644,15 @@ public class ActionBlockEmitter extends Emitter
             if( ns != null )
             {
                 int ns_index = addNamespace(ns, v.intValue());
-                namespace_set.add(IntegerPool.getNumber(ns_index));
+                namespace_list.add(IntegerPool.getNumber(ns_index));
             }
             else
             {
                 cx.internalError("internal error: non object value for namespace");
             }
         }
-        int ns_set_index = ab.addNsSetConstant(bytecodeFactory.ConstantNamespaceSet(namespace_set));
-        return ns_set_index;
+        Collections.sort(namespace_list);
+        return ab.addNsSetConstant(bytecodeFactory.ConstantNamespaceSet(namespace_list));
     }
 
     int makeMultiname(String name, ObjectList<ObjectValue> namespaces)

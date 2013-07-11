@@ -62,7 +62,7 @@ public class CompillerThreadPoolUtil {
     }
 
     public static void logCommands(String message) {
-        System.out.println(message + ": " + commands.size());
+        //System.out.println(message + ": " + commands.size());
     }
 
 

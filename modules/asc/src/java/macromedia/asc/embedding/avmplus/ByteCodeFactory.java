@@ -20,6 +20,7 @@ package macromedia.asc.embedding.avmplus;
 import macromedia.asc.util.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
@@ -260,20 +261,13 @@ public class ByteCodeFactory
         return bytes;
     }
 
-    public ByteList ConstantNamespaceSet(Set<Integer> namespaces)
+    public ByteList ConstantNamespaceSet(ArrayList<Integer> namespaces)
     {
         ByteList bytes = allocBytes(5 + namespaces.size()*2);
-        return ConstantNamespaceSet(bytes, namespaces);
-    }
-
-
-    public ByteList ConstantNamespaceSet( ByteList bytes,
-            Set<Integer> namespaces)
-    {
         if( show_bytecode )
         {
             cpool_out.write("\n      ConstantNamespaceSet " + namespaces.size() + " {");
-            for( int ns_id : namespaces )
+            for( int ns_id : namespaces)
             {
                 if( ns_id == 0 )
                 {
@@ -286,12 +280,13 @@ public class ByteCodeFactory
 
         //bytes = Byte(bytes, CONSTANT_Namespace_Set);
         bytes = Int(bytes, namespaces.size());
-        for( int ns_id : namespaces )
+        for( int ns_id : namespaces)
         {
             bytes = Int(bytes, ns_id);
         }
         return bytes;
     }
+
 
     public ByteList ConstantTypeName(ByteList bytes,
             int name_index,

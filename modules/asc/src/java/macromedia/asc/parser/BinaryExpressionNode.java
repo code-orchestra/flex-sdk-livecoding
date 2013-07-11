@@ -89,4 +89,52 @@ public class BinaryExpressionNode extends Node
 	{
 		void_result = true;
 	}
+
+    public BinaryExpressionNode clone() throws CloneNotSupportedException
+    {
+        BinaryExpressionNode result = (BinaryExpressionNode) super.clone();
+
+        if (lhs != null) result.lhs = lhs.clone();
+        if (lhstype != null) result.lhstype = lhstype.clone();
+        if (numberUsage != null) result.numberUsage = numberUsage.clone();
+        if (rhs != null) result.rhs = rhs.clone();
+        if (rhstype != null) result.rhstype = rhstype.clone();
+        if (slot != null) result.slot = slot.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        BinaryExpressionNode that = (BinaryExpressionNode) o;
+
+        if (op != that.op) return false;
+        if (void_result != that.void_result) return false;
+        if (lhs != null ? !lhs.equals(that.lhs) : that.lhs != null) return false;
+        if (lhstype != null ? !lhstype.equals(that.lhstype) : that.lhstype != null) return false;
+        if (numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) return false;
+        if (rhs != null ? !rhs.equals(that.rhs) : that.rhs != null) return false;
+        if (rhstype != null ? !rhstype.equals(that.rhstype) : that.rhstype != null) return false;
+        if (slot != null ? !slot.equals(that.slot) : that.slot != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (lhs != null ? lhs.hashCode() : 0);
+//        result = 31 * result + (rhs != null ? rhs.hashCode() : 0);
+//        result = 31 * result + op;
+//        result = 31 * result + (slot != null ? slot.hashCode() : 0);
+//        result = 31 * result + (lhstype != null ? lhstype.hashCode() : 0);
+//        result = 31 * result + (rhstype != null ? rhstype.hashCode() : 0);
+//        result = 31 * result + (numberUsage != null ? numberUsage.hashCode() : 0);
+//        result = 31 * result + (void_result ? 1 : 0);
+//        return result;
+//    }
 }

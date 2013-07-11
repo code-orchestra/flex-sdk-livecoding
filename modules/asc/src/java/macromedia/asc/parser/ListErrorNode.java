@@ -40,4 +40,31 @@ public class ListErrorNode extends ListNode // ErrorNode
 	{
 		return "ListError";
 	}
+
+    public ListErrorNode clone() throws CloneNotSupportedException
+    {
+        ListErrorNode result = (ListErrorNode) super.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ListErrorNode that = (ListErrorNode) o;
+
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (value != null ? value.hashCode() : 0);
+//        return result;
+//    }
 }

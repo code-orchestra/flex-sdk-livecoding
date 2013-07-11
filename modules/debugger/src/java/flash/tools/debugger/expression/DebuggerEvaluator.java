@@ -62,7 +62,35 @@ class DebuggerEvaluator implements Evaluator
 		{
 			debuggerValue = v;
 		}
-	}
+
+        public DebuggerValue clone() throws CloneNotSupportedException
+        {
+            DebuggerValue result = (DebuggerValue) super.clone();
+
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            if (!super.equals(o)) return false;
+
+            DebuggerValue that = (DebuggerValue) o;
+
+            if (debuggerValue != null ? !debuggerValue.equals(that.debuggerValue) : that.debuggerValue != null)
+                return false;
+
+            return true;
+        }
+
+//        @Override
+//        public int hashCode() {
+//            int result = super.hashCode();
+//            result = 31 * result + (debuggerValue != null ? debuggerValue.hashCode() : 0);
+//            return result;
+//        }
+    }
 
 	/**
 	 * Instances of this class are passed to cx.pushScope().

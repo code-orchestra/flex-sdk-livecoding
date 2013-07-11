@@ -27,6 +27,7 @@ public final class ByteList implements Serializable, Cloneable // CodeOrchestra:
 	{
 		this(list.size());
 		System.arraycopy(list.a, 0, a, 0, list.size());
+        this.size = list.size;
 	}
 
 	public ByteList()

@@ -22,6 +22,7 @@ import macromedia.asc.parser.MetaDataEvaluator;
 import macromedia.asc.parser.MetaDataNode;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * Class to store metadata info, so that Slots don't have pointers back into the AST
@@ -78,4 +79,37 @@ public class MetaData implements Serializable, Cloneable // CodeOrchestra: made 
         return values != null ? values.length : 0;
     }
 
+    public MetaData clone() throws CloneNotSupportedException {
+        MetaData result = (MetaData)super.clone();
+
+        if (values != null) {
+            int n = values.length;
+            result.values = new Value[n];
+            for (int i = 0; i < n; i++) {
+                result.values[i] = values[i].clone();
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MetaData metaData = (MetaData) o;
+
+        if (id != null ? !id.equals(metaData.id) : metaData.id != null) return false;
+        if (!Arrays.equals(values, metaData.values)) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = id != null ? id.hashCode() : 0;
+//        result = 31 * result + (values != null ? Arrays.hashCode(values) : 0);
+//        return result;
+//    }
 }

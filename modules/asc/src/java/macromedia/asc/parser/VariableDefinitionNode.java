@@ -138,4 +138,40 @@ public class VariableDefinitionNode extends DefinitionNode
       else
          return "VarDefinition";
 	}
+
+    public VariableDefinitionNode clone() throws CloneNotSupportedException
+    {
+        VariableDefinitionNode result = (VariableDefinitionNode) super.clone();
+
+        // cx is transient
+        //if (cx != null);
+        result.cx = null;
+        if (list != null) result.list = list.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        VariableDefinitionNode that = (VariableDefinitionNode) o;
+
+        if (kind != that.kind) return false;
+        //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+        if (list != null ? !list.equals(that.list) : that.list != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + kind;
+//        result = 31 * result + (list != null ? list.hashCode() : 0);
+//        result = 31 * result + (cx != null ? cx.hashCode() : 0);
+//        return result;
+//    }
 }

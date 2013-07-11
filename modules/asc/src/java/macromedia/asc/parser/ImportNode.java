@@ -52,4 +52,36 @@ public class ImportNode extends Node
 	{
 		return "ImportNode";
 	}
+
+    public ImportNode clone() throws CloneNotSupportedException
+    {
+        ImportNode result = (ImportNode) super.clone();
+
+        if (filespec != null) result.filespec = filespec.clone();
+        if (program != null) result.program = program.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ImportNode that = (ImportNode) o;
+
+        if (filespec != null ? !filespec.equals(that.filespec) : that.filespec != null) return false;
+        if (program != null ? !program.equals(that.program) : that.program != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (filespec != null ? filespec.hashCode() : 0);
+//        result = 31 * result + (program != null ? program.hashCode() : 0);
+//        return result;
+//    }
 }

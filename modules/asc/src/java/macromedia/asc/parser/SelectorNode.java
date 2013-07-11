@@ -139,4 +139,45 @@ public abstract class SelectorNode extends Node
     public int getFlags() {
         return flags;
     }
+
+    public SelectorNode clone() throws CloneNotSupportedException
+    {
+        SelectorNode result = (SelectorNode) super.clone();
+
+        if (base != null) result.base = base.clone();
+        if (expr != null) result.expr = expr.clone();
+        if (ref != null) result.ref = ref.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        SelectorNode that = (SelectorNode) o;
+
+        if (flags != that.flags) return false;
+        if (is_package != that.is_package) return false;
+        if (skip != that.skip) return false;
+        if (base != null ? !base.equals(that.base) : that.base != null) return false;
+        if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
+        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (base != null ? base.hashCode() : 0);
+//        result = 31 * result + flags;
+//        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+//        result = 31 * result + (expr != null ? expr.hashCode() : 0);
+//        result = 31 * result + (is_package ? 1 : 0);
+//        result = 31 * result + (skip ? 1 : 0);
+//        return result;
+//    }
 }

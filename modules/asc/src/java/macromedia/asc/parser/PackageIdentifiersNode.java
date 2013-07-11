@@ -17,6 +17,7 @@
 
 package macromedia.asc.parser;
 
+import macromedia.asc.parser.util.CloneUtil;
 import macromedia.asc.util.*;
 import macromedia.asc.semantics.*;
 
@@ -121,4 +122,41 @@ public class PackageIdentifiersNode extends Node
 
         return pkg_part;
     }
+
+    public PackageIdentifiersNode clone() throws CloneNotSupportedException
+    {
+        PackageIdentifiersNode result = (PackageIdentifiersNode) super.clone();
+
+        // def_part is String
+        //if (def_part != null);
+        // pkg_part is String
+        //if (pkg_part != null);
+        if (list != null) result.list = CloneUtil.cloneListINode(list);
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        PackageIdentifiersNode that = (PackageIdentifiersNode) o;
+
+        if (def_part != null ? !def_part.equals(that.def_part) : that.def_part != null) return false;
+        if (list != null ? !list.equals(that.list) : that.list != null) return false;
+        if (pkg_part != null ? !pkg_part.equals(that.pkg_part) : that.pkg_part != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (list != null ? list.hashCode() : 0);
+//        result = 31 * result + (pkg_part != null ? pkg_part.hashCode() : 0);
+//        result = 31 * result + (def_part != null ? def_part.hashCode() : 0);
+//        return result;
+//    }
 }

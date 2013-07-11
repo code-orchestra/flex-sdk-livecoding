@@ -64,5 +64,29 @@ public class DoubleNumberConstant extends NumberConstant {
 			return ("NaN");
 		return String.valueOf(val);
 	}
+    
+    public DoubleNumberConstant clone() throws CloneNotSupportedException
+    {
+        DoubleNumberConstant result = (DoubleNumberConstant) super.clone();
+    
+        return result;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DoubleNumberConstant that = (DoubleNumberConstant) o;
+
+        if (Double.compare(that.val, val) != 0) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        long temp = val != +0.0d ? Double.doubleToLongBits(val) : 0L;
+        return (int) (temp ^ (temp >>> 32));
+    }
 }

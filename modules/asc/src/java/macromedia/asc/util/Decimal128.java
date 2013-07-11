@@ -56,6 +56,13 @@ public class Decimal128 {
 		value = val;
 		flags = flagval;
 	}
+
+    public Decimal128 clone() throws CloneNotSupportedException
+    {
+        Decimal128 result = new Decimal128(value, flags);
+
+        return result;
+    }
 	
 	/* public constructors */
 	public Decimal128(String str) {
@@ -1121,4 +1128,17 @@ public class Decimal128 {
 	public int hashCode() {
 		return value.hashCode() ^ flags;
 	}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Decimal128 that = (Decimal128) o;
+
+        if (flags != that.flags) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+
+        return true;
+    }
 }

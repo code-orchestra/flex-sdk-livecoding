@@ -19,6 +19,8 @@
 
 package macromedia.asc.util;
 
+import java.util.Arrays;
+
 /**
  * Don't use java.util.ArrayList<Integer>. Store int directly.
  * 
@@ -204,4 +206,25 @@ public final class IntList
 		System.arraycopy(a, 0, temp, 0, size);
 		return temp;
 	}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IntList intList = (IntList) o;
+
+        if (size != intList.size) return false;
+
+        if (!Arrays.equals(toArray(), intList.toArray())) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = a != null ? Arrays.hashCode(a) : 0;
+        result = 31 * result + size;
+        return result;
+    }
 }

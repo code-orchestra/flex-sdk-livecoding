@@ -42,4 +42,11 @@ public class ConfigNamespaceDefinitionNode extends NamespaceDefinitionNode {
 		}
 	}
 
+    public ConfigNamespaceDefinitionNode clone() throws CloneNotSupportedException
+    {
+        ConfigNamespaceDefinitionNode result = (ConfigNamespaceDefinitionNode) super.clone();
+
+        return result;
+    }
+
 }

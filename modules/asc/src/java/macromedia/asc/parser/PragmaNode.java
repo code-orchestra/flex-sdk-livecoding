@@ -50,4 +50,33 @@ public class PragmaNode extends Node
 	{
 		return "Pragma";
 	}
+
+    public PragmaNode clone() throws CloneNotSupportedException
+    {
+        PragmaNode result = (PragmaNode) super.clone();
+
+        result.list = list.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        PragmaNode that = (PragmaNode) o;
+
+        if (list != null ? !list.equals(that.list) : that.list != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (list != null ? list.hashCode() : 0);
+//        return result;
+//    }
 }

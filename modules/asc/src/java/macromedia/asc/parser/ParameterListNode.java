@@ -19,6 +19,7 @@
 
 package macromedia.asc.parser;
 
+import macromedia.asc.parser.util.CloneUtil;
 import macromedia.asc.semantics.Value;
 import macromedia.asc.util.ObjectList;
 import macromedia.asc.util.ByteList;
@@ -145,5 +146,41 @@ public class ParameterListNode extends Node
 			         
 		return buf;
 	}
-	
+
+    public ParameterListNode clone() throws CloneNotSupportedException
+    {
+        ParameterListNode result = (ParameterListNode) super.clone();
+
+        if (decl_styles != null) result.decl_styles = new ByteList(decl_styles);
+        if (items != null) result.items = CloneUtil.cloneListPNode(items);
+        if (types != null) result.types = CloneUtil.cloneListTypeInfo(types);
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ParameterListNode that = (ParameterListNode) o;
+
+        if (count != that.count) return false;
+        if (decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) return false;
+        if (items != null ? !items.equals(that.items) : that.items != null) return false;
+        if (types != null ? !types.equals(that.types) : that.types != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (items != null ? items.hashCode() : 0);
+//        result = 31 * result + (types != null ? types.hashCode() : 0);
+//        result = 31 * result + (decl_styles != null ? decl_styles.hashCode() : 0);
+//        result = 31 * result + count;
+//        return result;
+//    }
 };

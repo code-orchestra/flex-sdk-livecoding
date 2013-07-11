@@ -66,4 +66,32 @@ public class NamespaceValue extends ObjectValue
         return ns_kind;
     }
 
+    public NamespaceValue clone() throws CloneNotSupportedException
+    {
+        NamespaceValue result = (NamespaceValue) super.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        NamespaceValue that = (NamespaceValue) o;
+
+        if (config_ns != that.config_ns) return false;
+        if (ns_kind != that.ns_kind) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (int) ns_kind;
+//        result = 31 * result + (config_ns ? 1 : 0);
+//        return result;
+//    }
 }

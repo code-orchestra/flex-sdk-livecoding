@@ -118,4 +118,34 @@ public class VariableSlot extends Slot
 
 	private int var_index;
 	private ReferenceValue typeref;
+
+    public VariableSlot clone() throws CloneNotSupportedException {
+        VariableSlot result = (VariableSlot)super.clone();
+
+        if (typeref != null) result.typeref = typeref.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        VariableSlot that = (VariableSlot) o;
+
+        if (var_index != that.var_index) return false;
+        if (typeref != null ? !typeref.equals(that.typeref) : that.typeref != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + var_index;
+//        result = 31 * result + (typeref != null ? typeref.hashCode() : 0);
+//        return result;
+//    }
 }

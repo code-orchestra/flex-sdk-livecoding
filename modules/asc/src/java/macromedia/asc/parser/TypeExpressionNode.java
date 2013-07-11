@@ -92,5 +92,37 @@ public class TypeExpressionNode extends Node
     {
         return this.expr != null ? this.expr.toCanonicalString(cx, buf) : buf;
     }
-    
+
+    public TypeExpressionNode clone() throws CloneNotSupportedException
+    {
+        TypeExpressionNode result = (TypeExpressionNode) super.clone();
+
+        if (expr != null) result.expr = expr.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        TypeExpressionNode that = (TypeExpressionNode) o;
+
+        if (is_nullable != that.is_nullable) return false;
+        if (nullable_annotation != that.nullable_annotation) return false;
+        if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (nullable_annotation ? 1 : 0);
+//        result = 31 * result + (is_nullable ? 1 : 0);
+//        result = 31 * result + (expr != null ? expr.hashCode() : 0);
+//        return result;
+//    }
 }

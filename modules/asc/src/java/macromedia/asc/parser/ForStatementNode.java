@@ -91,4 +91,46 @@ public class ForStatementNode extends Node implements HasBody, LoopStatement
     public void setBody(Node body) {
         this.statement = body;
     }
+
+    public ForStatementNode clone() throws CloneNotSupportedException
+    {
+        ForStatementNode result = (ForStatementNode) super.clone();
+
+        if (increment != null) result.increment = increment.clone();
+        if (initialize != null) result.initialize = initialize.clone();
+        if (statement != null) result.statement = statement.clone();
+        if (test != null) result.test = test.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ForStatementNode that = (ForStatementNode) o;
+
+        if (is_forin != that.is_forin) return false;
+        if (loop_index != that.loop_index) return false;
+        if (increment != null ? !increment.equals(that.increment) : that.increment != null) return false;
+        if (initialize != null ? !initialize.equals(that.initialize) : that.initialize != null) return false;
+        if (statement != null ? !statement.equals(that.statement) : that.statement != null) return false;
+        if (test != null ? !test.equals(that.test) : that.test != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (initialize != null ? initialize.hashCode() : 0);
+//        result = 31 * result + (test != null ? test.hashCode() : 0);
+//        result = 31 * result + (increment != null ? increment.hashCode() : 0);
+//        result = 31 * result + (statement != null ? statement.hashCode() : 0);
+//        result = 31 * result + (is_forin ? 1 : 0);
+//        result = 31 * result + loop_index;
+//        return result;
+//    }
 }

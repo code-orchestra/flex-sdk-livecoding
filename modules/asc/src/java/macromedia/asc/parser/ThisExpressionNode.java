@@ -46,4 +46,11 @@ public class ThisExpressionNode extends Node
       else
          return "ThisExpression";
 	}
+
+    public ThisExpressionNode clone() throws CloneNotSupportedException
+    {
+        ThisExpressionNode result = (ThisExpressionNode) super.clone();
+
+        return result;
+    }
 }

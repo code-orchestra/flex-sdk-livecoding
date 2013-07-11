@@ -50,4 +50,33 @@ public class CaseLabelNode extends Node
 	{
 		return "CaseLabel";
 	}
+
+    public CaseLabelNode clone() throws CloneNotSupportedException
+    {
+        CaseLabelNode result = (CaseLabelNode) super.clone();
+
+        if (label != null) result.label = label.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        CaseLabelNode that = (CaseLabelNode) o;
+
+        if (label != null ? !label.equals(that.label) : that.label != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (label != null ? label.hashCode() : 0);
+//        return result;
+//    }
 }

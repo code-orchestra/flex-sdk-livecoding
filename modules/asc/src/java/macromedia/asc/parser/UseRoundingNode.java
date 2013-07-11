@@ -81,4 +81,31 @@ public class UseRoundingNode extends UsePragmaNode {
 	{
 		return "UseRounding " + NumberUsage.roundingModeName[mode];
 	}
+
+    public UseRoundingNode clone() throws CloneNotSupportedException
+    {
+        UseRoundingNode result = (UseRoundingNode) super.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        UseRoundingNode that = (UseRoundingNode) o;
+
+        if (mode != that.mode) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + mode;
+//        return result;
+//    }
 }

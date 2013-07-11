@@ -284,5 +284,32 @@ public class ObjectValueWrapper extends ObjectValue
         return Context.NS_PUBLIC;
     }
  */
+    public ObjectValueWrapper clone() throws CloneNotSupportedException
+    {
+        ObjectValueWrapper result = (ObjectValueWrapper) super.clone();
 
+        result.wrapped = wrapped.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ObjectValueWrapper that = (ObjectValueWrapper) o;
+
+        if (wrapped != null ? !wrapped.equals(that.wrapped) : that.wrapped != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (wrapped != null ? wrapped.hashCode() : 0);
+//        return result;
+//    }
 }

@@ -376,8 +376,33 @@ public class Node implements Serializable, Cloneable // CodeOrchestra: made seri
     	return false;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Node node = (Node) o;
+
+        if (flags != node.flags) return false;
+        if (block != null ? !block.equals(node.block) : node.block != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = flags;
+//        result = 31 * result + (block != null ? block.hashCode() : 0);
+//        return result;
+//    }
+
     public Node clone() throws CloneNotSupportedException {
-        return (Node) super.clone();
+        Node result = (Node) super.clone();
+//        if (block != null)
+//        {
+//            result.block = block.clone();
+//        }
+        return result;
     }
 
 }

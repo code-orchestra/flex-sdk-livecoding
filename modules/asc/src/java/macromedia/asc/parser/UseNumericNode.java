@@ -50,4 +50,31 @@ public class UseNumericNode extends UsePragmaNode {
 	{
 		return "UsePrecision " + numeric_mode_names[numeric_mode];
 	}
+
+    public UseNumericNode clone() throws CloneNotSupportedException
+    {
+        UseNumericNode result = (UseNumericNode) super.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        UseNumericNode that = (UseNumericNode) o;
+
+        if (numeric_mode != that.numeric_mode) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + numeric_mode;
+//        return result;
+//    }
 }

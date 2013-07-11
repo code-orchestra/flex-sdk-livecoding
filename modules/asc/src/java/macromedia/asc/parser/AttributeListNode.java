@@ -17,6 +17,7 @@
 
 package macromedia.asc.parser;
 
+import macromedia.asc.parser.util.CloneUtil;
 import macromedia.asc.util.*;
 import macromedia.asc.semantics.*;
 
@@ -147,5 +148,75 @@ public class AttributeListNode extends Node
 	{
 		return userNamespace != null;
 	}
+
+    public AttributeListNode clone() throws CloneNotSupportedException
+    {
+        AttributeListNode result = (AttributeListNode) super.clone();
+
+        if (items != null) result.items = CloneUtil.cloneListNode(items);
+        if (namespace_ids != null) result.namespace_ids = CloneUtil.cloneListString(namespace_ids);
+        if (namespaces != null) result.namespaces = CloneUtil.cloneList(namespaces);
+        if (userNamespace != null) result.userNamespace = userNamespace.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        AttributeListNode that = (AttributeListNode) o;
+
+        if (compileDefinition != that.compileDefinition) return false;
+        if (hasConst != that.hasConst) return false;
+        if (hasDynamic != that.hasDynamic) return false;
+        if (hasFalse != that.hasFalse) return false;
+        if (hasFinal != that.hasFinal) return false;
+        if (hasInternal != that.hasInternal) return false;
+        if (hasIntrinsic != that.hasIntrinsic) return false;
+        if (hasNative != that.hasNative) return false;
+        if (hasOverride != that.hasOverride) return false;
+        if (hasPrivate != that.hasPrivate) return false;
+        if (hasProtected != that.hasProtected) return false;
+        if (hasPrototype != that.hasPrototype) return false;
+        if (hasPublic != that.hasPublic) return false;
+        if (hasStatic != that.hasStatic) return false;
+        if (hasVirtual != that.hasVirtual) return false;
+        if (items != null ? !items.equals(that.items) : that.items != null) return false;
+        if (namespace_ids != null ? !namespace_ids.equals(that.namespace_ids) : that.namespace_ids != null)
+            return false;
+        if (namespaces != null ? !namespaces.equals(that.namespaces) : that.namespaces != null) return false;
+        if (userNamespace != null ? !userNamespace.equals(that.userNamespace) : that.userNamespace != null)
+            return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (items != null ? items.hashCode() : 0);
+//        result = 31 * result + (hasIntrinsic ? 1 : 0);
+//        result = 31 * result + (hasStatic ? 1 : 0);
+//        result = 31 * result + (hasFinal ? 1 : 0);
+//        result = 31 * result + (hasVirtual ? 1 : 0);
+//        result = 31 * result + (hasOverride ? 1 : 0);
+//        result = 31 * result + (hasDynamic ? 1 : 0);
+//        result = 31 * result + (hasNative ? 1 : 0);
+//        result = 31 * result + (hasPrivate ? 1 : 0);
+//        result = 31 * result + (hasProtected ? 1 : 0);
+//        result = 31 * result + (hasPublic ? 1 : 0);
+//        result = 31 * result + (hasInternal ? 1 : 0);
+//        result = 31 * result + (hasConst ? 1 : 0);
+//        result = 31 * result + (hasFalse ? 1 : 0);
+//        result = 31 * result + (hasPrototype ? 1 : 0);
+//        result = 31 * result + (compileDefinition ? 1 : 0);
+//        result = 31 * result + (namespaces != null ? namespaces.hashCode() : 0);
+//        result = 31 * result + (namespace_ids != null ? namespace_ids.hashCode() : 0);
+//        result = 31 * result + (userNamespace != null ? userNamespace.hashCode() : 0);
+//        return result;
+//    }
 }
 

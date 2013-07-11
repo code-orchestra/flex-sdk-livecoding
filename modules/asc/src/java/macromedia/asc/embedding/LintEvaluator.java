@@ -3394,7 +3394,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 	//  of the compiler.  Slot supported an opaque data pointer named embeddedData which we
 	//  store our  custom LintDataRecord on.  The methods which follow simplify accessing
 	//  these custom data fields.
-	private static class LintDataRecord 
+	public static class LintDataRecord implements Cloneable
 	{
 		public boolean has_return_value;
 		public boolean is_registered_for_event;
@@ -3407,7 +3407,11 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 			is_registered_for_event = false;
             declaration_pos = 0;
 		}
-	};
+
+        public LintDataRecord clone() throws CloneNotSupportedException {
+            return (LintDataRecord) super.clone();
+        }
+    };
 
 	private ObjectList<Slot>  slotsToClean = new ObjectList<Slot>();  // store what we allocate so we can clean it up
 

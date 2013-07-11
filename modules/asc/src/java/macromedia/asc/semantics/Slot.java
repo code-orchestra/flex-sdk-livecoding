@@ -17,12 +17,15 @@
 
 package macromedia.asc.semantics;
 
+import macromedia.asc.embedding.LintEvaluator;
+import macromedia.asc.parser.util.CloneUtil;
 import macromedia.asc.util.*;
 import macromedia.asc.parser.Node;
 import macromedia.asc.parser.MetaDataNode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -465,6 +468,22 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
 
 	final class Overload extends HashMap<TypeValue, Integer>
 	{
+        public Overload clone()
+        {
+            Overload result = new Overload();
+            result.putAll(this);
+//            for (final Map.Entry<TypeValue, Integer> entry : entrySet()) {
+//                try {
+//                    //result.put(entry.getKey().clone(), entry.getValue());
+//                    result.put(entry.getKey().clone(), entry.getValue());
+//                }catch (CloneNotSupportedException ex)
+//                {
+//                    System.out.println("[Overload] CloneNotSupportedException");
+//                }
+//
+//            }
+            return result;
+        }
 	}
 	
 	// for packages
@@ -649,4 +668,128 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
     {
         return this.version;
     }
+
+    private ArrayList<MetaData> cloneMetaData (ArrayList<MetaData> src) throws CloneNotSupportedException
+    {
+        int n = src.size();
+        ArrayList<MetaData> dst = new ArrayList<MetaData>(n);
+        for (int i = 0; i < n; i++) {
+            dst.add(src.get(i).clone());
+        }
+        return dst;
+    }
+
+    private HashMap<TypeValue, Overload> cloneOverloads (HashMap<TypeValue, Overload> src) throws CloneNotSupportedException
+    {
+        HashMap<TypeValue, Overload> dst = new HashMap<TypeValue, Overload>();
+        for (Map.Entry<TypeValue, Overload> entry : src.entrySet()) {
+             //dst.put(entry.getKey().clone(), entry.getValue().clone());
+            dst.put(entry.getKey(), entry.getValue().clone());
+        }
+        return dst;
+    }
+
+    public Slot clone() throws CloneNotSupportedException
+    {
+        Slot result = (Slot) super.clone();
+
+        if (auxDataItems != null)
+        {
+            Object[] auxDataItems_cloned = new Object[auxDataItems.length];
+            for (int i = 1; i < auxDataItems.length; i += 2) {
+
+                // Integer type
+                auxDataItems_cloned[i - 1] = auxDataItems[i - 1];
+
+                switch (((Integer)auxDataItems[i - 1]).intValue()) {
+                    case AUX_OverriddenSlot:
+                        // value is Slot
+                        auxDataItems_cloned[i] = ((Slot)auxDataItems[i]).clone();
+                        break;
+                    case AUX_EmbeddedData:
+                        // value is Object (either null or LintDataRecord)
+                        auxDataItems_cloned[i] = null;
+                        if (auxDataItems[i] instanceof LintEvaluator.LintDataRecord) {
+                            auxDataItems_cloned[i] = ((LintEvaluator.LintDataRecord)auxDataItems[i]).clone();
+                        }
+                        break;
+                    case AUX_MetaData:
+                        // value is ArrayList<MetaData>
+                        auxDataItems_cloned[i] = cloneMetaData((ArrayList<MetaData>)auxDataItems[i]);
+                        break;
+                    case AUX_BaseNode:
+                    case AUX_ImplNode:
+                        // value is Node
+                        auxDataItems_cloned[i] = ((Node)auxDataItems[i]).clone();
+                        break;
+                    case AUX_UnaryOverloads:
+                        // value is Overload
+                        //auxDataItems_cloned[i] = ((Overload)auxDataItems[i]).clone();
+                        auxDataItems_cloned[i] = ((Overload)auxDataItems[i]);
+                        break;
+                    case AUX_BinaryOverloads:
+                        // value is Map<TypeValue, Overload> (actually always HashMap)
+                        //auxDataItems_cloned[i] = cloneOverloads((HashMap<TypeValue, Overload>)auxDataItems[i]);
+                        auxDataItems_cloned[i] = (HashMap<TypeValue, Overload>)auxDataItems[i];
+                        break;
+                    case AUX_DebugName:
+                    case AUX_MethodName:
+                    case AUX_ImplicitCall:
+                    case AUX_ImplicitConstruct:
+                        // value is String or Integer
+                        auxDataItems_cloned[i] = auxDataItems[i];
+                        break;
+                    default:
+                        throw new CloneNotSupportedException("Unexpected auxDataItems type: " + auxDataItems[i - 1]);
+                }
+            }
+            result.auxDataItems = auxDataItems_cloned;
+        }
+
+        //if (declaredBy != null) result.declaredBy = declaredBy.clone();
+        if (def_bits != null) result.def_bits = BitSet.copy(def_bits);
+        if (type != null) result.type = type.clone();
+        if (types != null) result.types = CloneUtil.cloneListTypeInfo(types);
+        if (value != null) result.value = value.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Slot slot = (Slot) o;
+
+        if (flags != slot.flags) return false;
+        if (id != slot.id) return false;
+        if (version != slot.version) return false;
+        /*
+        //TODO: need correct equals
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        if (!Arrays.equals(auxDataItems, slot.auxDataItems)) return false;
+        */
+        //if (declaredBy != null ? !declaredBy.equals(slot.declaredBy) : slot.declaredBy != null) return false;
+        if (def_bits != null ? !def_bits.equals(slot.def_bits) : slot.def_bits != null) return false;
+        if (type != null ? !type.equals(slot.type) : slot.type != null) return false;
+        if (types != null ? !types.equals(slot.types) : slot.types != null) return false;
+        if (value != null ? !value.equals(slot.value) : slot.value != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = flags;
+//        result = 31 * result + (auxDataItems != null ? Arrays.hashCode(auxDataItems) : 0);
+//        result = 31 * result + id;
+//        result = 31 * result + (declaredBy != null ? declaredBy.hashCode() : 0);
+//        result = 31 * result + (def_bits != null ? def_bits.hashCode() : 0);
+//        result = 31 * result + (value != null ? value.hashCode() : 0);
+//        result = 31 * result + (type != null ? type.hashCode() : 0);
+//        result = 31 * result + (types != null ? types.hashCode() : 0);
+//        result = 31 * result + (int) version;
+//        return result;
+//    }
 }

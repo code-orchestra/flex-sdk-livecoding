@@ -63,7 +63,34 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 			v=v.intern();//assert v == v.intern();
 			obj = v;
 		}
-	}
+
+        public KeylessValue clone() throws CloneNotSupportedException
+        {
+            KeylessValue result = (KeylessValue) super.clone();
+
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            if (!super.equals(o)) return false;
+
+            KeylessValue that = (KeylessValue) o;
+
+            if (obj != null ? !obj.equals(that.obj) : that.obj != null) return false;
+
+            return true;
+        }
+
+//        @Override
+//        public int hashCode() {
+//            int result = super.hashCode();
+//            result = 31 * result + (obj != null ? obj.hashCode() : 0);
+//            return result;
+//        }
+    }
 
 	static public class KeyValuePair extends Value
 	{
@@ -77,7 +104,36 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 			this.key = Context.livecodingSession ? key : key.intern();
 			this.obj = Context.livecodingSession ? value : value.intern();
 		}
-	}
+
+        public KeyValuePair clone() throws CloneNotSupportedException
+        {
+            KeyValuePair result = (KeyValuePair) super.clone();
+
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            if (!super.equals(o)) return false;
+
+            KeyValuePair that = (KeyValuePair) o;
+
+            if (key != null ? !key.equals(that.key) : that.key != null) return false;
+            if (obj != null ? !obj.equals(that.obj) : that.obj != null) return false;
+
+            return true;
+        }
+
+//        @Override
+//        public int hashCode() {
+//            int result = super.hashCode();
+//            result = 31 * result + (key != null ? key.hashCode() : 0);
+//            result = 31 * result + (obj != null ? obj.hashCode() : 0);
+//            return result;
+//        }
+    }
 
 	private MetaDataNode current;
 

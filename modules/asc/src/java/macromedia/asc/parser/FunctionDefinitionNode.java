@@ -125,4 +125,60 @@ public class FunctionDefinitionNode extends DefinitionNode
 	{
 		return "FunctionDefinition";
 	}
+
+    public FunctionDefinitionNode clone() throws CloneNotSupportedException
+    {
+        FunctionDefinitionNode result = (FunctionDefinitionNode) super.clone();
+
+        // cx is transient
+        //if (cx != null);
+        result.cx = null;
+        if (fexpr != null) result.fexpr = fexpr.cloneWithDef(this, result);
+        if (fun != null) result.fun = fun.clone();
+        if (init != null) result.init = init.clone();
+        if (name != null) result.name = name.clone();
+        if (ref != null) result.ref = ref.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        FunctionDefinitionNode that = (FunctionDefinitionNode) o;
+
+        if (fixedCount != that.fixedCount) return false;
+        if (is_prototype != that.is_prototype) return false;
+        if (needs_init != that.needs_init) return false;
+        if (skipLiveCoding != that.skipLiveCoding) return false;
+        if (version != that.version) return false;
+        //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+        if (fexpr != null ? !fexpr.equals(that.fexpr) : that.fexpr != null) return false;
+        if (fun != null ? !fun.equals(that.fun) : that.fun != null) return false;
+        if (init != null ? !init.equals(that.init) : that.init != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (name != null ? name.hashCode() : 0);
+//        result = 31 * result + (fexpr != null ? fexpr.hashCode() : 0);
+//        result = 31 * result + fixedCount;
+//        result = 31 * result + (fun != null ? fun.hashCode() : 0);
+//        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+//        result = 31 * result + (cx != null ? cx.hashCode() : 0);
+//        result = 31 * result + (init != null ? init.hashCode() : 0);
+//        result = 31 * result + (needs_init ? 1 : 0);
+//        result = 31 * result + (is_prototype ? 1 : 0);
+//        result = 31 * result + version;
+//        result = 31 * result + (skipLiveCoding ? 1 : 0);
+//        return result;
+//    }
 }

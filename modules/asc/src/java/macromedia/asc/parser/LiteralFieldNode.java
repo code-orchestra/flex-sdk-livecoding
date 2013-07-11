@@ -59,4 +59,39 @@ public class LiteralFieldNode extends Node
 	{
 		return "LiteralField";
 	}
+
+    public LiteralFieldNode clone() throws CloneNotSupportedException
+    {
+        LiteralFieldNode result = (LiteralFieldNode) super.clone();
+
+        if (name != null) result.name = name.clone();
+        if (value != null) result.value = value.clone();
+        if (ref != null) result.ref = ref.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        LiteralFieldNode that = (LiteralFieldNode) o;
+
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (name != null ? name.hashCode() : 0);
+//        result = 31 * result + (value != null ? value.hashCode() : 0);
+//        result = 31 * result + (ref != null ? ref.hashCode() : 0);
+//        return result;
+//    }
 }

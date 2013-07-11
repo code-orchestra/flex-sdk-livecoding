@@ -125,4 +125,45 @@ public class SetExpressionNode extends SelectorNode
     {
         return true;
     }
+
+    public SetExpressionNode clone() throws CloneNotSupportedException
+    {
+        SetExpressionNode result = (SetExpressionNode) super.clone();
+
+        if (args != null) result.args = args.clone();
+        if (gen_bits != null) result.gen_bits = BitSet.copy(gen_bits);
+        if (value_type != null) result.value_type = value_type.clone();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        SetExpressionNode that = (SetExpressionNode) o;
+
+        if (is_constinit != that.is_constinit) return false;
+        if (is_initializer != that.is_initializer) return false;
+        if (void_result != that.void_result) return false;
+        if (args != null ? !args.equals(that.args) : that.args != null) return false;
+        if (gen_bits != null ? !gen_bits.equals(that.gen_bits) : that.gen_bits != null) return false;
+        if (value_type != null ? !value_type.equals(that.value_type) : that.value_type != null) return false;
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = super.hashCode();
+//        result = 31 * result + (args != null ? args.hashCode() : 0);
+//        result = 31 * result + (value_type != null ? value_type.hashCode() : 0);
+//        result = 31 * result + (is_constinit ? 1 : 0);
+//        result = 31 * result + (is_initializer ? 1 : 0);
+//        result = 31 * result + (gen_bits != null ? gen_bits.hashCode() : 0);
+//        result = 31 * result + (void_result ? 1 : 0);
+//        return result;
+//    }
 }

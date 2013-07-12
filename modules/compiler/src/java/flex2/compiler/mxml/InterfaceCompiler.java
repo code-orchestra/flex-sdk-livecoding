@@ -846,7 +846,7 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
 
         tempContext.setEmitter(symbolTable.emitter);
         tempContext.setHandler(new As3Compiler.CompilerHandler());
-        symbolTable.perCompileData.handler = tempContext.getHandler();
+        symbolTable.perCompileData.setHandler(tempContext.getHandler());
 
         return symbolTable.getTypeAnalyzer().analyzeClass(tempContext, new MultiName(NameFormatter.toColon(className)));
     }

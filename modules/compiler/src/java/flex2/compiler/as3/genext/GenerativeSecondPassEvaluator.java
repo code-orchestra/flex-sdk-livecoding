@@ -296,7 +296,7 @@ public abstract class GenerativeSecondPassEvaluator extends EvaluatorAdapter {
                 context.setPath("");
                 context.setScriptName(generatedName);
                 context.setHandler(new flex2.compiler.as3.As3Compiler.CompilerHandler());
-                context.statics.handler = context.getHandler();
+                context.statics.setHandler(context.getHandler());
 
                 Parser parser = new Parser(context, stringWriter.toString(), generatedName, processComments, false);
 

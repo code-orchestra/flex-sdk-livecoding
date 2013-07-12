@@ -59,7 +59,7 @@ public class MetaDataParser {
         Context context = new Context((ContextStatics) perCompileData);
         context.setPath(file.getParent());
         context.setScriptName(file.getName());
-        context.setHandler(new flex2.compiler.as3.As3Compiler.CompilerHandler() {
+        context.setHandler(new As3Compiler.CompilerHandler() {
             public void error2(String filename, int ln, int col, Object msg, String source) {
                 ThreadLocalToolkit.log(new InvalidMetadataFormatError(), filename, beginLine);
             }
@@ -88,7 +88,7 @@ public class MetaDataParser {
                 return null;
             }
         });
-        ((ContextStatics) perCompileData).handler = context.getHandler();
+        ((ContextStatics) perCompileData).setHandler(context.getHandler());
 
         Parser parser = new Parser(context, stringBuffer.toString(), file.getName());
         MetaDataNode metaDataNode = parser.parseMetaData();

@@ -704,7 +704,6 @@ public final class CompilerAPI {
             // 10. SubCompiler.parse2() for .as and .mxml
             // 11. SubCompiler.parse1() for .as and .mxml
 
-
             // 1. SubCompiler.generate()
             for (int i = targets.size() - 1; i >= 0 && budget < maxBudget; i--) {
                 Source s = targets.get(i);
@@ -1152,115 +1151,21 @@ public final class CompilerAPI {
         while (unitsReset(units) > 0);
     }
 
-    public static List<CompilationUnit>
-    compileSwc(FileSpec fileSpec,
-               Collection<Source> classes,
-               SourcePath sourcePath,
-               ResourceContainer resources,
-               ResourceBundlePath bundlePath,
-               CompilerSwcContext swcContext,
-               SymbolTable symbolTable,
-               NameMappings nameMappings,
-               Configuration configuration,
-               SubCompiler[] compilers,
-               PreLink preLink,
-               Map licenseMap)
-            throws CompilerException {
-        return compile(fileSpec,
-                null,
-                classes,
-                sourcePath,
-                resources,
-                bundlePath,
-                swcContext,
-                symbolTable,
-                nameMappings,
-                configuration,
-                compilers,
-                preLink,
-                licenseMap,
-                new ArrayList<Source>());
+    public static List<CompilationUnit> compileSwc(FileSpec fileSpec, Collection<Source> classes, SourcePath sourcePath, ResourceContainer resources, ResourceBundlePath bundlePath, CompilerSwcContext swcContext, SymbolTable symbolTable, NameMappings nameMappings, Configuration configuration, SubCompiler[] compilers, PreLink preLink, Map licenseMap) throws CompilerException {
+        return compile(fileSpec, null, classes, sourcePath, resources, bundlePath, swcContext, symbolTable, nameMappings, configuration, compilers, preLink, licenseMap, new ArrayList<Source>());
     }
 
-    public static List<CompilationUnit>
-    compile(FileSpec fileSpec,
-            SourceList sourceList,
-            SourcePath sourcePath,
-            ResourceContainer resources,
-            ResourceBundlePath bundlePath,
-            CompilerSwcContext swcContext,
-            SymbolTable symbolTable,
-            NameMappings nameMappings,
-            Configuration configuration,
-            SubCompiler[] compilers,
-            PreLink preLink,
-            Map licenseMap)
-            throws CompilerException {
-        return compile(fileSpec,
-                sourceList,
-                null,
-                sourcePath,
-                resources,
-                bundlePath,
-                swcContext,
-                symbolTable,
-                nameMappings,
-                configuration,
-                compilers,
-                preLink,
-                licenseMap,
-                new ArrayList<Source>());
+    public static List<CompilationUnit> compile(FileSpec fileSpec, SourceList sourceList, SourcePath sourcePath, ResourceContainer resources, ResourceBundlePath bundlePath, CompilerSwcContext swcContext, SymbolTable symbolTable, NameMappings nameMappings, Configuration configuration, SubCompiler[] compilers, PreLink preLink, Map licenseMap) throws CompilerException {
+        return compile(fileSpec, sourceList, null, sourcePath, resources, bundlePath, swcContext, symbolTable, nameMappings, configuration, compilers, preLink, licenseMap, new ArrayList<Source>());
     }
 
     // full compilation
-    public static List<CompilationUnit>
-    compile(FileSpec fileSpec,
-            SourceList sourceList,
-            Collection<Source> classes,
-            SourcePath sourcePath,
-            ResourceContainer resources,
-            ResourceBundlePath bundlePath,
-            CompilerSwcContext swcContext,
-            NameMappings nameMappings,
-            Configuration configuration,
-            SubCompiler[] compilers,
-            PreLink preLink,
-            Map licenseMap,
-            List<Source> sources)
-            throws CompilerException {
-        return compile(fileSpec,
-                sourceList,
-                classes,
-                sourcePath,
-                resources,
-                bundlePath,
-                swcContext,
-                new SymbolTable(configuration),
-                nameMappings,
-                configuration,
-                compilers,
-                preLink,
-                licenseMap,
-                sources);
+    public static List<CompilationUnit> compile(FileSpec fileSpec, SourceList sourceList, Collection<Source> classes, SourcePath sourcePath, ResourceContainer resources, ResourceBundlePath bundlePath, CompilerSwcContext swcContext, NameMappings nameMappings, Configuration configuration, SubCompiler[] compilers, PreLink preLink, Map licenseMap, List<Source> sources) throws CompilerException {
+        return compile(fileSpec, sourceList, classes, sourcePath, resources, bundlePath, swcContext, new SymbolTable(configuration), nameMappings, configuration, compilers, preLink, licenseMap, sources);
     }
 
     // incremental compilation
-    public static List<CompilationUnit>
-    compile(FileSpec fileSpec,
-            SourceList sourceList,
-            Collection<Source> classes,
-            SourcePath sourcePath,
-            ResourceContainer resources,
-            ResourceBundlePath bundlePath,
-            CompilerSwcContext swcContext,
-            SymbolTable symbolTable,
-            NameMappings nameMappings,
-            Configuration configuration,
-            SubCompiler[] compilers,
-            PreLink preLink,
-            Map licenseMap,
-            List<Source> sources)
-            throws CompilerException {
+    public static List<CompilationUnit> compile(FileSpec fileSpec, SourceList sourceList, Collection<Source> classes, SourcePath sourcePath, ResourceContainer resources, ResourceBundlePath bundlePath, CompilerSwcContext swcContext, SymbolTable symbolTable, NameMappings nameMappings, Configuration configuration, SubCompiler[] compilers, PreLink preLink, Map licenseMap, List<Source> sources) throws CompilerException {
         Set<IPreCompileExtension> extensions =
                 ExtensionManager.getPreCompileExtensions(configuration.getCompilerConfiguration().getExtensionsConfiguration().getExtensionMappings());
         for (IPreCompileExtension extension : extensions) {

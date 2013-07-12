@@ -2898,7 +2898,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 	{
 		CompilerHandler handler = cx.getHandler();
 		if(handler == null) {
-			handler = cx.statics.handler;
+			handler = cx.statics.getHandler();
 		}
 
 		int count = 0;

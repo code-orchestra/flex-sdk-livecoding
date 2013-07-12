@@ -65,8 +65,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 /**
@@ -252,7 +250,7 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
             cx.setEmitter(symbolTable.emitter);
             cx.setHandler(new CompilerHandler(source));
-            symbolTable.perCompileData.handler = cx.getHandler();
+            symbolTable.perCompileData.setHandler(cx.getHandler());
 
             context.setAscContext(cx);
 
@@ -436,7 +434,7 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
         CompilerContext context = unit.getContext();
         Context cx = context.getAscContext();
-        symbolTable.perCompileData.handler = cx.getHandler();
+        symbolTable.perCompileData.setHandler(cx.getHandler());
 
         ObjectValue global = new ObjectValue(cx, new GlobalBuilder(), null);
         cx.pushScope(global); // first scope is always considered the global scope.
@@ -494,7 +492,7 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
         CompilerContext context = unit.getContext();
         Context cx = context.getAscContext();
-        symbolTable.perCompileData.handler = cx.getHandler();
+        symbolTable.perCompileData.setHandler(cx.getHandler());
 
         FlowAnalyzer flower = (FlowAnalyzer) context.getAttribute("FlowAnalyzer");
         context.setAttribute("processed", new HashSet(15));
@@ -551,7 +549,7 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
         CompilerContext context = unit.getContext();
         Context cx = context.getAscContext();
-        symbolTable.perCompileData.handler = cx.getHandler();
+        symbolTable.perCompileData.setHandler(cx.getHandler());
 
         inheritSlots(unit, unit.types, symbolTable);
         inheritSlots(unit, unit.namespaces, symbolTable);
@@ -661,7 +659,7 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
         CompilerContext context = unit.getContext();
         Context cx = context.getAscContext();
-        symbolTable.perCompileData.handler = cx.getHandler();
+        symbolTable.perCompileData.setHandler(cx.getHandler());
 
         // run ConstantEvaluator
         cx.pushScope(node.frame);
@@ -737,7 +735,7 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
         CompilerContext context = unit.getContext();
         Context cx = context.getAscContext();
-        symbolTable.perCompileData.handler = cx.getHandler();
+        symbolTable.perCompileData.setHandler(cx.getHandler());
 
         ProgramNode node = (ProgramNode) unit.getSyntaxTree();
 

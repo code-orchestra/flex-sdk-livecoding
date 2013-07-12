@@ -23,9 +23,7 @@ import macromedia.asc.embedding.CompilerHandler;
 import macromedia.asc.embedding.avmplus.ByteCodeFactory;
 import macromedia.asc.embedding.avmplus.Features;
 import macromedia.asc.parser.NodeFactory;
-import macromedia.asc.parser.MetaDataNode;
 import macromedia.asc.semantics.*;
-import macromedia.asc.semantics.MetaData;
 
 import java.util.*;
 
@@ -57,7 +55,7 @@ public class ContextStatics
     IntList versions = new IntList();
     public int withDepth = -1;
 	public NamespacesTable internNamespaces = new NamespacesTable();
-	public CompilerHandler handler = null;
+	private CompilerHandler handler = null;
 	String pathspec;
 	String scriptname;
 
@@ -228,74 +226,74 @@ public class ContextStatics
 	// C: This is for tracking recursive include path.
 	public ObjectList<String> includePaths = new ObjectList<String>();
 
-	public void clear()
-	{
-		if (builtins != null)
-		{
-			builtins.clear();
-		}
-
-        errorCodeMap.clear();
-		_publicNamespace = null;
-		_anyNamespace = null;
-        _noType = null;
-        _objectType = null;
-        _arrayType = null;
-		_voidType = null;
-		_nullType = null;
-		_booleanType = null;
-		_stringType = null;
-		_typeType = null;
-		_functionType = null;
-		_intType = null;
-		_uintType = null;
-		_numberType = null;
-        _doubleType = null;
-        _decimalType = null;
-        _xmlType = null;
-		_xmlListType = null;
-        _regExpType = null;
-        _vectorType = null;
-        _vectorObjType = null;
-
-        _booleanTrue = null;
-        _booleanFalse = null;
-
-        if (namespaces != null)
-        {
-	        namespaces.clear();
-        }
-        if (internal_namespaces != null)
-        {
-	        internal_namespaces.clear();
-        }
-        if (protected_namespaces != null)
-        {
-	        protected_namespaces.clear();
-        }
-        if (static_protected_namespaces != null)
-        {
-	        static_protected_namespaces.clear();
-        }
-        if (private_namespaces != null)
-        {
-	        private_namespaces.clear();
-        }
-		if (bytecodeFactory != null)
-		{
-			bytecodeFactory.clear();
-		}
-        errCount = 0;
-		handler = null;
-
-		unresolved_ns_count = 0;
-		ticket_count = 0;
-
-		if (validImports != null)
-		{
-			validImports.clear();
-		}
-	}
+//	public void clear()
+//	{
+//		if (builtins != null)
+//		{
+//			builtins.clear();
+//		}
+//
+//        errorCodeMap.clear();
+//		_publicNamespace = null;
+//		_anyNamespace = null;
+//        _noType = null;
+//        _objectType = null;
+//        _arrayType = null;
+//		_voidType = null;
+//		_nullType = null;
+//		_booleanType = null;
+//		_stringType = null;
+//		_typeType = null;
+//		_functionType = null;
+//		_intType = null;
+//		_uintType = null;
+//		_numberType = null;
+//        _doubleType = null;
+//        _decimalType = null;
+//        _xmlType = null;
+//		_xmlListType = null;
+//        _regExpType = null;
+//        _vectorType = null;
+//        _vectorObjType = null;
+//
+//        _booleanTrue = null;
+//        _booleanFalse = null;
+//
+//        if (namespaces != null)
+//        {
+//	        namespaces.clear();
+//        }
+//        if (internal_namespaces != null)
+//        {
+//	        internal_namespaces.clear();
+//        }
+//        if (protected_namespaces != null)
+//        {
+//	        protected_namespaces.clear();
+//        }
+//        if (static_protected_namespaces != null)
+//        {
+//	        static_protected_namespaces.clear();
+//        }
+//        if (private_namespaces != null)
+//        {
+//	        private_namespaces.clear();
+//        }
+//		if (bytecodeFactory != null)
+//		{
+//			bytecodeFactory.clear();
+//		}
+//        errCount = 0;
+//		setHandler(null);
+//
+//		unresolved_ns_count = 0;
+//		ticket_count = 0;
+//
+//		if (validImports != null)
+//		{
+//			validImports.clear();
+//		}
+//	}
 
 	public void reuse()
 	{
@@ -318,7 +316,7 @@ public class ContextStatics
 			internNamespaces.clear();
 		}
 
-		handler = null;
+		setHandler(null);
 		pathspec = null;
 		scriptname = null;
 		global = null;
@@ -326,7 +324,7 @@ public class ContextStatics
 		globalPrototype = null;
 
         errCount = 0;
-		handler = null;
+		setHandler(null);
 
 		unresolved_ns_count = 0;
 		ticket_count = 0;
@@ -420,5 +418,13 @@ public class ContextStatics
             namespace_map.put(name,val);
         }
         return val;
+    }
+
+    public CompilerHandler getHandler() {
+        return handler;
+    }
+
+    public void setHandler(CompilerHandler handler) {
+        this.handler = handler;
     }
 }

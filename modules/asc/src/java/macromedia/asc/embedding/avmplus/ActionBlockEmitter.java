@@ -633,7 +633,7 @@ public class ActionBlockEmitter extends Emitter
 
     int makeVersionedNamespaceSet(ObjectValue ns, TreeSet<Integer> versions)
     {
-        ArrayList<Integer> namespace_list = new ArrayList<Integer>();
+        ArrayList<Integer> namespace_set = new ArrayList<Integer>();
 		if (versions.size() == 0)
         {
             cx.internalError("internal error: empty versions set");
@@ -644,15 +644,15 @@ public class ActionBlockEmitter extends Emitter
             if( ns != null )
             {
                 int ns_index = addNamespace(ns, v.intValue());
-                namespace_list.add(IntegerPool.getNumber(ns_index));
+                namespace_set.add(IntegerPool.getNumber(ns_index));
             }
             else
             {
                 cx.internalError("internal error: non object value for namespace");
             }
         }
-        Collections.sort(namespace_list);
-        return ab.addNsSetConstant(bytecodeFactory.ConstantNamespaceSet(namespace_list));
+        Collections.sort(namespace_set);
+        return ab.addNsSetConstant(bytecodeFactory.ConstantNamespaceSet(namespace_set));
     }
 
     int makeMultiname(String name, ObjectList<ObjectValue> namespaces)

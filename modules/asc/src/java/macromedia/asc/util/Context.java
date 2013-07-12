@@ -383,10 +383,10 @@ public final class Context implements ErrorConstants
 	    {
 	        handler.error2(filename,ln,col,msg,source);
 	    }
-	    else if( statics.handler != null )
+	    else if( statics.getHandler() != null )
 	    {
 	        // Flex enters through here for regular compiler errors
-	        statics.handler.error2(filename,ln,col,msg,source);
+	        statics.getHandler().error2(filename, ln, col, msg, source);
 	    }
 	    else
 	    {
@@ -419,10 +419,10 @@ public final class Context implements ErrorConstants
 	    {
 	        handler.warning2(filename,ln,col,msg,source);
 	    }
-	    else if( statics.handler != null )
+	    else if( statics.getHandler() != null )
 	    {
 	        // Flex enters through here for regular compiler errors
-	        statics.handler.warning2(filename,ln,col,msg,source);
+	        statics.getHandler().warning2(filename, ln, col, msg, source);
 	    }
 	    else
 	    {
@@ -499,10 +499,10 @@ public final class Context implements ErrorConstants
         {
             handler.error(filename,ln,col,msg,source, code);
         }
-        else if( statics.handler != null )
+        else if( statics.getHandler() != null )
         {
             // Flex enters through here for regular compiler errors
-            statics.handler.error(filename,ln,col,msg,source, code);
+            statics.getHandler().error(filename, ln, col, msg, source, code);
         }
         else
         {
@@ -517,10 +517,10 @@ public final class Context implements ErrorConstants
         {
             handler.warning(filename,ln,col,msg,source, code);
         }
-        else if( statics.handler != null )
+        else if( statics.getHandler() != null )
         {
             // Flex enters through here for regular compiler errors
-            statics.handler.warning(filename,ln,col,msg,source, code);
+            statics.getHandler().warning(filename, ln, col, msg, source, code);
         }
         else
         {
@@ -958,9 +958,9 @@ public final class Context implements ErrorConstants
     {
         this.handler = handler;
 
-        if (statics.handler == null)
+        if (statics.getHandler() == null)
         {
-            statics.handler = handler;
+            statics.setHandler(handler);
         }
     }
 

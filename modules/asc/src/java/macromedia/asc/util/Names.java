@@ -96,6 +96,7 @@ public final class Names implements Serializable, Cloneable // CodeOrchestra: ma
         
         for (int id = hashTable[i]; id != -1; id = next[id])
         {
+            //todo: для нового клона такой костыль не нужен!
             boolean b = Context.livecodingSession ? this.name[id].equals(name) : this.name[id] == name;
             if (b && type[id] == ty)
                 return id;

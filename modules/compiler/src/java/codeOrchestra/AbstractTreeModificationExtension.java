@@ -14,6 +14,7 @@ import macromedia.asc.semantics.Value;
 import macromedia.asc.util.Context;
 import macromedia.asc.util.ObjectList;
 import org.apache.commons.lang3.SerializationUtils;
+import org.apache.flex.forks.velocity.runtime.parser.node.NodeUtils;
 
 import java.util.*;
 
@@ -242,6 +243,23 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         if (parameters != null) {
             for (ParameterNode parameterNode : parameters.items) {
                 Node initializer = SerializationUtils.clone(parameterNode.init);
+
+                if (initializer != null && initializer instanceof MemberExpressionNode) {
+                   MemberExpressionNode initializerMemberExpression = (MemberExpressionNode) initializer;
+                   if (initializerMemberExpression.base == null) {
+                       Node expr = initializerMemberExpression.selector.expr;
+                       if (expr instanceof IdentifierNode) {
+                           IdentifierNode identifierNode = (IdentifierNode) expr;
+                           String constantName = identifierNode.name;
+
+                           VariableBindingNode fieldDefinition = TreeNavigator.getFieldDefinition(constantName, parentClass);
+                           if (fieldDefinition != null && fieldDefinition.initializer != null) {
+                               initializer = SerializationUtils.clone(fieldDefinition.initializer);
+                           }
+                       }
+                   }
+                }
+
                 if (parameterNode.type == null) {
                     runMethod.addParameter(parameterNode.identifier.name, null, initializer);
                 } else {

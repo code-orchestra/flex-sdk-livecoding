@@ -172,6 +172,10 @@ public class PreLink implements flex2.compiler.PreLink
         {
             CompilationUnit u = (CompilationUnit) units.get(i);
 
+            if (u == null) {
+                continue;
+            }
+
             if (u.isRoot())
             {
                 StylesContainer stylesContainer =
@@ -859,6 +863,11 @@ public class PreLink implements flex2.compiler.PreLink
          for (Iterator it = units.iterator(); it.hasNext();)
         {
             CompilationUnit unit = (CompilationUnit) it.next();
+
+            if (unit == null) {
+                continue;
+            }
+
             if (unit.resourceBundleHistory.size() > 0)
             {
                 resourceBundleNames.addAll(unit.resourceBundleHistory);
@@ -996,6 +1005,10 @@ public class PreLink implements flex2.compiler.PreLink
         for (int i = 0, size = units.size(); i < size; i++)
         {
             CompilationUnit u = (CompilationUnit) units.get(i);
+
+            if (u == null) {
+                continue;
+            }
 
             if (u.isRoot())
             {

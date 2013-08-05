@@ -2247,6 +2247,7 @@ public final class SwfxPrinter extends TagHandler
 				catch (FileNotFoundException e)
 				{
 					System.err.println("Error: " + e.getMessage());
+                    e.printStackTrace();
 					System.exit(1);
 				}
 			}

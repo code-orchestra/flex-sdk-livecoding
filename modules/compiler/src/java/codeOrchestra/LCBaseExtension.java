@@ -68,6 +68,13 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         FunctionDefinitionNode initMethodNode = initMethod.getFunctionDefinitionNode();
         initMethodNode.pkgdef = classDefinitionNode.pkgdef;
 
+        // CAS-336 - create a static field holding a reference to the current class
+        FieldCONode fieldCONode = new FieldCONode("_liveCodingClassParam", "Class");
+        fieldCONode.isStatic = true;
+//        fieldCONode.initializer = TreeUtil.createIdentifier(className);
+        VariableDefinitionNode liveCodingClassParamField = fieldCONode.getVariableDefinitionNode();
+        liveCodingClassParamField.pkgdef = classDefinitionNode.pkgdef;
+
         // Do the Harlem shake
         LiveCodingPolicy liveCodingPolicy = LiveCodingUtil.getLiveCodingPolicy(classDefinitionNode);
         if (liveCodingPolicy.isEnabled()) {
@@ -161,12 +168,15 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
         }
         initMethodNode.fexpr.body.items.add(new ReturnStatementNode(new LiteralNumberNode("1")));
         classDefinitionNode.statements.items.add(initMethodNode);
+        classDefinitionNode.statements.items.add(liveCodingClassParamField);
         FieldCONode initField = new FieldCONode("initLiveField_" + className, "int");
         initField.isStatic = true;
         initField.initializer = TreeUtil.createCall(null, initMethodName, null);
         VariableDefinitionNode variableDefinitionNode = initField.getVariableDefinitionNode();
         variableDefinitionNode.pkgdef = classDefinitionNode.pkgdef;
         classDefinitionNode.statements.items.add(0, variableDefinitionNode);
+//        classDefinitionNode.statements.items.add(0, new ExpressionStatementNode(new ListNode(null, new MemberExpressionNode(null, new SetExpressionNode(TreeUtil.createIdentifier("_liveCodingClassParam"), new ArgumentListNode(TreeUtil.createIdentifier(className), -1))), -1), -1));
+        classDefinitionNode.statements.items.add(0, TreeUtil.createExpressionStatement(TreeUtil.createAssignmentExpression(null, new IdentifierNode("_liveCodingClassParam", -1), new ArgumentListNode(TreeUtil.createIdentifier(className), -1))));
     }
 
     private void processProtectedField(IMember member, ClassDefinitionNode classDefinitionNode) {

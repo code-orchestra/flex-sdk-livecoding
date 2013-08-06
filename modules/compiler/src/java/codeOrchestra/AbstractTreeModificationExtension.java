@@ -239,6 +239,11 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                 -1)));
         StatementListNode tryblock = new StatementListNode(null);
 
+        // CAS-336
+        if (staticMethod) {
+            runMethod.addParameter("classParam", "Class");
+        }
+
         ParameterListNode parameters = functionDefinitionNode.fexpr.signature.parameter;
         if (parameters != null) {
             for (ParameterNode parameterNode : parameters.items) {
@@ -540,14 +545,25 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         // COLT-57
         ArgumentListNode argumentListNode = null;
         ParameterListNode parameterListNode = functionDefinitionNode.fexpr.signature.parameter;
-        if (parameterListNode != null && parameterListNode.items.size() > 0) {
-            argumentListNode = new ArgumentListNode(TreeUtil.createIdentifier(parameterListNode.items.get(0).identifier.name), -1);
-            if (parameterListNode.items.size() > 1) {
-                for (int i = 1; i < parameterListNode.items.size(); i++) {
+        // CAS-336
+        if (staticMethod) {
+            argumentListNode = new ArgumentListNode(TreeUtil.createIdentifier("_liveCodingClassParam"), -1);
+            if (parameterListNode != null && parameterListNode.items.size() > 0) {
+                for (int i = 0; i < parameterListNode.items.size(); i++) {
                     argumentListNode.items.add(TreeUtil.createIdentifier(parameterListNode.items.get(i).identifier.name));
                 }
             }
+        } else {
+            if (parameterListNode != null && parameterListNode.items.size() > 0) {
+                argumentListNode = new ArgumentListNode(TreeUtil.createIdentifier(parameterListNode.items.get(0).identifier.name), -1);
+                if (parameterListNode.items.size() > 1) {
+                    for (int i = 1; i < parameterListNode.items.size(); i++) {
+                        argumentListNode.items.add(TreeUtil.createIdentifier(parameterListNode.items.get(i).identifier.name));
+                    }
+                }
+            }
         }
+
         ListNode expr;
         if (!staticMethod) {
             CallExpressionNode callExpressionNode = new CallExpressionNode(

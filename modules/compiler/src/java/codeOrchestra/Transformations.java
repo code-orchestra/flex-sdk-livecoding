@@ -456,10 +456,14 @@ public class Transformations {
                 if (!staticMethod && DigestManager.getInstance().isInstanceMemberVisibleInsideClass(originalClassFqName, identifier.name)) {
                     memberExpression.base = TreeUtil.createIdentifier("thisScope");
                 } else if (DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name) != null) {
-                    String ownerOfStaticMemberFqName = DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name);
-                    String shortName = StringUtils.shortNameFromLongName(ownerOfStaticMemberFqName);
-                    memberExpression.base = TreeUtil.createIdentifier(shortName);
-                    // TODO: add import!
+                    // CAS-336
+                    if (staticMethod) {
+                        memberExpression.base = TreeUtil.createIdentifier("classParam");
+                    } else {
+                        String ownerOfStaticMemberFqName = DigestManager.getInstance().findOwnerOfStaticMember(originalClassFqName, identifier.name);
+                        String shortName = StringUtils.shortNameFromLongName(ownerOfStaticMemberFqName);
+                        memberExpression.base = TreeUtil.createIdentifier(shortName);
+                    }
                 } else {
                     String possibleClassName = identifier.name;
                     if (className.equals(possibleClassName)) {

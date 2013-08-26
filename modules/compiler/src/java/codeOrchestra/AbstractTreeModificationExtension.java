@@ -356,7 +356,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         errorTraceArguments.items.add(
                 new BinaryExpressionNode(Tokens.PLUS_TOKEN, new LiteralStringNode("live method " + LiveCodingUtil.constructLiveCodingMethodId(functionDefinitionNode, className) + " execute error: "), TreeUtil.createIdentifier("e")));
         errorTraceArguments.items.add(TreeUtil.createIdentifier("e"));
-        StatementListNode catchlist = new StatementListNode(new CatchClauseNode(
+        CatchClauseNode catchClauseNode = new CatchClauseNode(
                 TreeUtil.createParameterNode("e", "Error", null),
                 new StatementListNode(new ExpressionStatementNode(new ListNode(null,
                         TreeUtil.createCall(
@@ -364,9 +364,23 @@ public abstract class AbstractTreeModificationExtension implements Extension {
                                 "log",
                                 errorTraceArguments
                         ),
-                        -1))))
-        );
-        runMethod.statements.add(new TryStatementNode(tryblock, catchlist, null));
+                        -1))));
+        StatementListNode catchlist = new StatementListNode(catchClauseNode);
+
+        StatementListNode finallyStatements = new StatementListNode(new ExpressionStatementNode(new ListNode(null,
+                TreeUtil.createCall(
+                        "LiveCodingCodeFlowUtil",
+                        "checkRecursion2",
+                        new ArgumentListNode(new LiteralStringNode(packageName + "." + liveCodingClassName + ".run"), -1)
+                ),
+                -1)));
+        NodeFactory nodeFactory = new NodeFactory(cx);
+        FinallyClauseNode finallyClauseNode = nodeFactory.finallyClause(finallyStatements);
+
+        TryStatementNode tryStatementNode = new TryStatementNode(tryblock, catchlist, finallyClauseNode);
+        tryStatementNode.finallyInserted = true;
+
+        runMethod.statements.add(tryStatementNode);
         if (methodResult != null) {
             runMethod.statements.add(new ReturnStatementNode(new ListNode(null, new LiteralNullNode(), -1)));
         }

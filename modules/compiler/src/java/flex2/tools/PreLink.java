@@ -328,6 +328,10 @@ public class PreLink implements flex2.compiler.PreLink
         for (int i = 0, length = units.size(); i < length; i++)
         {
             CompilationUnit compilationUnit = (CompilationUnit) units.get(i);
+            if (compilationUnit == null) {
+                continue;
+            }
+
             assert compilationUnit != null : "Must have missed a forcedToStop() check after the most recent batch()";
             Source source = compilationUnit.getSource();
 
@@ -444,7 +448,11 @@ public class PreLink implements flex2.compiler.PreLink
 
                         for (Iterator it2 = units.iterator(); it2.hasNext();)
                         {
-                            linkables.add( new CULinkable( (CompilationUnit) it2.next() ) );
+                            CompilationUnit unit = (CompilationUnit) it2.next();
+                            if (unit == null) {
+                                continue;
+                            }
+                            linkables.add( new CULinkable(unit) );
                         }
 
                         try

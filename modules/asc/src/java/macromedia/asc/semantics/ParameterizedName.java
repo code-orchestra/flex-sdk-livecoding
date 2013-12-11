@@ -59,7 +59,7 @@ public class ParameterizedName extends QName
                 {
                     for( int i = 0, limit = type_params.size(); i < limit; ++i)
                     {
-                        if( !type_params.at(i).equals(rp.type_params.at(1)) )
+                        if( !type_params.at(i).equals(rp.type_params.at(i)) )
                             return false;
                     }
                     return true;

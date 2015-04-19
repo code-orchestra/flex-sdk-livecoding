@@ -19,23 +19,16 @@
 
 package macromedia.asc.embedding;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-
 import macromedia.asc.util.Context;
 import macromedia.asc.util.ContextStatics;
 import macromedia.asc.util.ObjectList;
-import static macromedia.asc.util.Version.*;
-import static macromedia.asc.embedding.avmplus.Features.*;
 
-/**
- * @author Jeff Dyer
- */
+import java.io.*;
+
+import static macromedia.asc.embedding.avmplus.Features.*;
+import static macromedia.asc.util.Version.ASC_BUILD_CODE;
+import static macromedia.asc.util.Version.ASC_VERSION_USER;
+
 public class Main
 {
 	static boolean show_parsetrees = false;
@@ -390,7 +383,7 @@ public class Main
 		{
 			System.out.println("ActionScript 3.0 for AVM+");
 			System.out.println("version " + ASC_VERSION_USER + " build "+ ASC_BUILD_CODE);
-			System.out.println("Copyright 2012 The Apache Software Foundation");
+			System.out.println("Copyright 2015 The Apache Software Foundation");
 			System.out.println("All rights reserved\n");
 			System.out.println("Usage:");
 			System.out.println("  asc {-AS3|-ES|-d|-f|-h|-i|-import <filename>|-in <filename>|-m|-p}* filespec");

@@ -7,10 +7,9 @@
       <sourceFolder url="file://$MODULE_DIR$/../modules/debugger/src/java" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="module" module-name="flex-asc" />
     <orderEntry type="module" module-name="flex-compiler" />
     <orderEntry type="module" module-name="flex-swfutils" />
   </component>
 </module>
-

@@ -17,14 +17,42 @@
       <sourceFolder url="file://$MODULE_DIR$/../modules/compiler/src/java" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="module" module-name="flex-asc" />
     <orderEntry type="module" module-name="flex-fxgutils" />
     <orderEntry type="module" module-name="flex-swfutils" />
+    <orderEntry type="module" module-name="xml-batik" />
     <orderEntry type="module-library">
-      <library name="junit3">
+      <library>
         <CLASSES>
-          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/external/xml-apis-ext.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/external/commons-lang3-3.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/velocity-dep-1.4-flex.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="saxon9.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/external/saxon9.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -49,35 +77,14 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="saxon9.jar">
+      <library name="junit3">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/external/saxon9.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module" module-name="xml-batik" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/external/xml-apis-ext.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../modules/thirdparty/velocity/bin/velocity-1.4.jar!/" />
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="library" name="yjp-controller-api-redist" level="project" />
-    <orderEntry type="library" name="commons-lang3-3.1" level="project" />
   </component>
 </module>
-

@@ -19,28 +19,18 @@
 
 package com.adobe.internal.fxg.sax;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-
+import com.adobe.fxg.FXGConstants;
+import com.adobe.fxg.FXGException;
+import com.adobe.fxg.dom.FXGNode;
+import com.adobe.fxg.util.FXGLog;
+import com.adobe.fxg.util.FXGLogger;
+import com.adobe.internal.fxg.dom.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.adobe.fxg.util.FXGLog;
-import com.adobe.fxg.util.FXGLogger;
-import com.adobe.fxg.FXGException;
-import com.adobe.fxg.FXGConstants;
-import com.adobe.fxg.dom.FXGNode;
-
-import com.adobe.internal.fxg.dom.CDATANode;
-import com.adobe.internal.fxg.dom.GraphicNode;
-import com.adobe.internal.fxg.dom.DefinitionNode;
-import com.adobe.internal.fxg.dom.DelegateNode;
-import com.adobe.internal.fxg.dom.PreserveWhiteSpaceNode;
+import java.util.*;
 
 import static com.adobe.fxg.FXGConstants.*;
 
@@ -49,9 +39,6 @@ import static com.adobe.fxg.FXGConstants.*;
  * a graphical asset) to a simple object graph to serve as an intermediate
  * representation. The document must be in the FXG 1.0 namespace and the root
  * element must be a &lt;Graphic&gt; tag.
- * 
- * @author Peter Farland
- * @author Sujata Das
  */
 public class FXGSAXScanner extends DefaultHandler
 {

@@ -81,7 +81,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/external/jacl-1.2.6.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/external/jacl.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -90,7 +90,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/external/tcljava-1.2.6.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/external/tcljava.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -99,7 +99,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/external/jython-2.2-beta1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/external/jython-2.7-b4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -116,4 +116,3 @@
     </orderEntry>
   </component>
 </module>
-

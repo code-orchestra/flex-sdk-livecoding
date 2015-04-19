@@ -16,4 +16,4 @@ public interface TokenManager {
   public Token getNextToken();
 
 }
-/* JavaCC - OriginalChecksum=9b180e86f3ebfbd64d23f1ae826a6308 (do not edit this line) */
+/* JavaCC - OriginalChecksum=5883d8f09db1f750a2c9a448f4d12274 (do not edit this line) */

@@ -43,7 +43,11 @@
     <property name="velocity.zip.dir" value="velocity-1.4"/>
     <property name="velocity.dir" value="thirdparty/velocity"/>
     
-	<!-- 
+    <property name="maven.search.url" value="https://search.maven.org/remotecontent?filepath="/>
+    <property name="flexToolApi.name" value="flex-tool-api"/>
+    <property name="flexToolApi.version" value="1.0.0"/>
+
+	<!--
 	   Notes:
 	       For Apache, the JARS must be removed from the repository.
 	       Every attempt was made to use the same versions that were used for Flex 4.6 even
@@ -71,18 +75,23 @@
     <property name="commons-collections.name" value="commons-collections-3.0"/>
     <property name="commons-discovery.name" value="commons-discovery-0.2"/>	
     <property name="commons-logging.name" value="commons-logging-1.0.4"/>
-	
+    <property name="commons-lang3.name" value="commons-lang3-3.1"/>
+    <property name="yjp-controller-api-redist.name" value="yjp-controller-api-redist-12.0.3"/>
+    <property name="jython.name" value="jython-2.7-b4"/>
+    <property name="jacl.name" value="jacl"/>
+    <property name="tcljava.name" value="tcljava"/>
+    <property name="ant.name" value="ant-1.9.4"/>
     <property name="saxon9.bin.zip" value="saxonb9-1-0-8j.zip"/>
     <property name="saxon9.jar.dir" value="saxonb9-1-0-8j"/>
-    
+
     <property name="xerces.dir" value="xerces-2_9_1"/>
-     
+
     <!-- 
         Because the downloads requires a network connection and the JARs don't change very often, 
         they are each downloaded only if they don't already exist. 
     -->
     
-	<target name="main" depends="batik-jars, commons-jars, javacc-jar, saxon9-jar, velocity-jars, xalan-jar, xerces-jars" 
+	<target name="main" depends="batik-jars, commons-jars, yjp-controller-api-redist-jar, jython-jar, jacl-jar, tcljava-jar, ant-jar, javacc-jar, saxon9-jar, velocity-jars, xalan-jar, xerces-jars, flex-tool-api-jar"
 		description="Downloads all the required thirdparty JARs"/>
 
     <!--
@@ -97,6 +106,12 @@
                 <include name="commons-collections*/**"/>
                 <include name="commons-discovery*/**"/>
                 <include name="commons-logging*/**"/>
+                <include name="commons-lang3*/**"/>
+                <include name="yjp-controller-api-redist*/**"/>
+                <include name="jython*/**"/>
+                <include name="jacl*/**"/>
+                <include name="tcljava*/**"/>
+                <include name="ant*/**"/>
                 <include name="javacc*/**"/>
                 <include name="saxon*/**"/>
                 <include name="xalan*/**"/>
@@ -273,6 +288,15 @@
                 <include name="README.xml-apis-ext*"/>
             </fileset>            
         </copy>
+        <unzip src="${lib.ext.dir}/xml-apis-ext.jar" dest="${lib.ext.dir}/xml-apis-ext-LICENSES">
+            <patternset>
+                <include name="license/**" />
+            </patternset>
+        </unzip>
+        <copy toDir="${lib.ext.dir}/xml-apis-ext-LICENSES/" flatten="true">
+            <fileset dir="${lib.ext.dir}/xml-apis-ext-LICENSES/license" />
+        </copy>
+        <delete dir="${lib.ext.dir}/xml-apis-ext-LICENSES/license" />
 
         <delete dir="${download.dir}/${batik.zip.dir}"/>
     </target>
@@ -295,7 +319,7 @@
 	    commons
 	-->
 	
-	<target name="commons-jars" depends="commons-collections-jar,commons-discovery-jar,commons-logging-jar" />
+	<target name="commons-jars" depends="commons-collections-jar,commons-discovery-jar,commons-logging-jar,commons-lang3-jar" />
 
     <!--
 	    commons-collections
@@ -381,6 +405,150 @@
         <delete dir="${download.dir}/${commons-logging.name}"/>
     </target>
 
+    <!--
+       commons-lang3
+    -->
+
+    <target name="commons-lang3-jar-check" description="Checks if commons-lang3.jar is in lib directory.">
+        <available file="${lib.ext.dir}/commons.lang3.jar" property="commons.lang3.jar.exists"/>
+    </target>
+
+    <target name="commons-lang3-jar" depends="commons-lang3-jar-check"
+            unless="commons.lang3.jar.exists"
+            description="Downloads and copies commons.lang3.jar to the lib directory.">
+
+        <antcall target="download-zip">
+            <param name="srcUrl" value="http://archive.apache.org/dist/commons/lang/binaries"/>
+            <param name="zipFile" value="${commons-lang3.name}-bin.tar.gz"/>
+            <param name="md5" value="c105c55dc6f92c8ed20d1034be9b182a"/>
+            <param name="srcJarPath" value="${commons-lang3.name}/commons-lang3-3.1.jar"/>
+            <param name="destJarFile" value="${lib.ext.dir}/commons-lang3-3.1.jar"/>
+        </antcall>
+        <copy todir="${lib.ext.dir}">
+            <fileset dir="${download.dir}/${commons-lang3.name}">
+                <include name="LICENSE.txt"/>
+                <include name="NOTICE.txt"/>
+            </fileset>
+            <globmapper from="*" to="commons-lang3-*"/>
+        </copy>
+        <delete dir="${download.dir}/${commons-lang3.name}"/>
+    </target>
+
+    <target name="yjp-controller-api-redist-check" description="Checks if yjp-controller-api-redist.jar is in lib directory.">
+        <available file="${lib.ext.dir}/${yjp-controller-api-redist.name}.jar" property="yjp-controller-api-redist.jar.exists"/>
+    </target>
+
+    <target name="yjp-controller-api-redist-jar" depends="yjp-controller-api-redist-check"
+            unless="yjp-controller-api-redist.exists"
+            description="Downloads and copies yjp-controller-api-redist.jar to the lib directory.">
+
+        <antcall target="download-jar">
+            <param name="srcUrl" value="http://repo1.maven.org/maven2/com/facebook/thirdparty/yourkit-api/yjp-controller-api-redist/12.0.3"/>
+            <param name="md5" value="8496ddfefad16fa36fe7ed2fac44b526"/>
+            <param name="srcJarFile" value="${yjp-controller-api-redist.name}.jar"/>
+            <param name="destJarFile" value="${download.dir}/${yjp-controller-api-redist.name}.jar"/>
+            <param name="zipFile" value="${yjp-controller-api-redist.name}.jar"/>
+        </antcall>
+        <copy todir="${lib.ext.dir}">
+            <fileset dir="${download.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+        <delete dir="${download.dir}/${yjp-controller-api-redist.name}"/>
+    </target>
+
+    <target name="jython-check" description="Checks if jython.jar is in lib directory.">
+        <available file="${lib.ext.dir}/${jython.name}.jar" property="jython.jar.exists"/>
+    </target>
+
+    <target name="jython-jar" depends="jython-check"
+            unless="jython.exists"
+            description="Downloads and copies jython.jar to the lib directory.">
+
+        <antcall target="download-jar">
+            <param name="srcUrl" value="http://repo1.maven.org/maven2/org/python/jython/2.7-b4"/>
+            <param name="md5" value="5516d8e25789beb1da74d434ed15dded"/>
+            <param name="srcJarFile" value="${jython.name}.jar"/>
+            <param name="destJarFile" value="${download.dir}/${jython.name}.jar"/>
+            <param name="zipFile" value="${jython.name}.jar"/>
+        </antcall>
+        <copy todir="${lib.ext.dir}">
+            <fileset dir="${download.dir}">
+                <include name="jython*.jar"/>
+            </fileset>
+        </copy>
+        <delete dir="${download.dir}/${jython.name}"/>
+    </target>
+
+    <target name="jacl-check" description="Checks if jacl.jar is in lib directory.">
+        <available file="${lib.ext.dir}/jacl.jar" property="jacl.jar.exists"/>
+    </target>
+
+    <target name="jacl-jar" depends="jacl-check"
+            unless="jacl.jar.exists"
+            description="Downloads and copies jacl.jar to the lib directory.">
+
+        <antcall target="download-zip">
+            <param name="srcUrl" value="http://www.java2s.com/Code/JarDownload/jacl"/>
+            <param name="zipFile" value="${jacl.name}.jar.zip"/>
+            <param name="md5" value="41435ba91cbd17b93a4ec191fb972199"/>
+            <param name="srcJarPath" value="${jacl.name}.jar"/>
+            <param name="destJarFile" value="${lib.ext.dir}/jacl.jar"/>
+        </antcall>
+        <copy todir="${lib.ext.dir}">
+            <fileset dir="${download.dir}/">
+                <include name="jacl-*"/>
+            </fileset>
+        </copy>
+        <delete dir="${download.dir}/${jacl.name}"/>
+    </target>
+
+    <target name="tcljava-check" description="Checks if tcljava.jar is in lib directory.">
+        <available file="${lib.ext.dir}/tcljava.jar" property="tcljava.jar.exists"/>
+    </target>
+
+    <target name="tcljava-jar" depends="jacl-check"
+            unless="tcljava.jar.exists"
+            description="Downloads and copies jacl.jar to the lib directory.">
+
+        <antcall target="download-zip">
+            <param name="srcUrl" value="http://www.java2s.com/Code/JarDownload/tcljava"/>
+            <param name="zipFile" value="${tcljava.name}.jar.zip"/>
+            <param name="md5" value="cdda9d15b24431465b7e84166c3e7805"/>
+            <param name="srcJarPath" value="${tcljava.name}.jar"/>
+            <param name="destJarFile" value="${lib.ext.dir}/tcljava.jar"/>
+        </antcall>
+        <copy todir="${lib.ext.dir}">
+            <fileset dir="${download.dir}/">
+                <include name="tcljava-*"/>
+            </fileset>
+        </copy>
+        <delete dir="${download.dir}/${tcljava.name}"/>
+    </target>
+
+    <target name="ant-check" description="Checks if jython.jar is in lib directory.">
+        <available file="${lib.ext.dir}/${ant.name}.jar" property="ant.jar.exists"/>
+    </target>
+
+    <target name="ant-jar" depends="ant-check"
+            unless="ant.exists"
+            description="Downloads and copies ant.jar to the lib directory.">
+
+        <antcall target="download-jar">
+            <param name="srcUrl" value="http://repo1.maven.org/maven2/org/apache/ant/ant/1.9.4/"/>
+            <param name="md5" value="53a32fc286a44982c829de096becfa3b"/>
+            <param name="srcJarFile" value="${ant.name}.jar"/>
+            <param name="destJarFile" value="${download.dir}/${ant.name}.jar"/>
+            <param name="zipFile" value="${ant.name}.jar"/>
+        </antcall>
+        <copy todir="${lib.ext.dir}">
+            <fileset dir="${download.dir}">
+                <include name="ant*.jar"/>
+            </fileset>
+        </copy>
+        <delete dir="${download.dir}/${ant.name}"/>
+    </target>
+
 	<!--
         javacc - parser for mxmlc compiler
         
@@ -397,7 +565,7 @@
         description="Downloads and copies javacc.jar to the lib directory.">
 
         <antcall target="download-zip">
-          <param name="srcUrl" value="http://java.net/projects/javacc/downloads/download"/>
+          <param name="srcUrl" value="https://java.net/downloads/javacc"/>
           <param name="zipFile" value="javacc-5.0.tar.gz"/>
           <param name="srcJarPath" value="javacc-5.0/bin/lib/javacc.jar"/>
           <param name="destJarFile" value="${lib.ext.dir}/javacc.jar"/>
@@ -422,7 +590,7 @@
     <target name="saxon9-jar" depends="saxon9-jar-check" unless="saxon9.jar.exists" 
         description="Copies sax9.jar to the lib directory.">
 
-        <get src="http://sourceforge.net/projects/saxon/files/Saxon-B/9.1.0.8/${saxon9.bin.zip}/download" 
+        <get src="http://downloads.sourceforge.net/project/saxon/Saxon-B/9.1.0.8/saxonb9-1-0-8j.zip?r=&amp;ts=1366147457&amp;use_mirror=superb-dca2"
             dest="${download.dir}/${saxon9.bin.zip}" 
             verbose="false"/>   
 
@@ -510,6 +678,13 @@
           <param name="destJarFile" value="${lib.ext.dir}/xalan.jar"/>
         </antcall>
         
+        <unzip src="${lib.ext.dir}/xalan.jar" dest="${lib.ext.dir}/xalan-LICENSES">
+            <patternset>
+                <include name="*LICENSE*" />
+                <include name="*README*" />
+            </patternset>
+        </unzip>
+
         <copy todir="${lib.ext.dir}">
             <fileset dir="${download.dir}/xalan-j_2_6_0">
                 <include name="LICENSE"/>
@@ -545,7 +720,16 @@
         </antcall>
 
         <copy toDir="${lib.ext.dir}" file="${download.dir}/${xerces.dir}/xml-apis.jar" />
-        
+        <unzip src="${lib.ext.dir}/xml-apis.jar" dest="${lib.ext.dir}/xml-apis-LICENSES">
+            <patternset>
+                <include name="license/**" />
+            </patternset>
+        </unzip>
+        <copy toDir="${lib.ext.dir}/xml-apis-LICENSES/" flatten="true">
+            <fileset dir="${lib.ext.dir}/xml-apis-LICENSES/license" />
+        </copy>
+        <delete dir="${lib.ext.dir}/xml-apis-LICENSES/license" />
+
         <copy todir="${lib.ext.dir}">
             <fileset dir="${download.dir}/${xerces.dir}">
                 <include name="*NOTICE*"/>
@@ -559,5 +743,24 @@
             <globmapper from="*" to="xerces-LICENSE/*"/>
         </copy>
         <delete dir="${download.dir}/${xerces.dir}"/>
-    </target>    
+    </target>
+
+    <!--
+        flex-tool-api
+    -->
+
+    <target name="flex-tool-api-jar-check" description="Checks if flex-tool-api.jar is in lib directory.">
+        <available file="${lib.ext.dir}/flex-tool-api.jar" property="flexToolApi.jar.exists"/>
+    </target>
+
+    <target name="flex-tool-api-jar" depends="flex-tool-api-jar-check" unless="flexToolApi.jar.exists"
+            description="Downloads and copies flex-tool-api.jar to the lib directory.">
+
+        <get src="${maven.search.url}/org/apache/flex/${flexToolApi.name}/${flexToolApi.version}/${flexToolApi.name}-${flexToolApi.version}.jar"
+             dest="${download.dir}/flex-tool-api.jar"
+             verbose="false"/>
+
+        <copy file="${download.dir}/flex-tool-api.jar" toDir="${lib.ext.dir}" verbose="true"/>
+    </target>
+
 </project>

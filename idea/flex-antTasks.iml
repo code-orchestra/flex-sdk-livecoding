@@ -13,20 +13,27 @@
       <sourceFolder url="file://$MODULE_DIR$/../modules/antTasks/src" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="module" module-name="flex-asc" />
     <orderEntry type="module" module-name="flex-compiler" />
     <orderEntry type="module" module-name="flex-swfutils" />
     <orderEntry type="module-library">
-      <library name="ANT17_JAR">
+      <library name="ant">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/external/ant.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/external/ant-1.9.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="commons-lang3-3.1" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/external/commons-lang3-3.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
-

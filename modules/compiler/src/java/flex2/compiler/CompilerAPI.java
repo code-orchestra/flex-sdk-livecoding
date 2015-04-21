@@ -98,7 +98,6 @@ import macromedia.asc.util.Names;
  * @see flex2.compiler.fxg.FXGCompiler
  * @see flex2.compiler.i18n.I18nCompiler
  * @see flex2.compiler.mxml.MxmlCompiler
- * @author Clement Wong
  */
 public final class CompilerAPI
 {
@@ -4349,7 +4348,8 @@ public final class CompilerAPI
             }
         }
 
-        // ToDo: For Apache Flex remove this section since there is no longer a license.
+        // Remove Adobe Flex SDK premium  licence checking not needed in Apache Flex
+
         if ((u.licensedClassReqs != null) && (u.licensedClassReqs.size() > 0))
         {
             for (Iterator it = u.licensedClassReqs.entrySet().iterator(); it.hasNext();)
@@ -4358,8 +4358,6 @@ public final class CompilerAPI
                 String id = (String) e.getKey();
                 String handler = (String) e.getValue();
 
-                if (!hasValidLicense(licenseMap, id))
-                {
                     MultiName mName = new MultiName(handler);
                     QName qName = resolveMultiName(u.getSource().getNameForReporting(), mName, sources, sourceList,
                                                    sourcePath, resources, swcContext, symbolTable);
@@ -4378,13 +4376,7 @@ public final class CompilerAPI
                         // no license, no handler, no SWF
                         ThreadLocalToolkit.log(new UnableToResolveClass("RequiresLicense handler", handler));
                     }
-                }
-                else
-                {
-                    // if there is a license and the license handler is unconditionally added, remove it.
-                    configuration.getIncludes().remove(handler);
-                    configuration.getExterns().add(handler);
-                }
+
             }
         }
 
@@ -4441,12 +4433,6 @@ public final class CompilerAPI
         {
             throw new CompilerException();
         }
-    }
-
-    private static boolean hasValidLicense(Map licenseMap, String id)
-    {    	
-    	// For Apache Flex there is no license.
-    	return true;
     }
 
     private static void markDone(List<Source> sources, List<CompilationUnit> units)

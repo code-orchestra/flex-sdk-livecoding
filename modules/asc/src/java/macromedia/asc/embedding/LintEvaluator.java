@@ -19,22 +19,20 @@
 
 package macromedia.asc.embedding;
 
-import static macromedia.asc.embedding.avmplus.RuntimeConstants.TYPE_bool;
-import static macromedia.asc.embedding.avmplus.RuntimeConstants.TYPE_boolean;
-import static macromedia.asc.embedding.avmplus.RuntimeConstants.TYPE_double;
-import static macromedia.asc.embedding.avmplus.RuntimeConstants.TYPE_decimal;
-import static macromedia.asc.embedding.avmplus.RuntimeConstants.TYPE_int;
-import static macromedia.asc.embedding.avmplus.RuntimeConstants.TYPE_uint;
-import macromedia.asc.embedding.avmplus.*;
-import macromedia.asc.util.*;
+import macromedia.asc.embedding.avmplus.ActivationBuilder;
+import macromedia.asc.embedding.avmplus.InstanceBuilder;
+import macromedia.asc.embedding.avmplus.PackageBuilder;
 import macromedia.asc.parser.*;
 import macromedia.asc.semantics.*;
-import static macromedia.asc.parser.Tokens.*;
-import static macromedia.asc.embedding.WarningConstants.*;
-import static macromedia.asc.semantics.Slot.*;
+import macromedia.asc.util.*;
 
-import java.util.*;
 import java.io.*;
+import java.util.*;
+
+import static macromedia.asc.embedding.WarningConstants.*;
+import static macromedia.asc.embedding.avmplus.RuntimeConstants.*;
+import static macromedia.asc.parser.Tokens.*;
+import static macromedia.asc.semantics.Slot.PARAM_Rest;
 
 /**
  * This is the Evaluator for the -coach compiler option.  It gives warnings for
@@ -3394,7 +3392,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 	//  of the compiler.  Slot supported an opaque data pointer named embeddedData which we
 	//  store our  custom LintDataRecord on.  The methods which follow simplify accessing
 	//  these custom data fields.
-	public static class LintDataRecord implements Cloneable
+	private static class LintDataRecord
 	{
 		public boolean has_return_value;
 		public boolean is_registered_for_event;
@@ -3407,11 +3405,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 			is_registered_for_event = false;
             declaration_pos = 0;
 		}
-
-        public LintDataRecord clone() throws CloneNotSupportedException {
-            return (LintDataRecord) super.clone();
-        }
-    };
+	};
 
 	private ObjectList<Slot>  slotsToClean = new ObjectList<Slot>();  // store what we allocate so we can clean it up
 

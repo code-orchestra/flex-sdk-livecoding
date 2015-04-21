@@ -28,29 +28,19 @@ import flex2.compiler.TranscoderException;
 import flex2.compiler.io.VirtualFile;
 import flex2.compiler.util.MimeMappings;
 
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
+import javax.imageio.*;
+import javax.imageio.stream.MemoryCacheImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageTypeSpecifier;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.stream.MemoryCacheImageOutputStream;
 
 /**
  * Transcodes lossless images (GIF and PNG) into DefineBitsLossless
  * SWF tags.  Compression with quality is supported.  For compression,
  * we convert images to JPEG, then transcode them into DefineBitsJPEG3
  * SWF tags.
- *
- * @author Roger Gonzalez
- * @author Joa Ebert
- * @author Paul Reilly
  */
 public class LosslessImageTranscoder extends ImageTranscoder
 {

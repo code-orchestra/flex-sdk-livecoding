@@ -52,8 +52,6 @@ import java.io.IOException;
  * A SWF specific implementation of Java2D's <code>Graphics2D</code>
  * API. Calls to this class are converted into a <code>TagList</code>
  * that can be used to construct a SWF Sprite.
- *
- * @author Peter Farland
  */
 public class SpriteGraphics2D extends AbstractGraphics2D
 {
@@ -97,7 +95,8 @@ public class SpriteGraphics2D extends AbstractGraphics2D
 	private SpriteGraphics2D(SpriteGraphics2D swf2d)
 	{
 		super((GraphicContext)swf2d.graphicContext.clone());
-		defineTags = new TagList();
+		bounds = new Rect();
+		defineTags = swf2d.getTags();
 	}
 
 	/**

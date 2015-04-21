@@ -22,14 +22,7 @@ package flex2.compiler.css;
 import flash.css.StyleSheet;
 import flash.fonts.FontManager;
 import flash.util.Trace;
-import flex2.compiler.AbstractDelegatingSubCompiler;
-import flex2.compiler.CompilationUnit;
-import flex2.compiler.CompilerBenchmarkHelper;
-import flex2.compiler.CompilerContext;
-import flex2.compiler.Logger;
-import flex2.compiler.Source;
-import flex2.compiler.SymbolTable;
-import flex2.compiler.Transcoder;
+import flex2.compiler.*;
 import flex2.compiler.as3.As3Compiler;
 import flex2.compiler.as3.EmbedExtension;
 import flex2.compiler.common.CompilerConfiguration;
@@ -44,15 +37,13 @@ import flex2.compiler.mxml.lang.StandardDefs;
 import flex2.compiler.mxml.lang.TextParser;
 import flex2.compiler.mxml.rep.AtEmbed;
 import flex2.compiler.util.CompilerMessage.CompilerError;
-import flex2.compiler.util.DualModeLineNumberMap;
-import flex2.compiler.util.LineNumberMap;
-import flex2.compiler.util.MimeMappings;
-import flex2.compiler.util.NameMappings;
-import flex2.compiler.util.ThreadLocalToolkit;
+import flex2.compiler.util.*;
 import flex2.compiler.util.VelocityException.GenerateException;
 import flex2.compiler.util.VelocityException.TemplateNotFound;
 import flex2.compiler.util.VelocityException.UnableToWriteGeneratedFile;
-import flex2.compiler.util.VelocityManager;
+import org.apache.flex.forks.velocity.Template;
+import org.apache.flex.forks.velocity.VelocityContext;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,17 +52,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.flex.forks.velocity.Template;
-import org.apache.flex.forks.velocity.VelocityContext;
-
 /**
  * This subcompiler is used to translate a CSS file into an AS3
  * representation, so it can be compiled by the AS3 delegate compiler
  * into bytecode.  When the resulting SWF is loaded at runtime as a
  * CSS module, the StyleManager will be populated with the styles
  * defined in the CSS file.
- *
- * @author Paul Reilly
  */
 public class CssCompiler extends AbstractDelegatingSubCompiler
 {

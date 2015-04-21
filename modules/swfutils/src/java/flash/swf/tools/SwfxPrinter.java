@@ -92,9 +92,6 @@ import java.util.zip.ZipInputStream;
 /**
  * This class supports printing out a SWF in a human readable XML
  * format.
- *
- * @author Clement Wong
- * @author Edwin Smith
  */
 public final class SwfxPrinter extends TagHandler
 	{
@@ -231,6 +228,14 @@ public final class SwfxPrinter extends TagHandler
 			out.print(" suppressCrossDomainCaching='" + tag.suppressCrossDomainCaching + "'");
 			out.print(" swfRelativeUrls='" + tag.swfRelativeUrls + "'");
 			out.print(" useNetwork='" + tag.useNetwork + "'");
+			close();
+		}
+		
+		
+		public void enableTelemetry(EnableTelemetry tag)
+		{
+			open(tag);
+			out.print(" advancedTelemetry='" + tag.enabled + "'");
 			close();
 		}
 		
@@ -2247,7 +2252,6 @@ public final class SwfxPrinter extends TagHandler
 				catch (FileNotFoundException e)
 				{
 					System.err.println("Error: " + e.getMessage());
-                    e.printStackTrace();
 					System.exit(1);
 				}
 			}

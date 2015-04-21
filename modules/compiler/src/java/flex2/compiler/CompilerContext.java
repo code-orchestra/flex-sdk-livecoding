@@ -19,18 +19,16 @@
 
 package flex2.compiler;
 
+import macromedia.asc.util.Context;
+
 import java.util.HashMap;
 import java.util.Map;
-import macromedia.asc.util.Context;
 
 /**
  * This class provides a mechanism for passing objects from one
  * subsystem to another and for reusing objects in multiple phases.
  * Each CompilationUnit is paired with it's own CompilerContext.  This
  * class also facilitates passing around and reusing ASC's context.
- *
- * @author Clement Wong
- * @author Cathy Murphy
  * @see flex2.compiler.CompilationUnit
  * @see macromedia.asc.util.Context
  */

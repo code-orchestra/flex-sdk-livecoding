@@ -31,8 +31,6 @@ import java.util.Iterator;
  * each tag of interest.  This class encapsulates knowlege about how
  * the flash player executes.  In particular, the order of execution
  * of initActions and frame actions.
- *
- * @author Edwin Smith
  */
 public class MovieEncoder
 {
@@ -78,6 +76,11 @@ public class MovieEncoder
                 m.fileAttributes.hasMetadata = true;
 
             m.fileAttributes.visit(handler); // FileAttributes MUST be first tag after header!
+		}
+        
+		if (m.enableTelemetry != null)
+		{
+            m.enableTelemetry.visit(handler);
 		}
         if (m.metadata != null)
         {

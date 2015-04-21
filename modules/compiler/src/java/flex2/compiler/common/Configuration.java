@@ -117,9 +117,6 @@ import org.xml.sax.SAXException;
  * You can force one configuration option to be set before another,
  * and avoid race conditions, by using the
  * ConfigurationInfo.getSoftPrerequisites() method.
- *
- * @author Roger Gonzalez
- * @author Gordon Smith (notes below)
  */
 public class Configuration implements LinkerConfiguration, Cloneable
 {
@@ -1175,9 +1172,6 @@ public class Configuration implements LinkerConfiguration, Cloneable
 	/**
 	 * Capture the information in one argument specifing -runtime-shared-libraries-path
 	 * information.
-	 * 
-	 * @author dloverin
-	 * 
 	 */
 	public class RslPathInfo
 	{
@@ -2009,6 +2003,18 @@ public class Configuration implements LinkerConfiguration, Cloneable
                                                                  cv.getSource(),
                                                                  cv.getLine() );
     }
+
+    public void setAdvancedTelemetry(boolean enableTelemetry)
+    {
+    	compilerConfiguration.setAdvancedTelemetry(enableTelemetry);
+    }
+
+
+ 	public boolean getAdvancedTelemetry()
+	{
+		return compilerConfiguration.getAdvancedTelemetry();
+	}
+
 
  	@Override
  	public Configuration clone()

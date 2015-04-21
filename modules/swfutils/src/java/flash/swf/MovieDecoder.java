@@ -29,8 +29,6 @@ import java.util.Iterator;
  * and build up a framelist.  There are a number of singleton tags in
  * swf movies, so invoke errors if those singleton events are defined
  * more than once.
- *
- * @author Edwin Smith
  */
 public class MovieDecoder extends TagHandler
 {
@@ -263,6 +261,15 @@ public class MovieDecoder extends TagHandler
 			error("duplicate FileAttributes");
 		}
 		m.fileAttributes = tag;
+	}
+    
+    public void enableTelemetry(EnableTelemetry tag)
+	{
+		if (m.enableTelemetry != null)
+		{
+			error("duplicate EnableTelemetry");
+		}
+		m.enableTelemetry = tag;
 	}
 
 	public void defineButtonCxform(DefineButtonCxform tag)

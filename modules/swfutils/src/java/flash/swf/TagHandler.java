@@ -23,8 +23,6 @@ import flash.swf.tags.*;
 
 /**
  * Defines the API for SWF tag handlers.
- *
- * @author Clement Wong
  */
 public class TagHandler
 {
@@ -44,6 +42,10 @@ public class TagHandler
     {
     }
 
+    public void enableTelemetry(EnableTelemetry tag)
+    {
+    }
+    
     public void metadata(Metadata tag)
     {
     }

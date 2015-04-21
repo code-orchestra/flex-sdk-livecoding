@@ -24,8 +24,6 @@ import java.io.Serializable;
 /**
  * The value class from which all other values derive. Immediate
  * children are ObjectValue, and ReferenceValue.
- *
- * @author Jeff Dyer
  */
 public abstract class Value implements Serializable, Cloneable // CodeOrchestra: made serializable
 {

@@ -29,8 +29,6 @@ import java.util.Map;
 
 /**
  * Tag encoder which tracks size information about the resulting SWF.
- *
- * @author Corey Lucier
  */
 public class TagEncoderReporter extends TagEncoder
 {
@@ -64,6 +62,13 @@ public class TagEncoderReporter extends TagEncoder
     {
         report.startEntry(SizeReport.HEADER_DATA, writer.getPos(), -1, "fileAttributes");
         super.fileAttributes(tag);
+        report.endEntry(SizeReport.HEADER_DATA, writer.getPos());
+    }
+    
+    public void enableTelemetry(EnableTelemetry tag)
+    {
+        report.startEntry(SizeReport.HEADER_DATA, writer.getPos(), -1, "enableTelemetry");
+        super.enableTelemetry(tag);
         report.endEntry(SizeReport.HEADER_DATA, writer.getPos());
     }
     

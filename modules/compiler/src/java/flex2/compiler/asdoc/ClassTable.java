@@ -74,9 +74,6 @@ import flex2.compiler.util.ThreadLocalToolkit;
  * containing each unique package name linked to a CommentEntry for
  * that package (if it exists). A HashSet is used to quickly check
  * for known tag names.
- * 
- * @author klin
- *
  */
 public class ClassTable implements DocCommentTable {
     
@@ -392,10 +389,6 @@ public class ClassTable implements DocCommentTable {
      * CommentEntries in the order provided by KeyPair. CommentsTable
      * also assists in finding the correct CommentEntry to inherit
      * documentation from.
-     * 
-     * 
-     * @author klin
-     *
      */
     private class CommentsTable extends TreeMap<KeyPair, DocComment> {
         
@@ -598,9 +591,6 @@ public class ClassTable implements DocCommentTable {
          * that allows for easy retrieval from a CommentsTable. Metadata
          * and their comments are held in a definition's CommentEntry
          * through the List, metadata.
-         * 
-         * @author klin
-         *
          */
         private class CommentEntry implements DocComment{
             
@@ -1189,7 +1179,8 @@ public class ClassTable implements DocCommentTable {
                             // these metaData types can have their own DocComment associated with them, though they might also have no comment.
                             if (mdi.getId().equals(StandardDefs.MD_STYLE) || mdi.getId().equals(StandardDefs.MD_EVENT) || mdi.getId().equals(StandardDefs.MD_EFFECT)
                                     || mdi.getId().equals(StandardDefs.MD_SKINSTATE) || mdi.getId().equals(StandardDefs.MD_ALTERNATIVE)
-                                    || mdi.getId().equals(StandardDefs.MD_DISCOURAGEDFORPROFILE))
+                                    || mdi.getId().equals(StandardDefs.MD_DISCOURAGEDFORPROFILE)
+                                    ||  mdi.getId().equals(StandardDefs.MD_EXPERIMENTAL))
                             {
                                 if (x+1 < numItems)  // if it has a comment, it will be the sequentially next DocCommentNode
                                 {

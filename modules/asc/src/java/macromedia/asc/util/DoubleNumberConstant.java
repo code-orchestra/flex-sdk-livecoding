@@ -64,7 +64,7 @@ public class DoubleNumberConstant extends NumberConstant {
 			return ("NaN");
 		return String.valueOf(val);
 	}
-    
+
     public DoubleNumberConstant clone() throws CloneNotSupportedException
     {
         DoubleNumberConstant result = (DoubleNumberConstant) super.clone();

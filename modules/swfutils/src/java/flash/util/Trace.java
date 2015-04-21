@@ -62,7 +62,7 @@ public class Trace
     public static final boolean config = all || (System.getProperty("trace.config") != null);
     public static final boolean embed = all || (System.getProperty("trace.embed") != null);
     //public static final boolean embedx = all || (System.getProperty("trace.embedx") != null);
-    public static final boolean error = true;
+    public static final boolean error = all || (System.getProperty("trace.error") != null);
     public static final boolean font = all || (System.getProperty("trace.font") != null);
     public static final boolean font_cubic = all || (System.getProperty("trace.font.cubic") != null);
     //public static final boolean image = all || (System.getProperty("trace.image") != null);

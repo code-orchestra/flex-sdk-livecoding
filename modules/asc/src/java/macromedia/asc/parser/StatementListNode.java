@@ -24,8 +24,6 @@ import static macromedia.asc.util.BitSet.*;
 
 /**
  * Node
- *
- * @author Jeff Dyer
  */
 public class StatementListNode extends Node
 {

@@ -72,8 +72,6 @@ import java.util.zip.InflaterInputStream;
 /**
  * A SWF tag decoder.  It is typically used by passing an InputStream
  * to the constructor and then calling parse() with a TagHandler.
- *
- * @author Clement Wong
  */
 public final class TagDecoder
         implements TagValues
@@ -380,6 +378,9 @@ public final class TagDecoder
             break;
         case stagFileAttributes:
             t = decodeFileAttributes();
+            break;
+        case stagEnableTelemetry:
+            t = decodeEnableTelemetry();
             break;
         case stagDefineFontAlignZones:
             t = decodeDefineFontAlignZones();
@@ -2796,6 +2797,15 @@ public final class TagDecoder
         tag.swfRelativeUrls = r.readBit();
         tag.useNetwork = r.readBit();
         r.readUBits(24); //reserved
+        return tag;
+    }
+    
+    public Tag decodeEnableTelemetry() throws IOException
+    {
+    	EnableTelemetry tag = new EnableTelemetry();
+        r.syncBits();
+        r.readUBits(16); //reserved
+        tag.enabled = true;
         return tag;
     }
 

@@ -19,15 +19,13 @@
 
 package flex2.compiler.media;
 
+import flash.svg.SpriteTranscoder;
+import flash.swf.tags.DefineSprite;
 import flex2.compiler.SymbolTable;
 import flex2.compiler.TranscoderException;
 import flex2.compiler.common.PathResolver;
 import flex2.compiler.io.VirtualFile;
-import flex2.compiler.util.CompilerMessage;
 import flex2.compiler.util.MimeMappings;
-import flex2.compiler.util.ThreadLocalToolkit;
-import flash.svg.SpriteTranscoder;
-import flash.swf.tags.DefineSprite;
 import org.apache.flex.forks.batik.transcoder.TranscoderInput;
 
 import java.io.BufferedInputStream;
@@ -39,10 +37,6 @@ import java.util.zip.GZIPInputStream;
 
 /**
  * Transcodes SVGs into DefineSprites for embedding.
- *
- * @author Pete Farland
- * @author Roger Gonzalez
- * @author Clement Wong
  */
 public class SVGTranscoder extends AbstractTranscoder
 {
@@ -59,14 +53,6 @@ public class SVGTranscoder extends AbstractTranscoder
                                            Map<String, Object> args, String className, boolean generateSource )
         throws TranscoderException
 	{
-        // Flag a deprecation warning, as SVG has been deprecated since Flex 4.0. We only issue 
-        // a warning once per compilation.
-        if (!deprecationIssued && showDeprecationWarnings)
-        {
-            ThreadLocalToolkit.log(new Deprecated());
-            deprecationIssued = true;
-        }
-        
         TranscodingResults results = new TranscodingResults( resolveSource( context, args ));
         String newName = (String) args.get( NEWNAME );
 
@@ -202,10 +188,5 @@ public class SVGTranscoder extends AbstractTranscoder
 		}
 
 		return b;
-	}
-	
-	public static class Deprecated extends CompilerMessage.CompilerWarning
-	{
-		private static final long serialVersionUID = 274970449301472265L;
 	}
 }

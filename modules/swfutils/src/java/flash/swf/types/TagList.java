@@ -31,8 +31,6 @@ import java.util.List;
  * representation of a timeline too, although strictly speaking, only
  * the control tags are interesting on the timeline (placeobject,
  * removeobject, startsound, showframe, etc).
- *
- * @author Clement Wong
  */
 public class TagList extends TagHandler
 {
@@ -372,6 +370,11 @@ public class TagList extends TagHandler
     }
 
     public void fileAttributes(FileAttributes tag)
+    {
+        tags.add(tag);
+    }
+    
+    public void enableTelemetry(EnableTelemetry tag)
     {
         tags.add(tag);
     }

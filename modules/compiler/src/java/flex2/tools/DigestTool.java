@@ -19,10 +19,6 @@
 
 package flex2.tools;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-
 import flash.localization.LocalizationManager;
 import flash.localization.ResourceBundleLocalizer;
 import flash.localization.XLRLocalizer;
@@ -30,24 +26,34 @@ import flash.util.Trace;
 import flex2.compiler.config.CommandLineConfigurator;
 import flex2.compiler.config.ConfigurationBuffer;
 import flex2.compiler.config.ConfigurationException;
-import flex2.compiler.swc.Digest;
-import flex2.compiler.swc.Swc;
-import flex2.compiler.swc.SwcCache;
-import flex2.compiler.swc.SwcException;
-import flex2.compiler.swc.SwcGroup;
+import flex2.compiler.swc.*;
 import flex2.compiler.util.CompilerMessage;
 import flex2.compiler.util.ThreadLocalToolkit;
+import org.apache.flex.tools.FlexTool;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 
 /**
  * Given the path to a file and a swc, update the digest xml in catalog.xml of the swc
  * with the new digest of the file.
- * 
- * @author dloverin
  *
  */
-public class DigestTool extends Tool
+public class DigestTool extends Tool implements FlexTool
 {
 	static private final String PROGRAM_NAME = "digest";
+
+	@Override
+	public String getName() {
+		return FLEX_TOOL_DIGEST;
+	}
+
+	@Override
+	public int execute(String[] args) {
+		digestTool(args);
+		return ThreadLocalToolkit.errorCount();
+	}
 
 	/**
 	 * @param args
@@ -86,8 +92,8 @@ public class DigestTool extends Tool
 	        DigestConfiguration configuration = rootConfiguration.getDigestConfiguration();
 
 	        // load SWC
-            SwcCache cache = null;
-    		File libraryFile = null;
+            SwcCache cache;
+    		File libraryFile;
             BufferedInputStream libraryInput = null;
 	        try 
 	        {

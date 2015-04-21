@@ -19,17 +19,15 @@
 
 package flex2.linker;
 
+import flex2.compiler.common.FramesConfiguration.FrameInfo;
+
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 
-import flex2.compiler.common.FramesConfiguration.FrameInfo;
-
 /**
  * This interface is used to restrict consumers of
  * flex2.compiler.common.Configuration to linker specific options.
- *
- * @author Clement Wong
  */
 public interface LinkerConfiguration
 {
@@ -203,4 +201,5 @@ public interface LinkerConfiguration
 	  */
 	 boolean getIncludeInheritanceDependenciesOnly();
 	 
+	 boolean getAdvancedTelemetry();
 }

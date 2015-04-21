@@ -19,6 +19,9 @@
 
 package flex2.compiler.css;
 
+import flash.css.*;
+import flash.fonts.FontManager;
+import flash.util.Trace;
 import flex2.compiler.CompilationUnit;
 import flex2.compiler.ResourceContainer;
 import flex2.compiler.Source;
@@ -37,49 +40,23 @@ import flex2.compiler.mxml.reflect.Type;
 import flex2.compiler.mxml.reflect.TypeTable;
 import flex2.compiler.mxml.rep.AtEmbed;
 import flex2.compiler.mxml.rep.MxmlDocument;
+import flex2.compiler.util.*;
 import flex2.compiler.util.CompilerMessage.CompilerError;
 import flex2.compiler.util.CompilerMessage.CompilerWarning;
-import flex2.compiler.util.CompilerMessage;
-import flex2.compiler.util.MimeMappings;
-import flex2.compiler.util.NameFormatter;
-import flex2.compiler.util.NameMappings;
-import flex2.compiler.util.QName;
-import flex2.compiler.util.ThreadLocalToolkit;
-import flex2.compiler.util.VelocityException;
-import flex2.compiler.util.VelocityManager;
+import macromedia.asc.util.ContextStatics;
+import org.apache.flex.forks.velocity.Template;
+import org.apache.flex.forks.velocity.VelocityContext;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-
-import flash.css.MediaList;
-import flash.css.StyleDeclaration;
-import flash.css.StyleDeclarationBlock;
-import flash.css.StyleProperty;
-import flash.css.StyleSelector;
-import flash.css.StyleSheet;
-import flash.fonts.FontManager;
-import flash.util.Trace;
-import macromedia.asc.util.ContextStatics;
-
-import org.apache.flex.forks.velocity.Template;
-import org.apache.flex.forks.velocity.VelocityContext;
 
 /**
  * This class is an MXML document specific override of StyleModule. It provides
  * a context that manages style declarations for both default styles/themes
- * and document style nodes. 
- *
- * @author Paul Reilly
- * @author Pete Farland
+ * and document style nodes.
  */
 public class StylesContainer extends StyleModule
 {

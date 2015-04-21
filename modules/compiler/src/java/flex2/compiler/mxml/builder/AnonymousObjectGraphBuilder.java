@@ -20,23 +20,22 @@
 package flex2.compiler.mxml.builder;
 
 import flex2.compiler.CompilationUnit;
-import flex2.compiler.util.CompilerMessage.CompilerError;
-import flex2.compiler.util.CompilerMessage.CompilerWarning;
 import flex2.compiler.SymbolTable;
 import flex2.compiler.mxml.MxmlConfiguration;
 import flex2.compiler.mxml.dom.CDATANode;
 import flex2.compiler.mxml.dom.Node;
-import flex2.compiler.mxml.reflect.TypeTable;
 import flex2.compiler.mxml.reflect.Type;
+import flex2.compiler.mxml.reflect.TypeTable;
 import flex2.compiler.mxml.rep.*;
+import flex2.compiler.util.CompilerMessage.CompilerError;
+import flex2.compiler.util.CompilerMessage.CompilerWarning;
 import flex2.compiler.util.NameFormatter;
 import flex2.compiler.util.QName;
+import macromedia.asc.util.IntegerPool;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import macromedia.asc.util.IntegerPool;
 
 /*
  * TODO port to new setup
@@ -45,8 +44,6 @@ import macromedia.asc.util.IntegerPool;
 /**
  * This builder contains code common to ModelBuilder and
  * ServiceRequestBuilder.
- *
- * @author Matt Chotin
  */
 abstract class AnonymousObjectGraphBuilder extends AbstractBuilder
 {

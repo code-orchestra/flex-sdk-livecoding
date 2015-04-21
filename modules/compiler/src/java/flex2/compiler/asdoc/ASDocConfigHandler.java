@@ -19,22 +19,19 @@
 
 package flex2.compiler.asdoc;
 
-import org.xml.sax.helpers.DefaultHandler;
+import flex2.tools.ASDocConfiguration;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Iterator;
-
-import flex2.tools.ASDocConfiguration;
+import java.util.Map;
 
 /**
  * SAX Handler for parsing ASDoc_Config_Base.xml and writing out ASDoc_Config.xml
- *
- * @author Brian Deitte
  */
 public class ASDocConfigHandler extends DefaultHandler
 {

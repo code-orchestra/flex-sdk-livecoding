@@ -28,8 +28,7 @@ import java.util.Stack;
  *  @note Doesn't use XMLWriter so that the trace
  *    entries can be manually indented; the trace
  *    files get very large and difficult to read
- *    using a browser or other ready-to-hand viewer. 
- * @author Tom Harwood
+ *    using a browser or other ready-to-hand viewer.
  *
  */
 public class TraceManager

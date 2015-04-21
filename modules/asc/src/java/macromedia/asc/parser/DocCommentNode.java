@@ -23,9 +23,6 @@ import macromedia.asc.util.Context;
 import macromedia.asc.semantics.*;
 import static macromedia.asc.parser.Tokens.*;
 
-/**
- * @author Jeff Dyer
- */
 public class DocCommentNode extends MetaDataNode
 {
      // CodeOrchestra: made metaData and is_default public

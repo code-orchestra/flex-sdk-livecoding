@@ -19,18 +19,28 @@
 
 package com.adobe.internal.fxg.sax;
 
-import com.adobe.fxg.FXGConstants;
-import com.adobe.fxg.FXGException;
-import com.adobe.fxg.dom.FXGNode;
-import com.adobe.fxg.util.FXGLog;
-import com.adobe.fxg.util.FXGLogger;
-import com.adobe.internal.fxg.dom.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.*;
+import com.adobe.fxg.util.FXGLog;
+import com.adobe.fxg.util.FXGLogger;
+import com.adobe.fxg.FXGException;
+import com.adobe.fxg.FXGConstants;
+import com.adobe.fxg.dom.FXGNode;
+
+import com.adobe.internal.fxg.dom.CDATANode;
+import com.adobe.internal.fxg.dom.GraphicNode;
+import com.adobe.internal.fxg.dom.DefinitionNode;
+import com.adobe.internal.fxg.dom.DelegateNode;
+import com.adobe.internal.fxg.dom.PreserveWhiteSpaceNode;
 
 import static com.adobe.fxg.FXGConstants.*;
 

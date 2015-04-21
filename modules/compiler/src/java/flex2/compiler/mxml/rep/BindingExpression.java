@@ -21,9 +21,7 @@ package flex2.compiler.mxml.rep;
 
 import flex2.compiler.SymbolTable;
 import flex2.compiler.as3.AbstractSyntaxTreeUtil;
-import flex2.compiler.as3.binding.Watcher;
 import flex2.compiler.mxml.builder.AbstractBuilder;
-import flex2.compiler.mxml.lang.StandardDefs;
 import flex2.compiler.mxml.reflect.Property;
 import flex2.compiler.mxml.reflect.Style;
 import flex2.compiler.mxml.reflect.Type;
@@ -31,6 +29,7 @@ import flex2.compiler.util.NameFormatter;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
 import macromedia.asc.util.IntegerPool;
+
 import java.util.*;
 
 /**
@@ -38,10 +37,6 @@ import java.util.*;
  * across them while parsing MXML.  As we go, we fill in the destination of each
  * BindingExpression, and when we're done parsing we compile the source expression
  * in order to figure out how to attach ActionScript watchers and binding objects.
- *
- * @author gdaniels
- * @author mchotin
- * @author preilly
  */
 public class BindingExpression implements Comparable<BindingExpression>
 {

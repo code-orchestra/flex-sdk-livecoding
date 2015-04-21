@@ -19,18 +19,15 @@
 
 package adobe.abc;
 
+import adobe.abc.GlobalOptimizer.InputAbc;
+
 import java.io.*;
 import java.util.*;
 
-import static macromedia.asc.embedding.avmplus.ActionBlockConstants.*;
-import adobe.abc.GlobalOptimizer.*;
 import static adobe.abc.OptimizerConstants.*;
-import static java.lang.Boolean.TRUE;
 import static java.lang.Boolean.FALSE;
- 
-/**
- * @author Steven Johnson
- */
+import static java.lang.Boolean.TRUE;
+
 public class AbcThunkGen
 {
 	static class IndentingPrintWriter extends PrintWriter

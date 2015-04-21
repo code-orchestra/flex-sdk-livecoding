@@ -17,20 +17,19 @@
 
 package macromedia.asc.semantics;
 
-import macromedia.asc.embedding.LintEvaluator;
+import macromedia.asc.parser.MetaDataNode;
+import macromedia.asc.parser.Node;
 import macromedia.asc.parser.util.CloneUtil;
 import macromedia.asc.util.*;
-import macromedia.asc.parser.Node;
-import macromedia.asc.parser.MetaDataNode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static macromedia.asc.util.BitSet.*;
-import static macromedia.asc.parser.Tokens.*;
+import static macromedia.asc.parser.Tokens.EMPTY_TOKEN;
+import static macromedia.asc.parser.Tokens.NEW_TOKEN;
+import static macromedia.asc.util.BitSet.set;
 
 /**
  * A slot gives a compile-time description of an operation.
@@ -41,8 +40,6 @@ import static macromedia.asc.parser.Tokens.*;
  * - objValue, value, or intValue if used to store a constant value
  * - method_id if used to identify a native method or operation
  * - call_seq used to invoke
- *
- * @author Jeff Dyer
  */
 public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: made serializable
 {
@@ -709,9 +706,9 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
                     case AUX_EmbeddedData:
                         // value is Object (either null or LintDataRecord)
                         auxDataItems_cloned[i] = null;
-                        if (auxDataItems[i] instanceof LintEvaluator.LintDataRecord) {
-                            auxDataItems_cloned[i] = ((LintEvaluator.LintDataRecord)auxDataItems[i]).clone();
-                        }
+                        //if (auxDataItems[i] instanceof LintEvaluator.LintDataRecord) {
+                        //    auxDataItems_cloned[i] = ((LintEvaluator.LintDataRecord)auxDataItems[i]).clone();
+                        //}
                         break;
                     case AUX_MetaData:
                         // value is ArrayList<MetaData>

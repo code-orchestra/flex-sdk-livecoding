@@ -6,8 +6,6 @@ import java.util.*;
 
 /**
  * MXML parser: JavaCC + SAXParser as the tokenizer...
- *
- * @author Clement Wong
  */
 public class Parser implements MXMLNamespaces, ParserConstants {
     private static final HashSet SPECIAL_COMPONENT_TAGS = new HashSet(8);

@@ -23,9 +23,7 @@ import java.util.Arrays;
 
 /**
  * Don't use java.util.ArrayList<Integer>. Store int directly.
- * 
- * @author Clement Wong
- */
+*/
 public final class IntList
 {
 	public IntList(IntList list)

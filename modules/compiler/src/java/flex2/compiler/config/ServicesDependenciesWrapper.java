@@ -19,14 +19,11 @@
 
 package flex2.compiler.config;
 
-import java.io.File;
-import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -69,7 +66,10 @@ public class ServicesDependenciesWrapper
             }
             catch (Throwable e3)
             {
-            	System.err.println(e3);
+            	if (e3 instanceof InvocationTargetException)
+            		System.err.println(((InvocationTargetException)e3).getCause());
+            	else
+            		System.err.println(e3);
             }
         }
         catch (NoSuchMethodException e2)

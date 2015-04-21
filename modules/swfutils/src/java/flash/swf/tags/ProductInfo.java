@@ -27,8 +27,6 @@ import flash.swf.TagHandler;
  * information about the product, which was used to construct the SWF,
  * including it's edition, major version, minor version, and build
  * number, and the date the SWF was constructed.
- *
- * @author Paul Reilly
  */
 public class ProductInfo extends Tag
 {
@@ -49,7 +47,7 @@ public class ProductInfo extends Tag
         "unknown", // 0
         "Macromedia Flex for J2EE",
         "Macromedia Flex for .NET",    
-        "Adobe Flex",
+        "Apache Flex",
     };
 
     protected static final int DEVELOPER_EDITION = 0;

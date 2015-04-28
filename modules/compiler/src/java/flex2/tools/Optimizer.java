@@ -19,41 +19,39 @@
 
 package flex2.tools;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-
 import flash.localization.LocalizationManager;
 import flash.localization.ResourceBundleLocalizer;
-import flash.swf.Movie;
-import flash.swf.MovieDecoder;
-import flash.swf.MovieEncoder;
-import flash.swf.TagDecoder;
-import flash.swf.TagEncoder;
+import flash.swf.*;
 import flash.util.Trace;
 import flex2.compiler.common.DefaultsConfigurator;
-import flex2.compiler.config.ConfigurationBuffer;
-import flex2.compiler.config.ConfigurationException;
-import flex2.compiler.config.ConfigurationFilter;
-import flex2.compiler.config.ConfigurationInfo;
-import flex2.compiler.config.ConfigurationValue;
+import flex2.compiler.config.*;
 import flex2.compiler.io.FileUtil;
 import flex2.compiler.util.CompilerMessage;
 import flex2.compiler.util.ThreadLocalToolkit;
+import org.apache.flex.tools.FlexTool;
+
+import java.io.*;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * The post-link optimizer as a command-line tool...
- * 
- * @author Clement Wong
- */
-public class Optimizer
+*/
+public class Optimizer implements FlexTool
 {
-	public static void main(String[] args)
+
+    @Override
+    public String getName() {
+        return FLEX_TOOL_OPTIMIZER;
+    }
+
+    @Override
+    public int execute(String[] args) {
+        main(args);
+        return 0;
+    }
+
+    public static void main(String[] args)
 	{
         flex2.compiler.CompilerAPI.useAS3();
 

@@ -22,9 +22,7 @@ package flex2.tools.oem;
 import java.util.Iterator;
 
 /**
- * Defines the API for library information. 
- * 
- * @author Clement Wong
+ * Defines the API for library information.
  * @version 3.0
  */
 public interface LibraryInfo

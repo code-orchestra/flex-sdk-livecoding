@@ -28,8 +28,6 @@ import macromedia.asc.semantics.*;
 
 /**
  * The base Node class.
- *
- * @author Jeff Dyer
  */
 public class Node implements Serializable, Cloneable // CodeOrchestra: made serializable
 {

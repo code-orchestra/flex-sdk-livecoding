@@ -59,7 +59,7 @@ import java.util.Comparator;
  * faster lookup and dispatch.
  */
 
-public class ObjectValue extends Value
+public class ObjectValue extends Value implements Comparable
 {
     static final String EMPTY_STRING = "".intern();
 

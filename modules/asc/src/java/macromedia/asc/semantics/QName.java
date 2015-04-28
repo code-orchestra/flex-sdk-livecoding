@@ -23,10 +23,6 @@ import macromedia.asc.util.Context;
 
 import java.io.Serializable;
 
-/**
- *
- * @author Erik Tierney
- */
 public class QName implements Serializable, Cloneable // CodeOrchestra: made serializable
 {
     public ObjectValue ns;

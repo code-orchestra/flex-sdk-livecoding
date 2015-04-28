@@ -19,11 +19,6 @@
 
 package flex2.tools;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import flash.localization.LocalizationManager;
 import flash.localization.ResourceBundleLocalizer;
 import flash.localization.XLRLocalizer;
@@ -43,14 +38,17 @@ import flex2.compiler.util.SwcDependencyUtil;
 import flex2.compiler.util.SwcExternalScriptInfo;
 import flex2.compiler.util.ThreadLocalToolkit;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 
 /**
  * SwcDependencies is the entry point for a command line tool to list a set of SWC dependencies on each other.
  * 
  * This tool accepts all the command line options that mxmlc does but only uses the options to gather SWCs, it does 
  * not modify the file system in any way.
- * 
- * @author dloverin
  *
  */
 public class SwcDependencies extends Tool

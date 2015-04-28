@@ -101,8 +101,6 @@ import java.util.regex.Matcher;
  * complete AS code. (As noted above, the additional dependencies outside those needed purely for the document's
  * component tags, are detected and registered during that phase.)
  *
- * @author Clement Wong
- * 
  * Changed to extend AbstractSubCompiler to clean up benchmarking code and enble 
  * embedded compiler benchmarking - bfrazer
  * 
@@ -151,6 +149,7 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
             public boolean getGenerateAbstractSyntaxTree() { return ascConfiguration.getGenerateAbstractSyntaxTree(); }
             public String getEncoding() { return null; }
             public boolean metadataExport() { return false; }
+            public boolean getAdvancedTelemetry() { return false; }
             public boolean showDeprecationWarnings() { return false; }
             public boolean warn_array_tostring_changes() { return false; }
             public boolean warn_assignment_within_conditional() { return false; }

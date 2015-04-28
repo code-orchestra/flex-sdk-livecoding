@@ -19,6 +19,7 @@
 
 package flex2.compiler.swc;
 
+import flash.util.Trace;
 import flex2.compiler.io.VirtualFile;
 import flex2.compiler.io.VirtualZipFile;
 import flex2.compiler.io.ZipFileHolder;
@@ -26,20 +27,15 @@ import flex2.compiler.swc.zip.ZipEntry;
 import flex2.compiler.swc.zip.ZipFile;
 import flex2.compiler.util.MimeMappings;
 
+import java.io.File;
+import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-
-import flash.util.Trace;
 
 /**
  * This SwcArchive works like the default SwcDynamicArchive except in
  * its loading, which is done lazily.
  *
- * @author Brian Deitte
- * @author Paul Reilly
  */
 public class SwcLazyReadArchive extends SwcDynamicArchive
 {

@@ -20,9 +20,7 @@
 package flex2.tools.oem;
 
 /**
- * Defines the API for application information. 
- *
- * @author Clement Wong
+ * Defines the API for application information.
  * @version 3.0
  */
 public interface ApplicationInfo

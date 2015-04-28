@@ -58,8 +58,6 @@ import java.util.*;
 
 /**
  * fcsh (Flex Compiler SHell)
- *
- * @author Clement Wong
  */
 public class Fcsh extends Tool {
     // CodeOrchestra: added fields
@@ -83,12 +81,6 @@ public class Fcsh extends Tool {
         localizationManager.addLocalizer(new ResourceBundleLocalizer());
         ThreadLocalToolkit.setLocalizationManager(localizationManager);
 
-        /*
-        if (new Date().after(new Date(113, 5, 24))) {
-            System.out.println("This copy of COLT compiler has expired");
-            System.exit(1);
-        }
-        */
 
         if (!COLTRunningKey.isRunning()) {
             System.out.println("No valid running COLT instance found");
@@ -1200,10 +1192,10 @@ public class Fcsh extends Tool {
         } catch (Throwable t) // IOException, Throwable
         {
             ThreadLocalToolkit.logError(t.getMessage());
-//            if (Trace.error)
-            {
+            //if (Trace.error)
+            //{
                 t.printStackTrace();
-            }
+            //}
         } finally {
             if (benchmark != null) {
                 if ((ThreadLocalToolkit.errorCount() == 0) &&

@@ -15,14 +15,14 @@
  */
 package flex2.compiler.util;
 
-import java.io.Writer;
+import org.xml.sax.Attributes;
+
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Stack;
-import java.util.HashMap;
+import java.io.Writer;
 import java.util.ArrayList;
-
-import org.xml.sax.Attributes;
+import java.util.HashMap;
+import java.util.Stack;
 
 /**
  * Layer of abstraction for serialzing XML objects into a string
@@ -447,10 +447,6 @@ class UTF8Encoder {
  *
  * Accordingly, this stack is implemented as a single array, will null
  * values used to indicate frame boundaries.
- *
- * @author James Snell
- * @author Glen Daniels (gdaniels@apache.org)
- * @author Sam Ruby (rubys@us.ibm.com)
  */
 class NSStack {
 

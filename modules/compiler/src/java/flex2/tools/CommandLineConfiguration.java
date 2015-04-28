@@ -19,7 +19,6 @@
 
 package flex2.tools;
 
-import flash.util.FileUtils;
 import flex2.compiler.CompilerAPI;
 import flex2.compiler.common.Configuration;
 import flex2.compiler.common.ConfigurationPathResolver;
@@ -29,9 +28,7 @@ import flex2.compiler.config.ConfigurationInfo;
 import flex2.compiler.config.ConfigurationValue;
 import flex2.compiler.i18n.I18nUtils;
 import flex2.compiler.io.VirtualFile;
-import flex2.compiler.util.ThreadLocalToolkit;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,8 +38,6 @@ import java.util.List;
  * -file-specs, -help, -include-resource-bundles, -load-config,
  * -output, -projector, and -version.
  *
- * @author Roger Gonzalez
- * @author Clement Wong
  */
 public class CommandLineConfiguration extends ToolsConfiguration
 {

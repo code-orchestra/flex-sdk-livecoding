@@ -19,25 +19,37 @@
 
 package flex2.tools;
 
-import flex2.compiler.*;
-import flex2.compiler.swc.SwcException;
+import flash.localization.LocalizationManager;
+import flash.localization.ResourceBundleLocalizer;
+import flash.localization.XLRLocalizer;
+import flash.util.Trace;
+import flex2.compiler.CompilerException;
 import flex2.compiler.common.DefaultsConfigurator;
 import flex2.compiler.config.ConfigurationBuffer;
 import flex2.compiler.config.ConfigurationException;
-import flex2.compiler.util.*;
-import flash.localization.LocalizationManager;
-import flash.localization.XLRLocalizer;
-import flash.localization.ResourceBundleLocalizer;
-import flash.util.Trace;
+import flex2.compiler.swc.SwcException;
+import flex2.compiler.util.CompilerMessage;
+import flex2.compiler.util.ThreadLocalToolkit;
+import org.apache.flex.tools.FlexTool;
 
 /**
  * The entry-point for ASDoc.
  *
- * @see flex2.compiler.asdoc.AsDocAPI
- * @author Brian Deitte
  */
-public class ASDoc extends Tool
+public class ASDoc extends Tool implements FlexTool
 {
+
+    @Override
+    public String getName() {
+        return FLEX_TOOL_ASDOC;
+    }
+
+    @Override
+    public int execute(String[] args) {
+        ASDoc.asdoc(args);
+        return 0;
+    }
+
     public static void main(String[] args)
     {
 	    asdoc(args);

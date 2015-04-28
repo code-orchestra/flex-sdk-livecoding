@@ -55,8 +55,6 @@ import java.util.Set;
  * of these options have an optional prefix of "compiler", as long as
  * the option can be resolved unambiguously.  For example,
  * "-compiler.debug", can be abbreviated to "-debug".
- *
- * @author Roger Gonzalez
  */
 public class CompilerConfiguration implements As3Configuration,
                                               flex2.compiler.mxml.MxmlConfiguration, Cloneable
@@ -3259,6 +3257,27 @@ public class CompilerConfiguration implements As3Configuration,
         };
     }
     
+    //
+    // 'compiler.advanced-telemetry' option
+    //
+
+    private boolean advancedTelemetry;
+
+    public boolean getAdvancedTelemetry()
+    {
+        return advancedTelemetry;
+    }
+
+    public void setAdvancedTelemetry(boolean accessible)
+    {
+        this.advancedTelemetry = advancedTelemetry;
+    }
+
+    public void cfgAdvancedTelemetry( ConfigurationValue cv, boolean advancedTelemetry )
+    {
+        this.advancedTelemetry = advancedTelemetry;
+    }
+
     @Override
     public Object clone()
         throws CloneNotSupportedException

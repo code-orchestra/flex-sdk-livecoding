@@ -19,50 +19,29 @@
 
 package flex2.compiler.swc;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
 import flash.swf.Movie;
 import flash.swf.MovieEncoder;
 import flash.swf.TagEncoder;
 import flash.swf.TagEncoderReporter;
-import flash.swf.tools.SizeReport;
 import flex2.compiler.CompilationUnit;
-import flex2.compiler.Source;
 import flex2.compiler.CompilerAPI.UnableToWriteSizeReport;
-import flex2.compiler.common.Configuration;
+import flex2.compiler.Source;
 import flex2.compiler.common.MxmlConfiguration;
 import flex2.compiler.io.FileUtil;
 import flex2.compiler.io.InMemoryFile;
 import flex2.compiler.io.VirtualFile;
 import flex2.compiler.swc.catalog.CatalogReader;
 import flex2.compiler.swc.catalog.CatalogWriter;
-import flex2.compiler.util.CompilerMessage;
-import flex2.compiler.util.MimeMappings;
-import flex2.compiler.util.MultiName;
-import flex2.compiler.util.Name;
-import flex2.compiler.util.NameFormatter;
-import flex2.compiler.util.QName;
-import flex2.compiler.util.ThreadLocalToolkit;
+import flex2.compiler.util.*;
 import flex2.linker.LinkerConfiguration;
 import flex2.linker.LinkerException;
 import flex2.linker.SimpleMovie;
 import flex2.tools.Fcsh;
 import flex2.tools.PreLink;
 import flex2.tools.VersionInfo;
+
+import java.io.*;
+import java.util.*;
 
 
 /**
@@ -89,8 +68,6 @@ import flex2.tools.VersionInfo;
  *  - The SWC should be entirely rewritten to a temporary location,
  *    then copied atomically to the new location.
  *
- * @author Brian Deitte
- * @author Roger Gonzalez
  */
 public class Swc
 {

@@ -19,13 +19,10 @@
 
 package flex2.compiler.i18n;                                                   
 
-import flex2.compiler.AbstractSubCompiler;
-import flex2.compiler.CompilationUnit;
-import flex2.compiler.CompilerBenchmarkHelper;
-import flex2.compiler.CompilerContext;
-import flex2.compiler.Source;
-import flex2.compiler.SymbolTable;
-import flex2.compiler.Transcoder;
+import flash.util.FileUtils;
+import flash.util.StringJoiner;
+import flash.util.StringUtils;
+import flex2.compiler.*;
 import flex2.compiler.as3.As3Configuration;
 import flex2.compiler.as3.EmbedExtension;
 import flex2.compiler.as3.Extension;
@@ -38,27 +35,19 @@ import flex2.compiler.mxml.lang.StandardDefs;
 import flex2.compiler.mxml.rep.AtEmbed;
 import flex2.compiler.util.MimeMappings;
 import flex2.compiler.util.ThreadLocalToolkit;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Map;
-import java.io.File;
-import java.io.IOException;
-
 import macromedia.asc.embedding.ConfigVar;
 import macromedia.asc.util.ObjectList;
 
-import flash.util.FileUtils;
-import flash.util.StringJoiner;
-import flash.util.StringUtils;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Transforms translation files (usually .properties files) into
  * classes that extend ResourceBundle.
- *
- * @author Clement Wong
- * @author Brian Deitte
  */
 public class I18nCompiler extends AbstractSubCompiler implements flex2.compiler.SubCompiler
 {
@@ -80,6 +69,7 @@ public class I18nCompiler extends AbstractSubCompiler implements flex2.compiler.
             public boolean getGenerateAbstractSyntaxTree() { return false; }
 	        public String getEncoding() { return null; }
             public boolean metadataExport() { return false; }
+            public boolean getAdvancedTelemetry() { return false; }
             public boolean showDeprecationWarnings() { return false; }
 	        public boolean warn_array_tostring_changes() { return false; }
 	        public boolean warn_assignment_within_conditional() { return false; }

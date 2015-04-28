@@ -20,23 +20,15 @@
 package flex2.compiler.config;
 
 import flash.util.Trace;
-
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.ArrayList;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.InvocationTargetException;
-import java.io.UnsupportedEncodingException;
-
 import flex2.compiler.io.VirtualFile;
 import flex2.tools.Fcsh;
+
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.*;
 
 /**
  * The basic idea here is to let you keep all your configuration knowledge in your configuration object,
@@ -75,8 +67,6 @@ import flex2.tools.Fcsh;
  *   of other prerequisites for this var.  You will be guaranteed that the deps are committed before
  *   your var, or else a configurationexception will be thrown if a prerequsite was unset.  (Note that
  *   infinite cycles are not checked, so be careful.)<br>
- *
- * @author Roger Gonzalez
  */
 public final class ConfigurationBuffer
 {

@@ -20,17 +20,12 @@
 package macromedia.asc.parser;
 
 import macromedia.asc.parser.util.CloneUtil;
+import macromedia.asc.semantics.TypeInfo;
 import macromedia.asc.semantics.Value;
-import macromedia.asc.util.ObjectList;
 import macromedia.asc.util.ByteList;
 import macromedia.asc.util.Context;
-import macromedia.asc.semantics.Slot;
-import macromedia.asc.semantics.TypeInfo;
-import static macromedia.asc.parser.Tokens.*;
+import macromedia.asc.util.ObjectList;
 
-/**
- * @author Jeff Dyer
- */
 public class ParameterListNode extends Node
 {
 	public ObjectList<ParameterNode> items = new ObjectList<ParameterNode>();

@@ -179,5 +179,5 @@ public class NumberUsage implements Cloneable {
         result = 31 * result + precision;
         result = 31 * result + floating_usage;
         return result;
-    }
+	}
 }

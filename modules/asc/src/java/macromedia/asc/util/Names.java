@@ -28,9 +28,6 @@ import java.util.TreeMap;
 import macromedia.asc.semantics.ObjectValue;
 import static macromedia.asc.parser.Tokens.*;
 
-/**
- * @author Jeff Dyer
- */
 public final class Names implements Serializable, Cloneable // CodeOrchestra: made serializable
 {   
     

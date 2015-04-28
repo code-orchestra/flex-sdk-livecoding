@@ -19,19 +19,14 @@
 
 package flex2.compiler.as3;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import macromedia.asc.parser.InputBuffer;
+
+import java.util.*;
 
 /**
  * This class extends InputBuffer by adding support for mapping a line
  * number in a code fragment back to the line number in the MXML
  * document.
- *
- * @author Paul Reilly
  */
 public class CodeFragmentsInputBuffer extends InputBuffer
 {

@@ -16,12 +16,21 @@
     <content url="file://$MODULE_DIR$/../modules/compiler">
       <sourceFolder url="file://$MODULE_DIR$/../modules/compiler/src/java" isTestSource="false" />
     </content>
+    <orderEntry type="module" module-name="flex-asc" />
+    <orderEntry type="module" module-name="flex-swfutils" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
-    <orderEntry type="module" module-name="flex-asc" />
     <orderEntry type="module" module-name="flex-fxgutils" />
-    <orderEntry type="module" module-name="flex-swfutils" />
     <orderEntry type="module" module-name="xml-batik" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/flex-tool-api.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>

@@ -42,8 +42,6 @@ import java.util.*;
  * Represents a simple single frame Movie.  It's currently not
  * instantiated directly.  Instead, it's subclasses for special
  * purposes like an application SWF or a library SWF.
- *
- * @author Clement Wong
  */
 public class SimpleMovie extends Movie
 {
@@ -121,6 +119,7 @@ public class SimpleMovie extends Movie
         if (version >= 8)
         {
             fileAttributes = new FileAttributes();
+            enableTelemetry = new EnableTelemetry();
             fileAttributes.actionScript3 = (version >= 9);
 
             if (configuration.useNetwork())
@@ -129,6 +128,10 @@ public class SimpleMovie extends Movie
 	            fileAttributes.actionScript3 = (version >= 9);
             }
             
+            if (configuration.getAdvancedTelemetry()) {
+            	enableTelemetry.enabled = true;
+            }
+
             fileAttributes.useDirectBlit = configuration.getUseDirectBlit();
             fileAttributes.useGPU = configuration.getUseGpu();
             

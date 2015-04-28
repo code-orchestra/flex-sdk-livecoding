@@ -19,22 +19,17 @@
 
 package flex2.tools;
 
-import java.io.File;
-import java.io.ObjectOutputStream;
-import java.io.IOException;
-import java.io.FileOutputStream;
-import java.io.BufferedOutputStream;
-import java.io.OutputStream;
-import java.util.StringTokenizer;
+import flash.fonts.LocalFont;
+import org.apache.flex.forks.batik.svggen.font.Font;
+import org.apache.flex.forks.batik.svggen.font.table.NameTable;
+import org.apache.flex.forks.batik.svggen.font.table.Os2Table;
+import org.apache.flex.forks.batik.svggen.font.table.Table;
+
+import java.io.*;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.lang.reflect.Method;
-
-import org.apache.flex.forks.batik.svggen.font.Font;
-import org.apache.flex.forks.batik.svggen.font.table.Os2Table;
-import org.apache.flex.forks.batik.svggen.font.table.NameTable;
-import org.apache.flex.forks.batik.svggen.font.table.Table;
-import flash.fonts.LocalFont;
+import java.util.StringTokenizer;
 
 /**
  * A tool that takes a snapshot of all font information, storing it in LocalFont objects that are serialized
@@ -44,9 +39,7 @@ import flash.fonts.LocalFont;
  * not available, then the system font directories can be passed in.
  *
  * This is done as a separate tool and not as part of a compilation because of speed.  Reading all of
- * the fonts on a system takes a non-trivial amount of time. 
- *
- * @author Brian Deitte
+ * the fonts on a system takes a non-trivial amount of time.
  */
 public class FontSnapshot
 {

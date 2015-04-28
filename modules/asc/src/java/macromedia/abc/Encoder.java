@@ -19,19 +19,18 @@
 
 package macromedia.abc;
 
-import static macromedia.asc.embedding.avmplus.ActionBlockConstants.*;
-import macromedia.asc.util.IntegerPool;
 import macromedia.asc.util.IntList;
+import macromedia.asc.util.IntegerPool;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
 
+import static macromedia.asc.embedding.avmplus.ActionBlockConstants.*;
+
 /**
  * abc encoder. If the encoder is provided with multiple constant pools, it will use do merging.
- *
- * @author Clement Wong
  */
 public class Encoder implements Visitor
 {

@@ -1773,7 +1773,7 @@ public final class CompilerAPI
         for (int i = 0, n = units.size(); i < n; i++)
         {
             CompilationUnit unit = units.get(i);
-             // CodeOrchestra: added if
+            // CodeOrchestra: added if
             if (unit == null) {
                 continue;
             }
@@ -3274,7 +3274,7 @@ public final class CompilerAPI
             s = swcSource;
         }
 
-         // CodeOrchestra: added if
+        // CodeOrchestra: added if
         if (s == null) {
             Iterator<Source> iterator = addedSources.iterator();
             while (iterator.hasNext()) {

@@ -4562,7 +4562,7 @@ public class TopLevelClassesGenerator
                     return;
                 }
 
-                Element defNode = asDocUtil.getDefNode((Element) node);
+                Element defNode = asDocUtil.getDefNode((Element)node);
 
                 Element apiDeprecated = outputObject.createElement("apiDeprecated");
 

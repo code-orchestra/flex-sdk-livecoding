@@ -21,7 +21,7 @@
 <project name="modules" default="main" basedir=".">
 
 	<property name="FLEX_HOME" location=".."/>
-	<property name="build.compiler" value="javac1.8" />
+	<property name="build.compiler" value="javac1.7" />
 
 	<!-- properties -->
 	<property file="${FLEX_HOME}/build.properties"/>

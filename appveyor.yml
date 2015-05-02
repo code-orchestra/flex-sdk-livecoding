@@ -1,0 +1,18 @@
+version: '{build}'
+skip_tags: true
+clone_depth: 10
+clone_folder: C:\projects\flex-sdk-livecoding
+environment:
+  matrix:
+    - JAVA_HOME: C:\Program Files\Java\jdk1.7.0
+    - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
+    - JAVA_HOME: C:\Program Files (x86)\Java\jdk1.7.0
+    - JAVA_HOME: C:\Program Files (x86)\Java\jdk1.8.0
+install:
+   - cinst ant
+build_script:
+  - set PATH=C:\tools\apache-ant-1.9.4\bin;%JAVA_HOME%\bin;%PATH%
+  - ant -version
+  - java -version
+  - cd C:\projects\flex-sdk-livecoding\modules
+  - ant

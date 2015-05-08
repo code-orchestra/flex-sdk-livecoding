@@ -19,7 +19,7 @@
     <orderEntry type="module" module-name="flex-asc" />
     <orderEntry type="module" module-name="flex-swfutils" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="module" module-name="flex-fxgutils" />
     <orderEntry type="module" module-name="xml-batik" />
     <orderEntry type="module-library">

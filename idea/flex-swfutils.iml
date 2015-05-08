@@ -16,7 +16,7 @@
     </content>
     <orderEntry type="module" module-name="flex-asc" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="module-library">
       <library name="junit3">
         <CLASSES>

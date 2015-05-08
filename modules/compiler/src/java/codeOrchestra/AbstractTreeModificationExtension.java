@@ -1,6 +1,7 @@
 package codeOrchestra;
 
 import codeOrchestra.digest.DigestManager;
+import codeOrchestra.digest.IMember;
 import codeOrchestra.tree.*;
 import codeOrchestra.util.InsertPosition;
 import codeOrchestra.util.StringUtils;
@@ -14,7 +15,6 @@ import macromedia.asc.semantics.Value;
 import macromedia.asc.util.Context;
 import macromedia.asc.util.ObjectList;
 import org.apache.commons.lang3.SerializationUtils;
-import org.apache.flex.forks.velocity.runtime.parser.node.NodeUtils;
 
 import java.util.*;
 
@@ -294,16 +294,42 @@ public abstract class AbstractTreeModificationExtension implements Extension {
             }
         }
 
+        DigestManager digestManager = DigestManager.getInstance();
         // 'This' scope modifications
         List<Triple<Node, Node, InsertPosition>> deferredInsertions = new ArrayList<Triple<Node, Node, InsertPosition>>();
         for (Node statement : methodBody) {
             RegularNode statementRegularNode = new RegularNode(statement);
-
-            // Replace all `this` references with `thisScope`
+            List<RegularNode> memberExpressionNodes = statementRegularNode.getDescendants(MemberExpressionNode.class);
             if (!staticMethod) {
+                // Replace all `this` references with `thisScope`
                 List<RegularNode> thisNodes = statementRegularNode.getDescendants(ThisExpressionNode.class, FunctionCommonNode.class);
                 for (RegularNode thisNode : thisNodes) {
                     thisNode.replace(TreeUtil.createIdentifier("thisScope"));
+                }
+                // Replace all fake `super` references with `thisScope`)
+                for (RegularNode node : statementRegularNode.getDescendants(SuperExpressionNode.class)) {
+                    final int superNodePosition = node.getASTNode().getPosition();
+                    Node memberASTNode = null;
+                    int prevMemberASTNodePosition = Integer.MAX_VALUE;
+                    for (RegularNode regularNode : memberExpressionNodes) {
+                        Node curMemberASTNode = regularNode.getASTNode();
+                        int curASTNodePosition = curMemberASTNode.getPosition();
+                        if (curASTNodePosition > superNodePosition && curASTNodePosition < prevMemberASTNodePosition) {
+                            memberASTNode = curMemberASTNode;
+                            prevMemberASTNodePosition = curASTNodePosition;
+                        }
+                    }
+                    if (memberASTNode == null) continue;
+                    final String accessorName = ((MemberExpressionNode) memberASTNode).selector.getIdentifier().name;
+                    if (digestManager.findVisibleOwnerOfInstanceMember(originalClassFqName, accessorName) == null) continue;
+                    boolean noneMatchOverriddenMethod = true;
+                    for (IMember member : digestManager.getClassDigest(originalClassFqName).getAllMembers()) {
+                        if(!member.getName().equals(accessorName)) {
+                            noneMatchOverriddenMethod = false;
+                            break;
+                        }
+                    }
+                    if (noneMatchOverriddenMethod) node.replace(TreeUtil.createIdentifier("thisScope"));
                 }
             }
 
@@ -319,7 +345,6 @@ public abstract class AbstractTreeModificationExtension implements Extension {
             }
 
             // COLT-25 - Replace all field/method references without 'this.' to 'thisScope.x'
-            List<RegularNode> memberExpressionNodes = statementRegularNode.getDescendants(MemberExpressionNode.class);
             for (RegularNode regularMemberExprNode : memberExpressionNodes) {
                 MemberExpressionNode memberExpression = (MemberExpressionNode) regularMemberExprNode.getASTNode();
                 Transformations.transformMemberReferences(className, staticMethod, originalPackageName, originalClassFqName, localVariables, memberExpression);
@@ -432,7 +457,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
             }
         }
         for (String namespace : namespaces) {
-            String namespaceURI = DigestManager.getInstance().getNamespaceURI(namespace);
+            String namespaceURI = digestManager.getNamespaceURI(namespace);
             if (namespaceURI != null) {
                 classDefinitionNode.statements.items.add(0, new NamespaceDefinitionNode(classDefinitionNode.pkgdef, null, new IdentifierNode(namespace, -1), new LiteralStringNode(namespaceURI)));
             }

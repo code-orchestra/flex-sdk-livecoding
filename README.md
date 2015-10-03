@@ -125,12 +125,12 @@ The Adobe Flash Player and Adobe AIR have non Apache compatible licenses so
 they can not be bundled with the Apache Flex SDK and need to be installed
 separately.
 
-The Adobe Flash Player ‘playerglobal.swc’ is needed to compile all the
-components with the exception of the ‘airframework’ and ‘airspark’
-components, which require ‘airglobal.swc’ from the AIR Integration Kit. The
+The Adobe Flash Player â€˜playerglobal.swcâ€™ is needed to compile all the
+components with the exception of the â€˜airframeworkâ€™ and â€˜airsparkâ€™
+components, which require â€˜airglobal.swcâ€™ from the AIR Integration Kit. The
 AIR Integration kit is also needed to build and debug mobile and desktop
 applications. The Adobe Flash Player content debugger is used by the ant
-‘checkintests’ target and other pieces of the test subsystem to run compiled
+â€˜checkintestsâ€™ target and other pieces of the test subsystem to run compiled
 applications.
 
 
@@ -292,7 +292,7 @@ following commands:
     git checkout develop
 
 The Apache Flex SDK also requires source code from Apache Flex BlazeDS. To get
-the latest source for Apache Flex BlazeDS (‘master’ branch), use the
+the latest source for Apache Flex BlazeDS (â€˜masterâ€™ branch), use the
 following commands:
 
     git clone https://git-wip-us.apache.org/repos/asf/flex-blazeds.git flex-blazeds

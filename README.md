@@ -1,3 +1,6 @@
+#
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/code-orchestra/flex-sdk-livecoding?branch=development&svg=true)](https://ci.appveyor.com/project/code-orchestra/flex-sdk-livecoding)
+
 ##This repository includes only the apache flex compiler sources
 
 Removed items are:

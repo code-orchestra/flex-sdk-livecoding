@@ -1,5 +1,5 @@
 #
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/code-orchestra/flex-sdk-livecoding?branch=development&svg=true)](https://ci.appveyor.com/api/projects/status/github/code-orchestra/flex-sdk-livecoding)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/code-orchestra/flex-sdk-livecoding?branch=master&svg=true)](https://ci.appveyor.com/api/projects/status/github/code-orchestra/flex-sdk-livecoding)
 
 ##This repository includes only the apache flex compiler sources
 

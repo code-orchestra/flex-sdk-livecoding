@@ -1,38 +1,38 @@
-This repository includes only the apache flex compiler sources
+##This repository includes only the apache flex compiler sources
 
 Removed items are:
 
-asdoc
-bin
-build
-frameworks
-ide
-installer.properties
-mustella
-samples
-templates
-CONTRIBUTING
-CONTRIBUTORS
-KEYS
-RELEASE_NOTES
-jenkins.xml
-LICENSE.bin
-NOTICE.bin
-LICENSE.pb
-NOTICE.pb
-README.pb
-env-template.properties
-local-template.properties
-GIT-TEST.txt
-apache-flex-sdk-installer-config.xml
-ApproveSDK.xml
-build.xml
-flex-sdk-description.xml
-flexunit-tests.xml
-installer.xml
-jenkins.xml
-pixelbender.xml
-releasecandidate.xml
+* asdoc
+* bin
+* build
+* frameworks
+* ide
+* installer.properties
+* mustella
+* samples
+* templates
+* CONTRIBUTING
+* CONTRIBUTORS
+* KEYS
+* RELEASE_NOTES
+* jenkins.xml
+* LICENSE.bin
+* NOTICE.bin
+* LICENSE.pb
+* NOTICE.pb
+* README.pb
+* env-template.properties
+* local-template.properties
+* GIT-TEST.txt
+* apache-flex-sdk-installer-config.xml
+* ApproveSDK.xml
+* build.xml
+* flex-sdk-description.xml
+* flexunit-tests.xml
+* installer.xml
+* jenkins.xml
+* pixelbender.xml
+* releasecandidate.xml
 
 The Apache Flex SDK
 ===================

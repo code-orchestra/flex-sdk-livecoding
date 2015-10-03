@@ -22,7 +22,6 @@ package flex2.tools;
 import codeOrchestra.LCBaseExtension;
 import codeOrchestra.LCIncrementalExtension;
 import codeOrchestra.digest.DigestManager;
-import codeOrchestra.lcs.license.COLTRunningKey;
 import codeOrchestra.profiling.YourKitController;
 import codeOrchestra.tree.LastASTHolder;
 import codeOrchestra.util.StringUtils;
@@ -82,11 +81,6 @@ public class Fcsh extends Tool {
         ThreadLocalToolkit.setLocalizationManager(localizationManager);
 
 
-        if (!COLTRunningKey.isRunning()) {
-            System.out.println("No valid running COLT instance found");
-            System.exit(1);
-        }
-
         intro();
         prompt();
         while ((s = r.readLine()) != null) {
@@ -127,11 +121,6 @@ public class Fcsh extends Tool {
         LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
 
         if (s.startsWith("mxmlc")) {
-            if (!COLTRunningKey.isRunning()) {
-                System.out.println("No valid running COLT instance found");
-                System.exit(1);
-            }
-
             StringTokenizer t = new StringTokenizer(s.substring("mxmlc".length()).trim(), " ");
             String[] args = new String[t.countTokens()];
             for (int i = 0; t.hasMoreTokens(); i++) {
@@ -156,11 +145,6 @@ public class Fcsh extends Tool {
                 mxmlc(args, counter++);
             }
         } else if (s.startsWith("compc")) {
-            if (!COLTRunningKey.isRunning()) {
-                System.out.println("No valid running COLT instance found");
-                System.exit(1);
-            }
-
             StringTokenizer t = new StringTokenizer(s.substring("compc".length()).trim(), " ");
             String[] args = new String[t.countTokens()];
             for (int i = 0; t.hasMoreTokens(); i++) {
@@ -185,11 +169,6 @@ public class Fcsh extends Tool {
                 compc(args, counter++);
             }
         } else if (s.startsWith("compile")) {
-            if (!COLTRunningKey.isRunning()) {
-                System.out.println("No valid running COLT instance found");
-                System.exit(1);
-            }
-            
             String id = s.substring("compile".length()).trim();
             if (targets.containsKey(id)) {
                 compile(id);
@@ -310,11 +289,6 @@ public class Fcsh extends Tool {
         }
         // CodeOrchestra: added elseif
         else if (s.startsWith("lccompc") || s.startsWith("lcmxmlc") || s.startsWith("lcicompc")) {
-            if (!COLTRunningKey.isRunning()) {
-                System.out.println("No valid running COLT instance found");
-                System.exit(1);
-            }
-
             boolean isCompc = s.startsWith("lccompc") || s.startsWith("lcicompc");
 
             if (s.startsWith("lcicompc")) {

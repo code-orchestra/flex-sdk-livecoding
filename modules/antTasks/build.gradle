@@ -1,0 +1,32 @@
+group 'apache.flexsdk'
+apply plugin: 'idea'
+apply plugin: 'java'
+
+def FLEX_HOME = '../..'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    compile 'org.apache.ant:ant:1.9.6'
+}
+
+jar {
+    exclude "**/AscTask*"
+}
+
+task prepare(type: Copy) {
+    copy {
+        from files("$FLEX_HOME/LICENSE.base", "$FLEX_HOME/NOTICE.base")
+        into "$projectDir.path/src/main/resources"
+        rename ('.base', '')
+    }
+    copy {
+        from "flexTasks.tasks"
+        into "$projectDir.path/src/main/resources"
+    }
+}
+
+compileJava.dependsOn 'prepare'

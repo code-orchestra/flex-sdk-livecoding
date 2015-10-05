@@ -19,19 +19,11 @@
 
 package flex.ant;
 
-import java.io.BufferedReader;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DynamicAttribute;
 import org.apache.tools.ant.Task;
+
+import java.io.*;
 
 /**
  * Implements the &lt;html-wrapper&gt; Ant task.  For example:

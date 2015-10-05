@@ -19,28 +19,17 @@
 
 package flex.ant;
 
-import flex.ant.config.ConfigAppendString;
-import flex.ant.config.ConfigBoolean;
-import flex.ant.config.ConfigInt;
-import flex.ant.config.ConfigString;
-import flex.ant.config.ConfigVariable;
-import flex.ant.config.NestedAttributeElement;
-import flex.ant.config.OptionSource;
-import flex.ant.config.OptionSpec;
-import flex.ant.config.RepeatableConfigString;
-import flex.ant.types.DefaultScriptLimits;
-import flex.ant.types.DefaultSize;
+import flex.ant.config.*;
 import flex.ant.types.FlexFileSet;
 import flex.ant.types.Fonts;
 import flex.ant.types.Metadata;
 import flex.ant.types.RuntimeSharedLibraryPath;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DynamicConfigurator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.io.File;
 
 /**
  * Implements the &lt;asdoc&gt; Ant task.  For example:

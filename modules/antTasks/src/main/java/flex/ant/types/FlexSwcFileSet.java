@@ -18,13 +18,11 @@
  */
 package flex.ant.types;
 
-import java.io.File;
-import java.util.ArrayList;
-
+import flex.ant.config.OptionSpec;
 import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.util.FileUtils;
 
-import flex.ant.config.OptionSpec;
+import java.io.File;
 
 public class FlexSwcFileSet extends FlexFileSet 
 {

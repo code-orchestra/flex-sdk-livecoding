@@ -21,7 +21,6 @@ package flex.ant.types;
 
 import flex.ant.config.OptionSource;
 import flex.ant.config.OptionSpec;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DynamicAttribute;
 import org.apache.tools.ant.types.Commandline;

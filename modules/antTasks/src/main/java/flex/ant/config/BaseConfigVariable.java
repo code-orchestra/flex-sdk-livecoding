@@ -48,7 +48,7 @@ public abstract class BaseConfigVariable implements OptionSource
     /**
      * Adds arguments to the end of <code>cmdl</code> corresponding to the state of this variable.
      *
-     * @param cmld The Commandline object to which arguments correspond to this option should be added
+     * @param cmdl The Commandline object to which arguments correspond to this option should be added
      */
     public abstract void addToCommandline(Commandline cmdl);
 

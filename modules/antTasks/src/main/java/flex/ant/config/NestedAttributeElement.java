@@ -19,11 +19,10 @@
 
 package flex.ant.config;
 
+import flex.ant.FlexTask;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DynamicAttribute;
 import org.apache.tools.ant.types.Commandline;
-
-import flex.ant.FlexTask;
 
 /**
  * This class supports setting configuration option parameters via

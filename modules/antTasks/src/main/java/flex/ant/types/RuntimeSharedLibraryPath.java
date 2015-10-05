@@ -19,16 +19,14 @@
 
 package flex.ant.types;
 
-import flex.ant.config.ConfigString;
-import flex.ant.config.ConfigVariable;
-import flex.ant.config.NestedAttributeElement;
 import flex.ant.config.OptionSource;
 import flex.ant.config.OptionSpec;
-import java.util.ArrayList;
-import java.util.Iterator;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DynamicConfigurator;
 import org.apache.tools.ant.types.Commandline;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Supports the nested &lt;runtime-shared-library-path&gt; tag.

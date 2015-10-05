@@ -22,9 +22,8 @@ package flex.ant.types;
 import flex.ant.FlexTask;
 import flex.ant.config.ConfigString;
 import flex.ant.config.NestedAttributeElement;
-import flex.ant.config.OptionSpec;
 import flex.ant.config.OptionSource;
-
+import flex.ant.config.OptionSpec;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DynamicElement;
 import org.apache.tools.ant.types.Commandline;

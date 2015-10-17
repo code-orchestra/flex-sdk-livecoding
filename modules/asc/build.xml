@@ -17,15 +17,13 @@
   limitations under the License.
 
 -->
-<project name="asc" default="main" basedir="build/classes">
+<project name="asc" default="main" basedir=".">
 	<property file="${basedir}/build.properties" />
 	<property name="root.dir" value="${basedir}/../.."/>
-	<property name="bin.dir" value="${root.dir}/bin"/>
-	<property name="java.src.dir" value="${root.dir}/src/main/java"/>
-	<property name="javac.src" value="1.5"/>    
-	<property name="build.util" value="${root.dir}/util"/>
-	<property name="lib.dir" value="${root.dir}/lib"/>
-	<property name="asc.name" value="asc"/>
+	<property name="java.src.dir" value="${basedir}/src/main/java"/>
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="javac.src" value="1.5"/>
+	<property name="lib.dir" value="${build.dir}/lib"/>
     <property name="build.number" value="cyclone" />
 
 	<target name="main" depends="clean,jar"/>
@@ -44,10 +42,10 @@
 	</target>
 	<target name="jar" depends="classes" >
 		<mkdir dir="${lib.dir}" />
-		<mkdir dir="${basedir}/classes/META-INF"/>
-        <copy file="${root.dir}/../../LICENSE.base" tofile="${basedir}/classes/META-INF/LICENSE"/>
-        <copy file="${root.dir}/../../NOTICE.asc" tofile="${basedir}/classes/META-INF/NOTICE"/>
-		<jar file="${lib.dir}/asc.jar" basedir="${basedir}/classes" includes="macromedia/asc/**/*,macromedia/abc/**/*,adobe/abc/**/*">
+		<mkdir dir="${build.dir}/classes/META-INF"/>
+        <copy file="${root.dir}/LICENSE.base" tofile="${build.dir}/classes/META-INF/LICENSE"/>
+        <copy file="${root.dir}/NOTICE.asc" tofile="${build.dir}/classes/META-INF/NOTICE"/>
+		<jar file="${lib.dir}/asc.jar" basedir="${build.dir}/classes" includes="macromedia/asc/**/*,macromedia/abc/**/*,adobe/abc/**/*">
 		    <include name="META-INF/LICENSE"/>
             <include name="META-INF/NOTICE"/>
             <manifest>
@@ -75,7 +73,7 @@
 	
 	<target name="asc-coverage-jar" depends="classes" >
 		<mkdir dir="${lib.dir}" />
-		<jar file="${lib.dir}/asc.jar" basedir="${basedir}/classes" includes="macromedia/asc/**/*,macromedia/abc/**/*,adobe/abc/**/*">
+		<jar file="${lib.dir}/asc.jar" basedir="${build.dir}/classes" includes="macromedia/asc/**/*,macromedia/abc/**/*,adobe/abc/**/*">
             <manifest>
                 <attribute name="Main-Class" value="macromedia.asc.embedding.Main"/>
                 <attribute name="Class-Path" value="${lib.dir}/clover.jar"/>
@@ -86,13 +84,13 @@
 
     <target name="run-depend" if="src.depend">
         <echo level="info" message="Removing class files that changed and dependent class files."/>
-        <depend cache="${basedir}/classes" srcdir="${java.src.dir}" destdir="${basedir}/classes"/>
+        <depend cache="${build.dir}/classes" srcdir="${java.src.dir}" destdir="${build.dir}/classes"/>
     </target>
 
     <target name="classes" depends="run-depend">
 	    <mkdir dir="${lib.dir}" />
-        <mkdir dir="${basedir}/classes"/>
-        <javac source="${javac.src}" target="${javac.src}" encoding="UTF-8" debug="${src.debug}" destdir="${basedir}/classes" srcdir="${java.src.dir}" includes="**/*.java">
+        <mkdir dir="${build.dir}/classes"/>
+        <javac source="${javac.src}" target="${javac.src}" encoding="UTF-8" debug="${src.debug}" destdir="${build.dir}/classes" srcdir="${java.src.dir}" includes="**/*.java">
 			<classpath>
 				<fileset dir="${lib.dir}" includes="*.jar"/>
 			</classpath>
@@ -103,29 +101,17 @@
         <tstamp>
         	<format property="build.number.date" pattern="yyyyMMdd" />
         </tstamp>
-        <echo file="${basedir}/classes/macromedia/asc/util/version.properties" append="false">build=${build.number.date}</echo>
+        <echo file="${build.dir}/classes/macromedia/asc/util/version.properties" append="false">build=${build.number.date}</echo>
     </target>
-
-    <target name="full">
-		<apply executable="${basedir}/run_il.bat">
-			<fileset dir="${root.dir}/test" includes="**/*.as"/>
-		</apply>
-	</target>
-	<target name="sanity">
-		<apply executable="${basedir}/run_il.bat">
-			<fileset dir="${root.dir}/test/sanity" includes="**/*.as"/>
-		</apply>
-	</target>
 	<target name="clean">
 		<delete failonerror="false" >
 			<fileset file="${root.dir}/lib/abcdump.jar"/>
 			<fileset file="${root.dir}/lib/ash.jar"/>
-			<fileset file="${basedir}/lib/asc.jar"/>
 			<fileset file="${root.dir}/lib/asc.jar"/>
 			<fileset file="${root.dir}/lib/asc_authoring.jar"/>
 			<fileset file="${root.dir}/lib/global.abc"/>
 		</delete>
-		<delete dir="${basedir}/classes" failonerror="false"/>
+		<delete dir="${build.dir}/classes" failonerror="false"/>
         <delete dir="${lib.dir}"/>
 	</target>
 </project>

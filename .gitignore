@@ -10,3 +10,5 @@ classes15
 *.vms
 modules/antTasks/.gradle/
 modules/antTasks/build/
+idea/
+*.iml

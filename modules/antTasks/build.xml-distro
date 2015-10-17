@@ -23,18 +23,15 @@
     <target name="main" depends="clean, jar" />
 
     <target name="compile">
-        <mkdir dir="classes" />
-        <javac srcdir="src" destdir="classes"/>
+        <mkdir dir="build/classes" />
+        <javac srcdir="src/main/java" destdir="classes"/>
     </target>
 
     <target name="jar" depends="compile">
         <jar destfile="lib/flexTasks.jar">
-            <fileset dir="."
-                     includes="flexTasks.tasks" />
-            <fileset dir="classes"
-                     includes="**/*.class"/>
-            <fileset dir="."
-                     includes="templates/**" />
+            <fileset dir="." includes="flexTasks.tasks" />
+            <fileset dir="classes" includes="**/*.class"/>
+            <fileset dir="." includes="templates/**" />
         </jar>
     </target>
 

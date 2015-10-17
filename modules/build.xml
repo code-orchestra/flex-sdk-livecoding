@@ -85,13 +85,13 @@
     </target>
 
     <target name="clean" depends="batik-clean,velocity-clean">
-		<ant dir="${basedir}/asc/build/java" target="clean"/>
+		<ant dir="${basedir}/asc" target="clean"/>
 		<ant dir="${basedir}/swfutils" target="clean"/>
 		<ant dir="${basedir}/fxgutils" target="clean"/>
 		<ant dir="${basedir}/debugger" target="clean"/>
 		<ant dir="${basedir}/compiler" target="clean"/>
 		<ant dir="${basedir}/antTasks" target="clean"/>
-        <ant dir="${basedir}/asc/build/java" target="clean"/>
+        <ant dir="${basedir}/asc" target="clean"/>
         <ant dir="${basedir}/thirdparty/xerces-patch" target="clean"/>
         <delete includeemptydirs="true" failonerror="false">
             <fileset dir="${FLEX_LIB}">
@@ -113,12 +113,12 @@
 	<target name="modules-dev" depends="asc-dev,swfutils-dev,fxgutils-dev,compiler-dev,debugger-dev,antTasks-dev" description="Build src.depend JARs"/>
 
 	<target name="asc" description="Full build of asc.jar">
-		<ant dir="${basedir}/asc/build/java"/>
-		<copy file="${basedir}/asc/lib/asc.jar" tofile="${FLEX_LIB}/asc.jar"/>
+		<ant dir="${basedir}/asc"/>
+		<copy file="${basedir}/asc/build/lib/asc.jar" tofile="${FLEX_LIB}/asc.jar"/>
 	</target>
 
 	<target name="asc-dev" description="Build src.depend asc">
-		<ant dir="${basedir}/asc/build/java" target="dev"/>
+		<ant dir="${basedir}/asc" target="dev"/>
 	</target>
 
 	<target name="swfutils" description="Full build of swfutils.jar">

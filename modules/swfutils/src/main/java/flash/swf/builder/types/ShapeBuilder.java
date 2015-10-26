@@ -397,7 +397,7 @@ public final class ShapeBuilder
      */
     public static void divideQuad(double src[], int srcoff, double left[], int loff, double right[], int roff)
     {
-        double x1 = src[srcoff + 0];
+        double x1 = src[srcoff];
         double y1 = src[srcoff + 1];
         double ctrlx = src[srcoff + 2];
         double ctrly = src[srcoff + 3];
@@ -406,7 +406,7 @@ public final class ShapeBuilder
 
         if (left != null)
         {
-            left[loff + 0] = x1;
+            left[loff] = x1;
             left[loff + 1] = y1;
         }
 
@@ -433,7 +433,7 @@ public final class ShapeBuilder
 
         if (right != null)
         {
-            right[roff + 0] = ctrlx;
+            right[roff] = ctrlx;
             right[roff + 1] = ctrly;
             right[roff + 2] = x2;
             right[roff + 3] = y2;

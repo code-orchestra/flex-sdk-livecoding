@@ -374,11 +374,11 @@ public final class TurbulencePatternRed extends AbstractRed {
             noise[0] =
                 lerp(sy,
                      lerp(sx,
-                          rx0*gradient[b0+0] + ry0*gradient[b0+1],
-                          rx1*gradient[b1+0] + ry0*gradient[b1+1]),
+                          rx0*gradient[b0] + ry0*gradient[b0+1],
+                          rx1*gradient[b1] + ry0*gradient[b1+1]),
                      lerp(sx,
-                          rx0*gradient[b0+8+0] + ry1*gradient[b0+8+1],
-                          rx1*gradient[b1+8+0] + ry1*gradient[b1+8+1]));
+                          rx0*gradient[(b0 + 8)] + ry1*gradient[b0+8+1],
+                          rx1*gradient[(b1 + 8)] + ry1*gradient[b1+8+1]));
         }
     }
 
@@ -477,11 +477,11 @@ public final class TurbulencePatternRed extends AbstractRed {
             noise[0] =
                 lerp(sy,
                      lerp(sx,
-                          rx0*gradient[b00+0] + ry0*gradient[b00+1],
-                          rx1*gradient[b10+0] + ry0*gradient[b10+1]),
+                          rx0*gradient[b00] + ry0*gradient[b00+1],
+                          rx1*gradient[b10] + ry0*gradient[b10+1]),
                      lerp(sx,
-                          rx0*gradient[b01+0] + ry1*gradient[b01+1],
-                          rx1*gradient[b11+0] + ry1*gradient[b11+1]));
+                          rx0*gradient[b01] + ry1*gradient[b01+1],
+                          rx1*gradient[b11] + ry1*gradient[b11+1]));
         }
     }
 
@@ -530,11 +530,11 @@ public final class TurbulencePatternRed extends AbstractRed {
 
             n = lerp(sy,
                      lerp(sx,
-                          rx0*gradient[b0+0] + ry0*gradient[b0+1],
-                          rx1*gradient[b1+0] + ry0*gradient[b1+1]),
+                          rx0*gradient[b0] + ry0*gradient[b0+1],
+                          rx1*gradient[b1] + ry0*gradient[b1+1]),
                      lerp(sx,
-                          rx0*gradient[b0+8+0] + ry1*gradient[b0+8+1],
-                          rx1*gradient[b1+8+0] + ry1*gradient[b1+8+1]));
+                          rx0*gradient[(b0 + 8)] + ry1*gradient[b0+8+1],
+                          rx1*gradient[(b1 + 8)] + ry1*gradient[b1+8+1]));
 
             if (n<0) fSum[0] -= (n * ratio);
             else     fSum[0] += (n * ratio);
@@ -865,11 +865,11 @@ public final class TurbulencePatternRed extends AbstractRed {
 
             fSum[0] += lerp(sy,
                      lerp(sx,
-                          rx0*gradient[b0+0] + ry0*gradient[b0+1],
-                          rx1*gradient[b1+0] + ry0*gradient[b1+1]),
+                          rx0*gradient[b0] + ry0*gradient[b0+1],
+                          rx1*gradient[b1] + ry0*gradient[b1+1]),
                      lerp(sx,
-                          rx0*gradient[b0+8+0] + ry1*gradient[b0+8+1],
-                          rx1*gradient[b1+8+0] + ry1*gradient[b1+8+1]))*ratio;
+                          rx0*gradient[(b0 + 8)] + ry1*gradient[b0+8+1],
+                          rx1*gradient[(b1 + 8)] + ry1*gradient[b1+8+1]))*ratio;
 
             fSum[1] += lerp(sy,
                      lerp(sx,

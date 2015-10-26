@@ -98,7 +98,7 @@ public abstract class ToSVGAbstractTranscoder extends AbstractTranscoder
     }
 
     public static final int TRANSCODER_ERROR_BASE = 0xff00;
-    public static final int ERROR_NULL_INPUT = TRANSCODER_ERROR_BASE + 0;
+    public static final int ERROR_NULL_INPUT = TRANSCODER_ERROR_BASE;
     public static final int ERROR_INCOMPATIBLE_INPUT_TYPE = TRANSCODER_ERROR_BASE + 1;
     public static final int ERROR_INCOMPATIBLE_OUTPUT_TYPE = TRANSCODER_ERROR_BASE + 2;
 

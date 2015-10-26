@@ -1341,7 +1341,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
 				isSignedList = new ArrayList<Boolean>();
 			}
 			
-			isSignedList.add(Boolean.valueOf(isSigned));
+			isSignedList.add(isSigned);
 		}
 
 	}

@@ -2308,14 +2308,14 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 			} catch (NumberFormatException nfe) {
 			}
 
-			value = new Double(dval);
+			value = dval;
 			isPrimitive = true;
 			break;
 		}
 
 		case DMessage.kBooleanType: {
 			int bval = msg.getByte();
-			value = Boolean.valueOf((bval == 0) ? false : true);
+			value = (bval == 0) ? false : true;
 			isPrimitive = true;
 			break;
 		}
@@ -2367,7 +2367,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 			}
 			
 			className = DVariable.classNameFor(cType, false);
-			value = new Long(oid);
+			value = oid;
 			vType = (isFnc == 0) ? VariableType.OBJECT : VariableType.FUNCTION;
 			break;
 		}
@@ -2379,7 +2379,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 			typeName = (oid == -1) ? "" : msg.getString(); //$NON-NLS-1$
 			className = DVariable.classNameFor(cType, true);
 
-			value = new Long(oid);
+			value = oid;
 			vType = VariableType.MOVIECLIP;
 			break;
 		}

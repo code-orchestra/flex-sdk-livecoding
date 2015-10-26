@@ -554,7 +554,7 @@ public class BindableFirstPassEvaluator extends GenerativeFirstPassEvaluator
 	 */
 	private void registerVisitedGetterSetter(String name, int bindType)
 	{
-        (visitedProps != null ? visitedProps : (visitedProps = new HashMap<String, Integer>())).put(name, new Integer(bindType));
+        (visitedProps != null ? visitedProps : (visitedProps = new HashMap<String, Integer>())).put(name, bindType);
 	}
 
 	/**

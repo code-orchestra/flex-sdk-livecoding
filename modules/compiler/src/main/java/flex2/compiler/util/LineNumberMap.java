@@ -55,7 +55,7 @@ public class LineNumberMap {
 	}
 
 	public final void put(int oldStart, int newStart, int extent) {
-		map.put(new Range(newStart, extent), new Integer(newStart - oldStart));
+		map.put(new Range(newStart, extent), newStart - oldStart);
 	}
 
 	/**

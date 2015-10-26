@@ -613,7 +613,7 @@ public class CatalogReader
     {
     	if (isNewerLibVersion == null)
     	{
-    		isNewerLibVersion = Boolean.valueOf(VersionInfo.IsNewerLibVersion(libVersion, false));
+    		isNewerLibVersion = VersionInfo.IsNewerLibVersion(libVersion, false);
     	}
     	
     	return isNewerLibVersion.booleanValue();

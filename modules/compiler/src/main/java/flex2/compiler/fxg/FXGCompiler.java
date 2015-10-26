@@ -418,7 +418,7 @@ public class FXGCompiler extends AbstractSubCompiler
      */
     private void setCompileState(CompilationUnit unit, int state)
     {
-        unit.getContext().setAttribute(COMPILATION_STATE, new Integer(state));
+        unit.getContext().setAttribute(COMPILATION_STATE, state);
     }
 
     /**

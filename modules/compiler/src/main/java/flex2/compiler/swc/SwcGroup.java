@@ -163,7 +163,7 @@ public class SwcGroup
 		List<Long> lastModified = new ArrayList<Long>();
 
 		for (Swc swc : swcs.values()) {
-			lastModified.add(new Long(swc.getLastModified()));
+			lastModified.add(swc.getLastModified());
 		}
 
 		return lastModified;

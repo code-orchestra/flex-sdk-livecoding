@@ -9,6 +9,6 @@ public enum Visibility {
     INTERNAL,
     PROTECTED,
     PUBLIC,
-    UNKNOWN;
+    UNKNOWN
 
 }

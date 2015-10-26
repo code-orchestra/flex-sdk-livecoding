@@ -2745,7 +2745,6 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
             int i = 0, size = case_expr.size();
             for (; i < size && case_expr.get(i) != null; i++)
             {
-                ;
             }
             if (i == size)
             {

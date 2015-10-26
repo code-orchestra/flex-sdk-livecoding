@@ -8,6 +8,6 @@ public enum MemberKind {
     METHOD,
     GETTER,
     SETTER,
-    FIELD;
+    FIELD
 
 }

@@ -61,7 +61,7 @@ public class Escape
                     stEntity = "&quot;";
                     break;
                 default :
-                    /* no-op */ ;
+                    /* no-op */
             }
             if (stEntity != null)
             {

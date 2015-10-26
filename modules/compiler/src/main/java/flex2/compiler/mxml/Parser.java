@@ -224,8 +224,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       case START_LIBRARY:
       case START_ELEMENT:
       case CDATA:
-        ;
-        break;
+          break;
       default:
         jj_la1[0] = jj_gen;
         break label_1;
@@ -319,8 +318,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       case START_REPARENT:
       case START_ELEMENT:
       case CDATA:
-        ;
-        break;
+          break;
       default:
         jj_la1[2] = jj_gen;
         break label_2;
@@ -400,8 +398,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       case START_REPARENT:
       case START_ELEMENT:
       case CDATA:
-        ;
-        break;
+          break;
       default:
         jj_la1[4] = jj_gen;
         break label_3;
@@ -501,8 +498,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       case START_COMPONENT:
       case START_REPARENT:
       case START_ELEMENT:
-        ;
-        break;
+          break;
       default:
         jj_la1[7] = jj_gen;
         break label_4;
@@ -580,7 +576,6 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       break;
     default:
       jj_la1[10] = jj_gen;
-      ;
     }
     jj_consume_token(END_STYLE);
         if (visitor != null) { visitor.parseStyle(t, d); }
@@ -597,7 +592,6 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       break;
     default:
       jj_la1[11] = jj_gen;
-      ;
     }
     jj_consume_token(END_SCRIPT);
         if (visitor != null) { visitor.parseScript(t, d); }
@@ -614,7 +608,6 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       break;
     default:
       jj_la1[12] = jj_gen;
-      ;
     }
     jj_consume_token(END_METADATA);
         if (visitor != null) { visitor.parseMetaData(t, d); }
@@ -695,8 +688,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       case START_COMPONENT:
       case START_REPARENT:
       case START_ELEMENT:
-        ;
-        break;
+          break;
       default:
         jj_la1[14] = jj_gen;
         break label_5;
@@ -763,8 +755,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
         case START_CLASS:
         case START_FUNCTION:
         case START_ELEMENT:
-          ;
-          break;
+            break;
         default:
           jj_la1[16] = jj_gen;
           break label_6;
@@ -817,8 +808,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case START_ELEMENT:
-          ;
-          break;
+            break;
         default:
           jj_la1[19] = jj_gen;
           break label_7;
@@ -848,8 +838,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case START_ELEMENT:
-          ;
-          break;
+            break;
         default:
           jj_la1[21] = jj_gen;
           break label_8;
@@ -885,8 +874,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       case START_REPARENT:
       case START_ELEMENT:
       case CDATA:
-        ;
-        break;
+          break;
       default:
         jj_la1[23] = jj_gen;
         break label_9;
@@ -956,8 +944,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       case START_REPARENT:
       case START_ELEMENT:
       case CDATA:
-        ;
-        break;
+          break;
       default:
         jj_la1[25] = jj_gen;
         break label_10;
@@ -1024,8 +1011,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case START_ELEMENT:
       case CDATA:
-        ;
-        break;
+          break;
       default:
         jj_la1[27] = jj_gen;
         break label_11;
@@ -1092,7 +1078,6 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       break;
     default:
       jj_la1[30] = jj_gen;
-      ;
     }
     jj_consume_token(END_STRING);
         if (visitor != null) { visitor.parseString(t, data); }
@@ -1109,7 +1094,6 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       break;
     default:
       jj_la1[31] = jj_gen;
-      ;
     }
     jj_consume_token(END_NUMBER);
         if (visitor != null) { visitor.parseNumber(t, data); }
@@ -1126,7 +1110,6 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       break;
     default:
       jj_la1[32] = jj_gen;
-      ;
     }
     jj_consume_token(END_INT);
         if (visitor != null) { visitor.parseInt(t, data); }
@@ -1143,7 +1126,6 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       break;
     default:
       jj_la1[33] = jj_gen;
-      ;
     }
     jj_consume_token(END_UINT);
         if (visitor != null) { visitor.parseUInt(t, data); }
@@ -1160,7 +1142,6 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       break;
     default:
       jj_la1[34] = jj_gen;
-      ;
     }
     jj_consume_token(END_BOOLEAN);
         if (visitor != null) { visitor.parseBoolean(t, data); }
@@ -1177,7 +1158,6 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       break;
     default:
       jj_la1[35] = jj_gen;
-      ;
     }
     jj_consume_token(END_CLASS);
         if (visitor != null) { visitor.parseClass(t, data); }
@@ -1194,7 +1174,6 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       break;
     default:
       jj_la1[36] = jj_gen;
-      ;
     }
     jj_consume_token(END_FUNCTION);
         if (visitor != null) { visitor.parseFunction(t, data); }
@@ -1221,8 +1200,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case START_METHOD:
       case START_ELEMENT:
-        ;
-        break;
+          break;
       default:
         jj_la1[37] = jj_gen;
         break label_12;
@@ -1260,8 +1238,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case START_ARGUMENTS:
       case START_ELEMENT:
-        ;
-        break;
+          break;
       default:
         jj_la1[39] = jj_gen;
         break label_13;
@@ -1316,8 +1293,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
         case START_CLASS:
         case START_FUNCTION:
         case START_ELEMENT:
-          ;
-          break;
+            break;
         default:
           jj_la1[41] = jj_gen;
           break label_14;
@@ -1367,8 +1343,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case START_OPERATION:
       case START_ELEMENT:
-        ;
-        break;
+          break;
       default:
         jj_la1[44] = jj_gen;
         break label_15;
@@ -1407,8 +1382,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case START_REQUEST:
       case START_ELEMENT:
-        ;
-        break;
+          break;
       default:
         jj_la1[46] = jj_gen;
         break label_16;
@@ -1453,8 +1427,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case START_ELEMENT:
-          ;
-          break;
+            break;
         default:
           jj_la1[48] = jj_gen;
           break label_17;
@@ -1486,8 +1459,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case START_REQUEST:
       case START_ELEMENT:
-        ;
-        break;
+          break;
       default:
         jj_la1[50] = jj_gen;
         break label_18;
@@ -1542,7 +1514,6 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       break;
     default:
       jj_la1[53] = jj_gen;
-      ;
     }
     jj_consume_token(END_COMPONENT);
         if (visitor != null) { visitor.parseInlineComponent(comp, child); }
@@ -1573,8 +1544,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case CDATA:
       case SKIP_ELEMENT:
-        ;
-        break;
+          break;
       default:
         jj_la1[54] = jj_gen;
         break label_19;
@@ -1610,8 +1580,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case START_DEFINITION:
-        ;
-        break;
+          break;
       default:
         jj_la1[56] = jj_gen;
         break label_20;
@@ -1651,7 +1620,6 @@ public class Parser implements MXMLNamespaces, ParserConstants {
       break;
     default:
       jj_la1[58] = jj_gen;
-      ;
     }
     jj_consume_token(END_DEFINITION);
         if (visitor != null) { visitor.parseDefinition(definition, child); }

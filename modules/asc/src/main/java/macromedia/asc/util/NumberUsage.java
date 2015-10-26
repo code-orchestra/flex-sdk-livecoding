@@ -62,8 +62,8 @@ public class NumberUsage implements Cloneable {
 			return RoundingMode.FLOOR;
 		else 
 			return null;
-	};
-	
+	}
+
 	private int usage;
 	private int rounding; 
 	private int precision;

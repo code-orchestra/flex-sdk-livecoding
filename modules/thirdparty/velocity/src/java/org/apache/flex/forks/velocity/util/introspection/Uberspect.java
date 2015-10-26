@@ -33,25 +33,25 @@ public interface Uberspect
     /**
      *  Initializer - will be called before use
      */
-    public void init() throws Exception;
+    void init() throws Exception;
 
     /**
      *  To support iteratives - #foreach()
      */
-    public Iterator getIterator(Object obj, Info info) throws Exception;
+    Iterator getIterator(Object obj, Info info) throws Exception;
 
     /**
      *  Returns a general method, corresponding to $foo.bar( $woogie )
      */
-    public VelMethod getMethod(Object obj, String method, Object[] args, Info info) throws Exception;
+    VelMethod getMethod(Object obj, String method, Object[] args, Info info) throws Exception;
 
     /**
      * Property getter - returns VelPropertyGet appropos for #set($foo = $bar.woogie)
      */
-    public VelPropertyGet getPropertyGet(Object obj, String identifier, Info info) throws Exception;
+    VelPropertyGet getPropertyGet(Object obj, String identifier, Info info) throws Exception;
 
     /**
      * Property setter - returns VelPropertySet appropos for #set($foo.bar = "geir")
      */
-    public VelPropertySet getPropertySet(Object obj, String identifier, Object arg, Info info) throws Exception;
+    VelPropertySet getPropertySet(Object obj, String identifier, Object arg, Info info) throws Exception;
 }

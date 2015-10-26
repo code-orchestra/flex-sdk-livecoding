@@ -27,35 +27,35 @@ import org.apache.flex.forks.velocity.runtime.RuntimeServices;
  */
 public interface LogSystem
 {
-    public final static boolean DEBUG_ON = true;
+    boolean DEBUG_ON = true;
 
     /**
      * Prefix for debug messages.
      */
-    public final static int DEBUG_ID = 0;
+    int DEBUG_ID = 0;
 
     /** 
      * Prefix for info messages.
      */
-    public final static int INFO_ID = 1;
+    int INFO_ID = 1;
     
     /** 
      * Prefix for warning messages.
      */
-    public final static int WARN_ID = 2;
+    int WARN_ID = 2;
 
     /** 
      * Prefix for error messages.
      */
-    public final static int ERROR_ID = 3;
+    int ERROR_ID = 3;
 
     /**
      *  init()
      */
-    public void init( RuntimeServices rs ) throws Exception;
+    void init(RuntimeServices rs) throws Exception;
 
     /**
      * Send a log message from Velocity.
      */
-    public void logVelocityMessage(int level, String message);
+    void logVelocityMessage(int level, String message);
 }

@@ -44,67 +44,67 @@ public interface Node extends Serializable
      *  This method is called after the node has been made the current
      *  node.  It indicates that child nodes can now be added to it. 
      */
-    public void jjtOpen();
+    void jjtOpen();
 
     /** 
      *  This method is called after all the child nodes have been
      *  added. 
      */
-    public void jjtClose();
+    void jjtClose();
 
     /** 
      *  This pair of methods are used to inform the node of its
      *  parent. 
      */
-    public void jjtSetParent(Node n);
-    public Node jjtGetParent();
+    void jjtSetParent(Node n);
+    Node jjtGetParent();
 
     /** 
      *  This method tells the node to add its argument to the node's
      *   list of children.  
      */
-    public void jjtAddChild(Node n, int i);
+    void jjtAddChild(Node n, int i);
 
     /** 
      *  This method returns a child node.  The children are numbered
      *  from zero, left to right. 
      */
-    public Node jjtGetChild(int i);
+    Node jjtGetChild(int i);
 
     /** Return the number of children the node has. */
-    public int jjtGetNumChildren();
+    int jjtGetNumChildren();
 
     /** Accept the visitor. **/
-    public Object jjtAccept(ParserVisitor visitor, Object data);
+    Object jjtAccept(ParserVisitor visitor, Object data);
 
-    public Object childrenAccept(ParserVisitor visitor, Object data);
+    Object childrenAccept(ParserVisitor visitor, Object data);
 
     // added
-    public String getFirstTokenImage();
-    public Token getFirstToken();
-    public Token getLastToken();
-    public int getType();
+    String getFirstTokenImage();
+    Token getFirstToken();
+    Token getLastToken();
+    int getType();
 
-    public Object init( InternalContextAdapter context, Object data) throws Exception;
+    Object init(InternalContextAdapter context, Object data) throws Exception;
 
-    public boolean evaluate( InternalContextAdapter context)
+    boolean evaluate(InternalContextAdapter context)
         throws MethodInvocationException;
 
-    public Object value( InternalContextAdapter context)
+    Object value(InternalContextAdapter context)
         throws MethodInvocationException;
 
-    public boolean render( InternalContextAdapter context, Writer writer)
+    boolean render(InternalContextAdapter context, Writer writer)
         throws IOException,MethodInvocationException, ParseErrorException, ResourceNotFoundException;
 
-    public Object execute(Object o, InternalContextAdapter context)
+    Object execute(Object o, InternalContextAdapter context)
       throws MethodInvocationException;
 
-    public void setInfo(int info);
-    public int getInfo();
+    void setInfo(int info);
+    int getInfo();
 
-    public String literal();
-    public void setInvalid();
-    public boolean isInvalid();
-    public int getLine();
-    public int getColumn();
+    String literal();
+    void setInvalid();
+    boolean isInvalid();
+    int getLine();
+    int getColumn();
 }

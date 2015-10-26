@@ -34,5 +34,5 @@ public interface UberspectLoggable
      *  Sets the logger.  This will be called before any calls to the
      *  uberspector
      */
-    public void setRuntimeLogger(RuntimeLogger logger);
+    void setRuntimeLogger(RuntimeLogger logger);
 }

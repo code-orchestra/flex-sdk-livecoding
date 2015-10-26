@@ -13,7 +13,7 @@ public interface TokenManager {
   /** This gets the next token from the input stream.
    *  A token of kind 0 (<EOF>) should be returned on EOF.
    */
-  public Token getNextToken();
+  Token getNextToken();
 
 }
 /* JavaCC - OriginalChecksum=5883d8f09db1f750a2c9a448f4d12274 (do not edit this line) */

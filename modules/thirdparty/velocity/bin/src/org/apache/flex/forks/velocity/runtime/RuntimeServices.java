@@ -71,7 +71,7 @@ public interface RuntimeServices extends RuntimeLogger
      *   <li>Velocimacro System</li>
      * </ul>
      */
-    public void init() throws Exception;
+   void init() throws Exception;
 
     /**
      * Allows an external system to set a property in
@@ -80,7 +80,7 @@ public interface RuntimeServices extends RuntimeLogger
      * @param String property key
      * @param String property value
      */
-    public  void setProperty(String key, Object value);
+    void setProperty(String key, Object value);
 
     /**
      * Allow an external system to set an ExtendedProperties
@@ -92,7 +92,7 @@ public interface RuntimeServices extends RuntimeLogger
      *
      * @param ExtendedProperties configuration
      */
-    public void setConfiguration( ExtendedProperties configuration);
+    void setConfiguration(ExtendedProperties configuration);
 
     /**
      * Add a property to the configuration. If it already
@@ -113,7 +113,7 @@ public interface RuntimeServices extends RuntimeLogger
      * @param String key
      * @param String value
      */
-    public void addProperty(String key, Object value);
+    void addProperty(String key, Object value);
     
     /**
      * Clear the values pertaining to a particular
@@ -121,7 +121,7 @@ public interface RuntimeServices extends RuntimeLogger
      *
      * @param String key of property to clear
      */
-    public void clearProperty(String key);
+    void clearProperty(String key);
     
     /**
      *  Allows an external caller to get a property.  The calling
@@ -130,7 +130,7 @@ public interface RuntimeServices extends RuntimeLogger
      *
      *  @param key property to return
      */
-    public  Object getProperty( String key );
+    Object getProperty(String key);
 
     /**
      * Initialize the Velocity Runtime with a Properties
@@ -138,7 +138,7 @@ public interface RuntimeServices extends RuntimeLogger
      *
      * @param Properties
      */
-    public void init(Properties p) throws Exception;
+    void init(Properties p) throws Exception;
     
     /**
      * Initialize the Velocity Runtime with the name of
@@ -146,7 +146,7 @@ public interface RuntimeServices extends RuntimeLogger
      *
      * @param Properties
      */
-    public void init(String configurationFile) throws Exception;
+    void init(String configurationFile) throws Exception;
 
     /**
      * Parse the input and return the root of
@@ -163,7 +163,7 @@ public interface RuntimeServices extends RuntimeLogger
      * @param InputStream inputstream retrieved by a resource loader
      * @param String name of the template being parsed
      */
-    public  SimpleNode parse( Reader reader, String templateName )
+    SimpleNode parse(Reader reader, String templateName)
         throws ParseException;
 
     /**
@@ -173,7 +173,7 @@ public interface RuntimeServices extends RuntimeLogger
      * @param String name of the template being parsed
      * @param dumpNamespace flag to dump the Velocimacro namespace for this template
      */
-    public SimpleNode parse( Reader reader, String templateName, boolean dumpNamespace )
+    SimpleNode parse(Reader reader, String templateName, boolean dumpNamespace)
         throws ParseException;
     
     /**
@@ -190,7 +190,7 @@ public interface RuntimeServices extends RuntimeLogger
      *          to syntax (or other) error.
      * @throws Exception if an error occurs in template initialization
      */
-    public Template getTemplate(String name)
+    Template getTemplate(String name)
         throws ResourceNotFoundException, ParseErrorException, Exception;
 
     /**
@@ -205,7 +205,7 @@ public interface RuntimeServices extends RuntimeLogger
      *          to syntax (or other) error.
      * @throws Exception if an error occurs in template initialization
      */
-    public Template getTemplate(String name, String  encoding)
+    Template getTemplate(String name, String encoding)
         throws ResourceNotFoundException, ParseErrorException, Exception;
 
     /**
@@ -218,7 +218,7 @@ public interface RuntimeServices extends RuntimeLogger
      * @throws ResourceNotFoundException if template not found
      *          from any available source.
      */
-    public ContentResource getContent(String name)
+    ContentResource getContent(String name)
         throws ResourceNotFoundException, ParseErrorException, Exception;
 
     /**
@@ -231,7 +231,7 @@ public interface RuntimeServices extends RuntimeLogger
      * @throws ResourceNotFoundException if template not found
      *          from any available source.
      */
-    public ContentResource getContent( String name, String encoding )
+    ContentResource getContent(String name, String encoding)
         throws ResourceNotFoundException, ParseErrorException, Exception;
 
     /**
@@ -243,7 +243,7 @@ public interface RuntimeServices extends RuntimeLogger
      *  @param resourceName Name of template or content resource
      *  @return class name of loader than can provide it
      */
-    public String getLoaderNameForResource( String resourceName );
+    String getLoaderNameForResource(String resourceName);
 
     /**
      * String property accessor method with default to hide the
@@ -254,7 +254,7 @@ public interface RuntimeServices extends RuntimeLogger
      *               found in resource manager.
      * @return String  value of key or default 
      */
-    public String getString( String key, String defaultValue);
+    String getString(String key, String defaultValue);
 
     /**
      * Returns the appropriate VelocimacroProxy object if strVMname
@@ -263,7 +263,7 @@ public interface RuntimeServices extends RuntimeLogger
      * @param String vmName  Name of velocimacro requested
      * @return String VelocimacroProxy 
      */
-    public Directive getVelocimacro( String vmName, String templateName  );
+    Directive getVelocimacro(String vmName, String templateName);
 
    /**
      * Adds a new Velocimacro. Usually called by Macro only while parsing.
@@ -275,10 +275,10 @@ public interface RuntimeServices extends RuntimeLogger
      * @return boolean  True if added, false if rejected for some 
      *                  reason (either parameters or permission settings) 
      */
-    public boolean addVelocimacro( String name, 
-                                          Node macro, 
-                                          String argArray[], 
-                                          String sourceTemplate );
+   boolean addVelocimacro(String name,
+                          Node macro,
+                          String argArray[],
+                          String sourceTemplate);
  
     /**
      *  Checks to see if a VM exists
@@ -286,20 +286,20 @@ public interface RuntimeServices extends RuntimeLogger
      * @param name  Name of velocimacro
      * @return boolean  True if VM by that name exists, false if not
      */
-    public boolean isVelocimacro( String vmName, String templateName );
+    boolean isVelocimacro(String vmName, String templateName);
 
     /**
      *  tells the vmFactory to dump the specified namespace.  This is to support
      *  clearing the VM list when in inline-VM-local-scope mode
      */
-    public boolean dumpVMNamespace( String namespace );
+    boolean dumpVMNamespace(String namespace);
 
     /**
      * String property accessor method to hide the configuration implementation
      * @param key  property key
      * @return   value of key or null
      */
-    public String getString(String key);
+    String getString(String key);
 
     /**
      * Int property accessor method to hide the configuration implementation.
@@ -307,7 +307,7 @@ public interface RuntimeServices extends RuntimeLogger
      * @param String key property key
      * @return int value
      */
-    public int getInt( String key );
+    int getInt(String key);
 
     /**
      * Int property accessor method to hide the configuration implementation.
@@ -316,7 +316,7 @@ public interface RuntimeServices extends RuntimeLogger
      * @param int default value
      * @return int  value
      */
-    public int getInt( String key, int defaultValue );
+    int getInt(String key, int defaultValue);
 
     /**
      * Boolean property accessor method to hide the configuration implementation.
@@ -325,7 +325,7 @@ public interface RuntimeServices extends RuntimeLogger
      * @param boolean default default value if property not found
      * @return boolean  value of key or default value
      */
-    public boolean getBoolean( String key, boolean def );
+    boolean getBoolean(String key, boolean def);
 
     /**
      * Return the velocity runtime configuration object.
@@ -333,29 +333,29 @@ public interface RuntimeServices extends RuntimeLogger
      * @return ExtendedProperties configuration object which houses
      *                       the velocity runtime properties.
      */
-    public ExtendedProperties getConfiguration();
+    ExtendedProperties getConfiguration();
 
     /**
      * Return the specified applcation attribute.
      *
      * @param key The name of the attribute to retrieve.
      */
-    public Object getApplicationAttribute( Object key );
+    Object getApplicationAttribute(Object key);
 
     /**
      * Returns the configured class introspection/reflection
      * implemenation.
      */
-    public Uberspect getUberspect();
+    Uberspect getUberspect();
 
     /**
      * Returns the configured method introspection/reflection
      * implemenation.
      */
-    public Introspector getIntrospector();
+    Introspector getIntrospector();
     
-    public Hashtable getDirectives();
+    Hashtable getDirectives();
     
     // let us turn off namespaces for library loading
-    public void setNamespaceUsage(boolean on);
+    void setNamespaceUsage(boolean on);
 }

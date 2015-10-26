@@ -11,7 +11,7 @@ public interface IMember {
     String getType();
     String getName();
     boolean isStatic();
-    public MemberKind getKind();
+    MemberKind getKind();
     List<IParameter> getParameters();
     IClassDigest getParent();
     boolean isAddedDuringProcessing();

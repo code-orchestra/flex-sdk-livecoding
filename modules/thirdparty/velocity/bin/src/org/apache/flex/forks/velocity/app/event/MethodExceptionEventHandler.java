@@ -27,6 +27,6 @@ package org.apache.flex.forks.velocity.app.event;
  */
 public interface MethodExceptionEventHandler extends EventHandler
 {
-    public Object methodException( Class claz, String method, Exception e )
+    Object methodException(Class claz, String method, Exception e)
          throws Exception;
 }

@@ -29,26 +29,26 @@ public interface RuntimeLogger
      *
      * @param Object message to log
      */
-    public void warn(Object message);
+    void warn(Object message);
 
     /**
      * Log an info message.
      *
      * @param Object message to log
      */
-    public  void info(Object message);
+    void info(Object message);
 
     /**
      * Log an error message.
      *
      * @param Object message to log
      */
-    public void error(Object message);
+    void error(Object message);
 
     /**
      * Log a debug message.
      *
      * @param Object message to log
      */
-    public void debug(Object message);
+    void debug(Object message);
 }

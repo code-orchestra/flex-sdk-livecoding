@@ -299,7 +299,7 @@ public final class FileUtils
             }
         }
 
-		return (filteredFiles.toArray(new File[0]));
+		return (filteredFiles.toArray(new File[filteredFiles.size()]));
 	}
 
 	public static URL toURL(File f)

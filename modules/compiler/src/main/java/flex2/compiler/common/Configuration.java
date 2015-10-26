@@ -1369,7 +1369,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
             libraries.add(info.getSwcVirtualFile());
         }
 
-		return libraries.toArray(new VirtualFile[0]);
+		return libraries.toArray(new VirtualFile[libraries.size()]);
 	}
 
 	public void cfgRuntimeSharedLibraryPath(ConfigurationValue cfgval,

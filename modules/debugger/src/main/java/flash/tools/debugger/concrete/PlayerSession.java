@@ -2901,7 +2901,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 
 		Collections.addAll(swfList, m_manager.getSwfInfos(isolateId));
 
-		return swfList.toArray(new SwfInfo[0]);
+		return swfList.toArray(new SwfInfo[swfList.size()]);
 	}
 
 	@Override

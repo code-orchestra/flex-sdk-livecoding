@@ -513,7 +513,7 @@ public class DValue implements Value
 			finalList.addAll(varList);
 		}
 		
-		DVariable[] ar = finalList.toArray(new DVariable[0]);
+		DVariable[] ar = finalList.toArray(new DVariable[finalList.size()]);
 		// sort the member list by name
 		Arrays.sort(ar);
 
@@ -525,7 +525,7 @@ public class DValue implements Value
 			return new DVariable[0];
 		List<DVariable> list = m_inheritedPrivates.get(name);
 		if (list != null) {
-			return list.toArray(new Variable[0]);
+			return list.toArray(new Variable[list.size()]);
 		}
 		return new DVariable[0];
 	}

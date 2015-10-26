@@ -70,7 +70,7 @@ public class RuntimeSharedLibrarySettingsConfiguration
             return new VirtualFile[0];
         }
         
-        return forceRsls.toArray(new VirtualFile[0]);
+        return forceRsls.toArray(new VirtualFile[forceRsls.size()]);
     }
     
     /**

@@ -5846,7 +5846,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     // its a hit
                     bpHit = true;
                     a.hit();
-                    isSilent = (isSilent) ? true : a.isSilent();
+                    isSilent = (isSilent) || a.isSilent();
 
                     // autodelete, autodisable
                     if (a.isAutoDisable())

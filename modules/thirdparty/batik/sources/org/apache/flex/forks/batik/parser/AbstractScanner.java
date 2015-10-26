@@ -208,7 +208,7 @@ public abstract class AbstractScanner {
      * Compares the given int with the given character, ignoring case.
      */
     protected static boolean isEqualIgnoreCase(int i, char c) {
-        return (i == -1) ? false : Character.toLowerCase((char)i) == c;
+        return i != -1 && Character.toLowerCase((char) i) == c;
     }
 
     /**

@@ -104,7 +104,7 @@ public class FileInfoCache implements Comparator<SourceFile>
 
 		for (SwfInfo swf : swfs) {
 			if (swf != null)
-				worked = loadSwfFiles(files, swf) ? worked : false;
+				worked = loadSwfFiles(files, swf) && worked;
 		}
 
 		// trim the file list
@@ -201,7 +201,7 @@ public class FileInfoCache implements Comparator<SourceFile>
 		SwfInfo[] swfs = getAllSwfs();
 		for (SwfInfo swf : swfs) {
 			if (swf != null)
-				worked = loadSwfFiles(files, swf) ? worked : false;
+				worked = loadSwfFiles(files, swf) && worked;
 		}
 
 		// trim the file list

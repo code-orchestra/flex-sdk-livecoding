@@ -77,17 +77,17 @@ public class SetExpressionNode extends SelectorNode
     public boolean isQualified()
     {
         QualifiedIdentifierNode qin = expr instanceof QualifiedIdentifierNode ? (QualifiedIdentifierNode) expr : null;
-        return qin!=null?qin.qualifier!=null:false;
+        return qin != null && qin.qualifier != null;
     }
     
     public boolean isAttributeIdentifier()
     {
-    	return expr instanceof IdentifierNode ? ((IdentifierNode)expr).isAttr() : false;
+    	return expr instanceof IdentifierNode && ((IdentifierNode) expr).isAttr();
     }
     
     public boolean isAny()
     {
-    	return expr instanceof IdentifierNode ? ((IdentifierNode)expr).isAny() : false;
+    	return expr instanceof IdentifierNode && ((IdentifierNode) expr).isAny();
     }
 
     public BitSet getGenBits()

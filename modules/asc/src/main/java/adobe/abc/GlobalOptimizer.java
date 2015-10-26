@@ -8424,27 +8424,27 @@ public class GlobalOptimizer
 		
 	static boolean isSlot(Binding b)
 	{
-		return (b != null)? b.isSlot(): false;
+		return (b != null) && b.isSlot();
 	}
 	static boolean isConst(Binding b)
 	{
-		return (b != null)? b.isConst(): false;
+		return (b != null) && b.isConst();
 	}
 	static boolean isClass(Binding b)
 	{
-		return (b != null)? b.isClass(): false;
+		return (b != null) && b.isClass();
 	}
 	static boolean isMethod(Binding b)
 	{
-		return (b != null)? b.isMethod() :false;
+		return (b != null) && b.isMethod();
 	}
 	static boolean isGetter(Binding b)
 	{
-		return (b != null)? b.isGetter(): false;
+		return (b != null) && b.isGetter();
 	}
 	static boolean isSetter(Binding b)
 	{
-		return (b != null)? b.isSetter(): false;
+		return (b != null) && b.isSetter();
 	}
 	
 	/**

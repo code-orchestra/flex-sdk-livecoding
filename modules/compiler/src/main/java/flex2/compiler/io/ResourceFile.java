@@ -129,7 +129,7 @@ public class ResourceFile implements VirtualFile
 	public boolean isDirectory()
 	{
 		VirtualFile f = getVirtualFile();
-		return f == null ? false : f.isDirectory();
+		return f != null && f.isDirectory();
 	}
 
 	/**
@@ -215,7 +215,7 @@ public class ResourceFile implements VirtualFile
 	public boolean isTextBased()
 	{
 		VirtualFile f = getVirtualFile();
-		return f == null ? false : f.isTextBased();
+		return f != null && f.isTextBased();
 	}
 
 	private VirtualFile getVirtualFile()

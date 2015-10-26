@@ -1815,7 +1815,7 @@ public class PreLink implements flex2.compiler.PreLink
                                         boolean isLibraryCompile)
     {
         String lineSep = System.getProperty("line.separator");
-        boolean hasFonts = (fonts == null ? false : fonts.size() > 0);
+        boolean hasFonts = (fonts != null && fonts.size() > 0);
         StandardDefs standardDefs = ThreadLocalToolkit.getStandardDefs();
 
         String[] codePieces = new String[]

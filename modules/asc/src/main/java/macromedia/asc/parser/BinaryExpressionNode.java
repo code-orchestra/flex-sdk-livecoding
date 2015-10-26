@@ -62,18 +62,17 @@ public class BinaryExpressionNode extends Node
 	public boolean isBooleanExpression()
 	{
 		return
-			op == NOTEQUALS_TOKEN ? true :
-			op == STRICTNOTEQUALS_TOKEN ? true :
-			op == LOGICALAND_TOKEN ? true :
-			op == LOGICALXOR_TOKEN ? true :
-			op == LOGICALXORASSIGN_TOKEN ? true :
-			op == LOGICALOR_TOKEN ? true :
-			op == LESSTHAN_TOKEN ? true :
-			op == LESSTHANOREQUALS_TOKEN ? true :
-			op == EQUALS_TOKEN ? true :
-			op == STRICTEQUALS_TOKEN ? true :
-			op == GREATERTHAN_TOKEN ? true :
-			op == GREATERTHANOREQUALS_TOKEN ? true : false;
+				op == NOTEQUALS_TOKEN || (op == STRICTNOTEQUALS_TOKEN ? true :
+						op == LOGICALAND_TOKEN ? true :
+								op == LOGICALXOR_TOKEN ? true :
+										op == LOGICALXORASSIGN_TOKEN ? true :
+												op == LOGICALOR_TOKEN ? true :
+														op == LESSTHAN_TOKEN ? true :
+																op == LESSTHANOREQUALS_TOKEN ? true :
+																		op == EQUALS_TOKEN ? true :
+																				op == STRICTEQUALS_TOKEN ? true :
+																						op == GREATERTHAN_TOKEN ? true :
+																								op == GREATERTHANOREQUALS_TOKEN ? true : false);
 	}
 
 	public String toString()

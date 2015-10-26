@@ -67,7 +67,7 @@ public class ForStatementNode extends Node implements HasBody, LoopStatement
 
 	public boolean isDefinition()
 	{
-		return initialize != null ? initialize.isDefinition() : false;
+		return initialize != null && initialize.isDefinition();
 	}
 
 	public int countVars()

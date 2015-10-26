@@ -8758,7 +8758,7 @@ public class GlobalOptimizer
 			return "null";
 		}
 		
-		StringBuffer outBuffer = new StringBuffer();
+		StringBuilder outBuffer = new StringBuilder();
 		
 		outBuffer.append(e.toString());
 		if (e.onStack() || e.inLocal() || e.onScope())

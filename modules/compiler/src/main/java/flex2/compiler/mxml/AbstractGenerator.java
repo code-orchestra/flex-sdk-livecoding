@@ -38,7 +38,7 @@ import macromedia.asc.util.Context;
 public abstract class AbstractGenerator
 {
     // intern all identifier constants
-    protected static final String BINDABLE = "Bindable".intern();
+    protected static final String BINDABLE = "Bindable";
     protected static final String MX_INTERNAL = StandardDefs.NAMESPACE_MX_INTERNAL_LOCALNAME;
 
     protected final StandardDefs standardDefs;

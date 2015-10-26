@@ -272,7 +272,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
 
         if (member.getKind() == MemberKind.METHOD) {
             ArgumentListNode args = new ArgumentListNode(new ThisExpressionNode(), -1);
-            args.items.add(TreeUtil.createIdentifier("arguments".intern()));
+            args.items.add(TreeUtil.createIdentifier("arguments"));
             Node expr = new ListNode(null, new MemberExpressionNode(
                     new MemberExpressionNode(new ThisExpressionNode(), new GetExpressionNode(TreeUtil.createIdentifier(functionName)), -1),
                     new CallExpressionNode(
@@ -340,7 +340,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             super.someProtectedMethod.apply(this, arguments);
             */
             ArgumentListNode args = new ArgumentListNode(new ThisExpressionNode(), -1);
-            args.items.add(TreeUtil.createIdentifier("arguments".intern()));
+            args.items.add(TreeUtil.createIdentifier("arguments"));
             Node expr = new ListNode(null, new MemberExpressionNode(
                     new MemberExpressionNode(new SuperExpressionNode(null), new GetExpressionNode(TreeUtil.createIdentifier(functionName)), -1),
                     new CallExpressionNode(

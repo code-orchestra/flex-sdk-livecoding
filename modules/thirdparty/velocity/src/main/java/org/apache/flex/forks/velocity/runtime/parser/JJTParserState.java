@@ -93,7 +93,7 @@ class JJTParserState {
 
 
   void openNodeScope(Node n) {
-    marks.push(new Integer(mk));
+    marks.push(mk);
     mk = sp;
     n.jjtOpen();
   }

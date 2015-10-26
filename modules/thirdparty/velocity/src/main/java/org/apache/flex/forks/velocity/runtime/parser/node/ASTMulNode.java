@@ -93,7 +93,7 @@ public class ASTMulNode extends SimpleNode
             return null;
         }
 
-        return new Integer((Integer) left * (Integer) right);
+        return (Integer) left * (Integer) right;
     }
 }
 

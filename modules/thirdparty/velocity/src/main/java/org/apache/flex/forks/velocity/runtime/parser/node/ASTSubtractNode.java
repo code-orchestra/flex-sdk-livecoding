@@ -94,7 +94,7 @@ public class ASTSubtractNode extends SimpleNode
             return null;
         }
 
-        return new Integer((Integer) left - (Integer) right);
+        return (Integer) left - (Integer) right;
     }
 }
 

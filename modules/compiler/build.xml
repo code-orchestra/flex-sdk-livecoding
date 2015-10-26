@@ -32,6 +32,7 @@
     <property name="opt.dir" value="${ext.dir}/optional"/>
 	<property name="javac.src" value="1.7"/>
     <property name="module.src" value="${basedir}/src/main/java"/>
+    <property name="module.resources" value="${basedir}/src/main/resources"/>
     <property name="module.classes" value="${basedir}/build/classes"/>
     <property name="module.jar" value="${lib.dir}/mxmlc.jar"/>
     <property name="module.ja.jar" value="${lib.dir}/mxmlc_ja.jar"/>
@@ -120,7 +121,7 @@
     <target name="localization">
       <echo level="info" message="Copying localization files."/>
       <copy todir="${module.classes}">
-          <fileset dir="${module.src}" includes="**/*.xlr,**/*.properties"/>
+          <fileset dir="${module.resources}" includes="**/*.xlr,**/*.properties"/>
       </copy>
     </target>
 

@@ -162,10 +162,9 @@ public abstract class SelectorNode extends Node
         if (skip != that.skip) return false;
         if (base != null ? !base.equals(that.base) : that.base != null) return false;
         if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+		return !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

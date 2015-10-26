@@ -77,9 +77,8 @@ public class ApplyTypeExprNode extends SelectorNode
 
         ApplyTypeExprNode that = (ApplyTypeExprNode) o;
 
-        if (typeArgs != null ? !typeArgs.equals(that.typeArgs) : that.typeArgs != null) return false;
+        return !(typeArgs != null ? !typeArgs.equals(that.typeArgs) : that.typeArgs != null);
 
-        return true;
     }
 
 //    @Override

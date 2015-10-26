@@ -70,10 +70,9 @@ public class DefaultXMLNamespaceNode extends Node
         DefaultXMLNamespaceNode that = (DefaultXMLNamespaceNode) o;
 
         if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+		return !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

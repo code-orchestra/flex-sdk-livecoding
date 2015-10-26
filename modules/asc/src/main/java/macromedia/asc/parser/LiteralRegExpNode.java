@@ -78,10 +78,9 @@ public class LiteralRegExpNode extends Node
         LiteralRegExpNode that = (LiteralRegExpNode) o;
 
         if (void_result != that.void_result) return false;
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+		return !(value != null ? !value.equals(that.value) : that.value != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

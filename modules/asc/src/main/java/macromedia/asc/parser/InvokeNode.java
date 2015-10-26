@@ -74,10 +74,9 @@ public class InvokeNode extends SelectorNode
 
         if (index != that.index) return false;
         if (args != null ? !args.equals(that.args) : that.args != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+		return !(name != null ? !name.equals(that.name) : that.name != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

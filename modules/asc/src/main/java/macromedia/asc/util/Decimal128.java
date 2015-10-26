@@ -841,48 +841,33 @@ public class Decimal128 {
 	public boolean equals(Decimal128 num) {
 		// return true if I'm > num
 		Decimal128 comp = this.compareTo(num, Decimal128Context.DECIMAL128);
-		if (comp == ZERO)
-			return true;
-		else
-			return false;
+		return comp == ZERO;
 	}
 	
 	public boolean greaterThan(Decimal128 num) {
 		// return true if I'm > num
 		Decimal128 comp = this.compareTo(num, Decimal128Context.DECIMAL128);
-		if (comp == ONE)
-			return true;
-		else
-			return false;
+		return comp == ONE;
 	}
 
 	
 	public boolean greaterThanOrEqual(Decimal128 num) {
 		// return true if I'm >= num
 		Decimal128 comp = this.compareTo(num, Decimal128Context.DECIMAL128);
-		if (comp == ONE || comp == ZERO)
-			return true;
-		else
-			return false;
+		return comp == ONE || comp == ZERO;
 	}
 
 	public boolean lessThan(Decimal128 num) {
 		// return true if I'm < num
 		Decimal128 comp = this.compareTo(num, Decimal128Context.DECIMAL128);
-		if (comp == NEG1)
-			return true;
-		else
-			return false;
+		return comp == NEG1;
 	}
 
 	
 	public boolean lessThanOrEqual(Decimal128 num) {
 		// return true if I'm <= num
 		Decimal128 comp = this.compareTo(num, Decimal128Context.DECIMAL128);
-		if (comp == NEG1 || comp == ZERO)
-			return true;
-		else
-			return false;
+		return comp == NEG1 || comp == ZERO;
 	}
 
 	
@@ -1137,8 +1122,7 @@ public class Decimal128 {
         Decimal128 that = (Decimal128) o;
 
         if (flags != that.flags) return false;
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+		return !(value != null ? !value.equals(that.value) : that.value != null);
 
-        return true;
-    }
+	}
 }

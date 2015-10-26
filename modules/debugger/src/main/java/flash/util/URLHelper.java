@@ -150,14 +150,10 @@ public class URLHelper
 			return false;
 
 		URLHelper newHelper = new URLHelper(everythingBeforeQuery + query + fragment);
-		if (!newHelper.getEverythingBeforeQuery().equals(everythingBeforeQuery) ||
-			!newHelper.getQuery().equals(query) ||
-			!newHelper.getFragment().equals(fragment))
-		{
-			return false;
-		}
-		
-		return true;
+		return !(!newHelper.getEverythingBeforeQuery().equals(everythingBeforeQuery) ||
+				!newHelper.getQuery().equals(query) ||
+				!newHelper.getFragment().equals(fragment));
+
 	}
 
 	/**

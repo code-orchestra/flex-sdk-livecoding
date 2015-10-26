@@ -125,11 +125,7 @@ public class AttributeListNode extends Node
 
 	public boolean isLabel()
 	{
-		if (items.size() == 1 && items.last().isLabel())
-		{
-			return true;
-		}
-		return false;
+		return items.size() == 1 && items.last().isLabel();
 	}
 	
 	public ObjectValue getUserNamespace()
@@ -186,11 +182,9 @@ public class AttributeListNode extends Node
         if (namespace_ids != null ? !namespace_ids.equals(that.namespace_ids) : that.namespace_ids != null)
             return false;
         if (namespaces != null ? !namespaces.equals(that.namespaces) : that.namespaces != null) return false;
-        if (userNamespace != null ? !userNamespace.equals(that.userNamespace) : that.userNamespace != null)
-            return false;
+		return !(userNamespace != null ? !userNamespace.equals(that.userNamespace) : that.userNamespace != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

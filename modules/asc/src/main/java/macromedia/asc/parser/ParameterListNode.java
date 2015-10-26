@@ -164,10 +164,9 @@ public class ParameterListNode extends Node
         if (count != that.count) return false;
         if (decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) return false;
         if (items != null ? !items.equals(that.items) : that.items != null) return false;
-        if (types != null ? !types.equals(that.types) : that.types != null) return false;
+		return !(types != null ? !types.equals(that.types) : that.types != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

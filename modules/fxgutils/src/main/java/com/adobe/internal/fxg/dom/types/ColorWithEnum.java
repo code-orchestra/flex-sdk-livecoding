@@ -89,10 +89,7 @@ public class ColorWithEnum
      */
     public boolean isColorWithEnumAsEnum()
     {
-    	if (colorEnum != null)
-    		return true;
-    	else
-    		return false;
+        return colorEnum != null;
     }
     
     /**

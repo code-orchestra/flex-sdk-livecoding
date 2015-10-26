@@ -829,9 +829,8 @@ public class ObjectValue extends Value implements Comparable
         if (slot_ids != null ? !slot_ids.equals(that.slot_ids) : that.slot_ids != null) return false;
         if (slots != null ? !slots.equals(that.slots) : that.slots != null) return false;
         //if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+        return !(value != null ? !value.equals(that.value) : that.value != null);
 
-        return true;
     }
 
 //    @Override
@@ -1161,10 +1160,8 @@ public class ObjectValue extends Value implements Comparable
 
             if (cur_range_index != that.cur_range_index) return false;
             if (cur_slot_id != that.cur_slot_id) return false;
-            if (slot_id_boundaries != null ? !slot_id_boundaries.equals(that.slot_id_boundaries) : that.slot_id_boundaries != null)
-                return false;
+            return !(slot_id_boundaries != null ? !slot_id_boundaries.equals(that.slot_id_boundaries) : that.slot_id_boundaries != null);
 
-            return true;
         }
 
 //        @Override

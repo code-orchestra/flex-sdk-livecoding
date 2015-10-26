@@ -109,9 +109,8 @@ public class IncrementNode extends SelectorNode
         if (op != that.op) return false;
         if (void_result != that.void_result) return false;
         if (numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) return false;
-        if (slot != null ? !slot.equals(that.slot) : that.slot != null) return false;
+        return !(slot != null ? !slot.equals(that.slot) : that.slot != null);
 
-        return true;
     }
 
 //    @Override

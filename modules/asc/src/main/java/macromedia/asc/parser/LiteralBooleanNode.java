@@ -82,10 +82,9 @@ public class LiteralBooleanNode extends Node
         LiteralBooleanNode that = (LiteralBooleanNode) o;
 
         if (value != that.value) return false;
-        if (void_result != that.void_result) return false;
+		return void_result == that.void_result;
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

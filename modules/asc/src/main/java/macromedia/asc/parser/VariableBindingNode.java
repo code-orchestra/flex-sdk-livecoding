@@ -106,10 +106,9 @@ public class VariableBindingNode extends Node
         if (initializer != null ? !initializer.equals(that.initializer) : that.initializer != null) return false;
         if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
         if (typeref != null ? !typeref.equals(that.typeref) : that.typeref != null) return false;
-        if (variable != null ? !variable.equals(that.variable) : that.variable != null) return false;
+		return !(variable != null ? !variable.equals(that.variable) : that.variable != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

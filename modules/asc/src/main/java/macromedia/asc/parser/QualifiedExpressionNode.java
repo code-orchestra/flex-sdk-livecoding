@@ -76,10 +76,9 @@ public class QualifiedExpressionNode extends QualifiedIdentifierNode
         QualifiedExpressionNode that = (QualifiedExpressionNode) o;
 
         if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-        if (nss != null ? !nss.equals(that.nss) : that.nss != null) return false;
+		return !(nss != null ? !nss.equals(that.nss) : that.nss != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

@@ -105,10 +105,9 @@ public class BinaryExpressionNode extends Node
         if (numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) return false;
         if (rhs != null ? !rhs.equals(that.rhs) : that.rhs != null) return false;
         if (rhstype != null ? !rhstype.equals(that.rhstype) : that.rhstype != null) return false;
-        if (slot != null ? !slot.equals(that.slot) : that.slot != null) return false;
+		return !(slot != null ? !slot.equals(that.slot) : that.slot != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

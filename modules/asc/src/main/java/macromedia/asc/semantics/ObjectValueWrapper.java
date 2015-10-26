@@ -301,9 +301,8 @@ public class ObjectValueWrapper extends ObjectValue
 
         ObjectValueWrapper that = (ObjectValueWrapper) o;
 
-        if (wrapped != null ? !wrapped.equals(that.wrapped) : that.wrapped != null) return false;
+        return !(wrapped != null ? !wrapped.equals(that.wrapped) : that.wrapped != null);
 
-        return true;
     }
 
 //    @Override

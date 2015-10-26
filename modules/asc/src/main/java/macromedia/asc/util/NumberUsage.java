@@ -167,10 +167,9 @@ public class NumberUsage implements Cloneable {
         if (floating_usage != that.floating_usage) return false;
         if (precision != that.precision) return false;
         if (rounding != that.rounding) return false;
-        if (usage != that.usage) return false;
+		return usage == that.usage;
 
-        return true;
-    }
+	}
 
     @Override
     public int hashCode() {

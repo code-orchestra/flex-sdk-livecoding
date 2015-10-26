@@ -119,10 +119,9 @@ public class FunctionSignatureNode extends Node
         if (parameter != null ? !parameter.equals(that.parameter) : that.parameter != null) return false;
         if (result != null ? !result.equals(that.result) : that.result != null) return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (typeref != null ? !typeref.equals(that.typeref) : that.typeref != null) return false;
+		return !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

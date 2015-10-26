@@ -74,10 +74,9 @@ public class ContinueStatementNode extends Node
         ContinueStatementNode that = (ContinueStatementNode) o;
 
         if (loop_index != that.loop_index) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+		return !(id != null ? !id.equals(that.id) : that.id != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

@@ -91,9 +91,8 @@ public class LabeledStatementNode extends Node
         if (is_loop_label != that.is_loop_label) return false;
         if (loop_index != that.loop_index) return false;
         if (label != null ? !label.equals(that.label) : that.label != null) return false;
-        if (statement != null ? !statement.equals(that.statement) : that.statement != null) return false;
+        return !(statement != null ? !statement.equals(that.statement) : that.statement != null);
 
-        return true;
     }
 
 //    @Override

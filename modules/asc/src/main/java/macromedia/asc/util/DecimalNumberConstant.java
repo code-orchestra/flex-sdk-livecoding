@@ -74,10 +74,9 @@ public class DecimalNumberConstant extends NumberConstant {
 
         DecimalNumberConstant that = (DecimalNumberConstant) o;
 
-        if (val != null ? !val.equals(that.val) : that.val != null) return false;
+		return !(val != null ? !val.equals(that.val) : that.val != null);
 
-        return true;
-    }
+	}
 
     @Override
     public int hashCode() {

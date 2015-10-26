@@ -2117,9 +2117,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 	 * filtered out.
 	 */
 	private boolean showMember(DVariable child) {
-		if (isTraits(child))
-			return false;
-		return true;
+		return !isTraits(child);
 	}
 
 	/**
@@ -2129,11 +2127,8 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 	 */
 	private boolean isTraits(DVariable variable) {
 		Value value = variable.getValue();
-		if (value.getType() == VariableType.UNKNOWN
-				&& Value.TRAITS_TYPE_NAME.equals(value.getTypeName())) {
-			return true;
-		}
-		return false;
+		return value.getType() == VariableType.UNKNOWN
+				&& Value.TRAITS_TYPE_NAME.equals(value.getTypeName());
 	}
 
 	/**

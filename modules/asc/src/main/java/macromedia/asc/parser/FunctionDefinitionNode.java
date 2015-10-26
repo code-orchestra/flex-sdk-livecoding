@@ -158,10 +158,9 @@ public class FunctionDefinitionNode extends DefinitionNode
         if (fun != null ? !fun.equals(that.fun) : that.fun != null) return false;
         if (init != null ? !init.equals(that.init) : that.init != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+		return !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

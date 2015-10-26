@@ -42,10 +42,7 @@ public class ASTNotNode extends SimpleNode
     public boolean evaluate( InternalContextAdapter context)
         throws MethodInvocationException
     {
-        if (jjtGetChild(0).evaluate(context))
-            return false;
-        else
-            return true;
+        return !jjtGetChild(0).evaluate(context);
     }
 
     public Object value( InternalContextAdapter context)

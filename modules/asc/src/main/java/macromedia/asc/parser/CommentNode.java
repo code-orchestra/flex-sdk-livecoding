@@ -56,9 +56,8 @@ public class CommentNode extends Node
         CommentNode that = (CommentNode) o;
 
         if (type != that.type) return false;
-        if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
+        return !(comment != null ? !comment.equals(that.comment) : that.comment != null);
 
-        return true;
     }
 
 //    @Override

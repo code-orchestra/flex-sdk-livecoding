@@ -70,10 +70,9 @@ public class SuperStatementNode extends Node
         SuperStatementNode that = (SuperStatementNode) o;
 
         if (baseobj != null ? !baseobj.equals(that.baseobj) : that.baseobj != null) return false;
-        if (call != null ? !call.equals(that.call) : that.call != null) return false;
+		return !(call != null ? !call.equals(that.call) : that.call != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

@@ -111,11 +111,7 @@ public class ListNode extends Node
 
 	public boolean isLabel()
 	{
-		if (items.size() == 1 && items.last().isLabel())
-		{
-			return true;
-		}
-		return false;
+		return items.size() == 1 && items.last().isLabel();
 	}
 
 	public boolean hasAttribute(String name)
@@ -157,10 +153,9 @@ public class ListNode extends Node
         ListNode listNode = (ListNode) o;
 
         if (items != null ? !items.equals(listNode.items) : listNode.items != null) return false;
-        if (values != null ? !values.equals(listNode.values) : listNode.values != null) return false;
+		return !(values != null ? !values.equals(listNode.values) : listNode.values != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

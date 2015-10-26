@@ -57,12 +57,8 @@ public class CatalogWriter
         this.components = components;
         this.libraries = libraries;
         this.files = files;
-    
-        forceLibraryVersion1 = false;
-        if (VersionInfo.LIB_VERSION_1_0.equals(versions.getLibVersion()))
-        {
-            forceLibraryVersion1 = true;
-        }
+
+        forceLibraryVersion1 = VersionInfo.LIB_VERSION_1_0.equals(versions.getLibVersion());
     }
 
     public void write() throws IOException

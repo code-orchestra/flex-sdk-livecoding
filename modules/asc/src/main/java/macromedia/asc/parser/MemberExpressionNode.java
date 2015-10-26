@@ -104,25 +104,17 @@ public class MemberExpressionNode extends Node
 
     public boolean isLabel()
     {
-        if (this.base == null &&
-            this.selector.isGetExpression() &&
-            !(this.selector.expr instanceof QualifiedIdentifierNode))
-        {
-            return true;
-        }
-        return false;
+        return this.base == null &&
+                this.selector.isGetExpression() &&
+                !(this.selector.expr instanceof QualifiedIdentifierNode);
     }
 
     public boolean isAny() { return selector.isAny(); }
 
     public boolean hasAttribute(String name)
     {
-        if (this.base == null &&
-            this.selector.hasAttribute(name))
-        {
-            return true;
-        }
-        return false;
+        return this.base == null &&
+                this.selector.hasAttribute(name);
     }
 
     public StringBuilder toCanonicalString(Context cx, StringBuilder buf)
@@ -168,9 +160,8 @@ public class MemberExpressionNode extends Node
         if (authOrigToken != that.authOrigToken) return false;
         if (base != null ? !base.equals(that.base) : that.base != null) return false;
         if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
-        if (selector != null ? !selector.equals(that.selector) : that.selector != null) return false;
+        return !(selector != null ? !selector.equals(that.selector) : that.selector != null);
 
-        return true;
     }
 
 //    @Override

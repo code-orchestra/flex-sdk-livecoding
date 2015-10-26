@@ -83,10 +83,7 @@ public class NumberPercentAuto
      */
     public boolean isNumberPercentAutoAsEnum()
     {
-    	if (numberPercentAutoAsEnum != null)
-    		return true;
-    	else
-    		return false;
+        return numberPercentAutoAsEnum != null;
     }
     
     /**

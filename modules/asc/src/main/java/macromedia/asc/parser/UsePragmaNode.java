@@ -75,10 +75,9 @@ public class UsePragmaNode extends Node {
         UsePragmaNode that = (UsePragmaNode) o;
 
         if (argument != null ? !argument.equals(that.argument) : that.argument != null) return false;
-        if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
+		return !(identifier != null ? !identifier.equals(that.identifier) : that.identifier != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

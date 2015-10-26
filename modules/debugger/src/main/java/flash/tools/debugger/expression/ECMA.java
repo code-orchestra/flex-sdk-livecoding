@@ -170,14 +170,7 @@ public class ECMA
 		case VariableType.NUMBER:
 		{
 			double d = (Double) v.getValueAsObject();
-			if (d == 0 || Double.isNaN(d))
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
+			return !(d == 0 || Double.isNaN(d));
 		}
 		case VariableType.STRING:
 			return ((String) v.getValueAsObject()).length() != 0;

@@ -553,13 +553,9 @@ public final class Parser
     private boolean lookaheadSemicolon(int mode)
     {
         final int lt = lookahead();
-        
-        if (lt==SEMICOLON_TOKEN || lt==EOS_TOKEN || lt==RIGHTBRACE_TOKEN || lt==mode || scanner.followsLineTerminator())
-        {
-        	return true;
-        }
-        return false;
-    }
+
+		return lt == SEMICOLON_TOKEN || lt == EOS_TOKEN || lt == RIGHTBRACE_TOKEN || lt == mode || scanner.followsLineTerminator();
+	}
 
     private int matchSemicolon(int mode)
     {

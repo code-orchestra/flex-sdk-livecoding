@@ -1152,15 +1152,8 @@ public class GlobalOptimizer
 					trylabels.get(pos-code_start) || 
 					catchlabels.get(pos-code_start) 
 					)
-				{	
-					if ( catchlabels.get(pos-code_start) )
-					{
-						in_catch_block = true;
-					}
-					else
-					{
-						in_catch_block = false;
-					}
+				{
+					in_catch_block = catchlabels.get(pos - code_start);
 
 					Edge edge = null;
 					

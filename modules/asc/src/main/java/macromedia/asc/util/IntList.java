@@ -214,10 +214,9 @@ public final class IntList
 
         if (size != intList.size) return false;
 
-        if (!Arrays.equals(toArray(), intList.toArray())) return false;
+		return Arrays.equals(toArray(), intList.toArray());
 
-        return true;
-    }
+	}
 
     @Override
     public int hashCode() {

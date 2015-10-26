@@ -66,10 +66,9 @@ public class UseNumericNode extends UsePragmaNode {
 
         UseNumericNode that = (UseNumericNode) o;
 
-        if (numeric_mode != that.numeric_mode) return false;
+		return numeric_mode == that.numeric_mode;
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

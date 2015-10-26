@@ -95,10 +95,9 @@ public class UseRoundingNode extends UsePragmaNode {
 
         UseRoundingNode that = (UseRoundingNode) o;
 
-        if (mode != that.mode) return false;
+		return mode == that.mode;
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

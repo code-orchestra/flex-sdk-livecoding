@@ -115,10 +115,9 @@ public class ForStatementNode extends Node implements HasBody, LoopStatement
         if (increment != null ? !increment.equals(that.increment) : that.increment != null) return false;
         if (initialize != null ? !initialize.equals(that.initialize) : that.initialize != null) return false;
         if (statement != null ? !statement.equals(that.statement) : that.statement != null) return false;
-        if (test != null ? !test.equals(that.test) : that.test != null) return false;
+		return !(test != null ? !test.equals(that.test) : that.test != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

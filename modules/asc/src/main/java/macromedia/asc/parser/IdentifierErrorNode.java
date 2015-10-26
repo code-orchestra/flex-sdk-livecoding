@@ -59,10 +59,9 @@ public class IdentifierErrorNode extends IdentifierNode // ErrorNode
 
         IdentifierErrorNode that = (IdentifierErrorNode) o;
 
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+		return !(value != null ? !value.equals(that.value) : that.value != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

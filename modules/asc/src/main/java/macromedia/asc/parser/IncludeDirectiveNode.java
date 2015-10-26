@@ -86,9 +86,8 @@ public class IncludeDirectiveNode extends DefinitionNode
         //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
         if (filespec != null ? !filespec.equals(that.filespec) : that.filespec != null) return false;
         //if (prev_cx != null ? !prev_cx.equals(that.prev_cx) : that.prev_cx != null) return false;
-        if (program != null ? !program.equals(that.program) : that.program != null) return false;
+        return !(program != null ? !program.equals(that.program) : that.program != null);
 
-        return true;
     }
 
 //    @Override

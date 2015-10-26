@@ -144,10 +144,9 @@ public class PackageIdentifiersNode extends Node
 
         if (def_part != null ? !def_part.equals(that.def_part) : that.def_part != null) return false;
         if (list != null ? !list.equals(that.list) : that.list != null) return false;
-        if (pkg_part != null ? !pkg_part.equals(that.pkg_part) : that.pkg_part != null) return false;
+		return !(pkg_part != null ? !pkg_part.equals(that.pkg_part) : that.pkg_part != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

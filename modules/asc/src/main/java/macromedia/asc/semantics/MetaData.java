@@ -99,9 +99,8 @@ public class MetaData implements Serializable, Cloneable // CodeOrchestra: made 
         MetaData metaData = (MetaData) o;
 
         if (id != null ? !id.equals(metaData.id) : metaData.id != null) return false;
-        if (!Arrays.equals(values, metaData.values)) return false;
+        return Arrays.equals(values, metaData.values);
 
-        return true;
     }
 
 //    @Override

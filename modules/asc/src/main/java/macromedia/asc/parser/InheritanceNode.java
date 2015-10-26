@@ -70,10 +70,9 @@ public class InheritanceNode extends Node
         InheritanceNode that = (InheritanceNode) o;
 
         if (baseclass != null ? !baseclass.equals(that.baseclass) : that.baseclass != null) return false;
-        if (interfaces != null ? !interfaces.equals(that.interfaces) : that.interfaces != null) return false;
+		return !(interfaces != null ? !interfaces.equals(that.interfaces) : that.interfaces != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

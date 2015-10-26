@@ -237,9 +237,8 @@ public class StatementListNode extends Node
         if (default_namespace != null ? !default_namespace.equals(that.default_namespace) : that.default_namespace != null)
             return false;
         if (items != null ? !items.equals(that.items) : that.items != null) return false;
-        if (numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) return false;
+        return !(numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null);
 
-        return true;
     }
 
 //    @Override

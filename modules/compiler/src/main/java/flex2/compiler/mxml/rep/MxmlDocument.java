@@ -1097,13 +1097,9 @@ public final class MxmlDocument
             ThreadLocalToolkit.log(new AmbiguousStateFilterError(), getSourcePath(), line);
             return false;
         }
-        
-        if (unresolvedStateIdentifier(include, line) || unresolvedStateIdentifier(exclude, line))
-        {
-            return false;
-        }
-        
-        return true;
+
+        return !(unresolvedStateIdentifier(include, line) || unresolvedStateIdentifier(exclude, line));
+
     }
     
     /**

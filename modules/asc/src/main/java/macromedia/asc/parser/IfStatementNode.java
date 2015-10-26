@@ -91,10 +91,9 @@ public class IfStatementNode extends Node
         if (is_true != that.is_true) return false;
         if (condition != null ? !condition.equals(that.condition) : that.condition != null) return false;
         if (elseactions != null ? !elseactions.equals(that.elseactions) : that.elseactions != null) return false;
-        if (thenactions != null ? !thenactions.equals(that.thenactions) : that.thenactions != null) return false;
+		return !(thenactions != null ? !thenactions.equals(that.thenactions) : that.thenactions != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

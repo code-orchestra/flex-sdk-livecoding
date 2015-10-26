@@ -110,10 +110,9 @@ public class CallExpressionNode extends SelectorNode
 
         if (is_new != that.is_new) return false;
         if (void_result != that.void_result) return false;
-        if (args != null ? !args.equals(that.args) : that.args != null) return false;
+		return !(args != null ? !args.equals(that.args) : that.args != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

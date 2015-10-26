@@ -75,10 +75,9 @@ public class UintNumberConstant extends NumberConstant {
 
         UintNumberConstant that = (UintNumberConstant) o;
 
-        if (val != that.val) return false;
+		return val == that.val;
 
-        return true;
-    }
+	}
 
     @Override
     public int hashCode() {

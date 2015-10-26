@@ -80,10 +80,9 @@ public class LiteralObjectNode extends Node
         LiteralObjectNode that = (LiteralObjectNode) o;
 
         if (void_result != that.void_result) return false;
-        if (fieldlist != null ? !fieldlist.equals(that.fieldlist) : that.fieldlist != null) return false;
+		return !(fieldlist != null ? !fieldlist.equals(that.fieldlist) : that.fieldlist != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

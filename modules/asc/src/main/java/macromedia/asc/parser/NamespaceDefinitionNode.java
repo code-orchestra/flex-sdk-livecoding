@@ -130,10 +130,9 @@ public class NamespaceDefinitionNode extends DefinitionNode
         if (qualifiedname != null ? !qualifiedname.equals(that.qualifiedname) : that.qualifiedname != null)
             return false;
         if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+		return !(value != null ? !value.equals(that.value) : that.value != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

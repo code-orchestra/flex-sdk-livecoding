@@ -74,10 +74,9 @@ public class LiteralNullNode extends Node
 
         LiteralNullNode that = (LiteralNullNode) o;
 
-        if (void_result != that.void_result) return false;
+		return void_result == that.void_result;
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

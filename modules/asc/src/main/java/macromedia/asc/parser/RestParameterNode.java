@@ -72,10 +72,9 @@ public class RestParameterNode extends ParameterNode
 
         RestParameterNode that = (RestParameterNode) o;
 
-        if (parameter != null ? !parameter.equals(that.parameter) : that.parameter != null) return false;
+		return !(parameter != null ? !parameter.equals(that.parameter) : that.parameter != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

@@ -937,12 +937,8 @@ public abstract class TextParser
         }
 
         int closeBraceIdx = StringUtils.findClosingToken('{', '}', s, openBraceIdx);
-        if (closeBraceIdx == -1)
-        {
-            return false;
-        }
+        return closeBraceIdx != -1;
 
-        return true;
     }
 
     /**
@@ -967,12 +963,8 @@ public abstract class TextParser
         }
 
         int closeBraceIdx = StringUtils.findClosingToken('{', '}', s, openBraceIdx);
-        if (closeBraceIdx == -1)
-        {
-            return false;
-        }
+        return closeBraceIdx != -1;
 
-        return true;
     }
 
     /**
@@ -1093,12 +1085,8 @@ public abstract class TextParser
             }
         }
 
-        if (StandardDefs.isReservedWord(id))
-        {
-            return false;
-        }
+        return !StandardDefs.isReservedWord(id);
 
-        return true;
     }
     
     /**
@@ -1116,13 +1104,9 @@ public abstract class TextParser
                     return false;
                 }
             }
-        
-            if (!XMLChar.isValidName(id))
-            {
-                return false;
-            }
 
-            return true;
+            return XMLChar.isValidName(id);
+
         }
         return false;
     }

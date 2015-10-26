@@ -66,10 +66,9 @@ public class PragmaNode extends Node
 
         PragmaNode that = (PragmaNode) o;
 
-        if (list != null ? !list.equals(that.list) : that.list != null) return false;
+		return !(list != null ? !list.equals(that.list) : that.list != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

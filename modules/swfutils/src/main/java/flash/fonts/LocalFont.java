@@ -70,11 +70,7 @@ public class LocalFont implements Serializable
 		{
 			return false;
 		}
-		if (trademark != null ? !trademark.equals(localFont.trademark) : localFont.trademark != null)
-		{
-			return false;
-		}
+		return !(trademark != null ? !trademark.equals(localFont.trademark) : localFont.trademark != null);
 
-		return true;
 	}
 }

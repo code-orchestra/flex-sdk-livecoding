@@ -87,10 +87,9 @@ public class ConditionalExpressionNode extends Node
         if (elseexpr != null ? !elseexpr.equals(that.elseexpr) : that.elseexpr != null) return false;
         if (elsevalue != null ? !elsevalue.equals(that.elsevalue) : that.elsevalue != null) return false;
         if (thenexpr != null ? !thenexpr.equals(that.thenexpr) : that.thenexpr != null) return false;
-        if (thenvalue != null ? !thenvalue.equals(that.thenvalue) : that.thenvalue != null) return false;
+		return !(thenvalue != null ? !thenvalue.equals(that.thenvalue) : that.thenvalue != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

@@ -79,10 +79,9 @@ public class LiteralFieldNode extends Node
 
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+		return !(value != null ? !value.equals(that.value) : that.value != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

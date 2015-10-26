@@ -1177,17 +1177,10 @@ public class ShapeHelper implements SwfConstants
     {
         //If a joint lies miterLimit*strokeWeight/2 away from pathBox, 
         //it is considered an inner joint and has no effect on bounds.              
-        if ((jointPoint.x - pathBBox.xMin)>miterLimit*halfWeight &&
-                (pathBBox.xMax - jointPoint.x)>miterLimit*halfWeight &&
-                (jointPoint.y - pathBBox.yMin)>miterLimit*halfWeight &&
-                (pathBBox.yMax - jointPoint.y)>miterLimit*halfWeight)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (jointPoint.x - pathBBox.xMin) > miterLimit * halfWeight &&
+                (pathBBox.xMax - jointPoint.x) > miterLimit * halfWeight &&
+                (jointPoint.y - pathBBox.yMin) > miterLimit * halfWeight &&
+                (pathBBox.yMax - jointPoint.y) > miterLimit * halfWeight;
     }
     
     /**
@@ -1421,11 +1414,8 @@ public class ShapeHelper implements SwfConstants
         if (y < ymin) ymin = y;
         if (x > xmax) xmax = x;
         if (y > ymax) ymax = y;
-        
-        if ((currRect.xMin < xmin) && (currRect.xMax > xmax) && (currRect.yMin < ymin) && (currRect.yMax > ymax))
-            return true;
-        else
-            return false;      
+
+        return (currRect.xMin < xmin) && (currRect.xMax > xmax) && (currRect.yMin < ymin) && (currRect.yMax > ymax);
     }
     
     //compute value for quadratic bezier curve at t

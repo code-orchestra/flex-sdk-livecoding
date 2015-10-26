@@ -119,7 +119,7 @@ public class PNGRed extends AbstractRed {
         }
 
         public String getString4(int offset) {
-            String s = new String();
+            String s = "";
             s += (char)data[offset];
             s += (char)data[offset + 1];
             s += (char)data[offset + 2];

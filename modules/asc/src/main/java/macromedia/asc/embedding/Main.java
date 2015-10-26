@@ -343,7 +343,7 @@ public class Main
 				// assume it's a filename
 				else
 				{
-					filename = new String(args[i].trim());
+					filename = args[i].trim();
 					if (filename.endsWith(".as"))
 					{
 						ext = ".as";

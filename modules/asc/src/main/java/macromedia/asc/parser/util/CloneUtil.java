@@ -50,7 +50,7 @@ public class CloneUtil {
         Map<String, TypeValue> dst = new HashMap<String, TypeValue> ();
         for (Map.Entry<String, TypeValue> entry : src.entrySet()) {
             //dst.put(new String(entry.getKey()), entry.getValue().clone());
-            dst.put(new String(entry.getKey()), entry.getValue());
+            dst.put(entry.getKey(), entry.getValue());
         }
         return dst;
     }
@@ -88,7 +88,7 @@ public class CloneUtil {
     public static ObjectList<String> cloneListString(ObjectList<String> src) throws CloneNotSupportedException
     {
         ObjectList<String> dst = new ObjectList<String>(src.size());
-        for (String item: src) dst.add(new String(item));
+        for (String item: src) dst.add(item);
         return dst;
     }
 

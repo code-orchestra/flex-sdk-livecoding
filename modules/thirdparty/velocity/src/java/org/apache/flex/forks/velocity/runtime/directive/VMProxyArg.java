@@ -341,7 +341,7 @@ public class VMProxyArg implements Serializable
               rsvc.error("Unsupported arg type : " + callerReference
                             + "  You most likely intended to call a VM with a string literal, so enclose with ' or \" characters. (VMProxyArg.setup())");
               constant = true;
-              staticObject = new String( callerReference );
+              staticObject = callerReference;
 
               break;
           }

@@ -346,13 +346,13 @@ public interface RuntimeConstants
      * Default Runtime properties.
      */
     String DEFAULT_RUNTIME_PROPERTIES =
-        "org/apache/flex/forks/velocity/runtime/defaults/velocity.properties";
+            "org/apache/flex/forks/velocity/runtime/defaults/velocity.properties";
 
     /** 
      * Default Runtime properties 
      */
     String DEFAULT_RUNTIME_DIRECTIVES =
-        "org/apache/flex/forks/velocity/runtime/defaults/directive.properties";
+            "org/apache/flex/forks/velocity/runtime/defaults/directive.properties";
 
     /**
      * The default number of parser instances to create.  Configurable

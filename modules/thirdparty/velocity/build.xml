@@ -38,7 +38,8 @@
     
   <property name="example.dir" value="../examples"/>
 
-  <property name="src.java.dir" value="src/java"/>
+  <property name="module.src" value="src/main/java"/>
+  <property name="module.resources" value="src/main/resources"/>
   <property name="javadoc.destdir" value="../docs/api"/>
   <property name="final.name" value="${project}-${version}"/>
   <property name="dist.root" value="../dist"/>
@@ -171,7 +172,7 @@
     <mkdir dir="${build.lib}"/>
 
     <copy todir="${build.src}" filtering="yes">
-      <fileset dir="${src.java.dir}"> 
+      <fileset dir="${module.src}">
         <include name="**/*.java"/>
       </fileset>
     </copy>
@@ -244,19 +245,19 @@
   <target name="compile-copy">
 
     <copy todir="${build.dest}/org/apache/flex/forks/velocity">
-      <fileset dir="${src.java.dir}/org/apache/flex/forks/velocity">
+      <fileset dir="${module.src}/org/apache/flex/forks/velocity">
         <include name="**/*.class"/>
       </fileset>
     </copy>
             
     <copy todir="${build.dest}/${runtime.defaults.dir}">
-      <fileset dir="${src.java.dir}/${runtime.defaults.dir}">
+      <fileset dir="${module.resources}/${runtime.defaults.dir}">
         <include name="*"/>
       </fileset>
     </copy>
 
     <copy 
-      file="${src.java.dir}/${default.texen.properties}"
+      file="${module.resources}/${default.texen.properties}"
       tofile="${build.dest}/${default.texen.properties}"
     />
 

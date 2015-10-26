@@ -61,7 +61,7 @@ public class Generator
      * tools placed in the context.
      */
     private static final String DEFAULT_TEXEN_PROPERTIES =
-        "org/apache/flex/forks/velocity/texen/defaults/texen.properties";
+            "org/apache/flex/forks/velocity/texen/defaults/texen.properties";
 
     /**
      * Default properties used by texen.

@@ -19,11 +19,7 @@
 
 package flex.tools.debugger.cli;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 import flash.tools.debugger.InProgressException;
 import flash.tools.debugger.Isolate;
@@ -150,8 +146,7 @@ public class FileInfoCache implements Comparator<SourceFile>
 				swfs = new SwfInfo[0];
 			}
 
-			for (SwfInfo swf : swfs)
-				result.add(swf);
+			Collections.addAll(result, swfs);
 		}
 
 		return result.toArray(new SwfInfo[0]);

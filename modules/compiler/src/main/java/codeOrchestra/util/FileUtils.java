@@ -2,6 +2,7 @@ package codeOrchestra.util;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -191,9 +192,7 @@ public class FileUtils {
     }
 
     private static void addArrayToList(List<File> list, File[] array) {
-        for (File file : array) {
-            list.add(file);
-        }
+        Collections.addAll(list, array);
     }
 
 }

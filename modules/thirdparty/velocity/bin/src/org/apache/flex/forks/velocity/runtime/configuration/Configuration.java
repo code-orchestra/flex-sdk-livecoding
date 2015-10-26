@@ -1163,7 +1163,7 @@ public class Configuration extends Hashtable
      */
     public boolean getBoolean(String key, boolean defaultValue)
     {
-        return getBoolean(key, new Boolean(defaultValue)).booleanValue();
+        return getBoolean(key, Boolean.valueOf(defaultValue)).booleanValue();
     }
 
     /**
@@ -1188,7 +1188,7 @@ public class Configuration extends Hashtable
         else if (value instanceof String)
         {
             String s = testBoolean((String)value);
-            Boolean b = new Boolean(s);
+            Boolean b = Boolean.valueOf(s);
             put(key, b);
             return b;
         }

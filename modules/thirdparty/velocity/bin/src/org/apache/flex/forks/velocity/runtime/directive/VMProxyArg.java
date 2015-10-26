@@ -314,14 +314,14 @@ public class VMProxyArg implements Serializable
         case ParserTreeConstants.JJTTRUE :
             {
                 constant = true;
-                staticObject = new  Boolean(true);
+                staticObject = Boolean.TRUE;
                 break;
             }
 
         case ParserTreeConstants.JJTFALSE :
             {
                 constant = true;
-                staticObject =  new Boolean(false);
+                staticObject = Boolean.FALSE;
                 break;
             }
 

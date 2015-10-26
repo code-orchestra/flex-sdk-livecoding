@@ -84,6 +84,6 @@ public class CompilerPlug
         optimizer_configs = null;
         in = null;
 
-		filename = new String();
+		filename = "";
 	}
 }

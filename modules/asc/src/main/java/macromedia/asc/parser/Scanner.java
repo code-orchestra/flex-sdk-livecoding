@@ -1399,7 +1399,7 @@ public final class Scanner implements ErrorConstants
                     case '*':
                         if ( nextchar() == '/' ){
                             state = start_state;
-                            return makeCommentToken( BLOCKCOMMENT_TOKEN, new String());
+                            return makeCommentToken( BLOCKCOMMENT_TOKEN, "");
                         }
                         retract(); 
                         state = doccomment_state; 

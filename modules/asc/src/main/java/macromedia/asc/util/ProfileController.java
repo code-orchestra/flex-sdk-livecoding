@@ -98,7 +98,7 @@ public class ProfileController
      */
     public static String captureSnapshot()
     {
-        String result = new String();
+        String result = "";
         if ( m_profiler != null )
         {
             result = m_profiler.captureSnapshot();

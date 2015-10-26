@@ -79,9 +79,9 @@ public class ContextSafetyTestCase extends BaseTestCase implements TemplateTestB
          */
         Vector v = new Vector();
         
-        v.addElement( new String("vector hello 1") );
-        v.addElement( new String("vector hello 2") );
-        v.addElement( new String("vector hello 3") );
+        v.addElement("vector hello 1");
+        v.addElement("vector hello 2");
+        v.addElement("vector hello 3");
         
         String strArray[] = new String[3];
         

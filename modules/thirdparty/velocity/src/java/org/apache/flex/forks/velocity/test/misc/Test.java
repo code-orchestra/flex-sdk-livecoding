@@ -91,8 +91,8 @@ public class Test implements ReferenceInsertionEventHandler,
 
         String str = "mystr";
 
-        v.addElement( new String("hello") );
-        v.addElement( new String("hello2") );
+        v.addElement("hello");
+        v.addElement("hello2");
         v.addElement( str );
 
         try
@@ -197,7 +197,7 @@ public class Test implements ReferenceInsertionEventHandler,
             context.put("menu", provider.getMenu());
             context.put("stringarray", provider.getArray());
             context.put("vector", v);
-            context.put("mystring", new String());
+            context.put("mystring", "");
             context.put("hashmap", new HashMap() );
             context.put("runtime", new FieldMethodizer( "org.apache.flex.forks.velocity.runtime.RuntimeSingleton" ));
             context.put("fmprov", new FieldMethodizer( provider ));

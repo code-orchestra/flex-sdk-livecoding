@@ -115,8 +115,8 @@ public class TemplateTestCase extends BaseTestCase implements TemplateTestBase
 
         vec = new Vector();
 
-        vec.addElement(new String("string1"));
-        vec.addElement(new String("string2"));
+        vec.addElement("string1");
+        vec.addElement("string2");
 
         /*
          *  set up 3 chained contexts, and add our data 
@@ -138,7 +138,7 @@ public class TemplateTestCase extends BaseTestCase implements TemplateTestBase
         context1.put("searchResults", provider.getRelSearches());
         context2.put("stringarray", provider.getArray());
         context.put("vector", vec );
-        context.put("mystring", new String());
+        context.put("mystring", "");
         context.put("runtime", new FieldMethodizer( "org.apache.flex.forks.velocity.runtime.RuntimeSingleton" ));
         context.put("fmprov", new FieldMethodizer( provider ));
         context.put("Floog", "floogie woogie");

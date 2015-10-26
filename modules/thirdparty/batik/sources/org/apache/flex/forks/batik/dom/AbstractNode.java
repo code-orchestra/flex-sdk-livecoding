@@ -453,7 +453,7 @@ public abstract class AbstractNode
     }
 
     public static String getBaseURI(Node n) {
-        return ((AbstractNode) n).getBaseURI();
+        return n.getBaseURI();
     }
 
     // DocumentPosition constants from DOM Level 3 Core org.w3c.dom.Node
@@ -487,7 +487,7 @@ public abstract class AbstractNode
             if (other.getNodeType() == ATTRIBUTE_NODE) {
                 Attr otherAttr = (Attr) other;
                 if (n == otherAttr.getOwnerElement()) {
-                    if (hashCode() < ((Attr) other).hashCode()) {
+                    if (hashCode() < other.hashCode()) {
                         return DOCUMENT_POSITION_PRECEDING
                             | DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC;
                     } else {
@@ -618,7 +618,7 @@ public abstract class AbstractNode
                         n != null;
                         n = n.getParentNode()) {
                     if (n.getNodeType() == ELEMENT_NODE) {
-                        return ((AbstractNode) n).lookupPrefix(namespaceURI);
+                        return n.lookupPrefix(namespaceURI);
                     }
                 }
                 return null;
@@ -636,7 +636,7 @@ public abstract class AbstractNode
                 && ns.equals(namespaceURI)
                 && prefix != null) {
             String pns =
-                ((AbstractNode) originalElement).lookupNamespaceURI(prefix);
+                originalElement.lookupNamespaceURI(prefix);
             if (pns != null && pns.equals(namespaceURI)) {
                 return prefix;
             }
@@ -810,7 +810,7 @@ public abstract class AbstractNode
         Node n = getFirstChild();
         Node m = other.getFirstChild();
         if (n != null && m != null) {
-            if (!((AbstractNode) n).isEqualNode(m)) {
+            if (!n.isEqualNode(m)) {
                 return false;
             }
         }
@@ -847,7 +847,7 @@ public abstract class AbstractNode
                 } else {
                     n2 = nnm2.getNamedItem(n1.getNodeName());
                 }
-                if (!((AbstractNode) n1).isEqualNode(n2)) {
+                if (!n1.isEqualNode(n2)) {
                     return false;
                 }
             }

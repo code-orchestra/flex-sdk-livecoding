@@ -53,7 +53,7 @@ public class ExtendedParserWrapper implements ExtendedParser {
      */
     public static ExtendedParser wrap(Parser p) {
         if (p instanceof ExtendedParser)
-            return (ExtendedParser)p;
+            return (ExtendedParser) p;
 
         return new ExtendedParserWrapper(p);
     }

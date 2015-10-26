@@ -94,7 +94,7 @@ public class MethodInvocationExceptionTest extends TestCase
 
             if( t instanceof Exception)
             {
-                System.out.println("  exception = " + ( (Exception) t).getMessage() );
+                System.out.println("  exception = " + t.getMessage() );
             }
         }
         catch( Exception e)
@@ -126,7 +126,7 @@ public class MethodInvocationExceptionTest extends TestCase
 
             if( t instanceof Exception)
             {
-                System.out.println("  exception = " + ( (Exception) t).getMessage() );
+                System.out.println("  exception = " + t.getMessage() );
             }
         }
         catch( Exception e)
@@ -152,7 +152,7 @@ public class MethodInvocationExceptionTest extends TestCase
 
             if( t instanceof Exception)
             {
-                System.out.println("  exception = " + ( (Exception) t).getMessage() );
+                System.out.println("  exception = " + t.getMessage() );
             }
         }
         catch( Exception e)
@@ -178,7 +178,7 @@ public class MethodInvocationExceptionTest extends TestCase
 
             if( t instanceof Exception)
             {
-                System.out.println("  exception = " + ( (Exception) t).getMessage() );
+                System.out.println("  exception = " + t.getMessage() );
             }
         }
         catch( Exception e)

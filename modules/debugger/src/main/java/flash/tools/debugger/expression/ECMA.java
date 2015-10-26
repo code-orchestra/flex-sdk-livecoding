@@ -311,14 +311,12 @@ public class ECMA
 		Object x = xv.getValueAsObject();
 		Object y = yv.getValueAsObject();
 
-		if (xv.getType() == yv.getType())
-		{
+		if (xv.getType() == yv.getType()) {
 			if (x == Value.UNDEFINED)
 				return true;
 			if (x == null)
 				return true;
-			if (x instanceof Double)
-			{
+			if (x instanceof Double) {
 				double dx = (Double) x;
 				double dy = (Double) y;
 				return dx == dy;
@@ -327,24 +325,19 @@ public class ECMA
 				return x.equals(y);
 
 			// see if they are the same object
-			if (xv.getId() != -1 || yv.getId() != -1)
-				return xv.getId() == yv.getId();
-			return false;
+			return (xv.getId() != -1 || yv.getId() != -1) && xv.getId() == yv.getId();
 		}
-		else
-		{
+		else {
 			if (x == null && y == Value.UNDEFINED)
 				return true;
 			if (x == Value.UNDEFINED && y == null)
 				return true;
-			if (x instanceof Double && y instanceof String)
-			{
+			if (x instanceof Double && y instanceof String) {
 				double dx = (Double) x;
 				double dy = toNumber(session, yv);
 				return dx == dy;
 			}
-			if (x instanceof String && y instanceof Double)
-			{
+			if (x instanceof String && y instanceof Double) {
 				double dx = toNumber(session, xv);
 				double dy = (Double) y;
 				return dx == dy;
@@ -353,15 +346,10 @@ public class ECMA
 				return equals(session, DValue.forPrimitive(toNumber(session, xv), xv.getIsolateId()), yv);
 			if (y instanceof Boolean)
 				return equals(session, xv, DValue.forPrimitive(toNumber(session, yv), xv.getIsolateId()));
-			if ((x instanceof String || x instanceof Double) && yv.getType() == VariableType.OBJECT)
-			{
+			if ((x instanceof String || x instanceof Double) && yv.getType() == VariableType.OBJECT) {
 				return equals(session, xv, toPrimitive(session, yv, null, yv.getIsolateId()));
 			}
-			if (xv.getType() == VariableType.OBJECT && (y instanceof String || y instanceof Double))
-			{
-				return equals(session, toPrimitive(session, xv, null, xv.getIsolateId()), yv);
-			}
-			return false;
+			return xv.getType() == VariableType.OBJECT && (y instanceof String || y instanceof Double) && equals(session, toPrimitive(session, xv, null, xv.getIsolateId()), yv);
 		}
 	}
 
@@ -374,14 +362,12 @@ public class ECMA
 		Object x = xv.getValueAsObject();
 		Object y = yv.getValueAsObject();
 
-		if (xv.getType() == yv.getType())
-		{
+		if (xv.getType() == yv.getType()) {
 			if (x == Value.UNDEFINED)
 				return true;
 			if (x == null)
 				return true;
-			if (x instanceof Double)
-			{
+			if (x instanceof Double) {
 				double dx = (Double) x;
 				double dy = (Double) y;
 				return dx == dy;
@@ -390,9 +376,7 @@ public class ECMA
 				return x.equals(y);
 
 			// see if they are the same object
-			if (xv.getId() != -1 || yv.getId() != -1)
-				return xv.getId() == yv.getId();
-			return false;
+			return (xv.getId() != -1 || yv.getId() != -1) && xv.getId() == yv.getId();
 		}
 		else
 		{

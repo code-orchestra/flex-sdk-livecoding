@@ -56,14 +56,9 @@ public class QNameList extends ArrayList<QName>
 		}
 	}
 	
-	public boolean add(QName obj)
-	{
-		if (!contains(obj))
-		{
-			return super.add(obj);
-		}
-		
-		return true;
+	public boolean add(QName obj) {
+		return contains(obj) || super.add(obj);
+
 	}
 
 	public boolean addAll(int index, Collection<? extends QName> c)

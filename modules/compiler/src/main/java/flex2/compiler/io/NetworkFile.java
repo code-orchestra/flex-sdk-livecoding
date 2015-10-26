@@ -124,16 +124,8 @@ public class NetworkFile implements VirtualFile
 	}
 
 
-	public boolean equals(Object obj)
-	{
-		if (obj instanceof NetworkFile)
-		{
-			return (this == obj) || name.equals(((NetworkFile) obj).name);
-		}
-		else
-		{
-			return false;
-		}
+	public boolean equals(Object obj) {
+		return obj instanceof NetworkFile && ((this == obj) || name.equals(((NetworkFile) obj).name));
 	}
 
 	public int hashCode()

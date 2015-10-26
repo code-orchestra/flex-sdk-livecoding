@@ -30,12 +30,9 @@ public class Header
 	{
 	}
 
-	public static boolean useCompression(int version)
-	{
-		if ((System.getProperty("flex.swf.uncompressed") != null))
-			return false;
+	public static boolean useCompression(int version) {
+		return System.getProperty("flex.swf.uncompressed") == null && version >= 6;
 
-		return version >= 6;
 	}
 
     public boolean compressed;

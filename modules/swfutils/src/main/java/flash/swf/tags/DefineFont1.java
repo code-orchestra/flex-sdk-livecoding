@@ -81,23 +81,17 @@ public class DefineFont1 extends DefineFont
     /**
      * Reports whether the font face is bold.
      */
-    public boolean isBold()
-    {
-        if (fontInfo != null)
-            return fontInfo.bold;
+    public boolean isBold() {
+        return fontInfo != null && fontInfo.bold;
 
-        return false;
     }
 
     /**
      * Reports whether the font face is italic.
      */
-    public boolean isItalic()
-    {
-        if (fontInfo != null)
-            return fontInfo.italic;
+    public boolean isItalic() {
+        return fontInfo != null && fontInfo.italic;
 
-        return false;
     }
 
     //--------------------------------------------------------------------------

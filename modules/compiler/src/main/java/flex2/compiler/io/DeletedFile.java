@@ -96,16 +96,8 @@ public class DeletedFile implements VirtualFile
 	{
 	}
 
-	public boolean equals(Object obj)
-	{
-		if (obj instanceof DeletedFile)
-		{
-			return (this == obj) || getName().equals(((DeletedFile) obj).getName());
-		}
-		else
-		{
-			return false;
-		}
+	public boolean equals(Object obj) {
+		return obj instanceof DeletedFile && ((this == obj) || getName().equals(((DeletedFile) obj).getName()));
 	}
 
 	public int hashCode()

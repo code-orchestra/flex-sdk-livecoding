@@ -109,16 +109,8 @@ public final class Vertex <W>
 		return emanatingEdges == null ? 0 : emanatingEdges.size();
 	}
 
-	public boolean equals(Object object)
-	{
-		if (object instanceof Vertex)
-		{
-			return (weight == null) ? super.equals(object) : weight.equals(((Vertex) object).weight);
-		}
-		else
-		{
-			return false;
-		}
+	public boolean equals(Object object) {
+		return object instanceof Vertex && ((weight == null) ? super.equals(object) : weight.equals(((Vertex) object).weight));
 	}
 
 	public int hashCode()

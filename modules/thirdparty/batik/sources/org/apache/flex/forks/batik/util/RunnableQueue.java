@@ -449,10 +449,7 @@ public class RunnableQueue implements Runnable {
                 Link head = (Link)list.getHead();
                 Link link;
                 public boolean hasNext() {
-                    if (head == null) {
-                        return false;
-                    }
-                    return link == null || link != head;
+                    return head != null && (link == null || link != head);
                 }
                 public Object next() {
                     if (head == null || head == link) {

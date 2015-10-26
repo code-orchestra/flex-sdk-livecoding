@@ -289,13 +289,10 @@ public class MxmlConfiguration
 
     private boolean qualifiedTypeSelectors = true;
 
-    public boolean getQualifiedTypeSelectors()
-    {
-        if (getCompatibilityVersion() < MxmlConfiguration.VERSION_4_0)
-            return false;
+    public boolean getQualifiedTypeSelectors() {
+		return getCompatibilityVersion() >= MxmlConfiguration.VERSION_4_0 && qualifiedTypeSelectors;
 
-        return qualifiedTypeSelectors;
-    }
+	}
 
     public void cfgQualifiedTypeSelectors(ConfigurationValue cv, boolean b)
     {

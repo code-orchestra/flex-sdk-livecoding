@@ -3182,13 +3182,9 @@ public class CompilerConfiguration implements As3Configuration,
     // then don't check for duplicates. Just use the old "selector exists" test. 
     private boolean allowDuplicateDefaultStyleDeclarations = false;
 
-    public boolean getAllowDuplicateDefaultStyleDeclarations()
-    {
-    	if (getIsolateStyles())
-    		return allowDuplicateDefaultStyleDeclarations;
-    	else
-    		return true;
-    }
+    public boolean getAllowDuplicateDefaultStyleDeclarations() {
+		return !getIsolateStyles() || allowDuplicateDefaultStyleDeclarations;
+	}
 
     public void cfgAllowDuplicateDefaultStyleDeclarations( ConfigurationValue cv, boolean allowDuplicateDefaultStyleDeclarations)
     {

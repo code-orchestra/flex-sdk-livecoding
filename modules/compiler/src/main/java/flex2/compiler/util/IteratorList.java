@@ -33,13 +33,8 @@ public class IteratorList extends ArrayList<Iterator>
 {
 	private static final long serialVersionUID = -5093248926480065063L;
 
-    public boolean add(Iterator iter)
-	{
-		if (iter.hasNext())
-		{
-			return super.add(iter);
-		}
-        return false;
+    public boolean add(Iterator iter) {
+		return iter.hasNext() && super.add(iter);
 	}
 
 	public Iterator toIterator()

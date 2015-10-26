@@ -280,8 +280,7 @@ public class StringUtils
     /**
      * Sees if src equals pat, also allowing '*' and '?' as wildcards
      */
-    public static boolean findMatchWithWildcard(char[] src, char[] pat)
-    {
+    public static boolean findMatchWithWildcard(char[] src, char[] pat) {
         if (src == null || pat == null)
             return false;
 
@@ -299,24 +298,21 @@ public class StringUtils
         int srcIdx = 0;
         int patIdx = 0;
 
-        for( ; srcIdx < srcLen ; srcIdx++)
-        {
-            if (patIdx == patLen)
-			{
-				if (patLen < (srcLen - srcIdx))
-					patIdx = 0; //Start the search again
-				else
-					return false;
-			}
+        for (; srcIdx < srcLen; srcIdx++) {
+            if (patIdx == patLen) {
+                if (patLen < (srcLen - srcIdx))
+                    patIdx = 0; //Start the search again
+                else
+                    return false;
+            }
 
             char s = src[srcIdx];
             char m = pat[patIdx];
 
-            switch(m)
-            {
-                case'*':
+            switch (m) {
+                case '*':
                     // star on the end
-                    if(patIdx == pat.length-1)
+                    if (patIdx == pat.length - 1)
                         return true;
                     star = true;
                     ++patIdx;
@@ -327,18 +323,14 @@ public class StringUtils
                     break;
 
                 default:
-                    if(s != m)
-                    {
-                        if(!star)
-						{
+                    if (s != m) {
+                        if (!star) {
                             if (patLen < (srcLen - srcIdx))
-								patIdx = 0; //Start the search again
-							else
-								return false;
-						}
-                    }
-                    else
-                    {
+                                patIdx = 0; //Start the search again
+                            else
+                                return false;
+                        }
+                    } else {
                         star = false;
                         ++patIdx;
                     }
@@ -346,10 +338,8 @@ public class StringUtils
             }
         }
 
-        if(patIdx < patLen)
-            return false;
+        return patIdx >= patLen && !star;
 
-        return !star;
     }
 
 	/**

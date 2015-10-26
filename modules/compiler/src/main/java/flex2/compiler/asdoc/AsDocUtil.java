@@ -885,10 +885,8 @@ public class AsDocUtil
     {
         if (packageName == null || packageName.isEmpty())
             return false;
-        else if (hiddenPackages.contains(":" + packageName + ":"))
-            return (hiddenPackages.contains(":" + packageName + ":true:"));
         else
-            return false;
+            return hiddenPackages.contains(":" + packageName + ":") && (hiddenPackages.contains(":" + packageName + ":true:"));
     }
 
     /** 

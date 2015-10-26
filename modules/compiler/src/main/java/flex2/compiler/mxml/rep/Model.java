@@ -782,13 +782,8 @@ public class Model implements LineNumberMapped
     /**
      * Returns true if this object is to be applied for a given state.
      */
-    public final boolean hasState(String state)
-    {
-        if (states != null)
-        {
-           return states.contains(state); 
-        }
-        return false;
+    public final boolean hasState(String state) {
+        return states != null && states.contains(state);
     }
     
     /**

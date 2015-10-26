@@ -249,19 +249,11 @@ public final class BytecodeEmitter extends ActionBlockEmitter
 			{
 				Line line = (Line) o;
 
-                if ((fileName != null) && (line.fileName != null))
-                {
-                    return fileName.equals(line.fileName) && lineNumber == line.lineNumber;
-                }
-                else if (((fileName != null) && (line.fileName == null)) ||
-                         ((fileName == null) && (line.fileName != null)))
-                {
-                    return false;
-                }
-                else
-                {
-                    return lineNumber == line.lineNumber;
-                }
+				if ((fileName != null) && (line.fileName != null)) {
+					return fileName.equals(line.fileName) && lineNumber == line.lineNumber;
+				} else
+					return !(((fileName != null) && (line.fileName == null)) ||
+							((fileName == null) && (line.fileName != null))) && lineNumber == line.lineNumber;
 			}
 			else
 			{

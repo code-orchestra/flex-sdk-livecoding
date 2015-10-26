@@ -60,16 +60,8 @@ public class QNameSet extends HashSet<QName>
 		return contains(key);
 	}
 
-	public boolean add(String ns, String name)
-	{
-		if (!contains(ns, name))
-		{
-			return add(new QName(ns, name));
-		}
-		else
-		{
-			return false;
-		}
+	public boolean add(String ns, String name) {
+		return !contains(ns, name) && add(new QName(ns, name));
 	}
 
 	public QName first()

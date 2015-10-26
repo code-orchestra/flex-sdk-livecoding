@@ -1221,12 +1221,9 @@ public class Configuration implements LinkerConfiguration, Cloneable
 		 * @return true if the url specifies a signed rsl, false otherwise.
 		 */
 		public boolean isRslUrlSigned(String url) {
-			if (url == null) {
-				return false;
-			}
-			
-			return url.endsWith(SIGNED_RSL_URL_DOT_EXTENSION);
-		}
+            return url != null && url.endsWith(SIGNED_RSL_URL_DOT_EXTENSION);
+
+        }
 
 		
 		/**

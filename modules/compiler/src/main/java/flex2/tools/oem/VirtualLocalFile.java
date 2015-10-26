@@ -203,16 +203,8 @@ public class VirtualLocalFile implements VirtualFile
      * 
      * @return <code>true</code> if <code>obj == this</code>.
      */
-    public boolean equals(Object obj)
-    {
-        if (obj instanceof VirtualLocalFile)
-        {
-            return (this == obj) || getName().equals(((VirtualLocalFile) obj).getName());
-        }
-        else
-        {
-            return false;
-        }
+    public boolean equals(Object obj) {
+        return obj instanceof VirtualLocalFile && ((this == obj) || getName().equals(((VirtualLocalFile) obj).getName()));
     }
 
     /**

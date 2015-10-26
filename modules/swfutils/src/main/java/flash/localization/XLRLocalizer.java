@@ -327,13 +327,8 @@ public class XLRLocalizer implements ILocalizer
             return (((this.locale == null) && (locale == null)) || locale.equalsIgnoreCase( this.locale ));
 
         }
-        public boolean execute( StringBuilder buffer, String locale, Map parameters )
-        {
-            if (matchesLocale( locale ))
-            {
-                return super.execute( buffer, locale, parameters );
-            }
-            return false;
+        public boolean execute( StringBuilder buffer, String locale, Map parameters ) {
+            return matchesLocale(locale) && super.execute(buffer, locale, parameters);
         }
         public final String locale;
     }
@@ -406,16 +401,9 @@ public class XLRLocalizer implements ILocalizer
             // match based on the value being non-zero length, non-zero, or not "false" if pattern isn't set
 
             boolean matched = false;
-            if (pattern == null)
-            {
-                if ((value != null) && (value.length() > 0))
-                {
-                    matched = !(value.equalsIgnoreCase( "false" ) || value.equals( "0" ));
-                }
-                else
-                {
-                    matched = false;    // null string
-                }
+            if (pattern == null) {
+                matched = (value != null) && (value.length() > 0) && !(value.equalsIgnoreCase("false") || value.equals("0"));
+// null string
             }
             else
             {

@@ -204,19 +204,11 @@ public final class ByteList implements Serializable, Cloneable // CodeOrchestra:
 
     public boolean equals(Object b)
     {
-        if (this == b)
-        {
-            return true;
-        }
-        else if (b instanceof ByteList)
-        {
-            return equals((ByteList)b);
-        }
-        else
-        {
-            return false;
-        }
-    }
+		if (this == b) {
+			return true;
+		} else
+			return b instanceof ByteList && equals((ByteList) b);
+	}
 
     public boolean equals(ByteList b)
     {

@@ -3428,11 +3428,8 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 		slot_GetComplianceRecord(s).is_registered_for_event = isRegistered;
 	}
 
-	private boolean slot_isAlreadyDeclared(Slot s)
-	{
-		if (s != null && s.getEmbeddedData() != null)
-			return slot_GetComplianceRecord(s).has_been_declared;
-		return false;
+	private boolean slot_isAlreadyDeclared(Slot s) {
+		return s != null && s.getEmbeddedData() != null && slot_GetComplianceRecord(s).has_been_declared;
 	}
 
 //    private int slot_getOriginalDeclarationPosition(Slot s)
@@ -3454,11 +3451,8 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 		return false;
 	}
 
-	private boolean slot_GetRegisteredForEvent(Slot s)
-	{
-		if (s != null && s.getEmbeddedData() != null)
-			return slot_GetComplianceRecord(s).is_registered_for_event;
-		return false;
+	private boolean slot_GetRegisteredForEvent(Slot s) {
+		return s != null && s.getEmbeddedData() != null && slot_GetComplianceRecord(s).is_registered_for_event;
 	}
 
 	static void clear_lintData(Slot s)

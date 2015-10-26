@@ -140,16 +140,8 @@ public class TextFile implements VirtualFile
 		text = null;
 	}
 
-	public boolean equals(Object obj)
-	{
-		if (obj instanceof TextFile)
-		{
-			return (this == obj) || getName().equals(((TextFile) obj).getName());
-		}
-		else
-		{
-			return false;
-		}
+	public boolean equals(Object obj) {
+		return obj instanceof TextFile && ((this == obj) || getName().equals(((TextFile) obj).getName()));
 	}
 
 	public int hashCode()

@@ -55,7 +55,7 @@ public class JaclInterpreter implements org.apache.flex.forks.batik.script.Inter
     public Object evaluate(Reader scriptreader, String description)
         throws IOException {
         // oops jacl doesn't accept reader in its eval method :-(
-        StringBuffer sbuffer = new StringBuffer();
+        StringBuilder sbuffer = new StringBuilder();
         char[] buffer = new char[1024];
         int val = 0;
         while ((val = scriptreader.read(buffer)) != -1) {

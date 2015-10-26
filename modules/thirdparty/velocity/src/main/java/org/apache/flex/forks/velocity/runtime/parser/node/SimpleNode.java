@@ -185,7 +185,7 @@ public class SimpleNode implements Node
     public String literal()
     {
         Token t = first;
-        StringBuffer sb = new StringBuffer(t.image);
+        StringBuilder sb = new StringBuilder(t.image);
         
         while (t != last)
         {

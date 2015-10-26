@@ -52,7 +52,7 @@ public class BaseTestCase extends TestCase
      */
     protected static String getFileName (String dir, String base, String ext)
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         if (dir != null)
         {
             buf.append(dir).append('/');
@@ -136,7 +136,7 @@ public class BaseTestCase extends TestCase
      */
     protected  static String getTestCaseName (String s)
     {
-        StringBuffer name = new StringBuffer();
+        StringBuilder name = new StringBuilder();
         name.append(Character.toTitleCase(s.charAt(0)));
         name.append(s.substring(1, s.length()).toLowerCase());
         return name.toString();

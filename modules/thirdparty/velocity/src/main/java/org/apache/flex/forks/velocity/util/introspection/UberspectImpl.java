@@ -205,7 +205,7 @@ public class UberspectImpl implements Uberspect, UberspectLoggable
             }
             catch(NoSuchMethodException nsme2)
             {
-                StringBuffer sb = new StringBuffer("set");
+                StringBuilder sb = new StringBuilder("set");
                 sb.append(identifier);
 
                 if (Character.isLowerCase( sb.charAt(3)))

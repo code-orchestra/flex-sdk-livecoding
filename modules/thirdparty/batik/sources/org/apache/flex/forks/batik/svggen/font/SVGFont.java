@@ -95,7 +95,7 @@ public class SVGFont implements XMLConstants, SVGConstants, ScriptTags, FeatureT
         "SVGFont.config.svg.test.card.end";
 
     protected static String encodeEntities(String s) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             if (s.charAt(i) == XML_CHAR_LT) {
                 sb.append(XML_ENTITY_LT);
@@ -121,7 +121,7 @@ public class SVGFont implements XMLConstants, SVGConstants, ScriptTags, FeatureT
             return "";
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int offset = 0;
 
         while (offset < count) {
@@ -196,7 +196,7 @@ public class SVGFont implements XMLConstants, SVGConstants, ScriptTags, FeatureT
     }
 
     protected static String getSVGFontFaceElement(Font font) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         String fontFamily = font.getNameTable().getRecord(Table.nameFontFamilyName);
         short unitsPerEm = font.getHeadTable().getUnitsPerEm();
         String panose = font.getOS2Table().getPanose().toString();
@@ -482,7 +482,7 @@ public class SVGFont implements XMLConstants, SVGConstants, ScriptTags, FeatureT
             SingleSubst arabTermSubst,
             String code) {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         boolean substituted = false;
 
         // arabic = "initial | medial | terminal | isolated"
@@ -568,7 +568,7 @@ public class SVGFont implements XMLConstants, SVGConstants, ScriptTags, FeatureT
     }
 
     protected static String getKerningPairAsSVG(KerningPair kp, PostTable post) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         // sb.append("<hkern g1=\"");
         sb.append(XML_OPEN_TAG_START).append(SVG_HKERN_TAG).append(XML_SPACE);
         sb.append(SVG_G1_ATTRIBUTE).append(XML_EQUAL_QUOT);

@@ -54,7 +54,7 @@ public class NodeUtils
         {
             String st = tmp_t.image;
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
 
             for(int i = 0; i < st.length(); i++)
             {
@@ -145,7 +145,7 @@ public class NodeUtils
      */
     public static String interpolate(String argStr, Context vars)
     {
-        StringBuffer argBuf = new StringBuffer();
+        StringBuilder argBuf = new StringBuilder();
 
         for (int cIdx = 0 ; cIdx < argStr.length();)
         {
@@ -154,7 +154,7 @@ public class NodeUtils
             switch (ch)
             {
                 case '$':
-                    StringBuffer nameBuf = new StringBuffer();
+                    StringBuilder nameBuf = new StringBuilder();
                     for (++cIdx ; cIdx < argStr.length(); ++cIdx)
                     {
                         ch = argStr.charAt(cIdx);

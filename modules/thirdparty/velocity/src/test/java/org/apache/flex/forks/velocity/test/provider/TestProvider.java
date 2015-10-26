@@ -204,7 +204,7 @@ public class TestProvider
 
     public String concat(Object[] strings)
     {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
 
         for (Object string : strings) {
             result.append((String) string).append(' ');
@@ -215,7 +215,7 @@ public class TestProvider
 
     public String concat(List strings)
     {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
 
         for (Object string : strings) {
             result.append((String) string).append(' ');
@@ -226,7 +226,7 @@ public class TestProvider
 
     public String objConcat(List objects)
     {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
 
         for (Object object : objects) {
             result.append(object).append(' ');

@@ -370,7 +370,7 @@ public class Velocity implements RuntimeConstants
          *  now just create the VM call, and use evaluate
          */
 
-        StringBuffer construct = new StringBuffer("#");
+        StringBuilder construct = new StringBuilder("#");
 
         construct.append( vmName );
         construct.append( "(" );

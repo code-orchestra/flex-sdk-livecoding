@@ -301,8 +301,9 @@ public abstract class AnimationEngine {
      */
     protected float tick(float time, boolean hyperlinking) {
         float waitTime = timedDocumentRoot.seekTo(time, hyperlinking);
+        java.util.Set var = targets.entrySet();
         Map.Entry[] targetEntries =
-            (Map.Entry[]) targets.entrySet().toArray(MAP_ENTRY_ARRAY);
+            (Map.Entry[]) var.toArray(new Map.Entry[var.size()]);
         for (Map.Entry e : targetEntries) {
             AnimationTarget target = (AnimationTarget) e.getKey();
             TargetInfo info = (TargetInfo) e.getValue();

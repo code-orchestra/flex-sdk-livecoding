@@ -1829,7 +1829,7 @@ public abstract class CSSEngine {
      */
     protected void firePropertiesChangedEvent(Element target, int[] props) {
         CSSEngineListener[] ll =
-            (CSSEngineListener[])listeners.toArray(LISTENER_ARRAY);
+            (CSSEngineListener[]) listeners.toArray(new CSSEngineListener[listeners.size()]);
 
         int len = ll.length;
         if (len > 0) {

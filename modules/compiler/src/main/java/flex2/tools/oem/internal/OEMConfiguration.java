@@ -2203,8 +2203,10 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 		List<RslPathInfo> rslList = c.getRslPathInfo();
 		boolean first = true;
 		for (RslPathInfo info : rslList) {
-			String[] rslUrls = info.getRslUrls().toArray(new String[0]);
-			String[] policyUrls = info.getPolicyFileUrls().toArray(new String[0]);
+			List<String> rslUrls1 = info.getRslUrls();
+			String[] rslUrls = rslUrls1.toArray(new String[rslUrls1.size()]);
+			List<String> policyFileUrls = info.getPolicyFileUrls();
+			String[] policyUrls = policyFileUrls.toArray(new String[policyFileUrls.size()]);
 			if (first) {
 				setRuntimeSharedLibraryPath(info.getSwcPath(),
 						rslUrls,
@@ -2220,13 +2222,10 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 		// TODO
 		// setSWFMetaData();
 		// setProjector();
-		
 		setSWFMetaData(c.getMetadata());
 		setRuntimeSharedLibraries(toStrings(c.getRuntimeSharedLibraries()));
 		useNetwork(c.useNetwork());
-		
 		// useMobileFramework();
-		
 		populateDefaults(c.getCompilerConfiguration());
 		populateDefaults(c.getFramesConfiguration());
 		populateDefaults(c.getLicensesConfiguration());
@@ -2470,7 +2469,7 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 			rslList.add(policyFileUrls[i]);
 		}
 		
-		return rslList.toArray(new String[0]);
+		return rslList.toArray(new String[rslList.size()]);
 	}
 	
 	

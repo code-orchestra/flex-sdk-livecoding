@@ -148,7 +148,7 @@ public class FileInfoCache implements Comparator<SourceFile>
 			Collections.addAll(result, swfs);
 		}
 
-		return result.toArray(new SwfInfo[0]);
+		return result.toArray(new SwfInfo[result.size()]);
 	}
 
 	void populate()

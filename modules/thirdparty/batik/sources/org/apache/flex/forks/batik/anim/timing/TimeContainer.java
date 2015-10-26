@@ -79,7 +79,7 @@ public abstract class TimeContainer extends TimedElement {
      * Returns an array of the children of this container.
      */
     public TimedElement[] getChildren() {
-        return (TimedElement[]) children.toArray(new TimedElement[0]);
+        return (TimedElement[]) children.toArray(new TimedElement[children.size()]);
     }
 
     /**

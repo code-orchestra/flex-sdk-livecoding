@@ -19,19 +19,15 @@
 
 package flex2.compiler.extensions;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import flex2.compiler.common.ConfigurationPathResolver;
 import flex2.compiler.common.PathResolver;
 import flex2.compiler.config.ConfigurationException;
 import flex2.compiler.config.ConfigurationInfo;
 import flex2.compiler.config.ConfigurationValue;
 import flex2.compiler.util.ThreadLocalToolkit;
+
+import java.io.File;
+import java.util.*;
 
 /**
  * This class handles extension specific configuration options.
@@ -70,7 +66,8 @@ public class ExtensionsConfiguration
     {
         if ( extensionMappings != null )
         {
-            return extensionMappings.keySet().toArray( new File[0] );
+            java.util.Set<String> var = extensionMappings.keySet();
+            return var.toArray(new File[var.size()]);
         }
         else
         {

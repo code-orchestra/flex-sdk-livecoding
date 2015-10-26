@@ -19,29 +19,20 @@
 
 package flex2.compiler.mxml.builder;
 
-import flash.util.StringJoiner;
 import flex2.compiler.CompilationUnit;
-import flex2.compiler.util.CompilerMessage.CompilerError;
 import flex2.compiler.mxml.Attribute;
 import flex2.compiler.mxml.MXMLNamespaces;
 import flex2.compiler.mxml.MxmlConfiguration;
 import flex2.compiler.mxml.dom.*;
 import flex2.compiler.mxml.gen.TextGen;
-import flex2.compiler.mxml.lang.BindingHandler;
-import flex2.compiler.mxml.lang.StandardDefs;
-import flex2.compiler.mxml.lang.TextParser;
-import flex2.compiler.mxml.lang.TypeCompatibility;
-import flex2.compiler.mxml.lang.ValueNodeHandler;
+import flex2.compiler.mxml.lang.*;
 import flex2.compiler.mxml.reflect.Assignable;
 import flex2.compiler.mxml.reflect.Property;
 import flex2.compiler.mxml.reflect.Type;
 import flex2.compiler.mxml.reflect.TypeTable;
 import flex2.compiler.mxml.rep.*;
-import flex2.compiler.util.MimeMappings;
-import flex2.compiler.util.MxmlCommentUtil;
-import flex2.compiler.util.NameFormatter;
-import flex2.compiler.util.QName;
-import flex2.compiler.util.QNameSet;
+import flex2.compiler.util.CompilerMessage.CompilerError;
+import flex2.compiler.util.*;
 
 import java.util.*;
 
@@ -231,7 +222,7 @@ public class DocumentBuilder extends ComponentBuilder implements MXMLNamespaces
 
             // If the document sets Frame metadata, then we must not overwrite it.
             // Is there a better way to do this?   This seems really hacky and brittle.
-            if (node.getText().toString().indexOf( "[Frame" ) != -1)
+            if (node.getText().indexOf( "[Frame" ) != -1)
             {
                 assert unit.isRoot();
                 generateLoader = false;

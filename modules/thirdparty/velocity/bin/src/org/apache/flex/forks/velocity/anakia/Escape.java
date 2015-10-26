@@ -39,7 +39,7 @@ public class Escape
      */
     public static String getText(String st)
     {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         char[] block = st.toCharArray();
         String stEntity = null;
         int i, last;

@@ -169,7 +169,7 @@ public class DOMUtilities extends XMLUtilities {
      * characters with entities.
      */
     public static String contentToString(String s) {
-        StringBuffer result = new StringBuffer( s.length() );
+        StringBuilder result = new StringBuilder( s.length() );
 
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
@@ -416,7 +416,7 @@ public class DOMUtilities extends XMLUtilities {
         }
 
         // Try and parse as a document fragment
-        StringBuffer sb = new StringBuffer(wrapperElementPrefix.length()
+        StringBuilder sb = new StringBuilder(wrapperElementPrefix.length()
                 + text.length() + wrapperElementSuffix.length());
         sb.append(wrapperElementPrefix);
         sb.append(text);
@@ -587,7 +587,7 @@ public class DOMUtilities extends XMLUtilities {
                 throw new DOMException(DOMException.INVALID_CHARACTER_ERR,
                                        "Wrong name initial:  " + c);
             }
-            StringBuffer ident = new StringBuffer();
+            StringBuilder ident = new StringBuilder();
             ident.append(c);
             while (++i < data.length()) {
                 c = data.charAt(i);
@@ -635,7 +635,7 @@ public class DOMUtilities extends XMLUtilities {
             // The next char must be '\'' or '"'
             c = data.charAt(i);
             i++;
-            StringBuffer value = new StringBuffer();
+            StringBuilder value = new StringBuilder();
             if (c == '\'') {
                 while (i < data.length()) {
                     c = data.charAt(i);

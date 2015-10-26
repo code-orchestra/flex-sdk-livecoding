@@ -666,7 +666,7 @@ public abstract class VelocityServlet extends HttpServlet
     protected void error( HttpServletRequest request, HttpServletResponse response, Exception cause )
         throws ServletException, IOException
     {
-        StringBuffer html = new StringBuffer();
+        StringBuilder html = new StringBuilder();
         html.append("<html>");
         html.append("<title>Error</title>");
         html.append("<body bgcolor=\"#ffffff\">");

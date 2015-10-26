@@ -118,7 +118,7 @@ public class Parse extends InputBase
         if ( templateStack.length >= 
                 rsvc.getInt(RuntimeConstants.PARSE_DIRECTIVE_MAXDEPTH, 20) )
         {
-            StringBuffer path = new StringBuffer();
+            StringBuilder path = new StringBuilder();
 
             for (Object aTemplateStack : templateStack) {
                 path.append(" > ").append(aTemplateStack);

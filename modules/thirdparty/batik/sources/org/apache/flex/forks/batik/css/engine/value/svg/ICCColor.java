@@ -85,7 +85,7 @@ public class ICCColor extends AbstractValue {
      *  A string representation of the current value.
      */
     public String getCssText() {
-        StringBuffer sb = new StringBuffer( count * 8 );
+        StringBuilder sb = new StringBuilder( count * 8 );
         sb.append("icc-color(");
         sb.append(colorProfile);
         for (int i = 0; i < count; i++) {

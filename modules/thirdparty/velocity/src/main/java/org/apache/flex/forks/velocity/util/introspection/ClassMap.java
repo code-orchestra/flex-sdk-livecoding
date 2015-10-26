@@ -186,7 +186,7 @@ public class ClassMap
     {
         Class[] parameterTypes = method.getParameterTypes();
         
-        StringBuffer methodKey = new StringBuffer(method.getName());
+        StringBuilder methodKey = new StringBuilder(method.getName());
 
         for (Class parameterType : parameterTypes) {
             /*
@@ -222,7 +222,7 @@ public class ClassMap
 
     private static String makeMethodKey(String method, Object[] params)
     {
-        StringBuffer methodKey = new StringBuffer().append(method);
+        StringBuilder methodKey = new StringBuilder().append(method);
 
         for (Object param : params) {
             Object arg = param;

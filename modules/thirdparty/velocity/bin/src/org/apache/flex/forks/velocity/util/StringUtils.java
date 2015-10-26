@@ -61,7 +61,7 @@ public class StringUtils
      */
     public String concat(List list)
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int size = list.size();
 
         for (Object aList : list) {
@@ -101,7 +101,7 @@ public class StringUtils
     static public String removeUnderScores (String data)
     {
         String temp = null;
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         temp = data;
 
         StringTokenizer st = new StringTokenizer(temp, "_");
@@ -158,7 +158,7 @@ public class StringUtils
     static public String removeAndHump (String data,String replaceThis)
     {
         String temp = null;
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         temp = data;
 
         StringTokenizer st = new StringTokenizer(temp, replaceThis);
@@ -312,7 +312,7 @@ public class StringUtils
             switch (ch)
             {
                 case '$':
-                    StringBuffer nameBuf = new StringBuffer();
+                    StringBuilder nameBuf = new StringBuilder();
                     for (++cIdx ; cIdx < argStr.length(); ++cIdx)
                     {
                         ch = argStr.charAt(cIdx);
@@ -385,7 +385,7 @@ public class StringUtils
     public static String collapseNewlines(String argStr)
     {
         char last = argStr.charAt(0);
-        StringBuffer argBuf = new StringBuffer();
+        StringBuilder argBuf = new StringBuilder();
 
         for (int cIdx = 0 ; cIdx < argStr.length(); cIdx++)
         {
@@ -409,7 +409,7 @@ public class StringUtils
     public static String collapseSpaces(String argStr)
     {
         char last = argStr.charAt(0);
-        StringBuffer argBuf = new StringBuffer();
+        StringBuilder argBuf = new StringBuilder();
 
         for (int cIdx = 0 ; cIdx < argStr.length(); cIdx++)
         {
@@ -442,7 +442,7 @@ public class StringUtils
             char [] line2 = line.toCharArray();
             char [] newString2 = newString.toCharArray();
             int oLength = oldString.length();
-            StringBuffer buf = new StringBuffer(line2.length);
+            StringBuilder buf = new StringBuilder(line2.length);
             buf.append(line2, 0, i).append(newString2);
             i += oLength;
             int j = i;

@@ -1052,7 +1052,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
     protected String normalizeString(String s,
                                      boolean preserve,
                                      boolean stripfirst) {
-        StringBuffer sb = new StringBuffer(s.length());
+        StringBuilder sb = new StringBuilder(s.length());
         if (preserve) {
             for (int i = 0; i < s.length(); i++) {
                 char c = s.charAt(i);
@@ -1230,7 +1230,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                                             (Map)attributes.get(0));
             }
 
-            StringBuffer sb = new StringBuffer( strings.size() * 5 );
+            StringBuilder sb = new StringBuilder( strings.size() * 5 );
             for (Object string : strings) {
                 sb.append((String) string);
             }
@@ -1267,7 +1267,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                 return (String)strings.get(0);
             }
 
-            StringBuffer sb = new StringBuffer( strings.size() * 5 );
+            StringBuilder sb = new StringBuilder( strings.size() * 5 );
             for (Object string : strings) {
                 sb.append((String) string);
             }

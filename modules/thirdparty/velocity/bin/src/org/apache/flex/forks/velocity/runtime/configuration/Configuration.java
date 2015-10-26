@@ -214,7 +214,7 @@ public class Configuration extends Hashtable
          */
         public String readProperty() throws IOException
         {
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
 
             try
             {
@@ -284,7 +284,7 @@ public class Configuration extends Hashtable
          */
         public String nextToken()
         {
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
 
             while (hasMoreTokens())
             {
@@ -716,7 +716,7 @@ public class Configuration extends Hashtable
                 {
                     if(value instanceof String)
                     {
-                        StringBuffer currentOutput = new StringBuffer();
+                        StringBuilder currentOutput = new StringBuilder();
                         currentOutput.append(key);
                         currentOutput.append("=");
                         currentOutput.append((String) value);
@@ -730,7 +730,7 @@ public class Configuration extends Hashtable
                         {
                             String currentElement = 
                                    (String) valuesEnum.nextElement();
-                            StringBuffer currentOutput = new StringBuffer();
+                            StringBuilder currentOutput = new StringBuilder();
                             currentOutput.append(key);
                             currentOutput.append("=");
                             currentOutput.append(currentElement);

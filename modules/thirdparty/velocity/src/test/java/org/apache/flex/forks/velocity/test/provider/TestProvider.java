@@ -311,7 +311,7 @@ public class TestProvider
     public void setBangStart( Integer i )
     {
         System.out.println("SetBangStart() : called with val = " + i );
-        stateint = i.intValue();
+        stateint = i;
     }
     public Integer bang()
     {

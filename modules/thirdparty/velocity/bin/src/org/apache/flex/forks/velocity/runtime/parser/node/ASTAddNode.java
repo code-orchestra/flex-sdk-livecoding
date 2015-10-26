@@ -97,7 +97,7 @@ public class ASTAddNode extends SimpleNode
             return null;
         }
 
-        return new Integer( ( (Integer) left ).intValue() + (  (Integer) right ).intValue() );
+        return new Integer((Integer) left + (Integer) right);
     }
 
 }

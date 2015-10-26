@@ -1143,7 +1143,7 @@ public class Configuration extends Hashtable
         Boolean b = getBoolean(key, (Boolean) null);
         if (b != null)
         {
-            return b.booleanValue();
+            return b;
         }
         else
         {
@@ -1163,7 +1163,7 @@ public class Configuration extends Hashtable
      */
     public boolean getBoolean(String key, boolean defaultValue)
     {
-        return getBoolean(key, Boolean.valueOf(defaultValue)).booleanValue();
+        return getBoolean(key, Boolean.valueOf(defaultValue));
     }
 
     /**
@@ -1257,7 +1257,7 @@ public class Configuration extends Hashtable
         Byte b = getByte(key, null);
         if (b != null)
         {
-            return b.byteValue();
+            return b;
         }
         else
         {
@@ -1280,7 +1280,7 @@ public class Configuration extends Hashtable
     public byte getByte(String key,
                         byte defaultValue)
     {
-        return getByte(key, new Byte(defaultValue)).byteValue();
+        return getByte(key, new Byte(defaultValue));
     }
 
     /**
@@ -1345,7 +1345,7 @@ public class Configuration extends Hashtable
         Short s = getShort(key, null);
         if (s != null)
         {
-            return s.shortValue();
+            return s;
         }
         else
         {
@@ -1368,7 +1368,7 @@ public class Configuration extends Hashtable
     public short getShort(String key,
                           short defaultValue)
     {
-        return getShort(key, new Short(defaultValue)).shortValue();
+        return getShort(key, new Short(defaultValue));
     }
 
     /**
@@ -1459,7 +1459,7 @@ public class Configuration extends Hashtable
         Integer i = getInteger(key, null);
         if (i != null)
         {
-            return i.intValue();
+            return i;
         }
         else
         {
@@ -1489,7 +1489,7 @@ public class Configuration extends Hashtable
             return defaultValue;
         }
         
-        return i.intValue();
+        return i;
       }
 
 
@@ -1555,7 +1555,7 @@ public class Configuration extends Hashtable
         Long l = getLong(key, null);
         if (l != null)
         {
-            return l.longValue();
+            return l;
         }
         else
         {
@@ -1578,7 +1578,7 @@ public class Configuration extends Hashtable
     public long getLong(String key,
                         long defaultValue)
     {
-        return getLong(key, new Long(defaultValue)).longValue();
+        return getLong(key, new Long(defaultValue));
     }
 
     /**
@@ -1643,7 +1643,7 @@ public class Configuration extends Hashtable
         Float f = getFloat(key, null);
         if (f != null)
         {
-            return f.floatValue();
+            return f;
         }
         else
         {
@@ -1666,7 +1666,7 @@ public class Configuration extends Hashtable
     public float getFloat(String key,
                           float defaultValue)
     {
-        return getFloat(key, new Float(defaultValue)).floatValue();
+        return getFloat(key, new Float(defaultValue));
     }
 
     /**
@@ -1731,7 +1731,7 @@ public class Configuration extends Hashtable
         Double d = getDouble(key, null);
         if (d != null)
         {
-            return d.doubleValue();
+            return d;
         }
         else
         {
@@ -1754,7 +1754,7 @@ public class Configuration extends Hashtable
     public double getDouble(String key,
                             double defaultValue)
     {
-        return getDouble(key, new Double(defaultValue)).doubleValue();
+        return getDouble(key, new Double(defaultValue));
     }
 
     /**

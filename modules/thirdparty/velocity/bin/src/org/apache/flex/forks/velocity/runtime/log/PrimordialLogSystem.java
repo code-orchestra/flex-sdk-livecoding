@@ -82,7 +82,7 @@ public class PrimordialLogSystem implements LogSystem
                 for( Enumeration e = pendingMessages.elements(); e.hasMoreElements(); )
                 {
                     Object[] data = (Object[]) e.nextElement();
-                    newLogger.logVelocityMessage(((Integer) data[0]).intValue(), (String) data[1]);
+                    newLogger.logVelocityMessage((Integer) data[0], (String) data[1]);
                 }
             }    
         }

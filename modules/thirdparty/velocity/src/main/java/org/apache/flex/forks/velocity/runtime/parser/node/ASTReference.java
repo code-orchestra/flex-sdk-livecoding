@@ -325,7 +325,7 @@ public class ASTReference extends SimpleNode
         }
         else if (value instanceof Boolean)
         {
-            if (((Boolean) value).booleanValue())
+            if ((Boolean) value)
                 return true;
             else
                 return false;

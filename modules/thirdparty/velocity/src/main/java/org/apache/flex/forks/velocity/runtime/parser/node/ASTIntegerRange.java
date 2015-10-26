@@ -102,8 +102,8 @@ public class ASTIntegerRange extends SimpleNode {
          *  get the two integer values of the ends of the range
          */
 
-        int l = ( (Integer) left ).intValue() ;
-        int r = (  (Integer) right ).intValue();
+        int l = (Integer) left;
+        int r = (Integer) right;
 
         /*
          *  find out how many there are

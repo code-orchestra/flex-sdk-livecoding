@@ -67,7 +67,7 @@ class JJTParserState {
      stack.  */
   Node popNode() {
     if (--sp < mk) {
-      mk = ((Integer)marks.pop()).intValue();
+      mk = (Integer) marks.pop();
     }
     return (Node)nodes.pop();
   }
@@ -88,7 +88,7 @@ class JJTParserState {
     while (sp > mk) {
       popNode();
     }
-    mk = ((Integer)marks.pop()).intValue();
+    mk = (Integer) marks.pop();
   }
 
 
@@ -104,7 +104,7 @@ class JJTParserState {
      made the children of the definite node.  Then the definite node
      is pushed on to the stack. */
   void closeNodeScope(Node n, int num) {
-    mk = ((Integer)marks.pop()).intValue();
+    mk = (Integer) marks.pop();
     while (num-- > 0) {
       Node c = popNode();
       c.jjtSetParent(n);
@@ -124,7 +124,7 @@ class JJTParserState {
   void closeNodeScope(Node n, boolean condition) {
     if (condition) {
       int a = nodeArity();
-      mk = ((Integer)marks.pop()).intValue();
+      mk = (Integer) marks.pop();
       while (a-- > 0) {
 	Node c = popNode();
 	c.jjtSetParent(n);
@@ -134,7 +134,7 @@ class JJTParserState {
       pushNode(n);
       node_created = true;
     } else {
-      mk = ((Integer)marks.pop()).intValue();
+      mk = (Integer) marks.pop();
       node_created = false;
     }
   }

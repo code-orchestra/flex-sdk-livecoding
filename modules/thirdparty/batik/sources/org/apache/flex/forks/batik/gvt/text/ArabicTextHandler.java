@@ -207,7 +207,7 @@ public class ArabicTextHandler {
                     if (arabicCharShapesRight(prevChar)
                         && arabicCharShapesLeft(currentChar)) {
                         // Increment the form of the previous char
-                        prevForm = new Integer(prevForm.intValue()+1);
+                        prevForm = new Integer(prevForm +1);
                         as.addAttribute(ARABIC_FORM, prevForm,
                                         prevCharIndex, prevCharIndex+1);
 
@@ -435,7 +435,7 @@ public class ArabicTextHandler {
                         && nextForm.equals(ARABIC_INITIAL)) {
                         // look for an isolated ligature
                         int substChar = ArabicTextHandler.getSubstituteChar
-                            (c, nextChar,ARABIC_ISOLATED.intValue());
+                            (c, nextChar, ARABIC_ISOLATED);
                         if (substChar > -1) {
                             substString.append((char)substChar);
                             i++;
@@ -444,7 +444,7 @@ public class ArabicTextHandler {
                     } else if (form.equals(ARABIC_TERMINAL)) {
                         // look for a terminal ligature
                         int substChar = ArabicTextHandler.getSubstituteChar
-                            (c, nextChar,ARABIC_TERMINAL.intValue());
+                            (c, nextChar, ARABIC_TERMINAL);
                         if (substChar > -1) {
                             substString.append((char)substChar);
                             i++;
@@ -454,7 +454,7 @@ public class ArabicTextHandler {
                                && nextForm.equals(ARABIC_MEDIAL)) {
                         // look for a medial ligature
                         int substChar = ArabicTextHandler.getSubstituteChar
-                            (c, nextChar,ARABIC_MEDIAL.intValue());
+                            (c, nextChar, ARABIC_MEDIAL);
                         if (substChar > -1) {
                             substString.append((char)substChar);
                             i++;
@@ -466,8 +466,8 @@ public class ArabicTextHandler {
 
             // couldn't find a matching ligature so just look for a
             // simple substitution
-            if (form != null && form.intValue() > 0) {
-                int substChar = getSubstituteChar(c, form.intValue());
+            if (form != null && form > 0) {
+                int substChar = getSubstituteChar(c, form);
                 if (substChar > -1) {
                     c = (char)substChar;
                 }

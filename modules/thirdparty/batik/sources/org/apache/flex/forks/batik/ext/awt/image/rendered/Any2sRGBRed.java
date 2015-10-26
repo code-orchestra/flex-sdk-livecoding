@@ -19,19 +19,10 @@
 package org.apache.flex.forks.batik.ext.awt.image.rendered;
 
 
-import java.awt.color.ColorSpace;
-import java.awt.image.BandCombineOp;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorConvertOp;
-import java.awt.image.ColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferInt;
-import java.awt.image.Raster;
-import java.awt.image.SampleModel;
-import java.awt.image.SinglePixelPackedSampleModel;
-import java.awt.image.WritableRaster;
-
 import org.apache.flex.forks.batik.ext.awt.image.GraphicsUtil;
+
+import java.awt.color.ColorSpace;
+import java.awt.image.*;
 
 /**
  * This function will tranform an image from any colorspace into a
@@ -66,24 +57,23 @@ public class Any2sRGBRed extends AbstractRed {
     }
 
     public static boolean is_INT_PACK_COMP(SampleModel sm) {
-        if(!(sm instanceof SinglePixelPackedSampleModel)) return false;
+        if (!(sm instanceof SinglePixelPackedSampleModel)) return false;
 
         // Check transfer types
-        if(sm.getDataType() != DataBuffer.TYPE_INT)       return false;
+        if (sm.getDataType() != DataBuffer.TYPE_INT) return false;
 
         SinglePixelPackedSampleModel sppsm;
-        sppsm = (SinglePixelPackedSampleModel)sm;
+        sppsm = (SinglePixelPackedSampleModel) sm;
 
-        int [] masks = sppsm.getBitMasks();
-        if ((masks.length != 3) && (masks.length != 4)) return false;
-        if(masks[0] != 0x00ff0000) return false;
-        if(masks[1] != 0x0000ff00) return false;
-        if(masks[2] != 0x000000ff) return false;
-        if ((masks.length == 4) &&
-            (masks[3] != 0xff000000)) return false;
-
-        return true;
-   }
+        int[] masks = sppsm.getBitMasks();
+        return !((masks.length != 3)
+                && (masks.length != 4))
+                && masks[0] == 0x00ff0000
+                && masks[1] == 0x0000ff00
+                && masks[2] == 0x000000ff
+                && !((masks.length == 4)
+                && (masks[3] != 0xff000000));
+    }
 
     /**
      * Exponent for linear to sRGB convertion

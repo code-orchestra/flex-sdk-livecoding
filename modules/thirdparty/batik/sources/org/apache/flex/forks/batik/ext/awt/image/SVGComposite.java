@@ -96,23 +96,16 @@ public class SVGComposite
     }
 
     public boolean is_INT_PACK(ColorModel cm) {
-          // Check ColorModel is of type DirectColorModel
-        if(!(cm instanceof PackedColorModel)) return false;
+        // Check ColorModel is of type DirectColorModel
+        if (!(cm instanceof PackedColorModel)) return false;
 
-        PackedColorModel pcm = (PackedColorModel)cm;
+        PackedColorModel pcm = (PackedColorModel) cm;
 
-        int [] masks = pcm.getMasks();
+        int[] masks = pcm.getMasks();
 
         // Check transfer type
-        if(masks.length != 4) return false;
-
-        if (masks[0] != 0x00ff0000) return false;
-        if (masks[1] != 0x0000ff00) return false;
-        if (masks[2] != 0x000000ff) return false;
-        if (masks[3] != 0xff000000) return false;
-
-        return true;
-   }
+        return masks.length == 4 && masks[0] == 0x00ff0000 && masks[1] == 0x0000ff00 && masks[2] == 0x000000ff && masks[3] == 0xff000000;
+    }
 
     public CompositeContext createContext(ColorModel srcCM,
                                           ColorModel dstCM,

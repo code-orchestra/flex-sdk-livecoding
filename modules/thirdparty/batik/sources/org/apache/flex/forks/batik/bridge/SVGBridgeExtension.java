@@ -18,11 +18,11 @@
  */
 package org.apache.flex.forks.batik.bridge;
 
-import java.util.Collections;
-import java.util.Iterator;
-
 import org.apache.flex.forks.batik.util.SVGConstants;
 import org.w3c.dom.Element;
+
+import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * This is a Service interface for classes that want to extend the
@@ -171,11 +171,8 @@ public class SVGBridgeExtension implements BridgeExtension {
             return false;
         }
         String ln = e.getLocalName();
-        if (ln.equals(SVGConstants.SVG_SCRIPT_TAG)
-                || ln.startsWith("animate")
-                || ln.equals(SVGConstants.SVG_SET_TAG)) {
-            return true;
-        }
-        return false;
+        return !(!ln.equals(SVGConstants.SVG_SCRIPT_TAG)
+                && !ln.startsWith("animate")
+                && !ln.equals(SVGConstants.SVG_SET_TAG));
     }
 }

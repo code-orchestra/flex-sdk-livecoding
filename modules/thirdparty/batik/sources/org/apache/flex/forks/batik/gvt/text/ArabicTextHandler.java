@@ -242,10 +242,7 @@ public class ArabicTextHandler {
      * @return True if the char is arabic, false otherwise.
      */
     public static boolean arabicChar(char c) {
-        if (c >= arabicStart && c <= arabicEnd) {
-            return true;
-        }
-        return false;
+        return c >= arabicStart && c <= arabicEnd;
     }
 
     /**
@@ -283,17 +280,8 @@ public class ArabicTextHandler {
      */
     public static boolean arabicCharTransparent(char c) {
         int charVal = c;
-        if ((charVal  < 0x064B) || (charVal > 0x06ED))
-            return false;
-
-        if ((charVal <= 0x0655)                      ||
-            (charVal == 0x0670)                      ||
-            (charVal >= 0x06D6 && charVal <= 0x06E4) ||
-            (charVal >= 0x06E7 && charVal <= 0x06E8) ||
-            (charVal >= 0x06EA)) {
-            return true;
-        }
-        return false;
+        return !((charVal < 0x064B) || (charVal > 0x06ED))
+                && ((charVal <= 0x0655) || (charVal == 0x0670) || (charVal >= 0x06D6 && charVal <= 0x06E4) || (charVal >= 0x06E7 && charVal <= 0x06E8) || (charVal >= 0x06EA));
     }
 
     /**
@@ -305,24 +293,21 @@ public class ArabicTextHandler {
      */
     private static boolean arabicCharShapesRight(char c) {
         int charVal = c;
-        if ((charVal >= 0x0622 && charVal <= 0x0625)
-         || (charVal == 0x0627)
-         || (charVal == 0x0629)
-         || (charVal >= 0x062F && charVal <= 0x0632)
-         || (charVal == 0x0648)
-         || (charVal >= 0x0671 && charVal <= 0x0673)
-         || (charVal >= 0x0675 && charVal <= 0x0677)
-         || (charVal >= 0x0688 && charVal <= 0x0699)
-         || (charVal == 0x06C0)
-         || (charVal >= 0x06C2 && charVal <= 0x06CB)
-         || (charVal == 0x06CD)
-         || (charVal == 0x06CF)
-         || (charVal >= 0x06D2 && charVal <= 0x06D3)
-         // check for duel shaping too
-         || arabicCharShapesDuel(c)) {
-            return true;
-        }
-        return false;
+        return (charVal >= 0x0622 && charVal <= 0x0625)
+                || (charVal == 0x0627)
+                || (charVal == 0x0629)
+                || (charVal >= 0x062F && charVal <= 0x0632)
+                || (charVal == 0x0648)
+                || (charVal >= 0x0671 && charVal <= 0x0673)
+                || (charVal >= 0x0675 && charVal <= 0x0677)
+                || (charVal >= 0x0688 && charVal <= 0x0699)
+                || (charVal == 0x06C0)
+                || (charVal >= 0x06C2 && charVal <= 0x06CB)
+                || (charVal == 0x06CD)
+                || (charVal == 0x06CF)
+                || (charVal >= 0x06D2 && charVal <= 0x06D3)
+                // check for duel shaping too
+                || arabicCharShapesDuel(c);
     }
 
     /**
@@ -334,22 +319,19 @@ public class ArabicTextHandler {
     private static boolean arabicCharShapesDuel(char c) {
         int charVal = c;
 
-        if ((charVal == 0x0626)
-         || (charVal == 0x0628)
-         || (charVal >= 0x062A && charVal <= 0x062E)
-         || (charVal >= 0x0633 && charVal <= 0x063A)
-         || (charVal >= 0x0641 && charVal <= 0x0647)
-         || (charVal >= 0x0649 && charVal <= 0x064A)
-         || (charVal >= 0x0678 && charVal <= 0x0687)
-         || (charVal >= 0x069A && charVal <= 0x06BF)
-         || (charVal == 0x6C1)
-         || (charVal == 0x6CC)
-         || (charVal == 0x6CE)
-         || (charVal >= 0x06D0 && charVal <= 0x06D1)
-         || (charVal >= 0x06FA && charVal <= 0x06FC)) {
-            return true;
-        }
-        return false;
+        return (charVal == 0x0626)
+                || (charVal == 0x0628)
+                || (charVal >= 0x062A && charVal <= 0x062E)
+                || (charVal >= 0x0633 && charVal <= 0x063A)
+                || (charVal >= 0x0641 && charVal <= 0x0647)
+                || (charVal >= 0x0649 && charVal <= 0x064A)
+                || (charVal >= 0x0678 && charVal <= 0x0687)
+                || (charVal >= 0x069A && charVal <= 0x06BF)
+                || (charVal == 0x6C1)
+                || (charVal == 0x6CC)
+                || (charVal == 0x6CE)
+                || (charVal >= 0x06D0 && charVal <= 0x06D1)
+                || (charVal >= 0x06FA && charVal <= 0x06FC);
     }
 
     /**
@@ -505,13 +487,10 @@ public class ArabicTextHandler {
      */
     public static boolean charStartsLigature(char c) {
         int charVal = c;
-        if (charVal == 0x064B || charVal == 0x064C || charVal == 0x064D
-         || charVal == 0x064E || charVal == 0x064F || charVal == 0x0650
-         || charVal == 0x0651 || charVal == 0x0652 || charVal == 0x0622
-         || charVal == 0x0623 || charVal == 0x0625 || charVal == 0x0627) {
-            return true;
-        }
-        return false;
+        return charVal == 0x064B || charVal == 0x064C || charVal == 0x064D
+                || charVal == 0x064E || charVal == 0x064F || charVal == 0x0650
+                || charVal == 0x0651 || charVal == 0x0652 || charVal == 0x0622
+                || charVal == 0x0623 || charVal == 0x0625 || charVal == 0x0627;
     }
 
     /**
@@ -539,16 +518,8 @@ public class ArabicTextHandler {
      */
     public static boolean isLigature(char c) {
         int charVal = c;
-        if ((charVal < 0xFE70) || (charVal > 0xFEFC))
-            return false;
+        return !((charVal < 0xFE70) || (charVal > 0xFEFC)) && ((charVal <= 0xFE72) || (charVal == 0xFE74) || (charVal >= 0xFE76 && charVal <= 0xFE7F) || (charVal >= 0xFEF5));
 
-        if ((charVal <= 0xFE72)                      ||
-            (charVal == 0xFE74)                      ||
-            (charVal >= 0xFE76 && charVal <= 0xFE7F) ||
-            (charVal >= 0xFEF5)) {
-            return true;
-        }
-        return false;
     }
 
 

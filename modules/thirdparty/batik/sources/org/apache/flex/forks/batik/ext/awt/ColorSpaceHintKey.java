@@ -72,13 +72,12 @@ public final class ColorSpaceHintKey extends RenderingHints.Key {
     ColorSpaceHintKey(int number) { super(number); }
 
     public boolean isCompatibleValue(Object val) {
-        if (val == VALUE_COLORSPACE_ARGB)          return true;
-        if (val == VALUE_COLORSPACE_RGB)           return true;
-        if (val == VALUE_COLORSPACE_GREY)          return true;
-        if (val == VALUE_COLORSPACE_AGREY)         return true;
-        if (val == VALUE_COLORSPACE_ALPHA)         return true;
-        if (val == VALUE_COLORSPACE_ALPHA_CONVERT) return true;
-        return false;
+        return val == VALUE_COLORSPACE_ARGB
+                || val == VALUE_COLORSPACE_RGB
+                || val == VALUE_COLORSPACE_GREY
+                || val == VALUE_COLORSPACE_AGREY
+                || val == VALUE_COLORSPACE_ALPHA
+                || val == VALUE_COLORSPACE_ALPHA_CONVERT;
     }
 }
 

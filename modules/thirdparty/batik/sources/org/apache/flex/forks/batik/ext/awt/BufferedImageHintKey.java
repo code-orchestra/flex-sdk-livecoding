@@ -38,14 +38,8 @@ final class BufferedImageHintKey extends RenderingHints.Key {
 
         if (!(val instanceof Reference))
             return false;
-        Reference ref = (Reference)val;
+        Reference ref = (Reference) val;
         val = ref.get();
-        if (val == null)
-            return true;
-        if (val instanceof BufferedImage)
-            return true;
-
-        return false;
+        return val == null || val instanceof BufferedImage;
     }
 }
-

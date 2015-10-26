@@ -287,11 +287,7 @@ public class DOMUtilities extends XMLUtilities {
      * @return True if a node is a child of the given parent node
      */
     public static boolean isParentOf(Node node, Node parentNode) {
-        if (node == null || parentNode == null
-                || node.getParentNode() != parentNode) {
-            return false;
-        }
-        return true;
+        return !(node == null || parentNode == null || node.getParentNode() != parentNode);
     }
 
     /**
@@ -304,11 +300,7 @@ public class DOMUtilities extends XMLUtilities {
      * @return True if the given node can be appended on the parent node
      */
     public static boolean canAppend(Node node, Node parentNode) {
-        if (node == null || parentNode == null || node == parentNode
-                || isAncestorOf(node, parentNode)) {
-            return false;
-        }
-        return true;
+        return !(node == null || parentNode == null || node == parentNode || isAncestorOf(node, parentNode));
     }
 
     /**

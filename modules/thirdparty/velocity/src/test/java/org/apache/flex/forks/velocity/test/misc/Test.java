@@ -16,40 +16,22 @@ package org.apache.flex.forks.velocity.test.misc;
  * limitations under the License.
  */
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.io.StringWriter;
-
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.HashMap;
-import java.util.Properties;
-import java.util.Stack;
-import java.util.Vector;
-import java.util.Enumeration;
-
-import org.apache.flex.forks.velocity.VelocityContext;
 import org.apache.flex.forks.velocity.Template;
-
+import org.apache.flex.forks.velocity.VelocityContext;
 import org.apache.flex.forks.velocity.app.FieldMethodizer;
 import org.apache.flex.forks.velocity.app.Velocity;
-
+import org.apache.flex.forks.velocity.app.event.EventCartridge;
+import org.apache.flex.forks.velocity.app.event.MethodExceptionEventHandler;
+import org.apache.flex.forks.velocity.app.event.NullSetEventHandler;
+import org.apache.flex.forks.velocity.app.event.ReferenceInsertionEventHandler;
+import org.apache.flex.forks.velocity.exception.MethodInvocationException;
 import org.apache.flex.forks.velocity.exception.ParseErrorException;
 import org.apache.flex.forks.velocity.exception.ResourceNotFoundException;
-import org.apache.flex.forks.velocity.exception.MethodInvocationException;
-
 import org.apache.flex.forks.velocity.runtime.RuntimeSingleton;
 import org.apache.flex.forks.velocity.test.provider.TestProvider;
 
-import org.apache.flex.forks.velocity.app.event.EventCartridge;
-import org.apache.flex.forks.velocity.app.event.ReferenceInsertionEventHandler;
-import org.apache.flex.forks.velocity.app.event.MethodExceptionEventHandler;
-import org.apache.flex.forks.velocity.app.event.NullSetEventHandler;
-
-import org.apache.flex.forks.velocity.context.Context;
+import java.io.*;
+import java.util.*;
 
 
 /**
@@ -279,11 +261,7 @@ public class Test implements ReferenceInsertionEventHandler,
     public boolean shouldLogOnNullSet( String lhs, String rhs )
     {
         //        System.out.println("Woo2! nullSetLogMessage : " + lhs + " :  RHS = " + rhs);
-
-        if (lhs.equals("$woogie"))
-            return false;
-        
-        return true;
+        return !lhs.equals("$woogie");
     }
 
    public Object methodException( Class claz, String method, Exception e )

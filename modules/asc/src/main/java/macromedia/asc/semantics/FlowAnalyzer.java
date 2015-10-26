@@ -3529,22 +3529,17 @@ else
         ObjectList<String> namespace_ids = new ObjectList<String>(1);
 
 
-        if( node.attrs != null)
-        {
-            if( node.attrs.hasVirtual && node.attrs.hasFinal )
-            {
+        if( node.attrs != null) {
+            if (node.attrs.hasVirtual && node.attrs.hasFinal) {
                 cx.error(node.attrs.pos(), kError_FuncIsVirtualAndFinal);
             }
-            if( node.attrs.hasStatic && node.attrs.hasVirtual )
-            {
+            if (node.attrs.hasStatic && node.attrs.hasVirtual) {
                 cx.error(node.attrs.pos(), kError_FuncIsStaticAndVirtual);
             }
-            if( node.attrs.hasStatic && node.attrs.hasOverride )
-            {
+            if (node.attrs.hasStatic && node.attrs.hasOverride) {
                 cx.error(node.attrs.pos(), kError_FuncIsStaticAndOverride);
             }
-            if( node.attrs.hasStatic && node.attrs.hasDynamic )
-            {
+            if (node.attrs.hasStatic && node.attrs.hasDynamic) {
                 cx.error(node.attrs.pos(), kError_InvalidDynamic);
             }
 
@@ -3553,14 +3548,8 @@ else
             is_native = node.attrs.hasNative;
             is_dynamic = node.attrs.hasDynamic;
 
-            if( is_static )
-            {
-                is_final = true;  // statics are always final
-            }
-            else
-            {
-                is_final = node.attrs.hasFinal;
-            }
+            // statics are always final
+            is_final = is_static || node.attrs.hasFinal;
             is_override = node.attrs.hasOverride;
         }
 
@@ -6241,12 +6230,9 @@ else
      */
     private <T extends Builder>
         boolean currentScopeChainContainsBuilder
-                    (Class<T> builder, Context cx, int startingScopeDepth)
-    {
-        if(startingScopeDepth < 0) return false;
+                    (Class<T> builder, Context cx, int startingScopeDepth) {
+        return startingScopeDepth >= 0 && (builder.isInstance(cx.scope(startingScopeDepth).builder) || currentScopeChainContainsBuilder(builder, cx, startingScopeDepth - 1));
 
-        return (builder.isInstance(cx.scope(startingScopeDepth).builder)
-                || currentScopeChainContainsBuilder(builder, cx,startingScopeDepth-1));
     }
 
     private void processInterfacePublicMethods(Context cx, ObjectValue iframe)

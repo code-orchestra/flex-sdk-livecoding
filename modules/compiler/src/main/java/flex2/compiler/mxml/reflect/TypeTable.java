@@ -251,18 +251,10 @@ public class TypeTable
 
         public boolean equals(Object obj)
         {
-            if (obj == this)
-            {
+            if (obj == this) {
                 return true;
-            }
-            else if (obj instanceof Type)
-            {
-                return getName().equals(((Type) obj).getName());
-            }
-            else
-            {
-                return false;
-            }
+            } else
+                return obj instanceof Type && getName().equals(((Type) obj).getName());
         }
 
         public TypeTable getTypeTable()
@@ -668,46 +660,22 @@ public class TypeTable
             {
                 return true;
             }
-            else if (baseType == noType)
-            {
+            else if (baseType == noType) {
                 return false;
-            }
-            else if (baseType != null)
-            {
-                return isSubclassOf(baseType.getName());
-            }
-            else
-            {
-                return false;
-            }
+            } else
+                return baseType != null && isSubclassOf(baseType.getName());
         }
 
-        public boolean isSubclassOf(String baseName)
-        {
-            if (SymbolTable.NOTYPE.equals(baseName))
-            {
-                return false;
-            }
-            else
-            {
-                return isAssignableTo(baseName);
-            }
+        public boolean isSubclassOf(String baseName) {
+            return !SymbolTable.NOTYPE.equals(baseName) && isAssignableTo(baseName);
         }
 
         public boolean isAssignableTo(Type baseType)
         {
-            if (baseType == this || baseType == noType)
-            {
+            if (baseType == this || baseType == noType) {
                 return true;
-            }
-            else if (baseType != null)
-            {
-                return isAssignableTo(baseType.getName());
-            }
-            else
-            {
-                return false;
-            }
+            } else
+                return baseType != null && isAssignableTo(baseType.getName());
         }
 
         public boolean isAssignableTo(String baseName)

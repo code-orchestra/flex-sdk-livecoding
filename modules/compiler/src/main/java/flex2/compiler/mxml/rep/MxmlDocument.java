@@ -378,12 +378,8 @@ public final class MxmlDocument
        return new FilterIterator(new IteratorChain(root.getPropertyInitializerIterator(false),
                getTopLevelInitializerIterator()), new Predicate()
        {
-           public boolean evaluate(Object object)
-           {
-               if (object instanceof NamedInitializer)
-                   return (!StandardDefs.isStageProperty(((NamedInitializer)object).getName())) &&
-                   	      (!((NamedInitializer)object).isDesignLayer());
-               return true;
+           public boolean evaluate(Object object) {
+               return !(object instanceof NamedInitializer) || (!StandardDefs.isStageProperty(((NamedInitializer) object).getName())) && (!((NamedInitializer) object).isDesignLayer());
            }
        });
    }
@@ -410,11 +406,8 @@ public final class MxmlDocument
       return new FilterIterator(new IteratorChain(root.getPropertyInitializerIterator(false),
               getTopLevelInitializerIterator()), new Predicate()
       {
-          public boolean evaluate(Object object)
-          {
-              if (object instanceof NamedInitializer)
-                  return StandardDefs.isStageProperty(((NamedInitializer)object).getName());
-              return false;
+          public boolean evaluate(Object object) {
+              return object instanceof NamedInitializer && StandardDefs.isStageProperty(((NamedInitializer) object).getName());
           }
       });
   }

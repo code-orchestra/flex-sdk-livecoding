@@ -316,19 +316,15 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	/*
 	 * @see flash.tools.debugger.Session#isIsolateSuspended()
 	 */
-	public boolean isWorkerSuspended(int isolateId) throws NotConnectedException
-	{
+	public boolean isWorkerSuspended(int isolateId) throws NotConnectedException {
 		if (isolateId == Isolate.DEFAULT_ID)
 			return isSuspended();
-		
+
 		if (!isConnected())
 			throw new NotConnectedException();
-		
-		if (m_isolateStatus.containsKey(isolateId)) {
-			return m_isolateStatus.get(isolateId).m_isHalted;
-		}
-		
-		return false;
+
+		return m_isolateStatus.containsKey(isolateId) && m_isolateStatus.get(isolateId).m_isHalted;
+
 	}
 
 	/**

@@ -83,10 +83,8 @@ public class ASTOrNode extends SimpleNode
          *  same for right
          */
 
-        if ( right != null && right.evaluate( context ) )
-            return true;
+        return right != null && right.evaluate(context);
 
-        return false;
     }
 }
 

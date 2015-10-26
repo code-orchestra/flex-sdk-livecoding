@@ -586,16 +586,8 @@ public final class CompilationUnit
 	    standardDefs = defs;
 	}
 
-	public boolean equals(Object obj)
-	{
-		if (obj instanceof CompilationUnit)
-		{
-			return ((CompilationUnit) obj).getSource() == getSource();
-		}
-		else
-		{
-			return false;
-		}
+	public boolean equals(Object obj) {
+		return obj instanceof CompilationUnit && ((CompilationUnit) obj).getSource() == getSource();
 	}
 
 	// C: There is no need to persist this value. Ideally it should be in Context, but using Integer

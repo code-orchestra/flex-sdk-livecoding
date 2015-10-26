@@ -944,15 +944,12 @@ public abstract class TypeAnalysis
 		return o instanceof Number ? ((Number)o).doubleValue() : Double.NaN;
 	}
 	
-	public static boolean booleanValue(Object o)
-	{
+	public static boolean booleanValue(Object o) {
 		if (o instanceof Boolean)
 			return o == TRUE;
 		if (o instanceof String || o instanceof Namespace)
 			return true;
-		if (o == TypeCache.instance().NULL || o == UNDEFINED)
-			return false;
-		return doubleValue(o) != 0;
+		return !(o == TypeCache.instance().NULL || o == UNDEFINED) && doubleValue(o) != 0;
 	}
 	
 	public static String stringValue(Object v0)

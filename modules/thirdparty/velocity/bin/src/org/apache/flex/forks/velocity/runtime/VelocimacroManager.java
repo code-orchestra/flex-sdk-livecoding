@@ -328,12 +328,8 @@ public class VelocimacroManager
          *  currently, we only support the local template namespace idea
          */
 
-        if (inlineLocalMode)
-        {
-            return true;
-        }
+        return inlineLocalMode;
 
-        return false;
     }
 
     public String getLibraryName(String vmName, String namespace)

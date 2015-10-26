@@ -98,11 +98,8 @@ public final class FXGVersion
      * @return true if this object's value is equal to the 'version' object's
      * value; false otherwise
      */
-    public boolean equals(Object object)
-    {
-        if (!(object instanceof FXGVersion))
-            return false;
-        return equalTo((FXGVersion)object);
+    public boolean equals(Object object) {
+        return object instanceof FXGVersion && equalTo((FXGVersion) object);
     }
 
     /**

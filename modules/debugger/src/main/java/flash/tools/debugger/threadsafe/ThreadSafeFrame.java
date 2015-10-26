@@ -76,12 +76,9 @@ public class ThreadSafeFrame extends ThreadSafeDebuggerObject implements Frame {
 			if (other == null)
 				return false;
 			if (other instanceof ThreadSafeFrame) {
-				return (fFrame.equals(((ThreadSafeFrame)other).fFrame));
+				return (fFrame.equals(((ThreadSafeFrame) other).fFrame));
 			}
-			if (other instanceof Frame) {
-				return (fFrame.equals(other));
-			}
-			return false;
+			return other instanceof Frame && (fFrame.equals(other));
 		}
 	}
 

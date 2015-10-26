@@ -6771,25 +6771,17 @@ public class GlobalOptimizer
 		boolean needs_coercion;
 		
 		Typeref merged_type = typeMerge(to_ty, from_ty);
-		
-		if ( null == merged_type )
-		{
+
+		if (null == merged_type) {
 			//  No sensible meet of these types,
 			//  coercion necessary.
 			needs_coercion = true;
-		}
-		else if ( backwards_branch )
-		{
-			//  FIXME:  The type modeling in LocalVarState
-			//  needs to account for cross-block nullable changes.
-			needs_coercion = true;
-			//needs_coercion = ! from_ty.equals(to_ty);
-		}
-		else
-		{
-			needs_coercion = !to_ty.t.isMachineCompatible(merged_type.t);
-		}
-		
+		} else
+//  FIXME:  The type modeling in LocalVarState
+//  needs to account for cross-block nullable changes.
+//needs_coercion = ! from_ty.equals(to_ty);
+			needs_coercion = backwards_branch || !to_ty.t.isMachineCompatible(merged_type.t);
+
 		return needs_coercion;
 		
 	}
@@ -7285,11 +7277,8 @@ public class GlobalOptimizer
 		}
 	}
 	
-	boolean hasStackEffect(Expr e)
-	{
-		if (e == null || e.op == OP_arg)
-			return true;
-		return e.onStack() || e.args.length > 0;
+	boolean hasStackEffect(Expr e) {
+		return e == null || e.op == OP_arg || e.onStack() || e.args.length > 0;
 	}
 	
 	Typeref typeMerge(Typeref t1, Typeref t2)

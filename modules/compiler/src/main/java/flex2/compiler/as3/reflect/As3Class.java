@@ -401,17 +401,9 @@ public final class As3Class implements AbcClass
 	    return result;
 	}
 
-	public boolean isSubclassOf(String baseName)
-	{
-		if (SymbolTable.NOTYPE.equals(baseName))
-		{
-			return false;
-		}
-		else
-		{
-			return isAssignableTo(baseName);
-		}
-	}
+	public boolean isSubclassOf(String baseName) {
+        return !SymbolTable.NOTYPE.equals(baseName) && isAssignableTo(baseName);
+    }
 
 	public boolean isInterface()
 	{

@@ -97,13 +97,8 @@ public class ManagedClassInfo extends GenerativeClassInfo
         transientProperties = properties;
     }
 
-    public boolean isTransientProperty(String propertyName)
-    {
-        if (transientProperties != null)
-        {
-            return transientProperties.contains(propertyName);
-        }
-        return false;
+    public boolean isTransientProperty(String propertyName) {
+        return transientProperties != null && transientProperties.contains(propertyName);
     }
 
     /**

@@ -74,10 +74,7 @@ public class ThreadSafeValue extends ThreadSafeDebuggerObject implements Value {
 	
 	@Override
 	public boolean equals(Object other) {
-		if (other instanceof Value)
-			return fVal.equals(getRaw((Value)other));
-		else
-			return false;
+		return other instanceof Value && fVal.equals(getRaw((Value) other));
 	}
 
 	public int getAttributes() {

@@ -818,68 +818,36 @@ class DebuggerEvaluator implements Evaluator
 			long n2 = (ECMA.toUint32(session, eeContext.toValue(rhs.debuggerValue)) & 0x1F);
 			return new DebuggerValue((double) (n1 >>> n2));
 		}
-		case Tokens.LESSTHAN_TOKEN:
-		{
+		case Tokens.LESSTHAN_TOKEN: {
 			// ECMA 11.8.1
 			flash.tools.debugger.Value lessThan = ECMA.lessThan(session, eeContext.toValue(lhs.debuggerValue), eeContext
 					.toValue(rhs.debuggerValue));
 			boolean result;
-			if (lessThan.getType() == VariableType.UNDEFINED)
-			{
-				result = false;
-			}
-			else
-			{
-				result = ECMA.toBoolean(lessThan);
-			}
+			result = lessThan.getType() != VariableType.UNDEFINED && ECMA.toBoolean(lessThan);
 			return new DebuggerValue(result);
 		}
-		case Tokens.GREATERTHAN_TOKEN:
-		{
+		case Tokens.GREATERTHAN_TOKEN: {
 			// ECMA 11.8.2
 			flash.tools.debugger.Value greaterThan = ECMA.lessThan(session, eeContext.toValue(rhs.debuggerValue), eeContext
 					.toValue(lhs.debuggerValue));
 			boolean result;
-			if (greaterThan.getType() == VariableType.UNDEFINED)
-			{
-				result = false;
-			}
-			else
-			{
-				result = ECMA.toBoolean(greaterThan);
-			}
+			result = greaterThan.getType() != VariableType.UNDEFINED && ECMA.toBoolean(greaterThan);
 			return new DebuggerValue(result);
 		}
-		case Tokens.LESSTHANOREQUALS_TOKEN:
-		{
+		case Tokens.LESSTHANOREQUALS_TOKEN: {
 			// ECMA 11.8.3
 			flash.tools.debugger.Value lessThan = ECMA.lessThan(session, eeContext.toValue(rhs.debuggerValue), eeContext
 					.toValue(lhs.debuggerValue));
 			boolean result;
-			if (lessThan.getType() == VariableType.UNDEFINED)
-			{
-				result = false;
-			}
-			else
-			{
-				result = !ECMA.toBoolean(lessThan);
-			}
+			result = lessThan.getType() != VariableType.UNDEFINED && !ECMA.toBoolean(lessThan);
 			return new DebuggerValue(result);
 		}
-		case Tokens.GREATERTHANOREQUALS_TOKEN:
-		{
+		case Tokens.GREATERTHANOREQUALS_TOKEN: {
 			// ECMA 11.8.4
 			flash.tools.debugger.Value lessThan = ECMA.lessThan(session, eeContext.toValue(lhs.debuggerValue), eeContext
 					.toValue(rhs.debuggerValue));
 			boolean result;
-			if (lessThan.getType() == VariableType.UNDEFINED)
-			{
-				result = false;
-			}
-			else
-			{
-				result = !ECMA.toBoolean(lessThan);
-			}
+			result = lessThan.getType() != VariableType.UNDEFINED && !ECMA.toBoolean(lessThan);
 			return new DebuggerValue(result);
 		}
 		case Tokens.INSTANCEOF_TOKEN:

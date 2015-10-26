@@ -9,10 +9,7 @@ public class ObjectUtils {
         if (object1 == object2) {
             return true;
         }
-        if ((object1 == null) || (object2 == null)) {
-            return false;
-        }
-        return object1.equals(object2);
+        return !((object1 == null) || (object2 == null)) && object1.equals(object2);
     }
 
 }

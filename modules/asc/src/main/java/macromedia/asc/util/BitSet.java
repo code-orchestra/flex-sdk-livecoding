@@ -190,11 +190,8 @@ public final class BitSet
 		return s != null && !s.isEmpty() ? new BitSet(s) : null;
 	}
 
-	public boolean equals(Object obj)
-	{
-		if (!(obj instanceof BitSet))
-			return false;
-		return equals(this,(BitSet)obj);
+	public boolean equals(Object obj) {
+		return obj instanceof BitSet && equals(this, (BitSet) obj);
 	}
 	
 	public static boolean equals(BitSet a, BitSet b)

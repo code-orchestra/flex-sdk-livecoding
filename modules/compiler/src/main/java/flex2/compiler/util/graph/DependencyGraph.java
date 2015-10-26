@@ -126,30 +126,20 @@ public class DependencyGraph<EdgeWeight> extends Graph<String, EdgeWeight>
 		addEdge(new Edge<String,EdgeWeight>(tail, head, null));
 	}
 
-	public boolean dependencyExists(String name, String dep)
-	{
-		Vertex<String,EdgeWeight> tail = null, head = null;
+	public boolean dependencyExists(String name, String dep) {
+		Vertex<String, EdgeWeight> tail = null, head = null;
 
-		if ((head = vertices.get(name)) == null)
-		{
+		if ((head = vertices.get(name)) == null) {
 			return false;
 		}
 
-		if ((tail = vertices.get(dep)) == null)
-		{
+		if ((tail = vertices.get(dep)) == null) {
 			return false;
 		}
 
-		Set<Vertex<String,EdgeWeight>> predecessors = head.getPredecessors();
+		Set<Vertex<String, EdgeWeight>> predecessors = head.getPredecessors();
 
-		if (predecessors != null)
-		{
-			return predecessors.contains(tail);
-		}
-		else
-		{
-			return false;
-		}
+		return predecessors != null && predecessors.contains(tail);
 	}
 	
 	/**

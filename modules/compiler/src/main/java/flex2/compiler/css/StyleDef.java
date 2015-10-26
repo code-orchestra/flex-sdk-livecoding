@@ -246,12 +246,9 @@ public class StyleDef
      * @return true if a style manager will store style declarations that are 
      * the same as its parent style manager.
      */
-    public boolean getAllowDuplicateDefaultStyleDeclarations()
-    {
-        if (mxmlConfiguration != null)
-            return mxmlConfiguration.getAllowDuplicateDefaultStyleDeclarations();
-        
-        return false;   // default value
+    public boolean getAllowDuplicateDefaultStyleDeclarations() {
+        return mxmlConfiguration != null && mxmlConfiguration.getAllowDuplicateDefaultStyleDeclarations();
+
     }
     
     public Set<AtEmbed> getAtEmbeds()

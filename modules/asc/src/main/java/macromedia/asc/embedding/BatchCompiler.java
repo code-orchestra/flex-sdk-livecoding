@@ -568,16 +568,8 @@ public class BatchCompiler
 		int i, where;
 		boolean processed;
 
-		public boolean equals(Object obj)
-		{
-			if (obj instanceof Pair)
-			{
-				return i == ((Pair) obj).i && where == ((Pair) obj).where;
-			}
-			else
-			{
-				return false;
-			}
+		public boolean equals(Object obj) {
+			return obj instanceof Pair && i == ((Pair) obj).i && where == ((Pair) obj).where;
 		}
 
 		public int hashCode()

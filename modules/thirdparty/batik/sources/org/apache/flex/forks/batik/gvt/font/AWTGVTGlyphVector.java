@@ -18,12 +18,11 @@
  */
 package org.apache.flex.forks.batik.gvt.font;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Stroke;
+import org.apache.flex.forks.batik.gvt.text.ArabicTextHandler;
+import org.apache.flex.forks.batik.gvt.text.GVTAttributedCharacterIterator;
+import org.apache.flex.forks.batik.gvt.text.TextPaintInfo;
+
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphJustificationInfo;
 import java.awt.font.GlyphMetrics;
@@ -34,10 +33,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.text.AttributedCharacterIterator;
 import java.text.CharacterIterator;
-
-import org.apache.flex.forks.batik.gvt.text.ArabicTextHandler;
-import org.apache.flex.forks.batik.gvt.text.GVTAttributedCharacterIterator;
-import org.apache.flex.forks.batik.gvt.text.TextPaintInfo;
 
 /**
  * This is a wrapper class for a java.awt.font.GlyphVector instance.
@@ -307,13 +302,8 @@ public class AWTGVTGlyphVector implements GVTGlyphVector {
                 double tdy12 = tp1.getY()-tp2.getY();
                 double tdy13 = tp1.getY()-tp3.getY();
 
-                if (((Math.abs(tdx12) < 0.001) && (Math.abs(tdy13) < 0.001)) ||
-                    ((Math.abs(tdx13) < 0.001) && (Math.abs(tdy12) < 0.001))) {
-                    // If either of these are zero then it is axially aligned
-                    rotated[i] = false;
-                } else {
-                    rotated [i] = true;
-                }
+                rotated[i] = !(((Math.abs(tdx12) < 0.001) && (Math.abs(tdy13) < 0.001)) ||
+                        ((Math.abs(tdx13) < 0.001) && (Math.abs(tdy12) < 0.001)));
 
                 Rectangle2D rectBounds;
                 rectBounds = tempLogicalBounds[i].getBounds2D();

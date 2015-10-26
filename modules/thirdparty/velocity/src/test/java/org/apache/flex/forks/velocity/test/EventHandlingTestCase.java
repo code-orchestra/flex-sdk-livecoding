@@ -295,10 +295,8 @@ public class EventHandlingTestCase extends TestCase implements ReferenceInsertio
      */
     public boolean shouldLogOnNullSet( String lhs, String rhs )
     {
-        if (lhs.equals("$settest"))
-            return false;
-        
-        return true;
+        return !lhs.equals("$settest");
+
     }
 
     /**

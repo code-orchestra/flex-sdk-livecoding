@@ -18,22 +18,6 @@
  */
 package org.apache.flex.forks.batik.gvt;
 
-import java.awt.AlphaComposite;
-import java.awt.Composite;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.lang.ref.WeakReference;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.event.EventListenerList;
-
 import org.apache.flex.forks.batik.ext.awt.RenderingHintsKeyExt;
 import org.apache.flex.forks.batik.ext.awt.image.renderable.ClipRable;
 import org.apache.flex.forks.batik.ext.awt.image.renderable.Filter;
@@ -43,6 +27,17 @@ import org.apache.flex.forks.batik.gvt.filter.GraphicsNodeRable;
 import org.apache.flex.forks.batik.gvt.filter.GraphicsNodeRable8Bit;
 import org.apache.flex.forks.batik.gvt.filter.Mask;
 import org.apache.flex.forks.batik.util.HaltingThread;
+
+import javax.swing.event.EventListenerList;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.lang.ref.WeakReference;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A partial implementation of the <tt>GraphicsNode</tt> interface.
@@ -622,12 +617,9 @@ public abstract class AbstractGraphicsNode implements GraphicsNode {
             (val == RenderingHintsKeyExt.VALUE_TRANSCODING_VECTOR))
             return false;
 
-        if(!(clip instanceof Rectangle2D &&
-             usr2dev.getShearX() == 0 &&
-             usr2dev.getShearY() == 0))
-            return true;
-
-        return false;
+        return !(clip instanceof Rectangle2D &&
+                usr2dev.getShearX() == 0 &&
+                usr2dev.getShearY() == 0);
     }
 
     //

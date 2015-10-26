@@ -242,12 +242,7 @@ public class LocalizableSupport implements Localizable {
     }
 
     protected boolean hasNextResourceBundle(int i) {
-        if (i == 0) return true;
-        if (i < resourceBundles.size()) return true;
-
-        if (lastResourceClass == null) return false;
-        if (lastResourceClass == Object.class) return false;
-        return true;
+        return i == 0 || i < resourceBundles.size() || lastResourceClass != null && lastResourceClass != Object.class;
     }
 
     protected ResourceBundle lookupResourceBundle(String bundle,

@@ -736,12 +736,8 @@ public class SVGSVGElementBridge
         ShapeNode sn = (ShapeNode)gn;
         Shape sensitive = sn.getSensitiveArea();
         if (sensitive == null) return false;
-
         sensitive = at.createTransformedShape(sensitive);
-        if (sensitive.intersects(rect))
-            return true;
-
-        return false;
+        return sensitive.intersects(rect);
     }
 
     public boolean checkEnclosure (Element element, SVGRect svgRect ) {

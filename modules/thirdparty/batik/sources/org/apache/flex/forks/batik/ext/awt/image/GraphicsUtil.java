@@ -18,46 +18,19 @@
  */
 package org.apache.flex.forks.batik.ext.awt.image;
 
-import java.awt.Composite;
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Shape;
+import org.apache.flex.forks.batik.ext.awt.RenderingHintsKeyExt;
+import org.apache.flex.forks.batik.ext.awt.image.renderable.PaintRable;
+import org.apache.flex.forks.batik.ext.awt.image.rendered.*;
+
+import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.ComponentSampleModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
-import java.awt.image.DataBufferShort;
-import java.awt.image.DataBufferUShort;
-import java.awt.image.DirectColorModel;
-import java.awt.image.Raster;
-import java.awt.image.RenderedImage;
-import java.awt.image.SampleModel;
-import java.awt.image.SinglePixelPackedSampleModel;
-import java.awt.image.WritableRaster;
+import java.awt.image.*;
 import java.awt.image.renderable.RenderContext;
 import java.awt.image.renderable.RenderableImage;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
-
-import org.apache.flex.forks.batik.ext.awt.RenderingHintsKeyExt;
-import org.apache.flex.forks.batik.ext.awt.image.renderable.PaintRable;
-import org.apache.flex.forks.batik.ext.awt.image.rendered.AffineRed;
-import org.apache.flex.forks.batik.ext.awt.image.rendered.Any2LsRGBRed;
-import org.apache.flex.forks.batik.ext.awt.image.rendered.Any2sRGBRed;
-import org.apache.flex.forks.batik.ext.awt.image.rendered.BufferedImageCachableRed;
-import org.apache.flex.forks.batik.ext.awt.image.rendered.CachableRed;
-import org.apache.flex.forks.batik.ext.awt.image.rendered.FormatRed;
-import org.apache.flex.forks.batik.ext.awt.image.rendered.RenderedImageCachableRed;
-import org.apache.flex.forks.batik.ext.awt.image.rendered.TranslateRed;
 
 
 /**
@@ -1358,27 +1331,21 @@ public class GraphicsUtil {
     public static boolean is_INT_PACK_Data(SampleModel sm,
                                            boolean requireAlpha) {
         // Check ColorModel is of type DirectColorModel
-        if(!(sm instanceof SinglePixelPackedSampleModel)) return false;
+        if (!(sm instanceof SinglePixelPackedSampleModel)) return false;
 
         // Check transfer type
-        if(sm.getDataType() != DataBuffer.TYPE_INT)       return false;
+        if (sm.getDataType() != DataBuffer.TYPE_INT) return false;
 
         SinglePixelPackedSampleModel sppsm;
-        sppsm = (SinglePixelPackedSampleModel)sm;
+        sppsm = (SinglePixelPackedSampleModel) sm;
 
-        int [] masks = sppsm.getBitMasks();
+        int[] masks = sppsm.getBitMasks();
         if (masks.length == 3) {
             if (requireAlpha) return false;
         } else if (masks.length != 4)
             return false;
 
-        if(masks[0] != 0x00ff0000) return false;
-        if(masks[1] != 0x0000ff00) return false;
-        if(masks[2] != 0x000000ff) return false;
-        if ((masks.length == 4) &&
-            (masks[3] != 0xff000000)) return false;
-
-        return true;
+        return masks[0] == 0x00ff0000 && masks[1] == 0x0000ff00 && masks[2] == 0x000000ff && !((masks.length == 4) && (masks[3] != 0xff000000));
     }
 
         public static boolean is_BYTE_COMP_Data(SampleModel sm) {
@@ -1386,9 +1353,7 @@ public class GraphicsUtil {
             if(!(sm instanceof ComponentSampleModel))    return false;
 
             // Check transfer type
-            if(sm.getDataType() != DataBuffer.TYPE_BYTE) return false;
-
-            return true;
+            return sm.getDataType() == DataBuffer.TYPE_BYTE;
         }
 
     protected static void divide_INT_PACK_Data(WritableRaster wr) {

@@ -18,30 +18,16 @@
  */
 package org.apache.flex.forks.batik.gvt.text;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.Stroke;
+import org.apache.flex.forks.batik.gvt.font.*;
+
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextAttribute;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Line2D;
+import java.awt.geom.*;
 import java.text.AttributedCharacterIterator;
 import java.text.CharacterIterator;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.flex.forks.batik.gvt.font.AWTGVTFont;
-import org.apache.flex.forks.batik.gvt.font.AltGlyphHandler;
-import org.apache.flex.forks.batik.gvt.font.GVTFont;
-import org.apache.flex.forks.batik.gvt.font.GVTGlyphMetrics;
-import org.apache.flex.forks.batik.gvt.font.GVTGlyphVector;
-import org.apache.flex.forks.batik.gvt.font.GVTLineMetrics;
 
 /**
  * Implementation of TextSpanLayout which uses java.awt.font.GlyphVector.
@@ -1959,17 +1945,14 @@ public class GlyphLayout implements TextSpanLayout {
 
         Character.UnicodeBlock block = Character.UnicodeBlock.of(c);
 
-        if (block == Character.UnicodeBlock.BASIC_LATIN ||
-            block == Character.UnicodeBlock.LATIN_1_SUPPLEMENT ||
-            block == Character.UnicodeBlock.LATIN_EXTENDED_ADDITIONAL ||
-            block == Character.UnicodeBlock.LATIN_EXTENDED_A ||
-            block == Character.UnicodeBlock.LATIN_EXTENDED_B ||
-            block == Character.UnicodeBlock.ARABIC ||
-            block == Character.UnicodeBlock.ARABIC_PRESENTATION_FORMS_A ||
-            block == Character.UnicodeBlock.ARABIC_PRESENTATION_FORMS_B) {
-            return true;
-        }
-        return false;
+        return block == Character.UnicodeBlock.BASIC_LATIN ||
+                block == Character.UnicodeBlock.LATIN_1_SUPPLEMENT ||
+                block == Character.UnicodeBlock.LATIN_EXTENDED_ADDITIONAL ||
+                block == Character.UnicodeBlock.LATIN_EXTENDED_A ||
+                block == Character.UnicodeBlock.LATIN_EXTENDED_B ||
+                block == Character.UnicodeBlock.ARABIC ||
+                block == Character.UnicodeBlock.ARABIC_PRESENTATION_FORMS_A ||
+                block == Character.UnicodeBlock.ARABIC_PRESENTATION_FORMS_B;
     }
 
     /**

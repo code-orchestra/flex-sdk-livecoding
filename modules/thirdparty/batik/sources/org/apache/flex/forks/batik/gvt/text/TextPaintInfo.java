@@ -101,8 +101,7 @@ public class TextPaintInfo {
 
     public static boolean equivilent(TextPaintInfo tpi1, TextPaintInfo tpi2) {
         if (tpi1 == null) {
-            if (tpi2 == null) return true;
-            return false;
+            return tpi2 == null;
         } else if (tpi2 == null) return false;
 
         if ((tpi1.fillPaint == null) != (tpi2.fillPaint == null))

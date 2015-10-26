@@ -221,7 +221,7 @@ public class SAXParserMMImpl extends javax.xml.parsers.SAXParser
     public Parser getParser() throws SAXException {
         // Xerces2 AbstractSAXParser implements SAX1 Parser
         // assert(xmlReader instanceof Parser);
-        return (Parser) xmlReader;
+        return xmlReader;
     }
 
     /**

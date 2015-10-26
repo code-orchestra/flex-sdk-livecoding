@@ -108,7 +108,6 @@ public class FillShapePainter implements ShapePainter {
      */
     public boolean inPaintedArea(Point2D pt) {
         return !((paint == null) || (shape == null)) && shape.contains(pt);
-
     }
 
     /**

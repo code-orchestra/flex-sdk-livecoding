@@ -18,21 +18,21 @@
  */
 
 package macromedia.abc;
-import static macromedia.asc.parser.Tokens.EMPTY_TOKEN;
-import static macromedia.asc.semantics.Slot.*;
-
 import macromedia.asc.embedding.avmplus.*;
-import macromedia.asc.util.*;
 import macromedia.asc.parser.*;
 import macromedia.asc.semantics.*;
 import macromedia.asc.semantics.QName;
+import macromedia.asc.util.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+
+import static macromedia.asc.parser.Tokens.EMPTY_TOKEN;
+import static macromedia.asc.semantics.Slot.CALL_Method;
 
 @SuppressWarnings("nls") // TODO: Remove
 public final class AbcParser
@@ -701,7 +701,7 @@ public final class AbcParser
         }
         else
         {
-            assert (mn.nsIsSet != true):"expected a single namespace";
+            assert (!mn.nsIsSet):"expected a single namespace";
 
             String fullName = getStringFromCPool(mn.nameID);
             ObjectValue ns = getNamespace(mn.nsID);
@@ -742,7 +742,7 @@ public final class AbcParser
         {
             AbcData.BinaryMN superMN = getBinaryMNFromCPool(superID);
             
-            assert (superMN.nsIsSet != true):"expected a single namespace";
+            assert (!superMN.nsIsSet):"expected a single namespace";
             
             superNamespace = getNamespace(superMN.nsID);
             superName = getFullName(superMN);

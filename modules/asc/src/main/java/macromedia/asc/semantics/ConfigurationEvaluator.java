@@ -802,7 +802,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
         if( node.config_attrs != null )
         {
         	node.config_attrs.evaluate(cx, this);
-    		if( node.config_attrs.compileDefinition == false)
+    		if(!node.config_attrs.compileDefinition)
     			node.items.clear();
     		node.config_attrs = null;
         }

@@ -224,7 +224,7 @@ public class RuntimeInstance implements RuntimeConstants, RuntimeServices
     public synchronized void init()
         throws Exception
     {
-        if (initialized == false)
+        if (!initialized)
         {
             info("************************************************************** ");
             info("Starting Jakarta Velocity v1.4");

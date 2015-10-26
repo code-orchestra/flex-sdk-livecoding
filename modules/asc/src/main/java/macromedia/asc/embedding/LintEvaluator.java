@@ -798,7 +798,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
                     }
                 }
 
-                if (unsupported == false && baseType != null ) // check for unsupported event handlers (StyleSheet.onLoad = new function() ... )
+                if (!unsupported && baseType != null ) // check for unsupported event handlers (StyleSheet.onLoad = new function() ... )
                 {
                     Map<TypeValue,Integer> search = unsupportedEventsMap.get(node.ref.name);
                     if (search != null && ! search.isEmpty()) // it matches a former auto-registered event handler name
@@ -1901,7 +1901,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 		}
 		ObjectValue  fun = node.fun;
 		cx.pushScope(fun.activation);
-		if( node.isFunctionDefinition() == false )  // if it not a defn then 'this' can be used and is dynamic (i.e. don't warn about undeclared props/methods)
+		if(!node.isFunctionDefinition())  // if it not a defn then 'this' can be used and is dynamic (i.e. don't warn about undeclared props/methods)
 		{
 			this_contexts.add(global_this);
 		}
@@ -1967,7 +1967,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 
 
         open_namespaces.pop_back();
-		if( node.isFunctionDefinition() == false )
+		if(!node.isFunctionDefinition())
 		{
 			this_contexts.removeLast();
 		}
@@ -2073,7 +2073,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 			return null;
 		}
 
-        if(initialized == false)
+        if(!initialized)
             initialize(cx); // initialize tables and maps
 
 		// Unlike the other evaluators, we evaluate the ProgramNode twice

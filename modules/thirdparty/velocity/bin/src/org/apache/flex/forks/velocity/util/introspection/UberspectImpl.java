@@ -159,7 +159,7 @@ public class UberspectImpl implements Uberspect, UberspectLoggable
          *  if that didn't work, look for get("foo")
          */
 
-        if (executor.isAlive() == false)
+        if (!executor.isAlive())
         {
             executor = new GetExecutor(rlog, introspector, claz, identifier);
         }
@@ -168,7 +168,7 @@ public class UberspectImpl implements Uberspect, UberspectLoggable
          *  finally, look for boolean isFoo()
          */
 
-        if( executor.isAlive() == false)
+        if(!executor.isAlive())
         {
             executor = new BooleanPropertyExecutor(rlog, introspector, claz, identifier);
         }

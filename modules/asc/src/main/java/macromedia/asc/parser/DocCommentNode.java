@@ -83,7 +83,7 @@ public class DocCommentNode extends MetaDataNode
             {
                 for( Value v : meta.getValues())
                 {
-                    if (v instanceof MetaDataEvaluator.KeylessValue && has_name == false)
+                    if (v instanceof MetaDataEvaluator.KeylessValue && !has_name)
                     {
                         MetaDataEvaluator.KeylessValue ov = (MetaDataEvaluator.KeylessValue)v;
                         buf.append("name='").append(ov.obj).append("' ");
@@ -110,7 +110,7 @@ public class DocCommentNode extends MetaDataNode
 		// [Event], [Style], and [Effect] are documented as seperate entities, rather than
 		//   as elements of other entities.  In that case, we need to write out the asDoc
 		//   comment here 
-		if ( isAttributeOfDefinition == false)
+		if (!isAttributeOfDefinition)
 		{
 
 			if (getValues() != null)

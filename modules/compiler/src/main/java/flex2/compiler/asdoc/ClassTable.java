@@ -705,7 +705,7 @@ public class ClassTable implements DocCommentTable {
                         Value v = meta.getValues()[i];
                         if (v != null)
                         {
-                            if (v instanceof MetaDataEvaluator.KeylessValue && has_name == false)
+                            if (v instanceof MetaDataEvaluator.KeylessValue && !has_name)
                             {
                                 MetaDataEvaluator.KeylessValue ov = (MetaDataEvaluator.KeylessValue)v;
                                 this.key.name = ov.obj;
@@ -769,7 +769,7 @@ public class ClassTable implements DocCommentTable {
                 // [Event], [Style], and [Effect] are documented as seperate entities, rather than
                 //   as elements of other entities.  In that case, we need to write out the asDoc
                 //   comment here 
-                if (isAttributeOfDefinition == false)
+                if (!isAttributeOfDefinition)
                 {
                     if (current.getId() != null)
                     {

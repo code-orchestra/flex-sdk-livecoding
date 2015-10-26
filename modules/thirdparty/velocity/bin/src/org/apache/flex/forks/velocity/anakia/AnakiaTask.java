@@ -315,7 +315,7 @@ public class AnakiaTask extends MatchingTask
                             xmlFile.lastIndexOf('.')) + extension);
 
             // only process files that have changed
-            if (lastModifiedCheck == false || 
+            if (!lastModifiedCheck ||
                     (inFile.lastModified() > outFile.lastModified() ||
                     styleSheetLastModified > outFile.lastModified() ||
                     projectFileLastModified > outFile.lastModified()))

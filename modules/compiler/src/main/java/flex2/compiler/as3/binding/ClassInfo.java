@@ -145,7 +145,7 @@ public class ClassInfo extends Info
      */
     public Map<String, Boolean> getSkinParts(Boolean inherited)
     {
-        if (inherited == true)
+        if (inherited)
         {
             Map<String, Boolean> baseParts = null;
             //Get all base class skin parts

@@ -359,7 +359,7 @@ public final class MxmlDocument
     /**
      *
      */
-    private final Iterator<PropertyDeclaration> getTopLevelDeclarationIterator()
+    private Iterator<PropertyDeclaration> getTopLevelDeclarationIterator()
     {
         return new FilterIterator(declarations.values().iterator(), new Predicate()
         {
@@ -623,7 +623,7 @@ public final class MxmlDocument
     //  HACK: because essential stuff in a BindingExpression is set up *after* addBindingExpression() is called
     //  on it, we have to wait until the last minute before adding their destination types to the import list.
     //  TODO clean up BindingExpression setup. A BE should be completely configured by the time it's added here.
-    private final void ensureBindingImports()
+    private void ensureBindingImports()
     {
         if (!bindingImportsAdded)
         {
@@ -1022,7 +1022,7 @@ public final class MxmlDocument
      * If an inherited property by the given name exists, we check usage constraints.
      * @return true iff inherited property exists, and an assignment to it (under the given type) is an error.
      */
-    private final boolean inheritedPropertyUsageError(String name, Type type, int line)
+    private boolean inheritedPropertyUsageError(String name, Type type, int line)
     {
         assert root != null : "root null in checkInherited";
 
@@ -1062,7 +1062,7 @@ public final class MxmlDocument
      * Validates a set of states against our states list to ensure previous 
      * declaration.
      */
-    private final boolean unresolvedStateIdentifier(Collection states, int line)
+    private boolean unresolvedStateIdentifier(Collection states, int line)
     {
         for (Object state1 : states) {
             String state = (String) state1;

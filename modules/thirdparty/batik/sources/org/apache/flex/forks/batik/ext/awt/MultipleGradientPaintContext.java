@@ -1036,9 +1036,9 @@ abstract class MultipleGradientPaintContext implements PaintContext {
     }
 
 
-    private final int getAntiAlias(float p1, boolean p1_up,
-                                   float p2, boolean p2_up,
-                                   float sz, float weight) {
+    private int getAntiAlias(float p1, boolean p1_up,
+                             float p2, boolean p2_up,
+                             float sz, float weight) {
 
         // Until the last set of ops these are 28.4 fixed point values.
         int ach=0, rch=0, gch=0, bch=0;

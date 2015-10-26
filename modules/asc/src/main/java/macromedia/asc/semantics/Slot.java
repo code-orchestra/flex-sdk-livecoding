@@ -537,22 +537,22 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
 		return (Slot)getAuxData(AUX_OverriddenSlot);
 	}
 
-	private final void setUnaryOverloads(Overload unary_overloads)
+	private void setUnaryOverloads(Overload unary_overloads)
 	{
 		setAuxData(AUX_UnaryOverloads, unary_overloads);
 	}
 
-	private final Overload getUnaryOverloads()
+	private Overload getUnaryOverloads()
 	{
 		return (Overload)getAuxData(AUX_UnaryOverloads);
 	}
 
-	private final void setBinaryOverloads(Map<TypeValue, Overload> binary_overloads)
+	private void setBinaryOverloads(Map<TypeValue, Overload> binary_overloads)
 	{
 		setAuxData(AUX_BinaryOverloads, binary_overloads);
 	}
 
-	private final Map<TypeValue, Overload> getBinaryOverloads()
+	private Map<TypeValue, Overload> getBinaryOverloads()
 	{
 		return (Map<TypeValue, Overload>)getAuxData(AUX_BinaryOverloads);
 	}

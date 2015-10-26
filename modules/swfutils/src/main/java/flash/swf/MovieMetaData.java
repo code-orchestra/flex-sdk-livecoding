@@ -325,7 +325,7 @@ public final class MovieMetaData extends TagHandler
 		}
 	}
 
-	private static final boolean hasLineRecord(ActionList c)
+	private static boolean hasLineRecord(ActionList c)
 	{
 		if (c == null || c.size() == 0)
 		{

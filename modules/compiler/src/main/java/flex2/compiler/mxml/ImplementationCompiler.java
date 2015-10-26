@@ -425,7 +425,7 @@ class ImplementationCompiler extends flex2.compiler.AbstractSubCompiler
 	/**
 	 *
 	 */
-	private final VirtualFile generateImplementation(MxmlDocument doc)
+	private VirtualFile generateImplementation(MxmlDocument doc)
 	{
 	    StandardDefs standardDefs = doc.getStandardDefs();
 	    String classDefTemplate = CLASSDEF_TEMPLATE_PATH + standardDefs.getClassDefTemplate();

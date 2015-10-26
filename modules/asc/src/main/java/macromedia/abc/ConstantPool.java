@@ -721,7 +721,7 @@ final class IndexHistory
 	 * @param kind 0-based
 	 * @param oldIndex 1-based
 	 */
-	private final int calculateIndex(final int poolIndex, final int kind, final int oldIndex)
+	private int calculateIndex(final int poolIndex, final int kind, final int oldIndex)
 	{
 		int index = poolSizes[poolIndex];
 
@@ -770,7 +770,7 @@ final class IndexHistory
 		return index;
 	}
 
-	private final void decodeOnDemand(final int poolIndex, final int kind, final int j, final int j2)
+	private void decodeOnDemand(final int poolIndex, final int kind, final int j, final int j2)
     {
 	    ConstantPool pool = pools[poolIndex];
 	    ByteArrayPool baPool = null;

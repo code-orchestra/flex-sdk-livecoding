@@ -190,7 +190,7 @@ public final class Scanner implements ErrorConstants
     }
 
 
-    private final int makeCommentToken(int id, String text)
+    private int makeCommentToken(int id, String text)
     {
         currentToken.id = id;
         // leave currentToken.lookback alone, comments dont count.
@@ -198,7 +198,7 @@ public final class Scanner implements ErrorConstants
         return id;
     }
     
-    private final int makeToken(int id, String text)
+    private int makeToken(int id, String text)
     {
         currentToken.id = id;
         currentToken.lookback = id;
@@ -206,7 +206,7 @@ public final class Scanner implements ErrorConstants
         return id;
     }
     
-    private final int makeToken(int id)
+    private int makeToken(int id)
     {
         currentToken.id = id;
         currentToken.lookback = id;

@@ -354,7 +354,7 @@ public class InputBuffer
 	// utility for java branch only to convert a Character.getType() unicode type specifier to one of the enums
 	//  defined in CharacterClasses.java.  In the c++ branch, we use the character as an index to a table defined
 	//  in CharacterClasses.h
-	final private char javaTypeOfToCharacterClass(int javaClassOf)
+	private char javaTypeOfToCharacterClass(int javaClassOf)
 	{
 		switch(javaClassOf)
 		{

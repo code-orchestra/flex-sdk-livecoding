@@ -60,7 +60,7 @@ public class PrimordialLogSystem implements LogSystem
         synchronized( this )
         {
             Object[] data = new Object[2];
-            data[0] = new Integer(level);
+            data[0] = level;
             data[1] = message;
             pendingMessages.addElement(data);
         }

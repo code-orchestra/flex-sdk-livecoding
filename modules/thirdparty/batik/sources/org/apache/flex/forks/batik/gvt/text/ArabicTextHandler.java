@@ -134,7 +134,7 @@ public class ArabicTextHandler {
                 if (x != null && !x.isNaN()) {
                     reorderedAS.addAttribute
                         (GVTAttributedCharacterIterator.TextAttribute.X,
-                         new Float(Float.NaN), charOrder[0], charOrder[0]+1);
+                                Float.NaN, charOrder[0], charOrder[0]+1);
                     reorderedAS.addAttribute
                         (GVTAttributedCharacterIterator.TextAttribute.X,
                          x, 0, 1);
@@ -142,7 +142,7 @@ public class ArabicTextHandler {
                 if (y != null && !y.isNaN()) {
                     reorderedAS.addAttribute
                         (GVTAttributedCharacterIterator.TextAttribute.Y,
-                         new Float(Float.NaN), charOrder[0], charOrder[0]+1);
+                                Float.NaN, charOrder[0], charOrder[0]+1);
                     reorderedAS.addAttribute
                         (GVTAttributedCharacterIterator.TextAttribute.Y,
                          y, 0, 1);
@@ -207,7 +207,7 @@ public class ArabicTextHandler {
                     if (arabicCharShapesRight(prevChar)
                         && arabicCharShapesLeft(currentChar)) {
                         // Increment the form of the previous char
-                        prevForm = new Integer(prevForm +1);
+                        prevForm = prevForm + 1;
                         as.addAttribute(ARABIC_FORM, prevForm,
                                         prevCharIndex, prevCharIndex+1);
 

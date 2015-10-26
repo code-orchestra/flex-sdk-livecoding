@@ -90,9 +90,9 @@ public class ParserTokenManager implements ParserConstants
 
         Hashtable h = new Hashtable();
 
-        h.put("lexstate", new Integer( curLexState ) );
-        h.put("lparen", new Integer( lparen ));
-        h.put("rparen", new Integer( rparen ));
+        h.put("lexstate", curLexState);
+        h.put("lparen", lparen);
+        h.put("rparen", rparen);
 
         lparen = 0;
 

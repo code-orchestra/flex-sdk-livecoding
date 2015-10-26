@@ -169,7 +169,7 @@ public class Foreach extends Directive
 
         while (i.hasNext())
         {
-            context.put( counterName , new Integer(counter));
+            context.put( counterName , counter);
             context.put(elementKey,i.next());
             node.jjtGetChild(3).render(context, writer);
             counter++;

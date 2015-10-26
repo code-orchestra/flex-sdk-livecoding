@@ -18,12 +18,6 @@
  */
 package org.apache.flex.forks.batik.dom;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.apache.flex.forks.batik.dom.events.DOMMutationEvent;
 import org.apache.flex.forks.batik.dom.events.EventSupport;
 import org.apache.flex.forks.batik.dom.events.NodeEventTarget;
@@ -33,20 +27,17 @@ import org.apache.flex.forks.batik.dom.xbl.NodeXBL;
 import org.apache.flex.forks.batik.dom.xbl.XBLManagerData;
 import org.apache.flex.forks.batik.util.ParsedURL;
 import org.apache.flex.forks.batik.util.XMLConstants;
-
-import org.w3c.dom.Attr;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.UserDataHandler;
+import org.w3c.dom.*;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 import org.w3c.dom.events.MutationEvent;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * This class implements the {@link org.w3c.dom.Node} interface.
@@ -362,7 +353,7 @@ public abstract class AbstractNode
         }
 
         // prefix is guaranteed to be non-null here...
-        if (!prefix.equals("") && !DOMUtilities.isValidName(prefix)) {
+        if (!prefix.isEmpty() && !DOMUtilities.isValidName(prefix)) {
             throw createDOMException(DOMException.INVALID_CHARACTER_ERR,
                                      "prefix",
                                      new Object[] { new Integer(getNodeType()),

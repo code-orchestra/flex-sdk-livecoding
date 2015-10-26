@@ -266,7 +266,7 @@ public class TopLevelClassesGenerator
             trans.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             trans.setOutputProperty(OutputKeys.INDENT, "no");
 
-            if (!ditaDTDLoc.equals(""))
+            if (!ditaDTDLoc.isEmpty())
             {
                 trans.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, ditaDTDLoc + "/" + "adobeAPIPackage.dtd");
             }
@@ -548,7 +548,7 @@ public class TopLevelClassesGenerator
 
         classTable.put(fullName, thisClass);
 
-        if (packageName == null || packageName.equals(""))
+        if (packageName == null || packageName.isEmpty())
         {
             packageName = GLOBAL;
         }
@@ -595,13 +595,13 @@ public class TopLevelClassesGenerator
         }
 
         String isFinal = record.getAttribute("isFinal");
-        if (isFinal.equals(""))
+        if (isFinal.isEmpty())
         {
             isFinal = "false";
         }
 
         String isDynamic = record.getAttribute("isDynamic");
-        if (isDynamic.equals(""))
+        if (isDynamic.isEmpty())
         {
             isDynamic = "false";
         }
@@ -641,7 +641,7 @@ public class TopLevelClassesGenerator
             interfaceStr = record.getAttribute("interfaces");
         }
 
-        if (!interfaceStr.equals(""))
+        if (!interfaceStr.isEmpty())
         {
             thisClass.setInterfaceStr(interfaceStr);
         }
@@ -684,7 +684,7 @@ public class TopLevelClassesGenerator
             apiClassifierDef.appendChild(apiFinal);
         }
 
-        if (!author.equals(""))
+        if (!author.isEmpty())
         {
             Element tempAuthorElement = outputObject.createElement("author");
             tempAuthorElement.setTextContent(author);
@@ -1042,7 +1042,7 @@ public class TopLevelClassesGenerator
             {
                 for (int iy = 2; iy < playerVersionArr.length; iy++)
                 {
-                    if (!"".equals(playerVersionArr[iy]) && !"\n".equals(playerVersionArr[iy]))
+                    if (playerVersionArr[iy] != null && !playerVersionArr[iy].isEmpty() && !"\n".equals(playerVersionArr[iy]))
                     {
                         if ((iy != playerVersionArr.length - 1) && !playerVersionArr[iy].matches("\\s"))
                         {
@@ -1076,7 +1076,7 @@ public class TopLevelClassesGenerator
             {
                 for (int iy = 2; iy < productVersionArr.length; iy++)
                 {
-                    if (!"".equals(productVersionArr[iy]) && !"\n".equals(productVersionArr[iy]))
+                    if (productVersionArr[iy] != null && !productVersionArr[iy].isEmpty() && !"\n".equals(productVersionArr[iy]))
                     {
                         if ((iy != productVersionArr.length - 1) && !productVersionArr[iy].matches("\\s"))
                         {
@@ -1235,7 +1235,7 @@ public class TopLevelClassesGenerator
                         String nextDefault = paramDefaults.substring(lastParamDefault, nextParam);
                         lastParamDefault = nextParam + 1;
 
-                        if (nextName.equals(""))
+                        if (nextName.isEmpty())
                         {
                             continue;
                         }
@@ -1327,7 +1327,7 @@ public class TopLevelClassesGenerator
                     String copyRef = child.getTextContent();
                     copyRef = copyRef.replaceAll("[\\n\\s]", "");
 
-                    if (copyRef.equals(""))
+                    if (copyRef.isEmpty())
                     {
                         continue;
                     }
@@ -1634,18 +1634,18 @@ public class TopLevelClassesGenerator
 
         classNameSpacesSize = result.getClassNameSpaces().size();
         // special case for a method or var which is toplevel within a package:
-        if (classNameSize == 0 && !result.getPackageName().equals(""))
+        if (classNameSize == 0 && !result.getPackageName().isEmpty())
         {
             result.getClassNames().add("$$" + result.getPackageName() + "$$");
         }
 
         // now rebuild fullclassname from components
         result.setFullClassName("");
-        if (!result.getPackageName().equals(""))
+        if (!result.getPackageName().isEmpty())
         {
             result.setFullClassName(result.getPackageName());
 
-            if (classNameSpacesSize != 0 && !result.getClassNameSpaces().get(0).equals("public") && !result.getClassNameSpaces().get(0).equals(""))
+            if (classNameSpacesSize != 0 && !result.getClassNameSpaces().get(0).equals("public") && !result.getClassNameSpaces().get(0).isEmpty())
             {
                 result.setFullClassName(result.getFullClassName() + "$" + result.getClassNameSpaces().get(0) + ":");
             }
@@ -1656,12 +1656,12 @@ public class TopLevelClassesGenerator
         }
 
         classNameSize = result.getClassNames().size();
-        if (classNameSize != 0 && !result.getClassNames().get(0).equals(""))
+        if (classNameSize != 0 && !result.getClassNames().get(0).isEmpty())
         {
             result.setFullClassName(result.getFullClassName() + result.getClassNames().get(0));
         }
 
-        if (result.getFullClassName().equals(""))
+        if (result.getFullClassName().isEmpty())
         {
             result.setFullClassName(GLOBAL); // use fake "global" class to
             // hold global methods/props
@@ -1797,7 +1797,7 @@ public class TopLevelClassesGenerator
                     else
                     {
                         className = hrefStr.substring(0, poundLoc);
-                        if (className.equals(""))
+                        if (className.isEmpty())
                         {
                             if (qualifiedName.getClassNames().size() != 0)
                             {
@@ -1805,19 +1805,19 @@ public class TopLevelClassesGenerator
                             }
                         }
 
-                        if (packageNameStr.equals("") && classTable.get(className) == null)
+                        if (packageNameStr.isEmpty() && classTable.get(className) == null)
                         {
                             packageNameStr = qualifiedName.getPackageName();
                         }
 
                         String fullNameStr = "";
 
-                        if (!packageNameStr.equals(""))
+                        if (!packageNameStr.isEmpty())
                         {
                             fullNameStr = packageNameStr + ":";
                         }
 
-                        if (!className.equals(""))
+                        if (!className.isEmpty())
                         {
                             fullNameStr = fullNameStr + className;
                         }
@@ -1830,7 +1830,7 @@ public class TopLevelClassesGenerator
 
                     if (isValidLink)
                     {
-                        if (!packageNameStr.equals(""))
+                        if (!packageNameStr.isEmpty())
                         {
                             hrefStr = packageNameStr + ".xml#" + className + "/" + memberName;
                         }
@@ -1843,7 +1843,7 @@ public class TopLevelClassesGenerator
                     {
                         hrefStr = "";
 
-                        if (!packageNameStr.equals(""))
+                        if (!packageNameStr.isEmpty())
                         {
                             invalidHrefStr = packageNameStr + ".xml#" + className + "/" + memberName;
                         }
@@ -1867,7 +1867,7 @@ public class TopLevelClassesGenerator
                         className = hrefStr;
                     }
 
-                    if (className.equals(""))
+                    if (className.isEmpty())
                     {
                         if (qualifiedName.getClassNames().size() != 0)
                         {
@@ -1875,14 +1875,14 @@ public class TopLevelClassesGenerator
                         }
                     }
 
-                    if (packageNameStr.equals("") && classTable.get(className) == null)
+                    if (packageNameStr.isEmpty() && classTable.get(className) == null)
                     {
                         packageNameStr = qualifiedName.getPackageName();
                     }
 
                     String fullNameStr = "";
 
-                    if (!packageNameStr.equals(""))
+                    if (!packageNameStr.isEmpty())
                     {
                         fullNameStr = packageNameStr + ":";
                     }
@@ -1902,7 +1902,7 @@ public class TopLevelClassesGenerator
                             invalidHrefStr = temp + ".xml";
                         }
                     }
-                    else if (!packageNameStr.equals(""))
+                    else if (!packageNameStr.isEmpty())
                     {
                         hrefStr = packageNameStr + ".xml#" + className;
                     }
@@ -2263,7 +2263,7 @@ public class TopLevelClassesGenerator
             result.appendChild(swfBlock);
         }
 
-        if (!versionStr.equals(""))
+        if (!versionStr.isEmpty())
         {
             int langVersionIdx = versionStr.indexOf("-langversion");
             int productVersionIdx = versionStr.indexOf("-productversion");
@@ -2407,7 +2407,7 @@ public class TopLevelClassesGenerator
                             {
                                 for (int iy = 2; iy < tempPlayerVersionArr.length; iy++)
                                 {
-                                    if (!"".equals(tempPlayerVersionArr[iy]) && !"\n".equals(tempPlayerVersionArr[iy]))
+                                    if (tempPlayerVersionArr[iy] != null && !tempPlayerVersionArr[iy].isEmpty() && !"\n".equals(tempPlayerVersionArr[iy]))
                                     {
                                         if ((iy != tempPlayerVersionArr.length - 1) && !tempPlayerVersionArr[iy].matches("\\s"))
                                         {
@@ -2474,7 +2474,7 @@ public class TopLevelClassesGenerator
                             {
                                 for (int iy = 2; iy < tmpProductVersionArr.length; iy++)
                                 {
-                                    if (!"".equals(tmpProductVersionArr[iy]) && !"\n".equals(tmpProductVersionArr[iy]))
+                                    if (tmpProductVersionArr[iy] != null && !tmpProductVersionArr[iy].isEmpty() && !"\n".equals(tmpProductVersionArr[iy]))
                                     {
                                         if ((iy != tmpProductVersionArr.length - 1) && !tmpProductVersionArr[iy].matches("\\s"))
                                         {
@@ -2704,7 +2704,7 @@ public class TopLevelClassesGenerator
 
             String isConst = ((Element)parent).getAttribute("isConst");
 
-            if (isConst.equals(""))
+            if (isConst.isEmpty())
             {
                 isConst = "false";
             }
@@ -2737,7 +2737,7 @@ public class TopLevelClassesGenerator
             if (children != null && children.getLength() != 0)
             {
                 String author = children.item(0).getTextContent();
-                if (!author.equals(""))
+                if (!author.isEmpty())
                 {
                     Element authorElement = outputObject.createElement("author");
                     authorElement.setTextContent(author);
@@ -3583,7 +3583,7 @@ public class TopLevelClassesGenerator
                 if (authorList != null && authorList.getLength() != 0)
                 {
                     String author = authorList.item(0).getTextContent();
-                    if (!author.equals(""))
+                    if (!author.isEmpty())
                     {
                         Element authorElement = outputObject.createElement("author");
                         authorElement.setTextContent(author);
@@ -4261,7 +4261,7 @@ public class TopLevelClassesGenerator
 
                 Element deprecatedNode = null;
 
-                if (!eventElement.getAttribute("deprecatedMessage").equals(""))
+                if (!eventElement.getAttribute("deprecatedMessage").isEmpty())
                 {
                     deprecatedNode = outputObject.createElement("apiDeprecated");
                     Element apiDesc2 = outputObject.createElement("apiDesc");
@@ -4270,7 +4270,7 @@ public class TopLevelClassesGenerator
                     deprecatedNode.appendChild(apiDesc2);
                     asDocUtil.convertDescToDITA(apiDesc2, oldNewNamesMap);
                 }
-                else if (!eventElement.getAttribute("deprecatedReplacement").equals(""))
+                else if (!eventElement.getAttribute("deprecatedReplacement").isEmpty())
                 {
                     deprecatedNode = outputObject.createElement("apiDeprecated");
                     deprecatedNode.setAttribute("replacement", eventElement.getAttribute("deprecatedReplacement"));
@@ -4278,7 +4278,7 @@ public class TopLevelClassesGenerator
 
                 if (deprecatedNode != null)
                 {
-                    if (!eventElement.getAttribute("deprecatedSince").equals(""))
+                    if (!eventElement.getAttribute("deprecatedSince").isEmpty())
                     {
                         deprecatedNode.setAttribute("sinceVersion", eventElement.getAttribute("deprecatedSince"));
                     }
@@ -4371,11 +4371,11 @@ public class TopLevelClassesGenerator
                                         if (apiPropertyList != null && apiPropertyList.getLength() != 0)
                                         {
                                             apiProperty = (Element)apiPropertyList.item(0);
-                                            if (apiProperty.getAttribute("isBindable").equals("") || !apiProperty.getAttribute("isBindable").equals("true"))
+                                            if (apiProperty.getAttribute("isBindable").isEmpty() || !apiProperty.getAttribute("isBindable").equals("true"))
                                             {
                                                 apiProperty.setAttribute("isBindable", "true");
                                                 
-                                                if (!bindableEventName.equals(""))
+                                                if (!bindableEventName.isEmpty())
                                                 {
                                                     apiProperty.setAttribute("name", bindableEventName);  
                                                 }
@@ -4389,7 +4389,7 @@ public class TopLevelClassesGenerator
                                             apiProperty = outputObject.createElement("apiProperty");
                                             apiProperty.setAttribute("isBindable", "true");
                                             
-                                            if (!bindableEventName.equals(""))
+                                            if (!bindableEventName.isEmpty())
                                             {
                                                 apiProperty.setAttribute("name", bindableEventName);  
                                             }
@@ -4404,7 +4404,7 @@ public class TopLevelClassesGenerator
                                         apiProperty = outputObject.createElement("apiProperty");
                                         apiProperty.setAttribute("isBindable", "true");
                                         
-                                        if (!bindableEventName.equals(""))
+                                        if (!bindableEventName.isEmpty())
                                         {
                                             apiProperty.setAttribute("name", bindableEventName);  
                                         }
@@ -4422,7 +4422,7 @@ public class TopLevelClassesGenerator
                                     apiProperty = outputObject.createElement("apiProperty");
                                     apiProperty.setAttribute("isBindable", "true");
                                     
-                                    if (!bindableEventName.equals(""))
+                                    if (!bindableEventName.isEmpty())
                                     {
                                         apiProperty.setAttribute("name", bindableEventName);  
                                     }
@@ -4566,11 +4566,11 @@ public class TopLevelClassesGenerator
 
                 Element apiDeprecated = outputObject.createElement("apiDeprecated");
 
-                if (!deprecatedElement.getAttribute("replacement").equals(""))
+                if (!deprecatedElement.getAttribute("replacement").isEmpty())
                 {
                     apiDeprecated.setAttribute("replacement", deprecatedElement.getAttribute("replacement"));
                 }
-                else if (!deprecatedElement.getAttribute("message").equals(""))
+                else if (!deprecatedElement.getAttribute("message").isEmpty())
                 {
                     Element apiDesc = outputObject.createElement("apiDesc");
                     CDATASection cdata = outputObject.createCDATASection(deprecatedElement.getAttribute("message"));
@@ -4578,7 +4578,7 @@ public class TopLevelClassesGenerator
                     apiDeprecated.appendChild(apiDesc);
                     asDocUtil.convertDescToDITA(apiDesc, oldNewNamesMap);
                 }
-                else if (!deprecatedElement.getAttribute("name").equals(""))
+                else if (!deprecatedElement.getAttribute("name").isEmpty())
                 {
                     Element apiDesc = outputObject.createElement("apiDesc");
                     CDATASection cdata = outputObject.createCDATASection(deprecatedElement.getAttribute("name"));
@@ -4587,7 +4587,7 @@ public class TopLevelClassesGenerator
                     asDocUtil.convertDescToDITA(apiDesc, oldNewNamesMap);
                 }
 
-                if (!deprecatedElement.getAttribute("since").equals(""))
+                if (!deprecatedElement.getAttribute("since").isEmpty())
                 {
                     apiDeprecated.setAttribute("sinceVersion", deprecatedElement.getAttribute("since"));
                 }
@@ -5202,7 +5202,7 @@ public class TopLevelClassesGenerator
                 }
             }
 
-            if (asClass.getInterfaceStr() != null && !asClass.getInterfaceStr().equals("") && !asClass.getInterfaceStr().equals("Object"))
+            if (asClass.getInterfaceStr() != null && !asClass.getInterfaceStr().isEmpty() && !asClass.getInterfaceStr().equals("Object"))
             {
                 String[] interfaces = asClass.getInterfaceStr().split(";");
 
@@ -5497,7 +5497,7 @@ public class TopLevelClassesGenerator
                 continue;
             }
 
-            if (!key.equals(""))
+            if (!key.isEmpty())
             {
                 packageContents = packageContentsTable.get(key);
 

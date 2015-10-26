@@ -42,7 +42,7 @@ class Namespace implements Comparable<Namespace>
 	
 	boolean isPublic()
 	{
-		return (kind == CONSTANT_Namespace || kind == CONSTANT_PackageNamespace) && "".equals(uri);
+		return (kind == CONSTANT_Namespace || kind == CONSTANT_PackageNamespace) && uri != null && uri.isEmpty();
 	}
 	
 	boolean isInternal()

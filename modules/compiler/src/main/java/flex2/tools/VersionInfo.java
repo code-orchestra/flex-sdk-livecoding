@@ -81,7 +81,7 @@ public class VersionInfo
                 getBuild();
 
                 String buildNum = BUILD_NUMBER_STRING;
-                if (buildNum == null || buildNum.equals(""))
+                if (buildNum == null || buildNum.isEmpty())
                 {
                     buildNum = "development";
                 }
@@ -118,7 +118,7 @@ public class VersionInfo
                 {
                     p.load(in);                
                     String build = p.getProperty("build");
-                    if ((build != null) && (! build.equals("")))
+                    if ((build != null) && (!build.isEmpty()))
                     {
                         // In open source builds the build number has changed from an
                         // integer to a string of dot separated integers.

@@ -117,7 +117,7 @@ public class StringUtils
 
     public static String substitute(String str, String from, String to)
     {
-        if(from == null || from.equals("") || to == null)
+        if(from == null || from.isEmpty() || to == null)
             return str;
 
         int index = str.indexOf(from);

@@ -418,7 +418,7 @@ public class Configuration extends Hashtable
                      * Configure produces lines like this ... just
                      * ignore them.
                      */
-                    if ("".equals(value))
+                    if (value != null && value.isEmpty())
                         continue;
 
                     if (getInclude() != null && 

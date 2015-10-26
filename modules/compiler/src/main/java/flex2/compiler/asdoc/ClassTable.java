@@ -185,7 +185,7 @@ public class ClassTable implements DocCommentTable {
                         if (!s.equals(debug) && !s.equals(otherPackage))
                         {
                             QName q = new QName(s);
-                            if (!q.getLocalPart().equals(""))
+                            if (!q.getLocalPart().isEmpty())
                             {
                                 assert !((q.getLocalPart().equals(cls)) && (q.getNamespace().equals(pkg))) : "same class";
                                 inherit.add(q);
@@ -253,7 +253,7 @@ public class ClassTable implements DocCommentTable {
             //Add to list for other classes (they will be in a separate package)
             if (!pkg.equals(packageName))
             {
-                if (cls.equals(""))
+                if (cls.isEmpty())
                     cls = "null";
                 List<DocCommentNode> l = otherClasses.get(cls);
                 if (l == null)
@@ -320,7 +320,7 @@ public class ClassTable implements DocCommentTable {
         {
             if (packageName == null)
                 packageName = "";
-            if (className == null || className.equals(""))
+            if (className == null || className.isEmpty())
                 className = "null";
             String name = NameFormatter.toDot(new QName(packageName, className));
             CommentsTable temp = classTable.get(name);
@@ -356,7 +356,7 @@ public class ClassTable implements DocCommentTable {
             
             //Case when in empty package. ("null" package signifies top-level functions/variables)
             // we also want the "null" key - that is for top level functions.. 
-            if (dot < 0 && packageName.equals("") )
+            if (dot < 0 && packageName.isEmpty())
             {
                 CommentsTable temp1 = classTable.get(key);
                 if (!temp1.isInterface() && c)

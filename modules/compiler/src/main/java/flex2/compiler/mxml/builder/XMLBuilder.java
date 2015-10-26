@@ -569,7 +569,7 @@ class XMLBuilder extends AbstractBuilder
 
         public String getQName (int index)
         {
-            if ((namespaces[index] == null) || (namespaces[index].equals("")))
+            if ((namespaces[index] == null) || (namespaces[index].isEmpty()))
             {
                 return localParts[index];
             }

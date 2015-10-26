@@ -364,7 +364,7 @@ public class Generator
         
         Template template = getTemplate(inputTemplate, inputEncoding != null ? inputEncoding : this.inputEncoding);
         
-        if (outputFile == null || outputFile.equals(""))
+        if (outputFile == null || outputFile.isEmpty())
         {
             StringWriter sw = new StringWriter();
             template.merge (controlContext,sw);

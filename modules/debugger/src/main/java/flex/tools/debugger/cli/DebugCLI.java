@@ -655,7 +655,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             Properties p = new Properties();
             p.load(this.getClass().getResourceAsStream("version.properties")); //$NON-NLS-1$
             String buildString = p.getProperty("build"); //$NON-NLS-1$
-            if ((buildString != null) && (!buildString.equals(""))) //$NON-NLS-1$
+            if ((buildString != null) && (!buildString.isEmpty())) //$NON-NLS-1$
             {
                 build = buildString;
             }
@@ -4494,7 +4494,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 numLines = file.getLineCount();
 
                 int newLine;
-                if (numLines == 1 && file.getLine(1).equals("")) //$NON-NLS-1$
+                if (numLines == 1 && file.getLine(1).isEmpty()) //$NON-NLS-1$
                 {
                     // there's no source in the file at all!
                     // this presumably means that the source file isn't in the current directory
@@ -5461,7 +5461,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             String dir = iter.next();
 
             // new File("", filename) searches the root dir -- that's not what we want!
-            if (dir.equals("")) //$NON-NLS-1$
+            if (dir.isEmpty()) //$NON-NLS-1$
                 dir = "."; //$NON-NLS-1$
 
             // look for sourcedir\package\filename
@@ -5730,7 +5730,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         Map<String, Object> args = new HashMap<String, Object>();
         String formatString;
         args.put("command", s); //$NON-NLS-1$
-        if (what == null || what.equals("")) //$NON-NLS-1$
+        if (what == null || what.isEmpty()) //$NON-NLS-1$
         {
             formatString = "unknownCommand"; //$NON-NLS-1$
             args.put("commandCategory", what); //$NON-NLS-1$

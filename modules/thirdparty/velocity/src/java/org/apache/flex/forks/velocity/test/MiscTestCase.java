@@ -55,11 +55,11 @@ public class MiscTestCase extends BaseTestCase
 
         String arg = "XY";
         String res = StringUtils.chop(arg, 1, eol );
-        assertTrue( "Test 1", res.equals("") );
+        assertTrue( "Test 1", res.isEmpty());
 
         arg = "X";
         res = StringUtils.chop( arg, 1, eol );
-        assertTrue( "Test 2", res.equals("") );
+        assertTrue( "Test 2", res.isEmpty());
 
         arg = "ZXY";
         res = StringUtils.chop( arg, 1, eol );

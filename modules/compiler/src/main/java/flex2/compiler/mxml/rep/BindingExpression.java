@@ -687,7 +687,7 @@ public class BindingExpression implements Comparable<BindingExpression>
         return (!isFromBindingNode() &&
                 !isStyle() &&
                 !isDestinationObjectProxy() &&
-                getNamespaceDeclarations().equals("") &&
+                getNamespaceDeclarations().isEmpty() &&
                 (twoWayCounterpart == null) &&
                 (getDestinationPath(false).indexOf("[") == -1));
     }

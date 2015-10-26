@@ -163,7 +163,7 @@ public class UserStyleDialog extends JDialog implements ActionMap {
         public void actionPerformed(ActionEvent e) {
             if (panel.fileCheckBox.isSelected()) {
                 String path = panel.fileTextField.getText();
-                if (path.equals("")) {
+                if (path.isEmpty()) {
                     JOptionPane.showMessageDialog
                         (UserStyleDialog.this,
                          resources.getString("StyleDialogError.text"),

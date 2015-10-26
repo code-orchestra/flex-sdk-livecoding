@@ -369,7 +369,7 @@ class EmbedEvaluator extends EvaluatorAdapter
         }
 
         // TODO: This kind of logic should be encapsulated inside Source or even QName
-        String packagePrefix = packageName == null || packageName.equals( "" ) ? "" : packageName + ".";
+        String packagePrefix = packageName == null || packageName.isEmpty() ? "" : packageName + ".";
         String nameForReporting = path != null ? path : unit.getSource().getNameForReporting();
 
         try
@@ -412,7 +412,7 @@ class EmbedEvaluator extends EvaluatorAdapter
             Transcoder.TranscodingResults asset, String packageName, String className) throws IOException
     {
         // TODO: This kind of logic should be encapsulated inside Source or even QName
-        String packagePrefix = packageName == null || packageName.equals("") ? "" : packageName + ".";
+        String packagePrefix = packageName == null || packageName.isEmpty() ? "" : packageName + ".";
         String generatedName = (packagePrefix + className).replace('.', File.separatorChar) + ".as";
 
         if (generatedOutputDir != null)

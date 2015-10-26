@@ -214,7 +214,7 @@ public final class SignatureExtension implements Extension
                  = fileName.substring(0, (fileName.length() -
                                           MimeMappings.getExtension(unit.getSource().getMimeType()).length()));
             
-            final String sigName = pkgName.concat(pkgName.equals("") ? "" : "_")
+            final String sigName = pkgName.concat(pkgName.isEmpty() ? "" : "_")
                                                   .concat(srcName)
                                                   .concat(".sig");
             

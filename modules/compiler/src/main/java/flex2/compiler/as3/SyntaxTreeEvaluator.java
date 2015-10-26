@@ -88,7 +88,7 @@ public class SyntaxTreeEvaluator extends EvaluatorAdapter
         ClassDefinitionNode prev = currentClassNode;
         try
         {
-            assert currentClassName.equals("") : "nested classdef in SyntaxTreeEvaluator (outer='" + currentClassName + "')";
+            assert currentClassName.isEmpty() : "nested classdef in SyntaxTreeEvaluator (outer='" + currentClassName + "')";
             currentClassName = NodeMagic.getUnqualifiedClassName(node);
             currentClassNode = node;
             seenConstructor = false;

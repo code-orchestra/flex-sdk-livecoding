@@ -278,7 +278,7 @@ public class ImplementationGenerator extends AbstractGenerator
 
         int position = AbstractSyntaxTreeUtil.lineNumberToPosition(nodeFactory, model.getXmlLineNumber());
         
-        if (packageName.equals(""))
+        if (packageName.isEmpty())
         {
             modelTypeIdentifier = nodeFactory.identifier(className, false);
         }

@@ -582,7 +582,7 @@ public class BatchCompiler
 
 		public int hashCode()
 		{
-			return (((1 * 17) + i) * 17) + where;
+			return (((17) + i) * 17) + where;
 		}
 	}
 }

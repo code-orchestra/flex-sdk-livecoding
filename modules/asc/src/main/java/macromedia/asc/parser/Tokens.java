@@ -42,7 +42,7 @@ public interface Tokens
  * that their values can point to their instance data in an array.
  */
 int FIRST_TOKEN = -1;
-	int EOS_TOKEN = FIRST_TOKEN - 0;
+	int EOS_TOKEN = FIRST_TOKEN;
 	int MINUS_TOKEN = FIRST_TOKEN - 1;
 	int MINUSMINUS_TOKEN = MINUS_TOKEN - 1;
 	int NOT_TOKEN = MINUSMINUS_TOKEN - 1;

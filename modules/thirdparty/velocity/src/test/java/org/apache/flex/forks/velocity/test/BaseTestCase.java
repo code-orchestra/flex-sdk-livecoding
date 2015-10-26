@@ -134,7 +134,7 @@ public class BaseTestCase extends TestCase
      * @param s The base file name.
      * @return  The test case name.
      */
-    protected  static final String getTestCaseName (String s)
+    protected  static String getTestCaseName (String s)
     {
         StringBuffer name = new StringBuffer();
         name.append(Character.toTitleCase(s.charAt(0)));

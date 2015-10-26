@@ -30,7 +30,7 @@ public abstract class AbstractLight implements Light {
     /**
      * Conversion function for light values.
      */
-    public static final double sRGBToLsRGB(double value) {
+    public static double sRGBToLsRGB(double value) {
         if(value <= 0.003928)
             return value/12.92;
         return Math.pow((value+0.055)/1.055, 2.4);

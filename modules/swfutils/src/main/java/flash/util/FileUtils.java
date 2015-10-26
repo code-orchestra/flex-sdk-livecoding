@@ -30,7 +30,7 @@ import java.util.HashMap;
  */
 public final class FileUtils
 {
-	public static final String canonicalPath(String rootPath)
+	public static String canonicalPath(String rootPath)
 	{
 		if (rootPath == null)
 			return null;
@@ -152,7 +152,7 @@ public final class FileUtils
      * @return file encoding..
      * @throws IOException
      */
-    public static final String consumeBOM(InputStream in, String default_encoding) throws IOException
+    public static String consumeBOM(InputStream in, String default_encoding) throws IOException
     {
         return consumeBOM(in, default_encoding, false);
     }
@@ -169,9 +169,9 @@ public final class FileUtils
      * @return file encoding..
      * @throws IOException
      */
-	public static final String consumeBOM(InputStream in, 
-                                        String default_encoding,
-                                        boolean alwaysConsumeBOM) throws IOException
+	public static String consumeBOM(InputStream in,
+                                    String default_encoding,
+                                    boolean alwaysConsumeBOM) throws IOException
 	{
 		in.mark(3);
 		// Determine file encoding...

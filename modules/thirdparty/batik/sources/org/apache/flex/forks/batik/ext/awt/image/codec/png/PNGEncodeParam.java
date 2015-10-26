@@ -1301,7 +1301,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
      * is included as a convenience to subclasses that override the
      * <code>filterRow</code> method.
      */
-    public static final int paethPredictor(int a, int b, int c) {
+    public static int paethPredictor(int a, int b, int c) {
         int p = a + b - c;
         int pa = abs(p - a);
         int pb = abs(p - b);

@@ -267,7 +267,7 @@ public final class MovieMetaData extends TagHandler
 	};
 
 	// TODO: Use an evaluation stack to figure out the Object.registerClass() call.
-	public static final boolean isRegisterClass(ActionList actionList)
+	public static boolean isRegisterClass(ActionList actionList)
 	{
 		if (!hasLineRecord(actionList))
 		{

@@ -29,7 +29,7 @@ public final class URLEncoder
 	{
 	}
 
-	public static final String encode(String s)
+	public static String encode(String s)
 	{
 		try
 		{
@@ -41,7 +41,7 @@ public final class URLEncoder
 		}
 	}
 
-	public static final String encode(String s, String enc) throws UnsupportedEncodingException
+	public static String encode(String s, String enc) throws UnsupportedEncodingException
 	{
 		if (!needsEncoding(s))
 		{

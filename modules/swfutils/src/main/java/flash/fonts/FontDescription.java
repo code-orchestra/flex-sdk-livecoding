@@ -79,13 +79,12 @@ public class FontDescription
         {
             return true;
         }
-        else if (value != null && value instanceof FontDescription)
-        {
-            FontDescription other = (FontDescription)value;
+        else if (value != null && value instanceof FontDescription) {
+            FontDescription other = (FontDescription) value;
 
             if (style != other.style)
                 return false;
-            
+
             if (compactFontFormat != other.compactFontFormat)
                 return false;
 
@@ -98,10 +97,7 @@ public class FontDescription
             if (source == null && other.source != null)
                 return false;
 
-            if (unicodeRanges != null && !unicodeRanges.equals(other.unicodeRanges))
-                return false;
-
-            return !(source != null && !source.equals(other.source));
+            return !(unicodeRanges != null && !unicodeRanges.equals(other.unicodeRanges)) && !(source != null && !source.equals(other.source));
 
         }
 

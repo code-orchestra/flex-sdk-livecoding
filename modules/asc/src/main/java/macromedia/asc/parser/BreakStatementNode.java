@@ -67,14 +67,13 @@ public class BreakStatementNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        BreakStatementNode that = (BreakStatementNode) o;
+		BreakStatementNode that = (BreakStatementNode) o;
 
-        if (loop_index != that.loop_index) return false;
-		return !(id != null ? !id.equals(that.id) : that.id != null);
+		return loop_index == that.loop_index && !(id != null ? !id.equals(that.id) : that.id != null);
 
 	}
 

@@ -66,15 +66,14 @@ public class InvokeNode extends SelectorNode
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        InvokeNode that = (InvokeNode) o;
+		InvokeNode that = (InvokeNode) o;
 
-        if (index != that.index) return false;
-        if (args != null ? !args.equals(that.args) : that.args != null) return false;
-		return !(name != null ? !name.equals(that.name) : that.name != null);
+		if (index != that.index) return false;
+		return !(args != null ? !args.equals(that.args) : that.args != null) && !(name != null ? !name.equals(that.name) : that.name != null);
 
 	}
 

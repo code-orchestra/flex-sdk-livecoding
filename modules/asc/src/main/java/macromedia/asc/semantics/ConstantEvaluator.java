@@ -4137,9 +4137,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
     }
 
     private boolean compareTypeInfos(TypeInfo t1, TypeInfo t2) {
-        if (t1 == t2)
-            return true;
-        return t1 != null && t2 != null && t1.isNullable() == t2.isNullable() && t1.getTypeValue() == t2.getTypeValue();
+        return t1 == t2 || t1 != null && t2 != null && t1.isNullable() == t2.isNullable() && t1.getTypeValue() == t2.getTypeValue();
     }
 
     public Value evaluate(Context cx, TypeExpressionNode node)

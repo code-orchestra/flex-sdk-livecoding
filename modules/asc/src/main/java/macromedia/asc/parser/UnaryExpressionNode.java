@@ -86,18 +86,17 @@ public class UnaryExpressionNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        UnaryExpressionNode that = (UnaryExpressionNode) o;
+		UnaryExpressionNode that = (UnaryExpressionNode) o;
 
-        if (op != that.op) return false;
-        if (void_result != that.void_result) return false;
-        if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-        if (numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) return false;
-        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
-		return !(slot != null ? !slot.equals(that.slot) : that.slot != null);
+		if (op != that.op) return false;
+		if (void_result != that.void_result) return false;
+		if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
+		if (numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) return false;
+		return !(ref != null ? !ref.equals(that.ref) : that.ref != null) && !(slot != null ? !slot.equals(that.slot) : that.slot != null);
 
 	}
 

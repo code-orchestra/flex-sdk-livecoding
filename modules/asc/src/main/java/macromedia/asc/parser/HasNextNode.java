@@ -64,15 +64,13 @@ public class HasNextNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        HasNextNode that = (HasNextNode) o;
+		HasNextNode that = (HasNextNode) o;
 
-        if (indexRegister != null ? !indexRegister.equals(that.indexRegister) : that.indexRegister != null)
-            return false;
-		return !(objectRegister != null ? !objectRegister.equals(that.objectRegister) : that.objectRegister != null);
+		return !(indexRegister != null ? !indexRegister.equals(that.indexRegister) : that.indexRegister != null) && !(objectRegister != null ? !objectRegister.equals(that.objectRegister) : that.objectRegister != null);
 
 	}
 

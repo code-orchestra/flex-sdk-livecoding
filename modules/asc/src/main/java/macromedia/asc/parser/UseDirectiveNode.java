@@ -69,14 +69,13 @@ public class UseDirectiveNode extends DefinitionNode
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        UseDirectiveNode that = (UseDirectiveNode) o;
+		UseDirectiveNode that = (UseDirectiveNode) o;
 
-        if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-		return !(ref != null ? !ref.equals(that.ref) : that.ref != null);
+		return !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
 	}
 

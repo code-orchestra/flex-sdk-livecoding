@@ -155,16 +155,15 @@ public class ParameterListNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        ParameterListNode that = (ParameterListNode) o;
+		ParameterListNode that = (ParameterListNode) o;
 
-        if (count != that.count) return false;
-        if (decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) return false;
-        if (items != null ? !items.equals(that.items) : that.items != null) return false;
-		return !(types != null ? !types.equals(that.types) : that.types != null);
+		if (count != that.count) return false;
+		if (decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) return false;
+		return !(items != null ? !items.equals(that.items) : that.items != null) && !(types != null ? !types.equals(that.types) : that.types != null);
 
 	}
 

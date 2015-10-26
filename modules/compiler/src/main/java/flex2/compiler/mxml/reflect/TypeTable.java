@@ -249,12 +249,8 @@ public class TypeTable
         private List<MetaData> styles;
         private final StandardDefs standardDefs;
 
-        public boolean equals(Object obj)
-        {
-            if (obj == this) {
-                return true;
-            } else
-                return obj instanceof Type && getName().equals(((Type) obj).getName());
+        public boolean equals(Object obj) {
+            return obj == this || obj instanceof Type && getName().equals(((Type) obj).getName());
         }
 
         public TypeTable getTypeTable()
@@ -656,26 +652,18 @@ public class TypeTable
          */
         public boolean isSubclassOf(Type baseType)
         {
-            if (baseType == this)
-            {
+            if (baseType == this) {
                 return true;
-            }
-            else if (baseType == noType) {
-                return false;
             } else
-                return baseType != null && isSubclassOf(baseType.getName());
+                return baseType != noType && baseType != null && isSubclassOf(baseType.getName());
         }
 
         public boolean isSubclassOf(String baseName) {
             return !SymbolTable.NOTYPE.equals(baseName) && isAssignableTo(baseName);
         }
 
-        public boolean isAssignableTo(Type baseType)
-        {
-            if (baseType == this || baseType == noType) {
-                return true;
-            } else
-                return baseType != null && isAssignableTo(baseType.getName());
+        public boolean isAssignableTo(Type baseType) {
+            return baseType == this || baseType == noType || baseType != null && isAssignableTo(baseType.getName());
         }
 
         public boolean isAssignableTo(String baseName)

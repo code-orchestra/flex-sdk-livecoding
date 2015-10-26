@@ -63,14 +63,13 @@ public class PragmaExpressionNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        PragmaExpressionNode that = (PragmaExpressionNode) o;
+		PragmaExpressionNode that = (PragmaExpressionNode) o;
 
-        if (arg != null ? !arg.equals(that.arg) : that.arg != null) return false;
-		return !(identifier != null ? !identifier.equals(that.identifier) : that.identifier != null);
+		return !(arg != null ? !arg.equals(that.arg) : that.arg != null) && !(identifier != null ? !identifier.equals(that.identifier) : that.identifier != null);
 
 	}
 

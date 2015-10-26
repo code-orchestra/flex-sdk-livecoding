@@ -69,14 +69,13 @@ public class QualifiedExpressionNode extends QualifiedIdentifierNode
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        QualifiedExpressionNode that = (QualifiedExpressionNode) o;
+		QualifiedExpressionNode that = (QualifiedExpressionNode) o;
 
-        if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-		return !(nss != null ? !nss.equals(that.nss) : that.nss != null);
+		return !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(nss != null ? !nss.equals(that.nss) : that.nss != null);
 
 	}
 

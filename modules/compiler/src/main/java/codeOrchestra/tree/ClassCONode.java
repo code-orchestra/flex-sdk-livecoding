@@ -190,8 +190,7 @@ public class ClassCONode extends CONode {
 
             ImportElement that = (ImportElement) o;
 
-            if (className != null ? !className.equals(that.className) : that.className != null) return false;
-            return !(packageName != null ? !packageName.equals(that.packageName) : that.packageName != null);
+            return !(className != null ? !className.equals(that.className) : that.className != null) && !(packageName != null ? !packageName.equals(that.packageName) : that.packageName != null);
 
         }
 

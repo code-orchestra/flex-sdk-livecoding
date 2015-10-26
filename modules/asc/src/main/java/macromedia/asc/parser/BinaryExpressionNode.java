@@ -92,20 +92,19 @@ public class BinaryExpressionNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        BinaryExpressionNode that = (BinaryExpressionNode) o;
+		BinaryExpressionNode that = (BinaryExpressionNode) o;
 
-        if (op != that.op) return false;
-        if (void_result != that.void_result) return false;
-        if (lhs != null ? !lhs.equals(that.lhs) : that.lhs != null) return false;
-        if (lhstype != null ? !lhstype.equals(that.lhstype) : that.lhstype != null) return false;
-        if (numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) return false;
-        if (rhs != null ? !rhs.equals(that.rhs) : that.rhs != null) return false;
-        if (rhstype != null ? !rhstype.equals(that.rhstype) : that.rhstype != null) return false;
-		return !(slot != null ? !slot.equals(that.slot) : that.slot != null);
+		if (op != that.op) return false;
+		if (void_result != that.void_result) return false;
+		if (lhs != null ? !lhs.equals(that.lhs) : that.lhs != null) return false;
+		if (lhstype != null ? !lhstype.equals(that.lhstype) : that.lhstype != null) return false;
+		if (numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) return false;
+		if (rhs != null ? !rhs.equals(that.rhs) : that.rhs != null) return false;
+		return !(rhstype != null ? !rhstype.equals(that.rhstype) : that.rhstype != null) && !(slot != null ? !slot.equals(that.slot) : that.slot != null);
 
 	}
 

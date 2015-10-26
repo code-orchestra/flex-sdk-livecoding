@@ -84,20 +84,19 @@ public class ParameterNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        ParameterNode that = (ParameterNode) o;
+		ParameterNode that = (ParameterNode) o;
 
-        if (kind != that.kind) return false;
-        if (no_anno != that.no_anno) return false;
-        if (attrs != null ? !attrs.equals(that.attrs) : that.attrs != null) return false;
-        if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
-        if (init != null ? !init.equals(that.init) : that.init != null) return false;
-        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-		return !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
+		if (kind != that.kind) return false;
+		if (no_anno != that.no_anno) return false;
+		if (attrs != null ? !attrs.equals(that.attrs) : that.attrs != null) return false;
+		if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
+		if (init != null ? !init.equals(that.init) : that.init != null) return false;
+		if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+		return !(type != null ? !type.equals(that.type) : that.type != null) && !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
 
 	}
 

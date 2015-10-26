@@ -81,17 +81,16 @@ public class IfStatementNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        IfStatementNode that = (IfStatementNode) o;
+		IfStatementNode that = (IfStatementNode) o;
 
-        if (is_false != that.is_false) return false;
-        if (is_true != that.is_true) return false;
-        if (condition != null ? !condition.equals(that.condition) : that.condition != null) return false;
-        if (elseactions != null ? !elseactions.equals(that.elseactions) : that.elseactions != null) return false;
-		return !(thenactions != null ? !thenactions.equals(that.thenactions) : that.thenactions != null);
+		if (is_false != that.is_false) return false;
+		if (is_true != that.is_true) return false;
+		if (condition != null ? !condition.equals(that.condition) : that.condition != null) return false;
+		return !(elseactions != null ? !elseactions.equals(that.elseactions) : that.elseactions != null) && !(thenactions != null ? !thenactions.equals(that.thenactions) : that.thenactions != null);
 
 	}
 

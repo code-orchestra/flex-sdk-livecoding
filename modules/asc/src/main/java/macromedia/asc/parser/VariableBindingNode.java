@@ -94,19 +94,18 @@ public class VariableBindingNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        VariableBindingNode that = (VariableBindingNode) o;
+		VariableBindingNode that = (VariableBindingNode) o;
 
-        if (kind != that.kind) return false;
-        if (attrs != null ? !attrs.equals(that.attrs) : that.attrs != null) return false;
-        if (debug_name != null ? !debug_name.equals(that.debug_name) : that.debug_name != null) return false;
-        if (initializer != null ? !initializer.equals(that.initializer) : that.initializer != null) return false;
-        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
-        if (typeref != null ? !typeref.equals(that.typeref) : that.typeref != null) return false;
-		return !(variable != null ? !variable.equals(that.variable) : that.variable != null);
+		if (kind != that.kind) return false;
+		if (attrs != null ? !attrs.equals(that.attrs) : that.attrs != null) return false;
+		if (debug_name != null ? !debug_name.equals(that.debug_name) : that.debug_name != null) return false;
+		if (initializer != null ? !initializer.equals(that.initializer) : that.initializer != null) return false;
+		if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+		return !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null) && !(variable != null ? !variable.equals(that.variable) : that.variable != null);
 
 	}
 

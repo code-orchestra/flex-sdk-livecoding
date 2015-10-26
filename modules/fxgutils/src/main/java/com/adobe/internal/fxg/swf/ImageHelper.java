@@ -201,20 +201,9 @@ public class ImageHelper
     		{
     			return false;
     		}
-    		else
-    		{
-    			if ((bFill.getFileVersion().equalTo(FXGVersion.v2_0)) && (bFill.fillMode == FillMode.SCALE))
-    			{
-                    return !(Double.isNaN(bFill.scaleX) && Double.isNaN(bFill.scaleY) &&
-                            Double.isNaN(bFill.x) && Double.isNaN(bFill.y) &&
-                            (Double.isNaN(bFill.rotation) || Math.abs(bFill.rotation) < AbstractFXGNode.EPSILON) &&
-                            bFill.matrix == null);
-    			}
-    			else
-    			{
-    				return true;
-    			}
-    		}    		
+    		else {
+                return !((bFill.getFileVersion().equalTo(FXGVersion.v2_0)) && (bFill.fillMode == FillMode.SCALE)) || !(Double.isNaN(bFill.scaleX) && Double.isNaN(bFill.scaleY) && Double.isNaN(bFill.x) && Double.isNaN(bFill.y) && (Double.isNaN(bFill.rotation) || Math.abs(bFill.rotation) < AbstractFXGNode.EPSILON) && bFill.matrix == null);
+            }
     		
     	}
     	return false;

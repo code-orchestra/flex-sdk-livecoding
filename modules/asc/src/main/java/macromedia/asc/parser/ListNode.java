@@ -146,14 +146,13 @@ public class ListNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        ListNode listNode = (ListNode) o;
+		ListNode listNode = (ListNode) o;
 
-        if (items != null ? !items.equals(listNode.items) : listNode.items != null) return false;
-		return !(values != null ? !values.equals(listNode.values) : listNode.values != null);
+		return !(items != null ? !items.equals(listNode.items) : listNode.items != null) && !(values != null ? !values.equals(listNode.values) : listNode.values != null);
 
 	}
 

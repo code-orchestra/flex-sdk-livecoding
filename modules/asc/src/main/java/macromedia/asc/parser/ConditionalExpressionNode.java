@@ -77,17 +77,16 @@ public class ConditionalExpressionNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        ConditionalExpressionNode that = (ConditionalExpressionNode) o;
+		ConditionalExpressionNode that = (ConditionalExpressionNode) o;
 
-        if (condition != null ? !condition.equals(that.condition) : that.condition != null) return false;
-        if (elseexpr != null ? !elseexpr.equals(that.elseexpr) : that.elseexpr != null) return false;
-        if (elsevalue != null ? !elsevalue.equals(that.elsevalue) : that.elsevalue != null) return false;
-        if (thenexpr != null ? !thenexpr.equals(that.thenexpr) : that.thenexpr != null) return false;
-		return !(thenvalue != null ? !thenvalue.equals(that.thenvalue) : that.thenvalue != null);
+		if (condition != null ? !condition.equals(that.condition) : that.condition != null) return false;
+		if (elseexpr != null ? !elseexpr.equals(that.elseexpr) : that.elseexpr != null) return false;
+		if (elsevalue != null ? !elsevalue.equals(that.elsevalue) : that.elsevalue != null) return false;
+		return !(thenexpr != null ? !thenexpr.equals(that.thenexpr) : that.thenexpr != null) && !(thenvalue != null ? !thenvalue.equals(that.thenvalue) : that.thenvalue != null);
 
 	}
 

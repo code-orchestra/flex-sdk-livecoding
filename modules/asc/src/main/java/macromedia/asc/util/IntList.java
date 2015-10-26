@@ -207,14 +207,12 @@ public final class IntList
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
-        IntList intList = (IntList) o;
+		IntList intList = (IntList) o;
 
-        if (size != intList.size) return false;
-
-		return Arrays.equals(toArray(), intList.toArray());
+		return size == intList.size && Arrays.equals(toArray(), intList.toArray());
 
 	}
 

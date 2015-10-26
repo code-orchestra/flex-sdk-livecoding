@@ -646,8 +646,7 @@ public class DocCommentNode extends MetaDataNode
 
         DocCommentNode that = (DocCommentNode) o;
 
-        if (is_default != that.is_default) return false;
-        return !(metaData != null ? !metaData.equals(that.metaData) : that.metaData != null);
+        return is_default == that.is_default && !(metaData != null ? !metaData.equals(that.metaData) : that.metaData != null);
 
     }
 

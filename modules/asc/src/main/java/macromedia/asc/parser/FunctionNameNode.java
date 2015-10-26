@@ -62,14 +62,13 @@ public class FunctionNameNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        FunctionNameNode that = (FunctionNameNode) o;
+		FunctionNameNode that = (FunctionNameNode) o;
 
-        if (kind != that.kind) return false;
-		return !(identifier != null ? !identifier.equals(that.identifier) : that.identifier != null);
+		return kind == that.kind && !(identifier != null ? !identifier.equals(that.identifier) : that.identifier != null);
 
 	}
 

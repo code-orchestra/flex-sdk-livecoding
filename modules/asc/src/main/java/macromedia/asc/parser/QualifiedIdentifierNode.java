@@ -75,14 +75,13 @@ public class QualifiedIdentifierNode extends IdentifierNode
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        QualifiedIdentifierNode that = (QualifiedIdentifierNode) o;
+		QualifiedIdentifierNode that = (QualifiedIdentifierNode) o;
 
-        if (is_config_name != that.is_config_name) return false;
-		return !(qualifier != null ? !qualifier.equals(that.qualifier) : that.qualifier != null);
+		return is_config_name == that.is_config_name && !(qualifier != null ? !qualifier.equals(that.qualifier) : that.qualifier != null);
 
 	}
 

@@ -152,15 +152,14 @@ public class IdentifierNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        IdentifierNode that = (IdentifierNode) o;
+		IdentifierNode that = (IdentifierNode) o;
 
-        if (authOrigTypeToken != that.authOrigTypeToken) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-		return !(ref != null ? !ref.equals(that.ref) : that.ref != null);
+		if (authOrigTypeToken != that.authOrigTypeToken) return false;
+		return !(name != null ? !name.equals(that.name) : that.name != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
 	}
 

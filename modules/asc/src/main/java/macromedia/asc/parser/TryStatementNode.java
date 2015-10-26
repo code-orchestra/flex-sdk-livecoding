@@ -91,18 +91,17 @@ public class TryStatementNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        TryStatementNode that = (TryStatementNode) o;
+		TryStatementNode that = (TryStatementNode) o;
 
-        if (finallyInserted != that.finallyInserted) return false;
-        if (loop_index != that.loop_index) return false;
-        if (skip != that.skip) return false;
-        if (catchlist != null ? !catchlist.equals(that.catchlist) : that.catchlist != null) return false;
-        if (finallyblock != null ? !finallyblock.equals(that.finallyblock) : that.finallyblock != null) return false;
-		return !(tryblock != null ? !tryblock.equals(that.tryblock) : that.tryblock != null);
+		if (finallyInserted != that.finallyInserted) return false;
+		if (loop_index != that.loop_index) return false;
+		if (skip != that.skip) return false;
+		if (catchlist != null ? !catchlist.equals(that.catchlist) : that.catchlist != null) return false;
+		return !(finallyblock != null ? !finallyblock.equals(that.finallyblock) : that.finallyblock != null) && !(tryblock != null ? !tryblock.equals(that.tryblock) : that.tryblock != null);
 
 	}
 

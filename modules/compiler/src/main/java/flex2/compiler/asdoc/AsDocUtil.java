@@ -881,12 +881,8 @@ public class AsDocUtil
      * @param hiddenPackages
      * @return
      */
-    boolean hidePackage(String packageName, String hiddenPackages)
-    {
-        if (packageName == null || packageName.isEmpty())
-            return false;
-        else
-            return hiddenPackages.contains(":" + packageName + ":") && (hiddenPackages.contains(":" + packageName + ":true:"));
+    boolean hidePackage(String packageName, String hiddenPackages) {
+        return !(packageName == null || packageName.isEmpty()) && hiddenPackages.contains(":" + packageName + ":") && (hiddenPackages.contains(":" + packageName + ":true:"));
     }
 
     /** 
@@ -1043,15 +1039,10 @@ public class AsDocUtil
         {
             return false;
         }
-        else if (namespace.equals("private"))
-        {
+        else if (namespace.equals("private")) {
             return true;
-        }
-        else if (namespace.equals("$internal"))
-        {
-            return true;
-        }
-        else return namespace.equals("internal");
+        } else
+            return namespace.equals("$internal") || namespace.equals("internal");
     }
 
     /**

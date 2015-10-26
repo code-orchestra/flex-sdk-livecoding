@@ -129,14 +129,13 @@ public class VariableSlot extends Slot
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        VariableSlot that = (VariableSlot) o;
+		VariableSlot that = (VariableSlot) o;
 
-        if (var_index != that.var_index) return false;
-		return !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
+		return var_index == that.var_index && !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
 
 	}
 

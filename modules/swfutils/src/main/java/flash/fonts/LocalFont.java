@@ -45,32 +45,23 @@ public class LocalFont implements Serializable
 	}
 
 	// we purposefully leave path out of equals()
-	public boolean equals(Object o)
-	{
-		if (this == o)
-		{
+	public boolean equals(Object o) {
+		if (this == o) {
 			return true;
 		}
-		if (o == null || getClass() != o.getClass())
-		{
+		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
 
-		final LocalFont localFont = (LocalFont)o;
+		final LocalFont localFont = (LocalFont) o;
 
-		if (fsType != localFont.fsType)
-		{
+		if (fsType != localFont.fsType) {
 			return false;
 		}
-		if (copyright != null ? !copyright.equals(localFont.copyright) : localFont.copyright != null)
-		{
+		if (copyright != null ? !copyright.equals(localFont.copyright) : localFont.copyright != null) {
 			return false;
 		}
-		if (postscriptName != null ? !postscriptName.equals(localFont.postscriptName) : localFont.postscriptName != null)
-		{
-			return false;
-		}
-		return !(trademark != null ? !trademark.equals(localFont.trademark) : localFont.trademark != null);
+		return !(postscriptName != null ? !postscriptName.equals(localFont.postscriptName) : localFont.postscriptName != null) && !(trademark != null ? !trademark.equals(localFont.trademark) : localFont.trademark != null);
 
 	}
 }

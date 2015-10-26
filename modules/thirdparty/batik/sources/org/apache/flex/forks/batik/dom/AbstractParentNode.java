@@ -18,15 +18,14 @@
  */
 package org.apache.flex.forks.batik.dom;
 
-import java.io.Serializable;
-
 import org.apache.flex.forks.batik.dom.events.DOMMutationEvent;
 import org.apache.flex.forks.batik.util.XMLConstants;
-
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.events.MutationEvent;
+
+import java.io.Serializable;
 
 /**
  * This class implements the Node interface with support for children.
@@ -695,10 +694,7 @@ public abstract class AbstractParentNode extends AbstractNode {
         }
 
         private boolean nsMatch(String s1, String s2) {
-            if (s1 == null && s2 == null) {
-                return true;
-            }
-            return !(s1 == null || s2 == null) && (s1.equals("*") || s1.equals(s2));
+            return s1 == null && s2 == null || !(s1 == null || s2 == null) && (s1.equals("*") || s1.equals(s2));
         }
     }
 

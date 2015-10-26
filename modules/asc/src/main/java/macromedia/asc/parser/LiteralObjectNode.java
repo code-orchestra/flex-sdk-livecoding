@@ -73,14 +73,13 @@ public class LiteralObjectNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        LiteralObjectNode that = (LiteralObjectNode) o;
+		LiteralObjectNode that = (LiteralObjectNode) o;
 
-        if (void_result != that.void_result) return false;
-		return !(fieldlist != null ? !fieldlist.equals(that.fieldlist) : that.fieldlist != null);
+		return void_result == that.void_result && !(fieldlist != null ? !fieldlist.equals(that.fieldlist) : that.fieldlist != null);
 
 	}
 

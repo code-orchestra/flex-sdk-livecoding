@@ -61,12 +61,12 @@ public class IntrospectorTestCase3 extends BaseTestCase
          * string integer
          */
 
-        Object[] listIntInt = { new ArrayList(), new Integer(1), new Integer(2) };
-        Object[] listLongList = { new ArrayList(), new Long(1), new ArrayList() };
-        Object[] listLongInt = { new ArrayList(), new Long(1), new Integer(2) };
-        Object[] intInt = {  new Integer(1), new Integer(2) };
-        Object[] longInt = {  new Long(1), new Integer(2) };
-        Object[] longLong = {  new Long(1), new Long(2) };
+        Object[] listIntInt = { new ArrayList(), 1, 2};
+        Object[] listLongList = { new ArrayList(), 1L, new ArrayList() };
+        Object[] listLongInt = { new ArrayList(), 1L, 2};
+        Object[] intInt = {1, 2};
+        Object[] longInt = {1L, 2};
+        Object[] longLong = {1L, 2L};
 
         method = RuntimeSingleton.getIntrospector().getMethod(
             MethodProvider.class, "lii", listIntInt);
@@ -106,7 +106,7 @@ public class IntrospectorTestCase3 extends BaseTestCase
          *  test invocation with nulls
          */
 
-        Object [] oa = {null, new Integer(0)};
+        Object [] oa = {null, 0};
         method = RuntimeSingleton.getIntrospector().getMethod(
             MethodProvider.class, "lll", oa );
         result = (String) method.invoke(mp, oa);

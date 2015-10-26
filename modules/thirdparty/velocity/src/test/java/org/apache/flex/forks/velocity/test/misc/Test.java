@@ -185,7 +185,7 @@ public class Test implements ReferenceInsertionEventHandler,
             context.put("fmprov", new FieldMethodizer( provider ));
             context.put("Floog", "floogie woogie");
             context.put("geirstring", str );
-            context.put("mylong", new Long(5) );
+            context.put("mylong", 5L);
             
             /*
              *  we want to make sure we test all types of iterative objects

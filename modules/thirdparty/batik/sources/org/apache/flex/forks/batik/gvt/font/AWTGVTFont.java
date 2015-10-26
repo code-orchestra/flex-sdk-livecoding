@@ -82,7 +82,7 @@ public class AWTGVTFont implements GVTFont {
         Float sz = (Float)attributes.get(TextAttribute.SIZE);
         if (sz != null) {
             this.size = sz.floatValue();
-            attributes.put(TextAttribute.SIZE, new Float(FONT_SIZE));
+            attributes.put(TextAttribute.SIZE, FONT_SIZE);
             this.awtFont = new Font(attributes);
         } else {
             this.awtFont = new Font(attributes);

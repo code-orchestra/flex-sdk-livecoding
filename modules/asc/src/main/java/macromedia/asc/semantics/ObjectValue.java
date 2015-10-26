@@ -963,7 +963,7 @@ public class ObjectValue extends Value implements Comparable
 
     public boolean booleanValue()
     {
-        return getValue().equals("true") ? true : false;
+        return getValue().equals("true");
     }
 
     public void setPackage(boolean package_flag)

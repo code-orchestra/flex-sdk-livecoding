@@ -2373,7 +2373,7 @@ public class DebugCLI implements Runnable, SourceLocator {
      */
     public void runningLoop() throws NoResponseException, NotConnectedException, SuspendedException, NotSupportedException, NotSuspendedException, IOException {
         int update = propertyGet(UPDATE_DELAY);
-        boolean nowait = (propertyGet(NO_WAITING) == 1) ? true : false;  // DEBUG ONLY; do not document
+        boolean nowait = (propertyGet(NO_WAITING) == 1);  // DEBUG ONLY; do not document
         boolean stop = false;
         boolean noConnection = !haveConnection();
         boolean hasAnythingSuspended = false;
@@ -5028,7 +5028,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         boolean worked = false;
 
         try {
-            worked = (m_session.clearWatch(b.getWatch()) == null) ? false : true;
+            worked = m_session.clearWatch(b.getWatch()) != null;
         } catch (NoResponseException nre) {
         }
 
@@ -6095,7 +6095,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 
         int timeout = propertyGet(HALT_TIMEOUT);
         int update = propertyGet(UPDATE_DELAY);
-        boolean wait = (propertyGet(NO_WAITING) == 1) ? false : true;
+        boolean wait = propertyGet(NO_WAITING) != 1;
 
         if (wait) {
             // spin for a while waiting for a halt; updating trace messages as we get them

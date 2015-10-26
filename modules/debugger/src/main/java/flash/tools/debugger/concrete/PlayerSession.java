@@ -267,7 +267,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	{
 		Object prefValue = getPreferenceAsObject(preferenceName);
 		if (prefValue != null)
-			return (Integer) prefValue != 0 ? true : false;
+			return (Integer) prefValue != 0;
 		else
 			return defaultValue;
 	}

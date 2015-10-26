@@ -1109,7 +1109,7 @@ final class PersistenceStore
 
 	private boolean readFileSpec(Object[] pool, FileSpec fileSpec) throws IOException
 	{
-		boolean fileSpecDataExists = readU8()==1 ? true : false;
+		boolean fileSpecDataExists = readU8() == 1;
 		if (fileSpecDataExists && fileSpec == null)
 		{
 			LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
@@ -1179,7 +1179,7 @@ final class PersistenceStore
 
 	private boolean readSourceList(Object[] pool, SourceList sourceList) throws IOException
 	{
-		boolean sourceListDataExists = readU8()==1 ? true : false;
+		boolean sourceListDataExists = readU8() == 1;
 		if (sourceListDataExists && sourceList == null)
 		{
 			LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
@@ -1258,7 +1258,7 @@ final class PersistenceStore
 
 	private boolean readSourcePath(Object[] pool, SourcePath sourcePath) throws IOException
 	{
-		boolean sourcePathDataExists = readU8()==1 ? true : false;
+		boolean sourcePathDataExists = readU8() == 1;
 		if (sourcePathDataExists && sourcePath == null)
 		{
 			LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
@@ -1351,7 +1351,7 @@ final class PersistenceStore
 
     private boolean readResourceBundlePath(Object[] pool, ResourceBundlePath bundlePath) throws IOException
 	{
-    	boolean resourceBundlePathDataExists = readU8()==1 ? true : false;
+    	boolean resourceBundlePathDataExists = readU8() == 1;
 		if (resourceBundlePathDataExists && bundlePath == null)
 		{
 			LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();

@@ -64,7 +64,7 @@ public class UnaryExpressionNode extends Node
 
 	boolean isbooleaneanExpression()
 	{
-		return op == NOT_TOKEN ? true : false;
+		return op == NOT_TOKEN;
 	}
 
 	public String toString()

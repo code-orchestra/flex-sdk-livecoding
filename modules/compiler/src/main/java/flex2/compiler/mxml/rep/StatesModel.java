@@ -811,12 +811,12 @@ public final class StatesModel
         boolean isStyle = false;
         if (parent != null && parentIndex != null)
         {
-            isStyle = (parent.getType().getStyle(parentIndex) != null) ? true : false;
+            isStyle = (parent.getType().getStyle(parentIndex) != null);
         }
         
         // Determine if adding an array instance so our override can treat it
         // as a whole vs. list of items to add.
-        boolean isArray = (model.getType() == document.getTypeTable().arrayType) ? true : false;
+        boolean isArray = (model.getType() == document.getTypeTable().arrayType);
         String vectorClassName = null;
 
         if (model.getParent().getType().getElementType() != null)
@@ -1580,7 +1580,7 @@ public final class StatesModel
             this.factory = factory;
             this.property = property;
             this.context = context;
-            this.clear = (value.getValue() != null && value.getValue() instanceof AtClear) ? true : false;
+            this.clear = (value.getValue() != null && value.getValue() instanceof AtClear);
             info.addImportName(NameFormatter.toDot(getDeclaredType()), 0);
         }
         
@@ -1775,7 +1775,7 @@ public final class StatesModel
             this.context = context;
             this.value = value;
             this.event = event;
-            this.clear = value.getHandlerText().equals("@Clear()") ? true : false;
+            this.clear = value.getHandlerText().equals("@Clear()");
             info.addImportName(NameFormatter.toDot(getDeclaredType()), 0);
         }
         

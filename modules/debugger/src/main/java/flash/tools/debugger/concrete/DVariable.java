@@ -228,7 +228,7 @@ public class DVariable implements Variable, Comparable
 		if ((att & VariableAttribute.SCOPE_MASK) == att)
 			return (getScope() == att);
 		else
-			return ( ( (getAttributes() & att) == att) ? true : false );
+			return (((getAttributes() & att) == att));
 	}
 
 	public void clearAttribute(int att)

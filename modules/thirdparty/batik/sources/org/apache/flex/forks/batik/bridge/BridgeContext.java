@@ -947,12 +947,9 @@ public class BridgeContext implements ErrorConstants, CSSContext {
         }
         String localName = element.getLocalName();
         String namespaceURI = element.getNamespaceURI();
-        namespaceURI = ((namespaceURI == null)? "" : namespaceURI);
+        namespaceURI = ((namespaceURI == null) ? "" : namespaceURI);
         HashMap localNameMap = (HashMap) namespaceURIMap.get(namespaceURI);
-        if (localNameMap == null) {
-            return false;
-        }
-        return (localNameMap.get(localName) instanceof GraphicsNodeBridge);
+        return localNameMap != null && (localNameMap.get(localName) instanceof GraphicsNodeBridge);
     }
 
     /**
@@ -1897,11 +1894,9 @@ public class BridgeContext implements ErrorConstants, CSSContext {
      */
     public boolean isInteractiveDocument(Document doc) {
 
-        Element root = ((SVGDocument)doc).getRootElement();
-        if (!SVGConstants.SVG_NAMESPACE_URI.equals(root.getNamespaceURI()))
-            return false;
+        Element root = ((SVGDocument) doc).getRootElement();
+        return SVGConstants.SVG_NAMESPACE_URI.equals(root.getNamespaceURI()) && checkInteractiveElement(root);
 
-        return checkInteractiveElement(root);
     }
 
     /**

@@ -941,16 +941,8 @@ public class RuntimeInstance implements RuntimeConstants, RuntimeServices
      * This occurs when there are errors during initialization
      * and the default properties have yet to be layed down.
      */
-    private boolean showStackTrace()
-    {
-        if (configuration.isInitialized())
-        {
-            return getBoolean(RUNTIME_LOG_WARN_STACKTRACE, false);
-        }            
-        else
-        {
-            return false;
-        }            
+    private boolean showStackTrace() {
+        return configuration.isInitialized() && getBoolean(RUNTIME_LOG_WARN_STACKTRACE, false);
     }
 
     /**

@@ -142,14 +142,9 @@ public class EventCartridge implements ReferenceInsertionEventHandler,
      *  @param reference reference from template about to be inserted
      *  @return true if to be logged, false otherwise
      */
-    public boolean shouldLogOnNullSet( String lhs, String rhs )
-    {
-        if ( nseh == null)
-        {
-            return true;
-        }
+    public boolean shouldLogOnNullSet( String lhs, String rhs ) {
+        return nseh == null || nseh.shouldLogOnNullSet(lhs, rhs);
 
-        return nseh.shouldLogOnNullSet( lhs, rhs );
     }
     
     /**

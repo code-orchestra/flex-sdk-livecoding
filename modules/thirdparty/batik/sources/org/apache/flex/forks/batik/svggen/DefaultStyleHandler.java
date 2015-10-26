@@ -90,11 +90,7 @@ public class DefaultStyleHandler implements StyleHandler, SVGConstants {
      * element.
      */
     protected boolean appliesTo(String styleName, String tagName) {
-        Set s = (Set)ignoreAttributes.get(tagName);
-        if (s == null) {
-            return true;
-        } else {
-            return !s.contains(styleName);
-        }
+        Set s = (Set) ignoreAttributes.get(tagName);
+        return s == null || !s.contains(styleName);
     }
 }

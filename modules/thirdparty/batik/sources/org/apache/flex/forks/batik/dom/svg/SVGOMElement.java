@@ -600,10 +600,7 @@ public abstract class SVGOMElement
     public final boolean isAttributeAnimatable(String ns, String ln) {
         DoublyIndexedTable t = getTraitInformationTable();
         TraitInformation ti = (TraitInformation) t.get(ns, ln);
-        if (ti != null) {
-            return ti.isAnimatable();
-        }
-        return false;
+        return ti != null && ti.isAnimatable();
     }
 
     /**

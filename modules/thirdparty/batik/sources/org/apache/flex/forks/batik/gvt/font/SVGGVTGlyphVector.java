@@ -215,11 +215,7 @@ public final class SVGGVTGlyphVector implements GVTGlyphVector {
             if (glyphBounds.isEmpty()) {
                 // can't tell if rotated or not, make it
                 // the same as the previous glyph, if we have one...
-                if (i > 0) {
-                    rotated[i] = rotated[i-1];
-                } else {
-                    rotated [i] = true;
-                }
+                rotated[i] = i <= 0 || rotated[i - 1];
             } else {
                 // get three corner points so we can determine
                 // whether the glyph is rotated

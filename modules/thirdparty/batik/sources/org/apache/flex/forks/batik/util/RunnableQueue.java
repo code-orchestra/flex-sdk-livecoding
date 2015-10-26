@@ -452,10 +452,7 @@ public class RunnableQueue implements Runnable {
                     if (head == null) {
                         return false;
                     }
-                    if (link == null) {
-                        return true;
-                    }
-                    return link != head;
+                    return link == null || link != head;
                 }
                 public Object next() {
                     if (head == null || head == link) {

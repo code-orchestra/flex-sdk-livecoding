@@ -704,18 +704,7 @@ public abstract class AbstractDocument
         if (ns != null && ns.length() == 0) {
             ns = null;
         }
-        if (ns == null || ns.equals(XMLConstants.XML_EVENTS_NAMESPACE_URI)) {
-            return eventType.equals("Event")
-                || eventType.equals("MutationEvent")
-                || eventType.equals("MutationNameEvent")
-                || eventType.equals("UIEvent")
-                || eventType.equals("MouseEvent")
-                || eventType.equals("KeyEvent")
-                || eventType.equals("KeyboardEvent")
-                || eventType.equals("TextEvent")
-                || eventType.equals("CustomEvent");
-        }
-        return false;
+        return (ns == null || ns.equals(XMLConstants.XML_EVENTS_NAMESPACE_URI)) && (eventType.equals("Event") || eventType.equals("MutationEvent") || eventType.equals("MutationNameEvent") || eventType.equals("UIEvent") || eventType.equals("MouseEvent") || eventType.equals("KeyEvent") || eventType.equals("KeyboardEvent") || eventType.equals("TextEvent") || eventType.equals("CustomEvent"));
     }
 
     // DocumentTraversal /////////////////////////////////////////////////////

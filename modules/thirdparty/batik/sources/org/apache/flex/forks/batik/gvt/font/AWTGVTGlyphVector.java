@@ -264,13 +264,9 @@ public class AWTGVTGlyphVector implements GVTGlyphVector {
                                                              glyphHeight);
 
             if (glyphBounds.isEmpty()) {
-                if (i > 0) {
-                    // can't tell if rotated or not, make it the same as
-                    // the previous glyph
-                    rotated [i] = rotated [i-1];
-                } else {
-                    rotated [i] = true;
-                }
+                // can't tell if rotated or not, make it the same as
+// the previous glyph
+                rotated[i] = i <= 0 || rotated[i - 1];
             } else {
                 // get three corner points so we can determine
                 // whether the glyph is rotated

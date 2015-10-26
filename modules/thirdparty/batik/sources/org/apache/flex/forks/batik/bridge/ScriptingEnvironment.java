@@ -1206,10 +1206,7 @@ public class ScriptingEnvironment extends BaseScriptingEnvironment {
          * Displays a confirm dialog box.
          */
         public boolean confirm(String message) {
-            if (userAgent != null) {
-                return userAgent.showConfirm(message);
-            }
-            return false;
+            return userAgent != null && userAgent.showConfirm(message);
         }
 
         /**

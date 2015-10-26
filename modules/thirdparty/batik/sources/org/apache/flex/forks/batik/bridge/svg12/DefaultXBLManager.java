@@ -1176,11 +1176,7 @@ public class DefaultXBLManager implements XBLManager, XBLConstants {
     protected boolean isActiveDefinition(XBLOMDefinitionElement def,
                                          Element imp) {
         DefinitionRecord defRec = (DefinitionRecord) definitions.get(def, imp);
-        if (defRec == null) {
-            return false;
-        }
-        return defRec == getActiveDefinition(defRec.namespaceURI,
-                                             defRec.localName);
+        return defRec != null && defRec == getActiveDefinition(defRec.namespaceURI, defRec.localName);
     }
 
     /**

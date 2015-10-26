@@ -673,7 +673,7 @@ public abstract class AbstractNode
         switch (getNodeType()) {
             case DOCUMENT_NODE:
                 AbstractNode de
-                    = (AbstractNode) ((Document) this).getDocumentElement();
+                        = (AbstractNode) ((Document) this).getDocumentElement();
                 return de.isDefaultNamespace(namespaceURI);
             case ENTITY_NODE:
             case NOTATION_NODE:
@@ -682,16 +682,13 @@ public abstract class AbstractNode
                 return false;
             case ATTRIBUTE_NODE:
                 AbstractNode owner
-                    = (AbstractNode) ((Attr) this).getOwnerElement();
-                if (owner != null) {
-                    return owner.isDefaultNamespace(namespaceURI);
-                }
-                return false;
+                        = (AbstractNode) ((Attr) this).getOwnerElement();
+                return owner != null && owner.isDefaultNamespace(namespaceURI);
             case ELEMENT_NODE:
                 if (getPrefix() == null) {
                     String ns = getNamespaceURI();
                     return ns == null && namespaceURI == null
-                        || ns != null && ns.equals(namespaceURI);
+                            || ns != null && ns.equals(namespaceURI);
                 }
                 NamedNodeMap nnm = getAttributes();
                 if (nnm != null) {

@@ -77,11 +77,8 @@ public class StringValue extends AbstractValue {
         if (obj == null || !(obj instanceof StringValue)) {
             return false;
         }
-        StringValue v = (StringValue)obj;
-        if (unitType != v.unitType) {
-            return false;
-        }
-        return value.equals(v.value);
+        StringValue v = (StringValue) obj;
+        return unitType == v.unitType && value.equals(v.value);
     }
 
     /**

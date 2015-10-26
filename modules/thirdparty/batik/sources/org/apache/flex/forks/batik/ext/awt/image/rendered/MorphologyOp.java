@@ -218,9 +218,7 @@ public class MorphologyOp implements BufferedImageOp, RasterOp {
     static boolean isBetter (final int v1, final int v2, final boolean doDilation) {
         if (v1 > v2)
             return doDilation;
-        if (v1 < v2)
-            return !doDilation;
-        return true;
+        return v1 >= v2 || !doDilation;
     }
 
     /*

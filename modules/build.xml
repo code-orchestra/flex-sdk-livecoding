@@ -105,12 +105,13 @@
 		Build Java module JARs.
 	-->
 
-	<target name="modules" depends="thirdparty,asc,swfutils,fxgutils,compiler,debugger,antTasks" description="Full build of all JARs"/>
+	<target name="modules" depends="thirdparty,asc,swfutils,fxgutils,compiler,debugger
+	" description="Full build of all JARs"/>
 
 	<!--
 	   dev does not do a clean first and the batik and velocity libraries are not rebuilt.
 	-->
-	<target name="modules-dev" depends="asc-dev,swfutils-dev,fxgutils-dev,compiler-dev,debugger-dev,antTasks-dev" description="Build src.depend JARs"/>
+	<target name="modules-dev" depends="asc-dev,swfutils-dev,fxgutils-dev,compiler-dev,debugger-dev" description="Build src.depend JARs"/>
 
 	<target name="asc" description="Full build of asc.jar">
 		<ant dir="${basedir}/asc"/>
@@ -153,16 +154,7 @@
 		<ant dir="${basedir}/compiler" target="dev"/>
 	</target>
 
-	<target name="antTasks" description="Full build of antTasks" unless="antTasks.compiled" >
-		<ant dir="${basedir}/antTasks"/>
-		<property name="antTasks.compiled" value="true"/>
-	</target>
-
-	<target name="antTasks-dev" description="Build src.depend antTasks" >
-		<ant dir="${basedir}/antTasks" target="dev"/>
-	</target>
-
-    <target name="thirdparty" depends="xerces-patch,batik,velocity" />
+	<target name="thirdparty" depends="xerces-patch,batik,velocity" />
     
 	<target name="xerces-patch" description="Build xercesPatch.jar based on xerces 2.9.1" >
         <ant dir="${basedir}/thirdparty/xerces-patch"/>

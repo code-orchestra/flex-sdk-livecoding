@@ -1144,8 +1144,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 				exceptionMessage = msg.getString();
 				if (msg.getRemaining() > 0) {
 					if (msg.getByte() != 0) {
-						willExceptionBeCaught = (msg.getByte() != 0 ? true
-								: false);
+						willExceptionBeCaught = (msg.getByte() != 0);
 						msg.getPtr();
 						DVariable thrownVar = extractVariable(msg);
 						thrown = thrownVar.getValue();
@@ -1192,7 +1191,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 
 		case DMessage.InSquelch: {
 			long state = msg.getDWord();
-			m_squelchEnabled = (state != 0) ? true : false;
+			m_squelchEnabled = (state != 0);
 			break;
 		}
 
@@ -1773,7 +1772,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 				// remember which was last seen
 
 				if (id != 0) {
-					boolean debugComing = (msg.getByte() == 0) ? false : true;
+					boolean debugComing = msg.getByte() != 0;
 					byte vmVersion = (byte) msg.getByte(); // AS vm version
 															// number (1 = avm+,
 															// 0 == avm-)
@@ -2030,7 +2029,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 		case DMessage.InSetActiveIsolate: {
 			long id = msg.getDWord();
 
-			boolean success = msg.getByte() != 0 ? true : false;
+			boolean success = msg.getByte() != 0;
 
 			/** Ignore inset since we don't wait
 			 * for response anymore.
@@ -2315,7 +2314,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 
 		case DMessage.kBooleanType: {
 			int bval = msg.getByte();
-			value = (bval == 0) ? false : true;
+			value = bval != 0;
 			isPrimitive = true;
 			break;
 		}

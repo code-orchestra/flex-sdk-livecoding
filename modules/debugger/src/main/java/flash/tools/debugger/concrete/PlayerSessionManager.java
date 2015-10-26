@@ -151,7 +151,7 @@ public class PlayerSessionManager implements SessionManager2
 	 */
 	public boolean isListening()
 	{
-		return (m_serverSocket == null) ? false : true;
+		return m_serverSocket != null;
 	}
 
 	private class LaunchInfo
@@ -1114,7 +1114,7 @@ public class PlayerSessionManager implements SessionManager2
 	 */
 	public boolean isConnecting()
 	{
-		return (m_connectSocket == null) ? false : true;
+		return m_connectSocket != null;
 	}
 	
 	/**

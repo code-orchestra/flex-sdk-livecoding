@@ -391,7 +391,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
                 continue;
             }
 
-            TreeUtil.makePublic(functionDefinitionNode.attrs, TreeNavigator.isStaticMethod(functionDefinitionNode) ? false : true);
+            TreeUtil.makePublic(functionDefinitionNode.attrs, !TreeNavigator.isStaticMethod(functionDefinitionNode));
         }
     }
 

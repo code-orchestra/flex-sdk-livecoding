@@ -908,8 +908,8 @@ public class ClassTable implements DocCommentTable {
                 AttributeListNode attrs = cd.attrs;
                 if (attrs != null)
                 {
-                    isFinal = attrs.hasFinal ? true : false;
-                    isDynamic = attrs.hasDynamic ? true : false;
+                    isFinal = attrs.hasFinal;
+                    isDynamic = attrs.hasDynamic;
                 }
             }
 
@@ -1264,7 +1264,7 @@ public class ClassTable implements DocCommentTable {
                 }
                 //check for @inheritDoc
                 index = id.indexOf("]]></inheritDoc>");
-                hasInheritTag = index > 0 ? true : false;
+                hasInheritTag = index > 0;
                 if (index > 0)
                 {
                     endCDATABefore = id.substring(0, index).lastIndexOf("]]>");
@@ -1387,7 +1387,7 @@ public class ClassTable implements DocCommentTable {
                 }
                 
                 //check for @private
-                hasPrivateTag = id.indexOf("]]></private>") > 0 ? true : false;
+                hasPrivateTag = id.indexOf("]]></private>") > 0;
                 
                 //extracting @productversion (multiple)
                 index = id.indexOf("]]></productversion>");
@@ -1411,7 +1411,7 @@ public class ClassTable implements DocCommentTable {
                 }
                 
                 //check for @review
-                hasReviewTag = id.indexOf("]]></review>") > 0 ? true : false;
+                hasReviewTag = id.indexOf("]]></review>") > 0;
                 //extracting @see (multiple)
                 index = id.indexOf("]]></see>");
                 if (index >= 0)

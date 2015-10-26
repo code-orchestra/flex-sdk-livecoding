@@ -59,7 +59,7 @@ public class FaultActions
 	public int			size()					{ return m_faults.size(); }
 	public Object[]     names()					{ return m_faults.keySet().toArray(); }
 	public Object[]     actions()				{ return m_actions.keySet().toArray(); }
-	public boolean		exists(String k)		{ return (get(k) == null) ? false : true;  }
+	public boolean		exists(String k)		{ return get(k) != null;  }
 
 	public void			putDescription(String k, String v)	{ m_description.put(k,v);	}
 	public String		getDescription(String k)			{ return (m_description.get(k) == null) ? "" :  m_description.get(k);	} //$NON-NLS-1$
@@ -89,7 +89,7 @@ public class FaultActions
 		int mask  = getAction(action);
 		int bits = get(fault);
 
-		boolean set = ( (bits & mask) == mask ) ? true : false;
+		boolean set = ((bits & mask) == mask);
 		return set;
 	}
 

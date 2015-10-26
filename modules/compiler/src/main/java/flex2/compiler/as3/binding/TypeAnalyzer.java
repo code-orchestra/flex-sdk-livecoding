@@ -366,7 +366,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
     		for (MetaData skinPart : metaData)
             {
     			String sRequired = skinPart.getValue(REQUIRED);
-                boolean required = ((sRequired != null) && sRequired.equalsIgnoreCase(TRUE)) ? true : false;
+                boolean required = ((sRequired != null) && sRequired.equalsIgnoreCase(TRUE));
                 classInfo.addSkinPart(qname.getLocalPart(), required);
             }
         }

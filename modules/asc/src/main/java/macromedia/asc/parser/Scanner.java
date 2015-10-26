@@ -253,7 +253,7 @@ public final class Scanner implements ErrorConstants
     		error("internal: string token expected.");
     	}
         String fulltext = currentToken.text;
-        is_single_quoted[0] = (fulltext.charAt(0) == '\'' ? true : false);
+        is_single_quoted[0] = (fulltext.charAt(0) == '\'');
         String enclosedText = fulltext.substring(1, fulltext.length() - 1);
         
         return enclosedText;

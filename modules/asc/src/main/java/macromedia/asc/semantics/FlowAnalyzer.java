@@ -1531,8 +1531,8 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
 
         if( val != null && val.getType(cx).getTypeValue() == cx.booleanType() )  // If there is a boolean value, use it to compile out code
         {
-            node.is_true  = val.booleanValue()?true:false;
-            node.is_false = val.booleanValue()?false:true;
+            node.is_true  = val.booleanValue();
+            node.is_false = !val.booleanValue();
 
             if( node.is_true )
             {

@@ -703,7 +703,7 @@ public class TextHelper
                 finalTabStops.add(tabStop);
                 iFinal++;
             }
-            escaped = tabStop.endsWith("\\") ? true : false;
+            escaped = tabStop.endsWith("\\");
         }
         
         String tabStopsVal = null;

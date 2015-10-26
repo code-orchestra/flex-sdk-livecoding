@@ -1426,7 +1426,7 @@ public final class Context implements ErrorConstants
     // C: this is only definition names, not package names
     public boolean isValidImport(String name)
     {
-        return statics != null ? statics.validImports.contains(name) : false;
+        return statics != null && statics.validImports.contains(name);
     }
 
     public void addValidImport(String name)

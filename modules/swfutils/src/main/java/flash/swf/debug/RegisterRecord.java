@@ -90,8 +90,8 @@ public class RegisterRecord extends Action
             isIt = super.equals(other);
 			for(int i=0; isIt && i<registerNumbers.length; i++)
 			{
-				isIt = ( (other.registerNumbers[i] == this.registerNumbers[i]) &&
-						 (other.variableNames[i] == this.variableNames[i]) ) ? isIt : false;
+				isIt = ((other.registerNumbers[i] == this.registerNumbers[i]) &&
+						(other.variableNames[i] == this.variableNames[i])) && isIt;
 			}
         }
 		return isIt;

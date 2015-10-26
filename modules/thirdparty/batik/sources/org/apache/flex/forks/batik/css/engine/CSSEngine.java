@@ -1908,15 +1908,9 @@ public abstract class CSSEngine {
             } else {
                 int count = 0;
                 // Invalidate the relative values
-                boolean fs = (fontSizeIndex == -1)
-                    ? false
-                    : updated[fontSizeIndex];
-                boolean lh = (lineHeightIndex == -1)
-                    ? false
-                    : updated[lineHeightIndex];
-                boolean cl = (colorIndex == -1)
-                    ? false
-                    : updated[colorIndex];
+                boolean fs = fontSizeIndex != -1 && updated[fontSizeIndex];
+                boolean lh = lineHeightIndex != -1 && updated[lineHeightIndex];
+                boolean cl = colorIndex != -1 && updated[colorIndex];
 
                 for (int i = getNumberOfProperties() - 1; i >= 0; --i) {
                     if (updated[i]) {
@@ -2067,15 +2061,9 @@ public abstract class CSSEngine {
             }
 
             // Invalidate the relative values
-            boolean fs = (fontSizeIndex == -1)
-                ? false
-                : updated[fontSizeIndex];
-            boolean lh = (lineHeightIndex == -1)
-                ? false
-                : updated[lineHeightIndex];
-            boolean cl = (colorIndex == -1)
-                ? false
-                : updated[colorIndex];
+            boolean fs = fontSizeIndex != -1 && updated[fontSizeIndex];
+            boolean lh = lineHeightIndex != -1 && updated[lineHeightIndex];
+            boolean cl = colorIndex != -1 && updated[colorIndex];
 
             int count = 0;
             for (int i = getNumberOfProperties() - 1; i >= 0; --i) {

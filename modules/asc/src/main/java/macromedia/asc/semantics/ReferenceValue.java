@@ -407,7 +407,7 @@ public final class ReferenceValue extends Value implements ErrorConstants
                     Namespaces hasNamespaces2 = obj.hasNames(cx,opposite_kind,name,namespaces);
                     if (hasNamespaces2 != null)
                     {
-                        boolean isOnlyProtected = hasNamespaces.size() == 1 ? hasNamespaces.at(0).isProtected() : false;
+                        boolean isOnlyProtected = hasNamespaces.size() == 1 && hasNamespaces.at(0).isProtected();
                         for( int i = 0; i < hasNamespaces2.size(); i++ )
                         {
                             localQualifier = hasNamespaces2.at(i);

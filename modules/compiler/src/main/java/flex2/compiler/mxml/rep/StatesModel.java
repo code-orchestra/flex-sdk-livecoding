@@ -119,8 +119,8 @@ public final class StatesModel
      */
     public boolean validateState(String state)
     { 
-         boolean isValid = (state != null) ? info.getStateNames().contains(state) : false;
-         isValid = !isValid ? info.getStateGroups().containsKey(state) : true;
+         boolean isValid = (state != null) && info.getStateNames().contains(state);
+         isValid = isValid || info.getStateGroups().containsKey(state);
          return isValid;
     }
     
@@ -1257,7 +1257,7 @@ public final class StatesModel
          */
         public boolean isDeclared()
         {
-            return (model != null) ? model.isDeclared() : false;
+            return (model != null) && model.isDeclared();
         }
         
         /*

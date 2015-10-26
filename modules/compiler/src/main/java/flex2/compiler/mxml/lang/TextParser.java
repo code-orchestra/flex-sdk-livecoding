@@ -84,7 +84,7 @@ public abstract class TextParser
     public TextParser(TypeTable typeTable, int compatibilityVersion)
     {
         this.typeTable = typeTable;
-        this.ignoreTwoWayBinding = compatibilityVersion == 0 ? false : compatibilityVersion < flex2.compiler.common.MxmlConfiguration.VERSION_4_0;
+        this.ignoreTwoWayBinding = compatibilityVersion != 0 && compatibilityVersion < flex2.compiler.common.MxmlConfiguration.VERSION_4_0;
     }
 
     public TextParser(TypeTable typeTable)

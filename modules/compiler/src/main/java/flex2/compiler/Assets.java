@@ -79,7 +79,7 @@ public final class Assets
 
 	public boolean contains(String className)
 	{
-		return assets == null ? false : assets.containsKey(className);
+		return assets != null && assets.containsKey(className);
 	}
 
 	public AssetInfo get(String className)

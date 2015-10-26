@@ -249,9 +249,7 @@ public class NodeList implements List, Cloneable
      */
     public boolean equals(Object o)
     {
-        return o instanceof NodeList 
-            ? ((NodeList)o).nodes.equals(nodes)
-            : false;
+        return o instanceof NodeList && ((NodeList) o).nodes.equals(nodes);
     }
     
     /**

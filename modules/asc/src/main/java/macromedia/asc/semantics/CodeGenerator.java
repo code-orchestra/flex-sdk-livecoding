@@ -1261,8 +1261,8 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
 
             Builder bui                  = base_index>0?cx.scope(base_index).builder:null; // get the builder from lexical scope, null if object reference
 
-            boolean is_constinit         = node.is_constinit?true:(is_ctor&&node.isThis())?true:(bui instanceof InstanceBuilder)?true:false;
-            boolean is_const             = slot!=null?slot.isConst():false;
+            boolean is_constinit         = node.is_constinit || ((is_ctor && node.isThis()) ? true : (bui instanceof InstanceBuilder) ? true : false);
+            boolean is_const             = slot != null && slot.isConst();
 
             boolean is_localref          = isLocalScope(cx, base_index);
             boolean is_globalref         = base_index == 0;
@@ -4519,8 +4519,8 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
             fexpr.evaluate(cx, this);
         }
 
-        boolean is_dynamic = node.attrs != null ? node.attrs.hasDynamic : false;
-        boolean is_final = node.attrs != null ? node.attrs.hasFinal : false;
+        boolean is_dynamic = node.attrs != null && node.attrs.hasDynamic;
+        boolean is_final = node.attrs != null && node.attrs.hasFinal;
 
         QName basename = null;
         if( node.cframe.baseclass != null)

@@ -1833,7 +1833,7 @@ public class Library implements Builder, Cloneable
             return 0;
         }
 
-        boolean hasChanged = (oemConfiguration == null) ? false : oemConfiguration.hasChanged();
+        boolean hasChanged = oemConfiguration != null && oemConfiguration.hasChanged();
         flex2.compiler.common.Configuration config = null;
 
         if (hasChanged)

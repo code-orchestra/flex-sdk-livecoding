@@ -88,9 +88,7 @@ public class CSSIdCondition extends AbstractAttributeCondition {
      * Tests whether this condition matches the given element.
      */
     public boolean match(Element e, String pseudoE) {
-        return (e instanceof CSSStylableElement)
-            ? ((CSSStylableElement)e).getXMLId().equals(getValue())
-            : false;
+        return (e instanceof CSSStylableElement) && ((CSSStylableElement) e).getXMLId().equals(getValue());
     }
 
     /**

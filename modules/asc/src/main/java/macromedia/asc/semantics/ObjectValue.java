@@ -330,7 +330,7 @@ public class ObjectValue extends Value implements Comparable
     	}
 
     	boolean ret = false;
-    	ret = names == null ? false : names.containsKey(name, qualifier, Names.getTypeFromKind(kind));
+    	ret = names != null && names.containsKey(name, qualifier, Names.getTypeFromKind(kind));
         
         // When in init only mode, only set slots defined in this object should be visible.
         // Any slots defined in the base class should not be visible.  
@@ -354,7 +354,7 @@ public class ObjectValue extends Value implements Comparable
     		return false;
     	}
     	boolean ret = false;
-    	ret = names == null ? false : (names.exist(name, Names.getTypeFromKind(kind)));
+    	ret = names != null && (names.exist(name, Names.getTypeFromKind(kind)));
 
         // When in init only mode, only set slots defined in this object should be visible.
         // Any slots defined in the base class should not be visible.  
@@ -791,8 +791,8 @@ public class ObjectValue extends Value implements Comparable
         return cx.noType().getDefaultTypeInfo();
     }
 
-    public boolean isDynamic() { return (builder != null ? builder.is_dynamic : false); }
-    public boolean isFinal() { return (builder != null ? builder.is_final : false); }
+    public boolean isDynamic() { return (builder != null && builder.is_dynamic); }
+    public boolean isFinal() { return (builder != null && builder.is_final); }
 
     /*
      * Old version

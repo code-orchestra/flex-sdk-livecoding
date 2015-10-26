@@ -196,8 +196,8 @@ public class ObjectValueWrapper extends ObjectValue
         return this.type;
     }
 
-    public boolean isDynamic() { return (builder != null ? builder.is_dynamic : false); }
-    public boolean isFinal() { return (builder != null ? builder.is_final : false); }
+    public boolean isDynamic() { return (builder != null && builder.is_dynamic); }
+    public boolean isFinal() { return (builder != null && builder.is_final); }
 /*
     private HashMap<TypeValue,ClassDefinitionNode> deferredClassMap;
 

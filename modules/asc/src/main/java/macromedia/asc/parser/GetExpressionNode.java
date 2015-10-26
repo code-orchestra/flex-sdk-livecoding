@@ -83,7 +83,7 @@ public class GetExpressionNode extends SelectorNode
     public boolean isQualified()
     {
         QualifiedIdentifierNode qin = expr instanceof QualifiedIdentifierNode ? (QualifiedIdentifierNode) expr : null;
-        return qin!=null?qin.qualifier!=null:false;
+        return qin != null && qin.qualifier != null;
     }
     
     public boolean isAttributeIdentifier()
@@ -93,7 +93,7 @@ public class GetExpressionNode extends SelectorNode
     
     public boolean isAny()
     {
-    	return expr instanceof IdentifierNode ? ((IdentifierNode)expr).isAny() : false;
+    	return expr instanceof IdentifierNode && ((IdentifierNode) expr).isAny();
     }
 
 	public void voidResult()

@@ -75,15 +75,14 @@ public class LiteralXMLNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        LiteralXMLNode that = (LiteralXMLNode) o;
+		LiteralXMLNode that = (LiteralXMLNode) o;
 
-        if (is_xmllist != that.is_xmllist) return false;
-        if (void_result != that.void_result) return false;
-		return !(list != null ? !list.equals(that.list) : that.list != null);
+		if (is_xmllist != that.is_xmllist) return false;
+		return void_result == that.void_result && !(list != null ? !list.equals(that.list) : that.list != null);
 
 	}
 

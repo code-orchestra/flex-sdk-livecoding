@@ -102,15 +102,14 @@ public class CallExpressionNode extends SelectorNode
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        CallExpressionNode that = (CallExpressionNode) o;
+		CallExpressionNode that = (CallExpressionNode) o;
 
-        if (is_new != that.is_new) return false;
-        if (void_result != that.void_result) return false;
-		return !(args != null ? !args.equals(that.args) : that.args != null);
+		if (is_new != that.is_new) return false;
+		return void_result == that.void_result && !(args != null ? !args.equals(that.args) : that.args != null);
 
 	}
 

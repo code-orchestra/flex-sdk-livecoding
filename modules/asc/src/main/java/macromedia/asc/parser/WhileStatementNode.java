@@ -96,15 +96,14 @@ public class WhileStatementNode extends Node implements HasBody, LoopStatement
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        WhileStatementNode that = (WhileStatementNode) o;
+		WhileStatementNode that = (WhileStatementNode) o;
 
-        if (loop_index != that.loop_index) return false;
-        if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-		return !(statement != null ? !statement.equals(that.statement) : that.statement != null);
+		if (loop_index != that.loop_index) return false;
+		return !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(statement != null ? !statement.equals(that.statement) : that.statement != null);
 
 	}
 

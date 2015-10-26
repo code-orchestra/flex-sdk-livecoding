@@ -80,16 +80,15 @@ public class LiteralVectorNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        LiteralVectorNode that = (LiteralVectorNode) o;
+		LiteralVectorNode that = (LiteralVectorNode) o;
 
-        if (void_result != that.void_result) return false;
-        if (elementlist != null ? !elementlist.equals(that.elementlist) : that.elementlist != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-		return !(value != null ? !value.equals(that.value) : that.value != null);
+		if (void_result != that.void_result) return false;
+		if (elementlist != null ? !elementlist.equals(that.elementlist) : that.elementlist != null) return false;
+		return !(type != null ? !type.equals(that.type) : that.type != null) && !(value != null ? !value.equals(that.value) : that.value != null);
 
 	}
 

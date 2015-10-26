@@ -227,9 +227,7 @@ public class ClassDefinitionNode extends DefinitionNode
         if (static_protected_namespace != null ? !static_protected_namespace.equals(that.static_protected_namespace) : that.static_protected_namespace != null)
             return false;
         if (staticfexprs != null ? !staticfexprs.equals(that.staticfexprs) : that.staticfexprs != null) return false;
-        if (used_def_namespaces != null ? !used_def_namespaces.equals(that.used_def_namespaces) : that.used_def_namespaces != null)
-            return false;
-        return !(used_namespaces != null ? !used_namespaces.equals(that.used_namespaces) : that.used_namespaces != null);
+        return !(used_def_namespaces != null ? !used_def_namespaces.equals(that.used_def_namespaces) : that.used_def_namespaces != null) && !(used_namespaces != null ? !used_namespaces.equals(that.used_namespaces) : that.used_namespaces != null);
 
     }
 

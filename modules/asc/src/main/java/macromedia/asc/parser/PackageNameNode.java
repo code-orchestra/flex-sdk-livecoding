@@ -71,14 +71,13 @@ public class PackageNameNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        PackageNameNode that = (PackageNameNode) o;
+		PackageNameNode that = (PackageNameNode) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-		return !(url != null ? !url.equals(that.url) : that.url != null);
+		return !(id != null ? !id.equals(that.id) : that.id != null) && !(url != null ? !url.equals(that.url) : that.url != null);
 
 	}
 

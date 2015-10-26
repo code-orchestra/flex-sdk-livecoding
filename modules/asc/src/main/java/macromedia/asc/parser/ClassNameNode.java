@@ -66,15 +66,14 @@ public class ClassNameNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        ClassNameNode that = (ClassNameNode) o;
+		ClassNameNode that = (ClassNameNode) o;
 
-        if (non_nullable != that.non_nullable) return false;
-        if (ident != null ? !ident.equals(that.ident) : that.ident != null) return false;
-		return !(pkgname != null ? !pkgname.equals(that.pkgname) : that.pkgname != null);
+		if (non_nullable != that.non_nullable) return false;
+		return !(ident != null ? !ident.equals(that.ident) : that.ident != null) && !(pkgname != null ? !pkgname.equals(that.pkgname) : that.pkgname != null);
 
 	}
 

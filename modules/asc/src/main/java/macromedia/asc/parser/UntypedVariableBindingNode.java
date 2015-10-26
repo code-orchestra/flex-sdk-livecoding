@@ -71,15 +71,14 @@ public class UntypedVariableBindingNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        UntypedVariableBindingNode that = (UntypedVariableBindingNode) o;
+		UntypedVariableBindingNode that = (UntypedVariableBindingNode) o;
 
-        if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
-        if (initializer != null ? !initializer.equals(that.initializer) : that.initializer != null) return false;
-		return !(ref != null ? !ref.equals(that.ref) : that.ref != null);
+		if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
+		return !(initializer != null ? !initializer.equals(that.initializer) : that.initializer != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
 	}
 

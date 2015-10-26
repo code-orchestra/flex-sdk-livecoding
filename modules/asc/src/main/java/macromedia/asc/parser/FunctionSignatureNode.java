@@ -107,19 +107,18 @@ public class FunctionSignatureNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        FunctionSignatureNode that = (FunctionSignatureNode) o;
+		FunctionSignatureNode that = (FunctionSignatureNode) o;
 
-        if (no_anno != that.no_anno) return false;
-        if (void_anno != that.void_anno) return false;
-        if (inits != null ? !inits.equals(that.inits) : that.inits != null) return false;
-        if (parameter != null ? !parameter.equals(that.parameter) : that.parameter != null) return false;
-        if (result != null ? !result.equals(that.result) : that.result != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-		return !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
+		if (no_anno != that.no_anno) return false;
+		if (void_anno != that.void_anno) return false;
+		if (inits != null ? !inits.equals(that.inits) : that.inits != null) return false;
+		if (parameter != null ? !parameter.equals(that.parameter) : that.parameter != null) return false;
+		if (result != null ? !result.equals(that.result) : that.result != null) return false;
+		return !(type != null ? !type.equals(that.type) : that.type != null) && !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
 
 	}
 

@@ -63,14 +63,13 @@ public class SuperStatementNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        SuperStatementNode that = (SuperStatementNode) o;
+		SuperStatementNode that = (SuperStatementNode) o;
 
-        if (baseobj != null ? !baseobj.equals(that.baseobj) : that.baseobj != null) return false;
-		return !(call != null ? !call.equals(that.call) : that.call != null);
+		return !(baseobj != null ? !baseobj.equals(that.baseobj) : that.baseobj != null) && !(call != null ? !call.equals(that.call) : that.call != null);
 
 	}
 

@@ -71,17 +71,16 @@ public class CoerceNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        CoerceNode that = (CoerceNode) o;
+		CoerceNode that = (CoerceNode) o;
 
-        if (is_explicit != that.is_explicit) return false;
-        if (void_result != that.void_result) return false;
-        if (actual != null ? !actual.equals(that.actual) : that.actual != null) return false;
-        if (expected != null ? !expected.equals(that.expected) : that.expected != null) return false;
-		return !(expr != null ? !expr.equals(that.expr) : that.expr != null);
+		if (is_explicit != that.is_explicit) return false;
+		if (void_result != that.void_result) return false;
+		if (actual != null ? !actual.equals(that.actual) : that.actual != null) return false;
+		return !(expected != null ? !expected.equals(that.expected) : that.expected != null) && !(expr != null ? !expr.equals(that.expr) : that.expr != null);
 
 	}
 

@@ -63,14 +63,13 @@ public class InheritanceNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        InheritanceNode that = (InheritanceNode) o;
+		InheritanceNode that = (InheritanceNode) o;
 
-        if (baseclass != null ? !baseclass.equals(that.baseclass) : that.baseclass != null) return false;
-		return !(interfaces != null ? !interfaces.equals(that.interfaces) : that.interfaces != null);
+		return !(baseclass != null ? !baseclass.equals(that.baseclass) : that.baseclass != null) && !(interfaces != null ? !interfaces.equals(that.interfaces) : that.interfaces != null);
 
 	}
 

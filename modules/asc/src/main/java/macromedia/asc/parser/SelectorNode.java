@@ -151,18 +151,17 @@ public abstract class SelectorNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        SelectorNode that = (SelectorNode) o;
+		SelectorNode that = (SelectorNode) o;
 
-        if (flags != that.flags) return false;
-        if (is_package != that.is_package) return false;
-        if (skip != that.skip) return false;
-        if (base != null ? !base.equals(that.base) : that.base != null) return false;
-        if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-		return !(ref != null ? !ref.equals(that.ref) : that.ref != null);
+		if (flags != that.flags) return false;
+		if (is_package != that.is_package) return false;
+		if (skip != that.skip) return false;
+		if (base != null ? !base.equals(that.base) : that.base != null) return false;
+		return !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
 	}
 

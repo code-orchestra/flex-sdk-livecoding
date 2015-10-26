@@ -105,11 +105,7 @@ public class BaseScriptingEnvironment {
                     (null, SVGConstants.SVG_ONRESIZE_ATTRIBUTE).length() > 0) {
                 return true;
             }
-            if (elt.getAttributeNS
-                    (null, SVGConstants.SVG_ONUNLOAD_ATTRIBUTE).length() > 0) {
-                return true;
-            }
-            return elt.getAttributeNS(null, SVGConstants.SVG_ONSCROLL_ATTRIBUTE).length() > 0 || elt.getAttributeNS(null, SVGConstants.SVG_ONZOOM_ATTRIBUTE).length() > 0 || isDynamicElement(ctx, doc.getDocumentElement());
+            return elt.getAttributeNS(null, SVGConstants.SVG_ONUNLOAD_ATTRIBUTE).length() > 0 || elt.getAttributeNS(null, SVGConstants.SVG_ONSCROLL_ATTRIBUTE).length() > 0 || elt.getAttributeNS(null, SVGConstants.SVG_ONZOOM_ATTRIBUTE).length() > 0 || isDynamicElement(ctx, doc.getDocumentElement());
         }
         return false;
     }

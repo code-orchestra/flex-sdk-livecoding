@@ -152,8 +152,7 @@ public class MethodCONode extends CONode {
 
             Parameter parameter = (Parameter) o;
 
-            if (paramName != null ? !paramName.equals(parameter.paramName) : parameter.paramName != null) return false;
-            return !(paramTypeString != null ? !paramTypeString.equals(parameter.paramTypeString) : parameter.paramTypeString != null);
+            return !(paramName != null ? !paramName.equals(parameter.paramName) : parameter.paramName != null) && !(paramTypeString != null ? !paramTypeString.equals(parameter.paramTypeString) : parameter.paramTypeString != null);
 
         }
 

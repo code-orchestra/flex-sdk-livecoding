@@ -863,8 +863,7 @@ public final class ReferenceValue extends Value implements ErrorConstants
         if (namespaces != null ? !namespaces.equals(that.namespaces) : that.namespaces != null) return false;
         if (slot != null ? !slot.equals(that.slot) : that.slot != null) return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (type_params != null ? !type_params.equals(that.type_params) : that.type_params != null) return false;
-        return !(ud_bits != null ? !ud_bits.equals(that.ud_bits) : that.ud_bits != null);
+        return !(type_params != null ? !type_params.equals(that.type_params) : that.type_params != null) && !(ud_bits != null ? !ud_bits.equals(that.ud_bits) : that.ud_bits != null);
 
     }
 

@@ -159,15 +159,14 @@ public class NumberUsage implements Cloneable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
-        NumberUsage that = (NumberUsage) o;
+		NumberUsage that = (NumberUsage) o;
 
-        if (floating_usage != that.floating_usage) return false;
-        if (precision != that.precision) return false;
-        if (rounding != that.rounding) return false;
-		return usage == that.usage;
+		if (floating_usage != that.floating_usage) return false;
+		if (precision != that.precision) return false;
+		return rounding == that.rounding && usage == that.usage;
 
 	}
 

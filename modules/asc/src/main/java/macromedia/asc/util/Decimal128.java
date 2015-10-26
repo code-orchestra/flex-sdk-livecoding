@@ -1116,13 +1116,12 @@ public class Decimal128 {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
-        Decimal128 that = (Decimal128) o;
+		Decimal128 that = (Decimal128) o;
 
-        if (flags != that.flags) return false;
-		return !(value != null ? !value.equals(that.value) : that.value != null);
+		return flags == that.flags && !(value != null ? !value.equals(that.value) : that.value != null);
 
 	}
 }

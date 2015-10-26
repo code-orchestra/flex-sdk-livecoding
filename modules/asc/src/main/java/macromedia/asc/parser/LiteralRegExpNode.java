@@ -71,14 +71,13 @@ public class LiteralRegExpNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        LiteralRegExpNode that = (LiteralRegExpNode) o;
+		LiteralRegExpNode that = (LiteralRegExpNode) o;
 
-        if (void_result != that.void_result) return false;
-		return !(value != null ? !value.equals(that.value) : that.value != null);
+		return void_result == that.void_result && !(value != null ? !value.equals(that.value) : that.value != null);
 
 	}
 

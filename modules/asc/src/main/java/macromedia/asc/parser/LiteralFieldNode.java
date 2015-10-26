@@ -71,15 +71,14 @@ public class LiteralFieldNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        LiteralFieldNode that = (LiteralFieldNode) o;
+		LiteralFieldNode that = (LiteralFieldNode) o;
 
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
-		return !(value != null ? !value.equals(that.value) : that.value != null);
+		if (name != null ? !name.equals(that.name) : that.name != null) return false;
+		return !(ref != null ? !ref.equals(that.ref) : that.ref != null) && !(value != null ? !value.equals(that.value) : that.value != null);
 
 	}
 

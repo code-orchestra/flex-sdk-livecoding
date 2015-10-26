@@ -104,18 +104,17 @@ public class ForStatementNode extends Node implements HasBody, LoopStatement
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        ForStatementNode that = (ForStatementNode) o;
+		ForStatementNode that = (ForStatementNode) o;
 
-        if (is_forin != that.is_forin) return false;
-        if (loop_index != that.loop_index) return false;
-        if (increment != null ? !increment.equals(that.increment) : that.increment != null) return false;
-        if (initialize != null ? !initialize.equals(that.initialize) : that.initialize != null) return false;
-        if (statement != null ? !statement.equals(that.statement) : that.statement != null) return false;
-		return !(test != null ? !test.equals(that.test) : that.test != null);
+		if (is_forin != that.is_forin) return false;
+		if (loop_index != that.loop_index) return false;
+		if (increment != null ? !increment.equals(that.increment) : that.increment != null) return false;
+		if (initialize != null ? !initialize.equals(that.initialize) : that.initialize != null) return false;
+		return !(statement != null ? !statement.equals(that.statement) : that.statement != null) && !(test != null ? !test.equals(that.test) : that.test != null);
 
 	}
 

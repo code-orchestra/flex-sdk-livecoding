@@ -104,15 +104,14 @@ public class MethodSlot extends Slot
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        MethodSlot that = (MethodSlot) o;
+		MethodSlot that = (MethodSlot) o;
 
-        if (method_id != that.method_id) return false;
-        if (decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) return false;
-		return !(method_name != null ? !method_name.equals(that.method_name) : that.method_name != null);
+		if (method_id != that.method_id) return false;
+		return !(decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) && !(method_name != null ? !method_name.equals(that.method_name) : that.method_name != null);
 
 	}
 

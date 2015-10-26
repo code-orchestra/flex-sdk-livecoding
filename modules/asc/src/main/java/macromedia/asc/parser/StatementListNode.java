@@ -236,8 +236,7 @@ public class StatementListNode extends Node
         if (config_attrs != null ? !config_attrs.equals(that.config_attrs) : that.config_attrs != null) return false;
         if (default_namespace != null ? !default_namespace.equals(that.default_namespace) : that.default_namespace != null)
             return false;
-        if (items != null ? !items.equals(that.items) : that.items != null) return false;
-        return !(numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null);
+        return !(items != null ? !items.equals(that.items) : that.items != null) && !(numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null);
 
     }
 

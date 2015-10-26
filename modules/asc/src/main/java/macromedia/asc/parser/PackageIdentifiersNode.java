@@ -136,15 +136,14 @@ public class PackageIdentifiersNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        PackageIdentifiersNode that = (PackageIdentifiersNode) o;
+		PackageIdentifiersNode that = (PackageIdentifiersNode) o;
 
-        if (def_part != null ? !def_part.equals(that.def_part) : that.def_part != null) return false;
-        if (list != null ? !list.equals(that.list) : that.list != null) return false;
-		return !(pkg_part != null ? !pkg_part.equals(that.pkg_part) : that.pkg_part != null);
+		if (def_part != null ? !def_part.equals(that.def_part) : that.def_part != null) return false;
+		return !(list != null ? !list.equals(that.list) : that.list != null) && !(pkg_part != null ? !pkg_part.equals(that.pkg_part) : that.pkg_part != null);
 
 	}
 

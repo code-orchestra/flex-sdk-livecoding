@@ -109,17 +109,15 @@ public class ArgumentListNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        ArgumentListNode that = (ArgumentListNode) o;
+		ArgumentListNode that = (ArgumentListNode) o;
 
-        if (is_bracket_selector != that.is_bracket_selector) return false;
-        if (decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) return false;
-        if (expected_types != null ? !expected_types.equals(that.expected_types) : that.expected_types != null)
-            return false;
-		return !(items != null ? !items.equals(that.items) : that.items != null);
+		if (is_bracket_selector != that.is_bracket_selector) return false;
+		if (decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) return false;
+		return !(expected_types != null ? !expected_types.equals(that.expected_types) : that.expected_types != null) && !(items != null ? !items.equals(that.items) : that.items != null);
 
 	}
 

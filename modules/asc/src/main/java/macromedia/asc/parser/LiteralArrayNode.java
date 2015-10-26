@@ -75,15 +75,14 @@ public class LiteralArrayNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        LiteralArrayNode that = (LiteralArrayNode) o;
+		LiteralArrayNode that = (LiteralArrayNode) o;
 
-        if (void_result != that.void_result) return false;
-        if (elementlist != null ? !elementlist.equals(that.elementlist) : that.elementlist != null) return false;
-		return !(value != null ? !value.equals(that.value) : that.value != null);
+		if (void_result != that.void_result) return false;
+		return !(elementlist != null ? !elementlist.equals(that.elementlist) : that.elementlist != null) && !(value != null ? !value.equals(that.value) : that.value != null);
 
 	}
 

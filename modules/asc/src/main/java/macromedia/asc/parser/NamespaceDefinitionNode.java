@@ -117,20 +117,19 @@ public class NamespaceDefinitionNode extends DefinitionNode
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        NamespaceDefinitionNode that = (NamespaceDefinitionNode) o;
+		NamespaceDefinitionNode that = (NamespaceDefinitionNode) o;
 
-        if (needs_init != that.needs_init) return false;
-        if (debug_name != null ? !debug_name.equals(that.debug_name) : that.debug_name != null) return false;
-        if (gen_bits != null ? !gen_bits.equals(that.gen_bits) : that.gen_bits != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (qualifiedname != null ? !qualifiedname.equals(that.qualifiedname) : that.qualifiedname != null)
-            return false;
-        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
-		return !(value != null ? !value.equals(that.value) : that.value != null);
+		if (needs_init != that.needs_init) return false;
+		if (debug_name != null ? !debug_name.equals(that.debug_name) : that.debug_name != null) return false;
+		if (gen_bits != null ? !gen_bits.equals(that.gen_bits) : that.gen_bits != null) return false;
+		if (name != null ? !name.equals(that.name) : that.name != null) return false;
+		if (qualifiedname != null ? !qualifiedname.equals(that.qualifiedname) : that.qualifiedname != null)
+			return false;
+		return !(ref != null ? !ref.equals(that.ref) : that.ref != null) && !(value != null ? !value.equals(that.value) : that.value != null);
 
 	}
 

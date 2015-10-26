@@ -78,19 +78,18 @@ public class CatchClauseNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        CatchClauseNode that = (CatchClauseNode) o;
+		CatchClauseNode that = (CatchClauseNode) o;
 
-        if (finallyInserted != that.finallyInserted) return false;
-        if (activation != null ? !activation.equals(that.activation) : that.activation != null) return false;
-        if (default_namespace != null ? !default_namespace.equals(that.default_namespace) : that.default_namespace != null)
-            return false;
-        if (parameter != null ? !parameter.equals(that.parameter) : that.parameter != null) return false;
-        if (statements != null ? !statements.equals(that.statements) : that.statements != null) return false;
-		return !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
+		if (finallyInserted != that.finallyInserted) return false;
+		if (activation != null ? !activation.equals(that.activation) : that.activation != null) return false;
+		if (default_namespace != null ? !default_namespace.equals(that.default_namespace) : that.default_namespace != null)
+			return false;
+		if (parameter != null ? !parameter.equals(that.parameter) : that.parameter != null) return false;
+		return !(statements != null ? !statements.equals(that.statements) : that.statements != null) && !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
 
 	}
 

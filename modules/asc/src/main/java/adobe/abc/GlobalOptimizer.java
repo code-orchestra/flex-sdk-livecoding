@@ -6760,30 +6760,26 @@ public class GlobalOptimizer
 		return single_path;
 	}
 
-	boolean needsCoercion(Method m, Typeref to_ty, Typeref from_ty, boolean backwards_branch)
-	{
-		if ( to_ty.equals(from_ty) || ignoreTypeConflict(m, to_ty, from_ty) )
+	boolean needsCoercion(Method m, Typeref to_ty, Typeref from_ty, boolean backwards_branch) {
+		if (to_ty.equals(from_ty) || ignoreTypeConflict(m, to_ty, from_ty))
 			return false;
-		
-		if ( isNumericType(from_ty) && isNumericType(to_ty))
+
+		if (isNumericType(from_ty) && isNumericType(to_ty))
 			return false;
-		
+
 		boolean needs_coercion;
-		
+
 		Typeref merged_type = typeMerge(to_ty, from_ty);
 
-		if (null == merged_type) {
-			//  No sensible meet of these types,
-			//  coercion necessary.
-			needs_coercion = true;
-		} else
+		//  No sensible meet of these types,
+//  coercion necessary.
+		needs_coercion = null == merged_type || backwards_branch || !to_ty.t.isMachineCompatible(merged_type.t);
 //  FIXME:  The type modeling in LocalVarState
 //  needs to account for cross-block nullable changes.
 //needs_coercion = ! from_ty.equals(to_ty);
-			needs_coercion = backwards_branch || !to_ty.t.isMachineCompatible(merged_type.t);
 
 		return needs_coercion;
-		
+
 	}
 
 	private boolean isNumericType(Typeref ty)

@@ -94,15 +94,14 @@ public class DeleteExpressionNode extends SelectorNode
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        DeleteExpressionNode that = (DeleteExpressionNode) o;
+		DeleteExpressionNode that = (DeleteExpressionNode) o;
 
-        if (op != that.op) return false;
-        if (void_result != that.void_result) return false;
-		return !(slot != null ? !slot.equals(that.slot) : that.slot != null);
+		if (op != that.op) return false;
+		return void_result == that.void_result && !(slot != null ? !slot.equals(that.slot) : that.slot != null);
 
 	}
 

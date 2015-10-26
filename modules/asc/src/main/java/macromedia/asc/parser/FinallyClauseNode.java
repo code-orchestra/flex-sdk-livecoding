@@ -69,15 +69,13 @@ public class FinallyClauseNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        FinallyClauseNode that = (FinallyClauseNode) o;
+		FinallyClauseNode that = (FinallyClauseNode) o;
 
-        if (default_catch != null ? !default_catch.equals(that.default_catch) : that.default_catch != null)
-            return false;
-		return !(statements != null ? !statements.equals(that.statements) : that.statements != null);
+		return !(default_catch != null ? !default_catch.equals(that.default_catch) : that.default_catch != null) && !(statements != null ? !statements.equals(that.statements) : that.statements != null);
 
 	}
 

@@ -77,14 +77,13 @@ public class ReturnStatementNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        ReturnStatementNode that = (ReturnStatementNode) o;
+		ReturnStatementNode that = (ReturnStatementNode) o;
 
-        if (finallyInserted != that.finallyInserted) return false;
-		return !(expr != null ? !expr.equals(that.expr) : that.expr != null);
+		return finallyInserted == that.finallyInserted && !(expr != null ? !expr.equals(that.expr) : that.expr != null);
 
 	}
 

@@ -157,32 +157,31 @@ public class AttributeListNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        AttributeListNode that = (AttributeListNode) o;
+		AttributeListNode that = (AttributeListNode) o;
 
-        if (compileDefinition != that.compileDefinition) return false;
-        if (hasConst != that.hasConst) return false;
-        if (hasDynamic != that.hasDynamic) return false;
-        if (hasFalse != that.hasFalse) return false;
-        if (hasFinal != that.hasFinal) return false;
-        if (hasInternal != that.hasInternal) return false;
-        if (hasIntrinsic != that.hasIntrinsic) return false;
-        if (hasNative != that.hasNative) return false;
-        if (hasOverride != that.hasOverride) return false;
-        if (hasPrivate != that.hasPrivate) return false;
-        if (hasProtected != that.hasProtected) return false;
-        if (hasPrototype != that.hasPrototype) return false;
-        if (hasPublic != that.hasPublic) return false;
-        if (hasStatic != that.hasStatic) return false;
-        if (hasVirtual != that.hasVirtual) return false;
-        if (items != null ? !items.equals(that.items) : that.items != null) return false;
-        if (namespace_ids != null ? !namespace_ids.equals(that.namespace_ids) : that.namespace_ids != null)
-            return false;
-        if (namespaces != null ? !namespaces.equals(that.namespaces) : that.namespaces != null) return false;
-		return !(userNamespace != null ? !userNamespace.equals(that.userNamespace) : that.userNamespace != null);
+		if (compileDefinition != that.compileDefinition) return false;
+		if (hasConst != that.hasConst) return false;
+		if (hasDynamic != that.hasDynamic) return false;
+		if (hasFalse != that.hasFalse) return false;
+		if (hasFinal != that.hasFinal) return false;
+		if (hasInternal != that.hasInternal) return false;
+		if (hasIntrinsic != that.hasIntrinsic) return false;
+		if (hasNative != that.hasNative) return false;
+		if (hasOverride != that.hasOverride) return false;
+		if (hasPrivate != that.hasPrivate) return false;
+		if (hasProtected != that.hasProtected) return false;
+		if (hasPrototype != that.hasPrototype) return false;
+		if (hasPublic != that.hasPublic) return false;
+		if (hasStatic != that.hasStatic) return false;
+		if (hasVirtual != that.hasVirtual) return false;
+		if (items != null ? !items.equals(that.items) : that.items != null) return false;
+		if (namespace_ids != null ? !namespace_ids.equals(that.namespace_ids) : that.namespace_ids != null)
+			return false;
+		return !(namespaces != null ? !namespaces.equals(that.namespaces) : that.namespaces != null) && !(userNamespace != null ? !userNamespace.equals(that.userNamespace) : that.userNamespace != null);
 
 	}
 

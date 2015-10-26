@@ -113,14 +113,13 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            if (!super.equals(o)) return false;
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			if (!super.equals(o)) return false;
 
-            KeyValuePair that = (KeyValuePair) o;
+			KeyValuePair that = (KeyValuePair) o;
 
-            if (key != null ? !key.equals(that.key) : that.key != null) return false;
-			return !(obj != null ? !obj.equals(that.obj) : that.obj != null);
+			return !(key != null ? !key.equals(that.key) : that.key != null) && !(obj != null ? !obj.equals(that.obj) : that.obj != null);
 
 		}
 

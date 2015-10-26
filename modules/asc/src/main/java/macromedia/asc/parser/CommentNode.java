@@ -49,16 +49,15 @@ public class CommentNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        CommentNode that = (CommentNode) o;
+		CommentNode that = (CommentNode) o;
 
-        if (type != that.type) return false;
-        return !(comment != null ? !comment.equals(that.comment) : that.comment != null);
+		return type == that.type && !(comment != null ? !comment.equals(that.comment) : that.comment != null);
 
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

@@ -87,18 +87,17 @@ public class ImportDirectiveNode extends DefinitionNode
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        ImportDirectiveNode that = (ImportDirectiveNode) o;
+		ImportDirectiveNode that = (ImportDirectiveNode) o;
 
-        if (package_retrieved != that.package_retrieved) return false;
-        if (attrs != null ? !attrs.equals(that.attrs) : that.attrs != null) return false;
-        //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (pkg_node != null ? !pkg_node.equals(that.pkg_node) : that.pkg_node != null) return false;
-		return !(ref != null ? !ref.equals(that.ref) : that.ref != null);
+		if (package_retrieved != that.package_retrieved) return false;
+		if (attrs != null ? !attrs.equals(that.attrs) : that.attrs != null) return false;
+		//if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+		if (name != null ? !name.equals(that.name) : that.name != null) return false;
+		return !(pkg_node != null ? !pkg_node.equals(that.pkg_node) : that.pkg_node != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
 	}
 

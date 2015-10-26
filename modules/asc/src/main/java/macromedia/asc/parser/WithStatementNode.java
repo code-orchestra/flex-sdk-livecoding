@@ -70,15 +70,14 @@ public class WithStatementNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        WithStatementNode that = (WithStatementNode) o;
+		WithStatementNode that = (WithStatementNode) o;
 
-        if (activation != null ? !activation.equals(that.activation) : that.activation != null) return false;
-        if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-		return !(statement != null ? !statement.equals(that.statement) : that.statement != null);
+		if (activation != null ? !activation.equals(that.activation) : that.activation != null) return false;
+		return !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(statement != null ? !statement.equals(that.statement) : that.statement != null);
 
 	}
 

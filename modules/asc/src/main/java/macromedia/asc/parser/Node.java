@@ -380,13 +380,12 @@ public class Node implements Serializable, Cloneable // CodeOrchestra: made seri
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
-        Node node = (Node) o;
+		Node node = (Node) o;
 
-        if (flags != node.flags) return false;
-		return !(block != null ? !block.equals(node.block) : node.block != null);
+		return flags == node.flags && !(block != null ? !block.equals(node.block) : node.block != null);
 
 	}
 

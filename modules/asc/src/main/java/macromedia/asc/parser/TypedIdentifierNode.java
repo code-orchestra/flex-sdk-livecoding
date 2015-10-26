@@ -70,15 +70,14 @@ public class TypedIdentifierNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        TypedIdentifierNode that = (TypedIdentifierNode) o;
+		TypedIdentifierNode that = (TypedIdentifierNode) o;
 
-        if (no_anno != that.no_anno) return false;
-        if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
-		return !(type != null ? !type.equals(that.type) : that.type != null);
+		if (no_anno != that.no_anno) return false;
+		return !(identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) && !(type != null ? !type.equals(that.type) : that.type != null);
 
 	}
 

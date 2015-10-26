@@ -60,14 +60,13 @@ public class ErrorNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        ErrorNode errorNode = (ErrorNode) o;
+		ErrorNode errorNode = (ErrorNode) o;
 
-        if (errorCode != errorNode.errorCode) return false;
-		return !(errorArg != null ? !errorArg.equals(errorNode.errorArg) : errorNode.errorArg != null);
+		return errorCode == errorNode.errorCode && !(errorArg != null ? !errorArg.equals(errorNode.errorArg) : errorNode.errorArg != null);
 
 	}
 

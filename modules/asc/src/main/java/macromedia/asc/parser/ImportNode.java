@@ -63,14 +63,13 @@ public class ImportNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        ImportNode that = (ImportNode) o;
+		ImportNode that = (ImportNode) o;
 
-        if (filespec != null ? !filespec.equals(that.filespec) : that.filespec != null) return false;
-		return !(program != null ? !program.equals(that.program) : that.program != null);
+		return !(filespec != null ? !filespec.equals(that.filespec) : that.filespec != null) && !(program != null ? !program.equals(that.program) : that.program != null);
 
 	}
 

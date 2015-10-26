@@ -68,14 +68,13 @@ public class UsePragmaNode extends Node {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        UsePragmaNode that = (UsePragmaNode) o;
+		UsePragmaNode that = (UsePragmaNode) o;
 
-        if (argument != null ? !argument.equals(that.argument) : that.argument != null) return false;
-		return !(identifier != null ? !identifier.equals(that.identifier) : that.identifier != null);
+		return !(argument != null ? !argument.equals(that.argument) : that.argument != null) && !(identifier != null ? !identifier.equals(that.identifier) : that.identifier != null);
 
 	}
 

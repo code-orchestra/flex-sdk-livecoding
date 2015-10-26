@@ -160,19 +160,18 @@ public class ExpressionStatementNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        ExpressionStatementNode that = (ExpressionStatementNode) o;
+		ExpressionStatementNode that = (ExpressionStatementNode) o;
 
-        if (is_var_stmt != that.is_var_stmt) return false;
-        if (skip != that.skip) return false;
+		if (is_var_stmt != that.is_var_stmt) return false;
+		if (skip != that.skip) return false;
 //        if (expected_type != null ? !expected_type.equals(that.expected_type) : that.expected_type != null)
 //            return false;
-        if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-        if (gen_bits != null ? !gen_bits.equals(that.gen_bits) : that.gen_bits != null) return false;
-		return !(ref != null ? !ref.equals(that.ref) : that.ref != null);
+		if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
+		return !(gen_bits != null ? !gen_bits.equals(that.gen_bits) : that.gen_bits != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
 	}
 

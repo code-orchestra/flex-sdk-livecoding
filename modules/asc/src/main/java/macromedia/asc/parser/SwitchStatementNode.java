@@ -75,15 +75,14 @@ public class SwitchStatementNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        SwitchStatementNode that = (SwitchStatementNode) o;
+		SwitchStatementNode that = (SwitchStatementNode) o;
 
-        if (loop_index != that.loop_index) return false;
-        if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-		return !(statements != null ? !statements.equals(that.statements) : that.statements != null);
+		if (loop_index != that.loop_index) return false;
+		return !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(statements != null ? !statements.equals(that.statements) : that.statements != null);
 
 	}
 

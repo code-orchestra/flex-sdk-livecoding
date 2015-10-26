@@ -156,8 +156,7 @@ public class ProgramNode extends Node
             return false;
         if (rt_unresolved != null ? !rt_unresolved.equals(that.rt_unresolved) : that.rt_unresolved != null)
             return false;
-        if (statements != null ? !statements.equals(that.statements) : that.statements != null) return false;
-        return !(used_def_namespaces != null ? !used_def_namespaces.equals(that.used_def_namespaces) : that.used_def_namespaces != null);
+        return !(statements != null ? !statements.equals(that.statements) : that.statements != null) && !(used_def_namespaces != null ? !used_def_namespaces.equals(that.used_def_namespaces) : that.used_def_namespaces != null);
 
     }
 

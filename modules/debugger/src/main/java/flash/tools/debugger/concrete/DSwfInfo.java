@@ -173,17 +173,14 @@ public class DSwfInfo implements SwfInfo
 	 * in case 1. we may also not get the a value if the swd has
 	 * not been fully processed by the player yet. 
 	 */
-	public boolean hasAllSource()
-	{
+	public boolean hasAllSource() {
 		boolean yes = false;
 		int expect = getSourceExpectedCount();
 		int have = getSourceCount();
 
 		// if they are equal we are done, unless
 		// our expectation has not been set and have not yet loaded our swd
-		if (expect == -1 && isSwdLoading())
-			yes = false;
-		else yes = expect == have;
+		yes = !(expect == -1 && isSwdLoading()) && expect == have;
 
 		return yes;
 	}

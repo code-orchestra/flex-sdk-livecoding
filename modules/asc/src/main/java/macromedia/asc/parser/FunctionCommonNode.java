@@ -268,49 +268,48 @@ public class FunctionCommonNode extends Node
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        FunctionCommonNode that = (FunctionCommonNode) o;
+		FunctionCommonNode that = (FunctionCommonNode) o;
 
-        if (fixedCount != that.fixedCount) return false;
-        if (flags != that.flags) return false;
-        if (kind != that.kind) return false;
-        if (needsArguments != that.needsArguments) return false;
-        if (temp_count != that.temp_count) return false;
-        if (var_count != that.var_count) return false;
-        if (void_result != that.void_result) return false;
-        if (with_depth != that.with_depth) return false;
-        if (blocks != null ? !blocks.equals(that.blocks) : that.blocks != null) return false;
-        if (body != null ? !body.equals(that.body) : that.body != null) return false;
-        // cx is transient
-        //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
-        if (debug_name != null ? !debug_name.equals(that.debug_name) : that.debug_name != null) return false;
+		if (fixedCount != that.fixedCount) return false;
+		if (flags != that.flags) return false;
+		if (kind != that.kind) return false;
+		if (needsArguments != that.needsArguments) return false;
+		if (temp_count != that.temp_count) return false;
+		if (var_count != that.var_count) return false;
+		if (void_result != that.void_result) return false;
+		if (with_depth != that.with_depth) return false;
+		if (blocks != null ? !blocks.equals(that.blocks) : that.blocks != null) return false;
+		if (body != null ? !body.equals(that.body) : that.body != null) return false;
+		// cx is transient
+		//if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+		if (debug_name != null ? !debug_name.equals(that.debug_name) : that.debug_name != null) return false;
 //        if (def != null ? !(def == that.def) : that.def != null) return false;
-        if (default_dxns != null ? !default_dxns.equals(that.default_dxns) : that.default_dxns != null) return false;
-        if (default_namespace != null ? !default_namespace.equals(that.default_namespace) : that.default_namespace != null)
-            return false;
-        if (fexprs != null ? !fexprs.equals(that.fexprs) : that.fexprs != null) return false;
-        if (fun != null ? !fun.equals(that.fun) : that.fun != null) return false;
-        if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
-        if (imported_names != null ? !imported_names.equals(that.imported_names) : that.imported_names != null)
-            return false;
-        if (internal_name != null ? !internal_name.equals(that.internal_name) : that.internal_name != null)
-            return false;
-        if (namespace_ids != null ? !namespace_ids.equals(that.namespace_ids) : that.namespace_ids != null)
-            return false;
-        if (private_namespace != null ? !private_namespace.equals(that.private_namespace) : that.private_namespace != null)
-            return false;
-        if (public_namespace != null ? !public_namespace.equals(that.public_namespace) : that.public_namespace != null)
-            return false;
-        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
-        if (scope_chain != null ? !scope_chain.equals(that.scope_chain) : that.scope_chain != null) return false;
-        if (signature != null ? !signature.equals(that.signature) : that.signature != null) return false;
-        if (use_stmts != null ? !use_stmts.equals(that.use_stmts) : that.use_stmts != null) return false;
-        return !(used_namespaces != null ? !used_namespaces.equals(that.used_namespaces) : that.used_namespaces != null);
+		if (default_dxns != null ? !default_dxns.equals(that.default_dxns) : that.default_dxns != null) return false;
+		if (default_namespace != null ? !default_namespace.equals(that.default_namespace) : that.default_namespace != null)
+			return false;
+		if (fexprs != null ? !fexprs.equals(that.fexprs) : that.fexprs != null) return false;
+		if (fun != null ? !fun.equals(that.fun) : that.fun != null) return false;
+		if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
+		if (imported_names != null ? !imported_names.equals(that.imported_names) : that.imported_names != null)
+			return false;
+		if (internal_name != null ? !internal_name.equals(that.internal_name) : that.internal_name != null)
+			return false;
+		if (namespace_ids != null ? !namespace_ids.equals(that.namespace_ids) : that.namespace_ids != null)
+			return false;
+		if (private_namespace != null ? !private_namespace.equals(that.private_namespace) : that.private_namespace != null)
+			return false;
+		if (public_namespace != null ? !public_namespace.equals(that.public_namespace) : that.public_namespace != null)
+			return false;
+		if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+		if (scope_chain != null ? !scope_chain.equals(that.scope_chain) : that.scope_chain != null) return false;
+		if (signature != null ? !signature.equals(that.signature) : that.signature != null) return false;
+		return !(use_stmts != null ? !use_stmts.equals(that.use_stmts) : that.use_stmts != null) && !(used_namespaces != null ? !used_namespaces.equals(that.used_namespaces) : that.used_namespaces != null);
 
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

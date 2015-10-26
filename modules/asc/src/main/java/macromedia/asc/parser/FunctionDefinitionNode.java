@@ -142,23 +142,22 @@ public class FunctionDefinitionNode extends DefinitionNode
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-        FunctionDefinitionNode that = (FunctionDefinitionNode) o;
+		FunctionDefinitionNode that = (FunctionDefinitionNode) o;
 
-        if (fixedCount != that.fixedCount) return false;
-        if (is_prototype != that.is_prototype) return false;
-        if (needs_init != that.needs_init) return false;
-        if (skipLiveCoding != that.skipLiveCoding) return false;
-        if (version != that.version) return false;
-        //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
-        if (fexpr != null ? !fexpr.equals(that.fexpr) : that.fexpr != null) return false;
-        if (fun != null ? !fun.equals(that.fun) : that.fun != null) return false;
-        if (init != null ? !init.equals(that.init) : that.init != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-		return !(ref != null ? !ref.equals(that.ref) : that.ref != null);
+		if (fixedCount != that.fixedCount) return false;
+		if (is_prototype != that.is_prototype) return false;
+		if (needs_init != that.needs_init) return false;
+		if (skipLiveCoding != that.skipLiveCoding) return false;
+		if (version != that.version) return false;
+		//if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
+		if (fexpr != null ? !fexpr.equals(that.fexpr) : that.fexpr != null) return false;
+		if (fun != null ? !fun.equals(that.fun) : that.fun != null) return false;
+		if (init != null ? !init.equals(that.init) : that.init != null) return false;
+		return !(name != null ? !name.equals(that.name) : that.name != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
 	}
 

@@ -1159,8 +1159,7 @@ public class ObjectValue extends Value implements Comparable
             SlotIDCache that = (SlotIDCache) o;
 
             if (cur_range_index != that.cur_range_index) return false;
-            if (cur_slot_id != that.cur_slot_id) return false;
-            return !(slot_id_boundaries != null ? !slot_id_boundaries.equals(that.slot_id_boundaries) : that.slot_id_boundaries != null);
+            return cur_slot_id == that.cur_slot_id && !(slot_id_boundaries != null ? !slot_id_boundaries.equals(that.slot_id_boundaries) : that.slot_id_boundaries != null);
 
         }
 

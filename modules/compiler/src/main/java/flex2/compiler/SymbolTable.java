@@ -19,7 +19,10 @@
 
 package flex2.compiler;
 
-import flex2.compiler.abc.*;
+import flex2.compiler.abc.AbcClass;
+import flex2.compiler.abc.MetaData;
+import flex2.compiler.abc.Method;
+import flex2.compiler.abc.Variable;
 import flex2.compiler.as3.BytecodeEmitter;
 import flex2.compiler.as3.binding.TypeAnalyzer;
 import flex2.compiler.common.CompilerConfiguration;
@@ -31,7 +34,6 @@ import flex2.tools.oem.ProgressMeter;
 import macromedia.asc.util.Context;
 import macromedia.asc.util.ContextStatics;
 import macromedia.asc.util.Namespaces;
-import macromedia.asc.util.ObjectList;
 
 import java.util.*;
 
@@ -356,9 +358,8 @@ public final class SymbolTable
 	 */
 	void registerQNames(QNameList qNames, Source source)
 	{
-		for (int i = 0, size = qNames.size(); i < size; i++)
-		{
-			QName qN = qNames.get(i);
+		for (QName qName : qNames) {
+			QName qN = qName;
 			qNameTable.put(qN, source);
 		}
 	}
@@ -464,9 +465,8 @@ public final class SymbolTable
 	 */
 	public void cleanClassTable()
 	{
-		for (Iterator<String> i = classTable.keySet().iterator(); i.hasNext();)
-		{
-			flex2.compiler.abc.AbcClass c = classTable.get(i.next());
+		for (String s : classTable.keySet()) {
+			AbcClass c = classTable.get(s);
 			c.setTypeTable(null);
 		}
 	}

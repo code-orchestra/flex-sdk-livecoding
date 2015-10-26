@@ -67,9 +67,8 @@ public class Graph <V,E>
 	public void normalize()
 	{
 		counter = 0;
-		for (Iterator<Vertex<V>> i = vertices.iterator(); i.hasNext();)
-		{
-			i.next().id = counter++;
+		for (Vertex<V> vertice : vertices) {
+			vertice.id = counter++;
 		}
 	}
 }

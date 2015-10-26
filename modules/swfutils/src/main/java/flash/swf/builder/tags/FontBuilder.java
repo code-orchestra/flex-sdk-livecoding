@@ -432,9 +432,7 @@ public final class FontBuilder implements TagBuilder
     public void addCharset(FontFace face, char[] chars)
     {
         //TODO: Sort before adding to optimize IntMap addition
-        for (int i = 0; i < chars.length; i++)
-        {
-            char c = chars[i];
+        for (char c : chars) {
             addChar(face, c);
         }
     }

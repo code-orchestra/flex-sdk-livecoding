@@ -117,17 +117,16 @@ public class StatesGenerator {
     {
         Map<String, SharedObject> shared = model.sharedObjects;
 
-        for (Iterator<String> iter = shared.keySet().iterator(); iter.hasNext(); )
-        {
-            SharedObject symbol = shared.get(iter.next());
-            String lval = indent + "var " + symbol.name + "_factory:" + NameFormatter.retrieveClassName(standardDefs.CLASS_DEFERREDINSTANCEFROMFUNCTION ) + " = \n";
+        for (String s : shared.keySet()) {
+            SharedObject symbol = shared.get(s);
+            String lval = indent + "var " + symbol.name + "_factory:" + NameFormatter.retrieveClassName(standardDefs.CLASS_DEFERREDINSTANCEFROMFUNCTION) + " = \n";
             indent += StatesGenerator.INDENT;
             String suffix = symbol.model.isDeclared() ? "_i" : "_c";
             Boolean isTransient = symbol.model.getIsTransient();
             String rval = indent + "new " + NameFormatter.toDot(standardDefs.CLASS_DEFERREDINSTANCEFROMFUNCTION) + "(" + symbol.name + suffix +
-                (isTransient ? ", " + symbol.name + "_r" : "") + ");";
+                    (isTransient ? ", " + symbol.name + "_r" : "") + ");";
             indent = indent.substring(0, indent.length() - INDENT.length());
-            list.add(lval, rval, 0 );
+            list.add(lval, rval, 0);
         }
     }
     
@@ -140,39 +139,37 @@ public class StatesGenerator {
         Map<String, SharedObject> shared = model.sharedObjects;
 
         StatementListNode result = statementList;
-        
-        for (Iterator<String> iter = shared.keySet().iterator(); iter.hasNext(); )
-        {
-            SharedObject symbol = shared.get(iter.next());
-            
-            String varName = ((String)symbol.name + _FACTORY).intern();
-            String typeName = NameFormatter.retrieveClassName( DEFERREDINSTANCEFROMFUNCTION );
+
+        for (String s : shared.keySet()) {
+            SharedObject symbol = shared.get(s);
+
+            String varName = ((String) symbol.name + _FACTORY).intern();
+            String typeName = NameFormatter.retrieveClassName(DEFERREDINSTANCEFROMFUNCTION);
             String factory = symbol.name + (symbol.model.isDeclared() ? _I : _C);
             String resetFunc = symbol.name + _R;
-            
+
             MemberExpressionNode memberExpression =
-                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, factory, true);
-            
+                    AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, factory, true);
+
             ArgumentListNode callExpressionArgumentList = nodeFactory.argumentList(null, memberExpression);
-            
-            if (symbol.model.getIsTransient())
-            {
-            	memberExpression = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, resetFunc, true);
-            	callExpressionArgumentList = nodeFactory.argumentList(callExpressionArgumentList, memberExpression);
+
+            if (symbol.model.getIsTransient()) {
+                memberExpression = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, resetFunc, true);
+                callExpressionArgumentList = nodeFactory.argumentList(callExpressionArgumentList, memberExpression);
             }
-            
+
             QualifiedIdentifierNode qualifiedIdentifier =
-                AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, standardDefs.getCorePackage(), typeName, false);
-                
+                    AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, standardDefs.getCorePackage(), typeName, false);
+
             CallExpressionNode callExpression =
-                (CallExpressionNode) nodeFactory.callExpression(qualifiedIdentifier, callExpressionArgumentList);
+                    (CallExpressionNode) nodeFactory.callExpression(qualifiedIdentifier, callExpressionArgumentList);
             callExpression.is_new = true;
             callExpression.setRValue(false);
-            
+
             MemberExpressionNode ad = nodeFactory.memberExpression(null, callExpression);
-            
+
             VariableDefinitionNode variableDefinition =
-                AbstractSyntaxTreeUtil.generateVariable(nodeFactory, varName, typeName, false, ad);
+                    AbstractSyntaxTreeUtil.generateVariable(nodeFactory, varName, typeName, false, ad);
             result = nodeFactory.statementList(result, variableDefinition);
         }
         return result;
@@ -183,9 +180,7 @@ public class StatesGenerator {
      */
     private void genBindingInitializers(CodeFragmentList list, String indent)
     {
-        for (Iterator<StatesModel.Override> iter = bindingsQueue.iterator(); iter.hasNext(); )
-        {
-            StatesModel.Override symbol = (StatesModel.Override)iter.next();            
+        for (StatesModel.Override symbol : bindingsQueue) {
             list.add(indent, NameFormatter.toDot(standardDefs.CLASS_BINDINGMANAGER),
                     ".executeBindings(this, \"" + symbol.declaration + "\", " + symbol.declaration + ");", 0);
         }
@@ -197,34 +192,31 @@ public class StatesGenerator {
     private StatementListNode genBindingInitializersAST(NodeFactory nodeFactory, StatementListNode statementList)
     {
         StatementListNode result = statementList;
-        
-        for (Iterator<StatesModel.Override> iter = bindingsQueue.iterator(); iter.hasNext(); )
-        {
-            StatesModel.Override symbol = (StatesModel.Override)iter.next();
-            
+
+        for (StatesModel.Override symbol : bindingsQueue) {
             QualifiedIdentifierNode qualifiedIdentifier =
-                AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory, 
-                        standardDefs.getBindingPackage(), BINDINGMANAGER, false);
-            
+                    AbstractSyntaxTreeUtil.generateQualifiedIdentifier(nodeFactory,
+                            standardDefs.getBindingPackage(), BINDINGMANAGER, false);
+
             GetExpressionNode bindExpression = nodeFactory.getExpression(qualifiedIdentifier);
-            
+
             MemberExpressionNode lvalue = nodeFactory.memberExpression(null, bindExpression);
-            
-            ArgumentListNode execArgs = nodeFactory.argumentList(null, nodeFactory.thisExpression(0)); 
+
+            ArgumentListNode execArgs = nodeFactory.argumentList(null, nodeFactory.thisExpression(0));
             String decl = symbol.declaration.intern();
             execArgs = nodeFactory.argumentList(execArgs, nodeFactory.literalString(decl, false));
             IdentifierNode rvalIdentifier = nodeFactory.identifier(decl, false);
             GetExpressionNode getExpression = nodeFactory.getExpression(rvalIdentifier);
             MemberExpressionNode rvalue = nodeFactory.memberExpression(null, getExpression);
             execArgs = nodeFactory.argumentList(execArgs, rvalue);
-            
+
             IdentifierNode bindIdentifier = nodeFactory.identifier(EXECUTEBINDINGS, false);
 
             CallExpressionNode selector =
-                (CallExpressionNode) nodeFactory.callExpression(bindIdentifier, execArgs);
+                    (CallExpressionNode) nodeFactory.callExpression(bindIdentifier, execArgs);
             selector.setRValue(false);
-            
-            MemberExpressionNode base = nodeFactory.memberExpression(lvalue, selector); 
+
+            MemberExpressionNode base = nodeFactory.memberExpression(lvalue, selector);
             ListNode list = nodeFactory.list(null, base);
             ExpressionStatementNode expressionStatement = nodeFactory.expressionStatement(list);
             result = nodeFactory.statementList(result, expressionStatement);
@@ -240,12 +232,10 @@ public class StatesGenerator {
     {
         List<String> objects = model.earlyInitObjects;
 
-        for (Iterator<String> iter = objects.iterator(); iter.hasNext(); )
-        {
-            String symbol = iter.next();
+        for (String symbol : objects) {
             String lval = indent + symbol + "_factory.getInstance();\n";
             indent += StatesGenerator.INDENT;
-            list.add(lval, 0 );
+            list.add(lval, 0);
         }
     }
     
@@ -257,25 +247,23 @@ public class StatesGenerator {
         StatementListNode result = statementList;
         List<String> objects = model.earlyInitObjects;
 
-        for (Iterator<String> iter = objects.iterator(); iter.hasNext(); )
-        {
-            String symbol = iter.next();
-            String identifier = ((String)symbol + "_factory").intern();
+        for (String symbol : objects) {
+            String identifier = ((String) symbol + "_factory").intern();
             IdentifierNode idNode = nodeFactory.identifier(identifier, false);
             GetExpressionNode getIndexExpression = nodeFactory.getExpression(idNode);
             MemberExpressionNode base = nodeFactory.memberExpression(null, getIndexExpression);
-            
+
             IdentifierNode getNode = nodeFactory.identifier(GETINSTANCE, false);
-            
+
             CallExpressionNode selector =
-                (CallExpressionNode) nodeFactory.callExpression(getNode,  null);
+                    (CallExpressionNode) nodeFactory.callExpression(getNode, null);
             selector.setRValue(false);
-            
+
             MemberExpressionNode memberExpression = nodeFactory.memberExpression(base, selector);
             ListNode list = nodeFactory.list(null, memberExpression);
             ExpressionStatementNode expressionStatement = nodeFactory.expressionStatement(list);
             result = nodeFactory.statementList(result, expressionStatement);
-            
+
         }
         return result;
     }
@@ -319,14 +307,12 @@ public class StatesGenerator {
         if (!states.isEmpty())
         {
             ArgumentListNode statesArgumentList = null;
-            
-            for (Iterator<String> iter = states.iterator(); iter.hasNext();  )
-            {
-                State state = (State) model.stateByName((String)iter.next());
-                if (state != null)
-                {
+
+            for (String state1 : states) {
+                State state = (State) model.stateByName(state1);
+                if (state != null) {
                     MemberExpressionNode stateExpression = state.generateDefinitionBody(nodeFactory, configNamespaces,
-                                                                                        generateDocComments, bindingsQueue);
+                            generateDocComments, bindingsQueue);
                     statesArgumentList = nodeFactory.argumentList(statesArgumentList, stateExpression);
                 }
             }
@@ -351,23 +337,19 @@ public class StatesGenerator {
     {        
         Set<String> states = model.info.getStateNames();
         int count = 0;
-        for (Iterator<String> iter = states.iterator(); iter.hasNext();  )
-        {
-            State state = (State) model.stateByName((String)iter.next());
-            if (state != null)
-            {
+        for (String state1 : states) {
+            State state = (State) model.stateByName(state1);
+            if (state != null) {
                 // Declaration initializer
-                if (state.isDeclared())
-                {
-                    list.add(indent, state.getId() + "= states[" + count + "];", 0 );
+                if (state.isDeclared()) {
+                    list.add(indent, state.getId() + "= states[" + count + "];", 0);
                 }
-                
+
                 // Event handlers
-                for (Iterator<Initializer> initializers = state.getEvents(); initializers.hasNext(); )
-                {
-                    EventInitializer ei = (EventInitializer) initializers.next();                   
-                    list.add(indent, "states[" + count + "].addEventListener(\"" + ei.getName() + "\", " + ei.getValueExpr() + " );" , 0 );             
-                }       
+                for (Iterator<Initializer> initializers = state.getEvents(); initializers.hasNext(); ) {
+                    EventInitializer ei = (EventInitializer) initializers.next();
+                    list.add(indent, "states[" + count + "].addEventListener(\"" + ei.getName() + "\", " + ei.getValueExpr() + " );", 0);
+                }
             }
             count++;
         }
@@ -385,52 +367,48 @@ public class StatesGenerator {
         StatementListNode result = statementList;
         Set<String> states = model.info.getStateNames();
         int count = 0;
-        for (Iterator<String> iter = states.iterator(); iter.hasNext();  )
-        {
-            State state = (State) model.stateByName((String)iter.next());
-            if (state != null)
-            {
+        for (String state1 : states) {
+            State state = (State) model.stateByName(state1);
+            if (state != null) {
                 String identifier = state.getId().intern();
                 IdentifierNode stateIdentifier = nodeFactory.identifier(identifier, false);
                 IdentifierNode statesIdentifier = nodeFactory.identifier(STATES, false);
-                
+
                 LiteralNumberNode numberNode = nodeFactory.literalNumber(count);
                 ArgumentListNode getIndexArgList = nodeFactory.argumentList(null, numberNode);
                 GetExpressionNode getIndexExpression = nodeFactory.getExpression(getIndexArgList);
                 getIndexExpression.setMode(Tokens.LEFTBRACKET_TOKEN);
-                
+
                 GetExpressionNode getStatesExpression = nodeFactory.getExpression(statesIdentifier);
                 MemberExpressionNode base = nodeFactory.memberExpression(null, getStatesExpression);
-   
+
                 MemberExpressionNode getExpr = nodeFactory.memberExpression(base, getIndexExpression);
-                
+
                 // Declaration initializer
-                if (state.isDeclared())
-                {
+                if (state.isDeclared()) {
                     ArgumentListNode argList = nodeFactory.argumentList(null, getExpr);
-                    SetExpressionNode selector = nodeFactory.setExpression(stateIdentifier, argList, false); 
+                    SetExpressionNode selector = nodeFactory.setExpression(stateIdentifier, argList, false);
                     MemberExpressionNode outer = nodeFactory.memberExpression(null, selector);
                     ListNode list = nodeFactory.list(null, outer);
                     ExpressionStatementNode expressionStatement = nodeFactory.expressionStatement(list);
                     result = nodeFactory.statementList(result, expressionStatement);
                 }
-                
+
                 // Event handlers
-                for (Iterator<Initializer> initializers = state.getEvents(); initializers.hasNext(); )
-                {
-                    EventInitializer ei = (EventInitializer) initializers.next();    
+                for (Iterator<Initializer> initializers = state.getEvents(); initializers.hasNext(); ) {
+                    EventInitializer ei = (EventInitializer) initializers.next();
                     IdentifierNode addEventIdentifier = nodeFactory.identifier(ADDEVENTLISTENER, false);
                     LiteralStringNode eventName = nodeFactory.literalString(ei.getName());
-                    macromedia.asc.parser.Node valueNode = ei.generateValueExpr(nodeFactory, configNamespaces,
-                                                                                generateDocComments);
+                    Node valueNode = ei.generateValueExpr(nodeFactory, configNamespaces,
+                            generateDocComments);
                     ArgumentListNode addEventArgs = nodeFactory.argumentList(null, eventName);
                     addEventArgs = nodeFactory.argumentList(addEventArgs, valueNode);
-                    
-                    
+
+
                     CallExpressionNode addListener =
-                        (CallExpressionNode) nodeFactory.callExpression(addEventIdentifier, addEventArgs);
+                            (CallExpressionNode) nodeFactory.callExpression(addEventIdentifier, addEventArgs);
                     addListener.setRValue(false);
-                    MemberExpressionNode outer = nodeFactory.memberExpression(getExpr, addListener );
+                    MemberExpressionNode outer = nodeFactory.memberExpression(getExpr, addListener);
                     ListNode list = nodeFactory.list(null, outer);
                     ExpressionStatementNode expressionStatement = nodeFactory.expressionStatement(list);
                     result = nodeFactory.statementList(result, expressionStatement);

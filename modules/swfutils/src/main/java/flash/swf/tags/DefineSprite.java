@@ -71,14 +71,11 @@ public class DefineSprite extends DefineTag
 	public Iterator<Tag> getReferences()
     {
 		ArrayList<Tag> list = new ArrayList<Tag>();
-		for (Iterator i = tagList.tags.iterator(); i.hasNext();)
-		{
-			Tag tag = (Tag) i.next();
-			for (Iterator<Tag> j = tag.getReferences(); j.hasNext();)
-			{
-				list.add(j.next());
-			}
-		}
+        for (Tag tag : tagList.tags) {
+            for (Iterator<Tag> j = tag.getReferences(); j.hasNext(); ) {
+                list.add(j.next());
+            }
+        }
 		return list.iterator();
     }
 

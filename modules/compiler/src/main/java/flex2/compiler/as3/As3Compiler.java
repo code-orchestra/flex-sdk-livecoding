@@ -19,29 +19,15 @@
 
 package flex2.compiler.as3;
 
-import flex2.compiler.AbstractSubCompiler;
-import flex2.compiler.CompilerContext;
-import flex2.compiler.CompilationUnit;
-import flex2.compiler.CompilerBenchmarkHelper;
-import flex2.compiler.Source;
-import flex2.compiler.SymbolTable;
+import flex2.compiler.*;
 import flex2.compiler.abc.AbcClass;
 import flex2.compiler.abc.MetaData;
-import flex2.compiler.as3.reflect.TypeTable;
 import flex2.compiler.as3.reflect.NodeMagic;
+import flex2.compiler.as3.reflect.TypeTable;
 import flex2.compiler.css.StyleConflictException;
 import flex2.compiler.io.VirtualFile;
-import flex2.compiler.util.CompilerMessage;
-import flex2.compiler.util.LineNumberMap;
-import flex2.compiler.util.MimeMappings;
-import flex2.compiler.util.MultiName;
-import flex2.compiler.util.MultiNameMap;
-import flex2.compiler.util.Name;
-import flex2.compiler.util.NameFormatter;
+import flex2.compiler.util.*;
 import flex2.compiler.util.QName;
-import flex2.compiler.util.QNameList;
-import flex2.compiler.util.QNameSet;
-import flex2.compiler.util.ThreadLocalToolkit;
 import macromedia.asc.embedding.ConfigVar;
 import macromedia.asc.embedding.LintEvaluator;
 import macromedia.asc.embedding.WarningConstants;
@@ -49,22 +35,11 @@ import macromedia.asc.embedding.avmplus.GlobalBuilder;
 import macromedia.asc.embedding.avmplus.RuntimeConstants;
 import macromedia.asc.parser.*;
 import macromedia.asc.semantics.*;
-import macromedia.asc.util.Context;
-import macromedia.asc.util.ContextStatics;
-import macromedia.asc.util.IntegerPool;
-import macromedia.asc.util.ObjectList;
-import macromedia.asc.util.Slots;
+import macromedia.asc.util.*;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -429,12 +404,10 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
             symbolTable.getContext().setAttribute(AttrTypeTable, typeTable);
         }
 
-		for (int i = 0, length = compilerExtensions.size(); i < length; i++)
-		{
-			compilerExtensions.get(i).parse1(unit, typeTable);
+		for (Extension compilerExtension : compilerExtensions) {
+			compilerExtension.parse1(unit, typeTable);
 
-			if (ThreadLocalToolkit.errorCount() > 0)
-			{
+			if (ThreadLocalToolkit.errorCount() > 0) {
 				return null;
 			}
 		}
@@ -461,12 +434,10 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
 		TypeTable typeTable = (TypeTable) symbolTable.getContext().getAttribute(AttrTypeTable);
 
-		for (int i = 0, length = compilerExtensions.size(); i < length; i++)
-		{
-			compilerExtensions.get(i).parse2(unit, typeTable);
+		for (Extension compilerExtension : compilerExtensions) {
+			compilerExtension.parse2(unit, typeTable);
 
-			if (ThreadLocalToolkit.errorCount() > 0)
-			{
+			if (ThreadLocalToolkit.errorCount() > 0) {
 				return;
 			}
 		}
@@ -545,15 +516,13 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
 		unit.typeInfo = node.frame;
 
-        for (int i = 0, length = compilerExtensions.size(); i < length; i++)
-		{
-			compilerExtensions.get(i).analyze1(unit, typeTable);
+		for (Extension compilerExtension : compilerExtensions) {
+			compilerExtension.analyze1(unit, typeTable);
 
-			if (ThreadLocalToolkit.errorCount() > 0)
-			{
+			if (ThreadLocalToolkit.errorCount() > 0) {
 				return;
 			}
-        }
+		}
         
         if (benchmarkHelper != null)
         {
@@ -613,12 +582,10 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 			transferImportDefinitions(node.import_def_unresolved, unit.importDefinitionStatements);
 		}
 
-		for (int i = 0, length = compilerExtensions.size(); i < length; i++)
-		{
-			compilerExtensions.get(i).analyze2(unit, typeTable);
+		for (Extension compilerExtension : compilerExtensions) {
+			compilerExtension.analyze2(unit, typeTable);
 
-			if (ThreadLocalToolkit.errorCount() > 0)
-			{
+			if (ThreadLocalToolkit.errorCount() > 0) {
 				return;
 			}
 		}
@@ -684,10 +651,9 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
 		        ObjectList comments = printer.doccomments;
 		        int numComments = comments.size();
-		        for(int x = 0; x < numComments; x++)
-		        {
-			        ((DocCommentNode) comments.get(x)).emit(cx,out);
-		        }
+				for (Object comment : comments) {
+					((DocCommentNode) comment).emit(cx, out);
+				}
 		        out.append("\n").append("</asdoc>").append("\n");
 	        }
 
@@ -713,12 +679,10 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
 		TypeTable typeTable = (TypeTable) symbolTable.getContext().getAttribute(AttrTypeTable);
 
-		for (int i = 0, length = compilerExtensions.size(); i < length; i++)
-		{
-			compilerExtensions.get(i).analyze3(unit, typeTable);
+		for (Extension compilerExtension : compilerExtensions) {
+			compilerExtension.analyze3(unit, typeTable);
 
-			if (ThreadLocalToolkit.errorCount() > 0)
-			{
+			if (ThreadLocalToolkit.errorCount() > 0) {
 				return;
 			}
 		}
@@ -815,13 +779,12 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
 		// last step: collect class definitions, add them to the symbol table and the CompilationUnit
         Map classMap = typeTable.createClasses(node.clsdefs, unit.topLevelDefinitions);
-        for (Iterator i = classMap.keySet().iterator(); i.hasNext();)
-        {
-            String className = (String) i.next();
-            AbcClass c = (AbcClass) classMap.get(className);
-            symbolTable.registerClass(className, c);
-            unit.classTable.put(className, c);
-        }
+		for (Object o : classMap.keySet()) {
+			String className = (String) o;
+			AbcClass c = (AbcClass) classMap.get(className);
+			symbolTable.registerClass(className, c);
+			unit.classTable.put(className, c);
+		}
 
         try
         {
@@ -835,12 +798,10 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
         evaluateLoaderClassBase(unit, typeTable);
 
-		for (int i = 0, length = compilerExtensions.size(); i < length; i++)
-		{
-			compilerExtensions.get(i).analyze4(unit, typeTable);
+		for (Extension compilerExtension : compilerExtensions) {
+			compilerExtension.analyze4(unit, typeTable);
 
-			if (ThreadLocalToolkit.errorCount() > 0)
-			{
+			if (ThreadLocalToolkit.errorCount() > 0) {
 				return;
 			}
 		}
@@ -896,12 +857,10 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
 		emitter.emit(unit.bytes);
 
-		for (int i = 0, length = compilerExtensions.size(); i < length; i++)
-		{
-			compilerExtensions.get(i).generate(unit, typeTable);
+		for (Extension compilerExtension : compilerExtensions) {
+			compilerExtension.generate(unit, typeTable);
 
-			if (ThreadLocalToolkit.errorCount() > 0)
-			{
+			if (ThreadLocalToolkit.errorCount() > 0) {
 				return;
 			}
 		}
@@ -927,50 +886,41 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
             final Slots ovSlots = ov.slots;
             if (ovSlots != null)
             {
-                for (int i = 0, length = ovSlots.size(); i < length; i++)
-                {
-                    final Slot slot = ovSlots.get(i);
-                    
-                    // the following block should be relatively in sync with ContextStatics.cleanSlot()
-                    if (slot != null)
-                    {
-                        slot.setImplNode(null);
-                    }
-                }
+				for (Slot ovSlot : ovSlots) {
+					final Slot slot = ovSlot;
+
+					// the following block should be relatively in sync with ContextStatics.cleanSlot()
+					if (slot != null) {
+						slot.setImplNode(null);
+					}
+				}
             }
         }
 
         // for each QName definition, clean each slot in TypeValue slot and its prototype
         if (cx != null && definitions != null)
         {
-    		for (int i = 0, size = definitions.size(); i < size; i++)
-    		{
-    			final TypeValue value = cx.userDefined((definitions.get(i)).toString());
-    			if (value != null)
-    			{
-                    final Slots valueSlots = value.slots;
-                    if (valueSlots != null)
-                    {
-                        for (int j = 0, length = valueSlots.size(); j < length; j++)
-                        {
-                            ContextStatics.cleanSlot(valueSlots.get(j));
-                        }
-                    }
-                    
-                    final ObjectValue proto = value.prototype;
-                    if (proto != null)
-                    {
-                        final Slots protoSlots = proto.slots;
-                        if (protoSlots != null)
-                        {
-                            for (int j = 0, length = protoSlots.size(); j < length; j++)
-                            {
-                                ContextStatics.cleanSlot(protoSlots.get(j));
-                            }
-                        }
-                    }
-    			}
-            }
+			for (QName definition : definitions) {
+				final TypeValue value = cx.userDefined(definition.toString());
+				if (value != null) {
+					final Slots valueSlots = value.slots;
+					if (valueSlots != null) {
+						for (Slot valueSlot : valueSlots) {
+							ContextStatics.cleanSlot(valueSlot);
+						}
+					}
+
+					final ObjectValue proto = value.prototype;
+					if (proto != null) {
+						final Slots protoSlots = proto.slots;
+						if (protoSlots != null) {
+							for (Slot protoSlot : protoSlots) {
+								ContextStatics.cleanSlot(protoSlot);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -1048,43 +998,29 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
 	private void transferDefinitions(Collection<QName> topLevelDefinitions, List<Node> definitions)
 	{
-		for (int i = 0, size = definitions.size(); i < size; i++)
-		{
-			Node n = definitions.get(i);
-			if (n instanceof ClassDefinitionNode)
-			{
+		for (Node n : definitions) {
+			if (n instanceof ClassDefinitionNode) {
 				ClassDefinitionNode def = (ClassDefinitionNode) n;
-				if (isNotPrivate(def.attrs))
-				{
+				if (isNotPrivate(def.attrs)) {
 					topLevelDefinitions.add(getClassDefinition(def));
 				}
-			}
-			else if (n instanceof NamespaceDefinitionNode)
-			{
+			} else if (n instanceof NamespaceDefinitionNode) {
 				NamespaceDefinitionNode def = (NamespaceDefinitionNode) n;
-                
-                // CNDNs are for conditional compilation, and only on the syntax tree for
-                // ASC error handling -- they are effectively hidden to us
-				if (isNotPrivate(def.attrs) && !(n instanceof ConfigNamespaceDefinitionNode))
-				{
+
+				// CNDNs are for conditional compilation, and only on the syntax tree for
+				// ASC error handling -- they are effectively hidden to us
+				if (isNotPrivate(def.attrs) && !(n instanceof ConfigNamespaceDefinitionNode)) {
 					topLevelDefinitions.add(getNamespaceDefinition(def));
 				}
-			}
-			else if (n instanceof FunctionDefinitionNode)
-			{
+			} else if (n instanceof FunctionDefinitionNode) {
 				FunctionDefinitionNode def = (FunctionDefinitionNode) n;
-				if (isNotPrivate(def.attrs))
-				{
+				if (isNotPrivate(def.attrs)) {
 					topLevelDefinitions.add(getFunctionDefinition(def));
 				}
-			}
-			else if (n instanceof VariableDefinitionNode)
-			{
+			} else if (n instanceof VariableDefinitionNode) {
 				VariableDefinitionNode def = (VariableDefinitionNode) n;
-				if (isNotPrivate(def.attrs))
-				{
-					for (int j = 0, length = def.list == null ? 0 : def.list.size(); j < length; j++)
-					{
+				if (isNotPrivate(def.attrs)) {
+					for (int j = 0, length = def.list == null ? 0 : def.list.size(); j < length; j++) {
 						VariableBindingNode binding = (VariableBindingNode) def.list.items.get(j);
 						topLevelDefinitions.add(getVariableBinding(def.pkgdef, binding));
 					}
@@ -1260,9 +1196,7 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 		Context cx = context.getAscContext();
 
 		// imports contains only definitions that are available... it doesn't mean that they are linked in.
-		for (Iterator i = imports.iterator(); i.hasNext(); )
-		{
-			QName qName = (QName) i.next();
+		for (QName qName : imports) {
 			// verify import statements
 			cx.addValidImport(qName.toString());
 		}
@@ -1304,14 +1238,11 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
 	public static void evaluateLoaderClassBase(CompilationUnit unit, TypeTable typeTable)
 	{
-		for (Iterator it = unit.topLevelDefinitions.iterator(); it.hasNext();)
-		{
-		    QName qName = (QName) it.next();
-
-		    AbcClass c = typeTable.getClass( qName.toString() );
-		    if (c == null)
-		        continue;
-		    getParentLoader(unit, typeTable, c);
+		for (QName qName : unit.topLevelDefinitions) {
+			AbcClass c = typeTable.getClass(qName.toString());
+			if (c == null)
+				continue;
+			getParentLoader(unit, typeTable, c);
 		}
 	}
 
@@ -1328,17 +1259,15 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
                 List inherited = sc.getMetaData( "Frame", true );
                 String inheritedLoaderClass = null;
 
-                for (Iterator it = inherited.iterator(); it.hasNext();)
-                {
-                    MetaData md = (MetaData) it.next();
+				for (Object anInherited : inherited) {
+					MetaData md = (MetaData) anInherited;
 
-                    String lc = md.getValue( "factoryClass" );
-                    if (lc != null)
-                    {
-                        inheritedLoaderClass = NodeMagic.normalizeClassName( lc );
-                        break;
-                    }
-                }
+					String lc = md.getValue("factoryClass");
+					if (lc != null) {
+						inheritedLoaderClass = NodeMagic.normalizeClassName(lc);
+						break;
+					}
+				}
 
                 u.loaderClassBase = inheritedLoaderClass;
             }

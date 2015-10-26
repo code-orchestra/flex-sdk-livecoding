@@ -89,45 +89,37 @@ public class SwcAPI
 
         try
         {
-            for (Iterator iterator = targets.iterator(); iterator.hasNext();)
-            {
-                String nsTarget = (String)iterator.next();
-                if (nsTarget != null)
-                {
+            for (Object target : targets) {
+                String nsTarget = (String) target;
+                if (nsTarget != null) {
                     Map map = mappings.getNamespace(nsTarget);
-                    if (map == null)
-                    {
+                    if (map == null) {
                         // fixme - pass enough info down to actually format this exception reasonably?
-                        throw new ConfigurationException.UnknownNamespace( nsTarget, null, null, -1 );
+                        throw new ConfigurationException.UnknownNamespace(nsTarget, null, null, -1);
                     }
-                    for (Iterator iter2 = map.entrySet().iterator(); iter2.hasNext();)
-                    {
-                        Map.Entry entry = (Map.Entry)iter2.next();
+                    for (Object o : map.entrySet()) {
+                        Map.Entry entry = (Map.Entry) o;
                         String compName = (String) entry.getKey();
                         String className = (String) entry.getValue();
                         String packageName = NameFormatter.retrievePackageName(className);
                         String leafName = NameFormatter.retrieveClassName(className);
-                        if (! mappings.isLookupOnly(nsTarget, className) || includeAllForAsdoc)
-                        {
+                        if (!mappings.isLookupOnly(nsTarget, className) || includeAllForAsdoc) {
                             // Check SourceList before SourcePath to avoid duplicate Source objects.
                             Source s = sourceList.findSource(packageName, leafName);
 
-                            if (s == null)
-                            {
+                            if (s == null) {
                                 s = sourcePath.findSource(packageName, leafName);
                             }
 
-                            if (s == null)
-                            {
-                            	// if includeAllForAsdoc is set to true then don't generate an exception if the source is not found.
-                            	// there are cases when flash classes are listed in the manifest but the source is not available 
-                            	// (or is not organized in folders as should be by package)
-                            	if(includeAllForAsdoc)
-                            	{
-                            		continue;
-                            	}
-                            	
-                                SwcException e = new SwcException.NoSourceForClass( className, nsTarget );
+                            if (s == null) {
+                                // if includeAllForAsdoc is set to true then don't generate an exception if the source is not found.
+                                // there are cases when flash classes are listed in the manifest but the source is not available
+                                // (or is not organized in folders as should be by package)
+                                if (includeAllForAsdoc) {
+                                    continue;
+                                }
+
+                                SwcException e = new SwcException.NoSourceForClass(className, nsTarget);
                                 ThreadLocalToolkit.log(e);
                                 throw e;
                             }
@@ -135,9 +127,7 @@ public class SwcAPI
 
                             SwcComponent component = new SwcComponent(className, compName, nsTarget);
                             nsComponents.add(component);
-                        }
-                        else if (includeLookupOnly)
-                        {
+                        } else if (includeLookupOnly) {
                             nsComponents.add(new SwcComponent(className, compName, nsTarget));
                         }
                     }
@@ -167,30 +157,24 @@ public class SwcAPI
         {
             try
             {
-                for (Iterator iterator = list.iterator(); iterator.hasNext();)
-                {
-                    String className = (String) iterator.next();
+                for (Object aList : list) {
+                    String className = (String) aList;
                     String tempName = className.replace('/', '.').replace('\\', '.');
                     String packageName = NameFormatter.retrievePackageName(tempName);
                     String leafName = NameFormatter.retrieveClassName(tempName);
 
                     // Check SourceList before SourcePath to avoid duplicate Source objects.
                     Source s = sourceList.findSource(packageName, leafName);
-                    
-                    if (s == null)
-                    {
+
+                    if (s == null) {
                         s = sourcePath.findSource(packageName, leafName);
                     }
 
-                    if (s == null)
-                    {
+                    if (s == null) {
                         SwcException msg;
-                        if (className.endsWith(".as") || className.endsWith(".mxml"))
-                        {
+                        if (className.endsWith(".as") || className.endsWith(".mxml")) {
                             msg = new SwcException.CouldNotFindFileSource(className);
-                        }
-                        else
-                        {
+                        } else {
                             msg = new SwcException.CouldNotFindSource(className);
                         }
                         ThreadLocalToolkit.log(msg);
@@ -277,37 +261,28 @@ public class SwcAPI
             Map<String, SwcComponent> allClassComp = new HashMap<String, SwcComponent>();
             //Map refClassComp = new HashMap();
 
-            for (Iterator e = m.getExportedUnits().iterator(); e.hasNext();)
-            {
-                CompilationUnit unit = (CompilationUnit) e.next();
-                if (unit.getSource().isSwcScriptOwner())
-                {
+            for (CompilationUnit unit : m.getExportedUnits()) {
+                if (unit.getSource().isSwcScriptOwner()) {
                     Swc unitswc = ((SwcScript) unit.getSource().getOwner()).getLibrary().getSwc();
-                    for (Iterator ci = unitswc.getComponentIterator(); ci.hasNext();)
-                    {
+                    for (Iterator ci = unitswc.getComponentIterator(); ci.hasNext(); ) {
                         SwcComponent c = (SwcComponent) ci.next();
-                        allClassComp.put( c.getClassName(), c );
+                        allClassComp.put(c.getClassName(), c);
                     }
                 }
             }
 
-            for (Iterator nsc = nsComponents.iterator(); nsc.hasNext();)
-            {
-                SwcComponent c = (SwcComponent) nsc.next();
+            for (Object nsComponent : nsComponents) {
+                SwcComponent c = (SwcComponent) nsComponent;
                 allClassComp.put(c.getClassName(), c);
             }
 
             // Now pare this down to just referenced classes (and thus components)
 
-            for (Iterator e = m.getExportedUnits().iterator(); e.hasNext();)
-            {
-                CompilationUnit unit = (CompilationUnit) e.next();
-                for (int i = 0, s = unit.topLevelDefinitions.size();i < s; i++)
-                {
+            for (CompilationUnit unit : m.getExportedUnits()) {
+                for (int i = 0, s = unit.topLevelDefinitions.size(); i < s; i++) {
                     String def = unit.topLevelDefinitions.get(i).toString();
-                    if (allClassComp.containsKey( def ))
-                    {
-                        swc.addComponent( allClassComp.get( def ) );
+                    if (allClassComp.containsKey(def)) {
+                        swc.addComponent(allClassComp.get(def));
                     }
                 }
             }
@@ -353,21 +328,17 @@ public class SwcAPI
     
     private static void addArchiveFiles(Map<String, VirtualFile> files, Swc swc) throws IOException
     {
-        for (Iterator iterator = files.entrySet().iterator(); iterator.hasNext();)
-        {
-            Map.Entry entry = (Map.Entry)iterator.next();
-            String fileName = (String)entry.getKey();
-            VirtualFile f = (VirtualFile)entry.getValue();
-            if (swc.getArchive().getFile( fileName ) == null)   // icons were already added, don't overwrite
+        for (Map.Entry<String, VirtualFile> stringVirtualFileEntry : files.entrySet()) {
+            Map.Entry entry = (Map.Entry) stringVirtualFileEntry;
+            String fileName = (String) entry.getKey();
+            VirtualFile f = (VirtualFile) entry.getValue();
+            if (swc.getArchive().getFile(fileName) == null)   // icons were already added, don't overwrite
             {
-                try
-                {
+                try {
                     VirtualFile swcFile = new InMemoryFile(f.getInputStream(), fileName,
-                                                           f.getMimeType(), f.getLastModified());
+                            f.getMimeType(), f.getLastModified());
                     swc.addFile(swcFile);
-                }
-                catch (IOException ioException)
-                {
+                } catch (IOException ioException) {
                     throw new SwcException.ArchiveFileException(ioException.getMessage());
                 }
             }

@@ -346,17 +346,13 @@ public class ContextStatics
 
 	private static void cleanSlots(Map<String, TypeValue> types)
 	{
-		for (Iterator<TypeValue> i = types.values().iterator(); i.hasNext();)
-		{
-			TypeValue value = i.next();
-			for (int j = 0, length = (value.slots != null) ? value.slots.size() : 0; j < length; j++)
-			{
+		for (TypeValue value : types.values()) {
+			for (int j = 0, length = (value.slots != null) ? value.slots.size() : 0; j < length; j++) {
 				cleanSlot(value.slots.get(j));
 			}
 
 			ObjectValue ov = value.prototype;
-			for (int j = 0, length = (ov != null && ov.slots != null) ? ov.slots.size() : 0; j < length; j++)
-			{
+			for (int j = 0, length = (ov != null && ov.slots != null) ? ov.slots.size() : 0; j < length; j++) {
 				cleanSlot(ov.slots.get(j));
 			}
 		}

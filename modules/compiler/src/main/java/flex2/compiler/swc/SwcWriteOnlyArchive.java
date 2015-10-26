@@ -62,13 +62,10 @@ public class SwcWriteOnlyArchive implements SwcArchive
 	    {
             zos = new ZipOutputStream(out);
 
-            for (Iterator<VirtualFile> it = files.values().iterator(); it.hasNext(); )
-            {
-                VirtualFile f = it.next();
-
-                ZipEntry entry = new ZipEntry( f.getName() );
+            for (VirtualFile f : files.values()) {
+                ZipEntry entry = new ZipEntry(f.getName());
                 entry.setTime(f.getLastModified());
-                zos.putNextEntry( entry );
+                zos.putNextEntry(entry);
 
                 BufferedInputStream in = new BufferedInputStream(f.getInputStream());
                 FileUtil.streamOutput(in, zos);

@@ -255,12 +255,8 @@ public class FontTranscoder extends AbstractTranscoder
         int defineFontTag = TagValues.stagDefineFont3;
 
         DefineFont defineFont = null;
-        for (Iterator<Serializable> it = locations.iterator(); it.hasNext();)
-        {
-            Object fontSource = it.next();
-
-            try
-            {
+        for (Serializable fontSource : locations) {
+            try {
                 // For now, keep the Flex 3 behavior of throwing errors for each 
                 // location when no FontManager exists.
                 if (fontManager == null)
@@ -268,38 +264,30 @@ public class FontTranscoder extends AbstractTranscoder
 
                 fontDesc.source = fontSource;
                 defineFont = fontManager.createDefineFont(defineFontTag, fontDesc);
-            }
-            catch (FontManager.InvalidUnicodeRangeException e)
-            {
+            } catch (FontManager.InvalidUnicodeRangeException e) {
                 // For now, keep the Flex 3 error message for invalid unicode
                 // ranges...
                 throw new InvalidUnicodeRangeException(e.range);
-            }
-            catch (Exception e)
-            {
-	            if (Trace.error)
-	            {
-		            e.printStackTrace();
-	            }
+            } catch (Exception e) {
+                if (Trace.error) {
+                    e.printStackTrace();
+                }
 
                 ExceptionWhileTranscoding exceptionWhileTranscoding = new ExceptionWhileTranscoding(e);
                 String path = (String) args.get(Transcoder.FILE);
                 String pathSep = (String) args.get(Transcoder.PATHSEP);
-                if ("true".equals(pathSep))
-                {
+                if ("true".equals(pathSep)) {
                     path = path.replace('/', '\\');
                 }
                 exceptionWhileTranscoding.path = path;
-                if (args.containsKey(Transcoder.LINE))
-                {
-                    int line = Integer.parseInt( (String) args.get(Transcoder.LINE) );
+                if (args.containsKey(Transcoder.LINE)) {
+                    int line = Integer.parseInt((String) args.get(Transcoder.LINE));
                     exceptionWhileTranscoding.line = line;
                 }
                 ThreadLocalToolkit.log(exceptionWhileTranscoding);
             }
 
-            if (defineFont != null)
-            {
+            if (defineFont != null) {
                 return defineFont;
             }
         }

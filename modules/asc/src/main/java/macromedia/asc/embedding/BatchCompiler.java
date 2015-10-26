@@ -107,11 +107,9 @@ public class BatchCompiler
 		//s.es4_numerics = ...
 
 		file = new ArrayList<File>(args.length);
-		for (int i = 0, length = args.length; i < length; i++)
-		{
-			File f = new File(args[i]);
-			if (f.exists() && f.isFile())
-			{
+		for (String arg : args) {
+			File f = new File(arg);
+			if (f.exists() && f.isFile()) {
 				file.add(f.getCanonicalFile());
 			}
 		}
@@ -174,21 +172,15 @@ public class BatchCompiler
 	{
 		for (int i = start; i < end; i++)
 		{
-			for (Iterator<ReferenceValue> k = node.get(i).fa_unresolved.iterator(); k.hasNext();)
-			{
-				ReferenceValue ref = k.next();
+			for (ReferenceValue ref : node.get(i).fa_unresolved) {
 				boolean found = false;
-				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++)
-				{
+				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++) {
 					QName qname = new QName(ref.getImmutableNamespaces().get(j), ref.name);
 					int where = findClass(qname);
-					if (where != -1)
-					{
-						if (i != where)
-						{
+					if (where != -1) {
+						if (i != where) {
 							Pair p = new Pair(i, where);
-							if (!inheritance.contains(p))
-							{
+							if (!inheritance.contains(p)) {
 								inheritance.add(p);
 							}
 						}
@@ -196,8 +188,7 @@ public class BatchCompiler
 						break;
 					}
 				}
-				if (!found)
-				{
+				if (!found) {
 					System.err.println(ref.toMultiName() + " in " + file.get(i) + " not resolved");
 				}
 			}
@@ -208,11 +199,8 @@ public class BatchCompiler
 
 	private static void sortInheritance() throws Throwable
 	{
-		for (Iterator<Pair> i = inheritance.iterator(); i.hasNext();)
-		{
-			Pair p = i.next();
-			if (!p.processed)
-			{
+		for (Pair p : inheritance) {
+			if (!p.processed) {
 				fa.get(p.i).inheritSlots(node.get(p.where).frame, node.get(p.i).frame, node.get(p.i).frame.builder, cx.get(p.i));
 				p.processed = true;
 			}
@@ -230,11 +218,8 @@ public class BatchCompiler
 				g.addVertex(new Vertex<String>(path));
 			}
 
-			for (Iterator<Pair> j = inheritance.iterator(); j.hasNext();)
-			{
-				Pair p = j.next();
-				if (p.i == i)
-				{
+			for (Pair p : inheritance) {
+				if (p.i == i) {
 					g.addDependency(path, file.get(p.where).getPath());
 				}
 			}
@@ -278,9 +263,8 @@ public class BatchCompiler
 			List<ProgramNode> tempNode = new ArrayList<ProgramNode>(node.size());
 			List<FlowAnalyzer> tempFA = new ArrayList<FlowAnalyzer>(fa.size());
 
-			for (int i = 0, length = tsort.size(); i < length; i++)
-			{
-				int loc = tsort.get(i);
+			for (Integer aTsort : tsort) {
+				int loc = aTsort;
 
 				tempFile.add(file.get(loc));
 				tempCX.add(cx.get(loc));
@@ -295,42 +279,30 @@ public class BatchCompiler
 			node = tempNode;
 			fa = tempFA;
 
-			for (Iterator<Pair> i = type.iterator(); i.hasNext();)
-			{
-				Pair p = i.next();
-				for (int j = 0, length = tsort.size(); j < length; j++)
-				{
-					if (tsort.get(j) == p.i)
-					{
+			for (Pair p : type) {
+				for (int j = 0, length = tsort.size(); j < length; j++) {
+					if (tsort.get(j) == p.i) {
 						p.i = j;
 						break;
 					}
 				}
-				for (int j = 0, length = tsort.size(); j < length; j++)
-				{
-					if (tsort.get(j) == p.where)
-					{
+				for (int j = 0, length = tsort.size(); j < length; j++) {
+					if (tsort.get(j) == p.where) {
 						p.where = j;
 						break;
 					}
 				}
 			}
 
-			for (Iterator<Pair> i = inheritance.iterator(); i.hasNext();)
-			{
-				Pair p = i.next();
-				for (int j = 0, length = tsort.size(); j < length; j++)
-				{
-					if (tsort.get(j) == p.i)
-					{
+			for (Pair p : inheritance) {
+				for (int j = 0, length = tsort.size(); j < length; j++) {
+					if (tsort.get(j) == p.i) {
 						p.i = j;
 						break;
 					}
 				}
-				for (int j = 0, length = tsort.size(); j < length; j++)
-				{
-					if (tsort.get(j) == p.where)
-					{
+				for (int j = 0, length = tsort.size(); j < length; j++) {
+					if (tsort.get(j) == p.where) {
 						p.where = j;
 						break;
 					}
@@ -356,21 +328,15 @@ public class BatchCompiler
 	{
 		for (int i = 0, length = node.size(); i < length; i++)
 		{
-			for (Iterator<ReferenceValue> k = node.get(i).ce_unresolved.iterator(); k.hasNext();)
-			{
-				ReferenceValue ref = k.next();
+			for (ReferenceValue ref : node.get(i).ce_unresolved) {
 				boolean found = false;
-				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++)
-				{
+				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++) {
 					QName qname = new QName(ref.getImmutableNamespaces().get(j), ref.name);
 					int where = findClass(qname);
-					if (where != -1)
-					{
-						if (i != where)
-						{
+					if (where != -1) {
+						if (i != where) {
 							Pair p = new Pair(i, where);
-							if (!type.contains(p))
-							{
+							if (!type.contains(p)) {
 								type.add(p);
 							}
 						}
@@ -378,8 +344,7 @@ public class BatchCompiler
 						break;
 					}
 				}
-				if (!found)
-				{
+				if (!found) {
 					System.err.println(ref.toMultiName() + " in " + file.get(i) + " not resolved");
 				}
 			}
@@ -389,21 +354,15 @@ public class BatchCompiler
 
 		for (int i = 0, length = node.size(); i < length; i++)
 		{
-			for (Iterator<ReferenceValue> k = node.get(i).body_unresolved.iterator(); k.hasNext();)
-			{
-				ReferenceValue ref = k.next();
+			for (ReferenceValue ref : node.get(i).body_unresolved) {
 				boolean found = false;
-				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++)
-				{
+				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++) {
 					QName qname = new QName(ref.getImmutableNamespaces().get(j), ref.name);
 					int where = findClass(qname);
-					if (where != -1)
-					{
-						if (i != where)
-						{
+					if (where != -1) {
+						if (i != where) {
 							Pair p = new Pair(i, where);
-							if (!type.contains(p))
-							{
+							if (!type.contains(p)) {
 								type.add(p);
 							}
 						}
@@ -411,8 +370,7 @@ public class BatchCompiler
 						break;
 					}
 				}
-				if (!found)
-				{
+				if (!found) {
 					System.err.println(ref.toMultiName() + " in " + file.get(i) + " not resolved");
 				}
 			}
@@ -422,21 +380,15 @@ public class BatchCompiler
 
 		for (int i = 0, length = node.size(); i < length; i++)
 		{
-			for (Iterator<ReferenceValue> k = node.get(i).ns_unresolved.iterator(); k.hasNext();)
-			{
-				ReferenceValue ref = k.next();
+			for (ReferenceValue ref : node.get(i).ns_unresolved) {
 				boolean found = false;
-				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++)
-				{
+				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++) {
 					QName qname = new QName(ref.getImmutableNamespaces().get(j), ref.name);
 					int where = findDefinition(qname);
-					if (where != -1)
-					{
-						if (i != where)
-						{
+					if (where != -1) {
+						if (i != where) {
 							Pair p = new Pair(i, where);
-							if (!type.contains(p))
-							{
+							if (!type.contains(p)) {
 								type.add(p);
 							}
 						}
@@ -444,8 +396,7 @@ public class BatchCompiler
 						break;
 					}
 				}
-				if (!found)
-				{
+				if (!found) {
 					System.err.println(ref.toMultiName() + " in " + file.get(i) + " not resolved");
 				}
 			}
@@ -456,13 +407,9 @@ public class BatchCompiler
 
 	private static void importType() throws Throwable
 	{
-		for (Iterator<Pair> i = type.iterator(); i.hasNext();)
-		{
-			Pair p = i.next();
-			if (!p.processed)
-			{
-				if (!inheritance.contains(p))
-				{
+		for (Pair p : type) {
+			if (!p.processed) {
+				if (!inheritance.contains(p)) {
 					fa.get(p.i).inheritSlots(node.get(p.where).frame, node.get(p.i).frame, node.get(p.i).frame.builder, cx.get(p.i));
 				}
 				p.processed = true;
@@ -521,27 +468,21 @@ public class BatchCompiler
 	{
 		for (int i = 0, length = node.size(); i < length; i++)
 		{
-			for (Iterator<ReferenceValue> k = node.get(i).rt_unresolved.iterator(); k.hasNext();)
-			{
-				ReferenceValue ref = k.next();
+			for (ReferenceValue ref : node.get(i).rt_unresolved) {
 				boolean found = false;
-				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++)
-				{
+				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++) {
 					QName qname = new QName(ref.getImmutableNamespaces().get(j), ref.name);
-					if (qname.ns instanceof UnresolvedNamespace && ((UnresolvedNamespace) qname.ns).resolved)
-					{
+					if (qname.ns instanceof UnresolvedNamespace && ((UnresolvedNamespace) qname.ns).resolved) {
 						found = true;
 						break;
 					}
 					int where = findDefinition(qname);
-					if (where != -1)
-					{
+					if (where != -1) {
 						found = true;
 						break;
 					}
 				}
-				if (!found)
-				{
+				if (!found) {
 					System.err.println(ref.toMultiName() + " in " + file.get(i) + " not resolved");
 				}
 			}

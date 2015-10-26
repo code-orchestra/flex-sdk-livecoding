@@ -69,20 +69,15 @@ public class Frame
 		ArrayList<Tag> list = new ArrayList<Tag>();
 
 		// exported symbols
-		for (Iterator<DefineTag> j = exportDefs.iterator(); j.hasNext();)
-		{
-			DefineTag def = j.next();
+		for (DefineTag def : exportDefs) {
 			list.add(def);
 		}
 
         list.addAll( symbolClass.class2tag.values() );
 
 		// definitions for control tags
-		for (Iterator<Tag> j = controlTags.iterator(); j.hasNext();)
-		{
-			Tag tag = j.next();
-			for (Iterator k = tag.getReferences(); k.hasNext();)
-			{
+		for (Tag tag : controlTags) {
+			for (Iterator k = tag.getReferences(); k.hasNext(); ) {
 				DefineTag def = (DefineTag) k.next();
 				list.add(def);
 			}
@@ -143,9 +138,8 @@ public class Frame
 
 	public void setExports(Map definitions)
 	{
-		for (Iterator i = definitions.entrySet().iterator(); i.hasNext();)
-		{
-			Map.Entry entry = (Map.Entry) i.next();
+		for (Object o : definitions.entrySet()) {
+			Map.Entry entry = (Map.Entry) o;
 			DefineTag def = (DefineTag) entry.getValue();
 			addExport(def);
 		}

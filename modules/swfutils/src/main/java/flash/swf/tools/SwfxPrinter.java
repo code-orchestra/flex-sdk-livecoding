@@ -774,9 +774,8 @@ public final class SwfxPrinter extends TagHandler
 			{
 				// todo - pretty print this once we actually care
 				out.print(" filters='");
-				for (Iterator it = tag.filters.iterator(); it.hasNext();)
-				{
-					out.print( (((Filter) it.next()).getID() ) + " ");
+				for (Filter filter : tag.filters) {
+					out.print(((filter).getID()) + " ");
 				}
 				out.print("'");
 			}
@@ -843,9 +842,7 @@ public final class SwfxPrinter extends TagHandler
 		
 		private void printMorphLineStyles(MorphLineStyle[] lineStyles)
 		{
-			for (int i = 0; i < lineStyles.length; i++)
-			{
-				MorphLineStyle lineStyle = lineStyles[i];
+			for (MorphLineStyle lineStyle : lineStyles) {
 				indent();
 				out.print("<linestyle ");
 				out.print("startColor='" + printRGBA(lineStyle.startColor) + "' ");
@@ -914,26 +911,21 @@ public final class SwfxPrinter extends TagHandler
 		
 		private void printMorphFillStyles(MorphFillStyle[] fillStyles)
 		{
-			for (int i = 0; i < fillStyles.length; i++)
-			{
-				MorphFillStyle fillStyle = fillStyles[i];
+			for (MorphFillStyle fillStyle : fillStyles) {
 				indent();
 				out.print("<fillstyle");
 				out.print(" type='" + fillStyle.type + "'");
-				if (fillStyle.type == FillStyle.FILL_SOLID)
-				{
+				if (fillStyle.type == FillStyle.FILL_SOLID) {
 					out.print(" startColor='" + printRGBA(fillStyle.startColor) + "'");
 					out.print(" endColor='" + printRGBA(fillStyle.endColor) + "'");
 				}
-				if ((fillStyle.type & FillStyle.FILL_LINEAR_GRADIENT) != 0)
-				{
+				if ((fillStyle.type & FillStyle.FILL_LINEAR_GRADIENT) != 0) {
 					// todo print linear or radial
 					out.print(" gradient='" + formatMorphGradient(fillStyle.gradRecords) + "'");
 					out.print(" startMatrix='" + fillStyle.startGradientMatrix + "'");
 					out.print(" endMatrix='" + fillStyle.endGradientMatrix + "'");
 				}
-				if ((fillStyle.type & FillStyle.FILL_BITS) != 0)
-				{
+				if ((fillStyle.type & FillStyle.FILL_BITS) != 0) {
 					// todo print tiled or clipped
 					out.print(" idref='" + idRef(fillStyle.bitmap) + "'");
 					out.print(" startMatrix='" + fillStyle.startBitmapMatrix + "'");
@@ -1882,10 +1874,9 @@ public final class SwfxPrinter extends TagHandler
 		private String hexify(byte[] id)
 		{
 			StringBuilder b = new StringBuilder(id.length * 2);
-			for (int i = 0; i < id.length; i++)
-			{
-				b.append(Character.forDigit((id[i] >> 4) & 15, 16));
-				b.append(Character.forDigit(id[i] & 15, 16));
+			for (byte anId : id) {
+				b.append(Character.forDigit((anId >> 4) & 15, 16));
+				b.append(Character.forDigit(anId & 15, 16));
 			}
 			return b.toString().toUpperCase();
 		}
@@ -2103,47 +2094,32 @@ public final class SwfxPrinter extends TagHandler
 					urls = new URL[]{FileUtils.toURL(f)};
 				}
 			}
-			
-			for (int i = 0; i < urls.length; i++)
-			{
-				try
-				{
-					URL url = urls[i];
-					if (saveOption)
-					{
+
+			for (URL url1 : urls) {
+				try {
+					URL url = url1;
+					if (saveOption) {
 						InputStream in = new BufferedInputStream(url.openStream());
-						try
-						{
+						try {
 							OutputStream fileOut = new BufferedOutputStream(new FileOutputStream(outfile));
-							try
-							{
+							try {
 								int c;
-								while ((c = in.read()) != -1)
-								{
+								while ((c = in.read()) != -1) {
 									fileOut.write(c);
 								}
-							}
-							finally
-							{
+							} finally {
 								fileOut.close();
 							}
-						}
-						finally
-						{
+						} finally {
 							in.close();
 						}
 					}
-					
-					if (isSwf(url))
-					{
+
+					if (isSwf(url)) {
 						dumpSwf(out, url, outfile);
-					}
-					else if (isZip(url) && !url.toString().endsWith(".abj"))
-					{
+					} else if (isZip(url) && !url.toString().endsWith(".abj")) {
 						dumpZip(out, url, outfile);
-					}
-					else
-					{
+					} else {
 						out.println("<!-- Parsing actions from " + url + " -->");
 						// we have no way of knowing the swf version, so assume latest
 						URLConnection connection = url.openConnection();
@@ -2156,18 +2132,14 @@ public final class SwfxPrinter extends TagHandler
 						printer.printActions(actions);
 					}
 					out.flush();
-				}
-				catch (Error e)
-				{
+				} catch (Error e) {
 					if (Trace.error)
 						e.printStackTrace();
-					
+
 					System.err.println("");
-					System.err.println("An unrecoverable error occurred.  The given file " + urls[i] + " may not be");
+					System.err.println("An unrecoverable error occurred.  The given file " + url1 + " may not be");
 					System.err.println("a valid swf.");
-				}
-				catch (FileNotFoundException e)
-				{
+				} catch (FileNotFoundException e) {
 					System.err.println("Error: " + e.getMessage());
 					System.exit(1);
 				}

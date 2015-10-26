@@ -64,9 +64,8 @@ public class FontSnapshot
 	{
 		if (paths != null && paths.length != 0)
 		{
-			for (int i = 0; i < paths.length; i++)
-			{
-				findFonts(paths[i]);
+			for (String path : paths) {
+				findFonts(path);
 			}
 		}
 
@@ -105,11 +104,8 @@ public class FontSnapshot
 			File[] children = file.listFiles();
 			if (children != null)
 			{
-				for (int i = 0; i < children.length; i++)
-				{
-					File child = children[i];
-					if (child.isDirectory() || child.toString().toLowerCase().endsWith(".ttf"))
-					{
+				for (File child : children) {
+					if (child.isDirectory() || child.toString().toLowerCase().endsWith(".ttf")) {
 						findFonts(child.toString());
 					}
 				}
@@ -190,11 +186,8 @@ public class FontSnapshot
 			//Method method = cls.getMethod("getFontPath", new Class[] { Boolean.class });
 			// this is painful... don't know why do we have to do this instead of calling the commented-out call above
 			Method[] meth = cls.getMethods();
-			for (int i = 0; i < meth.length; i++)
-			{
-				Method method = meth[i];
-				if (method.getName().equals("getFontPath"))
-				{
+			for (Method method : meth) {
+				if (method.getName().equals("getFontPath")) {
 					getFontPath = method;
 					break;
 				}

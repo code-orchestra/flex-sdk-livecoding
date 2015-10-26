@@ -282,10 +282,9 @@ public abstract class GenerativeSecondPassEvaluator extends EvaluatorAdapter
 
 				VelocityContext velocityContext = new VelocityContext();
 
-				for (Iterator iter = templateVars.entrySet().iterator(); iter.hasNext(); )
-				{
-					Map.Entry entry = (Map.Entry)iter.next();
-					velocityContext.put((String)entry.getKey(), entry.getValue());
+				for (Object o : templateVars.entrySet()) {
+					Map.Entry entry = (Map.Entry) o;
+					velocityContext.put((String) entry.getKey(), entry.getValue());
 				}
 
 				template.merge(velocityContext, stringWriter);
@@ -381,37 +380,25 @@ public abstract class GenerativeSecondPassEvaluator extends EvaluatorAdapter
 										   GenerativeClassInfo classInfo,
 										   ProgramNode genProgramNode)
 	{
-		for (Iterator genIter = genProgramNode.statements.items.iterator(); genIter.hasNext(); )
-		{
-			Object genItem = genIter.next();
-			if (genItem instanceof ClassDefinitionNode)
-			{
+		for (Node genItem : genProgramNode.statements.items) {
+			if (genItem instanceof ClassDefinitionNode) {
 				ClassDefinitionNode genClassDef = (ClassDefinitionNode) genItem;
-				if (genClassDef.statements != null)
-				{
-					for (Iterator genClassStmtIter = genClassDef.statements.items.iterator(); genClassStmtIter.hasNext(); )
-					{
-						Node genClassStmt = (Node) genClassStmtIter.next();
-
+				if (genClassDef.statements != null) {
+					for (Node genClassStmt : genClassDef.statements.items) {
 						/**
 						 * type-specific node prep
 						 */
-						if (genClassStmt instanceof MetaDataNode)
-						{
+						if (genClassStmt instanceof MetaDataNode) {
 							prepMetaDataNode(context, (MetaDataNode) genClassStmt);
-						}
-						else if (genClassStmt instanceof FunctionDefinitionNode)
-						{
+						} else if (genClassStmt instanceof FunctionDefinitionNode) {
 							prepFunctionDefinitionNode(context, classDef, classInfo, (FunctionDefinitionNode) genClassStmt);
-						}
-						else if (genClassStmt instanceof VariableDefinitionNode)
-						{
+						} else if (genClassStmt instanceof VariableDefinitionNode) {
 							VariableDefinitionNode variableDefinition = (VariableDefinitionNode) genClassStmt;
 							prepVariableDefinitionNode(classDef, variableDefinition);
-                            // If we get here, the genClassStmt is assumed to be the
-                            // _bindingEventDispatcher variable or one of the variables
-                            // from ManagedProperty.vm.  Set the position to -1, so it
-                            // won't interfere with debugging.
+							// If we get here, the genClassStmt is assumed to be the
+							// _bindingEventDispatcher variable or one of the variables
+							// from ManagedProperty.vm.  Set the position to -1, so it
+							// won't interfere with debugging.
 							resetPositions(context, variableDefinition, -1);
 						}
 
@@ -522,18 +509,16 @@ public abstract class GenerativeSecondPassEvaluator extends EvaluatorAdapter
 	 */
 	private void patchMetaData(DefinitionNode def, List metadata)
 	{
-		for (Iterator it = metadata.iterator(); it.hasNext();)
-		{
-			MetaDataNode md = (MetaDataNode) it.next();
-			if (md.getId() != null && md.getId().equals( StandardDefs.MD_BINDABLE ) && ((md.getValues() == null) || (md.getValues().length == 0)))
+		for (Object aMetadata : metadata) {
+			MetaDataNode md = (MetaDataNode) aMetadata;
+			if (md.getId() != null && md.getId().equals(StandardDefs.MD_BINDABLE) && ((md.getValues() == null) || (md.getValues().length == 0)))
 				continue;
-			
-			if (md instanceof DocCommentNode)
-			{
+
+			if (md instanceof DocCommentNode) {
 				md.def = def;
 			}
 
-			def.addMetaDataNode( md );
+			def.addMetaDataNode(md);
 		}
 	}
 

@@ -247,21 +247,16 @@ public class Benchmark
 	        Method getUsedMeth = memCls.getMethod("getUsed", emptyCls);
 
 	        List list = (List)getMemPoolMeth.invoke(null, emptyObj);
-	        for (Iterator iterator = list.iterator(); iterator.hasNext();)
-	        {
-	            Object memPoolObj = iterator.next();
-	            Object memUsageObj = getPeakUsageMeth.invoke(memPoolObj, emptyObj);
-		        Object memTypeObj = getTypeMeth.invoke(memPoolObj, emptyObj);
-		        Long used = (Long)getUsedMeth.invoke(memUsageObj, emptyObj);
-		        if (heapField.get(typeCls) == memTypeObj)
-		        {
-		            heapUsed += used.longValue();
-		        }
-		        else
-		        {
-			        nonHeapUsed += used.longValue();
-		        }
-	        }
+			for (Object memPoolObj : list) {
+				Object memUsageObj = getPeakUsageMeth.invoke(memPoolObj, emptyObj);
+				Object memTypeObj = getTypeMeth.invoke(memPoolObj, emptyObj);
+				Long used = (Long) getUsedMeth.invoke(memUsageObj, emptyObj);
+				if (heapField.get(typeCls) == memTypeObj) {
+					heapUsed += used.longValue();
+				} else {
+					nonHeapUsed += used.longValue();
+				}
+			}
 
 		    resetPeakMemoryUsage();
 	    }
@@ -287,11 +282,9 @@ public class Benchmark
 			Method resetPeakUsageMeth = mpCls.getMethod("resetPeakUsage", emptyCls);
 
 		    List list = (List)getMemPoolMeth.invoke(null, emptyObj);
-		    for (Iterator iterator = list.iterator(); iterator.hasNext();)
-		    {
-		        Object memPoolObj = iterator.next();
-			    resetPeakUsageMeth.invoke(memPoolObj, emptyObj);
-		    }
+			for (Object memPoolObj : list) {
+				resetPeakUsageMeth.invoke(memPoolObj, emptyObj);
+			}
 		}
 		catch(Exception e)
 		{

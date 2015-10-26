@@ -289,9 +289,7 @@ public class DModule implements SourceFile
 			
 		});
 
-		for (int i=0; i<funcNames.length; ++i)
-		{
-			String name = funcNames[i];
+		for (String name : funcNames) {
 			int firstLine = m_func2FirstLine.get(name).intValue();
 			int lastLine = m_func2LastLine.get(name).intValue();
 

@@ -153,276 +153,191 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 		ArrayList<String> buffer = new ArrayList<String>();
 		
         //TODO this can be optimized to use the entrySet
-		for (Iterator<String> i = tokens.keySet().iterator(); i.hasNext(); )
-		{
-			String key = i.next();
+		for (String key : tokens.keySet()) {
 			String value = tokens.get(key);
 			buffer.add("+" + key + "=" + value);
 		}
-		
-		for (Iterator<String> i = args.keySet().iterator(); i.hasNext(); )
-		{
-			String key = (String) i.next();
+
+		for (String key : args.keySet()) {
 			Object value = args.get(key);
 
-			if (value instanceof Boolean)
-			{
+			if (value instanceof Boolean) {
 				buffer.add(key + "=" + value);
-			}
-			else if (value instanceof Number)
-			{
+			} else if (value instanceof Number) {
 				buffer.add(key);
 				buffer.add(value.toString());
-			}
-			else if (COMPILER_CONTEXT_ROOT.equals(key) && value instanceof String)
-			{				
+			} else if (COMPILER_CONTEXT_ROOT.equals(key) && value instanceof String) {
 				buffer.add(key);
-				buffer.add((String)value);
-			}
-			else if (value instanceof String)
-			{				
-				if (!"".equals(value))
-				{
+				buffer.add((String) value);
+			} else if (value instanceof String) {
+				if (!"".equals(value)) {
 					buffer.add(key);
-					buffer.add((String)value);
-				}
-				else
-				{
+					buffer.add((String) value);
+				} else {
 					buffer.add(key + "=");
 				}
-			}
-			else if (value instanceof File)
-			{
+			} else if (value instanceof File) {
 				String p = ((File) value).getPath();
-				if (p != null && !p.isEmpty())
-				{
+				if (p != null && !p.isEmpty()) {
 					buffer.add(key);
 					buffer.add(p);
-				}
-				else
-				{
+				} else {
 					buffer.add(key + "=");
 				}
-			}
-			else if (value instanceof URL)
-			{
+			} else if (value instanceof URL) {
 				String u = ((URL) value).toExternalForm();
-				if (u != null && !u.isEmpty())
-				{
+				if (u != null && !u.isEmpty()) {
 					buffer.add(key);
 					buffer.add(u);
-				}
-				else
-				{
+				} else {
 					buffer.add(key + "=");
 				}
-			}
-			else if (value instanceof java.util.Date)
-			{
+			} else if (value instanceof Date) {
 				buffer.add(key);
 				buffer.add(value.toString());
-			}
-			else if (value instanceof Map)
-			{
+			} else if (value instanceof Map) {
 				Map m = (Map) value;
-				for (Iterator j = m.keySet().iterator(); j.hasNext(); )
-				{
-					String k = (String) j.next();
+				for (Object o : m.keySet()) {
+					String k = (String) o;
 					Object v = m.get(k);
-					
-					if (v instanceof String)
-					{
+
+					if (v instanceof String) {
 						buffer.add(key);
 						buffer.add(k);
-						buffer.add((String)v);
-					}
-					else if (v instanceof File)
-					{
+						buffer.add((String) v);
+					} else if (v instanceof File) {
 						buffer.add(key);
 						buffer.add(k);
 						buffer.add(((File) v).getPath());
-					}
-					else if (v instanceof String[])
-					{
+					} else if (v instanceof String[]) {
 						buffer.add(key);
 						buffer.add(k);
 						buffer.add(toCommaSeparatedString((String[]) v));
-					}
-					else if (v instanceof List)
-					{
+					} else if (v instanceof List) {
 						buffer.add(key);
 						buffer.add(k);
 						for (Object next : ((List) v)) {
 							if (next != null)
 								buffer.add(next.toString());
 						}
-					}
-					else if (v != null)
-					{
+					} else if (v != null) {
 						assert false;
 					}
 				}
-			}
-			else if (value instanceof int[])
-			{
+			} else if (value instanceof int[]) {
 				int[] a = (int[]) value;
 				buffer.add(key);
 				buffer.add(String.valueOf(a[0]));
 				buffer.add(String.valueOf(a[1]));
-			}
-			else if (value instanceof String[])
-			{
+			} else if (value instanceof String[]) {
 				String[] a = merge((String[]) args.get(key), (String[]) more.get(key));
 				int length = a == null ? 0 : a.length;
-				if (length > 0)
-				{
+				if (length > 0) {
 					buffer.add(key);
-				}
-				else
-				{
+				} else {
 					buffer.add(key + "=");
 				}
-				for (int j = 0; j < length; j++)
-				{
-					if (a[j] != null)
-					{
+				for (int j = 0; j < length; j++) {
+					if (a[j] != null) {
 						buffer.add(a[j]);
 					}
 				}
-			}
-			else if (LOAD_CONFIG.equals(key) && value instanceof File[])
-			{
+			} else if (LOAD_CONFIG.equals(key) && value instanceof File[]) {
 				File[] a = merge((File[]) args.get(key), (File[]) more.get(key));
-				for (int j = 0, length = a == null ? 0 : a.length; j < length; j++)
-				{
-					if (a[j] != null)
-					{
+				for (int j = 0, length = a == null ? 0 : a.length; j < length; j++) {
+					if (a[j] != null) {
 						buffer.add(key);
 						buffer.add(a[j].getPath());
 					}
 				}
-			}
-			else if (value instanceof File[])
-			{
+			} else if (value instanceof File[]) {
 				File[] a = merge((File[]) args.get(key), (File[]) more.get(key));
 				int length = a == null ? 0 : a.length;
-				if (length > 0)
-				{
+				if (length > 0) {
 					buffer.add(key);
-				}
-				else
-				{
+				} else {
 					buffer.add(key + "=");
 				}
-				for (int j = 0; j < length; j++)
-				{
-					if (a[j] != null)
-					{
+				for (int j = 0; j < length; j++) {
+					if (a[j] != null) {
 						buffer.add(a[j].getPath());
 					}
 				}
-			}
-			else if (value instanceof URL[])
-			{
+			} else if (value instanceof URL[]) {
 				URL[] a = merge((URL[]) args.get(key), (URL[]) more.get(key));
 				int length = a == null ? 0 : a.length;
-				if (length > 0)
-				{
+				if (length > 0) {
 					buffer.add(key);
-				}
-				else
-				{
+				} else {
 					buffer.add(key + "=");
 				}
-				for (int j = 0; j < length; j++)
-				{
-					if (a[j] != null)
-					{
+				for (int j = 0; j < length; j++) {
+					if (a[j] != null) {
 						buffer.add(a[j].toExternalForm());
 					}
 				}
-			}
-			else if (value instanceof RslPathList)
-			{
-				RslPathList valueList = (RslPathList)value;
-				for (Iterator<String[]> iter = valueList.iterator(); iter.hasNext();) 
-				{
+			} else if (value instanceof RslPathList) {
+				RslPathList valueList = (RslPathList) value;
+				for (String[] aValueList : valueList) {
 					StringBuilder sb = new StringBuilder(RUNTIME_SHARED_LIBRARY_PATH);
 					sb.append("=");
-					String[] cdArgs = iter.next();
+					String[] cdArgs = aValueList;
 					sb.append(cdArgs[0]);
-					for (int j = 1; j < cdArgs.length; j++)
-					{
+					for (int j = 1; j < cdArgs.length; j++) {
 						sb.append(",");
 						sb.append(cdArgs[j]);
 					}
 					buffer.add(sb.toString());
 				}
-			}
-            else if (value instanceof CompilerDefinitionList)
-            {
-                final CompilerDefinitionList defs = (CompilerDefinitionList)value;
-                for (Iterator<String> iter = defs.iterator(); iter.hasNext();)
-                {
-                    // String.valueOf will help turn null into "null"
-                    String name = String.valueOf(iter.next());
-                    String val  = String.valueOf(iter.next());
-                    
-                    // handle empty-string values
-                    
-                    // technically, name should not ever be empty length (value can be),
-                    // but we don't want to do error handling, CompilerConfiguration.cfgDefine()
-                    // will do it for us later
-                    if (name.length() == 0)
-                    {
-                        name = "\"\"";
-                    }
-                    
-                    if (val.length() == 0)
-                    {
-                        val = "\"\"";
-                    }
-                    
+			} else if (value instanceof CompilerDefinitionList) {
+				final CompilerDefinitionList defs = (CompilerDefinitionList) value;
+				for (Iterator<String> iter = defs.iterator(); iter.hasNext(); ) {
+					// String.valueOf will help turn null into "null"
+					String name = String.valueOf(iter.next());
+					String val = String.valueOf(iter.next());
+
+					// handle empty-string values
+
+					// technically, name should not ever be empty length (value can be),
+					// but we don't want to do error handling, CompilerConfiguration.cfgDefine()
+					// will do it for us later
+					if (name.length() == 0) {
+						name = "\"\"";
+					}
+
+					if (val.length() == 0) {
+						val = "\"\"";
+					}
+
                     /* note '+=': defines from all flex-config.xmls will be collected (just '=' would
                      * always ignore all but the most recent definitions), hopefully in a meaningful
                      * order (flex-config, user-config, commandline) since we now allow re-definitions.
                      */
-                    buffer.add(COMPILER_DEFINE + "+=" + name + "," + val);
-                }
-            }
-            else if (value instanceof ApplicationDomainsList)
-            {
-                ApplicationDomainsList valueList = (ApplicationDomainsList)value;
-                
-                if (valueList.size() == 0)
-                    buffer.add(key + "=");  // we should only ever come here for the first and only key.
-                else
-                    buffer.add(key);
-                
-                for (String[] adArgs : valueList) 
-                {
+					buffer.add(COMPILER_DEFINE + "+=" + name + "," + val);
+				}
+			} else if (value instanceof ApplicationDomainsList) {
+				ApplicationDomainsList valueList = (ApplicationDomainsList) value;
+
+				if (valueList.size() == 0)
+					buffer.add(key + "=");  // we should only ever come here for the first and only key.
+				else
+					buffer.add(key);
+
+				for (String[] adArgs : valueList) {
 					Collections.addAll(buffer, adArgs);
-                }
-            }
-			else if (value != null)
-			{
+				}
+			} else if (value != null) {
 				assert false;
-			}
-			else
-			{
+			} else {
 				// System.err.println("unprocessed compiler options: " + key + "=" + value);
 			}
 		}
-		
-		for (Iterator<String> i = more.keySet().iterator(); i.hasNext(); )
-		{
-			String key = (String) i.next();
+
+		for (String key : more.keySet()) {
 			Object value = more.get(key);
 
-			if (value instanceof String[])
-			{
-				if (!args.containsKey(key))
-				{
+			if (value instanceof String[]) {
+				if (!args.containsKey(key)) {
 					buffer.add(key + "+=" + toCommaSeparatedString((String[]) value));
 				}
 			}
@@ -443,68 +358,47 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 				}
 			}
 			*/
-			else if (value instanceof File[])
-			{
-				if (!args.containsKey(key))
-				{
+			else if (value instanceof File[]) {
+				if (!args.containsKey(key)) {
 					buffer.add(key + "+=" + toCommaSeparatedString((File[]) value));
 				}
-			}
-			else if (value instanceof URL[])
-			{
-				if (!args.containsKey(key))
-				{
+			} else if (value instanceof URL[]) {
+				if (!args.containsKey(key)) {
 					buffer.add(key + "+=" + toCommaSeparatedString((URL[]) value));
 				}
-			}
-			else if (value instanceof Map)
-			{
+			} else if (value instanceof Map) {
 				Map m = (Map) value;
-				for (Iterator j = m.keySet().iterator(); j.hasNext(); )
-				{
-					String k = (String) j.next();
+				for (Object o : m.keySet()) {
+					String k = (String) o;
 					Object v = m.get(k);
-					
-					if (v instanceof List)
-					{
+
+					if (v instanceof List) {
 						for (Object next : ((List) v)) {
 							if (next != null)
 								buffer.add(key + "+=" + k + "," + next.toString());
 						}
-					}
-					else if (v != null)
-					{
+					} else if (v != null) {
 						assert false;
 					}
 				}
-			}
-			else if (value instanceof Map)
-			{
+			} else if (value instanceof Map) {
 				Map m = (Map) value;
-				for (Iterator j = m.keySet().iterator(); j.hasNext(); )
-				{
-					String k = (String) j.next();
+				for (Object o : m.keySet()) {
+					String k = (String) o;
 					Object v = m.get(k);
-					
-					if (v instanceof List)
-					{
+
+					if (v instanceof List) {
 						for (Object next : ((List) v)) {
 							if (next != null)
 								buffer.add(key + "+=" + k + "," + next.toString());
 						}
-					}
-					else if (v != null)
-					{
+					} else if (v != null) {
 						assert false;
 					}
 				}
-			}
-			else if (value != null)
-			{
+			} else if (value != null) {
 				assert false;
-			}
-			else
-			{
+			} else {
 				// System.err.println("unprocessed compiler options: " + key + "=" + value);
 			}
 		}
@@ -2114,9 +2008,8 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 	{
 		String[] args = getCompilerOptions();
 		StringBuilder b = new StringBuilder();
-		for (int i = 0; i < args.length; i++)
-		{
-			b.append(args[i]);
+		for (String arg : args) {
+			b.append(arg);
 			b.append(' ');
 		}
 		return b.toString();
@@ -2309,8 +2202,7 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 		
 		List<RslPathInfo> rslList = c.getRslPathInfo();
 		boolean first = true;
-		for (Iterator<RslPathInfo> iter = rslList.iterator(); iter.hasNext();) {
-			RslPathInfo info = (RslPathInfo)iter.next();
+		for (RslPathInfo info : rslList) {
 			String[] rslUrls = info.getRslUrls().toArray(new String[0]);
 			String[] policyUrls = info.getPolicyFileUrls().toArray(new String[0]);
 			if (first) {
@@ -2318,8 +2210,7 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 						rslUrls,
 						policyUrls);
 				first = false;
-			}
-			else {
+			} else {
 				addRuntimeSharedLibraryPath(info.getSwcPath(),
 						rslUrls,
 						policyUrls);
@@ -2434,10 +2325,9 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 	private void populateDefaults(FontsConfiguration fc)
 	{
 		FontsConfiguration.Languages lc = fc.getLanguagesConfiguration();
-		
-		for (Iterator i = lc.keySet().iterator(); i.hasNext(); )
-		{
-			String key = (String) i.next();
+
+		for (Object o : lc.keySet()) {
+			String key = (String) o;
 			setFontLanguageRange(key, lc.getProperty(key));
 		}
 		setLocalFontSnapshot(toFile(fc.getLocalFontsSnapshot()));
@@ -2496,9 +2386,8 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 
 		if (licenseMap != null)
 		{
-			for (Iterator i = licenseMap.keySet().iterator(); i.hasNext(); )
-			{
-				String name = (String) i.next();
+			for (Object o : licenseMap.keySet()) {
+				String name = (String) o;
 				setLicense(name, (String) licenseMap.get(name));
 			}
 		}

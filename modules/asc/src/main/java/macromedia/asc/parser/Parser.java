@@ -6489,11 +6489,10 @@ XMLElementContent
         if (ctx.scriptAssistParsing)
         {
         	//the parser comments are needed after the parser is gone
-    		
-        	for (ListIterator<Node> it = comments.listIterator(); it.hasNext(); )
-    		{
-    			ctx.comments.add(it.next());
-    		}
+
+			for (Node comment : comments) {
+				ctx.comments.add(comment);
+			}
         }
         
         clearUnusedBuffers();  

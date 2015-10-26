@@ -87,8 +87,8 @@ public class SwfMaker
     void PutData(byte data[])
     {
 		CheckSpace(data.length);
-		for (int i=0; i<data.length; i++) {
-			buffer.set(pos++, data[i]);
+		for (byte aData : data) {
+			buffer.set(pos++, aData);
 		}
     }
 

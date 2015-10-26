@@ -326,9 +326,7 @@ final class PersistenceStore
 											   Map<Object, Integer> pool,
 											   OutputStream out) throws IOException
 	{
-		for (Iterator<QName> i = swcDefSignatureChecksums.keySet().iterator(); i.hasNext(); )
-		{
-			QName qName = i.next();
+		for (QName qName : swcDefSignatureChecksums.keySet()) {
 			Long ts = swcDefSignatureChecksums.get(qName);
 			writeU32(out, addQName(pool, qName));
 			writeLong(out, ts.longValue());
@@ -337,12 +335,10 @@ final class PersistenceStore
 
     private void writeFileChecksums(Map<String, Long> m, Map<Object, Integer> pool, OutputStream out) throws IOException
 	{
-        for (Iterator<String> i = m.keySet().iterator(); i.hasNext();)
-		{
-			String fileName = i.next();
-            Long ts = m.get(fileName);
-            writeU32(out, addString(pool, fileName));
-            writeLong(out, ts.longValue());
+		for (String fileName : m.keySet()) {
+			Long ts = m.get(fileName);
+			writeU32(out, addString(pool, fileName));
+			writeLong(out, ts.longValue());
 		}
 	}
 
@@ -450,48 +446,29 @@ final class PersistenceStore
 
 	private void writeSourceNames(List sources, Map<Object, Integer> pool, OutputStream out) throws IOException
 	{
-		for (int i = 0, size = sources.size(); i < size; i++)
-		{
-			Source s = (Source) sources.get(i);
-			if (s != null)
-			{
+		for (Object source : sources) {
+			Source s = (Source) source;
+			if (s != null) {
 				writeU32(out, addString(pool, s.getName()));
-				if (s.isFileSpecOwner())
-				{
+				if (s.isFileSpecOwner()) {
 					writeU8(out, 0);
-				}
-				else if (s.isSourceListOwner())
-				{
+				} else if (s.isSourceListOwner()) {
 					writeU8(out, 1);
-				}
-				else if (s.isSourcePathOwner())
-				{
+				} else if (s.isSourcePathOwner()) {
 					writeU8(out, 2);
-				}
-				else if (s.isResourceContainerOwner())
-				{
+				} else if (s.isResourceContainerOwner()) {
 					writeU8(out, 3);
-				}
-				else if (s.isResourceBundlePathOwner())
-				{
+				} else if (s.isResourceBundlePathOwner()) {
 					writeU8(out, 4);
-				}
-				else if (s.isSwcScriptOwner())
-				{
+				} else if (s.isSwcScriptOwner()) {
 					writeU8(out, 5);
+				} else if (s.isCompilerSwcContextOwner()) {
+					writeU8(out, 6);
+				} else {
+					writeU8(out, 7);
+					assert false : "s = " + s + ", owner = " + s.getOwner();
 				}
-                else if (s.isCompilerSwcContextOwner())
-                {
-                    writeU8(out, 6);
-                }
-                else
-                {
-                    writeU8(out, 7);
-                    assert false : "s = " + s + ", owner = " + s.getOwner();
-                }
-			}
-			else
-			{
+			} else {
 				writeU32(out, addString(pool, "null"));
 			}
 		}
@@ -508,16 +485,13 @@ final class PersistenceStore
 
 		writeU32(out, mimeTypes.length);
 
-		for (int i = 0, length = mimeTypes.length; i < length; i++)
-		{
-			writeU32(out, addString(pool, mimeTypes[i]));
+		for (String mimeType : mimeTypes) {
+			writeU32(out, addString(pool, mimeType));
 		}
 
 		writeU32(out, sources.size());
 
-		for (Iterator<Source> i = sources.iterator(); i.hasNext();)
-		{
-			Source s = i.next();
+		for (Source s : sources) {
 			writeU32(out, addString(pool, s.getName()));
 		}
 	}
@@ -534,23 +508,19 @@ final class PersistenceStore
 
 		writeU32(out, mimeTypes.length);
 
-		for (int i = 0, length = mimeTypes.length; i < length; i++)
-		{
-			writeU32(out, addString(pool, mimeTypes[i]));
+		for (String mimeType : mimeTypes) {
+			writeU32(out, addString(pool, mimeType));
 		}
 
 		writeU32(out, paths.size());
 
-		for (int i = 0, length = paths.size(); i < length; i++)
-		{
-			writeU32(out, addString(pool, FileUtil.getCanonicalPath(paths.get(i))));
+		for (File path : paths) {
+			writeU32(out, addString(pool, FileUtil.getCanonicalPath(path)));
 		}
 
 		writeU32(out, sources.size());
 
-		for (Iterator<Source> i = sources.iterator(); i.hasNext();)
-		{
-			Source s = i.next();
+		for (Source s : sources) {
 			writeU32(out, addString(pool, s.getName()));
 		}
 	}
@@ -567,23 +537,19 @@ final class PersistenceStore
 
 		writeU32(out, mimeTypes.length);
 
-		for (int i = 0, length = mimeTypes.length; i < length; i++)
-		{
-			writeU32(out, addString(pool, mimeTypes[i]));
+		for (String mimeType : mimeTypes) {
+			writeU32(out, addString(pool, mimeType));
 		}
 
 		writeU32(out, paths.size());
 
-		for (int i = 0, length = paths.size(); i < length; i++)
-		{
-			writeU32(out, addString(pool, FileUtil.getCanonicalPath(paths.get(i))));
+		for (File path : paths) {
+			writeU32(out, addString(pool, FileUtil.getCanonicalPath(path)));
 		}
 
 		writeU32(out, sources.size());
 
-		for (Iterator<String> i = sources.keySet().iterator(); i.hasNext();)
-		{
-			String className = i.next();
+		for (String className : sources.keySet()) {
 			Source s = sources.get(className);
 
 			writeU32(out, addString(pool, className));
@@ -604,9 +570,8 @@ final class PersistenceStore
 
 		writeU32(out, mimeTypes.length);
 
-		for (int i = 0, length = mimeTypes.length; i < length; i++)
-		{
-			writeU32(out, addString(pool, mimeTypes[i]));
+		for (String mimeType : mimeTypes) {
+			writeU32(out, addString(pool, mimeType));
 		}
 
 		writeU32(out, locales == null ? 0 : locales.length);
@@ -619,29 +584,25 @@ final class PersistenceStore
 
 			writeU32(out, paths == null ? 0 : paths.size());
 
-			for (int j = 0, size = paths.size(); j < size; j++)
-			{
-				writeU32(out, addString(pool, FileUtil.getCanonicalPath(paths.get(j))));
+			for (File path : paths) {
+				writeU32(out, addString(pool, FileUtil.getCanonicalPath(path)));
 			}
 		}
 
 		writeU32(out, sources.size());
 
-		for (Iterator<String> i = sources.keySet().iterator(); i.hasNext();)
-		{
-			String bundleName = i.next();
+		for (String bundleName : sources.keySet()) {
 			Source s = sources.get(bundleName);
 
 			writeU32(out, addString(pool, bundleName));
 			writeU32(out, addString(pool, s.getName()));
-			
+
 			ResourceFile rf = (ResourceFile) s.getBackingFile();
 			VirtualFile[] rFiles = rf.getResourceFiles();
 			VirtualFile[] rRoots = rf.getResourcePathRoots();
 
-			writeU32(out, rFiles.length);			
-			for (int j = 0, size = rFiles.length; j < size; j++)
-			{
+			writeU32(out, rFiles.length);
+			for (int j = 0, size = rFiles.length; j < size; j++) {
 				writeU32(out, addString(pool, rFiles[j] != null ? rFiles[j].getName() : "null"));
 				writeU32(out, addString(pool, rRoots[j] != null ? rRoots[j].getName() : "null"));
 			}
@@ -755,19 +716,14 @@ final class PersistenceStore
 	{
 		writeU32(out, map.size());
 
-		for (Iterator<Map.Entry<String, Object>> i = map.entrySet().iterator(); i.hasNext();)
-		{
-			Map.Entry<String, Object> e = i.next();
+		for (Entry<String, Object> e : map.entrySet()) {
 			String key = e.getKey();
 			String value = (String) e.getValue();
 
-			if (value != null)
-			{
+			if (value != null) {
 				writeU32(out, addString(pool, key));
 				writeU32(out, addString(pool, value));
-			}
-			else
-			{
+			} else {
 				assert false : key + " can't be null.";
 			}
 		}
@@ -781,9 +737,8 @@ final class PersistenceStore
 
 		writeU32(out, u.topLevelDefinitions.size());
 
-		for (Iterator<QName> i = u.topLevelDefinitions.iterator(); i.hasNext();)
-		{
-			writeU32(out, addQName(pool, i.next()));
+		for (QName topLevelDefinition : u.topLevelDefinitions) {
+			writeU32(out, addQName(pool, topLevelDefinition));
 		}
 
 		writeU32(out, u.inheritanceHistory.size());
@@ -1563,9 +1518,8 @@ final class PersistenceStore
         Map<String, String> mappings = new HashMap<String, String>();
         Map<String, Object> rbMappings = new HashMap<String, Object>();
 
-		for (Iterator i = m.keySet().iterator(); i.hasNext();)
-		{
-			String className = (String) i.next();
+		for (Object o1 : m.keySet()) {
+			String className = (String) o1;
 			String fileName = (String) m.get(className);
 
 			mappings.put(fileName, className);
@@ -1574,15 +1528,14 @@ final class PersistenceStore
 		m.clear();
 
 		m = bundlePath.sources();
-		for (Iterator i = m.keySet().iterator(); i.hasNext();)
-		{
-			String className = (String) i.next();
+		for (Object o : m.keySet()) {
+			String className = (String) o;
 			Object[] value = (Object[]) m.get(className);
 			String fileName = (String) value[0];
 			String[] rFiles = (String[]) value[1];
 			String[] rRoots = (String[]) value[2];
 
-			rbMappings.put(fileName, new Object[] { className, rFiles, rRoots });
+			rbMappings.put(fileName, new Object[]{className, rFiles, rRoots});
 		}
 
 		m.clear();
@@ -1717,13 +1670,11 @@ final class PersistenceStore
 		if (owner == 0) // FileSpec
 		{
 			Collection<Source> c = fileSpec.sources();
-			for (Iterator<Source> i = c.iterator(); i.hasNext();)
-			{
-				s = i.next();
-				if (s.getName().equals(name))
-				{
+			for (Source aC : c) {
+				s = aC;
+				if (s.getName().equals(name)) {
 					Source.populateSource(s, fileTime, pathRoot, relativePath, shortName, fileSpec, isInternal, isRoot, isDebuggable,
-					                      includes, includeTimes, logger);
+							includes, includeTimes, logger);
 					break;
 				}
 			}
@@ -1731,13 +1682,11 @@ final class PersistenceStore
 		else if (owner == 1) // SourceList
 		{
 			Collection<Source> c = sourceList.sources().values();
-			for (Iterator<Source> i = c.iterator(); i.hasNext();)
-			{
-				s = i.next();
-				if (s.getName().equals(name))
-				{
+			for (Source aC : c) {
+				s = aC;
+				if (s.getName().equals(name)) {
 					Source.populateSource(s, fileTime, pathRoot, relativePath, shortName, sourceList, isInternal, isRoot, isDebuggable,
-					                      includes, includeTimes, logger);
+							includes, includeTimes, logger);
 					break;
 				}
 			}
@@ -2059,9 +2008,8 @@ final class PersistenceStore
 
 		if (index == null)
 		{
-			for (int i = 0, size = array.length; i < size; i++)
-			{
-				addString(pool, array[i]);
+			for (String anArray : array) {
+				addString(pool, anArray);
 			}
 
 			index = IntegerPool.getNumber(pool.size());

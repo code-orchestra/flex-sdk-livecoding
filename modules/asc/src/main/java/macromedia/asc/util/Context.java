@@ -171,12 +171,10 @@ public final class Context implements ErrorConstants
             else
             {
                 List<UnresolvedNamespace> nsList = new ArrayList<UnresolvedNamespace>(cx.unresolved_namespaces.keySet());
-                for (int i = 0, size = nsList.size(); i < size; i++)
-                {
-                    UnresolvedNamespace ns = nsList.get(i);
+                for (UnresolvedNamespace ns : nsList) {
                     ObjectList<ObjectValue> scopes = cx.unresolved_namespaces.get(ns);
                     if (this.unresolved_namespaces.get(ns) == null)
-                        this.unresolved_namespaces.put(ns,scopes);
+                        this.unresolved_namespaces.put(ns, scopes);
                 }
             }
         }
@@ -1527,23 +1525,17 @@ public final class Context implements ErrorConstants
             unresolved_namespaces = new TreeMap<UnresolvedNamespace, ObjectList<ObjectValue>>(new ObjectValue.ObjectValueCompare());
         }
 
-        for (Iterator<UnresolvedNamespace> i = unresolved_namespaces.keySet().iterator(); i.hasNext();)
-        {
-            UnresolvedNamespace ns = i.next();
+        for (UnresolvedNamespace ns : unresolved_namespaces.keySet()) {
             ReferenceValue val = ns.ref;
-            if (val.name.equals(ref.name) && val.getImmutableNamespaces().size() == ref.getImmutableNamespaces().size())
-            {
+            if (val.name.equals(ref.name) && val.getImmutableNamespaces().size() == ref.getImmutableNamespaces().size()) {
                 boolean match = true;
-                for (int j = 0, size = val.getImmutableNamespaces().size(); j < size; j++)
-                {
-                    if (!val.getImmutableNamespaces().get(j).name.equals(ref.getImmutableNamespaces().get(j).name))
-                    {
+                for (int j = 0, size = val.getImmutableNamespaces().size(); j < size; j++) {
+                    if (!val.getImmutableNamespaces().get(j).name.equals(ref.getImmutableNamespaces().get(j).name)) {
                         match = false;
                         break;
                     }
                 }
-                if (match)
-                {
+                if (match) {
                     return ns;
                 }
             }
@@ -1562,22 +1554,18 @@ public final class Context implements ErrorConstants
         {
             List<UnresolvedNamespace> nsList = new ArrayList<UnresolvedNamespace>(unresolved_namespaces.keySet());
 
-            for (int i = 0, size = nsList.size(); i < size; i++)
-            {
-                UnresolvedNamespace ns = nsList.get(i);
+            for (UnresolvedNamespace ns : nsList) {
                 ObjectList<ObjectValue> temp = statics.scopes;
                 statics.scopes = unresolved_namespaces.get(ns);
                 Slot slot = ns.ref.getSlot(this);
                 statics.scopes = temp;
 
                 // If we find a slot without a value, it means the namespace is defined in a variable.
-                if (slot != null)
-                {
+                if (slot != null) {
                     Value val = slot.getValue();
                     ObjectValue realNamespace = (val instanceof ObjectValue) ? (ObjectValue) val : null;
 
-                    if (realNamespace != null)
-                    {
+                    if (realNamespace != null) {
                         // Remove the ns from the TreeMap before we change it's name, and ns_kind,
                         // which would change the ordering that ObjectValue.ObjectValueCompare generates.
                         // If we don't remove the entry, then the Tree could be messed up since the ordering could
@@ -1589,9 +1577,7 @@ public final class Context implements ErrorConstants
                         ns.ns_kind = realNamespace.getNamespaceKind();
                         ns.resolved = true;
                     }
-                }
-                else
-                {
+                } else {
                     // must use the context in effect when the unresolvedNamespace was created.  The node may have come from an included file.
                     ns.cx.error(ns.node.pos(), kError_Unknown_Namespace);
                 }
@@ -1600,7 +1586,7 @@ public final class Context implements ErrorConstants
                 // by some Names instances and these Names instances could be in turn, referenced by some ObjectValues,
                 // which mxmlc stores for incremental compilations.
                 ns.cx = null;
-	            ns.node = null;
+                ns.node = null;
                 ns.ref = null;
             }
 

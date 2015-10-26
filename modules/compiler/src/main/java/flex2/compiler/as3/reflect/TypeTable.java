@@ -76,13 +76,11 @@ public class TypeTable
 	public final Map<String, AbcClass> createClasses(ObjectList clsdefs, QNameList toplevelDefinitions)
 	{
 		Map<String, AbcClass> classes = new HashMap<String, AbcClass>();
-		for (int i = 0, size = clsdefs.size(); i < size; i++)
-		{
-			ClassDefinitionNode clsdef = (ClassDefinitionNode) clsdefs.get(i);
+		for (Object clsdef1 : clsdefs) {
+			ClassDefinitionNode clsdef = (ClassDefinitionNode) clsdef1;
 			macromedia.asc.semantics.QName qName = clsdef.cframe.builder.classname;
 
-			if (toplevelDefinitions.contains(qName.ns.name, qName.name))
-			{
+			if (toplevelDefinitions.contains(qName.ns.name, qName.name)) {
 				createClass(clsdef, classes);
 			}
 		}

@@ -422,9 +422,8 @@ class ByteArrayPool
 
 	void clear()
 	{
-		for (Iterator i = map.keySet().iterator(); i.hasNext();)
-		{
-			ByteArray a = (ByteArray) i.next();
+		for (Object o : map.keySet()) {
+			ByteArray a = (ByteArray) o;
 			a.clear();
 			wrappers.push(a);
 		}
@@ -436,18 +435,15 @@ class ByteArrayPool
 	{
 		Map sortedMap = new TreeMap();
 
-		for (Iterator i = map.keySet().iterator(); i.hasNext();)
-		{
-			Object key = i.next(); // ByteArray
+		for (Object key : map.keySet()) {
 			Object value = map.get(key); // Integer
 			sortedMap.put(value, key);
 		}
 
 		b.writeU32((sortedMap.size() == 0) ? 0 : sortedMap.size() + 1);
 
-		for (Iterator i = sortedMap.keySet().iterator(); i.hasNext();)
-		{
-			Integer index = (Integer) i.next();
+		for (Object o : sortedMap.keySet()) {
+			Integer index = (Integer) o;
 			ByteArray a = (ByteArray) sortedMap.get(index);
 			b.writeBytes(a.b, a.start, a.end);
 		}

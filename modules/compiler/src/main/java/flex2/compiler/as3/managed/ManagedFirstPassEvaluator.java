@@ -79,14 +79,11 @@ public class ManagedFirstPassEvaluator extends GenerativeFirstPassEvaluator
 	public Value evaluate(Context context, ProgramNode programNode)
 	{
         //  class metadata first...
-        for (Iterator iter = metaData.iterator(); iter.hasNext(); )
-		{
-            MetaDataNode metaDataNode = (MetaDataNode)iter.next();
-			if (StandardDefs.MD_MANAGED.equals(metaDataNode.getId()))
-			{
-                if (metaDataNode.def instanceof ClassDefinitionNode)
-				{
-                    ClassDefinitionNode classDef = (ClassDefinitionNode)metaDataNode.def;
+        for (Object aMetaData1 : metaData) {
+            MetaDataNode metaDataNode = (MetaDataNode) aMetaData1;
+            if (StandardDefs.MD_MANAGED.equals(metaDataNode.getId())) {
+                if (metaDataNode.def instanceof ClassDefinitionNode) {
+                    ClassDefinitionNode classDef = (ClassDefinitionNode) metaDataNode.def;
 
                     currentInfo = new ManagedClassInfo(context,
                             typeTable.getSymbolTable(),
@@ -100,50 +97,35 @@ public class ManagedFirstPassEvaluator extends GenerativeFirstPassEvaluator
                     currentInfo = null;
                 }
             }
-		}
+        }
 
         //  ...then properties
-        for (Iterator iter = metaData.iterator(); iter.hasNext(); )
-		{
-            MetaDataNode metaDataNode = (MetaDataNode)iter.next();
-            if (StandardDefs.MD_MANAGED.equals(metaDataNode.getId()))
-            {
-                if (metaDataNode.def instanceof ClassDefinitionNode)
-                {
+        for (Object aMetaData : metaData) {
+            MetaDataNode metaDataNode = (MetaDataNode) aMetaData;
+            if (StandardDefs.MD_MANAGED.equals(metaDataNode.getId())) {
+                if (metaDataNode.def instanceof ClassDefinitionNode) {
                     //  skip
-                }
-                else if (metaDataNode.def instanceof VariableDefinitionNode)
-                {
-                    VariableDefinitionNode varNode = (VariableDefinitionNode)metaDataNode.def;
+                } else if (metaDataNode.def instanceof VariableDefinitionNode) {
+                    VariableDefinitionNode varNode = (VariableDefinitionNode) metaDataNode.def;
                     ManagedClassInfo classInfo = getClassOfManagedMember(varNode);
 
-                    if (classInfo != null)
-                    {
+                    if (classInfo != null) {
                         setPropertyMode(context, metaDataNode, classInfo,
-                            new QName(NodeMagic.getUserNamespace(varNode), NodeMagic.getVariableName(varNode)));
-                    }
-                    else
-                    {
+                                new QName(NodeMagic.getUserNamespace(varNode), NodeMagic.getVariableName(varNode)));
+                    } else {
                         context.localizedWarning2(metaDataNode.pos(), new ManagedOnNonClassError());
                     }
-                }
-                else if (metaDataNode.def instanceof FunctionDefinitionNode)
-                {
-                    FunctionDefinitionNode node = (FunctionDefinitionNode)metaDataNode.def;
+                } else if (metaDataNode.def instanceof FunctionDefinitionNode) {
+                    FunctionDefinitionNode node = (FunctionDefinitionNode) metaDataNode.def;
                     ManagedClassInfo classInfo = getClassOfManagedMember(node);
 
-                    if (classInfo != null)
-                    {
+                    if (classInfo != null) {
                         setPropertyMode(context, metaDataNode, classInfo,
-                            new QName(NodeMagic.getUserNamespace(node), NodeMagic.getFunctionName(node)));
-                    }
-                    else
-                    {
+                                new QName(NodeMagic.getUserNamespace(node), NodeMagic.getFunctionName(node)));
+                    } else {
                         context.localizedWarning2(metaDataNode.pos(), new ManagedOnNonClassError());
                     }
-                }
-                else
-                {
+                } else {
                     context.localizedWarning2(metaDataNode.pos(), new ManagedOnNonClassError());
                 }
             }
@@ -152,26 +134,21 @@ public class ManagedFirstPassEvaluator extends GenerativeFirstPassEvaluator
         //  now prune manual mode properties
         if (managedClasses != null)
         {
-             for (Iterator<ManagedClassInfo> iter = managedClasses.values().iterator(); iter.hasNext(); )
-             {
-                 ManagedClassInfo info = iter.next();
-                 Map accessors = info.getAccessors();
+            for (ManagedClassInfo info : managedClasses.values()) {
+                Map accessors = info.getAccessors();
 
-                 if (accessors != null)
-                 {
-                     for (Iterator propIter = accessors.entrySet().iterator(); propIter.hasNext(); )
-                     {
-                         Map.Entry entry = (Map.Entry)propIter.next();
-                         QName propQName = (QName)entry.getKey();
-                         int mode = info.getPropertyMode(propQName);
+                if (accessors != null) {
+                    for (Iterator propIter = accessors.entrySet().iterator(); propIter.hasNext(); ) {
+                        Map.Entry entry = (Map.Entry) propIter.next();
+                        QName propQName = (QName) entry.getKey();
+                        int mode = info.getPropertyMode(propQName);
 
-                         if (mode == ManagedClassInfo.MODE_MANUAL)
-                         {
-                             propIter.remove();
-                         }
-                     }
-                 }
-             }
+                        if (mode == ManagedClassInfo.MODE_MANUAL) {
+                            propIter.remove();
+                        }
+                    }
+                }
+            }
         }
 
         return null;

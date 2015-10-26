@@ -186,13 +186,11 @@ public class AtEmbed implements LineNumberMapped
              tokenizeAndResolveSource(sourceValue, values, source, value, path, line, logInvalidEmbedOnMissingFile)) ||
             (metaData.getValue(Transcoder.SKINCLASS) != null))
         {
-            for (Iterator it = metaData.getValueMap().entrySet().iterator(); it.hasNext();)
-            {
-                Map.Entry e = (Map.Entry) it.next();
+            for (Object o : metaData.getValueMap().entrySet()) {
+                Map.Entry e = (Map.Entry) o;
                 String key = (String) e.getKey();
 
-                if (!values.containsKey(key))
-                {
+                if (!values.containsKey(key)) {
                     String val = ((String) e.getValue()).replace('\\', '/');
                     values.put(key, val);
                 }

@@ -302,10 +302,8 @@ final public class ActionFactory
      */
     private void processSkipEntries()
     {
-        for (Iterator<SkipEntry> i = skipRecords.iterator(); i.hasNext();)
-        {
-            SkipEntry skipRecord = i.next();
-            int labelOffset = actionOffsets[skipRecord.skipTarget-startCount];
+        for (SkipEntry skipRecord : skipRecords) {
+            int labelOffset = actionOffsets[skipRecord.skipTarget - startCount];
             skipRecord.action.skipTarget = getLabel(labelOffset);
         }
     }

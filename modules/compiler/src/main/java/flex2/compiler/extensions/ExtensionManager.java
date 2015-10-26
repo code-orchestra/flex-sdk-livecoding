@@ -158,42 +158,30 @@ public class ExtensionManager
 
         Set<E> extensions = new LinkedHashSet<E>();
 
-        for ( int j = 0; j < extNames.length; j++ )
-        {
-            String extName = extNames[j];
+        for (String extName : extNames) {
             Class<?> extClass;
 
-            try
-            {
-                extClass = loader.loadClass( extName );
-            }
-            catch ( ClassNotFoundException e )
-            {
-                throw new UnexistentExtensionError( extName );
+            try {
+                extClass = loader.loadClass(extName);
+            } catch (ClassNotFoundException e) {
+                throw new UnexistentExtensionError(extName);
             }
 
-            if ( clazz.isAssignableFrom( extClass ) )
-            {
+            if (clazz.isAssignableFrom(extClass)) {
                 E extInstance;
-                try
-                {
+                try {
                     extInstance = (E) extClass.newInstance();
-                }
-                catch ( Exception e )
-                {
-                    throw new FailToInstanciateError( e.getMessage() );
+                } catch (Exception e) {
+                    throw new FailToInstanciateError(e.getMessage());
                 }
 
-                if ( extInstance instanceof IConfigurableExtension )
-                {
+                if (extInstance instanceof IConfigurableExtension) {
                     IConfigurableExtension configExtension = (IConfigurableExtension) extInstance;
-                    configExtension.configure( parameters );
+                    configExtension.configure(parameters);
                 }
-                extensions.add( extInstance );
-            }
-            else
-            {
-                throw new InvalidExtensionKindError( extClass, clazz );
+                extensions.add(extInstance);
+            } else {
+                throw new InvalidExtensionKindError(extClass, clazz);
 
             }
         }

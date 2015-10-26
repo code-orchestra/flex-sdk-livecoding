@@ -22,15 +22,7 @@ package flex2.tools;
 import flash.swf.tags.DefineFont;
 import flash.swf.tags.DefineTag;
 import flash.util.StringJoiner;
-import flex2.compiler.CompilationUnit;
-import flex2.compiler.CompilerSwcContext;
-import flex2.compiler.FileSpec;
-import flex2.compiler.ResourceBundlePath;
-import flex2.compiler.ResourceContainer;
-import flex2.compiler.Source;
-import flex2.compiler.SourceList;
-import flex2.compiler.SourcePath;
-import flex2.compiler.SymbolTable;
+import flex2.compiler.*;
 import flex2.compiler.common.Configuration;
 import flex2.compiler.common.MxmlConfiguration;
 import flex2.compiler.i18n.I18nUtils;
@@ -245,12 +237,10 @@ public class CompcPreLink implements flex2.compiler.PreLink
 
     	if (accessibilityList.size() > 0)
     	{
-    		for (Iterator it = accessibilityList.iterator(); it.hasNext();)
-    		{
-    			String className = (String) it.next();
-    			MultiName mName = new MultiName(NameFormatter.retrievePackageName(className), NameFormatter.retrieveClassName(className));
-    			flex2.compiler.CompilerAPI.resolveMultiName(mName, sources, sourceList, sourcePath, resources, swcContext, symbolTable);
-    		}
+            for (String className : accessibilityList) {
+                MultiName mName = new MultiName(NameFormatter.retrievePackageName(className), NameFormatter.retrieveClassName(className));
+                CompilerAPI.resolveMultiName(mName, sources, sourceList, sourcePath, resources, swcContext, symbolTable);
+            }
     	}
 
         // Sort the checksums to make sure the checksums are always in the same order.
@@ -258,9 +248,7 @@ public class CompcPreLink implements flex2.compiler.PreLink
         // of the checksums. That's why the order is important.
         StringBuffer checksumBuffer = new StringBuffer();
         Collections.sort(checksumList);
-        for (Iterator iter = checksumList.iterator(); iter.hasNext();)
-        {
-            Long checksum = (Long)iter.next();
+        for (Long checksum : checksumList) {
             checksumBuffer.append(checksum.longValue());
         }
 
@@ -277,43 +265,36 @@ public class CompcPreLink implements flex2.compiler.PreLink
 	    	Set<String> s = new TreeSet<String>();
             Set externs = configuration.getExterns();
 
-	    	for (int i = 0, size = sources.size(); i < size; i++)
-	    	{
-	    		Source src = sources.get(i);
-	    		CompilationUnit unit = src == null ? null : src.getCompilationUnit();
-	    		if (unit != null && !PreLink.isCompilationUnitExternal(unit, externs) &&
-	    		    !src.isInternal())
-	    		{
-	    			s.addAll(unit.resourceBundleHistory);
-	    		}
-	    	}
+            for (Source src : sources) {
+                CompilationUnit unit = src == null ? null : src.getCompilationUnit();
+                if (unit != null && !PreLink.isCompilationUnitExternal(unit, externs) &&
+                        !src.isInternal()) {
+                    s.addAll(unit.resourceBundleHistory);
+                }
+            }
 
 	    	for (int i = 0, size = defaults == null ? 0 : defaults.size(); i < size; i++)
 	    	{
 	    		s.add(defaults.get(i));
 	    	}
 
-	    	for (Iterator i = s.iterator(); i.hasNext(); )
-	    	{
-	    		String rbName = NameFormatter.toColon((String) i.next());
-	    		QName qName = new QName(rbName);
+            for (String value : s) {
+                String rbName = NameFormatter.toColon(value);
+                QName qName = new QName(rbName);
 
-	    		VirtualFile[] files = bundlePath.findVirtualFiles(rbName);
+                VirtualFile[] files = bundlePath.findVirtualFiles(rbName);
 
-	    		if (files == null)
-	    		{
-	    			files = swcContext.getVirtualFiles(locales, qName.getNamespace(), qName.getLocalPart());
-	    		}
+                if (files == null) {
+                    files = swcContext.getVirtualFiles(locales, qName.getNamespace(), qName.getLocalPart());
+                }
 
-                if (files == null)
-                {
+                if (files == null) {
                     // Handle Flex 2 style precompiled resource bundles.
                     QName precompiledQName = new QName(rbName + I18nUtils.CLASS_SUFFIX);
                     Source source = swcContext.getSource(precompiledQName.getNamespace(),
-                                                         precompiledQName.getLocalPart());
+                            precompiledQName.getLocalPart());
 
-                    if (source != null)
-                    {
+                    if (source != null) {
                         //FIXME I don't know if this logic is correct or possible.
                         //      to my knowledge, getExterns() always returns String across the compiler
                         //      so... are we toString()ing this? if so, let's change externs to Set<String>
@@ -323,27 +304,23 @@ public class CompcPreLink implements flex2.compiler.PreLink
                     }
                 }
 
-	    		if (files == null && locales.length > 0)
-	    		{
+                if (files == null && locales.length > 0) {
                     ThreadLocalToolkit.log(new SwcException.NoResourceBundleSource(rbName));
-	    		}
+                }
 
-	    		for (int j = 0, size = files == null ? 0 : files.length; j < size; j++)
-	    		{
-	    			if (files[j] != null)
-	    			{
-	    				String ext = MimeMappings.getExtension(files[j].getMimeType());
-	    				String key = "locale/" + locales[j] + "/" + rbName.replace(':', '.').replace('.', '/') + ext;
-	    				rbFiles.put(key, files[j]);
-	    			}
-	    		}
+                for (int j = 0, size = files == null ? 0 : files.length; j < size; j++) {
+                    if (files[j] != null) {
+                        String ext = MimeMappings.getExtension(files[j].getMimeType());
+                        String key = "locale/" + locales[j] + "/" + rbName.replace(':', '.').replace('.', '/') + ext;
+                        rbFiles.put(key, files[j]);
+                    }
+                }
 
-	    		if (files != null)
-	    		{
-	    			QName[] qNames = flex2.compiler.CompilerAPI.resolveResourceBundleName(rbName, sources, null, bundlePath, null, swcContext, symbolTable, locales);
-	    			configuration.addExterns(qNames);
-	    		}
-	    	}
+                if (files != null) {
+                    QName[] qNames = CompilerAPI.resolveResourceBundleName(rbName, sources, null, bundlePath, null, swcContext, symbolTable, locales);
+                    configuration.addExterns(qNames);
+                }
+            }
 	    }
     }
 

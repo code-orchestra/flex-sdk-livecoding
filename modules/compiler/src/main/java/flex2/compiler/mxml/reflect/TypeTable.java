@@ -472,16 +472,13 @@ public class TypeTable
                 effects = classInfo.getMetaData("Effect", true);
             }
 
-            for (int i = 0, length = effects.size(); i < length; i++)
-            {
-                MetaData md = effects.get(i);
-                if (name.equals(md.getValue(0)))
-                {
+            for (MetaData md : effects) {
+                if (name.equals(md.getValue(0))) {
                     return new EffectHelper(name,
-                                            md.getValue("event"),
-                                            md.getValue(Deprecated.DEPRECATED_MESSAGE),
-                                            md.getValue(Deprecated.DEPRECATED_REPLACEMENT),
-                                            md.getValue(Deprecated.DEPRECATED_SINCE));
+                            md.getValue("event"),
+                            md.getValue(Deprecated.DEPRECATED_MESSAGE),
+                            md.getValue(Deprecated.DEPRECATED_REPLACEMENT),
+                            md.getValue(Deprecated.DEPRECATED_SINCE));
                 }
             }
 
@@ -500,24 +497,19 @@ public class TypeTable
 
             if (!isExcludedStyle(name))
             {
-                for (int i = 0, length = styles.size(); i < length; i++)
-                {
-                    MetaData md = styles.get(i);
-
-                    if (name.equals(md.getValue("name")))
-                    {
+                for (MetaData md : styles) {
+                    if (name.equals(md.getValue("name"))) {
                         String theme = md.getValue("theme");
 
-                        if ((theme == null) || (themeNames == null) || hasTheme(theme))
-                        {
+                        if ((theme == null) || (themeNames == null) || hasTheme(theme)) {
                             return new StyleHelper(name,
-                                                   md.getValue("type"),
-                                                   md.getValue("enumeration"),
-                                                   md.getValue("format"),
-                                                   md.getValue("inherit"),
-                                                   md.getValue(Deprecated.DEPRECATED_MESSAGE),
-                                                   md.getValue(Deprecated.DEPRECATED_REPLACEMENT),
-                                                   md.getValue(Deprecated.DEPRECATED_SINCE));
+                                    md.getValue("type"),
+                                    md.getValue("enumeration"),
+                                    md.getValue("format"),
+                                    md.getValue("inherit"),
+                                    md.getValue(Deprecated.DEPRECATED_MESSAGE),
+                                    md.getValue(Deprecated.DEPRECATED_REPLACEMENT),
+                                    md.getValue(Deprecated.DEPRECATED_SINCE));
                         }
                     }
                 }
@@ -557,12 +549,8 @@ public class TypeTable
                 styles = classInfo.getMetaData("Style", true);
             }
 
-            for (int i = 0, length = styles.size(); i < length; i++)
-            {
-                MetaData md = styles.get(i);
-
-                if (name.equals(md.getValue("name")))
-                {
+            for (MetaData md : styles) {
+                if (name.equals(md.getValue("name"))) {
                     return md.getValue("theme");
                 }
             }
@@ -574,11 +562,9 @@ public class TypeTable
         {
             boolean result = false;
             String[] themes = value.split("[, ]");
-            
-            for (int i = 0; i < themes.length; i++)
-            {
-                if (themeNames.contains(themes[i]))
-                {
+
+            for (String theme : themes) {
+                if (themeNames.contains(theme)) {
                     result = true;
                     break;
                 }
@@ -627,11 +613,8 @@ public class TypeTable
         public boolean hasObsolete(String name)
         {
             List<MetaData> metadata = classInfo.getMetaData("Obsolete", false);
-            for (int i = 0, length = metadata.size(); i < length; i++)
-            {
-                MetaData md = metadata.get(i);
-                if (name.equals(md.getValue(0)))
-                {
+            for (MetaData md : metadata) {
+                if (name.equals(md.getValue(0))) {
                     return true;
                 }
             }
@@ -836,39 +819,29 @@ public class TypeTable
 
             eventTypes = new HashMap<String, EventHelper>(events.size());
 
-            for (int i = 0, length = events.size(); i < length; i++)
-            {
-                MetaData md = events.get(i);
-
+            for (MetaData md : events) {
                 String name = md.getValue("name");
                 String typeName = md.getValue("type");
-                
-                if (name != null)
-                {
-                    if (typeName == null)
-                    {
+
+                if (name != null) {
+                    if (typeName == null) {
                         // [Event(name="...")]
                         typeName = SymbolTable.EVENT;
-                    }
-                    else
-                    {
+                    } else {
                         // [Event(name="...",type="...")]
                         typeName = NameFormatter.toColon(typeName);
                     }
-                }
-                else
-                {
+                } else {
                     // [Event("name")]
                     name = md.getValue(0);
                     typeName = SymbolTable.EVENT;
                 }
 
-                if (typeName != null)
-                {
+                if (typeName != null) {
                     eventTypes.put(name, new EventHelper(name, typeName,
-                                                         md.getValue(Deprecated.DEPRECATED_MESSAGE),
-                                                         md.getValue(Deprecated.DEPRECATED_REPLACEMENT),
-                                                         md.getValue(Deprecated.DEPRECATED_SINCE)));
+                            md.getValue(Deprecated.DEPRECATED_MESSAGE),
+                            md.getValue(Deprecated.DEPRECATED_REPLACEMENT),
+                            md.getValue(Deprecated.DEPRECATED_SINCE)));
                 }
             }
         }
@@ -1194,11 +1167,8 @@ public class TypeTable
                 List<MetaData> mdList = var.getMetaData(StandardDefs.MD_CHANGEEVENT);
                 if (mdList != null)
                 {
-                    for (int i = 0, size = mdList.size(); i < size; i++)
-                    {
-                        MetaData md = mdList.get(i);
-                        if (name.equals(md.getValue(0)))
-                        {
+                    for (MetaData md : mdList) {
+                        if (name.equals(md.getValue(0))) {
                             return true;
                         }
                     }

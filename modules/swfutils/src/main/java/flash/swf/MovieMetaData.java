@@ -536,9 +536,8 @@ public final class MovieMetaData extends TagHandler
 
 	private void collectCondActions(ButtonCondAction[] actions)
 	{
-		for (int i = 0; i < actions.length; i++)
-		{
-			collectActions(actions[i].actionList);
+		for (ButtonCondAction action : actions) {
+			collectActions(action.actionList);
 		}
 	}
 

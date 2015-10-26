@@ -47,11 +47,10 @@ public class FontLicenseChecker
 		File file = new File(args[0]);
 		TreeMap<Integer, ArrayList<String>> fonts = new TreeMap<Integer, ArrayList<String>>();
 		getLicenseTypes(file, fonts);
-		for (Iterator iterator = fonts.entrySet().iterator(); iterator.hasNext();)
-		{
-			Map.Entry entry = (Map.Entry)iterator.next();
-			Integer integ = (Integer)entry.getKey();
-			ArrayList list = (ArrayList)entry.getValue();
+		for (Map.Entry<Integer, ArrayList<String>> integerArrayListEntry : fonts.entrySet()) {
+			Map.Entry entry = (Map.Entry) integerArrayListEntry;
+			Integer integ = (Integer) entry.getKey();
+			ArrayList list = (ArrayList) entry.getValue();
 			FSType type = FSType.getFSType(integ.intValue());
 			String licenseType = type.description + ", fsType = '" + type.fsType + "'";
 			System.out.println("");
@@ -60,9 +59,8 @@ public class FontLicenseChecker
 			System.out.println("Flex will" + (type.usableByFlex ? "" : " not") + " embed any of the " + list.size() + " fonts listed below.");
 			System.out.println("");
 
-			for (Iterator interator2 = list.iterator(); interator2.hasNext();)
-			{
-				String fontStr = (String)interator2.next();
+			for (Object aList : list) {
+				String fontStr = (String) aList;
 				System.out.println(fontStr);
 			}
 		}
@@ -80,11 +78,8 @@ public class FontLicenseChecker
 			File[] children = file.listFiles();
 			if (children != null)
 			{
-				for (int i = 0; i < children.length; i++)
-				{
-					File child = children[i];
-					if (child.isDirectory() || child.toString().toLowerCase().endsWith(".ttf"))
-					{
+				for (File child : children) {
+					if (child.isDirectory() || child.toString().toLowerCase().endsWith(".ttf")) {
 						getLicenseTypes(child, fonts);
 					}
 				}

@@ -102,12 +102,10 @@ public final class FileUtils
                 files[i] = new File(canonfile.getPath(), ss[i]);
             }
 
-            for (int i = 0; i < files.length; ++i)
-            {
-                if (files[i].getName().equalsIgnoreCase( file ))
-                {
-                    filemap.put( path, files[i].getAbsolutePath() );
-                    return files[i].getAbsolutePath();
+            for (File file1 : files) {
+                if (file1.getName().equalsIgnoreCase(file)) {
+                    filemap.put(path, file1.getAbsolutePath());
+                    return file1.getAbsolutePath();
                 }
             }
         }
@@ -295,13 +293,11 @@ public final class FileUtils
 		}
 
 		ArrayList<File> filteredFiles = new ArrayList<File>();
-		for (int i=0; i < fileNames.length; i++) 
-		{
-			if ((filter == null) || filter.accept(dir, fileNames[i])) 
-			{
-				filteredFiles.add(new File(dir.getPath(), fileNames[i]));
-			}
-		}
+        for (String fileName : fileNames) {
+            if ((filter == null) || filter.accept(dir, fileName)) {
+                filteredFiles.add(new File(dir.getPath(), fileName));
+            }
+        }
 
 		return (filteredFiles.toArray(new File[0]));
 	}

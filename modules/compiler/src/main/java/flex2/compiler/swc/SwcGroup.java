@@ -162,9 +162,7 @@ public class SwcGroup
 	{
 		List<Long> lastModified = new ArrayList<Long>();
 
-		for (Iterator<Swc> iterator = swcs.values().iterator(); iterator.hasNext();)
-		{
-			Swc swc = iterator.next();
+		for (Swc swc : swcs.values()) {
 			lastModified.add(new Long(swc.getLastModified()));
 		}
 
@@ -178,31 +176,24 @@ public class SwcGroup
 
 	public void close()
 	{
-		for (Iterator<Swc> iterator = swcs.values().iterator(); iterator.hasNext();)
-		{
-			Swc swc = iterator.next();
+		for (Swc swc : swcs.values()) {
 			swc.close();
 		}
 	}
 
 	private void updateNameMappings()
 	{
-		for (Iterator<Swc> iter = swcs.values().iterator(); iter.hasNext();)
-		{
-			Swc swc = iter.next();
+		for (Swc swc : swcs.values()) {
 			Iterator iter2 = swc.getComponentIterator();
-			while (iter2.hasNext())
-			{
+			while (iter2.hasNext()) {
 				SwcComponent component = (SwcComponent) iter2.next();
 				String namespaceURI = component.getUri();
 				String name = component.getName();
 
 				if (namespaceURI == null) continue;
-				
-				if (namespaceURI != null && namespaceURI.isEmpty())
-				{
-					if (name != null)
-					{
+
+				if (namespaceURI != null && namespaceURI.isEmpty()) {
+					if (name != null) {
 						SwcException e = new SwcException.EmptyNamespace(name);
 						ThreadLocalToolkit.log(e);
 						throw e;
@@ -210,18 +201,16 @@ public class SwcGroup
 					continue;
 				}
 				String className = component.getClassName();
-				if (name == null)
-				{
+				if (name == null) {
 					name = NameFormatter.retrieveClassName(className);
 				}
 
 				boolean success = nameMappings.addClass(namespaceURI, name,
 						className);
-				if (!success)
-				{
+				if (!success) {
 					SwcException e = new SwcException.ComponentDefinedTwice(
 							name, className, nameMappings.lookupClassName(
-									namespaceURI, name));
+							namespaceURI, name));
 					ThreadLocalToolkit.log(e);
 					throw e;
 				}
@@ -231,29 +220,23 @@ public class SwcGroup
 
 	private void updateFiles()
 	{
-		for (Iterator<Swc> iterator = swcs.values().iterator(); iterator.hasNext();)
-		{
-			Swc swc = iterator.next();
-            Map<String, VirtualFile> catalogFiles = swc.getCatalogFiles();
+		for (Swc swc : swcs.values()) {
+			Map<String, VirtualFile> catalogFiles = swc.getCatalogFiles();
 
-            if (catalogFiles != null)
-			{
-                for (VirtualFile file : catalogFiles.values())
-                {
-                    String name = file.getName();
-                    String swcName = SwcFile.getFilePath(name);
-                    if (swcName != null)
-                    {
-                        name = swcName;
-                    }
-                    VirtualFile curFile = files.get(name);
-                    if (curFile == null || file.getLastModified() > curFile.getLastModified())
-                    {
-                        files.put(name, file);
-                    }
-                }
-            }
-        }
+			if (catalogFiles != null) {
+				for (VirtualFile file : catalogFiles.values()) {
+					String name = file.getName();
+					String swcName = SwcFile.getFilePath(name);
+					if (swcName != null) {
+						name = swcName;
+					}
+					VirtualFile curFile = files.get(name);
+					if (curFile == null || file.getLastModified() > curFile.getLastModified()) {
+						files.put(name, file);
+					}
+				}
+			}
+		}
 	}
 
 	private void updateMaps()
@@ -263,16 +246,11 @@ public class SwcGroup
 
 		ArrayList<SwcScript> scriptList = new ArrayList<SwcScript>();
 
-		for (Iterator<Swc> swcit = swcs.values().iterator(); swcit.hasNext();)
-		{
-			Swc swc = swcit.next();
-
-			for (Iterator libit = swc.getLibraryIterator(); libit.hasNext();)
-			{
+		for (Swc swc : swcs.values()) {
+			for (Iterator libit = swc.getLibraryIterator(); libit.hasNext(); ) {
 				SwcLibrary lib = (SwcLibrary) libit.next();
 
-				for (Iterator scriptit = lib.getScriptIterator(); scriptit.hasNext();)
-				{
+				for (Iterator scriptit = lib.getScriptIterator(); scriptit.hasNext(); ) {
 					SwcScript script = (SwcScript) scriptit.next();
 					scriptList.add(script);
 				}
@@ -343,53 +321,43 @@ public class SwcGroup
 
 		def2script = new HashMap<String, SwcScript>();
 		qnames = new HashSet<QName>();
-		for (int i = 0; i < scriptArray.length; i++)
-		{
-			SwcScript s = scriptArray[i];
+		for (SwcScript s : scriptArray) {
 			String name = s.getName();
 			HashMap<String, SwcScript> staging = new HashMap<String, SwcScript>();
-			for (Iterator defit = s.getDefinitionIterator(); defit.hasNext();)
-			{
+			for (Iterator defit = s.getDefinitionIterator(); defit.hasNext(); ) {
 				String def = (String) defit.next();
 				staging.put(def, s);
-                SwcScript newerSwcScript = def2script.get(def);
+				SwcScript newerSwcScript = def2script.get(def);
 
-				if (newerSwcScript != null)
-				{
-                    // already have a newer definition, this script is obsolete.
-                    staging = null;
+				if (newerSwcScript != null) {
+					// already have a newer definition, this script is obsolete.
+					staging = null;
 
-                    CompilationUnit compilationUnit = s.getCompilationUnit();
+					CompilationUnit compilationUnit = s.getCompilationUnit();
 
-                    if (compilationUnit != null)
-                    {
-                        CompilationUnit newerCompilationUnit = newerSwcScript.getCompilationUnit();
+					if (compilationUnit != null) {
+						CompilationUnit newerCompilationUnit = newerSwcScript.getCompilationUnit();
 
-                        if (newerCompilationUnit != null)
-                        {
-                            if ((newerCompilationUnit != null) &&
-                                (compilationUnit.typeInfo != newerCompilationUnit.typeInfo))
-                            {
-                                obsoleted.put(s, newerSwcScript.getLibrary().getSwcLocation());
-                                break;
-                            }
-                        }
-                    }
-                    break;
+						if (newerCompilationUnit != null) {
+							if ((newerCompilationUnit != null) &&
+									(compilationUnit.typeInfo != newerCompilationUnit.typeInfo)) {
+								obsoleted.put(s, newerSwcScript.getLibrary().getSwcLocation());
+								break;
+							}
+						}
+					}
+					break;
 				}
 			}
 
-			if (staging != null)
-			{
-				for (Map.Entry<String, SwcScript> entry : staging.entrySet())
-				{
+			if (staging != null) {
+				for (Map.Entry<String, SwcScript> entry : staging.entrySet()) {
 					String def = entry.getKey();
 
 					qnames.add(new QName(def));
 					def2script.put(def, entry.getValue());
 
-					if (Trace.swc)
-					{
+					if (Trace.swc) {
 						Trace.trace("Using " + def + " from " + s);
 					}
 				}

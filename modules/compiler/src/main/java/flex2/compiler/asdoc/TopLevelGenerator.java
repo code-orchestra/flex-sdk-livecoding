@@ -104,8 +104,8 @@ public class TopLevelGenerator implements DocCommentGenerator
                     continue;
             } else if (o instanceof List) {
                 List l = (List) o;
-                for (int i = 0; i < l.size(); i++) {
-                    String value = (String) l.get(i);
+                for (Object aL : l) {
+                    String value = (String) aL;
                     appendTag(tagName, value);
                 }
             } else if (o instanceof Map)   //custom Tags (implied tagName.equals("custom")
@@ -129,9 +129,8 @@ public class TopLevelGenerator implements DocCommentGenerator
      */
     private void emitMetadata(List metadata)
     {
-        for (int i = 0; i < metadata.size(); i++)
-        {
-            DocComment meta = (DocComment)metadata.get(i);
+        for (Object aMetadata : metadata) {
+            DocComment meta = (DocComment) aMetadata;
             String metadataType = meta.getMetadataType().intern();
             xml.append("\n<metadata>\n");
             xml.append("\t<");
@@ -143,125 +142,100 @@ public class TopLevelGenerator implements DocCommentGenerator
             if (!name.equals("IGNORE"))
                 xml.append("name='").append(name).append("' ");
             String type_meta = meta.getType_meta();
-            if (type_meta != null)
-            {
+            if (type_meta != null) {
                 xml.append("type='").append(type_meta).append("' ");
             }
-            
+
             String event_meta = meta.getEvent_meta();
-            if (event_meta != null)
-            {
+            if (event_meta != null) {
                 xml.append("event='").append(event_meta).append("' ");
             }
             String kind_meta = meta.getKind_meta();
-            if (kind_meta != null)
-            {
+            if (kind_meta != null) {
                 xml.append("kind='").append(kind_meta).append("' ");
             }
             String arrayType_meta = meta.getArrayType_meta();
-            if (arrayType_meta != null)
-            {
+            if (arrayType_meta != null) {
                 xml.append("arrayType='").append(arrayType_meta).append("' ");
             }
             String format_meta = meta.getFormat_meta();
-            if (format_meta != null)
-            {
+            if (format_meta != null) {
                 xml.append("format='").append(format_meta).append("' ");
             }
             String enumeration_meta = meta.getEnumeration_meta();
-            if (enumeration_meta != null)
-            {
+            if (enumeration_meta != null) {
                 xml.append("enumeration='").append(enumeration_meta).append("' ");
             }
             String inherit_meta = meta.getInherit_meta();
-            if (inherit_meta != null)
-            {
+            if (inherit_meta != null) {
                 xml.append("inherit='").append(inherit_meta).append("' ");
             }
-            
-            if (metadataType == StandardDefs.MD_EVENT || metadataType == StandardDefs.MD_STYLE || metadataType == StandardDefs.MD_EFFECT)
-            {
+
+            if (metadataType == StandardDefs.MD_EVENT || metadataType == StandardDefs.MD_STYLE || metadataType == StandardDefs.MD_EFFECT) {
                 // if message meta data is present then emit it. Applicable for Deprecation 
                 String message_meta = meta.getMessage_meta();
-                if (message_meta != null)
-                {
+                if (message_meta != null) {
                     xml.append("deprecatedMessage='").append(message_meta).append("' ");
-                }                
-                
+                }
+
                 // if replacement meta data is present then emit it. Applicable for Deprecation 
                 String replacement_meta = meta.getReplacement_meta();
-                if (replacement_meta != null)
-                {
+                if (replacement_meta != null) {
                     xml.append("deprecatedReplacement='").append(replacement_meta).append("' ");
-                }                
-                
+                }
+
                 // if since meta data is present then emit it. Applicable for Deprecation 
                 String since_meta = meta.getSince_meta();
-                if (since_meta != null)
-                {
+                if (since_meta != null) {
                     xml.append("deprecatedSince='").append(since_meta).append("' ");
-                }                                       
-                
-                if(metadataType == StandardDefs.MD_STYLE)
-                {
-                	// if theme meta data is present then emit it.
+                }
+
+                if (metadataType == StandardDefs.MD_STYLE) {
+                    // if theme meta data is present then emit it.
                     String theme_meta = meta.getTheme_meta();
-                    if (theme_meta != null)
-                    {
+                    if (theme_meta != null) {
                         xml.append("theme='").append(theme_meta).append("' ");
-                    }                	
+                    }
                 }
-            }
-            else if(metadataType == StandardDefs.MD_SKINPART)
-            {
+            } else if (metadataType == StandardDefs.MD_SKINPART) {
                 String variableType_meta = meta.getVariableType_meta();
-                if (variableType_meta != null)
-                {
+                if (variableType_meta != null) {
                     xml.append("var_type='").append(variableType_meta).append("' ");
-                }                
-                
-                String required_meta = meta.getRequired_meta();
-                if (required_meta != null)
-                {
-                    xml.append("required='").append(required_meta).append("' ");
                 }
-                else 
-                {
+
+                String required_meta = meta.getRequired_meta();
+                if (required_meta != null) {
+                    xml.append("required='").append(required_meta).append("' ");
+                } else {
                     // false is now the default value for required in case of SkinPart.
                     xml.append("required='false' ");
                 }
-            }
-            else 
-            {
+            } else {
                 // if message meta data is present then emit it. Applicable for Deprecation 
                 String message_meta = meta.getMessage_meta();
-                if (message_meta != null)
-                {
+                if (message_meta != null) {
                     xml.append("message='").append(message_meta).append("' ");
-                }                
-                
+                }
+
                 // if replacement meta data is present then emit it. Applicable for Deprecation 
                 String replacement_meta = meta.getReplacement_meta();
-                if (replacement_meta != null)
-                {
+                if (replacement_meta != null) {
                     xml.append("replacement='").append(replacement_meta).append("' ");
-                }                
-                
+                }
+
                 // if since meta data is present then emit it. Applicable for Deprecation 
                 String since_meta = meta.getSince_meta();
-                if (since_meta != null)
-                {
+                if (since_meta != null) {
                     xml.append("since='").append(since_meta).append("' ");
-                }                                
+                }
             }
-            
+
             xml.append(">");
-            
+
             //These types of metadata can have comments associated with them
-            if (metadataType == StandardDefs.MD_EVENT || metadataType == StandardDefs.MD_STYLE || metadataType == StandardDefs.MD_EFFECT 
+            if (metadataType == StandardDefs.MD_EVENT || metadataType == StandardDefs.MD_STYLE || metadataType == StandardDefs.MD_EFFECT
                     || metadataType == StandardDefs.MD_SKINSTATE || metadataType == StandardDefs.MD_SKINPART || metadataType == StandardDefs.MD_ALTERNATIVE
-                    || metadataType == StandardDefs.MD_DISCOURAGEDFORPROFILE || metadataType == StandardDefs.MD_EXPERIMENTAL)
-            {
+                    || metadataType == StandardDefs.MD_DISCOURAGEDFORPROFILE || metadataType == StandardDefs.MD_EXPERIMENTAL) {
                 String desc = meta.getDescription();
                 if (desc != null)
                     appendTag("description", meta.getDescription());

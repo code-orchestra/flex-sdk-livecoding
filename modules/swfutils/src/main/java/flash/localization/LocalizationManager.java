@@ -42,14 +42,10 @@ public class LocalizationManager
 
     private ILocalizedText getLocalizedTextInner( Locale locale, String id )
     {
-        for (Iterator it = localizers.iterator(); it.hasNext(); )
-        {
-            ILocalizer localizer = (ILocalizer) it.next();
+        for (ILocalizer localizer : localizers) {
+            ILocalizedText text = localizer.getLocalizedText(locale, id);
 
-            ILocalizedText text = localizer.getLocalizedText( locale, id );
-
-            if (text != null)
-            {
+            if (text != null) {
                 return text;
             }
         }
@@ -159,25 +155,17 @@ public class LocalizationManager
         {
             Field[] fields = c.getDeclaredFields();
 
-            for (int i = 0; i < fields.length; ++i)
-            {
-                Field f = fields[i];
-
-                if (!Modifier.isPublic( f.getModifiers() ))
-                {
+            for (Field f : fields) {
+                if (!Modifier.isPublic(f.getModifiers())) {
                     continue;
                 }
-                if (Modifier.isStatic( f.getModifiers() ))
-                {
+                if (Modifier.isStatic(f.getModifiers())) {
                     continue;
                 }
 
-                try
-                {
-                    parameters.put( f.getName(), f.get( object ) );
-                }
-                catch (Exception e)
-                {
+                try {
+                    parameters.put(f.getName(), f.get(object));
+                } catch (Exception e) {
                 }
             }
             c = c.getSuperclass();

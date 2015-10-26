@@ -215,23 +215,18 @@ public class SimpleMovie extends Movie
         final DependencyGraph<CompilationUnit> dependencies = new DependencyGraph<CompilationUnit>();
 	    CompilationUnit main = null;
 
-        for (int i = 0, length = units.size(); i < length; i++)
-        {
-            CompilationUnit u = units.get(i);
+        for (CompilationUnit u : units) {
             Source s = u.getSource();
             String path = s.getName();
 
-	        if (!u.isRoot())
-	        {
-		        // C: should also setup dependencies based on CompilationUnit.inheritance...
-		        //    it still works because the list is already sorted and this is a SimpleMovie!
+            if (!u.isRoot()) {
+                // C: should also setup dependencies based on CompilationUnit.inheritance...
+                //    it still works because the list is already sorted and this is a SimpleMovie!
                 dependencies.put(path, u);
-		        dependencies.addVertex(new Vertex<String,CompilationUnit>(path));
-	        }
-	        else
-	        {
-		        main = u;
-	        }
+                dependencies.addVertex(new Vertex<String, CompilationUnit>(path));
+            } else {
+                main = u;
+            }
         }
 
         if (main != null)
@@ -332,10 +327,8 @@ public class SimpleMovie extends Movie
     public static int getCodeHash( Frame f )
     {
         int h = f.symbolClass.hashCode();
-        for (Iterator ci = f.doABCs.iterator(); ci.hasNext();)
-        {
+        for (DoABC doABC : f.doABCs) {
 
-            DoABC doABC = (DoABC) ci.next();
             for (int i = 0; i < doABC.abc.length; ++i)
                 h += (doABC.abc[i] * DefineTag.PRIME);
         }
@@ -351,16 +344,13 @@ public class SimpleMovie extends Movie
     public List<CompilationUnit> getExportedUnitsByFrame(Frame f)
     {
     	List<CompilationUnit> a = new ArrayList<CompilationUnit>();
-    	
-    	for (Iterator<CompilationUnit> i = exportedUnits.keySet().iterator(); i.hasNext(); )
-    	{
-    		CompilationUnit u = i.next();
-    		Frame frame = exportedUnits.get(u);
-    		if (f == frame)
-    		{
-    			a.add(u);
-    		}
-    	}
+
+        for (CompilationUnit u : exportedUnits.keySet()) {
+            Frame frame = exportedUnits.get(u);
+            if (f == frame) {
+                a.add(u);
+            }
+        }
     	
     	return a;
     }

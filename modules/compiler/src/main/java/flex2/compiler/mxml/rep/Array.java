@@ -80,9 +80,8 @@ public class Array extends Model
 
 	public void addEntries(Collection entries, int line)
 	{
-		for (Iterator iter = entries.iterator(); iter.hasNext(); )
-		{
-			addEntry(iter.next(), line);
+		for (Object entry : entries) {
+			addEntry(entry, line);
 		}
 	}
 

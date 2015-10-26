@@ -160,41 +160,36 @@ public class PreLink implements flex2.compiler.PreLink
         StandardDefs standardDefs = ThreadLocalToolkit.getStandardDefs();
         TypeAnalyzer typeAnalyzer = symbolTable.getTypeAnalyzer();
         assert(typeAnalyzer != null);
-        
-        for (int i = 0, length = units.size(); i < length; i++)
-        {
-            CompilationUnit u = (CompilationUnit) units.get(i);
+
+        for (CompilationUnit unit : units) {
+            CompilationUnit u = (CompilationUnit) unit;
 
             if (u == null) {
                 continue;
             }
 
-            if (u.isRoot())
-            {
+            if (u.isRoot()) {
                 StylesContainer stylesContainer =
-                    (StylesContainer) symbolTable.getContext().getAttribute(StylesContainer.class.getName());
+                        (StylesContainer) symbolTable.getContext().getAttribute(StylesContainer.class.getName());
                 StylesContainer rootStylesContainer = u.getStylesContainer();
 
                 // If the backgroundColor wasn't specified inline, go looking for it in CSS.
-                if ((u.swfMetaData == null) || (u.swfMetaData.getValue("backgroundColor") == null))
-                {
+                if ((u.swfMetaData == null) || (u.swfMetaData.getValue("backgroundColor") == null)) {
                     QName qName = u.topLevelDefinitions.last();
-                    
-                    if (qName != null)
-                    {
+
+                    if (qName != null) {
                         String def = qName.toString();
                         lookupBackgroundColor(stylesContainer, rootStylesContainer, u.styleName,
-                                              NameFormatter.toDot(def), symbolTable, configuration);
+                                NameFormatter.toDot(def), symbolTable, configuration);
                     }
                 }
 
-                if (rootStylesContainer != null)
-                {
+                if (rootStylesContainer != null) {
                     // Swap in root's Logger, so warnings get associated correctly.
                     Logger originalLogger = ThreadLocalToolkit.getLogger();
                     ThreadLocalToolkit.setLogger(u.getSource().getLogger());
                     rootStylesContainer.validate(symbolTable, nameMappings, u.getStandardDefs(),
-                                                 compilerConfiguration.getThemeNames(), null);
+                            compilerConfiguration.getThemeNames(), null);
                     ThreadLocalToolkit.setLogger(originalLogger);
                 }
 
@@ -217,51 +212,42 @@ public class PreLink implements flex2.compiler.PreLink
 
                 // C: we don't need the styles container anymore
                 u.setStylesContainer(null);
-            }
-            else if (generatedLoaderClass && !u.getSource().isInternal() && !u.getSource().isSwcScriptOwner())
-            {
+            } else if (generatedLoaderClass && !u.getSource().isInternal() && !u.getSource().isSwcScriptOwner()) {
                 // Check if the source is a module or an application. If it is and we know it 
                 // is not the root then generate a warning.
-                if (typeAnalyzer != null)
-                {
-                    for (QName qName : u.topLevelDefinitions)
-                    {
+                if (typeAnalyzer != null) {
+                    for (QName qName : u.topLevelDefinitions) {
                         ClassInfo info = typeAnalyzer.getClassInfo(qName.toString());
                         checkForModuleOrApplication(standardDefs, typeAnalyzer, info, qName, configuration);
                     }
                 }
             }
-            
+
             // Only check the dependencies of hand written compilation units.
-            if (!u.getSource().isSwcScriptOwner() && compilerConfiguration.enableSwcVersionFiltering())
-            {
+            if (!u.getSource().isSwcScriptOwner() && compilerConfiguration.enableSwcVersionFiltering()) {
                 Set<Name> dependencies = new HashSet<Name>();
                 dependencies.addAll(u.inheritance);
                 dependencies.addAll(u.namespaces);
                 dependencies.addAll(u.expressions);
                 dependencies.addAll(u.types);
 
-                for (Name name : dependencies)
-                {
-                    if (name instanceof QName)
-                    {
+                for (Name name : dependencies) {
+                    if (name instanceof QName) {
                         Source dependent = symbolTable.findSourceByQName((QName) name);
 
-                        if (dependent.isSwcScriptOwner())
-                        {
+                        if (dependent.isSwcScriptOwner()) {
                             SwcScript swcScript = (SwcScript) dependent.getOwner();
                             Swc swc = swcScript.getLibrary().getSwc();
-                        
+
                             // Make sure each dependency's minimum
                             // supported version is less than or equal to
                             // the compatibility version.
-                            if (compatibilityVersion < swc.getVersions().getMinimumVersion())
-                            {
+                            if (compatibilityVersion < swc.getVersions().getMinimumVersion()) {
                                 DependencyNotCompatible message =
-                                    new DependencyNotCompatible(swcScript.getName().replace('/', '.'),
-                                                                swc.getLocation(),
-                                                                swc.getVersions().getMinimumVersionString(),
-                                                                compilerConfiguration.getCompatibilityVersionString());
+                                        new DependencyNotCompatible(swcScript.getName().replace('/', '.'),
+                                                swc.getLocation(),
+                                                swc.getVersions().getMinimumVersionString(),
+                                                compilerConfiguration.getCompatibilityVersionString());
                                 ThreadLocalToolkit.log(message, u.getSource());
                             }
                         }
@@ -318,9 +304,8 @@ public class PreLink implements flex2.compiler.PreLink
             versionDefaultsCssFileName = DEFAULTS_DASH + compilerConfiguration.getCompatibilityVersionString() + DOT_CSS;
         }
 
-        for (int i = 0, length = units.size(); i < length; i++)
-        {
-            CompilationUnit compilationUnit = (CompilationUnit) units.get(i);
+        for (CompilationUnit unit : units) {
+            CompilationUnit compilationUnit = (CompilationUnit) unit;
             if (compilationUnit == null) {
                 continue;
             }
@@ -328,24 +313,20 @@ public class PreLink implements flex2.compiler.PreLink
             assert compilationUnit != null : "Must have missed a forcedToStop() check after the most recent batch()";
             Source source = compilationUnit.getSource();
 
-            if (source.isSwcScriptOwner())
-            {
+            if (source.isSwcScriptOwner()) {
                 SwcScript swcScript = (SwcScript) source.getOwner();
                 Swc swc = swcScript.getLibrary().getSwc();
                 VirtualFile defaultsCssFile = null;
 
-                if (versionDefaultsCssFileName != null)
-                {
+                if (versionDefaultsCssFileName != null) {
                     defaultsCssFile = swc.getFile(versionDefaultsCssFileName);
                 }
 
-                if (defaultsCssFile == null)
-                {
+                if (defaultsCssFile == null) {
                     defaultsCssFile = swc.getFile(DEFAULTS_CSS);
                 }
 
-                if (defaultsCssFile != null)
-                {
+                if (defaultsCssFile != null) {
                     defaultsCssFiles.add(defaultsCssFile);
                 }
             }
@@ -439,13 +420,11 @@ public class PreLink implements flex2.compiler.PreLink
 
                         List<CULinkable> linkables = new LinkedList<CULinkable>();
 
-                        for (Iterator it2 = units.iterator(); it2.hasNext();)
-                        {
-                            CompilationUnit unit = (CompilationUnit) it2.next();
+                        for (CompilationUnit unit : units) {
                             if (unit == null) {
                                 continue;
                             }
-                            linkables.add( new CULinkable(unit) );
+                            linkables.add(new CULinkable(unit));
                         }
 
                         try
@@ -861,20 +840,17 @@ public class PreLink implements flex2.compiler.PreLink
     {
         Set externs = configuration.getExterns();
 
-         for (Iterator it = units.iterator(); it.hasNext();)
-        {
-            CompilationUnit unit = (CompilationUnit) it.next();
+        for (Object unit1 : units) {
+            CompilationUnit unit = (CompilationUnit) unit1;
 
             if (unit == null) {
                 continue;
             }
 
-            if (unit.resourceBundleHistory.size() > 0)
-            {
+            if (unit.resourceBundleHistory.size() > 0) {
                 resourceBundleNames.addAll(unit.resourceBundleHistory);
 
-                if (externs.contains(unit.topLevelDefinitions.first().toString()))
-                {
+                if (externs.contains(unit.topLevelDefinitions.first().toString())) {
                     externalResourceBundleNames.addAll(unit.resourceBundleHistory);
                 }
             }
@@ -981,15 +957,13 @@ public class PreLink implements flex2.compiler.PreLink
                 if (containsValue(value))
                 {
                    Object existingKey = null;
-                   for (Iterator iter = entrySet().iterator(); iter.hasNext();)
-                   {
-                       Map.Entry entry = (Map.Entry)iter.next();
-                       if (value != null && value.equals(entry.getValue()))
-                       {
-                           existingKey = entry.getKey();
-                           break;
-                       }
-                   }
+                    for (Map.Entry<String, String> stringStringEntry : entrySet()) {
+                        Map.Entry entry = (Map.Entry) stringStringEntry;
+                        if (value != null && value.equals(entry.getValue())) {
+                            existingKey = entry.getKey();
+                            break;
+                        }
+                    }
                    ThreadLocalToolkit.log(new ClassesMappedToSameRemoteAlias((String)key, (String)existingKey, (String)value));
                 }
                 return super.put(key, value);
@@ -1002,62 +976,53 @@ public class PreLink implements flex2.compiler.PreLink
         CompilationUnit mainUnit = null;
         Set externs = swcContext.getExterns();
         boolean removeUnusedRSLs = configuration.getRemoveUnusedRsls();
-        
-        for (int i = 0, size = units.size(); i < size; i++)
-        {
-            CompilationUnit u = (CompilationUnit) units.get(i);
+
+        for (Object unit : units) {
+            CompilationUnit u = (CompilationUnit) unit;
 
             if (u == null) {
                 continue;
             }
 
-            if (u.isRoot())
-            {
+            if (u.isRoot()) {
                 mainUnit = u;
             }
 
-            if (u.hasAssets())
-            {
+            if (u.hasAssets()) {
                 List<DefineFont> fontList = u.getAssets().getFonts();
 
                 // don't add font assets for definitions that have been externed.
                 if (fontList != null && !fontList.isEmpty() &&
-                    !isCompilationUnitExternal(u, externs) &&
-                    !u.getSource().isInternal())
-                {
+                        !isCompilationUnitExternal(u, externs) &&
+                        !u.getSource().isInternal()) {
                     fonts.addAll(fontList);    // save for later...
                 }
             }
 
-            remoteClassAliases.putAll( u.remoteClassAliases );
+            remoteClassAliases.putAll(u.remoteClassAliases);
 
-            effectTriggers.putAll( u.effectTriggers );
-            mixins.addAll( u.mixins );
+            effectTriggers.putAll(u.effectTriggers);
+            mixins.addAll(u.mixins);
 
-            inheritingStyles.addAll( u.styles.getInheritingStyles() );
+            inheritingStyles.addAll(u.styles.getInheritingStyles());
 
-            if (configuration.getCompilerConfiguration().accessible())
-            {
+            if (configuration.getCompilerConfiguration().accessible()) {
                 Set<String> unitAccessibilityList = u.getAccessibilityClasses();
-                if (unitAccessibilityList != null)
-                {
-                    if (accessibilityList == null)
-                    {
+                if (unitAccessibilityList != null) {
+                    if (accessibilityList == null) {
                         accessibilityList = new HashSet<String>();
                     }
                     accessibilityList.addAll(unitAccessibilityList);
                 }
             }
-            
-            if (removeUnusedRSLs)
-            {
+
+            if (removeUnusedRSLs) {
                 // Record which swcs have contributed the scripts. We will use
                 // this later to figure out which RSLs to load.
                 Source source = u.getSource();
-                
-                if (!source.isInternal() && source.isSwcScriptOwner())
-                {
-                    SwcScript script = (SwcScript)source.getOwner();
+
+                if (!source.isInternal() && source.isSwcScriptOwner()) {
+                    SwcScript script = (SwcScript) source.getOwner();
                     contributingSwcs.add(script.getSwcLocation());
                 }
             }
@@ -1066,12 +1031,9 @@ public class PreLink implements flex2.compiler.PreLink
         String flexInitClass = null;
         if (mainUnit != null)
         {
-            for (Iterator it = mainUnit.extraClasses.iterator(); it.hasNext();)
-            {
-                String extraClass = (String) it.next();
+            for (String extraClass : mainUnit.extraClasses) {
                 // FIXME - Depending on the contents of the classname is not the solution we want.
-                if (extraClass.indexOf("FlexInit") != -1)
-                {
+                if (extraClass.indexOf("FlexInit") != -1) {
                     flexInitClass = extraClass;
                     break;
                 }
@@ -1136,11 +1098,9 @@ public class PreLink implements flex2.compiler.PreLink
         frames.addAll( configuration.getFrameList() );
 
         CompilationUnit mainUnit = null;
-         for (Iterator it = units.iterator(); it.hasNext();)
-        {
-            CompilationUnit unit = (CompilationUnit) it.next();
-            if (unit.isRoot())
-            {
+        for (Object unit1 : units) {
+            CompilationUnit unit = (CompilationUnit) unit1;
+            if (unit.isRoot()) {
                 mainUnit = unit;
                 break;
             }
@@ -1280,9 +1240,8 @@ public class PreLink implements flex2.compiler.PreLink
         sb.append("import flash.system.*\n");
         if (accessibilityImplementations != null)
         {
-            for (Iterator<String> it = accessibilityImplementations.iterator(); it.hasNext();)
-            {
-                sb.append("import ").append(it.next()).append(";\n");
+            for (String accessibilityImplementation : accessibilityImplementations) {
+                sb.append("import ").append(accessibilityImplementation).append(";\n");
             }
         }
 
@@ -1604,14 +1563,12 @@ public class PreLink implements flex2.compiler.PreLink
         }
 
         Map<String, FontInfo> fontMap = new TreeMap<String, FontInfo>();
-        for (Iterator<DefineTag> it = fonts.iterator(); it.hasNext();)
-        {
-            DefineFont font = (DefineFont) it.next();
-            FontInfo fi = fontMap.get( font.getFontName() );
-            if (fi == null)
-            {
+        for (DefineTag font1 : fonts) {
+            DefineFont font = (DefineFont) font1;
+            FontInfo fi = fontMap.get(font.getFontName());
+            if (fi == null) {
                 fi = new FontInfo();
-                fontMap.put( font.getFontName(), fi );
+                fontMap.put(font.getFontName(), fi);
             }
 
             fi.plain |= (!font.isBold() && !font.isItalic());
@@ -1654,9 +1611,8 @@ public class PreLink implements flex2.compiler.PreLink
         {
             sb.append("       // trace(\"Flex accessibility startup: \" + Capabilities.hasAccessibility);\n");
             sb.append("       if (Capabilities.hasAccessibility) {\n");
-            for (Iterator<String> it = accessibilityImplementations.iterator(); it.hasNext();)
-            {
-                sb.append("          ").append(it.next()).append(".enableAccessibility();\n");
+            for (String accessibilityImplementation : accessibilityImplementations) {
+                sb.append("          ").append(accessibilityImplementation).append(".enableAccessibility();\n");
             }
             sb.append("       }\n");
         }
@@ -1688,9 +1644,7 @@ public class PreLink implements flex2.compiler.PreLink
             sb.append( "import mx.resources.ResourceManager;\n");
         }
 
-        for (Iterator<String> it = remoteClassAliases.keySet().iterator(); it.hasNext(); )
-        {
-            String className = it.next();
+        for (String className : remoteClassAliases.keySet()) {
             sb.append("import ").append(className).append(";\n");
         }
         return sb.toString();
@@ -1758,9 +1712,8 @@ public class PreLink implements flex2.compiler.PreLink
     {
         StringBuilder sb = new StringBuilder();
 
-        for (Iterator it = effectTriggers.entrySet().iterator(); it.hasNext(); )
-        {
-            Map.Entry e = (Map.Entry) it.next();
+        for (Map.Entry<String, String> stringStringEntry : effectTriggers.entrySet()) {
+            Map.Entry e = (Map.Entry) stringStringEntry;
             String name = (String) e.getKey();
             String event = (String) e.getValue();
 
@@ -2034,9 +1987,8 @@ public class PreLink implements flex2.compiler.PreLink
         String lineSep = System.getProperty("line.separator");
 
         StringBuilder codePieces = new StringBuilder();
-        for (Iterator<String> i = resourceBundleNames.iterator(); i.hasNext(); )
-        {
-            codePieces.append("[ResourceBundle(\"").append(i.next()).append("\")]").append(lineSep);
+        for (String resourceBundleName : resourceBundleNames) {
+            codePieces.append("[ResourceBundle(\"").append(resourceBundleName).append("\")]").append(lineSep);
         }
 
         return codePieces.toString();
@@ -2196,33 +2148,19 @@ public class PreLink implements flex2.compiler.PreLink
 
         if (rootAttributes != null)
         {
-            for (Iterator<Map.Entry<String, Object>> it = rootAttributes.entrySet().iterator(); it.hasNext(); )
-            {
-                Map.Entry<String, Object> e = it.next();
-
+            for (Map.Entry<String, Object> e : rootAttributes.entrySet()) {
                 // TODO - eliminate any special handling of preloaderDisplayClass!
-                if ("preloader".equals(e.getKey()))
-                {
+                if ("preloader".equals(e.getKey())) {
                     // skip, will handle preloader after the loop
-                }
-                else if ("usePreloader".equals(e.getKey()))
-                {
+                } else if ("usePreloader".equals(e.getKey())) {
                     t.put(e.getKey(), e.getValue());
-                }
-                else if ("runtimeDPIProvider".equals(e.getKey()))
-                {
+                } else if ("runtimeDPIProvider".equals(e.getKey())) {
                     // skip, will handle runtimeDPIProvider after the loop
-                }
-                else if ("implements".equals(e.getKey()))
-                {
+                } else if ("implements".equals(e.getKey())) {
                     // skip
-                }
-                else if ("backgroundColor".equals(e.getKey()))
-                {
+                } else if ("backgroundColor".equals(e.getKey())) {
                     t.put(e.getKey(), "\"0x" + Integer.toHexString(configuration.backgroundColor()).toUpperCase() + "\"");
-                }
-                else
-                {
+                } else {
                     String embedName = null;
                     if (rootAttributeEmbedNames != null)
                         embedName = (String) rootAttributeEmbedNames.get(e.getKey());

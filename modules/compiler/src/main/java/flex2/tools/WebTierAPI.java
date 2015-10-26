@@ -311,10 +311,8 @@ public final class WebTierAPI extends Tool
 	{
 		String[] mimeTypes = getTargetMimeTypes();
 
-		for (int i = 0, length = mimeTypes.length; i < length; i++)
-		{
-			if (mimeTypes[i].equals(targetFile.getMimeType()))
-			{
+		for (String mimeType : mimeTypes) {
+			if (mimeType.equals(targetFile.getMimeType())) {
 				return;
 			}
 		}

@@ -78,10 +78,8 @@ public class FlexMovie extends SimpleMovie
         // No new classes can be discovered here, we're just building the frame class list.
 
         Map<String, CompilationUnit> def2unit = new HashMap<String, CompilationUnit>();
-        for (Iterator<CompilationUnit> it = units.iterator(); it.hasNext(); )
-        {
-            CompilationUnit unit = it.next();
-            mapAll( def2unit, unit.topLevelDefinitions.getStringSet(), unit );
+        for (CompilationUnit unit : units) {
+            mapAll(def2unit, unit.topLevelDefinitions.getStringSet(), unit);
         }
 
         buildFrames( def2unit, mainDef, new HashSet<String>() );
@@ -98,14 +96,9 @@ public class FlexMovie extends SimpleMovie
     {
         // This is horribly inefficient, but the inner loop will only get called a few times
         // for a typical Flex movie.
-        for (Iterator<FrameInfo> fit = frameInfoList.iterator(); fit.hasNext();)
-        {
-            FramesConfiguration.FrameInfo frameInfo = fit.next();
-
-            for (Iterator<String> cit = frameInfo.frameClasses.iterator(); cit.hasNext(); )
-            {
-                String className = cit.next();
-                if (className.equals( queryClassName ))
+        for (FrameInfo frameInfo : frameInfoList) {
+            for (String className : frameInfo.frameClasses) {
+                if (className.equals(queryClassName))
                     return true;
             }
         }
@@ -162,31 +155,26 @@ public class FlexMovie extends SimpleMovie
         String serverConfigDef = null;
 
         CULinkable mainLinkable = null;
-        for (Iterator<CompilationUnit> it = units.iterator(); it.hasNext();)
-        {
-            CompilationUnit unit = it.next();
-
-			//	NOTE Here we watch for specific generated loose code units we have carnal knowledge of, and add their
-			//	definitions as deps to the main unit.
-			// 	TODO Remove once serverconfigdata is handled within the standard bootstrap setup.
-			//
+        for (CompilationUnit unit : units) {
+            //	NOTE Here we watch for specific generated loose code units we have carnal knowledge of, and add their
+            //	definitions as deps to the main unit.
+            // 	TODO Remove once serverconfigdata is handled within the standard bootstrap setup.
+            //
             Source source = unit.getSource();
-			String sourceName = source.getName();
+            String sourceName = source.getName();
 
-            if (sourceName.equals("serverConfigData.as"))
-            {
+            if (sourceName.equals("serverConfigData.as")) {
                 serverConfigDef = unit.topLevelDefinitions.first().toString();
             }
-            CULinkable linkable = new CULinkable( unit );
+            CULinkable linkable = new CULinkable(unit);
             if (unit.isRoot())
                 mainLinkable = linkable;
 
-            if (source.isInternal())
-            {
-                externs.addAll( unit.topLevelDefinitions.getStringSet() ); 
+            if (source.isInternal()) {
+                externs.addAll(unit.topLevelDefinitions.getStringSet());
             }
 
-            linkables.add( linkable );            
+            linkables.add(linkable);
         }
 
         frames = new ArrayList<Frame>();
@@ -261,15 +249,12 @@ public class FlexMovie extends SimpleMovie
 	        if (unresolved.size() != 0)
 	        {
 	            boolean fatal = false;
-	            for (Iterator<String> it = unresolved.iterator(); it.hasNext();)
-	            {
-	                String u = it.next();
-	                if (!externs.contains( u ))
-	                {
-	                    ThreadLocalToolkit.log( new LinkerException.UndefinedSymbolException( u ) );
-	                    fatal = true;
-	                }
-	            }
+                for (String u : unresolved) {
+                    if (!externs.contains(u)) {
+                        ThreadLocalToolkit.log(new LinkerException.UndefinedSymbolException(u));
+                        fatal = true;
+                    }
+                }
 	            if (fatal)
 	            {
 	                throw new LinkerException.LinkingFailed();
@@ -288,22 +273,19 @@ public class FlexMovie extends SimpleMovie
 	{
 		StringBuilder b = new StringBuilder();
 	    b.append("bundles = ");
-	    for (Iterator<String> iterator = bundles.iterator(); iterator.hasNext();)
-	    {
-		    String str = iterator.next();
-		    b.append(str).append(" ");
-	    }		
+        for (String str : bundles) {
+            b.append(str).append(" ");
+        }
 	    return b.toString();
 	}
 	
 	private static void mapAll( Map<String, CompilationUnit> map, Set keys, CompilationUnit val )
 	{
-	    for (Iterator it = keys.iterator(); it.hasNext();)
-	    {
-	        String defname = (String) it.next();
+        for (Object key : keys) {
+            String defname = (String) key;
 //            defname = defname.replace( ':', '.' );      // FIXME - which is the canonical form?
-	        map.put( defname, val );
-	    }
+            map.put(defname, val);
+        }
 	}
 
     /**

@@ -1145,9 +1145,7 @@ public class Library implements Builder, Cloneable
     private List<String> toStrings(Set<URI> set)
     {
         List<String> a = new ArrayList<String>(set.size());
-        for (Iterator<URI> i = set.iterator(); i.hasNext(); )
-        {
-            URI uri = i.next();
+        for (URI uri : set) {
             a.add(uri.toString());
         }
         return a;
@@ -1722,9 +1720,8 @@ public class Library implements Builder, Cloneable
         {
             if (benchmark != null)
             {
-                for (int i = 0; i < compilers.length; i++)
-                {
-                    compilers[i].initBenchmarks();
+                for (SubCompiler compiler : compilers) {
+                    compiler.initBenchmarks();
                 }
 
                 benchmark.stopTime(Benchmark.PRECOMPILE, false);
@@ -1748,9 +1745,7 @@ public class Library implements Builder, Cloneable
                 compilerBenchmarks.clear();
 
                 flex2.compiler.Logger logger = ThreadLocalToolkit.getLogger();
-                for (int i = 0; i < compilers.length; i++)
-                {
-                    SubCompiler compiler = compilers[i];
+                for (SubCompiler compiler : compilers) {
                     PerformanceData[] times = compiler.getBenchmarks();
 
                     if (times == null)
@@ -2067,10 +2062,8 @@ public class Library implements Builder, Cloneable
      */
     private <T> boolean isDifferent(Collection<T> s1, Collection<T> s2)
     {
-        for (Iterator<T> i = s2.iterator(); i.hasNext(); )
-        {
-            if (!s1.contains(i.next()))
-            {
+        for (T aS2 : s2) {
+            if (!s1.contains(aS2)) {
                 return true;
             }
         }

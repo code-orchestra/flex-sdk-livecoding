@@ -1314,13 +1314,11 @@ public class DebugCLI implements Runnable, SourceLocator {
         // use our expression cache formatting routine
         try {
             Variable[] vars = m_session.getWorkerSession(m_activeIsolate).getVariableList();
-            for (int i = 0; i < vars.length; i++) {
-                Variable v = vars[i];
-
+            for (Variable v : vars) {
                 // all non-local and non-arg variables
                 if (!v.isAttributeSet(VariableAttribute.IS_LOCAL) &&
                         !v.isAttributeSet(VariableAttribute.IS_ARGUMENT)) {
-                    m_exprCache.appendVariable(sb, vars[i], m_activeIsolate);
+                    m_exprCache.appendVariable(sb, v, m_activeIsolate);
                     sb.append(m_newline);
                 }
             }
@@ -1368,8 +1366,8 @@ public class DebugCLI implements Runnable, SourceLocator {
             int num = propertyGet(DISPLAY_FRAME_NUMBER);
             Frame[] frames = m_session.getWorkerSession(m_activeIsolate).getFrames();
             Variable[] vars = frames[num].getArguments(m_session);
-            for (int i = 0; i < vars.length; i++) {
-                m_exprCache.appendVariable(sb, vars[i], m_activeIsolate);
+            for (Variable var : vars) {
+                m_exprCache.appendVariable(sb, var, m_activeIsolate);
                 sb.append(m_newline);
             }
         } catch (NullPointerException npe) {
@@ -1395,9 +1393,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             Frame ctx = ar[num];
             Variable[] vars = ctx.getLocals(m_session);
 
-            for (int i = 0; i < vars.length; i++) {
-                Variable v = vars[i];
-
+            for (Variable v : vars) {
                 // see if variable is local
                 if (v.isAttributeSet(VariableAttribute.IS_LOCAL)) {
                     m_exprCache.appendVariable(sb, v, m_activeIsolate);
@@ -1427,8 +1423,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             Frame ctx = ar[num];
             Variable[] scopes = ctx.getScopeChain(m_session);
 
-            for (int i = 0; i < scopes.length; i++) {
-                Variable scope = scopes[i];
+            for (Variable scope : scopes) {
                 m_exprCache.appendVariable(sb, scope, m_activeIsolate);
                 sb.append(m_newline);
             }
@@ -1465,8 +1460,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         try {
             StringBuilder sb = new StringBuilder();
             SwfInfo[] swfs = m_fileInfo.getSwfs(m_activeIsolate);
-            for (int i = 0; i < swfs.length; i++) {
-                SwfInfo e = swfs[i];
+            for (SwfInfo e : swfs) {
                 if (e == null || e.isUnloaded())
                     continue;
 
@@ -1482,8 +1476,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     SourceFile[] files = e.getSourceList(m_session);
                     int max = Integer.MIN_VALUE;
                     int min = Integer.MAX_VALUE;
-                    for (int j = 0; j < files.length; j++) {
-                        SourceFile f = files[j];
+                    for (SourceFile f : files) {
                         int id = f.getId();
                         max = (id > max) ? id : max;
                         min = (id < min) ? id : min;
@@ -1553,8 +1546,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         Vector<String> syntheticFiles = new Vector<String>();
         Vector<String> actionsFiles = new Vector<String>();
 
-        for (int i = 0; i < ar.length; i++) {
-            SourceFile m = ar[i];
+        for (SourceFile m : ar) {
             int fileType = getFileType(m);
             int id = m.getId();
 //			int fakeId = m_fileInfo.getFakeId(m);
@@ -1609,8 +1601,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         int width = 0;
         int maxCol = propertyGet(COLUMN_WIDTH);
 
-        for (int i = 0; i < count; i++) {
-            String s = v.get(i);
+        for (String s : v) {
             sb.append(s);
 
             // too many of them, then wrap according to columnwidth
@@ -1664,8 +1655,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             Object names[] = m_faultTable.names();
             Arrays.sort(names);
 
-            for (int i = 0; i < names.length; i++)
-                appendFault(sb, (String) names[i]);
+            for (Object name : names) appendFault(sb, (String) name);
 
             out(sb.toString());
         }
@@ -1720,8 +1710,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         sb.append(getLocalizationManager().getLocalizedTextString("functionsInSourceFile", args)); //$NON-NLS-1$
         sb.append(m_newline);
 
-        for (int j = 0; j < names.length; j++) {
-            String fname = names[j];
+        for (String fname : names) {
             sb.append(' ');
             sb.append(fname);
             sb.append(' ');
@@ -1733,8 +1722,7 @@ public class DebugCLI implements Runnable, SourceLocator {
     void listFilesMatching(StringBuilder sb, String match) {
         SourceFile[] sourceFiles = m_fileInfo.getFiles(match);
 
-        for (int j = 0; j < sourceFiles.length; j++) {
-            SourceFile sourceFile = sourceFiles[j];
+        for (SourceFile sourceFile : sourceFiles) {
             sb.append(sourceFile.getName());
             sb.append('#');
             sb.append(sourceFile.getId());
@@ -3908,8 +3896,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             proto = null;
 
             // see if we find one called 'member'
-            for (int i = 0; i < members.length; i++) {
-                Variable m = members[i];
+            for (Variable m : members) {
                 String memName = m.getName();
                 if (memName.equals(member) && !tree.containsKey(m)) {
                     e.add(name);
@@ -3918,7 +3905,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     tree.put(m, name + "." + memName); //$NON-NLS-1$
                     done = true;
                 } else if (memName.equals("__proto__")) //$NON-NLS-1$
-                    proto = members[i].getValue();
+                    proto = m.getValue();
             }
         }
 
@@ -3930,8 +3917,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             proto = null;
 
             // see if we find an mc
-            for (int i = 0; i < members.length; i++) {
-                Variable m = members[i];
+            for (Variable m : members) {
                 String memName = m.getName();
 
                 // if our type is NOT object or movieclip then we are done
@@ -4662,8 +4648,7 @@ public class DebugCLI implements Runnable, SourceLocator {
     private void setInitialSourceFile() {
         int largestAuthoredId = -1;
         SourceFile[] files = m_fileInfo.getFileList(m_activeIsolate);
-        for (int i = 0; i < files.length; ++i) {
-            SourceFile sf = files[i];
+        for (SourceFile sf : files) {
             if (sf.getId() > largestAuthoredId && getFileType(sf) == AUTHORED_FILE)
                 largestAuthoredId = sf.getId();
         }
@@ -4788,8 +4773,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     try {
                         while (hasMoreTokens()) {
                             action = nextToken();
-                            for (int i = 0; i < names.length; i++)
-                                m_faultTable.action((String) names[i], action);
+                            for (Object name : names) m_faultTable.action((String) name, action);
                         }
                     } catch (IllegalArgumentException iae) {
                         Map<String, Object> args = new HashMap<String, Object>();
@@ -5552,9 +5536,9 @@ public class DebugCLI implements Runnable, SourceLocator {
                 File projectsDir = new File(flexHome, "frameworks/projects"); //$NON-NLS-1$
                 File[] files = projectsDir.listFiles();
                 if (files != null) {
-                    for (int i = 0; i < files.length; ++i) {
-                        if (files[i].isDirectory()) {
-                            File srcDir = new File(files[i], "src"); //$NON-NLS-1$
+                    for (File file : files) {
+                        if (file.isDirectory()) {
+                            File srcDir = new File(file, "src"); //$NON-NLS-1$
                             if (srcDir.isDirectory()) {
                                 m_sourceDirectories.add(srcDir.getCanonicalPath());
                             }

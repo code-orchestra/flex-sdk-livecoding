@@ -80,9 +80,7 @@ public class PathResolver implements SinglePathResolver
         VirtualFile virt = null;
         if (resolvers != null)
         {
-            for (int i = 0; i < resolvers.length; i++)
-            {
-                SinglePathResolver resolver = resolvers[i];
+            for (SinglePathResolver resolver : resolvers) {
                 virt = resolver.resolve(pathStr);
                 if (virt != null)
                     break;
@@ -131,12 +129,9 @@ public class PathResolver implements SinglePathResolver
         if (bases != null)
         {
             // fixme: should we just grab the first one or check mod times?
-            for (Iterator<SinglePathResolver> iterator = bases.iterator(); iterator.hasNext();)
-            {
-                SinglePathResolver baseResolver = iterator.next();
+            for (SinglePathResolver baseResolver : bases) {
                 virt = baseResolver.resolve(pathStr);
-                if (virt != null)
-                {
+                if (virt != null) {
                     break;
                 }
             }

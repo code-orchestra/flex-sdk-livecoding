@@ -366,9 +366,8 @@ public class JREFontManager extends CachedFontManager
         if (fnts != null)
         {
             systemFontNames = new ArrayList<String>(fnts.length);
-            for (int i = 0; i < fnts.length; i++)
-            {
-                systemFontNames.add(fnts[i].trim().toLowerCase());
+            for (String fnt : fnts) {
+                systemFontNames.add(fnt.trim().toLowerCase());
             }
         }
     }

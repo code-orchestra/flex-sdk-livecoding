@@ -170,39 +170,27 @@ class XMLBuilder extends AbstractBuilder
         {
             String destinationProperty = createExpression(destinationPropertyStack);
 
-            for (Iterator<QName> i = attributeBindings.keySet().iterator(); i.hasNext();)
-            {
-                flex2.compiler.util.QName attrName = i.next();
-
+            for (QName attrName : attributeBindings.keySet()) {
                 String attrExpr, nsUri = null;
                 int nsId = 0;
-                if (e4x)
-                {
+                if (e4x) {
                     // If the attribute node has a namespace use that.  Otherwise 
                     // use the namespace of the element node.
                     nsUri = attrName.getNamespace();
-                    if (nsUri.length() > 0)
-                    {
-                        nsId = PrefixMapping.getNamespaceId(nsUri, namespaces);                        
-                    }
-                    else
-                    {
+                    if (nsUri.length() > 0) {
+                        nsId = PrefixMapping.getNamespaceId(nsUri, namespaces);
+                    } else {
                         PrefixMapping pm = (PrefixMapping) namespaces.peek();
                         nsUri = pm.getUri();
                         nsId = pm.getNs();
                     }
-                    
-                    if (nsId > 0)
-                    {
+
+                    if (nsId > 0) {
                         attrExpr = getElementsByLocalName + ".@ns" + nsId + "::" + attrName.getLocalPart();
-                    }
-                    else
-                    {
+                    } else {
                         attrExpr = getElementsByLocalName + ".@" + attrName.getLocalPart();
                     }
-                }
-                else
-                {
+                } else {
                     attrExpr = getElementsByLocalName + ".attributes[\"" + attrName.getLocalPart() + "\"]";
                 }
 
@@ -216,11 +204,9 @@ class XMLBuilder extends AbstractBuilder
 
                 xml.setHasBindings(true);
 
-                if (e4x)
-                {
+                if (e4x) {
                     PrefixMapping.pushNamespaces(be, namespaces);
-                    if (nsUri.length() > 0)
-                    {
+                    if (nsUri.length() > 0) {
                         be.addNamespace(nsUri, nsId);
                     }
                 }

@@ -128,12 +128,10 @@ public class CompilerSwcContext
             {
                 SwcGroup tmpThemeGroup = swcCache.getSwcGroup( new VirtualFile[] {themeFiles[i] } );
                 groupList.add( tmpThemeGroup );
-                for (Iterator it = tmpThemeGroup.getFiles().values().iterator(); it.hasNext();)
-                {
-                    VirtualFile f = (VirtualFile) it.next();
-	                ts.append(f.getLastModified());
-                    if (f.getName().endsWith( DOT_CSS ))
-                        themeStyles.add( f );
+                for (VirtualFile f : tmpThemeGroup.getFiles().values()) {
+                    ts.append(f.getLastModified());
+                    if (f.getName().endsWith(DOT_CSS))
+                        themeStyles.add(f);
                 }
             }
         }
@@ -150,11 +148,10 @@ public class CompilerSwcContext
         updateObsoletedSources();
         
 	    Set qnames = swcGroup.getQNames();
-	    for (Iterator iterator = qnames.iterator(); iterator.hasNext();)
-	    {
-		    QName qName = (QName)iterator.next();
-		    packageNames.add(qName.getNamespace());
-	    }
+        for (Object qname : qnames) {
+            QName qName = (QName) qname;
+            packageNames.add(qName.getNamespace());
+        }
 
         ThreadLocalToolkit.getPathResolver().addSinglePathResolver(new SwcPathResolver(swcGroup));
 
@@ -223,10 +220,9 @@ public class CompilerSwcContext
 		if (libGroup != null)
 		{
 			List lastModified = libGroup.getSwcTimes();
-			for (int i = 0, size = lastModified.size(); i < size; i++)
-			{
-				ts.append(lastModified.get(i));
-			}
+            for (Object aLastModified : lastModified) {
+                ts.append(aLastModified);
+            }
 		}
 	}
 
@@ -260,15 +256,13 @@ public class CompilerSwcContext
         if (rbList != null && rbList.length > 0)
         {
         	String name = null;
-        	
-        	for (int i = 0; i < rbList.length; i++)
-        	{
-        		if (rbList[i] != null)
-        		{
-        			name = rbList[i].getName();
-        			break;
-        		}
-        	}
+
+            for (VirtualFile aRbList : rbList) {
+                if (aRbList != null) {
+                    name = aRbList.getName();
+                    break;
+                }
+            }
         	
         	if (name != null)
         	{
@@ -378,9 +372,8 @@ public class CompilerSwcContext
         
         // C: use symbol dependencies to obtain additional class dependencies,
         //    i.e. classX --> symbolX --> symbolY --> classY, but there is no dependency between classX and classY.
-        for (Iterator i = script.getSymbolClasses().iterator(); i.hasNext(); )
-        {
-        	u.expressions.add(new MultiName((String) i.next()));
+        for (String s1 : script.getSymbolClasses()) {
+            u.expressions.add(new MultiName(s1));
         }
 
         for (Iterator i = script.getDefinitionIterator(); i.hasNext();)
@@ -462,10 +455,9 @@ public class CompilerSwcContext
 		int checksum = 0;
 
 		// C: There are better algorithms to calculate checksums than this. Let's worry about it later.
-		for (int i = 0; i < b.length; i++)
-		{
-			checksum += b[i];
-		}
+        for (byte aB : b) {
+            checksum += aB;
+        }
 
 		return checksum;
 	}

@@ -175,11 +175,9 @@ class RemoteObjectBuilder extends ComponentBuilder
         op.setProperty(ARGUMENT_NAMES, argNames);
         argNames.setParentIndex(ARGUMENT_NAMES);
 
-        for (Iterator propNames = arguments.getProperties().keySet().iterator(); propNames.hasNext();)
-        {
-            String s = (String)propNames.next();
-            argNames.addEntry(s, op.getXmlLineNumber());
-        }
+		for (String s : arguments.getProperties().keySet()) {
+			argNames.addEntry(s, op.getXmlLineNumber());
+		}
     }
 }
 

@@ -1202,9 +1202,8 @@ public final class DataBindingExtension implements Extension
         StatementListNode programStatementList = program.statements;
 
         String[] watcherImports = compilationUnit.getStandardDefs().getImports();
-        for (int i = 0; i < watcherImports.length; i++)
-        {
-            ImportDirectiveNode importDirective = AbstractSyntaxTreeUtil.generateImport(cx, watcherImports[i]);
+        for (String watcherImport : watcherImports) {
+            ImportDirectiveNode importDirective = AbstractSyntaxTreeUtil.generateImport(cx, watcherImport);
             programStatementList = nodeFactory.statementList(programStatementList, importDirective);
         }
 

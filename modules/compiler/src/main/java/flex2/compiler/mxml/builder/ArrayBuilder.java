@@ -115,9 +115,8 @@ class ArrayBuilder extends AbstractBuilder
 		}
 		else
 		{
-			for (Iterator iter = nodes.iterator(); iter.hasNext(); )
-			{
-				elementNodeHandler.invoke(assignable, (Node)iter.next(), document);
+			for (Object node : nodes) {
+				elementNodeHandler.invoke(assignable, (Node) node, document);
 			}
 		}
 	}

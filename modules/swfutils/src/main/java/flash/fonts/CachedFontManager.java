@@ -124,11 +124,8 @@ public abstract class CachedFontManager extends FontManager
         int[][] ranges = getUnicodeRanges(font.unicodeRanges);
         if (ranges != null)
         {
-            for (int i = 0; i < ranges.length; i++)
-            {
-                int[] range = ranges[i];
-                if (range != null && range.length == 2)
-                {
+            for (int[] range : ranges) {
+                if (range != null && range.length == 2) {
                     int count = range[1] - range[0] + 1; // Inclusive range
                     builder.addCharset(range[0], count);
                 }

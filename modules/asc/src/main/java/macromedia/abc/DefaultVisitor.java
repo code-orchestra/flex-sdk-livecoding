@@ -176,9 +176,8 @@ public abstract class DefaultVisitor implements Visitor
 
 		if (metadata != null)
 		{
-			for (int i = 0, length = metadata.length; i < length; i++)
-			{
-				decoder.metadataInfo.decode(metadata[i], this);
+			for (int aMetadata : metadata) {
+				decoder.metadataInfo.decode(aMetadata, this);
 			}
 		}
 
@@ -215,9 +214,8 @@ public abstract class DefaultVisitor implements Visitor
 
 		if (metadata != null)
 		{
-			for (int i = 0, length = metadata.length; i < length; i++)
-			{
-				decoder.metadataInfo.decode(metadata[i], this);
+			for (int aMetadata : metadata) {
+				decoder.metadataInfo.decode(aMetadata, this);
 			}
 		}
 
@@ -245,9 +243,8 @@ public abstract class DefaultVisitor implements Visitor
 
 		if (metadata != null)
 		{
-			for (int i = 0, length = metadata.length; i < length; i++)
-			{
-				decoder.metadataInfo.decode(metadata[i], this);
+			for (int aMetadata : metadata) {
+				decoder.metadataInfo.decode(aMetadata, this);
 			}
 		}
 
@@ -264,9 +261,8 @@ public abstract class DefaultVisitor implements Visitor
 
 		if (metadata != null)
 		{
-			for (int i = 0, length = metadata.length; i < length; i++)
-			{
-				decoder.metadataInfo.decode(metadata[i], this);
+			for (int aMetadata : metadata) {
+				decoder.metadataInfo.decode(aMetadata, this);
 			}
 		}
 

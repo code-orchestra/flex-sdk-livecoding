@@ -97,8 +97,7 @@ public class Encoder implements Visitor
 	public void test()
 	{
 		// C: testing only...
-		for (int i = 0, size = pools.length; i < size; i++)
-		{
+		for (ConstantPool pool1 : pools) {
 			/*
 			for (int j = 1, count = pools[i].intpositions.length; j < count; j++)
 			{
@@ -420,10 +419,9 @@ public class Encoder implements Visitor
         // Nuke the param names if we're not keeping debugging around
         if( (flags & METHOD_HasParamNames) != 0 && param_names != null)
         {
-            for( int i = 0 ; i < param_names.length; ++i )
-            {
-                methodInfo.writeU32( pool.history.getIndex(poolIndex, IndexHistory.cp_string, returnType) );
-            }
+			for (int param_name : param_names) {
+				methodInfo.writeU32(pool.history.getIndex(poolIndex, IndexHistory.cp_string, returnType));
+			}
         }
 	}
 
@@ -2947,21 +2945,18 @@ public class Encoder implements Visitor
         {
             Map sortedMap = new TreeMap();
 
-            for (Iterator i = map.keySet().iterator(); i.hasNext();)
-            {
-                Object key = i.next(); // ByteArray
-                Object value = map.get(key); // Integer
-                sortedMap.put(value, key);
-            }
+			for (Object key : map.keySet()) {
+				Object value = map.get(key); // Integer
+				sortedMap.put(value, key);
+			}
 
             b.writeU32((sortedMap.size() == 0) ? 0 : sortedMap.size() );
 
-            for (Iterator i = sortedMap.keySet().iterator(); i.hasNext();)
-            {
-                Integer index = (Integer) i.next();
-                ByteArray a = (ByteArray) sortedMap.get(index);
-                b.writeBytes(a.b, a.start, a.end);
-            }
+			for (Object o : sortedMap.keySet()) {
+				Integer index = (Integer) o;
+				ByteArray a = (ByteArray) sortedMap.get(index);
+				b.writeBytes(a.b, a.start, a.end);
+			}
         }
 
         void writeTo(OutputStream os) throws java.io.IOException

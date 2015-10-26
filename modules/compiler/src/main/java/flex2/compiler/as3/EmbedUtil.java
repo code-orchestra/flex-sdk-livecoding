@@ -131,12 +131,10 @@ public class EmbedUtil
  			    List<Transcoder.TranscodingResults> additionalAssets = results.additionalAssets;
    				if (additionalAssets != null)
    				{
-   				    for (int i = 0; i < additionalAssets.size(); i++)
-   				    {
-   				        Transcoder.TranscodingResults asset = additionalAssets.get(i);
-   				        if (asset.defineTag != null)
-   				            unit.getAssets().add(asset.className, new AssetInfo(asset.defineTag, results.assetSource, results.modified, args));
-   				    }
+                    for (Transcoder.TranscodingResults asset : additionalAssets) {
+                        if (asset.defineTag != null)
+                            unit.getAssets().add(asset.className, new AssetInfo(asset.defineTag, results.assetSource, results.modified, args));
+                    }
    				}
    			}
         }
@@ -264,11 +262,9 @@ public class EmbedUtil
     public static Transcoder getTranscoder(Transcoder[] transcoders, String mimeType)
     {
         assert transcoders != null;
-        for (int i = 0; i < transcoders.length; ++i)
-        {
-            if (transcoders[i].isSupported(mimeType))
-            {
-                return transcoders[i];
+        for (Transcoder transcoder : transcoders) {
+            if (transcoder.isSupported(mimeType)) {
+                return transcoder;
             }
         }
 

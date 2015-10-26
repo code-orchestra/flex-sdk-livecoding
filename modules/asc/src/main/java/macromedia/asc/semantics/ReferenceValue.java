@@ -363,20 +363,16 @@ public final class ReferenceValue extends Value implements ErrorConstants
 
     public boolean findQualified(Context cx, final int flags)
     {
-        for (int i = 0, size = namespaces.size(); i < size; i++)
-        {
-            ObjectValue qualifier = namespaces.get(i);
+        for (ObjectValue namespace : namespaces) {
+            ObjectValue qualifier = namespace;
             // this is a qualified reference with a base object
-            for (ObjectValue obj = this.base; obj != null; obj = obj.proto())
-            {
-                if (obj.hasName(cx,getKind(),name,qualifier))
-                {
-                    if( type_params != null ) {
-                        int index = obj.getSlotIndex(cx,getKind(),name,qualifier);
-                        Slot slot = obj.getSlot(cx,index);
+            for (ObjectValue obj = this.base; obj != null; obj = obj.proto()) {
+                if (obj.hasName(cx, getKind(), name, qualifier)) {
+                    if (type_params != null) {
+                        int index = obj.getSlotIndex(cx, getKind(), name, qualifier);
+                        Slot slot = obj.getSlot(cx, index);
                         bindToTypeParamSlot(cx, obj, qualifier, slot);
-                    }
-                    else
+                    } else
                         bindToSlot(cx, obj, qualifier);
 
                     return true;

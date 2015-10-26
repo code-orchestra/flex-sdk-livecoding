@@ -117,37 +117,27 @@ public class MovieEncoder
 
         // finally, output the frames
         boolean associateRootClass = (m.topLevelClass != null);
-		for (Iterator i = m.frames.iterator(); i.hasNext();)
-		{
-			Frame frame = (Frame) i.next();
-
-			if (frame.label != null)
-			{
+		for (Frame frame : m.frames) {
+			if (frame.label != null) {
 				frame.label.visit(handler);
 			}
 
-			if (!frame.imports.isEmpty())
-			{
-				for (Iterator j = frame.imports.iterator(); j.hasNext();)
-				{
-					ImportAssets importAssets = (ImportAssets) j.next();
+			if (!frame.imports.isEmpty()) {
+				for (ImportAssets importAssets : frame.imports) {
 					importAssets.visit(handler);
 				}
 			}
 
 			// definitions needed in this frame
-			for (Iterator j = frame.getReferences(); j.hasNext();)
-			{
+			for (Iterator j = frame.getReferences(); j.hasNext(); ) {
 				DefineTag ref = (DefineTag) j.next();
 				define(ref);
 			}
 
 			// exports
-			if (frame.hasExports())
-			{
+			if (frame.hasExports()) {
 				ExportAssets exportAssets = new ExportAssets();
-				for (Iterator j = frame.exportIterator(); j.hasNext();)
-				{
+				for (Iterator j = frame.exportIterator(); j.hasNext(); ) {
 					DefineTag tag = (DefineTag) j.next();
 					exportAssets.exports.add(tag);
 				}
@@ -158,56 +148,45 @@ public class MovieEncoder
 			// included in ExportAssets as they are not required to be exported by name!
 
 			// fonts
-			if (frame.hasFonts())
-			{
-				for (Iterator k = frame.fontsIterator(); k.hasNext();)
-				{
+			if (frame.hasFonts()) {
+				for (Iterator k = frame.fontsIterator(); k.hasNext(); ) {
 					DefineFont tag = (DefineFont) k.next();
 
-                    // We may have already visited this font because of symbolClasses.
-                    if (!done.contains( tag ))
-                    {
-					    tag.visit(handler);
-                        done.add( tag );
-                    }
+					// We may have already visited this font because of symbolClasses.
+					if (!done.contains(tag)) {
+						tag.visit(handler);
+						done.add(tag);
+					}
 				}
 			}
 
 			// abc tags
-			for (Iterator j = frame.doABCs.iterator(); j.hasNext();)
-			{
-				Tag tag = (Tag) j.next();
+			for (DoABC doABC : frame.doABCs) {
+				Tag tag = (Tag) doABC;
 				tag.visit(handler);
 			}
 
-            SymbolClass classes = new SymbolClass();
+			SymbolClass classes = new SymbolClass();
 
-			if (frame.hasSymbolClasses())
-			{
-                classes.class2tag.putAll( frame.symbolClass.class2tag );
+			if (frame.hasSymbolClasses()) {
+				classes.class2tag.putAll(frame.symbolClass.class2tag);
 			}
-            if (associateRootClass)
-            {
-                // only works on frame 1
-    			classes.topLevelClass = m.topLevelClass;    // Why do we do this on every frame's symclass?
-            }
-            if (associateRootClass || frame.hasSymbolClasses())
-            {
-    			classes.visit(handler);
-            }
-            associateRootClass = false;
+			if (associateRootClass) {
+				// only works on frame 1
+				classes.topLevelClass = m.topLevelClass;    // Why do we do this on every frame's symclass?
+			}
+			if (associateRootClass || frame.hasSymbolClasses()) {
+				classes.visit(handler);
+			}
+			associateRootClass = false;
 
 			// control tags
-			for (Iterator j = frame.controlTags.iterator(); j.hasNext();)
-			{
-				Tag tag = (Tag) j.next();
+			for (Tag tag : frame.controlTags) {
 				tag.visit(handler);
 			}
 
 			// then frame actions
-			for (Iterator<ActionList> j = frame.doActions.iterator(); j.hasNext();)
-			{
-				ActionList list = j.next();
+			for (ActionList list : frame.doActions) {
 				new DoAction(list).visit(handler);
 			}
 

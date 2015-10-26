@@ -396,9 +396,8 @@ public class TagEncoder extends TagHandler
 
     private void encodeColorMapData(int[] colorData, byte[] pixelData, SwfEncoder w)
     {
-        for (int i = 0; i < colorData.length; i++)
-		{
-            encodeRGB(colorData[i], w);
+        for (int aColorData : colorData) {
+            encodeRGB(aColorData, w);
         }
         w.write(pixelData);
     }
@@ -439,10 +438,9 @@ public class TagEncoder extends TagHandler
 
     private void encodeAlphaColorMapData(int[] colorData, byte[] pixelData, SwfEncoder w)
     {
-        for (int i = 0; i < colorData.length; i++)
-		{
-            encodeRGBA(colorData[i], w);
-		}
+        for (int aColorData : colorData) {
+            encodeRGBA(aColorData, w);
+        }
         w.write(pixelData);
     }
 
@@ -824,8 +822,7 @@ public class TagEncoder extends TagHandler
         int offsetPos = tagw.getPos();
 
         // write offset placeholders
-        for (int i = 0; i < count; i++)
-        {
+        for (Shape aGlyphShapeTable : tag.glyphShapeTable) {
             tagw.writeUI16(0);
         }
 
@@ -1137,15 +1134,13 @@ public class TagEncoder extends TagHandler
             // save space for the offset table
             if (tag.wideOffsets)
             {
-                for (int i=0; i < count; i++)
-                {
+                for (Shape aGlyphShapeTable : tag.glyphShapeTable) {
                     tagw.write32(0);
                 }
             }
             else
             {
-                for (int i=0; i < count; i++)
-                {
+                for (Shape aGlyphShapeTable : tag.glyphShapeTable) {
                     tagw.writeUI16(0);
                 }
             }
@@ -1454,9 +1449,8 @@ public class TagEncoder extends TagHandler
 			w.writeUI8(count);
 		}
 
-        for (int i = 0; i < count; i++)
-        {
-            encodeMorphFillstyle(fillStyles[i], w, code);
+        for (MorphFillStyle fillStyle : fillStyles) {
+            encodeMorphFillstyle(fillStyle, w, code);
         }
     }
 
@@ -1499,9 +1493,7 @@ public class TagEncoder extends TagHandler
     private void encodeMorphGradient(MorphGradRecord[] gradRecords, SwfEncoder w)
     {
         w.writeUI8(gradRecords.length);
-        for (int i = 0; i < gradRecords.length; i++)
-        {
-            MorphGradRecord record = gradRecords[i];
+        for (MorphGradRecord record : gradRecords) {
             w.writeUI8(record.startRatio);
             encodeRGBA(record.startColor, w);
             w.writeUI8(record.endRatio);
@@ -1521,35 +1513,29 @@ public class TagEncoder extends TagHandler
 			w.writeUI8(lineStyles.length);
 		}
 
-        for (int i = 0; i < lineStyles.length; i++)
-        {
-            MorphLineStyle style = lineStyles[i];
+        for (MorphLineStyle style : lineStyles) {
             w.writeUI16(style.startWidth);
             w.writeUI16(style.endWidth);
-            if (code == stagDefineMorphShape2)
-            {
-            	w.writeUBits(style.startCapsStyle, 2);
-            	w.writeUBits(style.jointStyle, 2);
-            	w.writeBit(style.hasFill);
-            	w.writeBit(style.noHScale);
-            	w.writeBit(style.noVScale);
-            	w.writeBit(style.pixelHinting);
-            	w.writeUBits(0, 5); // reserved
-            	w.writeBit(style.noClose);
-            	w.writeUBits(style.endCapsStyle, 2);
-            	if (style.jointStyle == 2)
-            	{
-            		w.writeUI16(style.miterLimit);
-            	}
+            if (code == stagDefineMorphShape2) {
+                w.writeUBits(style.startCapsStyle, 2);
+                w.writeUBits(style.jointStyle, 2);
+                w.writeBit(style.hasFill);
+                w.writeBit(style.noHScale);
+                w.writeBit(style.noVScale);
+                w.writeBit(style.pixelHinting);
+                w.writeUBits(0, 5); // reserved
+                w.writeBit(style.noClose);
+                w.writeUBits(style.endCapsStyle, 2);
+                if (style.jointStyle == 2) {
+                    w.writeUI16(style.miterLimit);
+                }
             }
-            if (!style.hasFill)
-            {
-            	encodeRGBA(style.startColor,w);
-            	encodeRGBA(style.endColor,w);
+            if (!style.hasFill) {
+                encodeRGBA(style.startColor, w);
+                encodeRGBA(style.endColor, w);
             }
-            if (style.hasFill)
-            {
-            	encodeMorphFillstyle(style.fillType, w, code);
+            if (style.hasFill) {
+                encodeMorphFillstyle(style.fillType, w, code);
             }
         }
     }
@@ -1632,9 +1618,8 @@ public class TagEncoder extends TagHandler
         // write sprite tags
         List tags = tag.tagList.tags;
         int size = tags.size();
-        for (int i = 0; i < size; i++)
-        {
-            Tag t = (Tag) tags.get(i);
+        for (Object tag1 : tags) {
+            Tag t = (Tag) tag1;
             if (!(t instanceof DefineTag))
                 t.visit(this);
         }
@@ -1710,21 +1695,34 @@ public class TagEncoder extends TagHandler
     {
         int count = filters.size();
         w.writeUI8( count );
-        for (Iterator<Filter> it = filters.iterator(); it.hasNext();)
-        {
-            Filter f = (Filter) it.next();
+        for (Filter f : filters) {
             w.writeUI8(f.getID());
             // I've never quite understood why the serialization code isn't in the tags themselves..
-            switch(f.getID())
-            {
-                case DropShadowFilter.ID: encodeDropShadowFilter( w, (DropShadowFilter) f ); break;
-                case BlurFilter.ID: encodeBlurFilter( w, (BlurFilter) f ); break;
-                case ConvolutionFilter.ID: encodeConvolutionFilter( w, (ConvolutionFilter) f ); break;
-                case GlowFilter.ID: encodeGlowFilter( w, (GlowFilter) f ); break;
-                case BevelFilter.ID: encodeBevelFilter( w, (BevelFilter) f ); break;
-                case ColorMatrixFilter.ID: encodeColorMatrixFilter( w, (ColorMatrixFilter) f ); break;
-                case GradientGlowFilter.ID: encodeGradientGlowFilter( w, (GradientGlowFilter) f ); break;
-                case GradientBevelFilter.ID: encodeGradientBevelFilter( w, (GradientBevelFilter) f ); break;
+            switch (f.getID()) {
+                case DropShadowFilter.ID:
+                    encodeDropShadowFilter(w, (DropShadowFilter) f);
+                    break;
+                case BlurFilter.ID:
+                    encodeBlurFilter(w, (BlurFilter) f);
+                    break;
+                case ConvolutionFilter.ID:
+                    encodeConvolutionFilter(w, (ConvolutionFilter) f);
+                    break;
+                case GlowFilter.ID:
+                    encodeGlowFilter(w, (GlowFilter) f);
+                    break;
+                case BevelFilter.ID:
+                    encodeBevelFilter(w, (BevelFilter) f);
+                    break;
+                case ColorMatrixFilter.ID:
+                    encodeColorMatrixFilter(w, (ColorMatrixFilter) f);
+                    break;
+                case GradientGlowFilter.ID:
+                    encodeGradientGlowFilter(w, (GradientGlowFilter) f);
+                    break;
+                case GradientBevelFilter.ID:
+                    encodeGradientBevelFilter(w, (GradientBevelFilter) f);
+                    break;
 
             }
 

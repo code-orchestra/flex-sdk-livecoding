@@ -1368,11 +1368,9 @@ public class Configuration implements LinkerConfiguration, Cloneable
 		
 		List<VirtualFile> libraries = new ArrayList<VirtualFile>();
 
-		for (Iterator<RslPathInfo> iter = rslPathInfoList.iterator(); iter.hasNext();)
-		{
-			RslPathInfo info = iter.next();
-			libraries.add(info.getSwcVirtualFile());
-		}
+        for (RslPathInfo info : rslPathInfoList) {
+            libraries.add(info.getSwcVirtualFile());
+        }
 
 		return libraries.toArray(new VirtualFile[0]);
 	}
@@ -1976,18 +1974,13 @@ public class Configuration implements LinkerConfiguration, Cloneable
     {
         Locale[] locales = Locale.getAvailableLocales();
 
-        for (int i = 0; i < locales.length; i++)
-        {
-            if (locales[i].toString().equals(toolsLocale))
-            {
+        for (Locale locale : locales) {
+            if (locale.toString().equals(toolsLocale)) {
                 LocalizationManager localizationManager = ThreadLocalToolkit.getLocalizationManager();
 
-                if (localizationManager != null)
-                {
-                    localizationManager.setLocale(locales[i]);
-                }
-                else
-                {
+                if (localizationManager != null) {
+                    localizationManager.setLocale(locale);
+                } else {
                     assert false : "LocalizationManager not setup yet.";
                 }
 

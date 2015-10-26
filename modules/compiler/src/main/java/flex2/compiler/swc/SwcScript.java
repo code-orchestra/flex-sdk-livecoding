@@ -228,10 +228,9 @@ class ScriptImpl implements Script
         	names.add((String) i.next());
         }
 
-        for (Iterator<String> i = swcScript.getSymbolClasses().iterator(); i.hasNext(); )
-        {
-        	names.add(i.next());
-        }
+		for (String s : swcScript.getSymbolClasses()) {
+			names.add(s);
+		}
         
 		names.toArray(expressions = new String[names.size()]);
 		

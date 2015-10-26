@@ -77,9 +77,7 @@ public class TagList extends TagHandler
 	public void visitTags(TagHandler handler)
 	{
 		int size = tags.size();
-		for (int i = 0; i < size; i++)
-		{
-			Tag t = tags.get(i);
+		for (Tag t : tags) {
 			t.visit(handler);
 		}
 	}

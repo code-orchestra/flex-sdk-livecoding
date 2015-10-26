@@ -327,12 +327,9 @@ public class ShapeHelper implements SwfConstants
 
         if (shapeRecords != null && shapeRecords.size() > 0)
         {
-            for (int i = 0; i < shapeRecords.size(); i++)
-            {
-                ShapeRecord record = shapeRecords.get(i);
-                if (record instanceof StyleChangeRecord)
-                {
-                    StyleChangeRecord scr = (StyleChangeRecord)record;
+            for (ShapeRecord record : shapeRecords) {
+                if (record instanceof StyleChangeRecord) {
+                    StyleChangeRecord scr = (StyleChangeRecord) record;
 
                     if (fillStyle0Index > 0)
                         scr.setFillStyle0(fillStyle0Index);
@@ -342,7 +339,7 @@ public class ShapeHelper implements SwfConstants
 
                     if ((!scr.stateLineStyle) && (lineStyleIndex > 0))
                         scr.setLinestyle(lineStyleIndex);
-                    
+
                 }
             }
         }

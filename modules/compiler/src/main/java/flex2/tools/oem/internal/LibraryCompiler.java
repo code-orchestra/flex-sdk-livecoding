@@ -91,41 +91,35 @@ public class LibraryCompiler
 	
 		// transfer the value of compute-digest from CompcConfiguration to OEMConfiguration.
 		c1.enableDigestComputation(c2.getComputeDigest());
-		
-		for (Iterator i = c2.getClasses().iterator(); i.hasNext(); )
-		{
-			lib.addComponent((String) i.next());
+
+		for (String s2 : c2.getClasses()) {
+			lib.addComponent(s2);
 		}
 		
 		List fileList = flex2.compiler.CompilerAPI.getVirtualFileList(c2.getIncludeSources(),
 															  new HashSet<String>(Arrays.asList(flex2.tools.WebTierAPI.getSourcePathMimeTypes())));
 
-		for (Iterator i = fileList.iterator(); i.hasNext(); )
-		{
-			lib.addComponent(new File(((VirtualFile) i.next()).getName()));
+		for (Object aFileList : fileList) {
+			lib.addComponent(new File(((VirtualFile) aFileList).getName()));
 		}
 
 		Map ss = c2.getStylesheets();
-		for (Iterator i = ss.keySet().iterator(); i.hasNext(); )
-		{
-			String key = (String) i.next();
+		for (Object o1 : ss.keySet()) {
+			String key = (String) o1;
 			lib.addStyleSheet(key, new File(((VirtualFile) ss.get(key)).getName()));
 		}
 
-		for (Iterator i = c2.getIncludeResourceBundles().iterator(); i.hasNext(); )
-		{
-			lib.addResourceBundle((String) i.next());
+		for (String s1 : c2.getIncludeResourceBundles()) {
+			lib.addResourceBundle(s1);
 		}
 
-		for (Iterator i = c2.getNamespaces().iterator(); i.hasNext(); )
-		{
-			lib.addComponent(new URI((String) i.next()));
+		for (String s : c2.getNamespaces()) {
+			lib.addComponent(new URI(s));
 		}
 		
 		Map m = c2.getFiles();
-		for (Iterator i = m.keySet().iterator(); i.hasNext(); )
-		{
-			String key = (String) i.next();
+		for (Object o : m.keySet()) {
+			String key = (String) o;
 			lib.addArchiveFile(key, new File(((VirtualFile) m.get(key)).getName()));
 		}
         

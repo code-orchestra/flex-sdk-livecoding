@@ -311,9 +311,8 @@ public class TypeAnalyzer extends EvaluatorAdapter
 
         if (interfaceNames != null)
         {
-            for (int i = 0; i < interfaceNames.length; i++)
-            {
-                classInfo.addInterfaceName(interfaceNames[i]);
+            for (String interfaceName : interfaceNames) {
+                classInfo.addInterfaceName(interfaceName);
             }
 
             analyzeInterfaces(context, classInfo.getInterfaceMultiNames(), classInfo);
@@ -392,9 +391,8 @@ public class TypeAnalyzer extends EvaluatorAdapter
 
         if (interfaceNames != null)
         {
-            for (int i = 0; i < interfaceNames.length; i++)
-            {
-                interfaceInfo.addInterfaceName(interfaceNames[i]);
+            for (String interfaceName : interfaceNames) {
+                interfaceInfo.addInterfaceName(interfaceName);
             }
 
             analyzeInterfaces(context, interfaceInfo.getInterfaceMultiNames(), interfaceInfo);

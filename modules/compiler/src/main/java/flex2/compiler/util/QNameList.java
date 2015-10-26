@@ -71,11 +71,8 @@ public class QNameList extends ArrayList<QName>
 		if (c != null)
 		{
 			boolean result = false; int k = 0;
-			for (Iterator<? extends QName> i = c.iterator(); i.hasNext();)
-			{
-				QName obj = i.next();
-				if (!contains(obj))
-				{
+			for (QName obj : c) {
+				if (!contains(obj)) {
 					super.add(index + k, obj);
 					result = true;
 					k++;
@@ -94,11 +91,8 @@ public class QNameList extends ArrayList<QName>
 		if (c != null)
 		{
 			boolean result = false;
-			for (Iterator<? extends QName> i = c.iterator(); i.hasNext();)
-			{
-				QName obj = i.next();
-				if (!contains(obj))
-				{
+			for (QName obj : c) {
+				if (!contains(obj)) {
 					super.add(obj);
 					result = true;
 				}
@@ -132,10 +126,9 @@ public class QNameList extends ArrayList<QName>
     {
         Set<String> set = new LinkedHashSet<String>(size());
 
-	    for (int i = 0, s = size();i < s; i++)
-	    {
-		    set.add( get(i).toString() );
-	    }
+		for (QName qName : this) {
+			set.add(qName.toString());
+		}
 
         assert set.size() == this.size();
         return set;

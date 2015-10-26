@@ -129,11 +129,10 @@ class ImplementationCompiler extends flex2.compiler.AbstractSubCompiler
 	
 	public boolean isSupported(String mimeType)
 	{
-        for (int i = 0; i < mimeTypes.length; i++)
-        {
-            if (mimeTypes[i].equals(mimeType))
-                return true;
-        }
+		for (String mimeType1 : mimeTypes) {
+			if (mimeType1.equals(mimeType))
+				return true;
+		}
         return false;
 	}
 
@@ -415,9 +414,8 @@ class ImplementationCompiler extends flex2.compiler.AbstractSubCompiler
 		Set checkNodes = (Set)unit.getContext().removeAttribute(MxmlCompiler.CHECK_NODES);
 		if (checkNodes != null && !checkNodes.isEmpty())
 		{
-			for (Iterator iter = checkNodes.iterator(); iter.hasNext(); )
-			{
-				Node node = (Node)iter.next();
+			for (Object checkNode : checkNodes) {
+				Node node = (Node) checkNode;
 				ThreadLocalToolkit.log(new AnalyzerAdapter.CouldNotResolveToComponent(node.image), unit.getSource());
 			}
 		}

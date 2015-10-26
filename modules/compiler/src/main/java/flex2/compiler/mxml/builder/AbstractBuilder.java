@@ -1388,10 +1388,8 @@ public abstract class AbstractBuilder extends AnalyzerAdapter
     {
         if (enums != null)
         {
-            for (int j = 0, count = enums.length; j < count; j++)
-            {
-                if (enums[j].equals(value))
-                {
+            for (String anEnum : enums) {
+                if (anEnum.equals(value)) {
                     return true;
                 }
             }

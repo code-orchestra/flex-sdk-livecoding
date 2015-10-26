@@ -627,9 +627,7 @@ public final class MxmlDocument
     {
         if (!bindingImportsAdded)
         {
-            for (Iterator<BindingExpression> iter = bindingExpressions.iterator(); iter.hasNext(); )
-            {
-                BindingExpression expr = iter.next();
+            for (BindingExpression expr : bindingExpressions) {
                 addImport(expr.getDestinationTypeName(), expr.getXmlLineNumber());
             }
             bindingImportsAdded = true;
@@ -877,24 +875,21 @@ public final class MxmlDocument
         // A side-effect of creating a new BindingExpression is that it is inserted
         // into the bindingExressions list.  Since we can't add to the list while 
         // iterating thru it, use an array instead.
-        Object[] bindingExpressionsArray = bindingExpressions.toArray();        
-        for (int i = 0; i < bindingExpressionsArray.length; i++)
-        {
-            BindingExpression bindingExpression = (BindingExpression) bindingExpressionsArray[i];
-            if (bindingExpression.isTwoWayPrimary())
-            {
+        Object[] bindingExpressionsArray = bindingExpressions.toArray();
+        for (Object aBindingExpressionsArray : bindingExpressionsArray) {
+            BindingExpression bindingExpression = (BindingExpression) aBindingExpressionsArray;
+            if (bindingExpression.isTwoWayPrimary()) {
                 Model destination = bindingExpression.getDestination();
 
-                if (destination != null)
-                {
+                if (destination != null) {
                     destination.ensureBindable();
                 }
 
                 String source2 = bindingExpression.getDestinationPath(false);
-                
-                BindingExpression bindingExpression2 = 
-                    new BindingExpression(source2, bindingExpression.getXmlLineNumber(), this);
-                
+
+                BindingExpression bindingExpression2 =
+                        new BindingExpression(source2, bindingExpression.getXmlLineNumber(), this);
+
                 String destination2 = TextGen.stripParens(bindingExpression.getSourceExpression());
                 bindingExpression2.setDestinationProperty(destination2);
                 bindingExpression2.setDestinationLValue(destination2);
@@ -967,9 +962,8 @@ public final class MxmlDocument
     public String getInterfaceList()
     {
         List<String> names = new ArrayList<String>(info.getInterfaceNames().size());
-        for (Iterator i = info.getInterfaceNames().iterator(); i.hasNext();)
-        {
-            names.add(((DocumentInfo.NameInfo) i.next()).getName());
+        for (DocumentInfo.NameInfo nameInfo : info.getInterfaceNames()) {
+            names.add((nameInfo).getName());
         }
         return TextGen.toCommaList(names.iterator());
     }
@@ -1070,9 +1064,8 @@ public final class MxmlDocument
      */
     private final boolean unresolvedStateIdentifier(Collection states, int line)
     {
-        for (Iterator iter = states.iterator(); iter.hasNext(); )
-        {
-            String state = (String)iter.next();
+        for (Object state1 : states) {
+            String state = (String) state1;
             if (!validateState(state, line))
                 return true;
         }

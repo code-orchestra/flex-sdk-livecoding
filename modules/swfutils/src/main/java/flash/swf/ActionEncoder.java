@@ -150,44 +150,39 @@ public class ActionEncoder extends ActionHandler
     private void patchForwardBranches()
     {
         // now patch forward branches
-        for (Iterator<UpdateEntry> i = updates.iterator(); i.hasNext();)
-        {
-            UpdateEntry entry = i.next();
-            switch (entry.source.code)
-            {
-            case ActionConstants.sactionIf:
-            case ActionConstants.sactionJump:
-                int target = getLabelOffset(((Branch)entry.source).target);
-                writer.writeSI16at(entry.updatePos, target - entry.anchor);
-                break;
-            case ActionConstants.sactionWith:
-                int endWith = getLabelOffset(((With)entry.source).endWith);
-                writer.writeUI16at(entry.updatePos, endWith - entry.anchor);
-                break;
-            case ActionConstants.sactionWaitForFrame:
-            case ActionConstants.sactionWaitForFrame2:
-                int skipTarget = getLabelCount(((WaitForFrame)entry.source).skipTarget);
-                writer.writeUI8at(entry.updatePos, skipTarget - entry.anchor);
-                break;
-            case ActionConstants.sactionTry:
-                Try t = (Try) entry.source;
-                int endTry = getLabelOffset(t.endTry);
-                writer.writeUI16at(entry.updatePos, endTry - entry.anchor);
-                entry.anchor = endTry;
-                if (t.hasCatch())
-                {
-                    int endCatch = getLabelOffset(t.endCatch);
-                    writer.writeUI16at(entry.updatePos+2, endCatch - entry.anchor);
-                    entry.anchor = endCatch;
-                }
-                if (t.hasFinally())
-                {
-                    int endFinally = getLabelOffset(t.endFinally);
-                    writer.writeUI16at(entry.updatePos+4, endFinally - entry.anchor);
-                }
-                break;
-            default:
-                assert false : ("invalid action in UpdateEntry");
+        for (UpdateEntry entry : updates) {
+            switch (entry.source.code) {
+                case ActionConstants.sactionIf:
+                case ActionConstants.sactionJump:
+                    int target = getLabelOffset(((Branch) entry.source).target);
+                    writer.writeSI16at(entry.updatePos, target - entry.anchor);
+                    break;
+                case ActionConstants.sactionWith:
+                    int endWith = getLabelOffset(((With) entry.source).endWith);
+                    writer.writeUI16at(entry.updatePos, endWith - entry.anchor);
+                    break;
+                case ActionConstants.sactionWaitForFrame:
+                case ActionConstants.sactionWaitForFrame2:
+                    int skipTarget = getLabelCount(((WaitForFrame) entry.source).skipTarget);
+                    writer.writeUI8at(entry.updatePos, skipTarget - entry.anchor);
+                    break;
+                case ActionConstants.sactionTry:
+                    Try t = (Try) entry.source;
+                    int endTry = getLabelOffset(t.endTry);
+                    writer.writeUI16at(entry.updatePos, endTry - entry.anchor);
+                    entry.anchor = endTry;
+                    if (t.hasCatch()) {
+                        int endCatch = getLabelOffset(t.endCatch);
+                        writer.writeUI16at(entry.updatePos + 2, endCatch - entry.anchor);
+                        entry.anchor = endCatch;
+                    }
+                    if (t.hasFinally()) {
+                        int endFinally = getLabelOffset(t.endFinally);
+                        writer.writeUI16at(entry.updatePos + 4, endFinally - entry.anchor);
+                    }
+                    break;
+                default:
+                    assert false : ("invalid action in UpdateEntry");
             }
         }
     }

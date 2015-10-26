@@ -103,20 +103,17 @@ public final class URLEncoder
 
 	private static final void toHex(StringBuilder buffer, byte[] b)
 	{
-		for (int i = 0; i < b.length; i++)
-		{
+		for (byte aB : b) {
 			buffer.append('%');
 
-			char ch = Character.forDigit((b[i] >> 4) & 0xF, 16);
-			if (Character.isLetter(ch))
-			{
+			char ch = Character.forDigit((aB >> 4) & 0xF, 16);
+			if (Character.isLetter(ch)) {
 				ch -= 32;
 			}
 			buffer.append(ch);
 
-			ch = Character.forDigit(b[i] & 0xF, 16);
-			if (Character.isLetter(ch))
-			{
+			ch = Character.forDigit(aB & 0xF, 16);
+			if (Character.isLetter(ch)) {
 				ch -= 32;
 			}
 			buffer.append(ch);

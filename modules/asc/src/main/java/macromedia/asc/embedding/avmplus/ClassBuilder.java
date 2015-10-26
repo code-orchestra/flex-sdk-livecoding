@@ -216,9 +216,8 @@ public class ClassBuilder extends Builder
 
 //		if( method_id >= 0 )
 		{
-			for (Iterator<ObjectValue> it = namespaces.iterator(); it.hasNext();)
-			{
-				Name(cx,SET_TOKEN,name,it.next());
+			for (ObjectValue namespace : namespaces) {
+				Name(cx, SET_TOKEN, name, namespace);
 			}
 		}
 
@@ -275,9 +274,8 @@ public class ClassBuilder extends Builder
 
 //		if( var_id >= 0 )
 		{
-			for (Iterator<ObjectValue> it = namespaces.iterator();it.hasNext();)
-			{
-				Name(cx,VAR_TOKEN,name,it.next());
+			for (ObjectValue namespace : namespaces) {
+				Name(cx, VAR_TOKEN, name, namespace);
 			}
 		}
 
@@ -310,9 +308,8 @@ public class ClassBuilder extends Builder
 
 //        if( method_id >= 0 )
         {
-			for (Iterator<ObjectValue> it = namespaces.iterator();it.hasNext();)
-			{
-				Name(cx,EMPTY_TOKEN,name,it.next());
+			for (ObjectValue namespace : namespaces) {
+				Name(cx, EMPTY_TOKEN, name, namespace);
 			}
          }
 

@@ -260,31 +260,26 @@ public class ExpressionContext implements Context
 		String[] classHierarchy = val.getClassHierarchy(false);
 		if (classHierarchy != null && getSession().getPreference(SessionManager.PREF_HIERARCHICAL_VARIABLES) != 0)
 		{
-			for (int c=0; c<classHierarchy.length; ++c)
-			{
-				String classname = classHierarchy[c];
+			for (String classname : classHierarchy) {
 				sb.append(m_newline).append("(Members of ").append(classname).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
-				for (int i=0; i<mems.length; ++i)
-				{
-					if (classname.equals(mems[i].getDefiningClass()))
-					{
-			  			sb.append(m_newline).append(" "); //$NON-NLS-1$
-                        m_cache.appendVariable(sb, mems[i], m_isolateId);
+				for (Variable mem : mems) {
+					if (classname.equals(mem.getDefiningClass())) {
+						sb.append(m_newline).append(" "); //$NON-NLS-1$
+						m_cache.appendVariable(sb, mem, m_isolateId);
 						if (attrs)
-							ExpressionCache.appendVariableAttributes(sb, mems[i]);
+							ExpressionCache.appendVariableAttributes(sb, mem);
 					}
 				}
 			}
 		}
 		else
 		{
-	  		for(int i=0; i<mems.length; i++)
-	  		{
-	  			sb.append(m_newline).append(" "); //$NON-NLS-1$
-                m_cache.appendVariable(sb, mems[i], m_isolateId);
+			for (Variable mem : mems) {
+				sb.append(m_newline).append(" "); //$NON-NLS-1$
+				m_cache.appendVariable(sb, mem, m_isolateId);
 				if (attrs)
-					ExpressionCache.appendVariableAttributes(sb, mems[i]);
-	  		}
+					ExpressionCache.appendVariableAttributes(sb, mem);
+			}
 		}
 
   		return sb.toString();

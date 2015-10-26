@@ -269,9 +269,8 @@ public class AsDocAPI
 		if (configuration.excludeDependencies())
 		{
 			includeOnly = new HashSet<String>();
-			for (Iterator iterator = nsComponents.iterator(); iterator.hasNext();)
-			{
-				SwcComponent component = (SwcComponent)iterator.next();
+			for (Object nsComponent : nsComponents) {
+				SwcComponent component = (SwcComponent) nsComponent;
 				includeOnly.add(component.getClassName());
 			}
 			includeOnly.addAll(configuration.getClasses());
@@ -333,10 +332,9 @@ public class AsDocAPI
 		if (excludeClasses.size() != 0)
 		{
 			StringBuilder sb = new StringBuilder();
-			for (Iterator iterator = excludeClasses.iterator(); iterator.hasNext();)
-			{
+			for (Object excludeClass : excludeClasses) {
 				sb.append(' ');
-				sb.append(iterator.next());
+				sb.append(excludeClass);
 			}
 			ThreadLocalToolkit.log(new NotFound("exclude-classes", sb.toString()));
 		}
@@ -344,10 +342,9 @@ public class AsDocAPI
 		if (packages.size() != 0)
 		{
 			StringBuilder sb = new StringBuilder();
-			for (Iterator iterator = packages.iterator(); iterator.hasNext();)
-			{
+			for (Object aPackage : packages) {
 				sb.append(' ');
-				sb.append(iterator.next());
+				sb.append(aPackage);
 			}
 
 			ThreadLocalToolkit.log(new NotFound("packages", sb.toString()));
@@ -740,9 +737,7 @@ public class AsDocAPI
 				return (name.endsWith(".js") || name.endsWith(".css"));
 			}}
 		);
-		for (int i = 0; i < temArr.length; i++)
-		{
-			File f = temArr[i];
+		for (File f : temArr) {
 			copyFile(new File(templatesPath, f.getName()), new File(outputDir, f.getName()));
 		}
 
@@ -759,9 +754,7 @@ public class AsDocAPI
                 return true;
             }
         });
-		for (int i = 0; i < imageArr.length; i++)
-		{
-			File f = imageArr[i];
+		for (File f : imageArr) {
 			copyFile(new File(temImages, f.getName()), new File(outImages, f.getName()));
 		}
 	}
@@ -815,8 +808,8 @@ public class AsDocAPI
 		File outputDitaDir = new File(outputDir + "tempdita/");
 		if(outputDitaDir.exists()) {
 			File files[] = outputDitaDir.listFiles();
-			for ( int ix=0; ix < files.length; ix++ ){
-				files[ix].delete();
+			for (File file : files) {
+				file.delete();
 			}
 			outputDitaDir.delete();
 		}

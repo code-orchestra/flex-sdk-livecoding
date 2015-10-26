@@ -213,9 +213,8 @@ public class XLRLocalizer implements ILocalizer
             {
                 File[] files = f.listFiles();
 
-                for (int i = 0; i < files.length; ++i)
-                {
-                    findFiles( files[i].getAbsoluteFile(), ((relative == null)? "":(relative + ".")) + files[i].getName() );
+                for (File file : files) {
+                    findFiles(file.getAbsoluteFile(), ((relative == null) ? "" : (relative + ".")) + file.getName());
                 }
             }
             else
@@ -277,12 +276,8 @@ public class XLRLocalizer implements ILocalizer
         public boolean execute( StringBuilder buffer, String locale, Map parameters )
         {
             boolean success = false;
-            for (Iterator<XLRNode> it = children.iterator(); it.hasNext(); )
-            {
-                XLRNode child = it.next();
-
-                if (child.execute( buffer, locale, parameters ))
-                {
+            for (XLRNode child : children) {
+                if (child.execute(buffer, locale, parameters)) {
                     success = true;
                 }
             }
@@ -294,12 +289,8 @@ public class XLRLocalizer implements ILocalizer
     {
         public boolean execute( StringBuilder buffer, String locale, Map parameters )
         {
-            for (Iterator<XLRNode> it = children.iterator(); it.hasNext(); )
-            {
-                XLRNode child = it.next();
-
-                if (child.execute( buffer, locale, parameters ))
-                {
+            for (XLRNode child : children) {
+                if (child.execute(buffer, locale, parameters)) {
                     return true;
                 }
             }
@@ -315,12 +306,8 @@ public class XLRLocalizer implements ILocalizer
         }
         public XLRTargetNode getTarget( String locale )
         {
-            for (Iterator<XLRNode> it = children.iterator(); it.hasNext();)
-            {
-                XLRNode node = it.next();
-
-                if ((node instanceof XLRTargetNode) && ((XLRTargetNode) node).matchesLocale( locale ))
-                {
+            for (XLRNode node : children) {
+                if ((node instanceof XLRTargetNode) && ((XLRTargetNode) node).matchesLocale(locale)) {
                     return (XLRTargetNode) node;
                 }
             }

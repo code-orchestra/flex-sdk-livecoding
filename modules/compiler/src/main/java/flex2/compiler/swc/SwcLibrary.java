@@ -197,35 +197,31 @@ public class SwcLibrary
 
         int c1 = 0;
         def2symbol = new HashMap<String, DefineTag>();
-        for (Iterator frames = movie.frames.iterator(); frames.hasNext(); )
-        {
-            Frame frame = (Frame) frames.next();
-            for (Iterator abcit = frame.doABCs.iterator(); abcit.hasNext(); )
-            {
-                DoABC doABC = (DoABC) abcit.next();
-                SwcScript script = getScript( doABC );
+        for (Frame frame : movie.frames) {
+            for (DoABC doABC : frame.doABCs) {
+                SwcScript script = getScript(doABC);
                 script.setABC(doABC.abc);
             }
 
-            for (Iterator it = frame.symbolClass.class2tag.entrySet().iterator(); it.hasNext();)
-            {
-                Map.Entry e = (Map.Entry) it.next();
+            for (Map.Entry<String, Tag> stringTagEntry : frame.symbolClass.class2tag.entrySet()) {
+                Map.Entry e = (Map.Entry) stringTagEntry;
                 String className = (String) e.getKey();
                 DefineTag tag = (DefineTag) e.getValue();
 
-                def2symbol.put( className, tag );
+                def2symbol.put(className, tag);
             }
 
             if (Swc.FNORD)  // release SWCs must have magic hash label per frame
             {
-                if (frame.label != null)
-                {
-                    try { c1 = Integer.parseInt( frame.label.label ); } catch (Exception e) {}
+                if (frame.label != null) {
+                    try {
+                        c1 = Integer.parseInt(frame.label.label);
+                    } catch (Exception e) {
+                    }
                 }
-                int c2 = SimpleMovie.getCodeHash( frame );
+                int c2 = SimpleMovie.getCodeHash(frame);
 
-                if (c1 != c2)
-                {
+                if (c1 != c2) {
                     location = " " + swc.getLocation();
                 }
             }
@@ -251,14 +247,11 @@ public class SwcLibrary
     		    Tag r = (Tag)i.next();
     			if (r != null)
     			{
-					for (Iterator<String> j = def2symbol.keySet().iterator(); j.hasNext(); )
-					{
-						String className = j.next();
-						if (def2symbol.get(className) == r)
-						{
-							symbolClasses.add(NameFormatter.toColon(className));
-						}
-					}
+                    for (String className : def2symbol.keySet()) {
+                        if (def2symbol.get(className) == r) {
+                            symbolClasses.add(NameFormatter.toColon(className));
+                        }
+                    }
     			}
     			getReferencedSymbolClasses(r, symbolClasses, visited);
     		}

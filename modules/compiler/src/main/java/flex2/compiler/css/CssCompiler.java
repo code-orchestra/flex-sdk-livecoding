@@ -300,16 +300,13 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
         if (atEmbeds != null && configuration.archiveClassesAndAssets())
         {
         	Map<String, LocalFile> archiveFiles = new HashMap<String, LocalFile>();
-        	for (Iterator<AtEmbed>  i = atEmbeds.iterator(); i.hasNext(); )
-        	{
-        		AtEmbed e = (AtEmbed) i.next();
-        		String src = (String) e.getAttributes().get(Transcoder.SOURCE);
-        		String original = (String) e.getAttributes().get(Transcoder.ORIGINAL);
-        		if (src != null)
-        		{
-        			archiveFiles.put(original, new LocalFile(new File(src)));
-        		}
-        	}
+            for (AtEmbed e : atEmbeds) {
+                String src = (String) e.getAttributes().get(Transcoder.SOURCE);
+                String original = (String) e.getAttributes().get(Transcoder.ORIGINAL);
+                if (src != null) {
+                    archiveFiles.put(original, new LocalFile(new File(src)));
+                }
+            }
         	if (archiveFiles.size() > 0)
         	{
         		context.setAttribute(CompilerContext.CSS_ARCHIVE_FILES, archiveFiles);

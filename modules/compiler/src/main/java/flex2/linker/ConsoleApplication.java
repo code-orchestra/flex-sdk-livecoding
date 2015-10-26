@@ -75,41 +75,32 @@ public class ConsoleApplication
         final DependencyGraph<CompilationUnit> dependencies = new DependencyGraph<CompilationUnit>();
 		final Map<QName, String> qnames = new HashMap<QName, String>(); // QName, VirtualFile.getName()
 
-        for (int i = 0, length = units.size(); i < length; i++)
-        {
-            CompilationUnit u = units.get(i);
-            Source s = u.getSource();
-            String path = s.getName();
+		for (CompilationUnit u : units) {
+			Source s = u.getSource();
+			String path = s.getName();
 
-            dependencies.put(path, u);
-			if (!dependencies.containsVertex(s.getName()))
-			{
-				dependencies.addVertex(new Vertex<String,CompilationUnit>(path));
+			dependencies.put(path, u);
+			if (!dependencies.containsVertex(s.getName())) {
+				dependencies.addVertex(new Vertex<String, CompilationUnit>(path));
 			}
-				
+
 			// register QName --> VirtualFile.getName()
-			for (Iterator<QName> j = u.topLevelDefinitions.iterator(); j.hasNext();)
-			{
-				qnames.put(j.next(), s.getName());
+			for (QName topLevelDefinition : u.topLevelDefinitions) {
+				qnames.put(topLevelDefinition, s.getName());
 			}
-        }
+		}
 
 		// setup inheritance-based dependencies...
-		for (int i = 0, size = units.size(); i < size; i++)
-		{
-            CompilationUnit u = units.get(i);
-            Source s = u.getSource();
-            String head = s.getName();
+		for (CompilationUnit u : units) {
+			Source s = u.getSource();
+			String head = s.getName();
 
-			for (Name name : u.inheritance)
-			{
-				if (name instanceof QName)
-				{
+			for (Name name : u.inheritance) {
+				if (name instanceof QName) {
 					QName qname = (QName) name;
 					String tail = qnames.get(qname);
 
-					if (tail != null && !head.equals(tail) && !dependencies.dependencyExists(head, tail))
-					{
+					if (tail != null && !head.equals(tail) && !dependencies.dependencyExists(head, tail)) {
 						dependencies.addDependency(head, tail);
 					}
 				}

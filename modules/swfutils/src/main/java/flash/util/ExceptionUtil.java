@@ -188,17 +188,13 @@ public class ExceptionUtil
 
     private static Throwable getRootCauseWithReflection(Throwable t)
     {
-        for(int i = 0; i < unwrapMethods.length; i++)
-        {
+        for (String unwrapMethod : unwrapMethods) {
             Method m = null;
 
-            try
-            {
-                m = t.getClass().getMethod(unwrapMethods[i], (Class[])null);
-                return (Throwable) m.invoke(t, (Object[])null);
-            }
-            catch(Exception nsme)
-            {
+            try {
+                m = t.getClass().getMethod(unwrapMethod, (Class[]) null);
+                return (Throwable) m.invoke(t, (Object[]) null);
+            } catch (Exception nsme) {
                 // ignore
             }
         }

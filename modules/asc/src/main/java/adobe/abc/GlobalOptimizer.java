@@ -687,8 +687,7 @@ public class GlobalOptimizer
 			Attr[] attrs = md.attrs = new Attr[p.readU30()];
 			for (int j = 0, n=attrs.length; j < n; j++)
 				attrs[j] = new Attr(strings[p.readU30()]);
-			for (int j = 0, n=attrs.length; j < n; j++)
-				attrs[j].value = strings[p.readU30()];
+			for (Attr attr : attrs) attr.value = strings[p.readU30()];
 			return md;
 		}
 		
@@ -7219,9 +7218,8 @@ public class GlobalOptimizer
 		{
 			StringBuffer frame_state_buffer = new StringBuffer();
 			frame_state_buffer.append("\tLocals: ");
-			for ( int i = 0; i < fs_out.length; i++)
-			{
-				frame_state_buffer.append(fs_out[i].toString());
+			for (Typeref aFs_out : fs_out) {
+				frame_state_buffer.append(aFs_out.toString());
 				frame_state_buffer.append(" ");
 			}
 			verboseStatus(frame_state_buffer);

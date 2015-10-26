@@ -60,15 +60,12 @@ public class SlotReflect
         List<MetaData> result = null;
         if( list != null )
         {
-            for (int i = 0, length = list.size(); i < length; i++)
-            {
-                if (id.equals( (list.get(i)).id))
-                {
-                    if (result == null)
-                    {
+            for (macromedia.asc.semantics.MetaData aList : list) {
+                if (id.equals(aList.id)) {
+                    if (result == null) {
                         result = new ArrayList<MetaData>();
                     }
-                    result.add(new flex2.compiler.as3.reflect.MetaData(list.get(i)));
+                    result.add(new flex2.compiler.as3.reflect.MetaData(aList));
                 }
             }
         }

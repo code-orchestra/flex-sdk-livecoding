@@ -246,8 +246,8 @@ public class DOMUtilities extends XMLUtilities {
      */
     public static boolean isAnyNodeAncestorOf(ArrayList ancestorNodes, Node node) {
         int n = ancestorNodes.size();
-        for (int i = 0; i < n; i++) {
-            Node ancestor = (Node) ancestorNodes.get(i);
+        for (Object ancestorNode : ancestorNodes) {
+            Node ancestor = (Node) ancestorNode;
             if (isAncestorOf(ancestor, node)) {
                 return true;
             }
@@ -318,8 +318,8 @@ public class DOMUtilities extends XMLUtilities {
             return false;
         }
         int n = children.size();
-        for (int i = 0; i < n; i++) {
-            Node child = (Node) children.get(i);
+        for (Object aChildren : children) {
+            Node child = (Node) aChildren;
             if (canAppend(child, parentNode)) {
                 return true;
             }

@@ -141,9 +141,8 @@ public class SimpleNode implements Node
     {
         if (children != null)
         {
-            for (int i = 0; i < children.length; ++i)
-            {
-                children[i].jjtAccept(visitor, data);
+            for (Node aChildren : children) {
+                aChildren.jjtAccept(visitor, data);
             }
         }
         return data;
@@ -172,11 +171,9 @@ public class SimpleNode implements Node
         System.out.println(toString(prefix));
         if (children != null)
         {
-            for (int i = 0; i < children.length; ++i)
-            {
-                SimpleNode n = (SimpleNode) children[i];
-                if (n != null)
-                {
+            for (Node aChildren : children) {
+                SimpleNode n = (SimpleNode) aChildren;
+                if (n != null) {
                     n.dump(prefix + " ");
                 }
             }

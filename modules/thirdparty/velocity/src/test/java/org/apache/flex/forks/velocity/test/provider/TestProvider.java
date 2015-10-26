@@ -205,10 +205,9 @@ public class TestProvider
     public String concat(Object[] strings)
     {
         StringBuffer result = new StringBuffer();
-        
-        for (int i = 0; i < strings.length; i++)
-        {
-            result.append((String) strings[i]).append(' ');
+
+        for (Object string : strings) {
+            result.append((String) string).append(' ');
         }
         
         return result.toString();
@@ -217,10 +216,9 @@ public class TestProvider
     public String concat(List strings)
     {
         StringBuffer result = new StringBuffer();
-        
-        for (int i = 0; i < strings.size(); i++)
-        {
-            result.append((String) strings.get(i)).append(' ');
+
+        for (Object string : strings) {
+            result.append((String) string).append(' ');
         }
         
         return result.toString();
@@ -230,9 +228,8 @@ public class TestProvider
     {
         StringBuffer result = new StringBuffer();
 
-        for (int i = 0; i < objects.size(); i++)
-        {
-            result.append(objects.get(i)).append(' ');
+        for (Object object : objects) {
+            result.append(object).append(' ');
         }
 
         return result.toString();
@@ -280,9 +277,9 @@ public class TestProvider
     public boolean allEmpty(Object[] list)
     {
         int size = list.length;
-        
-        for (int i = 0; i < size; i++)
-            if (list[i].toString().length() > 0)
+
+        for (Object aList : list)
+            if (aList.toString().length() > 0)
                 return false;
         
         return true;

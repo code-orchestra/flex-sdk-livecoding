@@ -1693,8 +1693,8 @@ public class BridgeContext implements ErrorConstants, CSSContext {
                 // Check if 'display' changed on this element.
 
                 int [] properties = evt.getProperties();
-                for (int i=0; i < properties.length; ++i) {
-                    if (properties[i] == SVGCSSEngine.DISPLAY_INDEX) {
+                for (int property : properties) {
+                    if (property == SVGCSSEngine.DISPLAY_INDEX) {
                         if (!CSSUtilities.convertDisplay(elem)) {
                             // (Still) Not displayed
                             break;
@@ -1702,17 +1702,17 @@ public class BridgeContext implements ErrorConstants, CSSContext {
                         // build the graphics node
                         GVTBuilder builder = getGVTBuilder();
                         GraphicsNode childNode = builder.build
-                            (BridgeContext.this, elem);
+                                (BridgeContext.this, elem);
                         if (childNode == null) {
                             // the added element is not a graphic element?
                             break;
                         }
                         int idx = -1;
-                        for(Node ps = elem.getPreviousSibling(); ps != null;
-                            ps = ps.getPreviousSibling()) {
+                        for (Node ps = elem.getPreviousSibling(); ps != null;
+                             ps = ps.getPreviousSibling()) {
                             if (ps.getNodeType() != Node.ELEMENT_NODE)
                                 continue;
-                            Element pse = (Element)ps;
+                            Element pse = (Element) ps;
                             GraphicsNode gn = getGraphicsNode(pse);
                             if (gn == null)
                                 continue;

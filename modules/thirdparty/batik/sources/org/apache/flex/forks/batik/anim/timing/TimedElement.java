@@ -837,8 +837,8 @@ public abstract class TimedElement implements SMILConstants {
      * accesskey or repeat timing specifiers.
      */
     protected boolean endHasEventConditions() {
-        for (int i = 0; i < endTimes.length; i++) {
-            if (endTimes[i].isEventCondition()) {
+        for (TimingSpecifier endTime : endTimes) {
+            if (endTime.isEventCondition()) {
                 return true;
             }
         }
@@ -1288,11 +1288,11 @@ public abstract class TimedElement implements SMILConstants {
      * Initializes this timed element.
      */
     public void initialize() {
-        for (int i = 0; i < beginTimes.length; i++) {
-            beginTimes[i].initialize();
+        for (TimingSpecifier beginTime : beginTimes) {
+            beginTime.initialize();
         }
-        for (int i = 0; i < endTimes.length; i++) {
-            endTimes[i].initialize();
+        for (TimingSpecifier endTime : endTimes) {
+            endTime.initialize();
         }
     }
 
@@ -1300,11 +1300,11 @@ public abstract class TimedElement implements SMILConstants {
      * Deinitializes this timed element.
      */
     public void deinitialize() {
-        for (int i = 0; i < beginTimes.length; i++) {
-            beginTimes[i].deinitialize();
+        for (TimingSpecifier beginTime : beginTimes) {
+            beginTime.deinitialize();
         }
-        for (int i = 0; i < endTimes.length; i++) {
-            endTimes[i].deinitialize();
+        for (TimingSpecifier endTime : endTimes) {
+            endTime.deinitialize();
         }
     }
 

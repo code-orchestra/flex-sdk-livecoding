@@ -713,30 +713,30 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
         hasNewACI = false;
         int [] properties = evt.getProperties();
         // first try to find CSS properties that change the layout
-        for (int i=0; i < properties.length; ++i) {
-            switch(properties[i]) {         // fall-through is intended
-            case SVGCSSEngine.BASELINE_SHIFT_INDEX:
-            case SVGCSSEngine.DIRECTION_INDEX:
-            case SVGCSSEngine.DISPLAY_INDEX:
-            case SVGCSSEngine.FONT_FAMILY_INDEX:
-            case SVGCSSEngine.FONT_SIZE_INDEX:
-            case SVGCSSEngine.FONT_STRETCH_INDEX:
-            case SVGCSSEngine.FONT_STYLE_INDEX:
-            case SVGCSSEngine.FONT_WEIGHT_INDEX:
-            case SVGCSSEngine.GLYPH_ORIENTATION_HORIZONTAL_INDEX:
-            case SVGCSSEngine.GLYPH_ORIENTATION_VERTICAL_INDEX:
-            case SVGCSSEngine.KERNING_INDEX:
-            case SVGCSSEngine.LETTER_SPACING_INDEX:
-            case SVGCSSEngine.TEXT_ANCHOR_INDEX:
-            case SVGCSSEngine.UNICODE_BIDI_INDEX:
-            case SVGCSSEngine.WORD_SPACING_INDEX:
-            case SVGCSSEngine.WRITING_MODE_INDEX: {
-                if (!hasNewACI) {
-                    hasNewACI = true;
-                    computeLaidoutText(ctx, e, getTextNode());
+        for (int property : properties) {
+            switch (property) {         // fall-through is intended
+                case SVGCSSEngine.BASELINE_SHIFT_INDEX:
+                case SVGCSSEngine.DIRECTION_INDEX:
+                case SVGCSSEngine.DISPLAY_INDEX:
+                case SVGCSSEngine.FONT_FAMILY_INDEX:
+                case SVGCSSEngine.FONT_SIZE_INDEX:
+                case SVGCSSEngine.FONT_STRETCH_INDEX:
+                case SVGCSSEngine.FONT_STYLE_INDEX:
+                case SVGCSSEngine.FONT_WEIGHT_INDEX:
+                case SVGCSSEngine.GLYPH_ORIENTATION_HORIZONTAL_INDEX:
+                case SVGCSSEngine.GLYPH_ORIENTATION_VERTICAL_INDEX:
+                case SVGCSSEngine.KERNING_INDEX:
+                case SVGCSSEngine.LETTER_SPACING_INDEX:
+                case SVGCSSEngine.TEXT_ANCHOR_INDEX:
+                case SVGCSSEngine.UNICODE_BIDI_INDEX:
+                case SVGCSSEngine.WORD_SPACING_INDEX:
+                case SVGCSSEngine.WRITING_MODE_INDEX: {
+                    if (!hasNewACI) {
+                        hasNewACI = true;
+                        computeLaidoutText(ctx, e, getTextNode());
+                    }
+                    break;
                 }
-                break;
-            }
             }
         }
         //optimize the calculation of
@@ -2908,11 +2908,11 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
         CharacterInformation info = new CharacterInformation();
         info.characterIndex = startIndex+charnum;
 
-        for (int i = 0; i < list.size(); i++) {
+        for (Object aList : list) {
             StrokingTextPainter.TextRun run;
-            run = (StrokingTextPainter.TextRun)list.get(i);
+            run = (StrokingTextPainter.TextRun) aList;
 
-            if (!run.getLayout().hasCharacterIndex(info.characterIndex) )
+            if (!run.getLayout().hasCharacterIndex(info.characterIndex))
                 continue;
 
             info.layout = run.getLayout();
@@ -2920,20 +2920,19 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
             aci.setIndex(info.characterIndex);
 
             //check is it is a altGlyph
-            if (aci.getAttribute(ALT_GLYPH_HANDLER) != null){
+            if (aci.getAttribute(ALT_GLYPH_HANDLER) != null) {
                 info.glyphIndexStart = 0;
-                info.glyphIndexEnd = info.layout.getGlyphCount()-1;
+                info.glyphIndexEnd = info.layout.getGlyphCount() - 1;
             } else {
                 info.glyphIndexStart = info.layout.getGlyphIndex
-                    (info.characterIndex);
+                        (info.characterIndex);
 
                 //special case when the glyph does not have a unicode
                 //associated to it, it will return -1
-                if ( info.glyphIndexStart == -1 ){
+                if (info.glyphIndexStart == -1) {
                     info.glyphIndexStart = 0;
-                    info.glyphIndexEnd = info.layout.getGlyphCount()-1;
-                }
-                else{
+                    info.glyphIndexEnd = info.layout.getGlyphCount() - 1;
+                } else {
                     info.glyphIndexEnd = info.glyphIndexStart;
                 }
             }
@@ -2978,19 +2977,19 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
         if (list == null)
             return elems;
 
-        for (int i = 0 ; i < list.size(); i++) {
+        for (Object aList : list) {
             StrokingTextPainter.TextRun run;
-            run = (StrokingTextPainter.TextRun)list.get(i);
+            run = (StrokingTextPainter.TextRun) aList;
             TextSpanLayout layout = run.getLayout();
             AttributedCharacterIterator aci = run.getACI();
             aci.first();
             SoftReference sr;
-            sr =(SoftReference)aci.getAttribute(TEXT_COMPOUND_ID);
-            Element elem = (Element)sr.get();
+            sr = (SoftReference) aci.getAttribute(TEXT_COMPOUND_ID);
+            Element elem = (Element) sr.get();
 
             if (elem == null) continue;
             if (elems.contains(elem)) continue;
-            if (!isTextSensitive(elem))   continue;
+            if (!isTextSensitive(elem)) continue;
 
             Rectangle2D glBounds = layout.getBounds2D();
             if (glBounds != null) {
@@ -3000,13 +2999,13 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                     continue;
                 }
             }
-            
+
             GVTGlyphVector gv = layout.getGlyphVector();
             for (int g = 0; g < gv.getNumGlyphs(); g++) {
                 Shape gBounds = gv.getGlyphLogicalBounds(g);
                 if (gBounds != null) {
                     gBounds = at.createTransformedShape
-                        (gBounds).getBounds2D();
+                            (gBounds).getBounds2D();
 
                     if (gBounds.intersects(rect)) {
                         elems.add(elem);
@@ -3028,15 +3027,15 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
             return elems;
 
         Set reject = new HashSet();
-        for (int i = 0 ; i < list.size(); i++) {
+        for (Object aList : list) {
             StrokingTextPainter.TextRun run;
-            run = (StrokingTextPainter.TextRun)list.get(i);
+            run = (StrokingTextPainter.TextRun) aList;
             TextSpanLayout layout = run.getLayout();
             AttributedCharacterIterator aci = run.getACI();
             aci.first();
             SoftReference sr;
-            sr =(SoftReference)aci.getAttribute(TEXT_COMPOUND_ID);
-            Element elem = (Element)sr.get();
+            sr = (SoftReference) aci.getAttribute(TEXT_COMPOUND_ID);
+            Element elem = (Element) sr.get();
 
             if (elem == null) continue;
             if (reject.contains(elem)) continue;
@@ -3046,11 +3045,11 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
             }
 
             Rectangle2D glBounds = layout.getBounds2D();
-            if ( glBounds == null ){
+            if (glBounds == null) {
                 continue;
             }
 
-            glBounds = at.createTransformedShape( glBounds ).getBounds2D();
+            glBounds = at.createTransformedShape(glBounds).getBounds2D();
 
             if (rect.contains(glBounds)) {
                 elems.add(elem);
@@ -3098,15 +3097,15 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
         tnRect = at.createTransformedShape(tnRect).getBounds2D();
         if (!rect.intersects(tnRect)) return false;
 
-        for (int i = 0 ; i < list.size(); i++) {
+        for (Object aList : list) {
             StrokingTextPainter.TextRun run;
-            run = (StrokingTextPainter.TextRun)list.get(i);
+            run = (StrokingTextPainter.TextRun) aList;
             TextSpanLayout layout = run.getLayout();
             AttributedCharacterIterator aci = run.getACI();
             aci.first();
             SoftReference sr;
-            sr =(SoftReference)aci.getAttribute(TEXT_COMPOUND_ID);
-            Element runElem = (Element)sr.get();
+            sr = (SoftReference) aci.getAttribute(TEXT_COMPOUND_ID);
+            Element runElem = (Element) sr.get();
             if (runElem == null) continue;
 
             // Only consider runElem if it is sensitive.
@@ -3129,9 +3128,9 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                 Shape gBounds = gv.getGlyphLogicalBounds(g);
                 if (gBounds != null) {
                     gBounds = at.createTransformedShape
-                        (gBounds).getBounds2D();
+                            (gBounds).getBounds2D();
 
-                    if (gBounds.intersects(rect)){
+                    if (gBounds.intersects(rect)) {
                         return true;
                     }
                 }
@@ -3165,15 +3164,15 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
         Element  txtElem = txtBridge.e;
         Rectangle2D ret = null;
 
-        for (int i = 0 ; i < list.size(); i++) {
+        for (Object aList : list) {
             StrokingTextPainter.TextRun run;
-            run = (StrokingTextPainter.TextRun)list.get(i);
+            run = (StrokingTextPainter.TextRun) aList;
             TextSpanLayout layout = run.getLayout();
             AttributedCharacterIterator aci = run.getACI();
             aci.first();
             SoftReference sr;
-            sr =(SoftReference)aci.getAttribute(TEXT_COMPOUND_ID);
-            Element runElem = (Element)sr.get();
+            sr = (SoftReference) aci.getAttribute(TEXT_COMPOUND_ID);
+            Element runElem = (Element) sr.get();
             if (runElem == null) continue;
 
             // Only consider runElem if it is sensitive.
@@ -3188,8 +3187,8 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
             // runElem is a child of elem so include it's bounds.
             Rectangle2D glBounds = layout.getBounds2D();
             if (glBounds != null) {
-                if (ret == null) ret = (Rectangle2D)glBounds.clone();
-                else             ret.add(glBounds);
+                if (ret == null) ret = (Rectangle2D) glBounds.clone();
+                else ret.add(glBounds);
             }
         }
         return ret;

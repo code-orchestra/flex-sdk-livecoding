@@ -98,10 +98,9 @@ public class JarResourceLoader extends ResourceLoader
         }
                              
         rsvc.info("JarResourceLoader # of paths : " + paths.size() );
-        
-        for ( int i=0; i<paths.size(); i++ )
-        {
-            loadJar( (String)paths.get(i) );
+
+        for (Object path : paths) {
+            loadJar((String) path);
         }
         
         rsvc.info("JarResourceLoader : initialization complete.");

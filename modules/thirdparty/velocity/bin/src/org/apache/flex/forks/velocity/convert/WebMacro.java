@@ -127,10 +127,9 @@ public class WebMacro
             ds.addDefaultExcludes();
             ds.scan();
             String[] files = ds.getIncludedFiles();
-            
-            for (int i = 0; i < files.length; i++)
-            {
-                writeTemplate(files[i], basedir, newBasedir);
+
+            for (String file1 : files) {
+                writeTemplate(file1, basedir, newBasedir);
             }
         }
         else
@@ -282,10 +281,9 @@ public class WebMacro
     {
         if (args.length > 0)
         {
-            for (int x=0; x < args.length; x++)
-            {
+            for (String arg : args) {
                 WebMacro converter = new WebMacro();
-                converter.convert(args[x]);
+                converter.convert(arg);
             }
         }
         else

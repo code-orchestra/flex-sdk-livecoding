@@ -138,8 +138,8 @@ public abstract class TimedDocumentRoot extends TimeContainer {
         // about a partial ordering of timed elements to sample.
         float mint = Float.POSITIVE_INFINITY;
         TimedElement[] es = getChildren();
-        for (int i = 0; i < es.length; i++) {
-            float t = es[i].sampleAt(time, hyperlinking);
+        for (TimedElement e1 : es) {
+            float t = e1.sampleAt(time, hyperlinking);
             if (t < mint) {
                 mint = t;
             }
@@ -147,11 +147,11 @@ public abstract class TimedDocumentRoot extends TimeContainer {
         boolean needsUpdates;
         do {
             needsUpdates = false;
-            for (int i = 0; i < es.length; i++) {
-                if (es[i].shouldUpdateCurrentInterval) {
+            for (TimedElement e : es) {
+                if (e.shouldUpdateCurrentInterval) {
                     needsUpdates = true;
                     // System.err.print("{" + ((Test.AnimateElement) es[i]).id + "} ");
-                    float t = es[i].sampleAt(time, hyperlinking);
+                    float t = e.sampleAt(time, hyperlinking);
                     if (t < mint) {
                         mint = t;
                     }

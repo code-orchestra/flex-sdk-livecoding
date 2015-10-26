@@ -138,52 +138,31 @@ public class NodeList implements List, Cloneable
         StringWriter sw = new StringWriter(nodes.size() * 128);
         try
         {
-            for(Iterator i = nodes.iterator(); i.hasNext();)
-            {
-                Object node = i.next();
-                if(node instanceof Element)
-                {
-                    DEFAULT_OUTPUTTER.output((Element)node, sw);
-                }
-                else if(node instanceof Attribute)
-                {
-                    DEFAULT_OUTPUTTER.output((Attribute)node, sw);
-                }
-                else if(node instanceof Text)
-                {
-                    DEFAULT_OUTPUTTER.output((Text)node, sw);
-                }
-                else if(node instanceof Document)
-                {
-                    DEFAULT_OUTPUTTER.output((Document)node, sw);
-                }
-                else if(node instanceof ProcessingInstruction)
-                {
-                    DEFAULT_OUTPUTTER.output((ProcessingInstruction)node, sw);
-                }
-                else if(node instanceof Comment)
-                {
-                    DEFAULT_OUTPUTTER.output((Comment)node, sw);
-                }
-                else if(node instanceof CDATA)
-                {
-                    DEFAULT_OUTPUTTER.output((CDATA)node, sw);
-                }
-                else if(node instanceof DocType)
-                {
-                    DEFAULT_OUTPUTTER.output((DocType)node, sw);
-                }
-                else if(node instanceof EntityRef)
-                {
-                    DEFAULT_OUTPUTTER.output((EntityRef)node, sw);
-                }
-                else
-                {
+            for (Object node : nodes) {
+                if (node instanceof Element) {
+                    DEFAULT_OUTPUTTER.output((Element) node, sw);
+                } else if (node instanceof Attribute) {
+                    DEFAULT_OUTPUTTER.output((Attribute) node, sw);
+                } else if (node instanceof Text) {
+                    DEFAULT_OUTPUTTER.output((Text) node, sw);
+                } else if (node instanceof Document) {
+                    DEFAULT_OUTPUTTER.output((Document) node, sw);
+                } else if (node instanceof ProcessingInstruction) {
+                    DEFAULT_OUTPUTTER.output((ProcessingInstruction) node, sw);
+                } else if (node instanceof Comment) {
+                    DEFAULT_OUTPUTTER.output((Comment) node, sw);
+                } else if (node instanceof CDATA) {
+                    DEFAULT_OUTPUTTER.output((CDATA) node, sw);
+                } else if (node instanceof DocType) {
+                    DEFAULT_OUTPUTTER.output((DocType) node, sw);
+                } else if (node instanceof EntityRef) {
+                    DEFAULT_OUTPUTTER.output((EntityRef) node, sw);
+                } else {
                     throw new IllegalArgumentException(
-                        "Cannot process a " + 
-                        (node == null 
-                         ? "null node" 
-                         : "node of class " + node.getClass().getName()));
+                            "Cannot process a " +
+                                    (node == null
+                                            ? "null node"
+                                            : "node of class " + node.getClass().getName()));
                 }
             }
         }

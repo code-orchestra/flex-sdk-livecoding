@@ -1051,8 +1051,8 @@ public class WMFPainter extends AbstractWMFPainter {
         // the real stuff : we create an EVEN_ODD path, and add all the Shapes to it
         else {
             GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
-            for (int i = 0; i < pols.size(); i++) {
-                Polygon2D pol = (Polygon2D)(pols.get(i));
+            for (Object pol1 : pols) {
+                Polygon2D pol = (Polygon2D) pol1;
                 path.append(pol, false);
             }
             g2d.fill(path);

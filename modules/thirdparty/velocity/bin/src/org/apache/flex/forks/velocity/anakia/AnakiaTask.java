@@ -289,9 +289,8 @@ public class AnakiaTask extends MatchingTask
 
         // get a list of files to work on
         list = scanner.getIncludedFiles();
-        for (int i = 0;i < list.length; ++i)
-        {
-            process( baseDir, list[i], destDir, projectDocument );
+        for (String aList : list) {
+            process(baseDir, aList, destDir, projectDocument);
         }
     }    
     

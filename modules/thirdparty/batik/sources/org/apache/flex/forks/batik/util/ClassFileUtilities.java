@@ -90,9 +90,9 @@ public class ClassFileUtilities {
         File cwd = new File(".");
         File buildDir = null;
         String[] cwdFiles = cwd.list();
-        for (int i = 0; i < cwdFiles.length; i++) {
-            if (cwdFiles[i].startsWith("batik-")) {
-                buildDir = new File(cwdFiles[i]);
+        for (String cwdFile : cwdFiles) {
+            if (cwdFile.startsWith("batik-")) {
+                buildDir = new File(cwdFile);
                 if (!buildDir.isDirectory()) {
                     buildDir = null;
                 } else {
@@ -219,13 +219,13 @@ public class ClassFileUtilities {
 
     private static void collectJars(File dir, Map jars, Map classFiles) throws IOException {
         File[] files = dir.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            String n = files[i].getName();
-            if (n.endsWith(".jar") && files[i].isFile()) {
+        for (File file : files) {
+            String n = file.getName();
+            if (n.endsWith(".jar") && file.isFile()) {
                 Jar j = new Jar();
-                j.name = files[i].getPath();
-                j.file = files[i];
-                j.jarFile = new JarFile(files[i]);
+                j.name = file.getPath();
+                j.file = file;
+                j.jarFile = new JarFile(file);
                 jars.put(j.name, j);
 
                 Enumeration entries = j.jarFile.entries();
@@ -240,8 +240,8 @@ public class ClassFileUtilities {
                         j.files.add(cf);
                     }
                 }
-            } else if (files[i].isDirectory()) {
-                collectJars(files[i], jars, classFiles);
+            } else if (file.isDirectory()) {
+                collectJars(file, jars, classFiles);
             }
         }
     }

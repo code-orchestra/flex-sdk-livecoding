@@ -999,21 +999,16 @@ public class Configuration extends Hashtable
          * Each token is of the form 'key=value'.
          */
         Properties props = new Properties(defaults);
-        for (int i = 0; i < tokens.length; i++)
-        {
-            String token = tokens[i];
+        for (String token : tokens) {
             int equalSign = token.indexOf('=');
-            if (equalSign > 0)
-            {
+            if (equalSign > 0) {
                 String pkey = token.substring(0, equalSign).trim();
                 String pvalue = token.substring(equalSign + 1).trim();
                 props.put(pkey, pvalue);
-            }
-            else
-            {
+            } else {
                 throw new IllegalArgumentException('\'' + token +
-                                                   "' does not contain " +
-                                                   "an equals sign");
+                        "' does not contain " +
+                        "an equals sign");
             }
         }
         return props;

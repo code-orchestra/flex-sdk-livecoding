@@ -161,8 +161,8 @@ public class GlyfCompositeDescript extends GlyfDescript {
 
     protected GlyfCompositeComp getCompositeComp(int i) {
         GlyfCompositeComp c;
-        for (int n = 0; n < components.size(); n++) {
-            c = (GlyfCompositeComp) components.get(n);
+        for (Object component : components) {
+            c = (GlyfCompositeComp) component;
             GlyphDescription gd = parentTable.getDescription(c.getGlyphIndex());
             if (c.getFirstIndex() <= i && i < (c.getFirstIndex() + gd.getPointCount())) {
                 return c;
@@ -173,8 +173,8 @@ public class GlyfCompositeDescript extends GlyfDescript {
 
     protected GlyfCompositeComp getCompositeCompEndPt(int i) {
         GlyfCompositeComp c;
-        for (int j = 0; j < components.size(); j++) {
-            c = (GlyfCompositeComp) components.get(j);
+        for (Object component : components) {
+            c = (GlyfCompositeComp) component;
             GlyphDescription gd = parentTable.getDescription(c.getGlyphIndex());
             if (c.getFirstContour() <= i && i < (c.getFirstContour() + gd.getContourCount())) {
                 return c;

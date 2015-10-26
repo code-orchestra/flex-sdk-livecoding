@@ -672,10 +672,9 @@ public class RuntimeInstance implements RuntimeConstants, RuntimeServices
          */
          
         String[] userdirective = configuration.getStringArray("userdirective");
-        
-        for( int i = 0; i < userdirective.length; i++)
-        {
-            loadDirective( userdirective[i], "User");
+
+        for (String anUserdirective : userdirective) {
+            loadDirective(anUserdirective, "User");
         }
         
     }

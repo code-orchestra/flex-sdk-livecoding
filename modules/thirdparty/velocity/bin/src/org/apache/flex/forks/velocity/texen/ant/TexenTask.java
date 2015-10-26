@@ -268,49 +268,38 @@ public class TexenTask
         // resource in the filesystem. If this fails than attempt
         // to get the context properties resource from the
         // classpath.
-        for (int i = 0; i < sources.length; i++)
-        {
+        for (String source1 : sources) {
             ExtendedProperties source = new ExtendedProperties();
-            
-            try
-            {
+
+            try {
                 // resolve relative path from basedir and leave
                 // absolute path untouched.
-                File fullPath = project.resolveFile(sources[i]);
+                File fullPath = project.resolveFile(source1);
                 log("Using contextProperties file: " + fullPath);
                 source.load(new FileInputStream(fullPath));
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 ClassLoader classLoader = this.getClass().getClassLoader();
-            
-                try
-                {
-                    InputStream inputStream = classLoader.getResourceAsStream(sources[i]);
-                
-                    if (inputStream == null)
-                    {
-                        throw new BuildException("Context properties file " + sources[i] +
-                            " could not be found in the file system or on the classpath!");
-                    }
-                    else
-                    {
+
+                try {
+                    InputStream inputStream = classLoader.getResourceAsStream(source1);
+
+                    if (inputStream == null) {
+                        throw new BuildException("Context properties file " + source1 +
+                                " could not be found in the file system or on the classpath!");
+                    } else {
                         source.load(inputStream);
                     }
-                }
-                catch (IOException ioe)
-                {
+                } catch (IOException ioe) {
                     source = null;
                 }
             }
-        
+
             Iterator j = source.getKeys();
-            
-            while (j.hasNext())
-            {
+
+            while (j.hasNext()) {
                 String name = (String) j.next();
                 String value = source.getString(name);
-                contextProperties.setProperty(name,value);
+                contextProperties.setProperty(name, value);
             }
         }
     }

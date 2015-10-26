@@ -65,9 +65,8 @@ public class FileResourceLoader extends ResourceLoader
 
         int sz = paths.size();
 
-        for( int i=0; i < sz; i++)
-        {
-            rsvc.info("FileResourceLoader : adding path '" + (String) paths.get(i) + "'");
+        for (Object path : paths) {
+            rsvc.info("FileResourceLoader : adding path '" + (String) path + "'");
         }
 
         rsvc.info("FileResourceLoader : initialization complete.");
@@ -120,13 +119,11 @@ public class FileResourceLoader extends ResourceLoader
         }
 
         int size = paths.size();
-        for (int i = 0; i < size; i++)
-        {
-            String path = (String) paths.get(i);
+        for (Object path1 : paths) {
+            String path = (String) path1;
             InputStream inputStream = findTemplate(path, template);
-            
-            if (inputStream != null)
-            {
+
+            if (inputStream != null) {
                 /*
                  * Store the path that this template came
                  * from so that we can check its modification
@@ -135,7 +132,7 @@ public class FileResourceLoader extends ResourceLoader
 
                 templatePaths.put(templateName, path);
                 return inputStream;
-            }                
+            }
         }
     
         /*

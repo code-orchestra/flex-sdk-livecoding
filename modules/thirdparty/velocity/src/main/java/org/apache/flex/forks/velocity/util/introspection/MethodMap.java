@@ -168,22 +168,17 @@ public class MethodMap
 
         LinkedList maximals = new LinkedList();
 
-        for (Iterator applicable = applicables.iterator();
-             applicable.hasNext();)
-        {
-            Method app = (Method) applicable.next();
+        for (Object applicable1 : applicables) {
+            Method app = (Method) applicable1;
             Class[] appArgs = app.getParameterTypes();
             boolean lessSpecific = false;
 
             for (Iterator maximal = maximals.iterator();
-                 !lessSpecific && maximal.hasNext();)
-            {
+                 !lessSpecific && maximal.hasNext(); ) {
                 Method max = (Method) maximal.next();
 
-                switch(moreSpecific(appArgs, max.getParameterTypes()))
-                {
-                    case MORE_SPECIFIC:
-                    {
+                switch (moreSpecific(appArgs, max.getParameterTypes())) {
+                    case MORE_SPECIFIC: {
                         /*
                          * This method is more specific than the previously
                          * known maximally specific, so remove the old maximum.
@@ -193,8 +188,7 @@ public class MethodMap
                         break;
                     }
 
-                    case LESS_SPECIFIC:
-                    {
+                    case LESS_SPECIFIC: {
                         /*
                          * This method is less specific than some of the
                          * currently known maximally specific methods, so we
@@ -208,8 +202,7 @@ public class MethodMap
                 }
             }
 
-            if(!lessSpecific)
-            {
+            if (!lessSpecific) {
                 maximals.addLast(app);
             }
         }
@@ -289,12 +282,10 @@ public class MethodMap
     {
         LinkedList list = new LinkedList();
 
-        for (Iterator imethod = methods.iterator(); imethod.hasNext();)
-        {
-            Method method = (Method) imethod.next();
+        for (Object method1 : methods) {
+            Method method = (Method) method1;
 
-            if(isApplicable(method, classes))
-            {
+            if (isApplicable(method, classes)) {
                 list.add(method);
             }
 

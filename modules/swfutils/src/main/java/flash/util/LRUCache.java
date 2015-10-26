@@ -336,8 +336,7 @@ public abstract class LRUCache extends AbstractCache
     /**
      * Linked list element for the LRU list.
      */
-    protected class LRUListEntry extends Object
-    {
+    protected class LRUListEntry {
         LRUListEntry next;
         LRUListEntry prev;
         Object value;

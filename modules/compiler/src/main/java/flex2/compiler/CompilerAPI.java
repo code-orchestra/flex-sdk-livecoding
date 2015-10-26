@@ -4471,7 +4471,7 @@ public final class CompilerAPI
     /**
      * builds a list of VirtualFiles from list of path strings.
      */
-    public static List<VirtualFile> getVirtualFileList(List<? extends Object> files)
+    public static List<VirtualFile> getVirtualFileList(List<?> files)
         throws ConfigurationException
     {
         return new ArrayList<VirtualFile>(fileSetFromPaths(files, false, null, null));
@@ -4481,7 +4481,7 @@ public final class CompilerAPI
      * builds a list of VirtualFiles from list of path strings. Directories are scanned recursively, using mimeTypes
      * (if not null) as a filter.
      */
-    public static List<VirtualFile> getVirtualFileList(Collection<? extends Object> paths, Set mimeTypes)
+    public static List<VirtualFile> getVirtualFileList(Collection<?> paths, Set mimeTypes)
         throws ConfigurationException
     {
         return new ArrayList<VirtualFile>(fileSetFromPaths(paths, true, mimeTypes, null));
@@ -4491,14 +4491,14 @@ public final class CompilerAPI
      * list[0] --> List for FileSpec
      * list[1] --> List for SourceList
      */
-    public static List<VirtualFile>[] getVirtualFileList(Collection<? extends Object> paths, Collection<VirtualFile> stylesheets, Set mimeTypes, List<File> directories)
+    public static List<VirtualFile>[] getVirtualFileList(Collection<?> paths, Collection<VirtualFile> stylesheets, Set mimeTypes, List<File> directories)
         throws ConfigurationException
     {
         return getVirtualFileList(paths, stylesheets, mimeTypes, directories, null);
     }
 
-    public static List<VirtualFile>[] getVirtualFileList(Collection<? extends Object> paths, Collection<VirtualFile> stylesheets, Set mimeTypes, List<File> directories,
-            Collection<? extends Object> excludedPaths) throws ConfigurationException
+    public static List<VirtualFile>[] getVirtualFileList(Collection<?> paths, Collection<VirtualFile> stylesheets, Set mimeTypes, List<File> directories,
+                                                         Collection<?> excludedPaths) throws ConfigurationException
 	{
         //TODO this function should really be cleaned up to use Array.newInstance and
         //     List<List<VirtualFile>> instead of an array, so that we can get compile-time type-checks
@@ -4553,7 +4553,7 @@ public final class CompilerAPI
         return array;
     }
 
-	private static Set<VirtualFile> fileSetFromPaths(Collection<? extends Object> paths, boolean recurse, Set mimeTypes, Set<VirtualFile> fileSet)
+	private static Set<VirtualFile> fileSetFromPaths(Collection<?> paths, boolean recurse, Set mimeTypes, Set<VirtualFile> fileSet)
     throws ConfigurationException
     {
 	    return fileSetFromPaths(paths, recurse, mimeTypes, fileSet, null);
@@ -4568,7 +4568,7 @@ public final class CompilerAPI
 	 * @param fileSet if non-null, files are added to this set and a reference ts returned. If null, a new Set is created.
 	 * @param excludedPaths This is only set via asdoc, its for -exclude-sources option.
 	 */
-	private static Set<VirtualFile> fileSetFromPaths(Collection<? extends Object> paths, boolean recurse, Set mimeTypes, Set<VirtualFile> fileSet, Collection<? extends Object> excludedPaths)
+	private static Set<VirtualFile> fileSetFromPaths(Collection<?> paths, boolean recurse, Set mimeTypes, Set<VirtualFile> fileSet, Collection<?> excludedPaths)
 		throws ConfigurationException
 	{
 		boolean topLevel;
@@ -4576,7 +4576,7 @@ public final class CompilerAPI
 		{
 			fileSet = new HashSet<VirtualFile>(paths.size());
 		}
-		for (Iterator<? extends Object> iter = paths.iterator(); iter.hasNext(); )
+		for (Iterator<?> iter = paths.iterator(); iter.hasNext(); )
 		{
 			Object next = iter.next();
 			VirtualFile file;

@@ -3,7 +3,7 @@ package codeOrchestra.util;
 /**
  * @author Alexander Eliseyev
  */
-public class Triple<T,S,P extends Object> {
+public class Triple<T,S,P> {
 
     private T o1;
     private S o2;

@@ -3,7 +3,7 @@ package codeOrchestra.util;
 /**
  * @author Alexander Eliseyev
  */
-public class Pair<T,S extends Object> {
+public class Pair<T,S> {
 
     private T o1;
     private S o2;

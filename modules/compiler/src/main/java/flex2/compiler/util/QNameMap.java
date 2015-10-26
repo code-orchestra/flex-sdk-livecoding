@@ -26,7 +26,7 @@ import java.util.HashMap;
  * methods, like containsKey(String, String), which allow performing
  * collection operations without having to create a new QName.
  */
-public class QNameMap<V extends Object> extends HashMap<QName, V>
+public class QNameMap<V> extends HashMap<QName, V>
 {
 	private static final long serialVersionUID = -2981999493690343118L;
 

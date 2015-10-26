@@ -90,7 +90,6 @@
 		<ant dir="${basedir}/fxgutils" target="clean"/>
 		<ant dir="${basedir}/debugger" target="clean"/>
 		<ant dir="${basedir}/compiler" target="clean"/>
-		<ant dir="${basedir}/antTasks" target="clean"/>
         <ant dir="${basedir}/asc" target="clean"/>
         <ant dir="${basedir}/thirdparty/xerces-patch" target="clean"/>
         <delete includeemptydirs="true" failonerror="false">
@@ -178,12 +177,12 @@
 		<echo message="Note that velocity builds with several 'enum' is a keyword warnings."/>
 
         <ant antfile="${basedir}/downloads.xml" target="velocity-jars" dir="${basedir}"/>
-		<ant dir="${basedir}/thirdparty/velocity/build" target="jar-dep-flex"/>
+		<ant dir="${basedir}/thirdparty/velocity" target="jar-dep-flex"/>
 	</target>
 
     <target name="velocity-clean">
 	    <mkdir dir="${basedir}/thirdparty/velocity/build/lib"/>
-		<ant dir="${basedir}/thirdparty/velocity/build" target="jar-dep-flex-clean"/>
+		<ant dir="${basedir}/thirdparty/velocity" target="jar-dep-flex-clean"/>
 	    <delete dir="${basedir}/thirdparty/velocity/build/lib"/>
     </target>
 

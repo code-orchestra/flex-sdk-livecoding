@@ -513,19 +513,14 @@ public class Generator
      */
     public void shutdown()
     {
-        Iterator iterator = writers.values().iterator();
-        
-        while(iterator.hasNext())
-        {
-            Writer writer = (Writer) iterator.next();
-                        
-            try
-            {
+
+        for (Object o : writers.values()) {
+            Writer writer = (Writer) o;
+
+            try {
                 writer.flush();
                 writer.close();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 /* do nothing */
             }
         }

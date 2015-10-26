@@ -97,9 +97,8 @@ public class FontFamilyResolver {
         awtFonts.add(new AWTGVTFont(defaultFont.getFamilyName(), 0, 12));
 
         Collection fontValues = fonts.values();
-        Iterator iter = fontValues.iterator();
-        while(iter.hasNext()) {
-            String fontFamily = (String)iter.next();
+        for (Object fontValue : fontValues) {
+            String fontFamily = (String) fontValue;
             AWTFontFamily awtFontFamily = new AWTFontFamily(fontFamily);
             awtFontFamilies.add(awtFontFamily);
             AWTGVTFont font = new AWTGVTFont(fontFamily, 0, 12);

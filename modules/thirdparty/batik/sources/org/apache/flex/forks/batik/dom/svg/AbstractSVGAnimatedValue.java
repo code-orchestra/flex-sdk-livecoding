@@ -125,10 +125,9 @@ public abstract class AbstractSVGAnimatedValue
      * Fires the listeners for the animated value.
      */
     protected void fireAnimatedAttributeListeners() {
-        Iterator i = listeners.iterator();
-        while (i.hasNext()) {
+        for (Object listener1 : listeners) {
             AnimatedAttributeListener listener =
-                (AnimatedAttributeListener) i.next();
+                    (AnimatedAttributeListener) listener1;
             listener.animatedAttributeChanged(element, this);
         }
     }

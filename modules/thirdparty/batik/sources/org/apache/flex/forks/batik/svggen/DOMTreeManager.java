@@ -295,9 +295,8 @@ public class DOMTreeManager implements SVGSyntax, ErrorConstants {
         Element genericDefs =
             generatorContext.domFactory.createElementNS(SVG_NAMESPACE_URI,
                                                         SVG_DEFS_TAG);
-        Iterator iter = genericDefSet.iterator();
-        while (iter.hasNext()) {
-            genericDefs.appendChild((Element)iter.next());
+        for (Object aGenericDefSet : genericDefSet) {
+            genericDefs.appendChild((Element) aGenericDefSet);
         }
 
         genericDefs.setAttributeNS(null, SVG_ID_ATTRIBUTE, ID_PREFIX_GENERIC_DEFS);
@@ -408,9 +407,7 @@ public class DOMTreeManager implements SVGSyntax, ErrorConstants {
                                                topLevelGroup.getFirstChild());
                 }
 
-                Iterator iter = defSet.iterator();
-                while(iter.hasNext())
-                    defElement.appendChild((Element)iter.next());
+                for (Object aDefSet : defSet) defElement.appendChild((Element) aDefSet);
             }
         }
 

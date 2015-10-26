@@ -291,9 +291,8 @@ public class EventSupport {
     protected void runDefaultActions(AbstractEvent e) {
         List runables = e.getDefaultActions();
         if (runables != null) {
-            Iterator i = runables.iterator();
-            while (i.hasNext()) {
-                Runnable r = (Runnable)i.next();
+            for (Object runable : runables) {
+                Runnable r = (Runnable) runable;
                 r.run();
             }
         }

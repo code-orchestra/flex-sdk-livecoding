@@ -211,19 +211,18 @@ public class DynamicRenderer extends StaticRenderer {
                     Color fillColor   = new Color( 0, 0, 255, 50 );
                     Color borderColor = new Color( 0, 0,   0, 50 );
 
-                    Iterator iter = damagedAreas.iterator();
-                    while (iter.hasNext()) {
-                        Rectangle r = (Rectangle)iter.next();
+                    for (Object damagedArea : damagedAreas) {
+                        Rectangle r = (Rectangle) damagedArea;
                         if (!dr.intersects(r)) continue;
                         r = dr.intersection(r);
                         // System.err.println("Copy: " + r);
                         Raster src = currentRaster.createWritableChild
-                            (r.x, r.y, r.width, r.height, r.x, r.y, null);
+                                (r.x, r.y, r.width, r.height, r.x, r.y, null);
                         GraphicsUtil.copyData(src, copyRaster);
                         if (g2d != null) {
-                            g2d.setPaint( fillColor );
+                            g2d.setPaint(fillColor);
                             g2d.fill(r);
-                            g2d.setPaint( borderColor );
+                            g2d.setPaint(borderColor);
                             g2d.draw(r);
                         }
                     }
@@ -232,20 +231,19 @@ public class DynamicRenderer extends StaticRenderer {
                 Color fillColor   = new Color( 255, 0, 0, 50 );
                 Color borderColor = new Color(   0, 0, 0, 50 );
 
-                Iterator iter = devRLM.iterator();
-                while (iter.hasNext()) {
-                    Rectangle r = (Rectangle)iter.next();
+                for (Object aDevRLM : devRLM) {
+                    Rectangle r = (Rectangle) aDevRLM;
                     if (!dr.intersects(r)) continue;
                     r = dr.intersection(r);
 
                     // System.err.println("Render: " + r);
                     WritableRaster dst = copyRaster.createWritableChild
-                        (r.x, r.y, r.width, r.height, r.x, r.y, null);
+                            (r.x, r.y, r.width, r.height, r.x, r.y, null);
                     cr.copyData(dst);
                     if (g2d != null) {
-                        g2d.setPaint( fillColor );
+                        g2d.setPaint(fillColor);
                         g2d.fill(r);
-                        g2d.setPaint( borderColor );
+                        g2d.setPaint(borderColor);
                         g2d.draw(r);
                     }
                 }

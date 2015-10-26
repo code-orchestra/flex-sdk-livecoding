@@ -122,9 +122,8 @@ public class ClassFileUtilities {
                 // System.out.println(fromFile.name);
                 Set result = getClassDependencies(fromFile.getInputStream(),
                                                   classpath, false);
-                Iterator j = result.iterator();
-                while (j.hasNext()) {
-                    ClassFile toFile = (ClassFile) cs.get(j.next());
+                for (Object aResult : result) {
+                    ClassFile toFile = (ClassFile) cs.get(aResult);
                     if (fromFile != toFile && toFile != null) {
                         fromFile.deps.add(toFile);
                     }
@@ -134,9 +133,8 @@ public class ClassFileUtilities {
             i = cs.values().iterator();
             while (i.hasNext()) {
                 ClassFile fromFile = (ClassFile) i.next();
-                Iterator j = fromFile.deps.iterator();
-                while (j.hasNext()) {
-                    ClassFile toFile = (ClassFile) j.next();
+                for (Object dep : fromFile.deps) {
+                    ClassFile toFile = (ClassFile) dep;
                     Jar fromJar = fromFile.jar;
                     Jar toJar = toFile.jar;
                     if (fromFile.name.equals(toFile.name)
@@ -157,9 +155,8 @@ public class ClassFileUtilities {
             i = js.values().iterator();
             while (i.hasNext()) {
                 Jar fromJar = (Jar) i.next();
-                Iterator j = fromJar.deps.keySet().iterator();
-                while (j.hasNext()) {
-                    Jar toJar = (Jar) j.next();
+                for (Object o : fromJar.deps.keySet()) {
+                    Jar toJar = (Jar) o;
                     Triple t = new Triple();
                     t.from = fromJar;
                     t.to = toJar;
@@ -175,17 +172,15 @@ public class ClassFileUtilities {
                 System.out.println
                     (t.count + "," + t.from.name + "," + t.to.name);
                 if (showFiles) {
-                    Iterator j = t.from.files.iterator();
-                    while (j.hasNext()) {
-                        ClassFile fromFile = (ClassFile) j.next();
-                        Iterator k = fromFile.deps.iterator();
-                        while (k.hasNext()) {
-                            ClassFile toFile = (ClassFile) k.next();
+                    for (Object file : t.from.files) {
+                        ClassFile fromFile = (ClassFile) file;
+                        for (Object dep : fromFile.deps) {
+                            ClassFile toFile = (ClassFile) dep;
                             if (toFile.jar == t.to
                                     && !t.from.files.contains(toFile.name)) {
                                 System.out.println
-                                    ("\t" + fromFile.name + " --> "
-                                          + toFile.name);
+                                        ("\t" + fromFile.name + " --> "
+                                                + toFile.name);
                             }
                         }
                     }
@@ -286,17 +281,15 @@ public class ClassFileUtilities {
                                                  boolean rec)
             throws IOException {
 
-        Iterator it = getClassDependencies(is).iterator();
-        while (it.hasNext()) {
-            String s = (String)it.next();
+        for (Object o : getClassDependencies(is)) {
+            String s = (String) o;
             if (!done.contains(s)) {
                 done.add(s);
 
-                Iterator cpit = classpath.iterator();
-                while (cpit.hasNext()) {
+                for (Object aClasspath : classpath) {
                     InputStream depis = null;
                     String path = null;
-                    Object cpEntry = cpit.next();
+                    Object cpEntry = aClasspath;
                     if (cpEntry instanceof JarFile) {
                         JarFile jarFile = (JarFile) cpEntry;
                         String classFileName = s + ".class";
@@ -318,7 +311,7 @@ public class ClassFileUtilities {
 
                         if (rec) {
                             computeClassDependencies
-                                (depis, classpath, done, result, rec);
+                                    (depis, classpath, done, result, rec);
                         }
                     }
                 }

@@ -99,11 +99,9 @@ public abstract class FontFace extends GVTFontFace
             return new AWTFontFamily(ff);
         }
 
-        Iterator iter = srcs.iterator();
-        while (iter.hasNext()) {
-            Object o = iter.next();
+        for (Object o : srcs) {
             if (o instanceof String) {
-                String str = (String)o;
+                String str = (String) o;
                 name = FontFamilyResolver.lookup(str);
                 if (name != null) {
                     GVTFontFace ff = createFontFace(str, this);
@@ -111,7 +109,7 @@ public abstract class FontFace extends GVTFontFace
                 }
             } else if (o instanceof ParsedURL) {
                 try {
-                    GVTFontFamily ff = getFontFamily(ctx, (ParsedURL)o);
+                    GVTFontFamily ff = getFontFamily(ctx, (ParsedURL) o);
                     if (ff != null)
                         return ff;
                 } catch (SecurityException ex) {

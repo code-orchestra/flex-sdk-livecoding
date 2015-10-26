@@ -839,9 +839,8 @@ public abstract class SVGOMElement
     void fireBaseAttributeListeners(String ns, String ln) {
         if (targetListeners != null) {
             LinkedList ll = (LinkedList) targetListeners.get(ns, ln);
-            Iterator it = ll.iterator();
-            while (it.hasNext()) {
-                AnimationTargetListener l = (AnimationTargetListener) it.next();
+            for (Object aLl : ll) {
+                AnimationTargetListener l = (AnimationTargetListener) aLl;
                 l.baseValueChanged(this, ns, ln, false);
             }
         }

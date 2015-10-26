@@ -150,9 +150,8 @@ public class Interval {
         // Trace.enter(this, "setBegin", new Object[] { new Float(begin) } ); try {
         float minTime = Float.POSITIVE_INFINITY;
         this.begin = begin;
-        Iterator i = beginDependents.iterator();
-        while (i.hasNext()) {
-            InstanceTime it = (InstanceTime) i.next();
+        for (Object beginDependent : beginDependents) {
+            InstanceTime it = (InstanceTime) beginDependent;
             float t = it.dependentUpdate(begin);
             if (t < minTime) {
                 minTime = t;
@@ -170,9 +169,8 @@ public class Interval {
         float minTime = Float.POSITIVE_INFINITY;
         this.end = end;
         this.endInstanceTime = endInstanceTime;
-        Iterator i = endDependents.iterator();
-        while (i.hasNext()) {
-            InstanceTime it = (InstanceTime) i.next();
+        for (Object endDependent : endDependents) {
+            InstanceTime it = (InstanceTime) endDependent;
             float t = it.dependentUpdate(end);
             if (t < minTime) {
                 minTime = t;

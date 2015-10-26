@@ -385,9 +385,8 @@ public class DOMUtilities extends XMLUtilities {
             if (prefixes != null) {
                 wrapperElementPrefix += " ";
                 Set keySet = prefixes.keySet();
-                Iterator iter = keySet.iterator();
-                while (iter.hasNext()) {
-                    String currentKey = (String) iter.next();
+                for (Object aKeySet : keySet) {
+                    String currentKey = (String) aKeySet;
                     String currentValue = (String) prefixes.get(currentKey);
                     wrapperElementPrefix += currentKey + "=\"" + currentValue
                             + "\" ";

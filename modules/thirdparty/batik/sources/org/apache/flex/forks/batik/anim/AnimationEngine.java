@@ -90,22 +90,21 @@ public abstract class AnimationEngine {
      */
     public void dispose() {
         // Remove any target listeners that are registered.
-        Iterator i = targets.entrySet().iterator();
-        while (i.hasNext()) {
-            Map.Entry e = (Map.Entry) i.next();
+        for (Object o : targets.entrySet()) {
+            Map.Entry e = (Map.Entry) o;
             AnimationTarget target = (AnimationTarget) e.getKey();
             TargetInfo info = (TargetInfo) e.getValue();
 
             Iterator j = info.xmlAnimations.iterator();
             while (j.hasNext()) {
                 DoublyIndexedTable.Entry e2 =
-                    (DoublyIndexedTable.Entry) j.next();
+                        (DoublyIndexedTable.Entry) j.next();
                 String namespaceURI = (String) e2.getKey1();
                 String localName = (String) e2.getKey2();
                 Sandwich sandwich = (Sandwich) e2.getValue();
                 if (sandwich.listenerRegistered) {
                     target.removeTargetListener(namespaceURI, localName, false,
-                                                targetListener);
+                            targetListener);
                 }
             }
 
@@ -116,7 +115,7 @@ public abstract class AnimationEngine {
                 Sandwich sandwich = (Sandwich) e2.getValue();
                 if (sandwich.listenerRegistered) {
                     target.removeTargetListener(null, propertyName, true,
-                                                targetListener);
+                            targetListener);
                 }
             }
         }

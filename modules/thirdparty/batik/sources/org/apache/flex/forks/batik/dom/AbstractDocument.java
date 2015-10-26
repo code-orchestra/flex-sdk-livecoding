@@ -1378,9 +1378,8 @@ public abstract class AbstractDocument
 
         if (!namespaceDeclarations) {
             // remove namespace declarations
-            Iterator i = toRemove.iterator();
-            while (i.hasNext()) {
-                e.removeAttributeNode((Attr) i.next());
+            for (Object aToRemove : toRemove) {
+                e.removeAttributeNode((Attr) aToRemove);
             }
         } else {
             if (namespaces) {

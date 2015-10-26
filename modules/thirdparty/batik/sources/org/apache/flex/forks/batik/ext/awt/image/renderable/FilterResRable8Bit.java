@@ -146,9 +146,8 @@ public class FilterResRable8Bit extends AbstractRable
         // No sources and we are PaintRable so the chain is PaintRable.
         if (v == null) return true;
 
-        Iterator i = v.iterator();
-        while (i.hasNext()) {
-            RenderableImage nri = (RenderableImage)i.next();
+        for (Object aV : v) {
+            RenderableImage nri = (RenderableImage) aV;
             // A source is not paintRable so we are not 100% paintRable.
             if (!allPaintRable(nri)) return false;
         }

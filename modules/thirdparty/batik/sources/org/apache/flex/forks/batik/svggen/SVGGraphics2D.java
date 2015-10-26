@@ -1506,9 +1506,8 @@ public class SVGGraphics2D extends AbstractGraphics2D
         if (unsupportedAttributes == null) return false;
 
         Set      allAttrs = aci.getAllAttributeKeys();
-        Iterator iter     = allAttrs.iterator();
-        while (iter.hasNext()) {
-            if (unsupportedAttributes.contains(iter.next())) {
+        for (Object allAttr : allAttrs) {
+            if (unsupportedAttributes.contains(allAttr)) {
                 return true;
             }
         }

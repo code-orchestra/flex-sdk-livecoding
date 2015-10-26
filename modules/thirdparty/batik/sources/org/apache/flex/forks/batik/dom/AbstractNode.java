@@ -898,17 +898,16 @@ public abstract class AbstractNode
                                         Node newNode) {
         AbstractNode an = (AbstractNode) oldNode;
         if (an.userData != null) {
-            Iterator i = an.userData.entrySet().iterator();
-            while (i.hasNext()) {
-                Map.Entry e = (Map.Entry) i.next();
+            for (Object o : an.userData.entrySet()) {
+                Map.Entry e = (Map.Entry) o;
                 UserDataHandler h
-                    = (UserDataHandler) an.userDataHandlers.get(e.getKey());
+                        = (UserDataHandler) an.userDataHandlers.get(e.getKey());
                 if (h != null) {
                     h.handle(type,
-                             (String) e.getKey(),
-                             e.getValue(),
-                             oldNode,
-                             newNode);
+                            (String) e.getKey(),
+                            e.getValue(),
+                            oldNode,
+                            newNode);
                 }
             }
         }

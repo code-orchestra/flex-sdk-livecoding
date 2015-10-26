@@ -146,7 +146,7 @@ public class WebMacro
     private boolean writeTemplate(String file, String basedir,
                                   String newBasedir)
     {
-        if (file.indexOf(WM_EXT) < 0)
+        if (!file.contains(WM_EXT))
         {
             return false;
         }

@@ -263,12 +263,11 @@ public abstract class SVGUtilities implements SVGConstants, ErrorConstants {
             String baseURI = ((AbstractNode) e).getBaseURI();
             ParsedURL purl = new ParsedURL(baseURI, uriStr);
 
-            Iterator iter = refs.iterator();
-            while (iter.hasNext()) {
-                if (purl.equals(iter.next()))
+            for (Object ref : refs) {
+                if (purl.equals(ref))
                     throw new BridgeException
-                        (ctx, e, ERR_XLINK_HREF_CIRCULAR_DEPENDENCIES,
-                         new Object[] {uriStr});
+                            (ctx, e, ERR_XLINK_HREF_CIRCULAR_DEPENDENCIES,
+                                    new Object[]{uriStr});
             }
 
             try {

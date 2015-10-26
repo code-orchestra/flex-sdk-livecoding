@@ -357,11 +357,10 @@ public class VelocimacroFactory
         {
             String s = "#" +  name;
             s += "(";
-        
-            for( int i=0; i < argArray.length; i++)
-            {
+
+            for (String anArgArray : argArray) {
                 s += " ";
-                s += argArray[i];
+                s += anArgArray;
             }
 
             s += " ) : source = ";

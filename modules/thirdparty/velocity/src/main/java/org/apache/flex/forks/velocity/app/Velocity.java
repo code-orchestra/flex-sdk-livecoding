@@ -375,10 +375,9 @@ public class Velocity implements RuntimeConstants
         construct.append( vmName );
         construct.append( "(" );
 
-        for( int i = 0; i < params.length; i++)
-        {
-            construct.append( " $" );
-            construct.append( params[i] );
+        for (String param : params) {
+            construct.append(" $");
+            construct.append(param);
         }
 
         construct.append(" )");

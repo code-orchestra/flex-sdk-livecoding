@@ -162,9 +162,8 @@ public class ConfigurationTestCase extends BaseTestCase
     private void showVector(FileWriter result, Vector v)
         throws Exception
     {
-        for (int j = 0; j < v.size(); j++)
-        {
-            result.write((String) v.get(j));
+        for (Object aV : v) {
+            result.write((String) aV);
             result.write("\n");
         }
         result.write("\n");

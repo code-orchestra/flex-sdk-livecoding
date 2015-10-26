@@ -247,9 +247,9 @@ public class SVGAnimationEngine extends AnimationEngine {
         String[] eventNamesSVG12 = {
             "load", "resize", "scroll", "zoom"
         };
-        for (int i = 0; i < eventNamesCommon.length; i++) {
-            animationEventNames11.add(eventNamesCommon[i]);
-            animationEventNames12.add(eventNamesCommon[i]);
+        for (String anEventNamesCommon : eventNamesCommon) {
+            animationEventNames11.add(anEventNamesCommon);
+            animationEventNames12.add(anEventNamesCommon);
         }
         Collections.addAll(animationEventNames11, eventNamesSVG11);
         Collections.addAll(animationEventNames12, eventNamesSVG12);
@@ -419,14 +419,14 @@ public class SVGAnimationEngine extends AnimationEngine {
                 timedDocumentRoot.resetDocument(cal);
                 Object[] bridges = initialBridges.toArray();
                 initialBridges = null;
-                for (int i = 0; i < bridges.length; i++) {
+                for (Object bridge2 : bridges) {
                     SVGAnimationElementBridge bridge =
-                        (SVGAnimationElementBridge) bridges[i];
+                            (SVGAnimationElementBridge) bridge2;
                     bridge.initializeAnimation();
                 }
-                for (int i = 0; i < bridges.length; i++) {
+                for (Object bridge1 : bridges) {
                     SVGAnimationElementBridge bridge =
-                        (SVGAnimationElementBridge) bridges[i];
+                            (SVGAnimationElementBridge) bridge1;
                     bridge.initializeTimedElement();
                 }
                 // tick(0, false);

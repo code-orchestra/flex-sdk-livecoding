@@ -64,9 +64,8 @@ public class StringUtils
         StringBuffer sb = new StringBuffer();
         int size = list.size();
 
-        for (int i = 0; i < size; i++)
-        {
-            sb.append(list.get(i).toString());
+        for (Object aList : list) {
+            sb.append(aList.toString());
         }
         return sb.toString();
     }
@@ -583,11 +582,9 @@ public class StringUtils
     public boolean allEmpty(List list)
     {
         int size = list.size();
-        
-        for (int i = 0; i < size; i++)
-        {
-            if (list.get(i) != null && list.get(i).toString().length() > 0)
-            {
+
+        for (Object aList : list) {
+            if (aList != null && aList.toString().length() > 0) {
                 return false;
             }
         }            

@@ -2106,8 +2106,8 @@ public abstract class AbstractDocument
                 if (DOMConstants.DOM_ERROR_HANDLER_PARAM.equals(s)) {
                     return true;
                 }
-                for (int i = 0; i < booleanParamNames.length; i++) {
-                    if (booleanParamNames[i].equals(s)) {
+                for (String booleanParamName : booleanParamNames) {
+                    if (booleanParamName.equals(s)) {
                         return true;
                     }
                 }

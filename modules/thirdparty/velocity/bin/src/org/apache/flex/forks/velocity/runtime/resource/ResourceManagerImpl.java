@@ -124,23 +124,21 @@ public class ResourceManagerImpl implements ResourceManager
         ResourceLoader resourceLoader;
         
         assembleResourceLoaderInitializers();
-        
-        for (int i = 0; i < sourceInitializerList.size(); i++)
-        {
-            ExtendedProperties configuration = (ExtendedProperties) sourceInitializerList.get(i);
+
+        for (Object aSourceInitializerList : sourceInitializerList) {
+            ExtendedProperties configuration = (ExtendedProperties) aSourceInitializerList;
             String loaderClass = configuration.getString("class");
 
-            if ( loaderClass == null)
-            {
-                rsvc.error(  "Unable to find '"
-                                + configuration.getString(RESOURCE_LOADER_IDENTIFIER)
-                                + ".resource.loader.class' specification in configuation."
-                                + " This is a critical value.  Please adjust configuration.");
+            if (loaderClass == null) {
+                rsvc.error("Unable to find '"
+                        + configuration.getString(RESOURCE_LOADER_IDENTIFIER)
+                        + ".resource.loader.class' specification in configuation."
+                        + " This is a critical value.  Please adjust configuration.");
                 continue;
             }
 
-            resourceLoader = ResourceLoaderFactory.getLoader( rsvc, loaderClass);
-            resourceLoader.commonInit( rsvc, configuration);
+            resourceLoader = ResourceLoaderFactory.getLoader(rsvc, loaderClass);
+            resourceLoader.commonInit(rsvc, configuration);
             resourceLoader.init(configuration);
             resourceLoaders.add(resourceLoader);
 
@@ -221,8 +219,7 @@ public class ResourceManagerImpl implements ResourceManager
         Vector resourceLoaderNames = 
             rsvc.getConfiguration().getVector(RuntimeConstants.RESOURCE_LOADER);
 
-        for (int i = 0; i < resourceLoaderNames.size(); i++)
-        {
+        for (Object resourceLoaderName : resourceLoaderNames) {
             /*
              * The loader id might look something like the following:
              *
@@ -231,20 +228,19 @@ public class ResourceManagerImpl implements ResourceManager
              * The loader id is the prefix used for all properties
              * pertaining to a particular loader.
              */
-            String loaderID = 
-                resourceLoaderNames.get(i) + "." + RuntimeConstants.RESOURCE_LOADER;
+            String loaderID =
+                    resourceLoaderName + "." + RuntimeConstants.RESOURCE_LOADER;
 
             ExtendedProperties loaderConfiguration =
-                rsvc.getConfiguration().subset(loaderID);
+                    rsvc.getConfiguration().subset(loaderID);
 
             /*
              *  we can't really count on ExtendedProperties to give us an empty set
              */
 
-            if ( loaderConfiguration == null)
-            {
-                rsvc.warn("ResourceManager : No configuration information for resource loader named '" 
-                          + resourceLoaderNames.get(i) + "'. Skipping.");
+            if (loaderConfiguration == null) {
+                rsvc.warn("ResourceManager : No configuration information for resource loader named '"
+                        + resourceLoaderName + "'. Skipping.");
                 continue;
             }
 
@@ -254,7 +250,7 @@ public class ResourceManagerImpl implements ResourceManager
              *  in the 'name' field
              */
 
-            loaderConfiguration.setProperty( RESOURCE_LOADER_IDENTIFIER, resourceLoaderNames.get(i));
+            loaderConfiguration.setProperty(RESOURCE_LOADER_IDENTIFIER, resourceLoaderName);
 
             /*
              * Add resources to the list of resource loader
@@ -408,9 +404,8 @@ public class ResourceManagerImpl implements ResourceManager
 
         ResourceLoader resourceLoader = null;
 
-        for (int i = 0; i < resourceLoaders.size(); i++)
-        {
-            resourceLoader = (ResourceLoader) resourceLoaders.get(i);
+        for (Object resourceLoader1 : resourceLoaders) {
+            resourceLoader = (ResourceLoader) resourceLoader1;
             resource.setResourceLoader(resourceLoader);
             
             /*
@@ -418,10 +413,8 @@ public class ResourceManagerImpl implements ResourceManager
              *  as that is ok in our new multi-loader environment
              */
 
-            try 
-            {
-                if (resource.process())
-                {
+            try {
+                if (resource.process()) {
                      /*
                       *  FIXME  (gmj)
                       *  moved in here - technically still 
@@ -431,18 +424,15 @@ public class ResourceManagerImpl implements ResourceManager
                       *  multi-path support - will revisit and fix
                       */
 
-                     if ( logWhenFound )
-                     {
-                         rsvc.info("ResourceManager : found " + resourceName + 
-                                      " with loader " + resourceLoader.getClassName() );
-                     }
-   
-                     howOldItWas = resourceLoader.getLastModified( resource );
-                     break;
-                 }
-            }
-            catch( ResourceNotFoundException rnfe )
-            {
+                    if (logWhenFound) {
+                        rsvc.info("ResourceManager : found " + resourceName +
+                                " with loader " + resourceLoader.getClassName());
+                    }
+
+                    howOldItWas = resourceLoader.getLastModified(resource);
+                    break;
+                }
+            } catch (ResourceNotFoundException rnfe) {
                 /*
                  *  that's ok - it's possible to fail in
                  *  multi-loader environment
@@ -586,9 +576,8 @@ public class ResourceManagerImpl implements ResourceManager
         /*
          *  loop through our loaders...
          */
-        for (int i = 0; i < resourceLoaders.size(); i++)
-        { 
-            resourceLoader = (ResourceLoader) resourceLoaders.get(i);
+        for (Object resourceLoader1 : resourceLoaders) {
+            resourceLoader = (ResourceLoader) resourceLoader1;
 
             InputStream is = null;
 
@@ -596,35 +585,25 @@ public class ResourceManagerImpl implements ResourceManager
              *  if we find one that can provide the resource,
              *  return the name of the loaders's Class
              */
-            try
-            {
-                is=resourceLoader.getResourceStream( resourceName );
-               
-                if( is != null)
-                {
+            try {
+                is = resourceLoader.getResourceStream(resourceName);
+
+                if (is != null) {
                     return resourceLoader.getClass().toString();
                 }
-            }
-            catch( ResourceNotFoundException e)
-            {
+            } catch (ResourceNotFoundException e) {
                 /*
                  * this isn't a problem.  keep going
                  */
-            }
-            finally
-            {
+            } finally {
                 /*
                  *  if we did find one, clean up because we were 
                  *  returned an open stream
                  */
-                if (is != null)
-                {
-                    try
-                    {
+                if (is != null) {
+                    try {
                         is.close();
-                    }
-                    catch( IOException ioe)
-                    {
+                    } catch (IOException ioe) {
                     }
                 }
             }

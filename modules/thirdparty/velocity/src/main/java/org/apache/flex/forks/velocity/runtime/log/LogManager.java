@@ -110,37 +110,29 @@ public class LogManager
          *  search out a default simple file logger
          */
 
-        for( Iterator ii = classes.iterator(); ii.hasNext(); )
-        {
-            String claz = (String) ii.next();
+        for (Object aClass : classes) {
+            String claz = (String) aClass;
 
-            if (claz != null && claz.length() > 0 )
-            {
-                rsvc.info("Trying to use logger class " + claz );
-          
-                try
-                {
-                    o = Class.forName( claz ).newInstance();
+            if (claz != null && claz.length() > 0) {
+                rsvc.info("Trying to use logger class " + claz);
 
-                    if ( o instanceof LogSystem )
-                    {
-                        ((LogSystem) o).init( rsvc );
+                try {
+                    o = Class.forName(claz).newInstance();
 
-                        rsvc.info("Using logger class " + claz );
+                    if (o instanceof LogSystem) {
+                        ((LogSystem) o).init(rsvc);
+
+                        rsvc.info("Using logger class " + claz);
 
                         return (LogSystem) o;
+                    } else {
+                        rsvc.error("The specifid logger class " + claz +
+                                " isn't a valid LogSystem");
                     }
-                    else
-                    {
-                        rsvc.error("The specifid logger class " + claz + 
-                                   " isn't a valid LogSystem");
-                    }
-                }
-                catch( NoClassDefFoundError ncdfe )
-                {
-                    rsvc.debug("Couldn't find class " + claz 
-                               + " or necessary supporting classes in "
-                               + "classpath. Exception : " + ncdfe);
+                } catch (NoClassDefFoundError ncdfe) {
+                    rsvc.debug("Couldn't find class " + claz
+                            + " or necessary supporting classes in "
+                            + "classpath. Exception : " + ncdfe);
                 }
             }
         }

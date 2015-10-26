@@ -567,8 +567,8 @@ public class PNGImageEncoder extends ImageEncoderImpl {
             ChunkStream cs = new ChunkStream("sBIT");
             int[] significantBits = param.getSignificantBits();
             int len = significantBits.length;
-            for (int i = 0; i < len; i++) {
-                cs.writeByte(significantBits[i]);
+            for (int significantBit : significantBits) {
+                cs.writeByte(significantBit);
             }
             cs.writeToStream(dataOutput);
             cs.close();
@@ -638,8 +638,8 @@ public class PNGImageEncoder extends ImageEncoderImpl {
             ChunkStream cs = new ChunkStream("hIST");
 
             int[] hist = param.getPaletteHistogram();
-            for (int i = 0; i < hist.length; i++) {
-                cs.writeShort(hist[i]);
+            for (int aHist : hist) {
+                cs.writeShort(aHist);
             }
 
             cs.writeToStream(dataOutput);
@@ -656,8 +656,8 @@ public class PNGImageEncoder extends ImageEncoderImpl {
             if (param instanceof PNGEncodeParam.Palette) {
                 byte[] t =
                     ((PNGEncodeParam.Palette)param).getPaletteTransparency();
-                for (int i = 0; i < t.length; i++) {
-                    cs.writeByte(t[i]);
+                for (byte aT : t) {
+                    cs.writeByte(aT);
                 }
             } else if (param instanceof PNGEncodeParam.Gray) {
                 int t = ((PNGEncodeParam.Gray)param).getTransparentGray();

@@ -61,23 +61,22 @@ public class SerializedTemplateFactory
 	public static void main(String[] args) throws Exception
 	{
 		Velocity.init();
-		
-		for(int i=0,j=args.length; i<j; i++)
-		{
-			String serName = args[i] + "s";
-	        Template template = Velocity.getTemplate(args[i]);
-	
-	        try {
-		        FileOutputStream fos = new FileOutputStream(serName);
-		        ObjectOutputStream ooo = new ObjectOutputStream(fos);
-		        Object data = template.getData();
-		        ooo.writeObject(data);
-		        ooo.close();
-		        fos.close();
-	        } catch(NotSerializableException nse) {
-	        	System.err.println("Make sure you are using the special velocity in flex/sdk/lib.");
-	        	throw nse;
-	        }
+
+		for (String arg : args) {
+			String serName = arg + "s";
+			Template template = Velocity.getTemplate(arg);
+
+			try {
+				FileOutputStream fos = new FileOutputStream(serName);
+				ObjectOutputStream ooo = new ObjectOutputStream(fos);
+				Object data = template.getData();
+				ooo.writeObject(data);
+				ooo.close();
+				fos.close();
+			} catch (NotSerializableException nse) {
+				System.err.println("Make sure you are using the special velocity in flex/sdk/lib.");
+				throw nse;
+			}
 		}
 	}
 }

@@ -178,8 +178,7 @@ public class IntrospectorTestCase extends BaseTestCase
             if (totalFailures > 0)
             {
                 StringBuffer sb = new StringBuffer("\nIntrospection Errors:\n");
-                for (int i = 0; i < totalFailures; i++)
-                    sb.append((String) failures.get(i)).append("\n");
+                for (Object failure : failures) sb.append((String) failure).append("\n");
             
                 fail(sb.toString());
             }                    

@@ -715,10 +715,9 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
             }
 
             int numExtraFields = extraFields.length;
-            for(int i = 0; i < numExtraFields; i++) {
-                TIFFField fld = extraFields[i];
+            for (TIFFField fld : extraFields) {
                 Integer tagValue = fld.getTag();
-                if(!extantTags.contains(tagValue)) {
+                if (!extantTags.contains(tagValue)) {
                     fields.add(fld);
                     extantTags.add(tagValue);
                 }
@@ -1425,8 +1424,8 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         writeLong(nextIFDOffset);
 
         // Write the tag values that did not fit into 4 bytes
-        for (int i = 0; i < tooBig.size(); i++) {
-            writeValues((TIFFField)tooBig.get(i));
+        for (Object aTooBig : tooBig) {
+            writeValues((TIFFField) aTooBig);
         }
     }
 

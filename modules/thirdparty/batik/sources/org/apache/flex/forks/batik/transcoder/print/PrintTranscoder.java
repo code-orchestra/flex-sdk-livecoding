@@ -727,9 +727,9 @@ public class PrintTranscoder extends SVGAbstractTranscoder
         // First, request the transcoder to transcode
         // each of the input files
         //
-        for(int i=0; i<args.length; i++){
-            transcoder.transcode(new TranscoderInput(new File(args[i]).toURL().toString()),
-                                 null);
+        for (String arg : args) {
+            transcoder.transcode(new TranscoderInput(new File(arg).toURL().toString()),
+                    null);
         }
 
         //

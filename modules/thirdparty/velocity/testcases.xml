@@ -19,11 +19,11 @@
 <!-- Testcases for Velocity -->
 <project name="main" default="test-all">
 
-  <property name="build.dir" value="../bin"/>
+  <property name="build.dir" value="bin"/>
   <property name="build.dest" value="${build.dir}/classes"/>
   <property name="ant.home" value="."/>
-  <property name="test.home" value="../test"/>
-  <property name="junit.jar" value="lib/junit-3.7.jar"/>
+  <property name="test.home" value="test"/>
+  <property name="junit.jar" value="build/lib/junit-3.7.jar"/>
 
   <!-- JUnit Testbed properties -->
   <property name="velocity.test.runner" value="junit.textui.TestRunner"/>
@@ -33,7 +33,7 @@
 
   <!-- Build classpath -->
   <path id="classpath">
-    <fileset dir="./lib">
+    <fileset dir="build/lib">
       <include name="**/*.jar"/>
     </fileset>
     <pathelement location="${build.dest}"/>
@@ -195,8 +195,8 @@
       <arg value="org.apache.flex.forks.velocity.test.ClasspathResourceTest"/>
       <classpath>
         <path refid="classpath"/>
-        <pathelement location="../test/cpload/test1.jar"/>
-        <pathelement location="../test/cpload/test2.jar"/>
+        <pathelement location="test/cpload/test1.jar"/>
+        <pathelement location="test/cpload/test2.jar"/>
       </classpath>
     </java>
   </target>
@@ -354,7 +354,7 @@
     <taskdef name="texen" classname="org.apache.flex.forks.velocity.texen.ant.TexenTask"
 	reverseloader="true">
       <classpath>
-        <pathelement location="../test/texen-classpath/test.jar"/>
+        <pathelement location="test/texen-classpath/test.jar"/>
         <path refid="classpath"/>
       </classpath>
     </taskdef>
@@ -383,7 +383,7 @@
       <arg value="org.apache.flex.forks.velocity.test.MultiLoaderTestCase"/>
       <classpath>
         <path refid="classpath"/>
-        <pathelement location="../test/multiloader/test1.jar"/>
+        <pathelement location="test/multiloader/test1.jar"/>
       </classpath>
     </java>
   </target>

@@ -246,7 +246,7 @@ public class CompcPreLink implements flex2.compiler.PreLink
         // Sort the checksums to make sure the checksums are always in the same order.
         // Later we will be creating a unique name for the root class from the digests
         // of the checksums. That's why the order is important.
-        StringBuffer checksumBuffer = new StringBuffer();
+        StringBuilder checksumBuffer = new StringBuilder();
         Collections.sort(checksumList);
         for (Long checksum : checksumList) {
             checksumBuffer.append(checksum.longValue());

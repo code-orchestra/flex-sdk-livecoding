@@ -901,7 +901,7 @@ public class DocumentBuilder extends ComponentBuilder implements MXMLNamespaces
     {
         if ((varmap == null) || (varmap.size() == 0))
             return null;
-        StringBuffer buf = new StringBuffer( 50 );
+        StringBuilder buf = new StringBuilder( 50 );
         buf.append( "[SWF( " );
         boolean more = false;
         for (String var : varmap.keySet()) {

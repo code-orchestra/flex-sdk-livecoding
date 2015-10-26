@@ -113,7 +113,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
             String localPart = (isStart) ? localName : "/" + localName;
             if (ConstantMappings.containsKey(localPart))
             {
-                return (Integer) ConstantMappings.get(localPart);
+                return ((Integer) ConstantMappings.get(localPart)).intValue();
             }
         }
         else if (MXML_2006_NAMESPACE.equals(uri) &&
@@ -122,7 +122,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
             String localPart = (isStart) ? localName : "/" + localName;
             if (ConstantMappings.containsKey(localPart))
             {
-                return (Integer) ConstantMappings.get(localPart);
+                return ((Integer) ConstantMappings.get(localPart)).intValue();
             }
         }
         else if (FXG_2008_NAMESPACE.equals(uri) &&
@@ -131,7 +131,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
             String localPart = (isStart) ? localName : "/" + localName;
             if (ConstantMappings.containsKey(localPart))
             {
-                return (Integer) ConstantMappings.get(localPart);
+                return ((Integer) ConstantMappings.get(localPart)).intValue();
             }
         }
         else if ((SPARK_NAMESPACE.equals(uri) || MX_NAMESPACE.equals(uri)) &&
@@ -140,7 +140,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
             String localPart = (isStart) ? localName : "/" + localName;
             if (ConstantMappings.containsKey(localPart))
             {
-                return (Integer) ConstantMappings.get(localPart);
+                return ((Integer) ConstantMappings.get(localPart)).intValue();
             }
         }
 

@@ -497,7 +497,7 @@ public class StringUtils
 	 */
     public static String unformatString(String s)
     {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         int i = 0;
 
         while (i < s.length())

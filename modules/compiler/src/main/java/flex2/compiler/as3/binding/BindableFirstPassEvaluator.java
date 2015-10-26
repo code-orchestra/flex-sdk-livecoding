@@ -219,13 +219,10 @@ public class BindableFirstPassEvaluator extends GenerativeFirstPassEvaluator
                     if (node.instanceinits != null)
                     {
                         //	visit instance variable initializers
-                        Iterator iterator = node.instanceinits.iterator();
 
-                        while (iterator.hasNext())
-                        {
-                            Node instanceinit = (Node) iterator.next();
-                            instanceinit.evaluate(context, this);
-                        }
+						for (Node instanceinit : node.instanceinits) {
+							instanceinit.evaluate(context, this);
+						}
                     }
 
                     //	visit all statements within the classdef

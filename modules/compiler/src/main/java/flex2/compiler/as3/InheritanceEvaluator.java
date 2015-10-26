@@ -173,31 +173,22 @@ public class InheritanceEvaluator extends EvaluatorAdapter
         // process interfaces
         if (classDefinition.interfaces != null)
         {
-            Iterator iterator = classDefinition.interfaces.items.iterator();
 
-            while ( iterator.hasNext() )
-            {
-                MemberExpressionNode memberExpression = (MemberExpressionNode) iterator.next();
+            for (Object item : classDefinition.interfaces.items) {
+                MemberExpressionNode memberExpression = (MemberExpressionNode) item;
 
-                if (memberExpression.selector != null)
-                {
+                if (memberExpression.selector != null) {
                     IdentifierNode identifier = memberExpression.selector.getIdentifier();
                     String interfaceName = toString(identifier);
 
-                    if ((identifier.ref != null) && (identifier.ref.namespaces != null))
-                    {
+                    if ((identifier.ref != null) && (identifier.ref.namespaces != null)) {
                         NamespaceValue namespaceValue = (NamespaceValue) identifier.ref.namespaces.get(0);
-                        if (namespaceValue.name.length() > 0)
-                        {
+                        if (namespaceValue.name.length() > 0) {
                             inheritanceMultiNames.add(new MultiName(namespaceValue.name, interfaceName));
-                        }
-                        else
-                        {
+                        } else {
                             inheritanceNames.add(interfaceName);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         inheritanceNames.add(interfaceName);
                     }
                 }
@@ -296,31 +287,22 @@ public class InheritanceEvaluator extends EvaluatorAdapter
         // this is always the case, though.
         if (interfaceDefinition.interfaces != null)
         {
-            Iterator iterator = interfaceDefinition.interfaces.items.iterator();
 
-            while ( iterator.hasNext() )
-            {
-                MemberExpressionNode memberExpression = (MemberExpressionNode) iterator.next();
+            for (Object item : interfaceDefinition.interfaces.items) {
+                MemberExpressionNode memberExpression = (MemberExpressionNode) item;
 
-                if (memberExpression.selector != null)
-                {
+                if (memberExpression.selector != null) {
                     IdentifierNode identifier = memberExpression.selector.getIdentifier();
                     String baseInterfaceName = toString(identifier);
 
-                    if ((identifier.ref != null) && (identifier.ref.namespaces != null))
-                    {
+                    if ((identifier.ref != null) && (identifier.ref.namespaces != null)) {
                         NamespaceValue namespaceValue = (NamespaceValue) identifier.ref.namespaces.get(0);
-                        if (namespaceValue.name.length() > 0)
-                        {
+                        if (namespaceValue.name.length() > 0) {
                             inheritanceMultiNames.add(new MultiName(namespaceValue.name, baseInterfaceName));
-                        }
-                        else
-                        {
+                        } else {
                             inheritanceNames.add(baseInterfaceName);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         inheritanceNames.add(baseInterfaceName);
                     }
                 }

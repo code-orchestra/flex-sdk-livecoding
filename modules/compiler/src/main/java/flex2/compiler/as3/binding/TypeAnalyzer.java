@@ -794,54 +794,40 @@ public class TypeAnalyzer extends EvaluatorAdapter
     {
         if (definition.interfaces != null)
         {
-            Iterator iterator = definition.interfaces.items.iterator();
 
-            while ( iterator.hasNext() )
-            {
-                MemberExpressionNode memberExpression = (MemberExpressionNode) iterator.next();
+            for (Object item : definition.interfaces.items) {
+                MemberExpressionNode memberExpression = (MemberExpressionNode) item;
 
-                if (memberExpression.selector != null)
-                {
+                if (memberExpression.selector != null) {
                     IdentifierNode identifier = memberExpression.selector.getIdentifier();
                     String interfaceName = toString(identifier);
-                    
-                    if ((identifier.ref != null) && (identifier.ref.namespaces != null))
-                    {
+
+                    if ((identifier.ref != null) && (identifier.ref.namespaces != null)) {
                         int size = identifier.ref.namespaces.size();
 
-                        if (size == 0)
-                        {
+                        if (size == 0) {
                             NamespaceValue namespaceValue = (NamespaceValue) identifier.ref.namespaces.get(0);
-                            if (namespaceValue.name.length() > 0)
-                            {
+                            if (namespaceValue.name.length() > 0) {
                                 currentInfo.addInterfaceMultiName(namespaceValue.name, interfaceName);
-                            }
-                            else
-                            {
+                            } else {
                                 currentInfo.addInterfaceName(interfaceName);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             Set<String> namespacesSet = new HashSet<String>();
-                            
-                            for (int i = 0; i < size; i++)
-                            {
+
+                            for (int i = 0; i < size; i++) {
                                 NamespaceValue namespaceValue = (NamespaceValue) identifier.ref.namespaces.get(i);
-                                
-                                if (namespaceValue.name.length() > 0)
-                                {
+
+                                if (namespaceValue.name.length() > 0) {
                                     namespacesSet.add(namespaceValue.name);
                                 }
                             }
-                            
+
                             String[] namespaces = new String[namespacesSet.size()];
                             namespacesSet.toArray(namespaces);
                             currentInfo.addInterfaceMultiName(namespaces, interfaceName);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         currentInfo.addInterfaceName(interfaceName);
                     }
                 }

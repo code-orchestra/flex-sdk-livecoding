@@ -350,24 +350,14 @@ public class NodeMagic
        ArrayList<String> result = new ArrayList<String>();
        if (node != null)
        {
-           Iterator attrsIterator = node.items.iterator();
 
-           while ( attrsIterator.hasNext() )
-           {
-               Object attrsNode = attrsIterator.next();
+           for (Object attrsNode : node.items) {
+               if (attrsNode instanceof ListNode) {
 
-               if (attrsNode instanceof ListNode)
-               {
-                   Iterator listIterator = ((ListNode) attrsNode).items.iterator();
-
-                   while ( listIterator.hasNext() )
-                   {
-                       Object listNode = listIterator.next();
+                   for (Object listNode : ((ListNode) attrsNode).items) {
                        checkForIdentifier(result, listNode);
                    }
-               }
-               else
-               {
+               } else {
                    checkForIdentifier(result, attrsNode);
                }
            }
@@ -420,32 +410,21 @@ public class NodeMagic
     public static Set<String> getImports(Multinames multiNames)
     {
         Set<String> result = new HashSet<String>();
-        Iterator iterator = multiNames.entrySet().iterator();
 
-        while ( iterator.hasNext() )
-        {
-            Entry entry = (Entry) iterator.next();
+        for (Object o : multiNames.entrySet()) {
+            Entry entry = (Entry) o;
             String className = (String) entry.getKey();
             Namespaces namespaces = (Namespaces) entry.getValue();
 
-            if (namespaces.isEmpty())
-            {
+            if (namespaces.isEmpty()) {
                 result.add(className);
-            }
-            else
-            {
-                Iterator namespaceIterator = namespaces.iterator();
+            } else {
 
-                while ( namespaceIterator.hasNext() )
-                {
-                    ObjectValue objectValue = (ObjectValue) namespaceIterator.next();
+                for (Object objectValue : namespaces) {
                     String packageName = objectValue.toString();
-                    if (packageName.length() > 0)
-                    {
+                    if (packageName.length() > 0) {
                         result.add(packageName + "." + className);
-                    }
-                    else
-                    {
+                    } else {
                         result.add(className);
                     }
                 }

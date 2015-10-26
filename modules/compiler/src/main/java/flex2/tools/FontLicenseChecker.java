@@ -105,7 +105,7 @@ public class FontLicenseChecker
 			else
 			{
 				Os2Table table = font.getOS2Table();
-				Integer integ = new Integer(table.getLicenseType());
+				Integer integ = (int) table.getLicenseType();
 				ArrayList<String> list = fonts.get(integ);
 				if (list == null)
 				{

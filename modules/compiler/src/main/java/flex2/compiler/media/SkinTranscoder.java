@@ -147,15 +147,15 @@ public class SkinTranscoder extends AbstractTranscoder
             velocityContext.put("packageName", packageName);
             velocityContext.put("baseClassName", baseClassName);
             velocityContext.put("className", className);
-            velocityContext.put("needsIBorder", Boolean.valueOf(needsIBorder));
-            velocityContext.put("needsBorderMetrics", Boolean.valueOf(needsBorderMetrics));
-            velocityContext.put("needsIFlexDisplayObject", Boolean.valueOf(needsIFlexDisplayObject));
-            velocityContext.put("needsMeasuredHeight", Boolean.valueOf(needsMeasuredHeight));
-            velocityContext.put("needsMeasuredWidth", Boolean.valueOf(needsMeasuredWidth));
-            velocityContext.put("needsMove", Boolean.valueOf(needsMove));
-            velocityContext.put("needsSetActualSize", Boolean.valueOf(needsSetActualSize));
-            velocityContext.put("needsName", Boolean.valueOf(!flexMovieClipOrSprite));
-            velocityContext.put("needsToString", Boolean.valueOf(!flexMovieClipOrSprite));
+            velocityContext.put("needsIBorder", needsIBorder);
+            velocityContext.put("needsBorderMetrics", needsBorderMetrics);
+            velocityContext.put("needsIFlexDisplayObject", needsIFlexDisplayObject);
+            velocityContext.put("needsMeasuredHeight", needsMeasuredHeight);
+            velocityContext.put("needsMeasuredWidth", needsMeasuredWidth);
+            velocityContext.put("needsMove", needsMove);
+            velocityContext.put("needsSetActualSize", needsSetActualSize);
+            velocityContext.put("needsName", !flexMovieClipOrSprite);
+            velocityContext.put("needsToString", !flexMovieClipOrSprite);
 
             StringWriter stringWriter = new StringWriter();
             template.merge(velocityContext, stringWriter);

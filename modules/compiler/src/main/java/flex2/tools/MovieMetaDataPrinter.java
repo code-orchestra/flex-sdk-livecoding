@@ -233,11 +233,11 @@ public class MovieMetaDataPrinter
 		{
 			if (currentClass != null)
 			{
-				methods.put(new Integer(methodInfo), currentClass);
+				methods.put(methodInfo, currentClass);
 			}
 			else if (currentFunction != null)
 			{
-				methods.put(new Integer(methodInfo), currentFunction);
+				methods.put(methodInfo, currentFunction);
 			}
 		}
 
@@ -291,7 +291,7 @@ public class MovieMetaDataPrinter
 
 		public void beginBody(int methodID, int codeStart, long codeLength)
 		{
-			currentDefinition = methods.get(new Integer(methodID));
+			currentDefinition = methods.get(methodID);
 		}
 
 		public void beginCInit(int methodID)

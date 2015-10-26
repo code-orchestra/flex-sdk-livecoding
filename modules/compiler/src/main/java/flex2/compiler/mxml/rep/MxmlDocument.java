@@ -826,7 +826,7 @@ public final class MxmlDocument
         String typeName = NameFormatter.retrieveClassName(type.getName());
         Integer cell = anonIdCounts.get(typeName);
         int i = cell == null ? 1 : cell.intValue();
-        anonIdCounts.put(typeName, new Integer(i + 1));
+        anonIdCounts.put(typeName, i + 1);
         return i;
     }
 

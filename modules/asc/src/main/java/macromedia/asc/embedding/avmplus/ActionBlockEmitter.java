@@ -1669,7 +1669,7 @@ public class ActionBlockEmitter extends Emitter
         // either not integral or not small enough to fit in uint or int                                 
         ppType[0] = cx.doubleType();
         // canonicalize NaN and Infinity
-        d = Double.valueOf(sum);
+        d = sum;
         if (d.isNaN())
             d = Double.NaN;
         else if (d.isInfinite()) {

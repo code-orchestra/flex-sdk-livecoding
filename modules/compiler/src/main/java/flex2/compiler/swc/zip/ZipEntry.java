@@ -356,7 +356,7 @@ public class ZipEntry extends java.util.zip.ZipEntry implements Cloneable {
         if (haveSetCompressedSize()) {
             performSetCompressedSize(this, size);
         } else {
-            compressedSize = new Long(size);
+            compressedSize = size;
         }
     }
 
@@ -426,7 +426,7 @@ public class ZipEntry extends java.util.zip.ZipEntry implements Cloneable {
      * @since 1.2
      */
     private static void performSetCompressedSize(ZipEntry ze, long size) {
-        final Object[] s = {new Long(size)};
+        final Object[] s = {size};
         try {
             setCompressedSizeMethod.invoke(ze, s);
         } catch (InvocationTargetException ite) {

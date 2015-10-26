@@ -1063,7 +1063,7 @@ public final class ConfigurationBuffer
 
 	public void addPosition(String var, int iStart, int iEnd)
 	{
-		positions.add(new Object[] { var, new Integer(iStart), new Integer(iEnd) });
+		positions.add(new Object[] { var, iStart, iEnd});
 	}
 	
 	public List<Object[]> getPositions()

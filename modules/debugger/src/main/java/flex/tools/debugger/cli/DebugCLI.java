@@ -6696,54 +6696,54 @@ public class DebugCLI implements Runnable, SourceLocator {
      */
     static StringIntArray g_commandArray = new StringIntArray(new Object[][]
             {
-                    {"awatch", new Integer(CMD_AWATCH)}, //$NON-NLS-1$
-                    {"break", new Integer(CMD_BREAK)}, //$NON-NLS-1$
-                    {"bt", new Integer(INFO_STACK_CMD)}, //$NON-NLS-1$
-                    {"continue", new Integer(CMD_CONTINUE)}, //$NON-NLS-1$
-                    {"catch", new Integer(CMD_CATCH)}, //$NON-NLS-1$
-                    {"cf", new Integer(CMD_CF)}, //$NON-NLS-1$
-                    {"clear", new Integer(CMD_CLEAR)}, //$NON-NLS-1$
-                    {"commands", new Integer(CMD_COMMANDS)}, //$NON-NLS-1$
-                    {"condition", new Integer(CMD_CONDITION)}, //$NON-NLS-1$
-                    {"connect", new Integer(CMD_CONNECT)}, //$NON-NLS-1$
-                    {"delete", new Integer(CMD_DELETE)}, //$NON-NLS-1$
-                    {"disable", new Integer(CMD_DISABLE)}, //$NON-NLS-1$
-                    {"disassemble", new Integer(CMD_DISASSEMBLE)}, //$NON-NLS-1$
-                    {"display", new Integer(CMD_DISPLAY)}, //$NON-NLS-1$
-                    {"directory", new Integer(CMD_DIRECTORY)}, //$NON-NLS-1$
-                    {"down", new Integer(CMD_DOWN)}, //$NON-NLS-1$
-                    {"enable", new Integer(CMD_ENABLE)}, //$NON-NLS-1$
-                    {"finish", new Integer(CMD_FINISH)}, //$NON-NLS-1$
-                    {"file", new Integer(CMD_FILE)}, //$NON-NLS-1$
-                    {"frame", new Integer(CMD_FRAME)}, //$NON-NLS-1$
-                    {"help", new Integer(CMD_HELP)}, //$NON-NLS-1$
-                    {"halt", new Integer(CMD_HALT)}, //$NON-NLS-1$
-                    {"handle", new Integer(CMD_HANDLE)}, //$NON-NLS-1$
-                    {"home", new Integer(CMD_HOME)}, //$NON-NLS-1$
-                    {"info", new Integer(CMD_INFO)}, //$NON-NLS-1$
-                    {"kill", new Integer(CMD_KILL)}, //$NON-NLS-1$
-                    {"list", new Integer(CMD_LIST)}, //$NON-NLS-1$
-                    {"next", new Integer(CMD_NEXT)}, //$NON-NLS-1$
-                    {"nexti", new Integer(CMD_NEXT)}, //$NON-NLS-1$
-                    {"mctree", new Integer(CMD_MCTREE)}, //$NON-NLS-1$
-                    {"print", new Integer(CMD_PRINT)}, //$NON-NLS-1$
-                    {"pwd", new Integer(CMD_PWD)}, //$NON-NLS-1$
-                    {"quit", new Integer(CMD_QUIT)}, //$NON-NLS-1$
-                    {"run", new Integer(CMD_RUN)}, //$NON-NLS-1$
-                    {"rwatch", new Integer(CMD_RWATCH)}, //$NON-NLS-1$
-                    {"step", new Integer(CMD_STEP)}, //$NON-NLS-1$
-                    {"stepi", new Integer(CMD_STEP)}, //$NON-NLS-1$
-                    {"set", new Integer(CMD_SET)}, //$NON-NLS-1$
-                    {"show", new Integer(CMD_SHOW)}, //$NON-NLS-1$
-                    {"source", new Integer(CMD_SOURCE)}, //$NON-NLS-1$
-                    {"tutorial", new Integer(CMD_TUTORIAL)}, //$NON-NLS-1$
-                    {"undisplay", new Integer(CMD_UNDISPLAY)}, //$NON-NLS-1$
-                    {"up", new Integer(CMD_UP)}, //$NON-NLS-1$
-                    {"where", new Integer(INFO_STACK_CMD)}, //$NON-NLS-1$
-                    {"watch", new Integer(CMD_WATCH)}, //$NON-NLS-1$
-                    {"what", new Integer(CMD_WHAT)}, //$NON-NLS-1$
-                    {"viewswf", new Integer(CMD_VIEW_SWF)}, //$NON-NLS-1$
-                    {"worker", new Integer(CMD_WORKER)}, //$NON-NLS-1$
+                    {"awatch", CMD_AWATCH}, //$NON-NLS-1$
+                    {"break", CMD_BREAK}, //$NON-NLS-1$
+                    {"bt", INFO_STACK_CMD}, //$NON-NLS-1$
+                    {"continue", CMD_CONTINUE}, //$NON-NLS-1$
+                    {"catch", CMD_CATCH}, //$NON-NLS-1$
+                    {"cf", CMD_CF}, //$NON-NLS-1$
+                    {"clear", CMD_CLEAR}, //$NON-NLS-1$
+                    {"commands", CMD_COMMANDS}, //$NON-NLS-1$
+                    {"condition", CMD_CONDITION}, //$NON-NLS-1$
+                    {"connect", CMD_CONNECT}, //$NON-NLS-1$
+                    {"delete", CMD_DELETE}, //$NON-NLS-1$
+                    {"disable", CMD_DISABLE}, //$NON-NLS-1$
+                    {"disassemble", CMD_DISASSEMBLE}, //$NON-NLS-1$
+                    {"display", CMD_DISPLAY}, //$NON-NLS-1$
+                    {"directory", CMD_DIRECTORY}, //$NON-NLS-1$
+                    {"down", CMD_DOWN}, //$NON-NLS-1$
+                    {"enable", CMD_ENABLE}, //$NON-NLS-1$
+                    {"finish", CMD_FINISH}, //$NON-NLS-1$
+                    {"file", CMD_FILE}, //$NON-NLS-1$
+                    {"frame", CMD_FRAME}, //$NON-NLS-1$
+                    {"help", CMD_HELP}, //$NON-NLS-1$
+                    {"halt", CMD_HALT}, //$NON-NLS-1$
+                    {"handle", CMD_HANDLE}, //$NON-NLS-1$
+                    {"home", CMD_HOME}, //$NON-NLS-1$
+                    {"info", CMD_INFO}, //$NON-NLS-1$
+                    {"kill", CMD_KILL}, //$NON-NLS-1$
+                    {"list", CMD_LIST}, //$NON-NLS-1$
+                    {"next", CMD_NEXT}, //$NON-NLS-1$
+                    {"nexti", CMD_NEXT}, //$NON-NLS-1$
+                    {"mctree", CMD_MCTREE}, //$NON-NLS-1$
+                    {"print", CMD_PRINT}, //$NON-NLS-1$
+                    {"pwd", CMD_PWD}, //$NON-NLS-1$
+                    {"quit", CMD_QUIT}, //$NON-NLS-1$
+                    {"run", CMD_RUN}, //$NON-NLS-1$
+                    {"rwatch", CMD_RWATCH}, //$NON-NLS-1$
+                    {"step", CMD_STEP}, //$NON-NLS-1$
+                    {"stepi", CMD_STEP}, //$NON-NLS-1$
+                    {"set", CMD_SET}, //$NON-NLS-1$
+                    {"show", CMD_SHOW}, //$NON-NLS-1$
+                    {"source", CMD_SOURCE}, //$NON-NLS-1$
+                    {"tutorial", CMD_TUTORIAL}, //$NON-NLS-1$
+                    {"undisplay", CMD_UNDISPLAY}, //$NON-NLS-1$
+                    {"up", CMD_UP}, //$NON-NLS-1$
+                    {"where", INFO_STACK_CMD}, //$NON-NLS-1$
+                    {"watch", CMD_WATCH}, //$NON-NLS-1$
+                    {"what", CMD_WHAT}, //$NON-NLS-1$
+                    {"viewswf", CMD_VIEW_SWF}, //$NON-NLS-1$
+                    {"worker", CMD_WORKER}, //$NON-NLS-1$
 
             });
 
@@ -6752,20 +6752,20 @@ public class DebugCLI implements Runnable, SourceLocator {
      */
     static StringIntArray g_infoCommandArray = new StringIntArray(new Object[][]
             {
-                    {"arguments", new Integer(INFO_ARGS_CMD)}, //$NON-NLS-1$
-                    {"breakpoints", new Integer(INFO_BREAK_CMD)}, //$NON-NLS-1$
-                    {"display", new Integer(INFO_DISPLAY_CMD)}, //$NON-NLS-1$
-                    {"files", new Integer(INFO_FILES_CMD)}, //$NON-NLS-1$
-                    {"functions", new Integer(INFO_FUNCTIONS_CMD)}, //$NON-NLS-1$
-                    {"handle", new Integer(INFO_HANDLE_CMD)}, //$NON-NLS-1$
-                    {"locals", new Integer(INFO_LOCALS_CMD)}, //$NON-NLS-1$
-                    {"stack", new Integer(INFO_STACK_CMD)}, //$NON-NLS-1$
-                    {"scopechain", new Integer(INFO_SCOPECHAIN_CMD)}, //$NON-NLS-1$
-                    {"sources", new Integer(INFO_SOURCES_CMD)}, //$NON-NLS-1$
-                    {"swfs", new Integer(INFO_SWFS_CMD)}, //$NON-NLS-1$
-                    {"targets", new Integer(INFO_TARGETS_CMD)}, //$NON-NLS-1$
-                    {"variables", new Integer(INFO_VARIABLES_CMD)}, //$NON-NLS-1$
-                    {"workers", new Integer(INFO_WORKERS_CMD)}, //$NON-NLS-1$
+                    {"arguments", INFO_ARGS_CMD}, //$NON-NLS-1$
+                    {"breakpoints", INFO_BREAK_CMD}, //$NON-NLS-1$
+                    {"display", INFO_DISPLAY_CMD}, //$NON-NLS-1$
+                    {"files", INFO_FILES_CMD}, //$NON-NLS-1$
+                    {"functions", INFO_FUNCTIONS_CMD}, //$NON-NLS-1$
+                    {"handle", INFO_HANDLE_CMD}, //$NON-NLS-1$
+                    {"locals", INFO_LOCALS_CMD}, //$NON-NLS-1$
+                    {"stack", INFO_STACK_CMD}, //$NON-NLS-1$
+                    {"scopechain", INFO_SCOPECHAIN_CMD}, //$NON-NLS-1$
+                    {"sources", INFO_SOURCES_CMD}, //$NON-NLS-1$
+                    {"swfs", INFO_SWFS_CMD}, //$NON-NLS-1$
+                    {"targets", INFO_TARGETS_CMD}, //$NON-NLS-1$
+                    {"variables", INFO_VARIABLES_CMD}, //$NON-NLS-1$
+                    {"workers", INFO_WORKERS_CMD}, //$NON-NLS-1$
             });
 
     /**
@@ -6773,16 +6773,16 @@ public class DebugCLI implements Runnable, SourceLocator {
      */
     static StringIntArray g_showCommandArray = new StringIntArray(new Object[][]
             {
-                    {"break", new Integer(SHOW_BREAK_CMD)}, //$NON-NLS-1$
-                    {"directories", new Integer(SHOW_DIRS_CMD)}, //$NON-NLS-1$
-                    {"files", new Integer(SHOW_FILES_CMD)}, //$NON-NLS-1$
-                    {"functions", new Integer(SHOW_FUNC_CMD)}, //$NON-NLS-1$
-                    {"locations", new Integer(SHOW_LOC_CMD)}, //$NON-NLS-1$
-                    {"memory", new Integer(SHOW_MEM_CMD)}, //$NON-NLS-1$
-                    {"net", new Integer(SHOW_NET_CMD)}, //$NON-NLS-1$
-                    {"properties", new Integer(SHOW_PROPERTIES_CMD)}, //$NON-NLS-1$
-                    {"uri", new Integer(SHOW_URI_CMD)}, //$NON-NLS-1$
-                    {"variable", new Integer(SHOW_VAR_CMD)}, //$NON-NLS-1$
+                    {"break", SHOW_BREAK_CMD}, //$NON-NLS-1$
+                    {"directories", SHOW_DIRS_CMD}, //$NON-NLS-1$
+                    {"files", SHOW_FILES_CMD}, //$NON-NLS-1$
+                    {"functions", SHOW_FUNC_CMD}, //$NON-NLS-1$
+                    {"locations", SHOW_LOC_CMD}, //$NON-NLS-1$
+                    {"memory", SHOW_MEM_CMD}, //$NON-NLS-1$
+                    {"net", SHOW_NET_CMD}, //$NON-NLS-1$
+                    {"properties", SHOW_PROPERTIES_CMD}, //$NON-NLS-1$
+                    {"uri", SHOW_URI_CMD}, //$NON-NLS-1$
+                    {"variable", SHOW_VAR_CMD}, //$NON-NLS-1$
             });
 
     /**
@@ -6790,10 +6790,10 @@ public class DebugCLI implements Runnable, SourceLocator {
      */
     static StringIntArray g_enableCommandArray = new StringIntArray(new Object[][]
             {
-                    {"breakpoints", new Integer(CMD_BREAK)}, //$NON-NLS-1$
-                    {"display", new Integer(CMD_DISPLAY)}, //$NON-NLS-1$
-                    {"delete", new Integer(CMD_DELETE)}, //$NON-NLS-1$
-                    {"once", new Integer(ENABLE_ONCE_CMD)}, //$NON-NLS-1$
+                    {"breakpoints", CMD_BREAK}, //$NON-NLS-1$
+                    {"display", CMD_DISPLAY}, //$NON-NLS-1$
+                    {"delete", CMD_DELETE}, //$NON-NLS-1$
+                    {"once", ENABLE_ONCE_CMD}, //$NON-NLS-1$
             });
 
     /**
@@ -6801,8 +6801,8 @@ public class DebugCLI implements Runnable, SourceLocator {
      */
     static StringIntArray g_disableCommandArray = new StringIntArray(new Object[][]
             {
-                    {"display", new Integer(CMD_DISPLAY)}, //$NON-NLS-1$
-                    {"breakpoints", new Integer(CMD_BREAK)}, //$NON-NLS-1$
+                    {"display", CMD_DISPLAY}, //$NON-NLS-1$
+                    {"breakpoints", CMD_BREAK}, //$NON-NLS-1$
             });
 
 

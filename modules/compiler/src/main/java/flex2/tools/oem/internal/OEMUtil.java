@@ -583,13 +583,13 @@ public class OEMUtil
 			Map.Entry entry = (Map.Entry) stringVirtualFileEntry;
 			String filename = (String) entry.getKey();
 			VirtualFile file = (VirtualFile) entry.getValue();
-			data.swcFileChecksums.put(filename, new Long(file.getLastModified()));
+			data.swcFileChecksums.put(filename, file.getLastModified());
 		}
 
         for (VirtualFile themeStyleSheet : swcContext.getThemeStyleSheets())
         {
             data.swcFileChecksums.put(themeStyleSheet.getName(),
-                                      new Long(themeStyleSheet.getLastModified()));
+					themeStyleSheet.getLastModified());
         }
 	}
 
@@ -652,7 +652,7 @@ public class OEMUtil
 					if (swcSignatureChecksum == null && qName != null) {
 						Source source = swcContext.getSource(qName.getNamespace(), qName.getLocalPart());
 						if (source != null) {
-							swcSignatureChecksum = new Long(source.getLastModified());
+							swcSignatureChecksum = source.getLastModified();
 						}
 					}
 					if (Trace.swcChecksum) {
@@ -737,7 +737,7 @@ public class OEMUtil
 		if (signatureChecksum == null)
 		{
 			SwcScript script = (SwcScript) unit.getSource().getOwner();
-			signatureChecksum = new Long(script.getLastModified());
+			signatureChecksum = script.getLastModified();
 		}
 
 		if (data.swcDefSignatureChecksums != null)
@@ -807,7 +807,7 @@ public class OEMUtil
 				Long swcFileLastModified = null;
 				VirtualFile swcFile = (VirtualFile) swcFiles.get(filename);
 				if (swcFile != null) {
-					swcFileLastModified = new Long(swcFile.getLastModified());
+					swcFileLastModified = swcFile.getLastModified();
 				}
 
 				if (!dataFileLastModified.equals(swcFileLastModified)) {

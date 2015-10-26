@@ -30,7 +30,7 @@
     <property name="lib.in.dir" value="${FLEX_HOME}/in"/>
     <property name="ext.dir" value="external"/>
     <property name="opt.dir" value="${ext.dir}/optional"/>
-	<property name="javac.src" value="1.5"/>
+	<property name="javac.src" value="1.7"/>
     <property name="module.src" value="${basedir}/src/main/java"/>
     <property name="module.classes" value="${basedir}/build/classes"/>
     <property name="module.jar" value="${lib.dir}/mxmlc.jar"/>

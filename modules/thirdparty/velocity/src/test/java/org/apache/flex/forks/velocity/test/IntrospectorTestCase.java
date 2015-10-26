@@ -94,7 +94,7 @@ public class IntrospectorTestCase extends BaseTestCase
                 failures.add(type + "Method could not be found!");
 
             // Test char primitive.
-            Object[] characterParams = { new Character('a') };
+            Object[] characterParams = {'a'};
             type = "character";
             method = RuntimeSingleton.getIntrospector().getMethod(
                 MethodProvider.class, type + "Method", characterParams);
@@ -104,7 +104,7 @@ public class IntrospectorTestCase extends BaseTestCase
                 failures.add(type + "Method could not be found!");
 
             // Test double primitive.
-            Object[] doubleParams = { new Double((double)1) };
+            Object[] doubleParams = {(double) 1};
             type = "double";
             method = RuntimeSingleton.getIntrospector().getMethod(
                 MethodProvider.class, type + "Method", doubleParams);
@@ -114,7 +114,7 @@ public class IntrospectorTestCase extends BaseTestCase
                 failures.add(type + "Method could not be found!");
 
             // Test float primitive.
-            Object[] floatParams = { new Float((float)1) };
+            Object[] floatParams = {(float) 1};
             type = "float";
             method = RuntimeSingleton.getIntrospector().getMethod(
                 MethodProvider.class, type + "Method", floatParams);
@@ -124,7 +124,7 @@ public class IntrospectorTestCase extends BaseTestCase
                 failures.add(type + "Method could not be found!");
 
             // Test integer primitive.
-            Object[] integerParams = { new Integer((int)1) };
+            Object[] integerParams = {(int) 1};
             type = "integer";
             method = RuntimeSingleton.getIntrospector().getMethod(
                 MethodProvider.class, type + "Method", integerParams);
@@ -134,7 +134,7 @@ public class IntrospectorTestCase extends BaseTestCase
                 failures.add(type + "Method could not be found!");
 
             // Test long primitive.
-            Object[] longParams = { new Long((long)1) };
+            Object[] longParams = {(long) 1};
             type = "long";
             method = RuntimeSingleton.getIntrospector().getMethod(
                 MethodProvider.class, type + "Method", longParams);
@@ -144,7 +144,7 @@ public class IntrospectorTestCase extends BaseTestCase
                 failures.add(type + "Method could not be found!");
 
             // Test short primitive.
-            Object[] shortParams = { new Short((short)1) };
+            Object[] shortParams = {(short) 1};
             type = "short";
             method = RuntimeSingleton.getIntrospector().getMethod(
                 MethodProvider.class, type + "Method", shortParams);

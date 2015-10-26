@@ -105,7 +105,7 @@ public abstract class AbstractNode
     public void setSpecified(boolean v) {
         throw createDOMException(DOMException.INVALID_STATE_ERR,
                                  "node.type",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName()});
     }
 
@@ -139,7 +139,7 @@ public abstract class AbstractNode
     public void setParentNode(Node v) {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "parent.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName() });
     }
 
@@ -174,7 +174,7 @@ public abstract class AbstractNode
     public void setPreviousSibling(Node n) {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "sibling.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName() });
     }
 
@@ -193,7 +193,7 @@ public abstract class AbstractNode
     public void setNextSibling(Node n) {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "sibling.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName() });
     }
 
@@ -246,7 +246,7 @@ public abstract class AbstractNode
         throws DOMException {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "children.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName() });
     }
 
@@ -259,7 +259,7 @@ public abstract class AbstractNode
         throws DOMException {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "children.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName()});
     }
 
@@ -270,7 +270,7 @@ public abstract class AbstractNode
     public Node removeChild(Node oldChild) throws DOMException {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "children.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName() });
     }
 
@@ -281,7 +281,7 @@ public abstract class AbstractNode
     public Node appendChild(Node newChild) throws DOMException {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "children.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName() });
     }
 
@@ -334,14 +334,14 @@ public abstract class AbstractNode
         if (isReadonly()) {
             throw createDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                      "readonly.node",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName() });
         }
         String uri = getNamespaceURI();
         if (uri == null) {
             throw createDOMException(DOMException.NAMESPACE_ERR,
                                      "namespace",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName() });
         }
 
@@ -356,14 +356,14 @@ public abstract class AbstractNode
         if (!prefix.isEmpty() && !DOMUtilities.isValidName(prefix)) {
             throw createDOMException(DOMException.INVALID_CHARACTER_ERR,
                                      "prefix",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName(),
                                                     prefix });
         }
         if (!DOMUtilities.isValidPrefix(prefix)) {
             throw createDOMException(DOMException.NAMESPACE_ERR,
                                      "prefix",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName(),
                                                     prefix });
         }
@@ -373,7 +373,7 @@ public abstract class AbstractNode
              !XMLSupport.XMLNS_NAMESPACE_URI.equals(uri))) {
             throw createDOMException(DOMException.NAMESPACE_ERR,
                                      "namespace.uri",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName(),
                                                     uri });
         }
@@ -568,7 +568,7 @@ public abstract class AbstractNode
         if (isReadonly()) {
             throw createDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                      "readonly.node",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName() });
         }
         if (getNodeType() != DOCUMENT_TYPE_NODE) {
@@ -1173,7 +1173,7 @@ public abstract class AbstractNode
     protected void checkChildType(Node n, boolean replace) {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "children.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName() });
     }
 

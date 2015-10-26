@@ -316,7 +316,7 @@ public class TestProvider
     public Integer bang()
     {
         System.out.println("Bang! : " + stateint );
-        Integer ret = new Integer( stateint );
+        Integer ret = stateint;
         stateint++;
         return ret;
     }

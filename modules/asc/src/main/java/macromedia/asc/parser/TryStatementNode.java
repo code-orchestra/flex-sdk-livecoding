@@ -102,10 +102,9 @@ public class TryStatementNode extends Node
         if (skip != that.skip) return false;
         if (catchlist != null ? !catchlist.equals(that.catchlist) : that.catchlist != null) return false;
         if (finallyblock != null ? !finallyblock.equals(that.finallyblock) : that.finallyblock != null) return false;
-        if (tryblock != null ? !tryblock.equals(that.tryblock) : that.tryblock != null) return false;
+		return !(tryblock != null ? !tryblock.equals(that.tryblock) : that.tryblock != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

@@ -96,10 +96,7 @@ public class BaselineOffset
      */
     public boolean isBaselineOffsetAsEnum()
     {
-        if (this.baselineOffsetAsEnum != null)
-            return true;
-        else
-            return false;
+        return this.baselineOffsetAsEnum != null;
     }
     
     /**

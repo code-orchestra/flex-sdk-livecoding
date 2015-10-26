@@ -70,10 +70,9 @@ public class BlockNode extends Node
         BlockNode blockNode = (BlockNode) o;
 
         if (attributes != null ? !attributes.equals(blockNode.attributes) : blockNode.attributes != null) return false;
-        if (statements != null ? !statements.equals(blockNode.statements) : blockNode.statements != null) return false;
+		return !(statements != null ? !statements.equals(blockNode.statements) : blockNode.statements != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

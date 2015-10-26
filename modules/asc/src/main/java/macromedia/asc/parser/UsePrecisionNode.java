@@ -72,10 +72,9 @@ public class UsePrecisionNode extends UsePragmaNode {
 
         UsePrecisionNode that = (UsePrecisionNode) o;
 
-        if (precision != that.precision) return false;
+		return precision == that.precision;
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

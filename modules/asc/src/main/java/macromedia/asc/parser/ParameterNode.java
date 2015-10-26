@@ -97,10 +97,9 @@ public class ParameterNode extends Node
         if (init != null ? !init.equals(that.init) : that.init != null) return false;
         if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (typeref != null ? !typeref.equals(that.typeref) : that.typeref != null) return false;
+		return !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

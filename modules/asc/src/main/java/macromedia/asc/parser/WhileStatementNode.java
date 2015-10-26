@@ -104,10 +104,9 @@ public class WhileStatementNode extends Node implements HasBody, LoopStatement
 
         if (loop_index != that.loop_index) return false;
         if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-        if (statement != null ? !statement.equals(that.statement) : that.statement != null) return false;
+		return !(statement != null ? !statement.equals(that.statement) : that.statement != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

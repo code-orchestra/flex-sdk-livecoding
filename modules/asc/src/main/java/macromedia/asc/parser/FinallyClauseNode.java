@@ -77,10 +77,9 @@ public class FinallyClauseNode extends Node
 
         if (default_catch != null ? !default_catch.equals(that.default_catch) : that.default_catch != null)
             return false;
-        if (statements != null ? !statements.equals(that.statements) : that.statements != null) return false;
+		return !(statements != null ? !statements.equals(that.statements) : that.statements != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

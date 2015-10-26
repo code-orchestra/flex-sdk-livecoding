@@ -1053,14 +1053,7 @@ public class AsDocUtil
         {
             return true;
         }
-        else if (namespace.equals("internal"))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        else return namespace.equals("internal");
     }
 
     /**

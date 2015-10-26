@@ -172,10 +172,9 @@ public class ExpressionStatementNode extends Node
 //            return false;
         if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
         if (gen_bits != null ? !gen_bits.equals(that.gen_bits) : that.gen_bits != null) return false;
-        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+		return !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

@@ -53,11 +53,7 @@ public class VariableDefinitionNode extends DefinitionNode
 
 	public boolean hasAttribute(String name)
 	{
-		if (attrs != null && attrs.hasAttribute(name))
-		{
-			return true;
-		}
-		return false;
+		return attrs != null && attrs.hasAttribute(name);
 	}
 
 	public Node initializerStatement(Context cx)
@@ -159,10 +155,9 @@ public class VariableDefinitionNode extends DefinitionNode
 
         if (kind != that.kind) return false;
         //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
-        if (list != null ? !list.equals(that.list) : that.list != null) return false;
+		return !(list != null ? !list.equals(that.list) : that.list != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

@@ -84,10 +84,9 @@ public class ThrowStatementNode extends Node
         ThrowStatementNode that = (ThrowStatementNode) o;
 
         if (finallyInserted != that.finallyInserted) return false;
-        if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
+		return !(expr != null ? !expr.equals(that.expr) : that.expr != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

@@ -78,10 +78,9 @@ public class TypedIdentifierNode extends Node
 
         if (no_anno != that.no_anno) return false;
         if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+		return !(type != null ? !type.equals(that.type) : that.type != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

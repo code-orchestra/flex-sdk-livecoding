@@ -832,14 +832,9 @@ public class ComponentBuilder extends AbstractBuilder
      */
     protected boolean isAllowedProperty(Property property)
     {
-        if (property.getName().equals(StandardDefs.PROP_UICOMPONENT_STATES) && 
-                property.getType().equals(typeTable.arrayType)) //&& 
-                //component.getType().isAssignableTo(standardDefs.CLASS_UICOMPONENT))
-        {
-            return false;
-        }
+        return !(property.getName().equals(StandardDefs.PROP_UICOMPONENT_STATES) &&
+                property.getType().equals(typeTable.arrayType));
 
-        return true;
     }
 
     /**

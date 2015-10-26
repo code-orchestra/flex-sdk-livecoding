@@ -101,10 +101,8 @@ public class FontDescription
             if (unicodeRanges != null && !unicodeRanges.equals(other.unicodeRanges))
                 return false;
 
-            if (source != null && !source.equals(other.source))
-                return false;
+            return !(source != null && !source.equals(other.source));
 
-            return true;
         }
 
         return false;

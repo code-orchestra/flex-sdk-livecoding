@@ -472,9 +472,8 @@ public final class TypeValue extends ObjectValue
         if (name != null ? !name.equals(typeValue.name) : typeValue.name != null) return false;
         if (parameterizedTypes != null ? !parameterizedTypes.equals(typeValue.parameterizedTypes) : typeValue.parameterizedTypes != null)
             return false;
-        if (prototype != null ? !prototype.equals(typeValue.prototype) : typeValue.prototype != null) return false;
+        return !(prototype != null ? !prototype.equals(typeValue.prototype) : typeValue.prototype != null);
 
-        return true;
     }
 
 //    @Override

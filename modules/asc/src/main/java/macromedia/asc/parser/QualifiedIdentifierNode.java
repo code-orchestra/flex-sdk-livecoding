@@ -82,10 +82,9 @@ public class QualifiedIdentifierNode extends IdentifierNode
         QualifiedIdentifierNode that = (QualifiedIdentifierNode) o;
 
         if (is_config_name != that.is_config_name) return false;
-        if (qualifier != null ? !qualifier.equals(that.qualifier) : that.qualifier != null) return false;
+		return !(qualifier != null ? !qualifier.equals(that.qualifier) : that.qualifier != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

@@ -183,10 +183,7 @@ public class DSwfInfo implements SwfInfo
 		// our expectation has not been set and have not yet loaded our swd
 		if (expect == -1 && isSwdLoading())
 			yes = false;
-		else if (expect == have)
-			yes = true;
-		else
-			yes = false;
+		else yes = expect == have;
 
 		return yes;
 	}

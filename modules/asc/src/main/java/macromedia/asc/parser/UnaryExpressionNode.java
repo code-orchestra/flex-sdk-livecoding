@@ -97,10 +97,9 @@ public class UnaryExpressionNode extends Node
         if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
         if (numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) return false;
         if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
-        if (slot != null ? !slot.equals(that.slot) : that.slot != null) return false;
+		return !(slot != null ? !slot.equals(that.slot) : that.slot != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

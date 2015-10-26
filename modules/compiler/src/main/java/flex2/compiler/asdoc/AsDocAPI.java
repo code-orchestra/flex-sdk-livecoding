@@ -749,10 +749,8 @@ public class AsDocAPI
             public boolean accept(File f)
             {
                 //does not accept hidden files or files that cannot be read or .* files
-                if (f.getName().startsWith(".") || f.isHidden() || !f.canRead() || f.isDirectory())
-                    return false;
-                return true;
-            }
+				return !(f.getName().startsWith(".") || f.isHidden() || !f.canRead() || f.isDirectory());
+			}
         });
 		for (File f : imageArr) {
 			copyFile(new File(temImages, f.getName()), new File(outImages, f.getName()));

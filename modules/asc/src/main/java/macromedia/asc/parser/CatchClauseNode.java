@@ -90,10 +90,9 @@ public class CatchClauseNode extends Node
             return false;
         if (parameter != null ? !parameter.equals(that.parameter) : that.parameter != null) return false;
         if (statements != null ? !statements.equals(that.statements) : that.statements != null) return false;
-        if (typeref != null ? !typeref.equals(that.typeref) : that.typeref != null) return false;
+		return !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

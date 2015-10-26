@@ -70,10 +70,9 @@ public class PragmaExpressionNode extends Node
         PragmaExpressionNode that = (PragmaExpressionNode) o;
 
         if (arg != null ? !arg.equals(that.arg) : that.arg != null) return false;
-        if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
+		return !(identifier != null ? !identifier.equals(that.identifier) : that.identifier != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

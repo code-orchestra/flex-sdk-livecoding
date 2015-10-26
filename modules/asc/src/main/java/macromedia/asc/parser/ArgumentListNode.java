@@ -62,14 +62,7 @@ public class ArgumentListNode extends Node
 
 	public boolean isLiteralInteger()
 	{
-		if (items.size() == 1 && items.first().isLiteralInteger())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return items.size() == 1 && items.first().isLiteralInteger();
 	}
 
 	public String toString()
@@ -126,10 +119,9 @@ public class ArgumentListNode extends Node
         if (decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) return false;
         if (expected_types != null ? !expected_types.equals(that.expected_types) : that.expected_types != null)
             return false;
-        if (items != null ? !items.equals(that.items) : that.items != null) return false;
+		return !(items != null ? !items.equals(that.items) : that.items != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

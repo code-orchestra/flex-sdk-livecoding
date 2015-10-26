@@ -160,10 +160,9 @@ public class IdentifierNode extends Node
 
         if (authOrigTypeToken != that.authOrigTypeToken) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+		return !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

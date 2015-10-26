@@ -72,11 +72,9 @@ public class HasNextNode extends Node
 
         if (indexRegister != null ? !indexRegister.equals(that.indexRegister) : that.indexRegister != null)
             return false;
-        if (objectRegister != null ? !objectRegister.equals(that.objectRegister) : that.objectRegister != null)
-            return false;
+		return !(objectRegister != null ? !objectRegister.equals(that.objectRegister) : that.objectRegister != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

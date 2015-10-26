@@ -619,10 +619,7 @@ public class FXGSAXScanner extends DefaultHandler
     {
         long majorVersion = root.getVersion().getMajorVersion();
         long compilerMajorVersion = versionHandler.getVersion().getMajorVersion();
-        if (majorVersion == compilerMajorVersion)
-            return true;
-        else
-            return false;
+        return majorVersion == compilerMajorVersion;
     }
     
 }

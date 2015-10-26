@@ -82,10 +82,7 @@ public class NumberInherit
      */
     public boolean isNumberInheritAsEnum()
     {
-        if (this.numberInheritAsEnum != null)
-            return true;
-        else
-            return false;
+        return this.numberInheritAsEnum != null;
     }
     
     /**

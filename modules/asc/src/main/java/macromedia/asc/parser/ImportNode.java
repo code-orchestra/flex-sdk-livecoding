@@ -70,10 +70,9 @@ public class ImportNode extends Node
         ImportNode that = (ImportNode) o;
 
         if (filespec != null ? !filespec.equals(that.filespec) : that.filespec != null) return false;
-        if (program != null ? !program.equals(that.program) : that.program != null) return false;
+		return !(program != null ? !program.equals(that.program) : that.program != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

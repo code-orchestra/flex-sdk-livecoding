@@ -79,10 +79,9 @@ public class DoubleNumberConstant extends NumberConstant {
 
         DoubleNumberConstant that = (DoubleNumberConstant) o;
 
-        if (Double.compare(that.val, val) != 0) return false;
+		return Double.compare(that.val, val) == 0;
 
-        return true;
-    }
+	}
 
     @Override
     public int hashCode() {

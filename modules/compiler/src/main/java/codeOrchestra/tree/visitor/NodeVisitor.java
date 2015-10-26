@@ -219,10 +219,7 @@ public abstract class NodeVisitor<N extends Node> {
         if (left.get_precision() != right.get_precision()) {
             return false;
         }
-        if (left.get_floating_usage() != right.get_floating_usage()) {
-            return false;
-        }
-        return true;
+        return left.get_floating_usage() == right.get_floating_usage();
     }
 
     private boolean compareTypeInfos(TypeInfo left, TypeInfo right) {

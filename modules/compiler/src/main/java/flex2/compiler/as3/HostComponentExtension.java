@@ -238,15 +238,11 @@ public final class HostComponentExtension implements Extension
         typeAnalyzer.evaluate(cx, classDef);
 
         ClassInfo classInfo = typeAnalyzer.getClassInfo(className);
-        if (classInfo != null && (
-            classInfo.definesVariable(identifier) ||
-            classInfo.definesFunction(identifier, true) ||
-            classInfo.definesGetter(identifier, true) ||
-            classInfo.definesSetter(identifier, true)))
-        {
-            return true;
-        }
-        return false;
+        return classInfo != null && (
+                classInfo.definesVariable(identifier) ||
+                        classInfo.definesFunction(identifier, true) ||
+                        classInfo.definesGetter(identifier, true) ||
+                        classInfo.definesSetter(identifier, true));
     }
 
     private void validateRequiredSkinParts(AbcClass hostComponentClass, AbcClass skinClass,

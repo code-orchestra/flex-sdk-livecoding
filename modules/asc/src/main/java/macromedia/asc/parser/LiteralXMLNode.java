@@ -83,10 +83,9 @@ public class LiteralXMLNode extends Node
 
         if (is_xmllist != that.is_xmllist) return false;
         if (void_result != that.void_result) return false;
-        if (list != null ? !list.equals(that.list) : that.list != null) return false;
+		return !(list != null ? !list.equals(that.list) : that.list != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

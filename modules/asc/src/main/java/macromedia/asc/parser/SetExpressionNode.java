@@ -148,10 +148,9 @@ public class SetExpressionNode extends SelectorNode
         if (void_result != that.void_result) return false;
         if (args != null ? !args.equals(that.args) : that.args != null) return false;
         if (gen_bits != null ? !gen_bits.equals(that.gen_bits) : that.gen_bits != null) return false;
-        if (value_type != null ? !value_type.equals(that.value_type) : that.value_type != null) return false;
+		return !(value_type != null ? !value_type.equals(that.value_type) : that.value_type != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

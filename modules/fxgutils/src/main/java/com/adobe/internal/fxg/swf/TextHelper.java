@@ -41,10 +41,7 @@ public class TextHelper
         Matcher m;
 
         m = whitespacePattern.matcher(value);
-        if (m.matches ())
-            return true; 
-        else
-            return false;
+		return m.matches();
     }
 	
 }

@@ -83,10 +83,9 @@ public class SwitchStatementNode extends Node
 
         if (loop_index != that.loop_index) return false;
         if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-        if (statements != null ? !statements.equals(that.statements) : that.statements != null) return false;
+		return !(statements != null ? !statements.equals(that.statements) : that.statements != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

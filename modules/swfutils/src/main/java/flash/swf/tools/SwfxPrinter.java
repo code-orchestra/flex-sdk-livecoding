@@ -1647,10 +1647,7 @@ public final class SwfxPrinter extends TagHandler
 		private boolean isPrintable(char c)
 		{
 			int i = c & 0xFFFF;
-			if (i < ' ' || i == '<' || i == '&' || i == '\'')
-				return false;
-			else
-				return true;
+			return !(i < ' ' || i == '<' || i == '&' || i == '\'');
 		}
 		
 		

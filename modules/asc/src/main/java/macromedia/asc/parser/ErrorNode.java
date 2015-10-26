@@ -67,10 +67,9 @@ public class ErrorNode extends Node
         ErrorNode errorNode = (ErrorNode) o;
 
         if (errorCode != errorNode.errorCode) return false;
-        if (errorArg != null ? !errorArg.equals(errorNode.errorArg) : errorNode.errorArg != null) return false;
+		return !(errorArg != null ? !errorArg.equals(errorNode.errorArg) : errorNode.errorArg != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

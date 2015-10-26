@@ -72,11 +72,9 @@ public class BinaryProgramNode extends ProgramNode
 
         BinaryProgramNode that = (BinaryProgramNode) o;
 
-        if (toplevelDefinitions != null ? !toplevelDefinitions.equals(that.toplevelDefinitions) : that.toplevelDefinitions != null)
-            return false;
+		return !(toplevelDefinitions != null ? !toplevelDefinitions.equals(that.toplevelDefinitions) : that.toplevelDefinitions != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

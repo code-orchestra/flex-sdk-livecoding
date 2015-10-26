@@ -98,10 +98,9 @@ public class ImportDirectiveNode extends DefinitionNode
         //if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (pkg_node != null ? !pkg_node.equals(that.pkg_node) : that.pkg_node != null) return false;
-        if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
+		return !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

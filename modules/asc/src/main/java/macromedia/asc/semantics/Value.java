@@ -99,10 +99,9 @@ public abstract class Value implements Serializable, Cloneable // CodeOrchestra:
 
         Value value = (Value) o;
 
-        if (flags != value.flags) return false;
+		return flags == value.flags;
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

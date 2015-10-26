@@ -100,12 +100,8 @@ public class PreLink implements flex2.compiler.PreLink
 
         // Check if additional sources were generated after processing the
         // main compilation unit. The compiler will need to re-run pre-link.
-        if (sources.size() > initialSourceCount || reRunPrelink)
-        {
-        	return true;
-        }
+        return sources.size() > initialSourceCount || reRunPrelink;
 
-        return false;
     }
 
     /**

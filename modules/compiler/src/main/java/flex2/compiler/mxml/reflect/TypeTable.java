@@ -582,10 +582,8 @@ public class TypeTable
         public boolean hasMetadata(String name, boolean inheriting)
         {
             List<MetaData> metadata = classInfo.getMetaData(name, inheriting);
-            if (metadata != null && metadata.size() > 0)
-                return true;
+            return metadata != null && metadata.size() > 0;
 
-            return false;
         }
 
         /**

@@ -771,10 +771,9 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
         if (def_bits != null ? !def_bits.equals(slot.def_bits) : slot.def_bits != null) return false;
         if (type != null ? !type.equals(slot.type) : slot.type != null) return false;
         if (types != null ? !types.equals(slot.types) : slot.types != null) return false;
-        if (value != null ? !value.equals(slot.value) : slot.value != null) return false;
+		return !(value != null ? !value.equals(slot.value) : slot.value != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

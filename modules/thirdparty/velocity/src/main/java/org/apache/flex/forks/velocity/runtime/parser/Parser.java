@@ -175,10 +175,7 @@ public class Parser/*@bgen(jjtree)*/implements ParserTreeConstants, ParserConsta
      */
     public boolean isDirective(String directive)
     {
-        if (directives.containsKey(directive))
-            return true;
-        else
-            return false;
+        return directives.containsKey(directive);
     }
 
 

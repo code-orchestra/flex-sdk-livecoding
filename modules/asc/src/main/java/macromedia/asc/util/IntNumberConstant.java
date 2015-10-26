@@ -72,10 +72,9 @@ public class IntNumberConstant extends NumberConstant {
 
         IntNumberConstant that = (IntNumberConstant) o;
 
-        if (ival != that.ival) return false;
+		return ival == that.ival;
 
-        return true;
-    }
+	}
 
     @Override
     public int hashCode() {

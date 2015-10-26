@@ -79,10 +79,9 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 
             KeylessValue that = (KeylessValue) o;
 
-            if (obj != null ? !obj.equals(that.obj) : that.obj != null) return false;
+			return !(obj != null ? !obj.equals(that.obj) : that.obj != null);
 
-            return true;
-        }
+		}
 
 //        @Override
 //        public int hashCode() {
@@ -121,10 +120,9 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
             KeyValuePair that = (KeyValuePair) o;
 
             if (key != null ? !key.equals(that.key) : that.key != null) return false;
-            if (obj != null ? !obj.equals(that.obj) : that.obj != null) return false;
+			return !(obj != null ? !obj.equals(that.obj) : that.obj != null);
 
-            return true;
-        }
+		}
 
 //        @Override
 //        public int hashCode() {

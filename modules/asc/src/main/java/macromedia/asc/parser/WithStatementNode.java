@@ -78,10 +78,9 @@ public class WithStatementNode extends Node
 
         if (activation != null ? !activation.equals(that.activation) : that.activation != null) return false;
         if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-        if (statement != null ? !statement.equals(that.statement) : that.statement != null) return false;
+		return !(statement != null ? !statement.equals(that.statement) : that.statement != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

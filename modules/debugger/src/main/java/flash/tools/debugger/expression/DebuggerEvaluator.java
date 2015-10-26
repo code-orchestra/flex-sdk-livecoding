@@ -492,11 +492,8 @@ class DebuggerEvaluator implements Evaluator
 		} else if (context != null && index != null) {
 			//Resolve the Value to see if it is a Number
 			flash.tools.debugger.Value value = context.toValue(index);
-			if (value != null && value.getType() == VariableType.NUMBER) {
-				return true;
-			}
-			return false;
-		}		
+			return value != null && value.getType() == VariableType.NUMBER;
+		}
 		else {
 			return false;
 		}

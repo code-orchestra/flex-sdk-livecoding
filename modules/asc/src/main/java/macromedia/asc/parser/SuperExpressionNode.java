@@ -71,10 +71,9 @@ public class SuperExpressionNode extends Node
 
         SuperExpressionNode that = (SuperExpressionNode) o;
 
-        if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
+		return !(expr != null ? !expr.equals(that.expr) : that.expr != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

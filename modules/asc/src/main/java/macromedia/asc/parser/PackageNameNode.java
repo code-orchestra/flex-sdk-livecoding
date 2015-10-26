@@ -78,10 +78,9 @@ public class PackageNameNode extends Node
         PackageNameNode that = (PackageNameNode) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (url != null ? !url.equals(that.url) : that.url != null) return false;
+		return !(url != null ? !url.equals(that.url) : that.url != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

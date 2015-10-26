@@ -94,11 +94,8 @@ public class LiveCodingUtil {
                 }
             }
         }
-        if (parentLiveCodingPolicy == LiveCodingPolicy.SELECTED_METHODS && !TreeNavigator.hasAnnotation(function, LIVE_ANNOTATION)) {
-            return false;
-        }
+        return !(parentLiveCodingPolicy == LiveCodingPolicy.SELECTED_METHODS && !TreeNavigator.hasAnnotation(function, LIVE_ANNOTATION));
 
-        return true;
     }
 
     public static boolean isLiveCodeUpdateListener(FunctionDefinitionNode function) {

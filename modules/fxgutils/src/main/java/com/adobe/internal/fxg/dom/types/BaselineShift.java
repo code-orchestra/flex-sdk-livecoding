@@ -100,10 +100,7 @@ public class BaselineShift
      */
     public boolean isBaselineShiftAsEnum()
     {
-        if (this.baselineShiftAsEnum != null)
-            return true;
-        else
-            return false;
+        return this.baselineShiftAsEnum != null;
     }
     
     /**

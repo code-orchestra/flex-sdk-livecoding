@@ -74,9 +74,8 @@ public class TypeIdentifierNode extends IdentifierNode {
         TypeIdentifierNode that = (TypeIdentifierNode) o;
 
         if (base != null ? !base.equals(that.base) : that.base != null) return false;
-        if (typeArgs != null ? !typeArgs.equals(that.typeArgs) : that.typeArgs != null) return false;
+        return !(typeArgs != null ? !typeArgs.equals(that.typeArgs) : that.typeArgs != null);
 
-        return true;
     }
 
 //    @Override

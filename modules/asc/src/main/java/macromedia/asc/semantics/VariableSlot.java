@@ -136,10 +136,9 @@ public class VariableSlot extends Slot
         VariableSlot that = (VariableSlot) o;
 
         if (var_index != that.var_index) return false;
-        if (typeref != null ? !typeref.equals(that.typeref) : that.typeref != null) return false;
+		return !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

@@ -74,10 +74,9 @@ public class ClassNameNode extends Node
 
         if (non_nullable != that.non_nullable) return false;
         if (ident != null ? !ident.equals(that.ident) : that.ident != null) return false;
-        if (pkgname != null ? !pkgname.equals(that.pkgname) : that.pkgname != null) return false;
+		return !(pkgname != null ? !pkgname.equals(that.pkgname) : that.pkgname != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

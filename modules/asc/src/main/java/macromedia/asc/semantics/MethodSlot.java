@@ -112,10 +112,9 @@ public class MethodSlot extends Slot
 
         if (method_id != that.method_id) return false;
         if (decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) return false;
-        if (method_name != null ? !method_name.equals(that.method_name) : that.method_name != null) return false;
+		return !(method_name != null ? !method_name.equals(that.method_name) : that.method_name != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

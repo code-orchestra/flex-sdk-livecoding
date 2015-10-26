@@ -66,10 +66,9 @@ public class CaseLabelNode extends Node
 
         CaseLabelNode that = (CaseLabelNode) o;
 
-        if (label != null ? !label.equals(that.label) : that.label != null) return false;
+		return !(label != null ? !label.equals(that.label) : that.label != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

@@ -69,10 +69,9 @@ public class FunctionNameNode extends Node
         FunctionNameNode that = (FunctionNameNode) o;
 
         if (kind != that.kind) return false;
-        if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
+		return !(identifier != null ? !identifier.equals(that.identifier) : that.identifier != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

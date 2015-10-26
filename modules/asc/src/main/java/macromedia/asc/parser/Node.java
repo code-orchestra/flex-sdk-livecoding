@@ -386,10 +386,9 @@ public class Node implements Serializable, Cloneable // CodeOrchestra: made seri
         Node node = (Node) o;
 
         if (flags != node.flags) return false;
-        if (block != null ? !block.equals(node.block) : node.block != null) return false;
+		return !(block != null ? !block.equals(node.block) : node.block != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

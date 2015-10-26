@@ -89,10 +89,9 @@ public class LiteralVectorNode extends Node
         if (void_result != that.void_result) return false;
         if (elementlist != null ? !elementlist.equals(that.elementlist) : that.elementlist != null) return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+		return !(value != null ? !value.equals(that.value) : that.value != null);
 
-        return true;
-    }
+	}
 
 //    @Override
 //    public int hashCode() {

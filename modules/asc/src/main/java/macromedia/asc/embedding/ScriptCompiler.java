@@ -345,10 +345,10 @@ public class ScriptCompiler
 						expanded_args += s + " ";
 				}
 				String[] a = expanded_args.split("\\s+", -1);
-				for (int q = 0; q < a.length; ++q) {
-					String arg = a[q].trim();
+				for (String anA : a) {
+					String arg = anA.trim();
 					if (arg.length() != 0) {
-						exp_args.add(a[q]);
+						exp_args.add(anA);
 					}
 				}
 				has_expanded_args = true;

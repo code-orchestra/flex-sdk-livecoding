@@ -1411,7 +1411,7 @@ public class ActionBlockEmitter extends Emitter
     }
 
     // utility used by getValueOfNumberLiteral
-    final private int unHex(char c)
+    private int unHex(char c)
     {
         return Character.digit(c,16);
     }

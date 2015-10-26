@@ -87,7 +87,7 @@ public class VelocityManager
 	/**
 	 * Create a VelocityEngine instance configured with the given libs string
 	 */
-	private static final VelocityEngine createEngine(String lib)
+	private static VelocityEngine createEngine(String lib)
 	{
 		VelocityEngine ve = new VelocityEngine();
 		// use our logger, and customize log settings
@@ -124,7 +124,7 @@ public class VelocityManager
 	/**
 	 * Look up the VelocityEngine instance configured with the given libs string
 	 */
-	private static final VelocityEngine getEngine(String lib)
+	private static VelocityEngine getEngine(String lib)
 	{
 		String libKey = lib == null ? "" : lib;
 		VelocityEngine ve = engines.get(libKey);

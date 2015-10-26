@@ -199,7 +199,7 @@ public class WebMacro
      * Gets the path segment of the full path to a file (i.e. one
      * which originally included the file name).
      */
-    private final String extractPath(String file)
+    private String extractPath(String file)
     {
         int lastSepPos = file.lastIndexOf(File.separator);
         return (lastSepPos == -1 ? "" :
@@ -224,7 +224,7 @@ public class WebMacro
     /**
      * How to use this little puppy :-)
      */
-    private static final void usage()
+    private static void usage()
     {
         System.err.println("Usage: convert-wm <template.wm | directory>");
         System.exit(1);
@@ -270,7 +270,7 @@ public class WebMacro
     /**
      * Makes a Perl 5 regular expression for use by ORO.
      */
-    private final String makeSubstRE(int i)
+    private String makeSubstRE(int i)
     {
         return ("s/" + perLineREs[i] + '/' + perLineREs[i + 1] + "/g");
     }

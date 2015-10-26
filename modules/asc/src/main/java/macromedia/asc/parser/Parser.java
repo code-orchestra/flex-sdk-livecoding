@@ -171,12 +171,12 @@ public final class Parser
 		XMLTokenSet.set(-WITH_TOKEN);
 	}
     
-    private final boolean inXMLTokenSet( int id)
+    private boolean inXMLTokenSet(int id)
     {
     	return XMLTokenSet.get(-id);
     }
     
-    private final boolean inStatementTokenSet( int id)
+    private boolean inStatementTokenSet(int id)
     {
     	return StatementTokenSet.get(-id);
     }
@@ -489,7 +489,7 @@ public final class Parser
      * shift: -- like match, but we already know the token
      */
     
-    private final void shift()
+    private void shift()
     {
     	nextToken = EMPTY_TOKEN;
     }
@@ -550,7 +550,7 @@ public final class Parser
      * Handle optional semicolon recognition.
      */
 
-    private final boolean lookaheadSemicolon(int mode)
+    private boolean lookaheadSemicolon(int mode)
     {
         final int lt = lookahead();
         
@@ -561,7 +561,7 @@ public final class Parser
         return false;
     }
 
-    private final int matchSemicolon(int mode)
+    private int matchSemicolon(int mode)
     {
 
         int result = ERROR_TOKEN;
@@ -602,7 +602,7 @@ public final class Parser
      * that the EMPTY_TOKEN is equivalent to a semicolon.
      */
 
-    private final int matchNoninsertableSemicolon(int mode)
+    private int matchNoninsertableSemicolon(int mode)
     {
 
         switch ( lookahead() )
@@ -633,7 +633,7 @@ public final class Parser
      *  comments are located in the source while walking the parse-tree.
      */
     
-    private final void getNextToken()
+    private void getNextToken()
     {
         int tok = scanner.nexttoken(true);
         
@@ -660,7 +660,7 @@ public final class Parser
      * Change the lookahead token.
      */
     
-    private final void changeLookahead(int tok)
+    private void changeLookahead(int tok)
     {
         nextToken = tok;
     }
@@ -669,7 +669,7 @@ public final class Parser
      * Lookahead (simpler version)
      */
 
-    private final int lookahead()
+    private int lookahead()
     {
          if (nextToken == EMPTY_TOKEN)
          {
@@ -2073,7 +2073,7 @@ XMLElementContent
      * precedence:
      */
     
-    private final int precedence( int token, int mode )
+    private int precedence(int token, int mode )
     {
  
 		/*
@@ -3104,7 +3104,7 @@ XMLElementContent
      * Complicated by possible follow tokens >>>, >>>=, >>, >>=, >=
      */
     
- 	private final Node parseTemplatizedTypeExpression(Node first)
+ 	private Node parseTemplatizedTypeExpression(Node first)
  	{	
  		shift(); // match(DOTLESSTHAN_TOKEN);
  		Node result = nodeFactory.applyTypeExpr(first, parseTypeExpressionList(),scanner.input.positionOfMark());

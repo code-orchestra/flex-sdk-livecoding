@@ -182,7 +182,7 @@ public final class Names implements Serializable, Cloneable // CodeOrchestra: ma
 		return 5*(namesUsed+1) >= capacity()*4;
 	}
 	
-	private final int capacity()
+	private int capacity()
 	{
 		return (hashTable != null) ? hashTable.length : 0;
 	}

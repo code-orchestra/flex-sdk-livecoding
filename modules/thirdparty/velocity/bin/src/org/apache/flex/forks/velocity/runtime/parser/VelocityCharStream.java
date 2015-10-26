@@ -55,7 +55,7 @@ public final class VelocityCharStream
   private int maxNextCharInd = 0;
   private int inBuf = 0;
 
-  private final void ExpandBuff(boolean wrapAround)
+  private void ExpandBuff(boolean wrapAround)
   {
      char[] newbuffer = new char[bufsize + 2048];
      int newbufline[] = new int[bufsize + 2048];
@@ -105,7 +105,7 @@ public final class VelocityCharStream
      tokenBegin = 0;
   }
 
-  private final void FillBuff() throws java.io.IOException
+  private void FillBuff() throws java.io.IOException
   {
      if (maxNextCharInd == available)
      {
@@ -159,7 +159,7 @@ public final class VelocityCharStream
      return c;
   }
 
-  private final void UpdateLineColumn(char c)
+  private void UpdateLineColumn(char c)
   {
      column++;
 

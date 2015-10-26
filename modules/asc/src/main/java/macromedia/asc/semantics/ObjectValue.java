@@ -632,7 +632,7 @@ public class ObjectValue extends Value implements Comparable
         return newSlot.id;
     }
 
-    final private int nextSlotID(Context cx)
+    private int nextSlotID(Context cx)
     {
     	int slot_id;
     	if( slot_ids != null )

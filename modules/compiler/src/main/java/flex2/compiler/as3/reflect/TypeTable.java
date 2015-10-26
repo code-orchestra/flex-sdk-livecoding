@@ -87,7 +87,7 @@ public class TypeTable
 		return classes;
 	}
 
-	private final void createClass(ClassDefinitionNode clsdef, Map<String, AbcClass> classes)
+	private void createClass(ClassDefinitionNode clsdef, Map<String, AbcClass> classes)
 	{
 		AbcClass cls = new As3Class(clsdef, this);
 		classes.put(cls.getName(), cls);

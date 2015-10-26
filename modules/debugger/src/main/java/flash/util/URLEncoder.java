@@ -101,7 +101,7 @@ public final class URLEncoder
 		return out.toString();
 	}
 
-	private static final void toHex(StringBuilder buffer, byte[] b)
+	private static void toHex(StringBuilder buffer, byte[] b)
 	{
 		for (byte aB : b) {
 			buffer.append('%');
@@ -120,7 +120,7 @@ public final class URLEncoder
 		}
 	}
 
-	private static final boolean needsEncoding(String s)
+	private static boolean needsEncoding(String s)
 	{
 		if (s == null)
 		{

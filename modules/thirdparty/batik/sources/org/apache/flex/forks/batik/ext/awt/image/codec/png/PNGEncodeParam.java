@@ -1292,7 +1292,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
     /**
      * An abs() function for use by the Paeth predictor.
      */
-    private static final int abs(int x) {
+    private static int abs(int x) {
         return (x < 0) ? -x : x;
     }
 

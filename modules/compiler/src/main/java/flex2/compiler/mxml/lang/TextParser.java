@@ -873,15 +873,15 @@ public abstract class TextParser
     /**
      * flag extraction
      */
-    private static final boolean inCDATA(int flags) { return (flags & FlagInCDATA) == FlagInCDATA; }
-    private static final boolean collapseWhiteSpace(int flags) { return (flags & FlagCollapseWhiteSpace) == FlagCollapseWhiteSpace; }
-    private static final boolean convertColorNames(int flags) { return (flags & FlagConvertColorNames) == FlagConvertColorNames; }
-    private static final boolean allowPercentages(int flags) { return (flags & FlagAllowPercentages) == FlagAllowPercentages; }
-    private static final boolean ignoreBinding(int flags) { return (flags & FlagIgnoreBinding) == FlagIgnoreBinding; }
-    private static final boolean ignoreAtFunction(int flags) { return (flags & FlagIgnoreAtFunction) == FlagIgnoreAtFunction; }
-    private static final boolean ignoreArraySyntax(int flags) { return (flags & FlagIgnoreArraySyntax) == FlagIgnoreArraySyntax; }
-    private static final boolean ignoreAtFunctionEscape(int flags) { return (flags & FlagIgnoreAtFunctionEscape) == FlagIgnoreAtFunctionEscape; }
-    private static final boolean isRichTextContent(int flags) { return (flags & FlagRichTextContent) == FlagRichTextContent; }
+    private static boolean inCDATA(int flags) { return (flags & FlagInCDATA) == FlagInCDATA; }
+    private static boolean collapseWhiteSpace(int flags) { return (flags & FlagCollapseWhiteSpace) == FlagCollapseWhiteSpace; }
+    private static boolean convertColorNames(int flags) { return (flags & FlagConvertColorNames) == FlagConvertColorNames; }
+    private static boolean allowPercentages(int flags) { return (flags & FlagAllowPercentages) == FlagAllowPercentages; }
+    private static boolean ignoreBinding(int flags) { return (flags & FlagIgnoreBinding) == FlagIgnoreBinding; }
+    private static boolean ignoreAtFunction(int flags) { return (flags & FlagIgnoreAtFunction) == FlagIgnoreAtFunction; }
+    private static boolean ignoreArraySyntax(int flags) { return (flags & FlagIgnoreArraySyntax) == FlagIgnoreArraySyntax; }
+    private static boolean ignoreAtFunctionEscape(int flags) { return (flags & FlagIgnoreAtFunctionEscape) == FlagIgnoreAtFunctionEscape; }
+    private static boolean isRichTextContent(int flags) { return (flags & FlagRichTextContent) == FlagRichTextContent; }
 
     /**
      * TODO make private

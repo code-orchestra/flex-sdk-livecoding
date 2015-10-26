@@ -137,11 +137,11 @@ public class TIFFImage extends AbstractRed {
      * @param minX the X position of the returned Raster.
      * @param minY the Y position of the returned Raster.
      */
-    private static final Raster decodeJPEG(byte[] data,
-                                           JPEGDecodeParam decodeParam,
-                                           boolean colorConvert,
-                                           int minX,
-                                           int minY) {
+    private static Raster decodeJPEG(byte[] data,
+                                     JPEGDecodeParam decodeParam,
+                                     boolean colorConvert,
+                                     int minX,
+                                     int minY) {
         // Create an InputStream from the compressed data array.
         ByteArrayInputStream jpegStream = new ByteArrayInputStream(data);
 
@@ -169,7 +169,7 @@ public class TIFFImage extends AbstractRed {
      * Inflates <code>deflated</code> into <code>inflated</code> using the
      * <code>Inflater</code> constructed during class instantiation.
      */
-    private final void inflate(byte[] deflated, byte[] inflated) {
+    private void inflate(byte[] deflated, byte[] inflated) {
         inflater.setInput(deflated);
         try {
             inflater.inflate(inflated);

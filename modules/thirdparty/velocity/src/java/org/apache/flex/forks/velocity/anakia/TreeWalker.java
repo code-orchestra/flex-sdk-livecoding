@@ -62,7 +62,7 @@ public class TreeWalker
      * A recursive method to walk the Element tree.
      * @param Element the current Element
      */
-    private final void treeWalk(Element e, Collection theElements )
+    private void treeWalk(Element e, Collection theElements )
     {
         for (Iterator i=e.getChildren().iterator(); i.hasNext(); )
         {

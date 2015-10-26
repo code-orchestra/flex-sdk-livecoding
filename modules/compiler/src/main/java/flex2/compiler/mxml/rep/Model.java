@@ -636,7 +636,7 @@ public class Model implements LineNumberMapped
     	return getEvents().get(name);
     }
 
-    private final Map<String, Initializer> getEvents()
+    private Map<String, Initializer> getEvents()
     {
         return events != null ? events : Collections.<String, Initializer>emptyMap();
     }

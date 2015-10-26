@@ -1033,7 +1033,7 @@ public class PreLink implements flex2.compiler.PreLink
         {
             for (String extraClass : mainUnit.extraClasses) {
                 // FIXME - Depending on the contents of the classname is not the solution we want.
-                if (extraClass.indexOf("FlexInit") != -1) {
+                if (extraClass.contains("FlexInit")) {
                     flexInitClass = extraClass;
                     break;
                 }

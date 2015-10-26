@@ -1714,7 +1714,7 @@ public class TopLevelClassesGenerator
                 labelStr = seeStr;
             }
 
-            if (hrefStr.indexOf("http://") == -1 && hrefStr.indexOf(".html") == -1)
+            if (!hrefStr.contains("http://") && !hrefStr.contains(".html"))
             {
                 int poundLoc = hrefStr.indexOf("#");
 
@@ -1739,7 +1739,7 @@ public class TopLevelClassesGenerator
 
                 if (poundLoc != -1)
                 {
-                    QualifiedNameInfo qualifiedName = (fullName.indexOf("/") == -1 ? asDocUtil.decomposeFullClassName(fullName) : decomposeFullMethodOrFieldName(fullName));
+                    QualifiedNameInfo qualifiedName = (!fullName.contains("/") ? asDocUtil.decomposeFullClassName(fullName) : decomposeFullMethodOrFieldName(fullName));
 
                     String memberName = hrefStr.substring(poundLoc + 1);
 
@@ -2086,7 +2086,7 @@ public class TopLevelClassesGenerator
             // depending upon the extension of the external examples file.. the comment closing will be different.
             if (codeFileName.endsWith(".mxml"))
             {
-                if (codePart.indexOf("<!---") != -1)
+                if (codePart.contains("<!---"))
                 {
                     codeBegin = codePart.indexOf("-->"); // mxml files have xml comment closing
                 }
@@ -2918,7 +2918,7 @@ public class TopLevelClassesGenerator
 
         if (errorClass == null)
         {
-            if (errorClassStr.indexOf(".") != -1 && errorClassStr.indexOf(":") == -1)
+            if (errorClassStr.contains(".") && !errorClassStr.contains(":"))
             {
                 String[] parts = errorClassStr.split("\\.");
                 errorClassStr = "";

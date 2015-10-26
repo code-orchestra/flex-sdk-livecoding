@@ -329,7 +329,7 @@ final class PersistenceStore
 		for (QName qName : swcDefSignatureChecksums.keySet()) {
 			Long ts = swcDefSignatureChecksums.get(qName);
 			writeU32(out, addQName(pool, qName));
-			writeLong(out, ts.longValue());
+			writeLong(out, ts);
 		}
 	}
 
@@ -338,7 +338,7 @@ final class PersistenceStore
 		for (String fileName : m.keySet()) {
 			Long ts = m.get(fileName);
 			writeU32(out, addString(pool, fileName));
-			writeLong(out, ts.longValue());
+			writeLong(out, ts);
 		}
 	}
 
@@ -677,7 +677,7 @@ final class PersistenceStore
             if (hasSignatureChecksum)
             {
                 final Long signatureChecksum = unit.getSignatureChecksum();
-                writeLong(out, signatureChecksum.longValue());
+                writeLong(out, signatureChecksum);
             }
         }
 
@@ -706,9 +706,9 @@ final class PersistenceStore
 			writeU32(out, addString(pool, w.path == null ? "" : w.path));
 			writeU32(out, addString(pool, w.warning == null ? "" : w.warning));
 			writeU32(out, addString(pool, w.source == null ? "" : w.source));
-			writeU32(out, w.line == null ? -1 : w.line.intValue());
-			writeU32(out, w.col == null ? -1 : w.col.intValue());
-			writeU32(out, w.errorCode == null ? -1 : w.errorCode.intValue());
+			writeU32(out, w.line == null ? -1 : w.line);
+			writeU32(out, w.col == null ? -1 : w.col);
+			writeU32(out, w.errorCode == null ? -1 : w.errorCode);
 		}
 	}
 	
@@ -798,7 +798,7 @@ final class PersistenceStore
 			writeU32(out, addString(pool, preLoader == null ? "" : preLoader));
 
 			Boolean usePreloader = (Boolean) u.auxGenerateInfo.get( "usePreloader");
-			writeU8(out, usePreloader.booleanValue() ? 1 : 0);
+			writeU8(out, usePreloader ? 1 : 0);
 
 			Map<String, Object> rootAttributeMap = (Map<String, Object>) u.auxGenerateInfo.get( "rootAttributes");
 			writeMap(out, pool, rootAttributeMap);
@@ -1887,7 +1887,7 @@ final class PersistenceStore
 				return;
 			}
 			
-			int value = ((Integer) obj).intValue();
+			int value = (Integer) obj;
 			if ((s.isFileSpecOwner() && value == 0) ||
 				(s.isSourceListOwner() && value == 1) ||
 				(s.isSourcePathOwner() && value == 2) ||
@@ -1986,7 +1986,7 @@ final class PersistenceStore
 			pool.put(obj, index);
 		}
 
-		return index.intValue();
+		return index;
 	}
 
 	private int addBytes(Map<Object, Integer> pool, byte[] b)
@@ -2016,7 +2016,7 @@ final class PersistenceStore
 			pool.put(new ArrayKey(array), index);
 		}
 
-		return index.intValue();
+		return index;
 	}
 
 	private int addQName(Map<Object, Integer> pool, QName qName)
@@ -2034,7 +2034,7 @@ final class PersistenceStore
 			pool.put(qName, index);
 		}
 
-		return index.intValue();
+		return index;
 	}
 
 	private int addMultiName(Map<Object, Integer> pool, MultiName multiName)
@@ -2052,7 +2052,7 @@ final class PersistenceStore
 			pool.put(multiName, index);
 		}
 
-		return index.intValue();
+		return index;
 	}
 
 	/*

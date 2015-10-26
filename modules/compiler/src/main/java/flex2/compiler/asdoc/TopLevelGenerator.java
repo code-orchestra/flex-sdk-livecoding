@@ -97,7 +97,7 @@ public class TopLevelGenerator implements DocCommentGenerator
             if (o == null)
                 continue;
             if (o instanceof Boolean) {
-                boolean b = ((Boolean) o).booleanValue();
+                boolean b = (Boolean) o;
                 if (b) {
                     appendTag(tagName, "");
                 } else

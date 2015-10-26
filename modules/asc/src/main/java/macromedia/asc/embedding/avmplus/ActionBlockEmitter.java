@@ -166,7 +166,7 @@ public class ActionBlockEmitter extends Emitter
 
             if (mapcheck != null)
             {
-                return mapcheck.intValue() + 1;
+                return mapcheck + 1;
             }
 
             // Add it to map for fast lookups
@@ -189,7 +189,7 @@ public class ActionBlockEmitter extends Emitter
 
             if (mapcheck != null)
             {
-                int constant_index = mapcheck.intValue();
+                int constant_index = mapcheck;
                 return constant_index + 1;
             }
 
@@ -216,7 +216,7 @@ public class ActionBlockEmitter extends Emitter
 
             if (mapcheck != null)
             {
-                int constant_index = mapcheck.intValue();
+                int constant_index = mapcheck;
                 return constant_index + 1;
             }
 
@@ -243,7 +243,7 @@ public class ActionBlockEmitter extends Emitter
 
             if (mapcheck != null)
             {
-                int constant_index = mapcheck.intValue();
+                int constant_index = mapcheck;
                 return constant_index + 1;
             }
 
@@ -270,7 +270,7 @@ public class ActionBlockEmitter extends Emitter
 
             if (mapcheck != null)
             {
-                int constant_index = mapcheck.intValue();
+                int constant_index = mapcheck;
                 return constant_index + 1;
             }
 
@@ -297,7 +297,7 @@ public class ActionBlockEmitter extends Emitter
 
             if (mapcheck != null)
             {
-                int constant_index = mapcheck.intValue();
+                int constant_index = mapcheck;
                 return constant_index + 1;
             }
 
@@ -324,7 +324,7 @@ public class ActionBlockEmitter extends Emitter
 
             if (mapcheck != null)
             {
-                int constant_index = mapcheck.intValue();
+                int constant_index = mapcheck;
                 return constant_index + 1;
             }
 
@@ -351,7 +351,7 @@ public class ActionBlockEmitter extends Emitter
 
             if (mapcheck != null)
             {
-                int constant_index = mapcheck.intValue();
+                int constant_index = mapcheck;
                 return constant_index + 1;
             }
 
@@ -382,7 +382,7 @@ public class ActionBlockEmitter extends Emitter
 
             if (mapcheck != null)
             {
-                int constant_index = mapcheck.intValue();
+                int constant_index = mapcheck;
                 return constant_index + 1;
             }
 
@@ -640,7 +640,7 @@ public class ActionBlockEmitter extends Emitter
         {
             if( ns != null )
             {
-                int ns_index = addNamespace(ns, v.intValue());
+                int ns_index = addNamespace(ns, v);
                 namespace_set.add(IntegerPool.getNumber(ns_index));
             }
             else
@@ -1172,7 +1172,7 @@ public class ActionBlockEmitter extends Emitter
     {
         Integer id = method_infos_map.get(name);
         if (id != null)
-            return id.intValue();
+            return id;
         id = method_infos.size();
         method_infos_map.put(name,id);
 
@@ -1182,7 +1182,7 @@ public class ActionBlockEmitter extends Emitter
         {
             cx.internalError("internal error: internal method name and info out of sync");
         }
-        return id.intValue();
+        return id;
     }
 
     protected ObjectList<String> metadata_infos = new ObjectList<String>();
@@ -1194,7 +1194,7 @@ public class ActionBlockEmitter extends Emitter
 
         Integer id = metadata_infos_map.get(name);
         if (id != null)
-            return id.intValue();
+            return id;
         id = metadata_infos_map.size();
         metadata_infos_map.put(name,id);
 
@@ -1217,7 +1217,7 @@ public class ActionBlockEmitter extends Emitter
         {
             cx.internalError("internal error: internal metadata name and info out of sync");
         }
-        return id.intValue();
+        return id;
     }
 
     protected ObjectList<QName> class_infos = new ObjectList<QName>();
@@ -1564,7 +1564,7 @@ public class ActionBlockEmitter extends Emitter
             !(str.contains("x") || str.contains("X"))) {
             // looks like floating, and not hex
             d = Double.valueOf(str);
-            sum = d.doubleValue();
+            sum = d;
         }
         else {
             // looks like an integral value. It could be hex
@@ -1611,7 +1611,7 @@ public class ActionBlockEmitter extends Emitter
                 if (sum > 2147483647) // i.e. biggest integer possible.  After that, error creeps into the above calculation.
                 {
                     d = Double.valueOf(str2);
-                    sum = d.doubleValue();
+                    sum = d;
                 }
                 break;
             case 16:
@@ -1646,7 +1646,7 @@ public class ActionBlockEmitter extends Emitter
             if (negative) {
                 if (sum == 0.0) {
                     d = Double.valueOf("-0");
-                    sum = d.doubleValue();
+                    sum = d;
                     isInt = false; // can't represent -0 as an int
                 }
                 else
@@ -1678,7 +1678,7 @@ public class ActionBlockEmitter extends Emitter
             else
                 d = Double.POSITIVE_INFINITY;
         }
-        return new DoubleNumberConstant(d.doubleValue());
+        return new DoubleNumberConstant(d);
     }
         
         

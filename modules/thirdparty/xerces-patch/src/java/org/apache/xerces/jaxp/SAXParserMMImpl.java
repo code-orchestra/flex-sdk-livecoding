@@ -212,7 +212,7 @@ public class SAXParserMMImpl extends javax.xml.parsers.SAXParser
         if (features != null) {
             for (Enumeration e = features.keys(); e.hasMoreElements();) {
                 String feature = (String)e.nextElement();
-                boolean value = ((Boolean)features.get(feature)).booleanValue();
+                boolean value = (Boolean) features.get(feature);
                 xmlReader.setFeature0(feature, value);
             }
         }
@@ -533,7 +533,7 @@ public class SAXParserMMImpl extends javax.xml.parsers.SAXParser
                 while (iter.hasNext()) {
                     Map.Entry entry = (Map.Entry) iter.next();
                     String name = (String) entry.getKey();
-                    boolean value = ((Boolean) entry.getValue()).booleanValue();
+                    boolean value = (Boolean) entry.getValue();
                     super.setFeature(name, value);
                 }
                 fInitFeatures.clear();

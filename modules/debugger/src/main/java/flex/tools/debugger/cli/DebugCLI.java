@@ -749,7 +749,7 @@ public class DebugCLI implements Runnable, SourceLocator {
     }
 
     public int propertyGet(String k) {
-        return ((Integer) m_exprCache.get(k)).intValue();
+        return (Integer) m_exprCache.get(k);
     }
 
     public Set<String> propertyKeys() {
@@ -6649,8 +6649,8 @@ public class DebugCLI implements Runnable, SourceLocator {
                 // only 1 match or our input is 1 character or first match is exact
             else if (size == 1 ||
                     input.length() == 1 ||
-                    cmdList.getString(((Integer) ar.get(0)).intValue()).compareTo(input) == 0) {
-                cmd = (cmdList.getInteger(((Integer) ar.get(0)).intValue())).intValue();
+                    cmdList.getString((Integer) ar.get(0)).compareTo(input) == 0) {
+                cmd = cmdList.getInteger(((Integer) ar.get(0)).intValue());
             } else {
                 // matches more than one command dump message and go
                 StringBuilder sb = new StringBuilder();
@@ -6660,7 +6660,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 sb.append(' ');
                 sb.append(input);
                 for (int i = 0; i < size; i++) {
-                    String s = cmdList.getString(((Integer) ar.get(i)).intValue());
+                    String s = cmdList.getString((Integer) ar.get(i));
                     sb.append(s);
                     if (i + 1 < size)
                         sb.append(", "); //$NON-NLS-1$

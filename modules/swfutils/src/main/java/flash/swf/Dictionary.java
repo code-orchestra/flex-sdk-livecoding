@@ -89,7 +89,7 @@ public class Dictionary
             	assert false : ("encoding error, " + tag.name + " not in dictionary");
 			}
 
-            return ((Integer) idobj).intValue();
+            return (Integer) idobj;
         }
     }
 
@@ -103,14 +103,14 @@ public class Dictionary
         if (obj!=null)
         {
             //throw new IllegalArgumentException("symbol " +tag+ " redefined");
-            return obj.intValue();
+            return obj;
         }
         else
         {
             Integer key = nextId++;
             tags.put(tag, key);
             ids.put(key, tag);
-            return key.intValue();
+            return key;
         }
     }
 

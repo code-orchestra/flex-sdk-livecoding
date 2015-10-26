@@ -1068,12 +1068,12 @@ class MFUCache
 		{
 			count = 0;
 		}
-		count = count.intValue() + 1;
+		count = count + 1;
 		cache.put(m, count);
 
-		if (count.intValue() > topCount)
+		if (count > topCount)
 		{
-			topCount = count.intValue();
+			topCount = count;
 			topModule = m;
 		}
 	}

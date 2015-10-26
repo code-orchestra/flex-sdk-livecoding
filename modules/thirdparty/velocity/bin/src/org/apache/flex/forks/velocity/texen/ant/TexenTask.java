@@ -482,7 +482,7 @@ public class TexenTask
                         
                         if (booleanString != null)
                         {    
-                            c.put(property, new Boolean(booleanString));
+                            c.put(property, Boolean.valueOf(booleanString));
                         }
                         else
                         {

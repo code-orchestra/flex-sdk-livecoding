@@ -74,7 +74,7 @@ public class IntrospectorTestCase extends BaseTestCase
         try
         {
             // Test boolean primitive.
-            Object[] booleanParams = { new Boolean(true) };
+            Object[] booleanParams = {Boolean.TRUE};
             type = "boolean";
             method = RuntimeSingleton.getIntrospector().getMethod(
                 MethodProvider.class, type + "Method", booleanParams);

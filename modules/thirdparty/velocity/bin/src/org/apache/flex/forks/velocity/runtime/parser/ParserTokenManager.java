@@ -66,13 +66,13 @@ public class ParserTokenManager implements ParserConstants
         if( debugPrint )
             System.out.println(
                 " stack pop (" + stateStack.size() + ") : lparen=" +
-                    ( (Integer) h.get("lparen")).intValue() +
-                        " newstate=" + ( (Integer) h.get("lexstate")).intValue() );
+                        (Integer) h.get("lparen") +
+                        " newstate=" + (Integer) h.get("lexstate"));
 
-        lparen = ( (Integer) h.get("lparen")).intValue();
-        rparen = ( (Integer) h.get("rparen")).intValue();
+        lparen = (Integer) h.get("lparen");
+        rparen = (Integer) h.get("rparen");
 
-        SwitchTo( ( (Integer) h.get("lexstate")).intValue() );
+        SwitchTo((Integer) h.get("lexstate"));
 
         return true;
     }

@@ -81,7 +81,7 @@ public class ASTGENode extends SimpleNode
             return false;
         }
 
-        return ( (Integer) left).intValue() >=  ((Integer) right).intValue(); 
+        return (Integer) left >= (Integer) right;
      
     }
 

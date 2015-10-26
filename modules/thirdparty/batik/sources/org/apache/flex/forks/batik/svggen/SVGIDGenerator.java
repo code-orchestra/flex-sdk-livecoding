@@ -49,7 +49,7 @@ public class SVGIDGenerator {
             prefixMap.put(prefix, maxId);
         }
 
-        maxId = maxId.intValue() + 1;
+        maxId = maxId + 1;
         prefixMap.put(prefix, maxId);
         return prefix + maxId;
     }

@@ -1,0 +1,8 @@
+rootProject.name = 'flex-sdk-livecoding'
+include 'modules:asc'
+include 'modules:compiler'
+include 'modules:debugger'
+include 'modules:fxgutils'
+include 'modules:swfutils'
+include 'modules:thirdparty:batik'
+include 'modules:thirdparty:velocity'

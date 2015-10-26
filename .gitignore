@@ -12,3 +12,4 @@ modules/antTasks/.gradle/
 modules/antTasks/build/
 idea/
 *.iml
+.idea/

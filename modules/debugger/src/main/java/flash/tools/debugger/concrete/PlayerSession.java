@@ -231,7 +231,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	 * Set preference
 	 * If an invalid preference is passed, it will be silently ignored.
 	 */
-	public void			setPreferences(Map<String, ? extends Object> map)	{ m_prefs.putAll(map); mapBack(); }
+	public void			setPreferences(Map<String, ?> map)	{ m_prefs.putAll(map); mapBack(); }
 	public Set<String>	keySet()								{ return m_prefs.keySet(); }
 	public Object		getPreferenceAsObject(String pref)		{ return m_prefs.get(pref); }
 

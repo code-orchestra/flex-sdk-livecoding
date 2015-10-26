@@ -24,7 +24,7 @@ import java.util.LinkedHashMap;
 /**
  * A QNameMap implementation that maintains order.
  */
-public class LinkedQNameMap<V extends Object> extends LinkedHashMap<QName, V>
+public class LinkedQNameMap<V> extends LinkedHashMap<QName, V>
 {
 	private static final long serialVersionUID = 3204095789256503873L;
 

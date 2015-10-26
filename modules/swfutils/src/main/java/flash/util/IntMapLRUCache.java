@@ -297,8 +297,7 @@ public abstract class IntMapLRUCache
 /**
  * Linked list element for the LRU list.
  */
-class ListEntry extends Object
-{
+class ListEntry {
     ListEntry next;
     ListEntry prev;
     Object value;

@@ -187,25 +187,16 @@ public abstract class GenerativeSecondPassEvaluator extends EvaluatorAdapter
 				{
 					ListNode list = (ListNode) node;
 
-					Iterator listIterator = list.items.iterator();
-
-					while ( listIterator.hasNext() )
-					{
-						Object listNode = listIterator.next();
-
-						if (listNode instanceof MemberExpressionNode)
-						{
+					for (Object listNode : list.items) {
+						if (listNode instanceof MemberExpressionNode) {
 							// if this identifier is an override we need to remove it
 							// other wise we can go ahead and mark it private.
 							// NOTE: it appears that override _always_ lives in this
 							// portion of the node tree, i.e. the ListNode part
 							identifier = NodeMagic.getIdentifier((MemberExpressionNode) listNode);
-							if (isIdentifier(identifier, NodeMagic.OVERRIDE))
-							{
+							if (isIdentifier(identifier, NodeMagic.OVERRIDE)) {
 								iterator.remove();
-							}
-							else
-							{
+							} else {
 								ensureNonPublic(identifier);
 							}
 						}

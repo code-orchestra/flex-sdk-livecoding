@@ -241,11 +241,9 @@ public final class DataBindingExtension implements Extension
         {
             ExpressionStatementNode expressionStatement = (ExpressionStatementNode) nodeList.get(0);
             ListNode list = (ListNode) expressionStatement.expr;
-            Iterator<Node> iterator = list.items.iterator();
 
-            while (iterator.hasNext())
-            {
-                argumentList = nodeFactory.argumentList(argumentList, iterator.next());
+            for (Node item : list.items) {
+                argumentList = nodeFactory.argumentList(argumentList, item);
             }
         }
 

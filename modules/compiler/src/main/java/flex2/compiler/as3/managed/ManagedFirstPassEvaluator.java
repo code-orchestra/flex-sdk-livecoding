@@ -169,11 +169,8 @@ public class ManagedFirstPassEvaluator extends GenerativeFirstPassEvaluator
             if (node.instanceinits != null)
             {
                 //	visit instance variable initializers
-                Iterator iterator = node.instanceinits.iterator();
 
-                while (iterator.hasNext())
-                {
-                    Node instanceinit = (Node) iterator.next();
+                for (Node instanceinit : node.instanceinits) {
                     instanceinit.evaluate(context, this);
                 }
             }

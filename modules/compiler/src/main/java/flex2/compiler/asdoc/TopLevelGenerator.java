@@ -57,18 +57,12 @@ public class TopLevelGenerator implements DocCommentGenerator
     public void generate(DocCommentTable table)
     {
         xml.append("<asdoc>\n");
-        Iterator packageIterator = table.getPackages().keySet().iterator();
-        while (packageIterator.hasNext())
-        {
-            String currentPackage = (String)packageIterator.next();
-            Iterator classIterator = table.getClassesAndInterfaces(currentPackage).keySet().iterator();
-            while (classIterator.hasNext())
-            {
-                String currentClass = (String)classIterator.next();
-                Iterator commentsIterator = table.getAllClassComments(currentClass, currentPackage).iterator();
-                while (commentsIterator.hasNext())
-                {
-                    emitDocComment((DocComment)commentsIterator.next());
+        for (Object o : table.getPackages().keySet()) {
+            String currentPackage = (String) o;
+            for (Object o1 : table.getClassesAndInterfaces(currentPackage).keySet()) {
+                String currentClass = (String) o1;
+                for (Object o2 : table.getAllClassComments(currentClass, currentPackage)) {
+                    emitDocComment((DocComment) o2);
                 }
             }
         }
@@ -97,46 +91,33 @@ public class TopLevelGenerator implements DocCommentGenerator
      */
     private void emitTags(Map tags)
     {
-        Iterator tagIterator = tags.keySet().iterator();
-        while (tagIterator.hasNext())
-        {
-            String tagName = ((String)tagIterator.next()).intern();
+        for (Object o1 : tags.keySet()) {
+            String tagName = ((String) o1).intern();
             Object o = tags.get(tagName);
             if (o == null)
                 continue;
-            if (o instanceof Boolean)
-            {
-                boolean b = ((Boolean)o).booleanValue();
-                if (b)
-                {
+            if (o instanceof Boolean) {
+                boolean b = ((Boolean) o).booleanValue();
+                if (b) {
                     appendTag(tagName, "");
-                }
-                else 
+                } else
                     continue;
-            }
-            else if (o instanceof List)
-            {
-                List l = (List)o;
-                for (int i = 0; i < l.size(); i++)
-                {
-                    String value = (String)l.get(i);
+            } else if (o instanceof List) {
+                List l = (List) o;
+                for (int i = 0; i < l.size(); i++) {
+                    String value = (String) l.get(i);
                     appendTag(tagName, value);
                 }
-            }
-            else if (o instanceof Map)   //custom Tags (implied tagName.equals("custom")
+            } else if (o instanceof Map)   //custom Tags (implied tagName.equals("custom")
             {
-                Map m = (Map)o;
-                Iterator customTagIter = m.keySet().iterator();
-                while (customTagIter.hasNext())
-                {
-                    tagName = (String)customTagIter.next();
-                    String value = (String)m.get(tagName);
+                Map m = (Map) o;
+                for (Object o2 : m.keySet()) {
+                    tagName = (String) o2;
+                    String value = (String) m.get(tagName);
                     appendTag(tagName, value);
                 }
-            }
-            else
-            {
-                String value = (String)o;
+            } else {
+                String value = (String) o;
                 appendTag(tagName, value);
             }
         }

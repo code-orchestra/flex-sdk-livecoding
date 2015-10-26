@@ -846,49 +846,38 @@ public class ShapeHelper implements SwfConstants
         int y = 0;
         boolean firstMove = true;
 
-        Iterator<ShapeRecord> iterator = records.iterator();
-        while (iterator.hasNext())
-        {
-            ShapeRecord r = iterator.next();
-
+        for (ShapeRecord r : records) {
             if (r == null)
                 continue;
 
-            if (r instanceof StyleChangeRecord)
-            {
-                StyleChangeRecord scr = (StyleChangeRecord)r;
+            if (r instanceof StyleChangeRecord) {
+                StyleChangeRecord scr = (StyleChangeRecord) r;
                 x = scr.moveDeltaX;
                 y = scr.moveDeltaY;
-                if (firstMove)
-                {
+                if (firstMove) {
                     x1 = x;
                     y1 = y;
                     x2 = x;
                     y2 = y;
                     firstMove = false;
                 }
-            }
-            else if (r instanceof StraightEdgeRecord)
-            {
-                StraightEdgeRecord ser = (StraightEdgeRecord)r;
+            } else if (r instanceof StraightEdgeRecord) {
+                StraightEdgeRecord ser = (StraightEdgeRecord) r;
                 x = x + ser.deltaX;
                 y = y + ser.deltaY;
-            }
-            else if (r instanceof CurvedEdgeRecord)
-            {
-                CurvedEdgeRecord cer = (CurvedEdgeRecord)r;
-                
+            } else if (r instanceof CurvedEdgeRecord) {
+                CurvedEdgeRecord cer = (CurvedEdgeRecord) r;
+
                 Rect currRect = new Rect(x1, x2, y1, y2);
-                if (!curveControlPointInsideCurrentRect(x, y, cer, currRect))
-                {                
-                	Rect curvBounds = computeCurveBounds(x, y, cer);
-                
-                	if (curvBounds.xMin < x1) x1 = curvBounds.xMin;
-                	if (curvBounds.yMin < y1) y1 = curvBounds.yMin;
-                	if (curvBounds.xMax > x2) x2 = curvBounds.xMax;
-                	if (curvBounds.yMax > y2) y2 = curvBounds.yMax;
+                if (!curveControlPointInsideCurrentRect(x, y, cer, currRect)) {
+                    Rect curvBounds = computeCurveBounds(x, y, cer);
+
+                    if (curvBounds.xMin < x1) x1 = curvBounds.xMin;
+                    if (curvBounds.yMin < y1) y1 = curvBounds.yMin;
+                    if (curvBounds.xMax > x2) x2 = curvBounds.xMax;
+                    if (curvBounds.yMax > y2) y2 = curvBounds.yMax;
                 }
-                                
+
                 x = x + cer.controlDeltaX + cer.anchorDeltaX;
                 y = y + cer.controlDeltaY + cer.anchorDeltaY;
             }

@@ -312,10 +312,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
     {
         if (nodes == null) return;
 
-        Iterator<GraphicContentNode> iterator = nodes.iterator();
-        while (iterator.hasNext())
-        {
-            GraphicContentNode node = iterator.next();
+        for (GraphicContentNode node : nodes) {
             graphicContentNode(node);
         }
     }
@@ -1220,50 +1217,34 @@ public class FXG2SWFTranscoder implements FXGTranscoder
     protected List<Filter> createFilters(List<FilterNode> list)
     {
         List<Filter> filters = new ArrayList<Filter>(list.size());
-        Iterator<FilterNode> iterator = list.iterator();
-        while (iterator.hasNext())
-        {
-            FilterNode f = iterator.next();
-            if (f instanceof BevelFilterNode)
-            {
-                BevelFilterNode node = (BevelFilterNode)f;
+        for (FilterNode f : list) {
+            if (f instanceof BevelFilterNode) {
+                BevelFilterNode node = (BevelFilterNode) f;
                 BevelFilter filter = createBevelFilter(node);
                 filters.add(filter);
-            }
-            else if (f instanceof BlurFilterNode)
-            {
-                BlurFilterNode node = (BlurFilterNode)f;
+            } else if (f instanceof BlurFilterNode) {
+                BlurFilterNode node = (BlurFilterNode) f;
                 BlurFilter filter = createBlurFilter(node);
                 filters.add(filter);
-            }
-            else if (f instanceof ColorMatrixFilterNode)
-            {
-                ColorMatrixFilterNode node = (ColorMatrixFilterNode)f;
+            } else if (f instanceof ColorMatrixFilterNode) {
+                ColorMatrixFilterNode node = (ColorMatrixFilterNode) f;
                 ColorMatrixFilter filter = new ColorMatrixFilter();
                 filter.values = node.matrix;
                 filters.add(filter);
-            }
-            else if (f instanceof DropShadowFilterNode)
-            {
-                DropShadowFilterNode node = (DropShadowFilterNode)f;
+            } else if (f instanceof DropShadowFilterNode) {
+                DropShadowFilterNode node = (DropShadowFilterNode) f;
                 DropShadowFilter filter = createDropShadowFilter(node);
                 filters.add(filter);
-            }
-            else if (f instanceof GlowFilterNode)
-            {
-                GlowFilterNode node = (GlowFilterNode)f;
+            } else if (f instanceof GlowFilterNode) {
+                GlowFilterNode node = (GlowFilterNode) f;
                 GlowFilter filter = createGlowFilter(node);
                 filters.add(filter);
-            }
-            else if (f instanceof GradientBevelFilterNode)
-            {
-                GradientBevelFilterNode node = (GradientBevelFilterNode)f;
+            } else if (f instanceof GradientBevelFilterNode) {
+                GradientBevelFilterNode node = (GradientBevelFilterNode) f;
                 GradientBevelFilter filter = createGradientBevelFilter(node);
                 filters.add(filter);
-            }
-            else if (f instanceof GradientGlowFilterNode)
-            {
-                GradientGlowFilterNode node = (GradientGlowFilterNode)f;
+            } else if (f instanceof GradientGlowFilterNode) {
+                GradientGlowFilterNode node = (GradientGlowFilterNode) f;
                 GradientGlowFilter filter = createGradientGlowFilter(node);
                 filters.add(filter);
             }
@@ -1518,20 +1499,14 @@ public class FXG2SWFTranscoder implements FXGTranscoder
     {
         if ((mask == null) || (mask.children == null))
             return;
-    	Iterator<GraphicContentNode> iter = mask.children.iterator();
-    	while (iter.hasNext()) 
-    	{
-    		GraphicContentNode gcNode = iter.next();
-    		if (gcNode instanceof GroupNode)
-    		{
-    			markLeafNodesAsMask(maskableNode, (GroupNode) gcNode);
-    		}
-    		else
-    		{
-     		    if (maskableNode.getMaskType() == MaskType.CLIP)
-    		        gcNode.isPartofClipMask = true; 
-    		}
-    	}
+        for (GraphicContentNode gcNode : mask.children) {
+            if (gcNode instanceof GroupNode) {
+                markLeafNodesAsMask(maskableNode, (GroupNode) gcNode);
+            } else {
+                if (maskableNode.getMaskType() == MaskType.CLIP)
+                    gcNode.isPartofClipMask = true;
+            }
+        }
     }
     
 }

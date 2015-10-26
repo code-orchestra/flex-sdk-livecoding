@@ -457,13 +457,10 @@ public final class DataBindingExtension implements Extension
     private LiteralArrayNode generateListeners(NodeFactory nodeFactory, PropertyWatcher propertyWatcher)
     {
         ArgumentListNode argumentList = null;
-        Iterator<BindingExpression> iterator = propertyWatcher.getBindingExpressions().iterator();
 
-        while (iterator.hasNext())
-        {
-            BindingExpression bindingExpression = iterator.next();
+        for (BindingExpression bindingExpression : propertyWatcher.getBindingExpressions()) {
             MemberExpressionNode base =
-                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, BINDINGS, false);
+                    AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, BINDINGS, false);
             GetExpressionNode selector = generateArrayIndex(nodeFactory, bindingExpression.getId());
             selector.setMode(Tokens.LEFTBRACKET_TOKEN);
             MemberExpressionNode memberExpression = nodeFactory.memberExpression(base, selector);
@@ -575,11 +572,8 @@ public final class DataBindingExtension implements Extension
 
         StatementListNode statementList = null;
 
-        Iterator<String> importIterator = dataBindingInfo.getImports().iterator();
-
-        while (importIterator.hasNext())
-        {
-            ImportDirectiveNode importDirective = AbstractSyntaxTreeUtil.generateImport(cx, importIterator.next());
+        for (String s : dataBindingInfo.getImports()) {
+            ImportDirectiveNode importDirective = AbstractSyntaxTreeUtil.generateImport(cx, s);
             statementList = nodeFactory.statementList(statementList, importDirective);
         }
 
@@ -906,57 +900,37 @@ public final class DataBindingExtension implements Extension
     {
         StatementListNode result = statementList;
 
-        Iterator<Watcher> iterator = watcher.getChildren().iterator();
-
-        while (iterator.hasNext())
-        {
-            Watcher childWatcher = iterator.next();
-
-            if (childWatcher.shouldWriteSelf())
-            {
-                if (childWatcher instanceof ArrayElementWatcher)
-                {
+        for (Watcher childWatcher : watcher.getChildren()) {
+            if (childWatcher.shouldWriteSelf()) {
+                if (childWatcher instanceof ArrayElementWatcher) {
                     ArrayElementWatcher childArrayElementWatcher = (ArrayElementWatcher) childWatcher;
                     result = generateWatcher(nodeFactory, cx, configNamespaces, result,
-                                             childArrayElementWatcher, standardDefs);
-                }
-                else if (childWatcher instanceof FunctionReturnWatcher)
-                {
+                            childArrayElementWatcher, standardDefs);
+                } else if (childWatcher instanceof FunctionReturnWatcher) {
                     FunctionReturnWatcher childFunctionReturnWatcher = (FunctionReturnWatcher) childWatcher;
                     result = generateWatcher(nodeFactory, cx, configNamespaces, result,
-                                             childFunctionReturnWatcher, standardDefs);
-                }
-                else if (childWatcher instanceof RepeaterComponentWatcher)
-                {
+                            childFunctionReturnWatcher, standardDefs);
+                } else if (childWatcher instanceof RepeaterComponentWatcher) {
                     RepeaterComponentWatcher childRepeaterComponentWatcher = (RepeaterComponentWatcher) childWatcher;
                     result = generateWatcher(nodeFactory, result, childRepeaterComponentWatcher, standardDefs);
-                }
-                else if (childWatcher instanceof RepeaterItemWatcher)
-                {
+                } else if (childWatcher instanceof RepeaterItemWatcher) {
                     RepeaterItemWatcher childRepeaterItemWatcher = (RepeaterItemWatcher) childWatcher;
                     result = generateWatcher(nodeFactory, cx, result, childRepeaterItemWatcher, standardDefs);
-                }
-                else if (childWatcher instanceof XMLWatcher)
-                {
+                } else if (childWatcher instanceof XMLWatcher) {
                     XMLWatcher childXMLWatcher = (XMLWatcher) childWatcher;
                     result = generateWatcher(nodeFactory, result, childXMLWatcher, standardDefs);
-                }
-                else if (childWatcher instanceof PropertyWatcher)
-                {
+                } else if (childWatcher instanceof PropertyWatcher) {
                     PropertyWatcher childPropertyWatcher = (PropertyWatcher) childWatcher;
                     result = generateWatcher(nodeFactory, cx, result, childPropertyWatcher, standardDefs,
-                                             documentClassName);
-                }
-                else
-                {
+                            documentClassName);
+                } else {
                     assert false : "Unhandled Watcher type: " + childWatcher.getClass().getName();
                 }
             }
 
-            if (childWatcher.shouldWriteChildren())
-            {
+            if (childWatcher.shouldWriteChildren()) {
                 result = generateWatcherChildren(nodeFactory, cx, configNamespaces, result, childWatcher,
-                                                 standardDefs, documentClassName);
+                        standardDefs, documentClassName);
             }
         }
 
@@ -967,20 +941,15 @@ public final class DataBindingExtension implements Extension
                                                 List dataBindingInfoList)
     {
         Map<QName, Source> extraSources = new HashMap<QName, Source>();
-        Iterator iterator = dataBindingInfoList.iterator();
 
-        while ( iterator.hasNext() )
-        {
-            DataBindingInfo dataBindingInfo = (DataBindingInfo) iterator.next();
+        for (Object aDataBindingInfoList : dataBindingInfoList) {
+            DataBindingInfo dataBindingInfo = (DataBindingInfo) aDataBindingInfoList;
             QName classQName = new QName(dataBindingInfo.getWatcherSetupUtilClassName());
 
-            if (generateAbstractSyntaxTree)
-            {
+            if (generateAbstractSyntaxTree) {
                 extraSources.put(classQName, generateWatcherSetupUtilAST(compilationUnit, symbolTable,
-                                                                         dataBindingInfo));
-            }
-            else
-            {
+                        dataBindingInfo));
+            } else {
                 extraSources.put(classQName, generateWatcherSetupUtil(compilationUnit, dataBindingInfo));
             }
         }
@@ -1159,11 +1128,8 @@ public final class DataBindingExtension implements Extension
 
         if (watcher.shouldWriteChildren())
         {
-            Iterator<Watcher> iterator = watcher.getChildren().iterator();
 
-            while (iterator.hasNext())
-            {
-                Watcher childWatcher = iterator.next();
+            for (Watcher childWatcher : watcher.getChildren()) {
                 result = generateWatcherBottom(nodeFactory, cx, result, childWatcher);
             }
         }

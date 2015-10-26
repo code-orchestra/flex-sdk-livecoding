@@ -168,11 +168,8 @@ public class StyleModule
     public Set<Import> getImports()
     {
         Set<Import> result = new HashSet<Import>();
-        Iterator<StyleDef> styleDefIterator = styleDefs.values().iterator();
 
-        while ( styleDefIterator.hasNext() )
-        {
-            StyleDef styleDef = styleDefIterator.next();
+        for (StyleDef styleDef : styleDefs.values()) {
             result.addAll(styleDef.getImports());
         }
 
@@ -267,23 +264,14 @@ public class StyleModule
             return;
 
         // Aggregate rules by selector
-        Iterator<Rule> ruleIterator = sheetRules.iterator();
-        while (ruleIterator.hasNext())
-        {
-            Rule rule = ruleIterator.next();
-
-            if (rule instanceof StyleRule)
-            {
-                addStyleRule((StyleRule)rule, null, isLocal);
-            }
-            else if (rule instanceof FontFaceRule)
-            {
-                addFontFaceRule((FontFaceRule)rule);
-            }
-            else if (rule instanceof MediaRule)
-            {
+        for (Rule rule : sheetRules) {
+            if (rule instanceof StyleRule) {
+                addStyleRule((StyleRule) rule, null, isLocal);
+            } else if (rule instanceof FontFaceRule) {
+                addFontFaceRule((FontFaceRule) rule);
+            } else if (rule instanceof MediaRule) {
                 if (advanced)
-                    addMediaRule((MediaRule)rule, isLocal);
+                    addMediaRule((MediaRule) rule, isLocal);
             }
         }
     }
@@ -306,14 +294,9 @@ public class StyleModule
         List<Rule> childRules = mediaRule.getRules();
 
         // Aggregate rules by selector
-        Iterator<Rule> ruleIterator = childRules.iterator();
-        while (ruleIterator.hasNext())
-        {
-            Rule rule = ruleIterator.next();
-
-            if (rule instanceof StyleRule)
-            {
-                addStyleRule((StyleRule)rule, mediaRule.getMediaList(), isLocal);
+        for (Rule rule : childRules) {
+            if (rule instanceof StyleRule) {
+                addStyleRule((StyleRule) rule, mediaRule.getMediaList(), isLocal);
             }
         }
     }

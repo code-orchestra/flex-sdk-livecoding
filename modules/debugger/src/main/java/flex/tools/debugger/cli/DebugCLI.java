@@ -1044,9 +1044,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 
     void doShowDirectories() {
         out(getLocalizationManager().getLocalizedTextString("sourceDirectoriesSearched")); //$NON-NLS-1$
-        Iterator<String> iter = m_sourceDirectories.iterator();
-        while (iter.hasNext()) {
-            String dir = iter.next();
+        for (String dir : m_sourceDirectories) {
             out("  " + dir); //$NON-NLS-1$
         }
     }
@@ -5456,10 +5454,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         else
             pkgPlusName = null;
 
-        Iterator<String> iter = m_sourceDirectories.iterator();
-        while (iter.hasNext()) {
-            String dir = iter.next();
-
+        for (String dir : m_sourceDirectories) {
             // new File("", filename) searches the root dir -- that's not what we want!
             if (dir.isEmpty()) //$NON-NLS-1$
                 dir = "."; //$NON-NLS-1$

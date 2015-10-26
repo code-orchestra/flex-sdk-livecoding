@@ -108,11 +108,8 @@ public abstract class GenerativeExtension implements Extension
 
             node.evaluate(cx, typeAnalyzer);
 
-            Iterator iterator = firstPassEvaluator.getClassMap().entrySet().iterator();
-
-            while ( iterator.hasNext() )
-            {
-                Entry entry = (Entry) iterator.next();
+            for (Object o : firstPassEvaluator.getClassMap().entrySet()) {
+                Entry entry = (Entry) o;
                 String className = (String) entry.getKey();
                 GenerativeClassInfo generativeClassInfo = (GenerativeClassInfo) entry.getValue();
                 ClassInfo classInfo = typeAnalyzer.getClassInfo(className);

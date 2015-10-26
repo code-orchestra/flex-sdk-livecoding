@@ -555,21 +555,17 @@ public class FontFaceRule extends Rule
 	 */
 	public static FontFaceRule getRule(Collection<FontFaceRule> rules, String family, boolean bold, boolean italic)
 	{
-		Iterator<FontFaceRule> it = rules.iterator();
-		while (it.hasNext())
-		{
-			FontFaceRule ffr = it.next();
-			if (family.equals(ffr.getFamily()))
-			{
-				if (bold != ffr.isBold())
-					continue;
+        for (FontFaceRule ffr : rules) {
+            if (family.equals(ffr.getFamily())) {
+                if (bold != ffr.isBold())
+                    continue;
 
-				if (italic != ffr.isItalic())
-					continue;
+                if (italic != ffr.isItalic())
+                    continue;
 
-				return ffr;
-			}
-		}
+                return ffr;
+            }
+        }
 
 		return null;
 	}

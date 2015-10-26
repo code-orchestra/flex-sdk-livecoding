@@ -78,10 +78,8 @@ public class StyleSelector
 
         if (conditions != null)
         {
-            Iterator<StyleCondition> iterator = conditions.iterator();
-            while (iterator.hasNext())
-            {
-                sb.append(iterator.next().toString());
+            for (StyleCondition condition : conditions) {
+                sb.append(condition.toString());
             }
         }
 

@@ -312,22 +312,15 @@ public class FontTranscoder extends AbstractTranscoder
     {
         List<Serializable> result = new LinkedList<Serializable>();
 
-        Iterator iterator = ((List) args.get( SOURCELIST )).iterator();
-
-        while ( iterator.hasNext() )
-        {
-            Object source = iterator.next();
-
-            if (source instanceof URLSource)
-            {
+        for (Object source : ((List) args.get(SOURCELIST))) {
+            if (source instanceof URLSource) {
                 URLSource urlSource = (URLSource) source;
                 VirtualFile virtualFile = resolve(context, urlSource.getValue());
-                result.add( getURL(virtualFile) );
-            }
-            else // if (source instanceof LocalSource)
+                result.add(getURL(virtualFile));
+            } else // if (source instanceof LocalSource)
             {
                 LocalSource localSource = (LocalSource) source;
-                result.add( localSource.getValue() );
+                result.add(localSource.getValue());
             }
         }
 

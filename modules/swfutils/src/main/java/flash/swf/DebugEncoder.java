@@ -408,49 +408,34 @@ public class DebugEncoder implements DebugHandler
         String synthetic = "synthetic: ";
 		String actions = "Actions for ";
 
-        Iterator<DebugScript> debugScriptIter = debugScripts.iterator();
-        while (debugScriptIter.hasNext())
-        {
-            DebugScript debugScript = debugScriptIter.next();
-            if (isFrameworkClass(debugScript.name))
-            {
+        for (DebugScript debugScript : debugScripts) {
+            if (isFrameworkClass(debugScript.name)) {
                 // bitmap = 3 => Framework file
                 debugScript.bitmap = 3;
-            }
-            else if (debugScript.name.startsWith(synthetic))
-            {
+            } else if (debugScript.name.startsWith(synthetic)) {
                 // bitmap = 4 => Other per-component synthetic files
                 // produced by MXML compiler
                 debugScript.bitmap = 4;
 
                 String lookFor = "synthetic: Object.registerClass() for ";
-                if (debugScript.name.startsWith(lookFor))
-                {
+                if (debugScript.name.startsWith(lookFor)) {
                     String componentName = debugScript.name.substring(lookFor.length());
                     debugScript.name = "<" + componentName + ".2>";
-                }
-                else
-                {
-					// R: should really check for a collision here...
+                } else {
+                    // R: should really check for a collision here...
                     String componentName = debugScript.name.substring(synthetic.length());
-					debugScript.name = "<" + componentName + ".1>";
+                    debugScript.name = "<" + componentName + ".1>";
                 }
-            }
-			else if (debugScript.name.startsWith(actions))
-			{
+            } else if (debugScript.name.startsWith(actions)) {
                 // bitmap = 5 => Actions ...
-				debugScript.bitmap = 5;
-			}
-			else if (debugScript.name.equals(mainDebugScriptName))
-			{
-				// bitmap = 1 => Main MXML file for application
-				debugScript.bitmap = 1;
-			}
-            else
-            {
+                debugScript.bitmap = 5;
+            } else if (debugScript.name.equals(mainDebugScriptName)) {
+                // bitmap = 1 => Main MXML file for application
+                debugScript.bitmap = 1;
+            } else {
                 // bitmap = 2 => Other file, presumably an MXML or AS file
                 // written by the application author
-				debugScript.name = DebugDecoder.adjustModuleName(debugScript.name);
+                debugScript.name = DebugDecoder.adjustModuleName(debugScript.name);
                 debugScript.bitmap = 2;
             }
 
@@ -459,9 +444,9 @@ public class DebugEncoder implements DebugHandler
             // This will ensure that DebugScripts are sorted alphabetically
             // within each "bitmap" category.
             debugScript.comparableName = (new Integer(debugScript.bitmap)).toString() +
-                                         generateShortName(debugScript.name);
+                    generateShortName(debugScript.name);
 //            System.out.print(debugScript.comparableName + " " + debugScript.name);
-         }
+        }
     }
 
     private void encodeSwdData(SwfEncoder buffer)
@@ -481,10 +466,7 @@ public class DebugEncoder implements DebugHandler
 
         Collections.sort(debugScripts);
         int id = 0;
-        Iterator<DebugScript> debugScriptIter = debugScripts.iterator();
-        while (debugScriptIter.hasNext())
-        {
-            DebugScript debugScript = debugScriptIter.next();
+        for (DebugScript debugScript : debugScripts) {
             id++;
 
             buffer.write32(kDebugScript);
@@ -494,11 +476,7 @@ public class DebugEncoder implements DebugHandler
             buffer.writeString(debugScript.text);
 
             Collections.sort(debugScript.debugOffsets);
-            Iterator<DebugOffset> debugOffsetIter = debugScript.debugOffsets.iterator();
-            while (debugOffsetIter.hasNext())
-            {
-                DebugOffset debugOffset = debugOffsetIter.next();
-
+            for (DebugOffset debugOffset : debugScript.debugOffsets) {
                 buffer.write32(kDebugOffset);
                 buffer.write32(id);
                 buffer.write32(debugOffset.lineNumber);
@@ -508,30 +486,21 @@ public class DebugEncoder implements DebugHandler
 
         // Encode the kDebugRegister tags
         Collections.sort(debugRegisters);
-        Iterator<DebugRegisters> itr = debugRegisters.iterator();
-        while (itr.hasNext())
-        {
-            DebugRegisters debug = itr.next();
-			int size = debug.registerNumbers.length;
+        for (DebugRegisters debug : debugRegisters) {
+            int size = debug.registerNumbers.length;
 
             buffer.write32(kDebugRegisters);
-			buffer.write32(debug.offset);
-			buffer.writeUI8(size);
-			for(int i=0; i<debug.registerNumbers.length; i++)
-			{
-				buffer.writeUI8(debug.registerNumbers[i]);
-				buffer.writeString(debug.variableNames[i]);
-			}
+            buffer.write32(debug.offset);
+            buffer.writeUI8(size);
+            for (int i = 0; i < debug.registerNumbers.length; i++) {
+                buffer.writeUI8(debug.registerNumbers[i]);
+                buffer.writeString(debug.variableNames[i]);
+            }
         }
 		
         // Encode the kDebugBreakpoint tags
         Collections.sort(debugBreakpoints);
-        Iterator<DebugBreakpoint> debugBreakpointIterator = debugBreakpoints.iterator();
-        while (debugBreakpointIterator.hasNext())
-        {
-            DebugBreakpoint debugBreakpoint =
-                debugBreakpointIterator.next();
-
+        for (DebugBreakpoint debugBreakpoint : debugBreakpoints) {
             buffer.write32(kDebugBreakpoint);
             buffer.write32(debugBreakpoint.offset);
         }

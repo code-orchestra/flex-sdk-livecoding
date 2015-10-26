@@ -564,11 +564,9 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
     {
         if (renamedVariableMap != null)
         {
-            Iterator iterator = renamedVariableMap.entrySet().iterator();
 
-            while ( iterator.hasNext() )
-            {
-                Entry entry = (Entry) iterator.next();
+            for (Object o : renamedVariableMap.entrySet()) {
+                Entry entry = (Entry) o;
                 String newVariableName = (String) entry.getKey();
                 String oldVariableName = (String) entry.getValue();
                 message = message.replaceAll("'" + newVariableName + "'", "'" + oldVariableName + "'");

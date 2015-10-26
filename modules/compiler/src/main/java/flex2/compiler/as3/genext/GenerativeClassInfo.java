@@ -324,10 +324,8 @@ public abstract class GenerativeClassInfo
 			String result = "";
 			if (attributes != null)
 			{
-				Iterator iter = attributes.iterator();
-				while (iter.hasNext())
-				{
-					result += iter.next() + " ";
+				for (Object attribute : attributes) {
+					result += attribute + " ";
 				}
 				result = result.trim();
 			}

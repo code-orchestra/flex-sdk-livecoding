@@ -2190,9 +2190,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 			context.removeAllVariables();
 
 		// use the ordered child list
-		Iterator<DVariable> e = frameVars.iterator();
-		while (e.hasNext()) {
-			DVariable v = e.next();
+		for (DVariable v : frameVars) {
 			String name = v.getName();
 
 			// let's clear a couple of attributes that may get in our way

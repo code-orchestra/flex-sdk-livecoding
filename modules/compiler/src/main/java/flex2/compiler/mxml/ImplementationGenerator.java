@@ -546,11 +546,9 @@ public class ImplementationGenerator extends AbstractGenerator
     private Set<String> createInterfaceNames()
     {
         Set<String> result = new TreeSet<String>();
-        Iterator<DocumentInfo.NameInfo> iterator = mxmlDocument.getInterfaceNames().iterator();
 
-        while (iterator.hasNext())
-        {
-            result.add(iterator.next().getName());
+        for (DocumentInfo.NameInfo nameInfo : mxmlDocument.getInterfaceNames()) {
+            result.add(nameInfo.getName());
         }
 
         return result;
@@ -559,14 +557,12 @@ public class ImplementationGenerator extends AbstractGenerator
     protected StatementListNode generateAtResources(StatementListNode programStatementList)
     {
         StatementListNode result = programStatementList;
-        Iterator<AtResource> iterator = mxmlDocument.getAtResources().iterator();
 
-        while (iterator.hasNext())
-        {
+        for (AtResource atResource : mxmlDocument.getAtResources()) {
             //[ResourceBundle("$atResource.bundle")]
-            String bundle = iterator.next().getBundle();
+            String bundle = atResource.getBundle();
             MetaDataNode metaData =
-                AbstractSyntaxTreeUtil.generateMetaData(nodeFactory, RESOURCE_BUNDLE, bundle);
+                    AbstractSyntaxTreeUtil.generateMetaData(nodeFactory, RESOURCE_BUNDLE, bundle);
             result = nodeFactory.statementList(result, metaData);
         }
 
@@ -688,17 +684,11 @@ public class ImplementationGenerator extends AbstractGenerator
     {
         StatementListNode result = statementList;
 
-        Iterator<VariableDeclaration> iterator = MxmlDocument.getBindingManagementVars().iterator();
-
-        while (iterator.hasNext())
-        {
-            VariableDeclaration variableDeclaration = iterator.next();
-            if (!mxmlDocument.superHasPublicProperty(variableDeclaration.getName()))
-            {
-                if (generateDocComments)
-                {
+        for (VariableDeclaration variableDeclaration : MxmlDocument.getBindingManagementVars()) {
+            if (!mxmlDocument.superHasPublicProperty(variableDeclaration.getName())) {
+                if (generateDocComments) {
                     DocCommentNode docComment =
-                        AbstractSyntaxTreeUtil.generatePrivateDocComment(nodeFactory);
+                            AbstractSyntaxTreeUtil.generatePrivateDocComment(nodeFactory);
                     result = nodeFactory.statementList(result, docComment);
                 }
 
@@ -706,31 +696,26 @@ public class ImplementationGenerator extends AbstractGenerator
                 String initializerString = variableDeclaration.getInitializer();
                 Node initializerNode = null;
 
-                if (initializerString.equals("[]"))
-                {
+                if (initializerString.equals("[]")) {
                     initializerNode = nodeFactory.literalArray(null);
-                }
-                else if (initializerString.equals("{}"))
-                {
+                } else if (initializerString.equals("{}")) {
                     initializerNode = nodeFactory.literalObject(null);
-                }
-                else
-                {
+                } else {
                     assert false : initializerString;
                 }
 
                 String variableName = variableDeclaration.getName();
                 QualifiedIdentifierNode qualifiedIdentifier =
-                    AbstractSyntaxTreeUtil.generateMxInternalQualifiedIdentifier(nodeFactory,
-                                                                                 variableName,
-                                                                                 false);
+                        AbstractSyntaxTreeUtil.generateMxInternalQualifiedIdentifier(nodeFactory,
+                                variableName,
+                                false);
                 VariableDefinitionNode variableDefinition =
-                    AbstractSyntaxTreeUtil.generateVariable(nodeFactory,
-                                                            generateMxInternalAttribute(),
-                                                            qualifiedIdentifier,
-                                                            variableDeclaration.getType(),
-                                                            false,
-                                                            initializerNode);
+                        AbstractSyntaxTreeUtil.generateVariable(nodeFactory,
+                                generateMxInternalAttribute(),
+                                qualifiedIdentifier,
+                                variableDeclaration.getType(),
+                                false,
+                                initializerNode);
 
                 result = nodeFactory.statementList(result, variableDefinition);
             }
@@ -869,54 +854,43 @@ public class ImplementationGenerator extends AbstractGenerator
         Node resultVariableDefinition = generateResultVariable();
         StatementListNode functionStatementList = nodeFactory.statementList(null, resultVariableDefinition);
 
-        Iterator<BindingExpression> iterator = mxmlDocument.getBindingExpressions().iterator();
-
-        while (iterator.hasNext())
-        {
-            BindingExpression bindingExpression = iterator.next();
-
-            if (bindingExpression.isRepeatable())
-            {
+        for (BindingExpression bindingExpression : mxmlDocument.getBindingExpressions()) {
+            if (bindingExpression.isRepeatable()) {
                 ExpressionStatementNode expressionStatement = generateRepeatableBinding(bindingExpression);
                 functionStatementList = nodeFactory.statementList(functionStatementList, expressionStatement);
-            }
-            else
-            {
+            } else {
                 ExpressionStatementNode expressionStatement = generateBinding(bindingExpression);
                 functionStatementList = nodeFactory.statementList(functionStatementList, expressionStatement);
             }
 
-            if (bindingExpression.getTwoWayCounterpart() != null)
-            {
-                if (bindingExpression.isTwoWayPrimary())
-                {
+            if (bindingExpression.getTwoWayCounterpart() != null) {
+                if (bindingExpression.isTwoWayPrimary()) {
                     // result[${bindingExpression.id}].isTwoWayPrimary = true;
                     ExpressionStatementNode expressionStatement =
-                        generateIsTwoWayPrimaryAssignment(bindingExpression.getId());
+                            generateIsTwoWayPrimaryAssignment(bindingExpression.getId());
                     functionStatementList = nodeFactory.statementList(functionStatementList, expressionStatement);
                 }
 
                 {
                     // result[${bindingExpression.id}].twoWayCounterpart = result[${bindingExpression.twoWayCounterpart.id}];
                     ExpressionStatementNode expressionStatement =
-                        generateTwoWayCounterpartAssignment(bindingExpression.getId(),
-                                                            bindingExpression.getTwoWayCounterpart().getId());
+                            generateTwoWayCounterpartAssignment(bindingExpression.getId(),
+                                    bindingExpression.getTwoWayCounterpart().getId());
                     functionStatementList = nodeFactory.statementList(functionStatementList, expressionStatement);
                 }
 
-                if (bindingExpression.getTwoWayCounterpart().isTwoWayPrimary())
-                {
+                if (bindingExpression.getTwoWayCounterpart().isTwoWayPrimary()) {
                     // result[${bindingExpression.twoWayCounterpart.id}].isTwoWayPrimary = true;
                     ExpressionStatementNode expressionStatement =
-                        generateIsTwoWayPrimaryAssignment(bindingExpression.getTwoWayCounterpart().getId());
+                            generateIsTwoWayPrimaryAssignment(bindingExpression.getTwoWayCounterpart().getId());
                     functionStatementList = nodeFactory.statementList(functionStatementList, expressionStatement);
                 }
 
                 {
                     //result[${bindingExpression.twoWayCounterpart.id}].twoWayCounterpart = result[${bindingExpression.id}];
                     ExpressionStatementNode expressionStatement =
-                        generateTwoWayCounterpartAssignment(bindingExpression.getTwoWayCounterpart().getId(),
-                                                            bindingExpression.getId());
+                            generateTwoWayCounterpartAssignment(bindingExpression.getTwoWayCounterpart().getId(),
+                                    bindingExpression.getId());
                     functionStatementList = nodeFactory.statementList(functionStatementList, expressionStatement);
                 }
             }
@@ -1586,26 +1560,22 @@ public class ImplementationGenerator extends AbstractGenerator
     {
         StatementListNode result = statementList;
 
-        Iterator<AtEmbed> iterator = mxmlDocument.getAtEmbeds().iterator();
-
-        while (iterator.hasNext())
-        {
-            AtEmbed atEmbed = iterator.next();
+        for (AtEmbed atEmbed : mxmlDocument.getAtEmbeds()) {
             Map<String, Object> attributes = atEmbed.getAttributes();
             MetaDataNode metaData =
-                AbstractSyntaxTreeUtil.generateMetaData(nodeFactory, EMBED, attributes);
+                    AbstractSyntaxTreeUtil.generateMetaData(nodeFactory, EMBED, attributes);
             result = nodeFactory.statementList(result, metaData);
 
             MemberExpressionNode memberExpression =
-                AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory,
-                                                              atEmbed.getType(),
-                                                              true);
+                    AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory,
+                            atEmbed.getType(),
+                            true);
             TypeExpressionNode typeExpression =
-                nodeFactory.typeExpression(memberExpression, true, false, -1);
+                    nodeFactory.typeExpression(memberExpression, true, false, -1);
             Node variableDefinition =
-                AbstractSyntaxTreeUtil.generatePrivateVariable(nodeFactory,
-                                                               typeExpression,
-                                                               atEmbed.getPropName());
+                    AbstractSyntaxTreeUtil.generatePrivateVariable(nodeFactory,
+                            typeExpression,
+                            atEmbed.getPropName());
             result = nodeFactory.statementList(result, variableDefinition);
         }
 
@@ -1872,22 +1842,14 @@ public class ImplementationGenerator extends AbstractGenerator
     {
         StatementListNode result = statementList;
 
-        Iterator<String[]> splitImportIterator = mxmlDocument.getSplitImports().iterator();
-
-        while (splitImportIterator.hasNext())
-        {
-            String[] splitImport = splitImportIterator.next();
+        for (String[] splitImport : mxmlDocument.getSplitImports()) {
             ImportDirectiveNode importDirective = AbstractSyntaxTreeUtil.generateImport(context, splitImport);
             result = nodeFactory.statementList(result, importDirective);
         }
 
-        Iterator<DocumentInfo.NameInfo> iterator = mxmlDocument.getImports().iterator();
-
-        while (iterator.hasNext())
-        {
-            DocumentInfo.NameInfo nameInfo = iterator.next();
+        for (DocumentInfo.NameInfo nameInfo : mxmlDocument.getImports()) {
             int position = AbstractSyntaxTreeUtil.lineNumberToPosition(nodeFactory, nameInfo.getLine());
-            ImportDirectiveNode importDirective = AbstractSyntaxTreeUtil.generateImport(context, nameInfo.getName(), position);            
+            ImportDirectiveNode importDirective = AbstractSyntaxTreeUtil.generateImport(context, nameInfo.getName(), position);
             result = nodeFactory.statementList(result, importDirective);
         }
 
@@ -2836,16 +2798,9 @@ public class ImplementationGenerator extends AbstractGenerator
             initFunctionStatementList = nodeFactory.statementList(initFunctionStatementList, variableDefinition);
         }
 
-        Iterator<StyleDef> styleDefIterator = mxmlDocument.getStylesContainer().getStyleDefs().iterator();
-
-        while (styleDefIterator.hasNext())
-        {
-            StyleDef styleDef = styleDefIterator.next();
-
-            if (styleDef.isAdvanced())
-            {
-                for (StyleDeclaration styleDeclaration : styleDef.getDeclarations().values())
-                {
+        for (StyleDef styleDef : mxmlDocument.getStylesContainer().getStyleDefs()) {
+            if (styleDef.isAdvanced()) {
+                for (StyleDeclaration styleDeclaration : styleDef.getDeclarations().values()) {
                     StyleSelector selector = styleDeclaration.getSelector();
 
                     // selector = null;
@@ -2860,69 +2815,60 @@ public class ImplementationGenerator extends AbstractGenerator
 
                     // style = StyleManager.getStyleDeclaration("${selector.toString}");
                     ExpressionStatementNode expressionStatement = generateGetStyleDeclaration(selector.toString());
-            initFunctionStatementList = nodeFactory.statementList(initFunctionStatementList, expressionStatement);
+                    initFunctionStatementList = nodeFactory.statementList(initFunctionStatementList, expressionStatement);
 
                     Node nullStyleDeclarationIfStatement = generateIfNullStyleDeclaration(styleDeclaration.getSubject(), selector);
                     initFunctionStatementList = nodeFactory.statementList(initFunctionStatementList,
-                                                                          nullStyleDeclarationIfStatement);
+                            nullStyleDeclarationIfStatement);
 
-                    if (styleDeclaration.hasProperties())
-                    {
+                    if (styleDeclaration.hasProperties()) {
                         Node nullStyleFactoryIfStatement =
-                            generateIfNullStyleFactory(styleDef, styleDeclaration);
+                                generateIfNullStyleFactory(styleDef, styleDeclaration);
                         initFunctionStatementList = nodeFactory.statementList(initFunctionStatementList,
-                                                                              nullStyleFactoryIfStatement);
+                                nullStyleFactoryIfStatement);
                     }
 
-                    if (styleDeclaration.hasEffectStyles())
-                    {
+                    if (styleDeclaration.hasEffectStyles()) {
                         // effects = style.mx_internal::effects;
                         initFunctionStatementList =
-                            nodeFactory.statementList(initFunctionStatementList, generateEffectsInitializer());
+                                nodeFactory.statementList(initFunctionStatementList, generateEffectsInitializer());
 
                         generateIfNullEffectsAndPushes(styleDef, styleDeclaration,
-                                                       initFunctionStatementList);
+                                initFunctionStatementList);
                     }
                 }
-            }
-            else
-            {
+            } else {
                 ExpressionStatementNode expressionStatement;
 
-                if (styleDef.isTypeSelector())
-                {
+                if (styleDef.isTypeSelector()) {
                     //style = StyleManager.getStyleDeclaration("${styleDef.typeName}");
                     expressionStatement = generateGetStyleDeclaration(styleDef.getSubject());
-                }
-                else
-                {
+                } else {
                     //style = StyleManager.getStyleDeclaration(".${styleDef.typeName}");
                     expressionStatement = generateGetStyleDeclaration("." + styleDef.getSubject());
                 }
 
                 initFunctionStatementList = nodeFactory.statementList(initFunctionStatementList, expressionStatement);
 
-            Node nullStyleDeclarationIfStatement = generateIfNullStyleDeclaration(styleDef);
-            initFunctionStatementList = nodeFactory.statementList(initFunctionStatementList,
-                                                                  nullStyleDeclarationIfStatement);
-
-            if (styleDef.getStyles().size() > 0)
-            {
-                    Node nullStyleFactoryIfStatement =
-                        generateIfNullStyleFactory(styleDef, null);
+                Node nullStyleDeclarationIfStatement = generateIfNullStyleDeclaration(styleDef);
                 initFunctionStatementList = nodeFactory.statementList(initFunctionStatementList,
-                                                                      nullStyleFactoryIfStatement);
-            }
+                        nullStyleDeclarationIfStatement);
 
-            if (styleDef.getEffectStyles().size() > 0)
-            {
+                if (styleDef.getStyles().size() > 0) {
+                    Node nullStyleFactoryIfStatement =
+                            generateIfNullStyleFactory(styleDef, null);
+                    initFunctionStatementList = nodeFactory.statementList(initFunctionStatementList,
+                            nullStyleFactoryIfStatement);
+                }
+
+                if (styleDef.getEffectStyles().size() > 0) {
                     initFunctionStatementList =
-                        nodeFactory.statementList(initFunctionStatementList, generateEffectsInitializer());
+                            nodeFactory.statementList(initFunctionStatementList, generateEffectsInitializer());
 
                     generateIfNullEffectsAndPushes(styleDef, null,
-                                                   initFunctionStatementList);
+                            initFunctionStatementList);
+                }
             }
-        }
         }
 
         if (mxmlDocument.getIsFlexApplication())

@@ -804,109 +804,79 @@ public class FlexFXG2SWFTranscoder extends FXG2SWFTranscoder
         // Child Nodes
         if (children != null && children.size() > 0)
         {
-            Iterator<TextNode> iter = children.iterator();
-            while (iter.hasNext())
-            {
+            for (TextNode aChildren : children) {
                 String elementVar = null;
-                TextNode child = iter.next();
+                TextNode child = aChildren;
 
                 // FXG 2.0
-                if (child instanceof RichTextNode)
-                {
+                if (child instanceof RichTextNode) {
                     varContext.setVar(richTextType, NodeType.RICHTEXT);
                     elementVar = varContext.elementVar;
                     generateTextVariable(child, srcContext, varContext);
                     buf.append("        ").append(contentVar).append(".push(").append(elementVar).append(");\r\n");
-                }
-                else if (child instanceof ParagraphNode)
-                {
+                } else if (child instanceof ParagraphNode) {
                     varContext.setVar(paragraphType, NodeType.PARAGRAPH);
                     elementVar = varContext.elementVar;
                     generateTextVariable(child, srcContext, varContext);
                     buf.append("        ").append(contentVar).append(".push(").append(elementVar).append(");\r\n");
-                }
-                else if (child instanceof SpanNode)
-                {
+                } else if (child instanceof SpanNode) {
                     varContext.setVar(spanType, NodeType.SPAN);
                     elementVar = varContext.elementVar;
                     generateTextVariable(child, srcContext, varContext);
                     buf.append("        ").append(contentVar).append(".push(").append(elementVar).append(");\r\n");
-                }
-                else if (child instanceof DivNode)
-                {
+                } else if (child instanceof DivNode) {
                     varContext.setVar(divType, NodeType.DIV);
                     elementVar = varContext.elementVar;
                     generateTextVariable(child, srcContext, varContext);
                     buf.append("        ").append(contentVar).append(".push(").append(elementVar).append(");\r\n");
-                }
-                else if (child instanceof CDATANode)
-                {
+                } else if (child instanceof CDATANode) {
                     // someContent.push("some text");
-                    String text = formatString(((CDATANode)child).content);
+                    String text = formatString(((CDATANode) child).content);
                     buf.append("        ").append(contentVar).append(".push(").append(text).append(");\r\n");
-                }
-                else if (child instanceof BRNode)
-                {
+                } else if (child instanceof BRNode) {
                     // someContent.push(new BreakElement());
                     buf.append("        ").append(contentVar).append(".push(new BreakElement());\r\n");
-                }
-                else if (child instanceof ImgNode)
-                {
+                } else if (child instanceof ImgNode) {
                     varContext.setVar(imgType, NodeType.IMG);
                     elementVar = varContext.elementVar;
                     generateTextVariable(child, srcContext, varContext);
                     buf.append("        ").append(contentVar).append(".push(").append(elementVar).append(");\r\n");
-                }
-                else if (child instanceof LinkNode)
-                {
+                } else if (child instanceof LinkNode) {
                     varContext.setVar(linkType, NodeType.LINK);
                     elementVar = varContext.elementVar;
                     generateTextVariable(child, srcContext, varContext);
                     buf.append("        ").append(contentVar).append(".push(").append(elementVar).append(");\r\n");
-                }
-                else if (child instanceof TabNode)
-                {
+                } else if (child instanceof TabNode) {
                     varContext.setVar(tabType, NodeType.TAB);
                     elementVar = varContext.elementVar;
                     generateTextVariable(child, srcContext, varContext);
                     buf.append("        ").append(contentVar).append(".push(").append(elementVar).append(");\r\n");
-                }
-                else if (child instanceof TCYNode)
-                {
+                } else if (child instanceof TCYNode) {
                     varContext.setVar(tcyType, NodeType.TCY);
                     elementVar = varContext.elementVar;
                     generateTextVariable(child, srcContext, varContext);
                     buf.append("        ").append(contentVar).append(".push(").append(elementVar).append(");\r\n");
                 }
                 // FXG 1.0
-                else if (child instanceof TextGraphicNode)
-                {
+                else if (child instanceof TextGraphicNode) {
                     varContext.setVar(richTextType, NodeType.RICHTEXT);
                     elementVar = varContext.elementVar;
                     generateTextVariable(child, srcContext, varContext);
                     buf.append("        ").append(contentVar).append(".push(").append(elementVar).append(");\r\n");
-                }
-                else if (child instanceof com.adobe.internal.fxg.dom.text.ParagraphNode)
-                {
+                } else if (child instanceof com.adobe.internal.fxg.dom.text.ParagraphNode) {
                     varContext.setVar(paragraphType, NodeType.PARAGRAPH);
                     elementVar = varContext.elementVar;
                     generateTextVariable(child, srcContext, varContext);
                     buf.append("        ").append(contentVar).append(".push(").append(elementVar).append(");\r\n");
-                }
-                else if (child instanceof com.adobe.internal.fxg.dom.text.SpanNode)
-                {
+                } else if (child instanceof com.adobe.internal.fxg.dom.text.SpanNode) {
                     varContext.setVar(spanType, NodeType.SPAN);
                     elementVar = varContext.elementVar;
                     generateTextVariable(child, srcContext, varContext);
                     buf.append("        ").append(contentVar).append(".push(").append(elementVar).append(");\r\n");
-                }
-                else if (child instanceof com.adobe.internal.fxg.dom.text.BRNode)
-                {
+                } else if (child instanceof com.adobe.internal.fxg.dom.text.BRNode) {
                     // e.g. someContent.push(new BreakElement());
                     buf.append("        ").append(contentVar).append(".push(new BreakElement());\r\n");
-                }
-                else
-                {
+                } else {
                     // TODO: Error: Unknown Text Tag
                 }
             }

@@ -197,15 +197,13 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
             if (renamedVariableMap != null)
             {
-                Iterator iterator = renamedVariableMap.entrySet().iterator();
 
-                while ( iterator.hasNext() )
-                {
-                    Map.Entry entry = (Map.Entry) iterator.next();
-                    String newVariableName = (String) entry.getKey();
-                    String oldVariableName = (String) entry.getValue();
-                    msg = msg.replaceAll("'" + newVariableName + "'", "'" + oldVariableName + "'");
-                }
+				for (Object o : renamedVariableMap.entrySet()) {
+					Map.Entry entry = (Map.Entry) o;
+					String newVariableName = (String) entry.getKey();
+					String oldVariableName = (String) entry.getValue();
+					msg = msg.replaceAll("'" + newVariableName + "'", "'" + oldVariableName + "'");
+				}
             }
 
             return msg;

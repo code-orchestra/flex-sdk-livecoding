@@ -78,11 +78,9 @@ public class TypeAnalyzer extends EvaluatorAdapter
 
     private void analyzeInterfaces(Context context, List multiNames, Info info)
     {
-        Iterator iterator = multiNames.iterator();
 
-        while ( iterator.hasNext() )
-        {
-            MultiName multiName = (MultiName) iterator.next();
+        for (Object multiName1 : multiNames) {
+            MultiName multiName = (MultiName) multiName1;
 
             analyzeInterface(context, multiName, info);
         }

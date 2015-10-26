@@ -171,10 +171,7 @@ public class StylesContainer extends StyleModule
         }
 
         Set<String> processedDefNames = new HashSet<String>();
-        Iterator<String> defNameIterator = defNames.iterator();
-        while (defNameIterator.hasNext())
-        {
-            String defName = defNameIterator.next();
+        for (String defName : defNames) {
             if (qualifiedTypeSelectors)
                 processedDefNames.add(NameFormatter.toDot(defName));
             else
@@ -182,19 +179,15 @@ public class StylesContainer extends StyleModule
         }
 
         StyleDefList filteredStyleDefs = new StyleDefList();
-        Iterator<Entry<String, StyleDef>> iterator = styleDefs.entrySet().iterator();
-        while (iterator.hasNext())
-        {
-            Entry<String, StyleDef> entry = iterator.next();
+        for (Entry<String, StyleDef> entry : styleDefs.entrySet()) {
             String styleName = entry.getKey();
             StyleDef styleDef = entry.getValue();
             String typeName = StyleDef.dehyphenize(styleName);
-            
-            if (!styleDef.isTypeSelector() || 
-                (processedDefNames.contains(typeName) ||
-                mxmlConfiguration.keepAllTypeSelectors()) || 
-                styleName.equals(StyleDef.GLOBAL))
-            {
+
+            if (!styleDef.isTypeSelector() ||
+                    (processedDefNames.contains(typeName) ||
+                            mxmlConfiguration.keepAllTypeSelectors()) ||
+                    styleName.equals(StyleDef.GLOBAL)) {
                 filteredStyleDefs.add(styleDef);
             }
         }
@@ -487,10 +480,7 @@ public class StylesContainer extends StyleModule
 
         if (mxmlDocument != null)
         {
-            Iterator<Import> iterator = styleDef.getImports().iterator();
-            while (iterator.hasNext())
-            {
-                Import importObject = iterator.next();
+            for (Import importObject : styleDef.getImports()) {
                 mxmlDocument.addImport(importObject.getValue(), importObject.getLineNumber());
             }
         }
@@ -548,10 +538,7 @@ public class StylesContainer extends StyleModule
 
         if (mxmlDocument != null)
         {
-            Iterator<Import> iterator = styleDef.getImports().iterator();
-            while (iterator.hasNext())
-            {
-                Import importObject = iterator.next();
+            for (Import importObject : styleDef.getImports()) {
                 mxmlDocument.addImport(importObject.getValue(),
                         importObject.getLineNumber());
             }
@@ -676,11 +663,7 @@ public class StylesContainer extends StyleModule
             result = new Source(genFile, "", shortName, null, false, false, false);
             result.setPathResolver(compilationUnit.getSource().getPathResolver());
 
-            Iterator<VirtualFile> iterator = implicitIncludes.iterator();
-
-            while ( iterator.hasNext() )
-            {
-                VirtualFile virtualFile = iterator.next();
+            for (VirtualFile virtualFile : implicitIncludes) {
                 result.addFileInclude(virtualFile);
             }
         }

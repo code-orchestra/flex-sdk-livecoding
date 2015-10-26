@@ -219,16 +219,10 @@ public final class CompilerAPI
         Map<String, List<VirtualFile>> manifests = configuration.getCompilerConfiguration().getNamespacesConfiguration().getManifestMappings();
         if (manifests != null)
         {
-            Iterator<Entry<String, List<VirtualFile>>> entryIterator = manifests.entrySet().iterator();
-            while (entryIterator.hasNext())
-            {
-                Entry<String, List<VirtualFile>> entry = entryIterator.next();
+            for (Entry<String, List<VirtualFile>> entry : manifests.entrySet()) {
                 String ns = entry.getKey();
                 List<VirtualFile> files = entry.getValue();
-                Iterator<VirtualFile> filesIterator = files.iterator();
-                while (filesIterator.hasNext())
-                {
-                    VirtualFile file = filesIterator.next();
+                for (VirtualFile file : files) {
                     ManifestParser.parse(ns, file, mappings);
                 }
             }

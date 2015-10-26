@@ -235,10 +235,8 @@ public class TagEncoderReporter extends TagEncoder
     
     public void symbolClass(SymbolClass tag)
     {
-        Iterator it = tag.class2tag.entrySet().iterator();
-        while (it.hasNext())
-        {
-            Map.Entry e = (Map.Entry) it.next();
+        for (Object o : tag.class2tag.entrySet()) {
+            Map.Entry e = (Map.Entry) o;
             String name = (String) e.getKey();
             DefineTag ref = (DefineTag) e.getValue();
             int idref = dict.getId(ref);

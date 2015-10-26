@@ -636,10 +636,8 @@ public class ActionEncoder extends ActionHandler
 
         encodeClipEventFlags(clipActions.allEventFlags, writer);
 
-        Iterator it = clipActions.clipActionRecords.iterator();
-        while (it.hasNext())
-        {
-            ClipActionRecord r = (ClipActionRecord) it.next();
+        for (Object clipActionRecord : clipActions.clipActionRecords) {
+            ClipActionRecord r = (ClipActionRecord) clipActionRecord;
             encodeClipActionRecord(r);
         }
 

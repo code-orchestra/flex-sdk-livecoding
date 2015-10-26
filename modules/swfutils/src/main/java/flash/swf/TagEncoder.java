@@ -849,36 +849,27 @@ public class TagEncoder extends TagHandler
 
         if (s != null && s.shapeRecords != null)
         {
-            Iterator<ShapeRecord> it = s.shapeRecords.iterator();
-            while (it.hasNext())
-            {
-                ShapeRecord record = it.next();
-                if (record instanceof StyleChangeRecord)
-    			{
+            for (ShapeRecord record : s.shapeRecords) {
+                if (record instanceof StyleChangeRecord) {
                     // style change
                     w.writeBit(false);
                     StyleChangeRecord change = (StyleChangeRecord) record;
                     encodeStyleChangeRecord(w, change, numFillBits, numLineBits, shape);
-    			}
-    			else
-    			{
+                } else {
                     // edge
                     w.writeBit(true);
-    				EdgeRecord e = (EdgeRecord) record;
+                    EdgeRecord e = (EdgeRecord) record;
                     boolean straight = e instanceof StraightEdgeRecord;
                     w.writeBit(straight);
-                    int nbits = straight ? calcBits((StraightEdgeRecord)e) : calcBits((CurvedEdgeRecord)e);
+                    int nbits = straight ? calcBits((StraightEdgeRecord) e) : calcBits((CurvedEdgeRecord) e);
                     if (nbits < 2)
                         nbits = 2;
-    				w.writeUBits(nbits-2, 4);
-                    if (straight)
-                    {
+                    w.writeUBits(nbits - 2, 4);
+                    if (straight) {
                         // line
                         StraightEdgeRecord line = (StraightEdgeRecord) e;
                         encodeStraightEdgeRecord(line, w, nbits);
-                    }
-                    else
-                    {
+                    } else {
                         // curve
                         CurvedEdgeRecord curve = (CurvedEdgeRecord) e;
                         w.writeSBits(curve.controlDeltaX, nbits);
@@ -886,8 +877,8 @@ public class TagEncoder extends TagHandler
                         w.writeSBits(curve.anchorDeltaX, nbits);
                         w.writeSBits(curve.anchorDeltaY, nbits);
                     }
-    			}
-    		}
+                }
+            }
         }
 
         // endshaperecord
@@ -1041,10 +1032,7 @@ public class TagEncoder extends TagHandler
 
         if (count > 0)
         {
-            Iterator<FillStyle> it = fillstyles.iterator();
-            while (it.hasNext())
-            {
-                FillStyle style = (FillStyle) it.next();
+            for (FillStyle style : fillstyles) {
                 encodeFillStyle(style, w, shape);
             }
         }
@@ -1953,10 +1941,8 @@ public class TagEncoder extends TagHandler
     public void exportAssets(ExportAssets tag)
     {
         tagw.writeUI16(tag.exports.size());
-        Iterator it = tag.exports.iterator();
-        while (it.hasNext())
-        {
-            DefineTag ref = (DefineTag) it.next();
+        for (Object export : tag.exports) {
+            DefineTag ref = (DefineTag) export;
             int idref = dict.getId(ref);
             tagw.writeUI16(idref);
             assert (ref.name != null); // exported symbols must have names
@@ -1969,17 +1955,15 @@ public class TagEncoder extends TagHandler
 	public void symbolClass(SymbolClass tag)
 	{
 		tagw.writeUI16(tag.class2tag.size() + (tag.topLevelClass != null ? 1 : 0));
-		Iterator it = tag.class2tag.entrySet().iterator();
-		while (it.hasNext())
-		{
-			Map.Entry e = (Map.Entry) it.next();
-			String name = (String) e.getKey();
+        for (Object o : tag.class2tag.entrySet()) {
+            Map.Entry e = (Map.Entry) o;
+            String name = (String) e.getKey();
             DefineTag ref = (DefineTag) e.getValue();
 
-			int idref = dict.getId(ref);
-			tagw.writeUI16(idref);
-			tagw.writeString(name);
-		}
+            int idref = dict.getId(ref);
+            tagw.writeUI16(idref);
+            tagw.writeString(name);
+        }
 		if (tag.topLevelClass != null)
 		{
 			tagw.writeUI16(0);
@@ -2011,14 +1995,11 @@ public class TagEncoder extends TagHandler
         	}
         }
         tagw.writeUI16(tag.importRecords.size());
-        Iterator<ImportRecord> it = tag.importRecords.iterator();
-        while (it.hasNext())
-        {
-            ImportRecord record = (ImportRecord) it.next();
+        for (ImportRecord record : tag.importRecords) {
             int id = dict.add(record);
             tagw.writeUI16(id);
             tagw.writeString(record.name);
-		}
+        }
         encodeTag(tag);
     }
     

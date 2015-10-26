@@ -510,10 +510,8 @@ public final class MxmlDocument
 
         Model.addDefinitionIterators(iterList, getTopLevelInitializerIterator());
 
-        Iterator iter = statefulEventInitializers.iterator();
-        while (iter.hasNext())
-        {
-            iterList.add(((Initializer)iter.next()).getDefinitionsIterator());
+        for (Object statefulEventInitializer : statefulEventInitializers) {
+            iterList.add(((Initializer) statefulEventInitializer).getDefinitionsIterator());
         }
         
         iterList.add(root.getSubDefinitionsIterator());

@@ -128,220 +128,133 @@ public class BuilderLibrary extends Library
 					}
 					
 					List positions = cfgbuf.getPositions();
-					for (int i = 0, length = positions.size(); i < length; i++)
-					{
-						Object[] a = (Object[]) positions.get(i);
-						String var = (String) a[0];		
-						
-						if ("link-report".equals(var))
-						{
+					for (Object position : positions) {
+						Object[] a = (Object[]) position;
+						String var = (String) a[0];
+
+						if ("link-report".equals(var)) {
 							config.keepLinkReport(true);
-						}
-						else if ("compiler.debug".equals(var))
-						{
-							try
-							{
+						} else if ("compiler.debug".equals(var)) {
+							try {
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
 								String debugPassword = cfgbuf.peekSimpleConfigurationVar("debug-password");
-								if ("true".equals(value))
-								{
+								if ("true".equals(value)) {
 									config.enableDebugging(true, debugPassword);
-								}
-								else if ("false".equals(value))
-								{
+								} else if ("false".equals(value)) {
 									config.enableDebugging(false, debugPassword);
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("compiler.verbose-stacktraces".equals(var))
-						{
-							try
-							{
+						} else if ("compiler.verbose-stacktraces".equals(var)) {
+							try {
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
-								if ("true".equals(value))
-								{
+								if ("true".equals(value)) {
 									config.enableVerboseStacktraces(true);
-								}
-								else if ("false".equals(value))
-								{
+								} else if ("false".equals(value)) {
 									config.enableVerboseStacktraces(false);
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}							
-						}
-						else if ("compiler.accessible".equals(var))
-						{
-							try
-							{
+						} else if ("compiler.accessible".equals(var)) {
+							try {
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
-								if ("true".equals(value))
-								{
+								if ("true".equals(value)) {
 									config.enableAccessibility(true);
-								}
-								else if ("false".equals(value))
-								{
+								} else if ("false".equals(value)) {
 									config.enableAccessibility(false);
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("compiler.strict".equals(var))
-						{
-							try
-							{
+						} else if ("compiler.strict".equals(var)) {
+							try {
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
-								if ("true".equals(value))
-								{
+								if ("true".equals(value)) {
 									config.enableStrictChecking(true);
-								}
-								else if ("false".equals(value))
-								{
+								} else if ("false".equals(value)) {
 									config.enableStrictChecking(false);
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("help".equals(var))
-						{
+						} else if ("help".equals(var)) {
 							// do nothing
-						}
-						else if ("output".equals(var))
-						{
-							try
-							{
+						} else if ("output".equals(var)) {
+							try {
 								String isDirectory = cfgbuf.peekSimpleConfigurationVar("directory");
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
-								if ("true".equals(isDirectory))
-								{
+								if ("true".equals(isDirectory)) {
 									setDirectory(new File(value));
-								}
-								else
-								{
+								} else {
 									setOutput(new File(value));
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("size-report".equals(var))
-						{
+						} else if ("size-report".equals(var)) {
 							config.keepSizeReport(true);
-						}
-						else if ("directory".equals(var))
-						{
+						} else if ("directory".equals(var)) {
 							// do nothing
-						}
-						else if ("version".equals(var))
-						{
+						} else if ("version".equals(var)) {
 							// do nothing
-						}
-						else if ("include-classes".equals(var))
-						{
-							try
-							{
+						} else if ("include-classes".equals(var)) {
+							try {
 								List l = cfgbuf.peekConfigurationVar(var);
-								for (int j = 0, len = l == null ? 0 : l.size(); j < len; j++)
-								{
+								for (int j = 0, len = l == null ? 0 : l.size(); j < len; j++) {
 									ConfigurationValue val = (ConfigurationValue) l.get(j);
 									List valArgs = val.getArgs();
-									for (int k = 0, size = valArgs == null ? 0 : valArgs.size(); k < size; k++)
-									{
+									for (int k = 0, size = valArgs == null ? 0 : valArgs.size(); k < size; k++) {
 										this.addComponent((String) valArgs.get(k));
 									}
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("include-file".equals(var))
-						{
-							try
-							{
+						} else if ("include-file".equals(var)) {
+							try {
 								List l = cfgbuf.peekConfigurationVar(var);
-								for (int j = 0, len = l == null ? 0 : l.size(); j < len; j++)
-								{
+								for (int j = 0, len = l == null ? 0 : l.size(); j < len; j++) {
 									ConfigurationValue val = (ConfigurationValue) l.get(j);
 									List valArgs = val.getArgs();
-									this.addArchiveFile((String) valArgs.get(0), new File((String) valArgs.get(1))); 
+									this.addArchiveFile((String) valArgs.get(0), new File((String) valArgs.get(1)));
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("include-namespaces".equals(var))
-						{
-							try
-							{
+						} else if ("include-namespaces".equals(var)) {
+							try {
 								List l = cfgbuf.peekConfigurationVar(var);
-								for (int j = 0, len = l == null ? 0 : l.size(); j < len; j++)
-								{
+								for (int j = 0, len = l == null ? 0 : l.size(); j < len; j++) {
 									ConfigurationValue val = (ConfigurationValue) l.get(j);
 									List valArgs = val.getArgs();
-									for (int k = 0, size = valArgs == null ? 0 : valArgs.size(); k < size; k++)
-									{
-										try
-										{
+									for (int k = 0, size = valArgs == null ? 0 : valArgs.size(); k < size; k++) {
+										try {
 											this.addComponent(new URI((String) valArgs.get(k)));
-										}
-										catch (URISyntaxException ex)
-										{
+										} catch (URISyntaxException ex) {
 											ex.printStackTrace();
 										}
 									}
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("include-resource-bundles".equals(var))
-						{
-							try
-							{
+						} else if ("include-resource-bundles".equals(var)) {
+							try {
 								List l = cfgbuf.peekConfigurationVar(var);
-								for (int j = 0, len = l == null ? 0 : l.size(); j < len; j++)
-								{
+								for (int j = 0, len = l == null ? 0 : l.size(); j < len; j++) {
 									ConfigurationValue val = (ConfigurationValue) l.get(j);
 									List valArgs = val.getArgs();
-									for (int k = 0, size = valArgs == null ? 0 : valArgs.size(); k < size; k++)
-									{
+									for (int k = 0, size = valArgs == null ? 0 : valArgs.size(); k < size; k++) {
 										this.addResourceBundle((String) valArgs.get(k));
 									}
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("include-sources".equals(var))
-						{
-							try
-							{
+						} else if ("include-sources".equals(var)) {
+							try {
 								List l = cfgbuf.peekConfigurationVar(var);
-								for (int j = 0, len = l == null ? 0 : l.size(); j < len; j++)
-								{
+								for (int j = 0, len = l == null ? 0 : l.size(); j < len; j++) {
 									ConfigurationValue val = (ConfigurationValue) l.get(j);
 									List valArgs = val.getArgs();
-									for (int k = 0, size = valArgs == null ? 0 : valArgs.size(); k < size; k++)
-									{
+									for (int k = 0, size = valArgs == null ? 0 : valArgs.size(); k < size; k++) {
 										this.addComponent(new File((String) valArgs.get(k)));
 									}
 								}
-							}
-							catch (ConfigurationException ex)
-							{
+							} catch (ConfigurationException ex) {
 							}
 						}
 					}

@@ -83,10 +83,8 @@ public abstract class AbstractTranscoder implements Transcoder
 
     public boolean isSupported(String mimeType)
     {
-        for (int i = 0; i < mimeTypes.length; i++)
-        {
-            if (mimeTypes[i].equalsIgnoreCase(mimeType))
-            {
+        for (String mimeType1 : mimeTypes) {
+            if (mimeType1.equalsIgnoreCase(mimeType)) {
                 return true;
             }
         }
@@ -98,16 +96,12 @@ public abstract class AbstractTranscoder implements Transcoder
                                          boolean generateSource)
             throws TranscoderException
     {
-        for (Iterator<String> it = args.keySet().iterator(); it.hasNext();)
-        {
-            String attr = it.next();
-            if (attr.startsWith( "_") || Transcoder.SOURCE.equalsIgnoreCase( attr ) || Transcoder.MIMETYPE.equalsIgnoreCase( attr ) || Transcoder.NEWNAME.equalsIgnoreCase( attr ))
-            {
+        for (String attr : args.keySet()) {
+            if (attr.startsWith("_") || Transcoder.SOURCE.equalsIgnoreCase(attr) || Transcoder.MIMETYPE.equalsIgnoreCase(attr) || Transcoder.NEWNAME.equalsIgnoreCase(attr)) {
                 continue;
             }
-            if (!Transcoder.ORIGINAL.equals(attr) && !isSupportedAttribute( attr ))
-            {
-                throw new UnsupportedAttribute( attr, getClass().getName() );
+            if (!Transcoder.ORIGINAL.equals(attr) && !isSupportedAttribute(attr)) {
+                throw new UnsupportedAttribute(attr, getClass().getName());
             }
         }
 

@@ -61,11 +61,8 @@ public class DefineMorphShape extends DefineTag
 
         if (fillStyles != null)
         {
-            for (int i = 0; i < fillStyles.length; i++)
-            {
-                MorphFillStyle style = fillStyles[i];
-                if (style != null && style.hasBitmapId() && style.bitmap != null)
-                {
+            for (MorphFillStyle style : fillStyles) {
+                if (style != null && style.hasBitmapId() && style.bitmap != null) {
                     refs.add(style.bitmap);
                 }
             }

@@ -102,10 +102,9 @@ public class FileInfoCache implements Comparator<SourceFile>
 		boolean worked = true; // check that all worked correctly
 		ArrayList<SourceFile> files = new ArrayList<SourceFile>();
 
-		for(int i=0; i<swfs.length; i++)
-		{
-			if (swfs[i] != null)
-				worked = loadSwfFiles(files, swfs[i]) ? worked : false;
+		for (SwfInfo swf : swfs) {
+			if (swf != null)
+				worked = loadSwfFiles(files, swf) ? worked : false;
 		}
 
 		// trim the file list
@@ -200,10 +199,9 @@ public class FileInfoCache implements Comparator<SourceFile>
 		boolean worked = true; // check that all worked correctly
 		ArrayList<SourceFile> files = new ArrayList<SourceFile>();
 		SwfInfo[] swfs = getAllSwfs();
-		for(int i=0; i<swfs.length; i++)
-		{
-			if (swfs[i] != null)
-				worked = loadSwfFiles(files, swfs[i]) ? worked : false;
+		for (SwfInfo swf : swfs) {
+			if (swf != null)
+				worked = loadSwfFiles(files, swf) ? worked : false;
 		}
 
 		// trim the file list
@@ -228,10 +226,9 @@ public class FileInfoCache implements Comparator<SourceFile>
 			ar.ensureCapacity(ar.size()+files.length);
 
 			// add each file to our global source file IntMap and our list
-			for(int i=0; i<files.length; i++)
-			{
-				putFile(files[i], swf.getIsolateId());
-				ar.add(files[i]);
+			for (SourceFile file : files) {
+				putFile(file, swf.getIsolateId());
+				ar.add(file);
 			}
 		}
 		catch(InProgressException ipe)
@@ -252,23 +249,19 @@ public class FileInfoCache implements Comparator<SourceFile>
 		ArrayList<SourceFile> list = new ArrayList<SourceFile>();
 
 		int size = files.size();
-		for(int i=0; i<size; i++)
-		{
+		for (SourceFile file : files) {
 			boolean addIt = false;
 
-			SourceFile fi = files.get(i);
+			SourceFile fi = file;
 			// no filter currently in place so we add the file as long
 			// as no duplicates exist.  We use the original Swd full
 			// name for matching.
 			String fName = fi.getRawName();
-			if (m_swfFilter == null)
-			{
+			if (m_swfFilter == null) {
 				// If it exists, then we don't add it!
 				if (names.get(fName) == null)
 					addIt = true;
-			}
-			else
-			{
+			} else {
 				// we have a filter in place so, see
 				// if the source file is in our currently
 				// selected swf.
@@ -276,8 +269,7 @@ public class FileInfoCache implements Comparator<SourceFile>
 			}
 
 			// did we mark this one to add?
-			if (addIt)
-			{
+			if (addIt) {
 				names.put(fName, fName);
 				list.add(fi);
 			}
@@ -320,11 +312,8 @@ public class FileInfoCache implements Comparator<SourceFile>
 		else
 		{
 			SwfInfo[] swfs = getAllSwfs();
-			for(int i=0; i<swfs.length; i++)
-			{
-				SwfInfo e = swfs[i];
-				if (e != null && nameOfSwf(e).equalsIgnoreCase(swfName))
-				{
+			for (SwfInfo e : swfs) {
+				if (e != null && nameOfSwf(e).equalsIgnoreCase(swfName)) {
 					worked = true;
 					m_swfFilter = e;
 					break;
@@ -425,10 +414,9 @@ public class FileInfoCache implements Comparator<SourceFile>
 		if (!info.isProcessingComplete())
 			throw new InProgressException();
 
-		for(int i=0; i<files.length; i++)
-		{
-			if (filesMatch(f, files[i]))
-				hit = files[i];
+		for (SourceFile file : files) {
+			if (filesMatch(f, file))
+				hit = file;
 		}
         return hit;
     }

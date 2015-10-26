@@ -66,25 +66,21 @@ public class MxmlCommentUtil
 
             String[] commentFragment = comment.split("@");
 
-            for (int ix = 0; ix < commentFragment.length; ix++)
-            {
-                StringTokenizer tokenizer = new StringTokenizer(commentFragment[ix], " \t\n\r\f", true);
-                if (tokenizer.hasMoreElements())
-                {
-                    tagName = ((String)tokenizer.nextElement()).trim();
+            for (String aCommentFragment : commentFragment) {
+                StringTokenizer tokenizer = new StringTokenizer(aCommentFragment, " \t\n\r\f", true);
+                if (tokenizer.hasMoreElements()) {
+                    tagName = ((String) tokenizer.nextElement()).trim();
                 }
 
                 String tagContent = "";
 
                 // build the content for a tag.
-                while (tokenizer.hasMoreElements())
-                {
+                while (tokenizer.hasMoreElements()) {
                     tagContent += tokenizer.nextElement();
                 }
 
                 // if there is a tag name. lets wrap content inside the tag.
-                if (!tagName.trim().isEmpty())
-                {
+                if (!tagName.trim().isEmpty()) {
                     commentBuilder.append("<");
                     commentBuilder.append(tagName);
                     commentBuilder.append("><![CDATA[");
@@ -92,9 +88,7 @@ public class MxmlCommentUtil
                     commentBuilder.append("]]></");
                     commentBuilder.append(tagName);
                     commentBuilder.append(">");
-                }
-                else
-                {
+                } else {
                     commentBuilder.append(tagContent);
                 }
             }

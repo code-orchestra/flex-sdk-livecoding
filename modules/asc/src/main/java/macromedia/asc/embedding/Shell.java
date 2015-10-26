@@ -139,9 +139,8 @@ public class Shell
 			if (id.length() == 0)
 			{
 				HashSet<String> keys = new HashSet<String>(targets.keySet());
-				for (Iterator i = keys.iterator(); i.hasNext();)
-				{
-					clear((String) i.next());
+				for (String key : keys) {
+					clear(key);
 				}
 			}
 			else if (targets.containsKey(id))
@@ -159,9 +158,8 @@ public class Shell
 			if (id.length() == 0)
 			{
 				HashSet<String> keys = new HashSet<String>(targets.keySet());
-				for (Iterator i = keys.iterator(); i.hasNext();)
-				{
-					info((String) i.next());
+				for (String key : keys) {
+					info(key);
 				}
 			}
 			else if (targets.containsKey(id))
@@ -196,9 +194,8 @@ public class Shell
 		else if (s.equals("quit"))
 		{
 			Set<String> names = new HashSet<String>(targets.keySet());
-			for (Iterator i = names.iterator(); i.hasNext();)
-			{
-				process("clear " + (String) i.next());
+			for (String name : names) {
+				process("clear " + name);
 			}
 
 			exit = true;
@@ -238,22 +235,17 @@ public class Shell
 	        Method getUsedMeth = memCls.getMethod("getUsed", emptyCls);
 
 	        List list = (List)getMemPoolMeth.invoke(null, emptyObj);
-	        for (Iterator iterator = list.iterator(); iterator.hasNext();)
-	        {
-	            Object memPoolObj = iterator.next();
-	            Object memUsageObj = getPeakUsageMeth.invoke(memPoolObj, emptyObj);
-		        Object memTypeObj = getTypeMeth.invoke(memPoolObj, emptyObj);
-		        Long used = (Long)getUsedMeth.invoke(memUsageObj, emptyObj);
-		        if (heapField.get(typeCls) == memTypeObj)
-		        {
-		            heapUsed += used.longValue();
-		        }
-		        else
-		        {
-			        nonHeapUsed += used.longValue();
-		        }
-		        resetPeakUsageMeth.invoke(memPoolObj, emptyObj);
-	        }
+			for (Object memPoolObj : list) {
+				Object memUsageObj = getPeakUsageMeth.invoke(memPoolObj, emptyObj);
+				Object memTypeObj = getTypeMeth.invoke(memPoolObj, emptyObj);
+				Long used = (Long) getUsedMeth.invoke(memUsageObj, emptyObj);
+				if (heapField.get(typeCls) == memTypeObj) {
+					heapUsed += used.longValue();
+				} else {
+					nonHeapUsed += used.longValue();
+				}
+				resetPeakUsageMeth.invoke(memPoolObj, emptyObj);
+			}
 
 		    return new MemoryUsage(heapUsed, nonHeapUsed);
 	    }
@@ -381,9 +373,8 @@ public class Shell
 			}
 
 			System.out.print("Using ");
-			for (int j = 0; j < cmdArray.length; j++)
-			{
-				System.out.print(cmdArray[j] + " ");
+			for (String aCmdArray : cmdArray) {
+				System.out.print(aCmdArray + " ");
 			}
 			System.out.println();
 

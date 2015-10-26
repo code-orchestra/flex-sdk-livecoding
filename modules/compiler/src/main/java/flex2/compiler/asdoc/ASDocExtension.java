@@ -235,11 +235,8 @@ public class ASDocExtension implements Extension
         else if (unit.metadata != null)
         {
 
-            for (Iterator iterator = unit.metadata.iterator(); iterator.hasNext();)
-            {
-                MetaDataNode metaDataNode = (MetaDataNode)iterator.next();
-                if (EXCLUDE_CLASS.equals(metaDataNode.getId()))
-                {
+            for (MetaDataNode metaDataNode : unit.metadata) {
+                if (EXCLUDE_CLASS.equals(metaDataNode.getId())) {
                     exclude = true;
                     break;
                 }

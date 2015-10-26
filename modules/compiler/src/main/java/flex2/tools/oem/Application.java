@@ -294,9 +294,8 @@ public class Application implements Builder
     private void init(VirtualFile[] files)
     {
         this.files = new ArrayList(files.length);
-        for (int i = 0, length = files.length; i < length; i++)
-        {
-            this.files.add(files[i]);
+        for (VirtualFile file : files) {
+            this.files.add(file);
         }
         oemConfiguration = null;
         logger = null;
@@ -1331,9 +1330,8 @@ public class Application implements Builder
         {
             if (benchmark != null)
             {
-                for (int i = 0; i < compilers.length; i++)
-                {
-                    compilers[i].initBenchmarks();
+                for (SubCompiler compiler : compilers) {
+                    compiler.initBenchmarks();
                 }
             }
 
@@ -1379,30 +1377,26 @@ public class Application implements Builder
                 compilerBenchmarks.clear();
 
                 flex2.compiler.Logger logger = ThreadLocalToolkit.getLogger();
-                for (int i = 0; i < compilers.length; i++)
-                {
-                    SubCompiler compiler = compilers[i];
+                for (SubCompiler compiler : compilers) {
                     PerformanceData[] times = compiler.getBenchmarks();
 
-                    if (times != null)
-                    {
+                    if (times != null) {
                         compiler.logBenchmarks(logger);
                         String compilerName = compiler.getName();
 
-                        assert(!compilerBenchmarks.containsKey(compilerName));
+                        assert (!compilerBenchmarks.containsKey(compilerName));
                         compilerBenchmarks.put(compilerName, times);
                     }
 
                     // Now check for any embedded compilers and get their phase times.
                     // "synthesize" compiler name by appending _ebm to main compiler name
                     times = compiler.getEmbeddedBenchmarks();
-                    if (times != null)
-                    {
+                    if (times != null) {
                         compiler.logBenchmarks(logger);
                         String compilerName = compiler.getName();
                         compilerName += "_emb";
 
-                        assert(!compilerBenchmarks.containsKey(compilerName));
+                        assert (!compilerBenchmarks.containsKey(compilerName));
                         compilerBenchmarks.put(compilerName, times);
                     }
                 }

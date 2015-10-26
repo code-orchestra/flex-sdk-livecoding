@@ -260,56 +260,44 @@ public class DebugDecoder
 
     public static void main(String[] args) throws IOException
     {
-        for (int i=0; i<args.length; i++)
-        {
-            // does not need to be buffered because DebugDecoder turns it into a SwfDecoder, which is buffered
-            InputStream in = new FileInputStream(args[i]);
-            try
-            {
-                new DebugDecoder(in).readSwd(new DebugHandler()
-                {
-                    public void header(int version)
-                    {
-                        System.out.println("FWD"+version);
-                    }
-
-                    public void uuid(FlashUUID id)
-                    {
-                        System.out.println("DebugID "+id);
-                    }
-
-                    public void module(DebugModule dm)
-                    {
-                        System.out.println("DebugScript #" + dm.id + " " + dm.bitmap + " " + dm.name + " (nlines = " +(dm.offsets.length - 1) + ")");
-                    }
-
-                    public void offset(int offset, LineRecord lr)
-                    {
-                        System.out.println("DebugOffset #" + lr.module.id + ":" + lr.lineno + " " + offset);
-                    }
-
-                    public void breakpoint(int offset)
-                    {
-                        System.out.println("DebugBreakpoint " + offset);
-                    }
-
-                    public void registers(int offset, RegisterRecord r)
-                    {
-                        System.out.println("DebugRegisters " + r.toString());
-                    }
-
-					public void error(String msg)
-					{
-						System.err.println("***ERROR: "+msg);
+		for (String arg : args) {
+			// does not need to be buffered because DebugDecoder turns it into a SwfDecoder, which is buffered
+			InputStream in = new FileInputStream(arg);
+			try {
+				new DebugDecoder(in).readSwd(new DebugHandler() {
+					public void header(int version) {
+						System.out.println("FWD" + version);
 					}
-                });
-                System.out.println();
-            }
-            finally
-            {
-                in.close();
-            }
-        }
+
+					public void uuid(FlashUUID id) {
+						System.out.println("DebugID " + id);
+					}
+
+					public void module(DebugModule dm) {
+						System.out.println("DebugScript #" + dm.id + " " + dm.bitmap + " " + dm.name + " (nlines = " + (dm.offsets.length - 1) + ")");
+					}
+
+					public void offset(int offset, LineRecord lr) {
+						System.out.println("DebugOffset #" + lr.module.id + ":" + lr.lineno + " " + offset);
+					}
+
+					public void breakpoint(int offset) {
+						System.out.println("DebugBreakpoint " + offset);
+					}
+
+					public void registers(int offset, RegisterRecord r) {
+						System.out.println("DebugRegisters " + r.toString());
+					}
+
+					public void error(String msg) {
+						System.err.println("***ERROR: " + msg);
+					}
+				});
+				System.out.println();
+			} finally {
+				in.close();
+			}
+		}
     }
 
 	/**

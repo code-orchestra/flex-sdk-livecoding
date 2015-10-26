@@ -51,8 +51,7 @@ public class DefineText extends DefineTag
 	public Iterator<Tag> getReferences()
     {
         LinkedList<Tag> refs = new LinkedList<Tag>();
-        for (int i = 0; i < records.size(); ++i )
-            records.get(i).getReferenceList( refs );
+        for (TextRecord record : records) record.getReferenceList(refs);
 
         return refs.iterator();
     }

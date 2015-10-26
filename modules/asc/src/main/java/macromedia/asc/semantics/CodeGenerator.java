@@ -4515,9 +4515,8 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
          * User defined methods
          */
 
-        for (ListIterator<FunctionCommonNode> it = node.fexprs.listIterator(); it.hasNext(); )
-        {
-            it.next().evaluate(cx,this);
+        for (FunctionCommonNode fexpr : node.fexprs) {
+            fexpr.evaluate(cx, this);
         }
 
         boolean is_dynamic = node.attrs != null ? node.attrs.hasDynamic : false;
@@ -4629,9 +4628,8 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         /*
          * User defined methods
          */
-        for (ListIterator<FunctionCommonNode> it = node.fexprs.listIterator(); it.hasNext(); )
-        {
-            it.next().evaluate(cx,this);
+        for (FunctionCommonNode fexpr : node.fexprs) {
+            fexpr.evaluate(cx, this);
         }
 
         FinishClass(cx,node.cframe.builder.classname,null,false, false, true, node.cframe.is_nullable);

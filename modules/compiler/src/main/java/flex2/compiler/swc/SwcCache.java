@@ -98,9 +98,8 @@ public class SwcCache
         String path;
         Map<String, Swc> swcs = new LinkedHashMap<String, Swc>();
 
-        for (int i = 0; i < paths.length; i++)
-        {
-            path = paths[i];
+        for (String path1 : paths) {
+            path = path1;
             swcs.putAll(getSwcs(path));
         }
 
@@ -204,24 +203,18 @@ public class SwcCache
         else
         {
             File[] files = FileUtils.listFiles( f );
-            for (int i = 0; i < files.length; i++)
-            {
-                File file = files[i];
-
+            for (File file : files) {
                 // we don't want to snarf an entire directory tree, just a single level.
-                if ((!file.isDirectory()) && file.canRead())
-                {
+                if ((!file.isDirectory()) && file.canRead()) {
                     String lowerCase = file.getName().toLowerCase();
 
-                    if (lowerCase.endsWith( GENSWC_EXTENSION ))   // never automatically read genswcs
+                    if (lowerCase.endsWith(GENSWC_EXTENSION))   // never automatically read genswcs
                         continue;
 
-                    if (lowerCase.endsWith( SWC_EXTENSION ))
-                    {
-                        Swc swc = getSwc( file );
-                        if (swc != null)
-                        {
-                            map.put( swc.getLocation(), swc );
+                    if (lowerCase.endsWith(SWC_EXTENSION)) {
+                        Swc swc = getSwc(file);
+                        if (swc != null) {
+                            map.put(swc.getLocation(), swc);
                         }
                     }
                 }
@@ -334,11 +327,10 @@ public class SwcCache
         public List<Swc> getSwcs()
         {
             ArrayList<Swc> swcs = new ArrayList<Swc>(size());
-            for (Iterator iter = entrySet().iterator(); iter.hasNext();)
-            {
-                Map.Entry entry = (Map.Entry)iter.next();
-                LRUListEntry lruEntry = (LRUListEntry)entry.getValue();
-                swcs.add((Swc)lruEntry.getValue());
+            for (Object o : entrySet()) {
+                Map.Entry entry = (Map.Entry) o;
+                LRUListEntry lruEntry = (LRUListEntry) entry.getValue();
+                swcs.add((Swc) lruEntry.getValue());
             }
             
             return swcs;

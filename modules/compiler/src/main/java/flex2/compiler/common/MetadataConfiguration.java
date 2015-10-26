@@ -69,9 +69,8 @@ public class MetadataConfiguration
             else
             {
                 sb.append("<dc:title><rdf:Alt>");
-                for (Iterator it = localizedTitles.entrySet().iterator(); it.hasNext();)
-                {
-                    Map.Entry e = (Map.Entry) it.next();
+                for (Map.Entry<String, String> stringStringEntry : localizedTitles.entrySet()) {
+                    Map.Entry e = (Map.Entry) stringStringEntry;
                     sb.append("<rdf:li xml:lang='").append(e.getKey()).append("'>").append(f((String) e.getValue())).append("</rdf:li>");
                 }
                 sb.append("</rdf:Alt></dc:title>");
@@ -86,9 +85,8 @@ public class MetadataConfiguration
             else
             {
                 sb.append("<dc:description><rdf:Alt>");
-                for (Iterator it = localizedDescriptions.entrySet().iterator(); it.hasNext();)
-                {
-                    Map.Entry e = (Map.Entry) it.next();
+                for (Map.Entry<String, String> stringStringEntry : localizedDescriptions.entrySet()) {
+                    Map.Entry e = (Map.Entry) stringStringEntry;
                     sb.append("<rdf:li xml:lang='").append((String) e.getKey()).append("'>").append(f((String) e.getValue())).append("</rdf:li>");
                 }
                 sb.append("</rdf:Alt></dc:description>");
@@ -96,24 +94,20 @@ public class MetadataConfiguration
         }
         // FIXME - I suspect we need rdf:Bag for these when there are more than one?  --rg
 
-        for (Iterator<String> it = publishers.iterator(); it.hasNext();)
-        {
-            sb.append("<dc:publisher>").append(f(it.next())).append("</dc:publisher>");
+        for (String publisher : publishers) {
+            sb.append("<dc:publisher>").append(f(publisher)).append("</dc:publisher>");
         }
 
-        for (Iterator<String> it = creators.iterator(); it.hasNext();)
-        {
-            sb.append("<dc:creator>").append(f(it.next())).append("</dc:creator>");
+        for (String creator : creators) {
+            sb.append("<dc:creator>").append(f(creator)).append("</dc:creator>");
         }
 
-        for (Iterator<String> it = contributors.iterator(); it.hasNext();)
-        {
-            sb.append("<dc:contributor>").append(f(it.next())).append("</dc:contributor>");
+        for (String contributor : contributors) {
+            sb.append("<dc:contributor>").append(f(contributor)).append("</dc:contributor>");
         }
 
-        for (Iterator<String> it = langs.iterator(); it.hasNext();)
-        {
-            sb.append("<dc:language>").append(f(it.next())).append("</dc:language>");
+        for (String lang : langs) {
+            sb.append("<dc:language>").append(f(lang)).append("</dc:language>");
         }
 
 	    if (date == null)

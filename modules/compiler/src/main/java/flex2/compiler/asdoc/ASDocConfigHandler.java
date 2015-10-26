@@ -102,9 +102,8 @@ public class ASDocConfigHandler extends DefaultHandler
 			if (qName.equals("asDocConfig"))
 			{
 				// if we're at the end of the document, write out all the config values
-				for (Iterator iterator = configMap.entrySet().iterator(); iterator.hasNext();)
-				{
-					Map.Entry entry = (Map.Entry)iterator.next();
+				for (Map.Entry<String, String> stringStringEntry : configMap.entrySet()) {
+					Map.Entry entry = (Map.Entry) stringStringEntry;
 					writer.newLine();
 					writer.write("<" + entry.getKey() + ">" + entry.getValue() + "</" + entry.getKey() + ">");
 				}

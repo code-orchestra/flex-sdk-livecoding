@@ -144,9 +144,8 @@ public class CatalogWriter
     {
         writer.write("  <components>" + ls);
         String cls = "component";
-        for (Iterator iterator = components.iterator(); iterator.hasNext();)
-        {
-            SwcComponent comp = (SwcComponent)iterator.next();
+        for (Object component : components) {
+            SwcComponent comp = (SwcComponent) component;
             writer.write("    <component ");
             writeAttribute("className", comp.getClassName(), cls, true, writer);
             writeAttribute("name", comp.getName(), cls, false, writer);
@@ -163,59 +162,51 @@ public class CatalogWriter
     protected void writeLibraries() throws IOException
     {
         writer.write("  <libraries>" + ls);
-        for (Iterator libit = libraries.iterator(); libit.hasNext();)
-        {
-            SwcLibrary swcLibrary = (SwcLibrary) libit.next();
+        for (Object library : libraries) {
+            SwcLibrary swcLibrary = (SwcLibrary) library;
             writer.write("    <library path=\"" + swcLibrary.getPath() + "\">" + ls);
 
-            for (Iterator extit = swcLibrary.getExterns().iterator(); extit.hasNext(); )
-            {
-                writer.write("      <ext>" + extit.next() + "</ext>" + ls);
+            for (String s : swcLibrary.getExterns()) {
+                writer.write("      <ext>" + s + "</ext>" + ls);
             }
 
-	        HashSet<String> scriptSet = new HashSet<String>();
-            for (Iterator scriptit = swcLibrary.getScriptIterator(); scriptit.hasNext(); )
-            {
+            HashSet<String> scriptSet = new HashSet<String>();
+            for (Iterator scriptit = swcLibrary.getScriptIterator(); scriptit.hasNext(); ) {
                 SwcScript swcScript = (SwcScript) scriptit.next();
 
-	            // sanity check: make sure script names aren't added twice
-	            String scriptName = swcScript.getName();
-	            if (scriptSet.contains(scriptName))
-	            {
-		            throw new SwcException.ScriptUsedMultipleTimes(scriptName);
-	            }
-	            scriptSet.add(scriptName);
+                // sanity check: make sure script names aren't added twice
+                String scriptName = swcScript.getName();
+                if (scriptSet.contains(scriptName)) {
+                    throw new SwcException.ScriptUsedMultipleTimes(scriptName);
+                }
+                scriptSet.add(scriptName);
 
                 writer.write("      <script ");
                 writeAttribute("name", scriptName, "script", true, writer);
                 writeAttribute("mod", new Long(swcScript.getLastModified()), "script", true, writer);
-                
+
                 Long signatureChecksum = swcScript.getSignatureChecksum();
-                if (!forceLibraryVersion1 && signatureChecksum != null)
-                {
+                if (!forceLibraryVersion1 && signatureChecksum != null) {
                     writeAttribute("signatureChecksum", signatureChecksum, "script", false, writer);
                 }
                 writer.write(">" + ls);
 
-                for (Iterator it = swcScript.getDefinitionIterator(); it.hasNext();)
-                {
+                for (Iterator it = swcScript.getDefinitionIterator(); it.hasNext(); ) {
                     String defname = (String) it.next();
                     writer.write("        <def id=\"" + defname + "\" /> " + ls);
                 }
 
                 SwcDependencySet depset = swcScript.getDependencySet();
-                for (Iterator typeit = depset.getTypeIterator(); typeit.hasNext();)
-                {
+                for (Iterator typeit = depset.getTypeIterator(); typeit.hasNext(); ) {
                     String type = (String) typeit.next();
-                    for (Iterator depit = depset.getDependencyIterator( type ); depit.hasNext();)
-                    {
+                    for (Iterator depit = depset.getDependencyIterator(type); depit.hasNext(); ) {
                         String dep = (String) depit.next();
                         writer.write("        <dep id=\"" + dep + "\" type=\"" + type + "\" /> " + ls);
                     }
                 }
                 writer.write("      </script>" + ls);
             }
-    
+
             writeMetadata(swcLibrary);
             writeDigests(swcLibrary);
             writer.write("    </library>" + ls);
@@ -239,10 +230,9 @@ public class CatalogWriter
         if (!metadata.isEmpty())
         {
             writer.write("      <keep-as3-metadata>" + ls);
-            for (Iterator iter = metadata.iterator(); iter.hasNext();)
-            {
+            for (Object aMetadata : metadata) {
                 writer.write("        <metadata ");
-                writeAttribute("name", iter.next(), "metadata", true, writer);
+                writeAttribute("name", aMetadata, "metadata", true, writer);
                 writer.write("/>" + ls);
             }
             writer.write("      </keep-as3-metadata>" + ls);
@@ -253,15 +243,13 @@ public class CatalogWriter
     protected void writeFiles() throws IOException
     {
         writer.write("  <files>" + ls);
-        for (Iterator iterator = files.iterator(); iterator.hasNext();)
-        {
-        	Map.Entry entry = (Map.Entry)iterator.next();
-        	String name = (String)entry.getKey();
-            VirtualFile vFile = (VirtualFile)entry.getValue();
-            if (! (Swc.CATALOG_XML.equals(name) || Swc.LIBRARY_SWF.equals(name)))
-            {
+        for (Object file : files) {
+            Map.Entry entry = (Map.Entry) file;
+            String name = (String) entry.getKey();
+            VirtualFile vFile = (VirtualFile) entry.getValue();
+            if (!(Swc.CATALOG_XML.equals(name) || Swc.LIBRARY_SWF.equals(name))) {
                 writer.write("    <file path=\"" + name + "\" mod=\"" + vFile.getLastModified() +
-                             "\" />" + CatalogWriter.ls);
+                        "\" />" + CatalogWriter.ls);
             }
         }
         writer.write("  </files>" + ls);
@@ -286,19 +274,18 @@ public class CatalogWriter
     	{
    	        writer.write("      <digests>" + ls);
 
-    	    for (Iterator iter = digestMap.values().iterator(); iter.hasNext();)
-    	    {
-    	        Digest digest = (Digest)iter.next();
+            for (Object o : digestMap.values()) {
+                Digest digest = (Digest) o;
 
-    	        writer.write("        <digest ");
+                writer.write("        <digest ");
 
-    	        writeAttribute("type", digest.getType(), "digest", true, writer);
-    	        writeAttribute("signed", Boolean.toString(digest.isSigned()), "digest", true, writer);
-    	        writeAttribute("value", digest.getValue(), "digest", true, writer);
+                writeAttribute("type", digest.getType(), "digest", true, writer);
+                writeAttribute("signed", Boolean.toString(digest.isSigned()), "digest", true, writer);
+                writeAttribute("value", digest.getValue(), "digest", true, writer);
 
-    	        writer.write("  />" + ls);
+                writer.write("  />" + ls);
 
-    	    }
+            }
             writer.write("      </digests>" + ls);
     	}
         

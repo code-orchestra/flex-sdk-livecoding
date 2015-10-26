@@ -120,11 +120,8 @@ public class ListNode extends Node
 
 	public boolean hasAttribute(String name)
 	{
-		for (int i = 0, size = items.size(); i < size; i++)
-		{
-			Node n = items.get(i);
-			if (n.hasAttribute(name))
-			{
+		for (Node n : items) {
+			if (n.hasAttribute(name)) {
 				return true;
 			}
 		}

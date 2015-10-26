@@ -45,12 +45,10 @@ public class NameMappings
     public NameMappings copy()
     {
     	NameMappings m = new NameMappings();
-    	for (Iterator<String> i = namespaceMap.keySet().iterator(); i.hasNext(); )
-    	{
-    		String uri = i.next();
-    		Map<String, String> classMap = namespaceMap.get(uri);
-    		m.namespaceMap.put(uri, new HashMap<String,String>(classMap));
-    	}
+        for (String uri : namespaceMap.keySet()) {
+            Map<String, String> classMap = namespaceMap.get(uri);
+            m.namespaceMap.put(uri, new HashMap<String, String>(classMap));
+        }
     	m.lookupOnly.putAll(lookupOnly);
     	return m;
     }
@@ -114,19 +112,15 @@ public class NameMappings
 
     public void addMappings( NameMappings other )
     {
-        for (Iterator<Map.Entry<String, Map<String,String>>> nit = other.namespaceMap.entrySet().iterator(); nit.hasNext();)
-        {
-            Map.Entry<String, Map<String,String>> e = nit.next();
+        for (Map.Entry<String, Map<String, String>> e : other.namespaceMap.entrySet()) {
             String namespaceURI = e.getKey();
             Map<String, String> mappings = e.getValue();
 
-            for (Iterator<Map.Entry<String, String>> it = mappings.entrySet().iterator(); it.hasNext();)
-            {
-                Map.Entry<String, String> lc = it.next();
+            for (Map.Entry<String, String> lc : mappings.entrySet()) {
                 String local = lc.getKey();
                 String className = lc.getValue();
 
-                addClass( namespaceURI, local, className );
+                addClass(namespaceURI, local, className);
             }
         }
     }

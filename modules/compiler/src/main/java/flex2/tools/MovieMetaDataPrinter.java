@@ -165,41 +165,31 @@ public class MovieMetaDataPrinter
 		StringWriter w = new StringWriter();
 		PrintWriter out = new PrintWriter(w, true);
 
-		for (Iterator<String> i = classes.keySet().iterator(); i.hasNext();)
-		{
-			String key = i.next();
+		for (String key : classes.keySet()) {
 			Class c = classes.get(key);
-			
-			if (c.metadata.size() > 0)
-			{
+
+			if (c.metadata.size() > 0) {
 				out.println(c.metadata);
 			}
 			out.println(key);
 
-			for (Iterator<String> j = c.functions.keySet().iterator(); j.hasNext();)
-			{
-				Function f = c.functions.get(j.next());
-				if (f.metadata.size() > 0)
-				{
+			for (String s : c.functions.keySet()) {
+				Function f = c.functions.get(s);
+				if (f.metadata.size() > 0) {
 					out.println("\t" + f.metadata);
 				}
 				out.println("\t" + f.name);
 			}
 		}
 
-		for (Iterator<Function> i = functions.iterator(); i.hasNext();)
-		{
-			Function f = i.next();
-			if (f.metadata.size() > 0)
-			{
+		for (Function f : functions) {
+			if (f.metadata.size() > 0) {
 				out.println(f.metadata);
 			}
 			out.println(f.name);
 		}
 
-		for (Iterator<String> i = locations.keySet().iterator(); i.hasNext();)
-		{
-			String key = i.next();
+		for (String key : locations.keySet()) {
 			out.println(key + " --> " + locations.get(key));
 		}
 

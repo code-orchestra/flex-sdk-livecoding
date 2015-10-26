@@ -124,17 +124,17 @@ public class ExtraFieldUtils {
      */
     public static byte[] mergeLocalFileDataData(ZipExtraField[] data) {
         int sum = 4 * data.length;
-        for (int i = 0; i < data.length; i++) {
-            sum += data[i].getLocalFileDataLength().getValue();
+        for (ZipExtraField aData1 : data) {
+            sum += aData1.getLocalFileDataLength().getValue();
         }
         byte[] result = new byte[sum];
         int start = 0;
-        for (int i = 0; i < data.length; i++) {
-            System.arraycopy(data[i].getHeaderId().getBytes(),
-                             0, result, start, 2);
-            System.arraycopy(data[i].getLocalFileDataLength().getBytes(),
-                             0, result, start + 2, 2);
-            byte[] local = data[i].getLocalFileDataData();
+        for (ZipExtraField aData : data) {
+            System.arraycopy(aData.getHeaderId().getBytes(),
+                    0, result, start, 2);
+            System.arraycopy(aData.getLocalFileDataLength().getBytes(),
+                    0, result, start + 2, 2);
+            byte[] local = aData.getLocalFileDataData();
             System.arraycopy(local, 0, result, start + 4, local.length);
             start += (local.length + 4);
         }
@@ -148,17 +148,17 @@ public class ExtraFieldUtils {
      */
     public static byte[] mergeCentralDirectoryData(ZipExtraField[] data) {
         int sum = 4 * data.length;
-        for (int i = 0; i < data.length; i++) {
-            sum += data[i].getCentralDirectoryLength().getValue();
+        for (ZipExtraField aData1 : data) {
+            sum += aData1.getCentralDirectoryLength().getValue();
         }
         byte[] result = new byte[sum];
         int start = 0;
-        for (int i = 0; i < data.length; i++) {
-            System.arraycopy(data[i].getHeaderId().getBytes(),
-                             0, result, start, 2);
-            System.arraycopy(data[i].getCentralDirectoryLength().getBytes(),
-                             0, result, start + 2, 2);
-            byte[] local = data[i].getCentralDirectoryData();
+        for (ZipExtraField aData : data) {
+            System.arraycopy(aData.getHeaderId().getBytes(),
+                    0, result, start, 2);
+            System.arraycopy(aData.getCentralDirectoryLength().getBytes(),
+                    0, result, start + 2, 2);
+            byte[] local = aData.getCentralDirectoryData();
             System.arraycopy(local, 0, result, start + 4, local.length);
             start += (local.length + 4);
         }

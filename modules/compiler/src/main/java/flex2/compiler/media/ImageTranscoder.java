@@ -223,9 +223,8 @@ public abstract class ImageTranscoder extends AbstractTranscoder
         }
         shape.shapeWithStyle.shapeRecords.add( scr );
 
-        for (int i = 0; i < coords.length; ++i)
-        {
-            shape.shapeWithStyle.shapeRecords.add( new StraightEdgeRecord(coords[i][0], coords[i][1]));
+        for (int[] coord : coords) {
+            shape.shapeWithStyle.shapeRecords.add(new StraightEdgeRecord(coord[0], coord[1]));
         }
     }
 

@@ -196,34 +196,26 @@ public final class MimeMappings
      */
     public String findMimeType(String name)
     {
-    	for (Iterator<String> i = mimeMappings.keySet().iterator(); i.hasNext();)
-    	{
-    		String mimeType = i.next();
-    		Object value = mimeMappings.get(mimeType);
-    		
-    		if (value instanceof String[])
-    		{
-    			String[] extensions = (String[]) value;
-    			for (int j = 0, size = extensions.length; j < size; j++)
-    			{
-    				int nlen = name.length();
-    				int elen = extensions[j].length();
-    				if (nlen > elen && name.regionMatches(true, nlen - elen, extensions[j], 0, elen))
-    				{
-    					return mimeType;
-    				}
-    			}
-    		}
-    		else if (value instanceof String)
-    		{
+		for (String mimeType : mimeMappings.keySet()) {
+			Object value = mimeMappings.get(mimeType);
+
+			if (value instanceof String[]) {
+				String[] extensions = (String[]) value;
+				for (String extension : extensions) {
+					int nlen = name.length();
+					int elen = extension.length();
+					if (nlen > elen && name.regionMatches(true, nlen - elen, extension, 0, elen)) {
+						return mimeType;
+					}
+				}
+			} else if (value instanceof String) {
 				int nlen = name.length();
 				int elen = ((String) value).length();
-				if (nlen > elen && name.regionMatches(true, nlen - elen, (String) value, 0, elen))
-				{
+				if (nlen > elen && name.regionMatches(true, nlen - elen, (String) value, 0, elen)) {
 					return mimeType;
 				}
-    		}
-    	}
+			}
+		}
     	
     	return null;
     }

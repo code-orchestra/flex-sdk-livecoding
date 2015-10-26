@@ -455,8 +455,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 			OutputStream outputStream = osascript.getOutputStream();
 			PrintWriter writer = new PrintWriter(outputStream, true);
 			writer.println("on run argv"); //$NON-NLS-1$ // this gives the name "argv" to the command-line args
-			for (int i=0; i<appleScript.length; ++i)
-				writer.println(appleScript[i]);
+			for (String anAppleScript : appleScript) writer.println(anAppleScript);
 			writer.println("end run"); //$NON-NLS-1$
 			writer.close();
 			InputStreamReader reader = new InputStreamReader(osascript.getInputStream());
@@ -1122,9 +1121,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 
 		// loop through all frame variables, and separate them into two
 		// groups: activation objects, and all others (locals and arguments)
-		for (int i=0; i<frameVars.length; ++i)
-		{
-			DVariable member = frameVars[i];
+		for (DVariable member : frameVars) {
 			Matcher matcher = activationObjectNamePattern.matcher(member.getName());
 			if (matcher.matches())
 				activationObjects.add(member);
@@ -1137,13 +1134,9 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 			return;
 
 		// overwrite existing args and locals with ones pulled from the activation objects
-		for (int i=0; i<activationObjects.size(); ++i)
-		{
-			DVariable activationObject = activationObjects.get(i);
+		for (DVariable activationObject : activationObjects) {
 			DVariable[] activationMembers = (DVariable[]) activationObject.getValue().getMembers(this);
-			for (int j=0; j<activationMembers.length; ++j)
-			{
-				DVariable member = activationMembers[j];
+			for (DVariable member : activationMembers) {
 				int attributes = member.getAttributes();
 
 				// For some odd reason, the activation object often contains a whole bunch of

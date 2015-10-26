@@ -331,12 +331,9 @@ public class Swc
     // changed from private to protected to support Flash Authoring - jkamerer 2007.07.30
     protected void checkDefs(Set<String> scriptDefs, String sourceName)
     {
-        for (Iterator<String> iter2 = scriptDefs.iterator(); iter2.hasNext();)
-        {
-            String str = iter2.next();
+        for (String str : scriptDefs) {
             String script = defs.get(str);
-            if (script != null)
-            {
+            if (script != null) {
                 throw new SwcException.DuplicateDefinition(str, script, sourceName);
             }
             defs.put(str, sourceName);
@@ -365,9 +362,8 @@ public class Swc
 
     private static void addExtraClassesDeps( SwcDependencySet depset, Set extraClasses )
     {
-        for (Iterator it = extraClasses.iterator(); it.hasNext();)
-        {
-            String extraClass = (String) it.next();
+        for (Object extraClass1 : extraClasses) {
+            String extraClass = (String) extraClass1;
             depset.addDependency(SwcDependencySet.EXPRESSION, extraClass);
         }
     }
@@ -395,15 +391,12 @@ public class Swc
 	    versions.setFlexVersion(VersionInfo.getFlexVersion());
 	    versions.setFlexBuild(VersionInfo.getBuild());
 
-	    for (Iterator<SwcLibrary> it = libraries.values().iterator(); it.hasNext();)
-	    {
-		    SwcLibrary l = it.next();
-		    if (l.getExterns().size() > 0)
-		    {
-			    swcFeatures.setExternalDeps( true );
-			    break;
-		    }
-	    }
+        for (SwcLibrary l : libraries.values()) {
+            if (l.getExterns().size() > 0) {
+                swcFeatures.setExternalDeps(true);
+                break;
+            }
+        }
 	   
 	    CatalogWriter writer = new CatalogWriter(out, versions, swcFeatures, 
 	    										components.values(), 

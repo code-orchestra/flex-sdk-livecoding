@@ -144,10 +144,9 @@ public class ScriptCompiler
         if( debug )
         {
             System.out.print("Running with expanded args \'");
-            for( int i = 0;i < args.length; ++i )
-            {
-                System.out.print(args[i] + " ");
-            }
+			for (String arg : args) {
+				System.out.print(arg + " ");
+			}
             System.out.println("\'");
         }
 
@@ -334,36 +333,29 @@ public class ScriptCompiler
     public static String[] expandArguments(String[] args) throws IOException {
         boolean has_expanded_args = false;
         ObjectList<String> exp_args = new ObjectList<String>(args.length);
-        for( int i = 0, length = args.length; i < length; ++i )
-        {
-            // Expand @<filename> arguments
-            if( args[i].startsWith("@") )
-            {
-                String filename = args[i].substring(1);
-                BufferedReader bf = new BufferedReader(new FileReader(filename));
-                String s = null;
-                String expanded_args = "";
-                while ( (s = bf.readLine()) != null)
-                {
-                    if( ! s.startsWith("#"))
-                        expanded_args += s + " ";
-                }
-                String[] a = expanded_args.split("\\s+", -1);
-                for( int q = 0; q < a.length; ++q)
-                {
-                    String arg = a[q].trim();
-                    if( arg.length() != 0)
-                    {
-                        exp_args.add(a[q]);
-                    }
-                }
-                has_expanded_args = true;
-            }
-            else
-            {
-                exp_args.add(args[i]);
-            }
-        }
+		for (String arg1 : args) {
+			// Expand @<filename> arguments
+			if (arg1.startsWith("@")) {
+				String filename = arg1.substring(1);
+				BufferedReader bf = new BufferedReader(new FileReader(filename));
+				String s = null;
+				String expanded_args = "";
+				while ((s = bf.readLine()) != null) {
+					if (!s.startsWith("#"))
+						expanded_args += s + " ";
+				}
+				String[] a = expanded_args.split("\\s+", -1);
+				for (int q = 0; q < a.length; ++q) {
+					String arg = a[q].trim();
+					if (arg.length() != 0) {
+						exp_args.add(a[q]);
+					}
+				}
+				has_expanded_args = true;
+			} else {
+				exp_args.add(arg1);
+			}
+		}
 
         if( has_expanded_args)
         {
@@ -421,21 +413,15 @@ public class ScriptCompiler
         for (int i = start; i < end; i++)
 		{
             ProgramNode cur_node = node.get(i);
-            for (Iterator<ReferenceValue> k = cur_node.fa_unresolved.iterator(); k.hasNext();)
-			{
-				ReferenceValue ref = k.next();
+			for (ReferenceValue ref : cur_node.fa_unresolved) {
 				boolean found = false;
-				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++)
-				{
+				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++) {
 					QName qname = new QName(ref.getImmutableNamespaces().get(j), ref.name);
 					int where = findClass(qname);
-					if (where != -1)
-					{
-						if (i != where)
-						{
+					if (where != -1) {
+						if (i != where) {
 							Pair p = new Pair(i, where);
-							if (!inheritance.contains(p))
-							{
+							if (!inheritance.contains(p)) {
 								inheritance.add(p);
 							}
 						}
@@ -443,8 +429,7 @@ public class ScriptCompiler
 						break;
 					}
 				}
-				if (!found)
-				{
+				if (!found) {
 					System.err.println(ref.toMultiName() + " on line " + cx.get(i).getInputLine(ref.getPosition()) + " of file " + file.get(i) + " not resolved");
 				}
 			}
@@ -474,11 +459,8 @@ public class ScriptCompiler
 
 	private static void sortInheritance() throws Throwable
 	{
-		for (Iterator<Pair> i = inheritance.iterator(); i.hasNext();)
-		{
-			Pair p = i.next();
-			if (!p.processed)
-			{
+		for (Pair p : inheritance) {
+			if (!p.processed) {
 				fa.get(p.i).inheritSlots(node.get(p.where).frame, node.get(p.i).frame, node.get(p.i).frame.builder, cx.get(p.i));
 				p.processed = true;
 			}
@@ -496,11 +478,8 @@ public class ScriptCompiler
 				g.addVertex(new Vertex<String>(path));
 			}
 
-			for (Iterator<Pair> j = inheritance.iterator(); j.hasNext();)
-			{
-				Pair p = j.next();
-				if (p.i == i)
-				{
+			for (Pair p : inheritance) {
+				if (p.i == i) {
 					g.addDependency(path, file.get(p.where).getPath());
 				}
 			}
@@ -544,9 +523,8 @@ public class ScriptCompiler
 			List<ProgramNode> tempNode = new ArrayList<ProgramNode>(node.size());
 			List<FlowAnalyzer> tempFA = new ArrayList<FlowAnalyzer>(fa.size());
 
-			for (int i = 0, length = tsort.size(); i < length; i++)
-			{
-				int loc = tsort.get(i);
+			for (Integer aTsort : tsort) {
+				int loc = aTsort;
 
 				tempFile.add(file.get(loc));
 				tempCX.add(cx.get(loc));
@@ -561,42 +539,30 @@ public class ScriptCompiler
 			node = tempNode;
 			fa = tempFA;
 
-			for (Iterator<Pair> i = type.iterator(); i.hasNext();)
-			{
-				Pair p = i.next();
-				for (int j = 0, length = tsort.size(); j < length; j++)
-				{
-					if (tsort.get(j) == p.i)
-					{
+			for (Pair p : type) {
+				for (int j = 0, length = tsort.size(); j < length; j++) {
+					if (tsort.get(j) == p.i) {
 						p.i = j;
 						break;
 					}
 				}
-				for (int j = 0, length = tsort.size(); j < length; j++)
-				{
-					if (tsort.get(j) == p.where)
-					{
+				for (int j = 0, length = tsort.size(); j < length; j++) {
+					if (tsort.get(j) == p.where) {
 						p.where = j;
 						break;
 					}
 				}
 			}
 
-			for (Iterator<Pair> i = inheritance.iterator(); i.hasNext();)
-			{
-				Pair p = i.next();
-				for (int j = 0, length = tsort.size(); j < length; j++)
-				{
-					if (tsort.get(j) == p.i)
-					{
+			for (Pair p : inheritance) {
+				for (int j = 0, length = tsort.size(); j < length; j++) {
+					if (tsort.get(j) == p.i) {
 						p.i = j;
 						break;
 					}
 				}
-				for (int j = 0, length = tsort.size(); j < length; j++)
-				{
-					if (tsort.get(j) == p.where)
-					{
+				for (int j = 0, length = tsort.size(); j < length; j++) {
+					if (tsort.get(j) == p.where) {
 						p.where = j;
 						break;
 					}
@@ -622,25 +588,18 @@ public class ScriptCompiler
 	{
 		for (int i = 0, length = node.size(); i < length; i++)
 		{
-			for (Iterator<ReferenceValue> k = node.get(i).ce_unresolved.iterator(); k.hasNext();)
-			{
-				ReferenceValue ref = k.next();
-
-                if(ref.isAttributeIdentifier())
-                    continue;
+			for (ReferenceValue ref : node.get(i).ce_unresolved) {
+				if (ref.isAttributeIdentifier())
+					continue;
 
 				boolean found = false;
-				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++)
-				{
+				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++) {
 					QName qname = new QName(ref.getImmutableNamespaces().get(j), ref.name);
 					int where = findClass(qname);
-					if (where != -1)
-					{
-						if (i != where)
-						{
+					if (where != -1) {
+						if (i != where) {
 							Pair p = new Pair(i, where);
-							if (!type.contains(p))
-							{
+							if (!type.contains(p)) {
 								type.add(p);
 							}
 						}
@@ -648,8 +607,7 @@ public class ScriptCompiler
 						break;
 					}
 				}
-				if (!found)
-				{
+				if (!found) {
 					System.err.println(ref.toMultiName() + " on line " + cx.get(i).getInputLine(ref.getPosition()) + " of file " + file.get(i) + " not resolved");
 				}
 			}
@@ -659,25 +617,18 @@ public class ScriptCompiler
 
 		for (int i = 0, length = node.size(); i < length; i++)
 		{
-			for (Iterator<ReferenceValue> k = node.get(i).body_unresolved.iterator(); k.hasNext();)
-			{
-				ReferenceValue ref = k.next();
-
-                if(ref.isAttributeIdentifier())
-                    continue;
+			for (ReferenceValue ref : node.get(i).body_unresolved) {
+				if (ref.isAttributeIdentifier())
+					continue;
 
 				boolean found = false;
-				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++)
-				{
+				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++) {
 					QName qname = new QName(ref.getImmutableNamespaces().get(j), ref.name);
 					int where = findClass(qname);
-					if (where != -1)
-					{
-						if (i != where)
-						{
+					if (where != -1) {
+						if (i != where) {
 							Pair p = new Pair(i, where);
-							if (!type.contains(p))
-							{
+							if (!type.contains(p)) {
 								type.add(p);
 							}
 						}
@@ -685,8 +636,7 @@ public class ScriptCompiler
 						break;
 					}
 				}
-				if (!found)
-				{
+				if (!found) {
 					System.err.println(ref.toMultiName() + " on line " + cx.get(i).getInputLine(ref.getPosition()) + " of file " + file.get(i) + " not resolved");
 				}
 			}
@@ -696,25 +646,18 @@ public class ScriptCompiler
 
 		for (int i = 0, length = node.size(); i < length; i++)
 		{
-			for (Iterator<ReferenceValue> k = node.get(i).ns_unresolved.iterator(); k.hasNext();)
-			{
-				ReferenceValue ref = k.next();
-
-                if(ref.isAttributeIdentifier())
-                    continue;
+			for (ReferenceValue ref : node.get(i).ns_unresolved) {
+				if (ref.isAttributeIdentifier())
+					continue;
 
 				boolean found = false;
-				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++)
-				{
+				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++) {
 					QName qname = new QName(ref.getImmutableNamespaces().get(j), ref.name);
 					int where = findDefinition(qname);
-					if (where != -1)
-					{
-						if (i != where)
-						{
+					if (where != -1) {
+						if (i != where) {
 							Pair p = new Pair(i, where);
-							if (!type.contains(p))
-							{
+							if (!type.contains(p)) {
 								type.add(p);
 							}
 						}
@@ -722,8 +665,7 @@ public class ScriptCompiler
 						break;
 					}
 				}
-				if (!found)
-				{
+				if (!found) {
 					System.err.println(ref.toMultiName() + " on line " + cx.get(i).getInputLine(ref.getPosition()) + " of file " + file.get(i) + " not resolved");
 				}
 			}
@@ -734,13 +676,9 @@ public class ScriptCompiler
 
 	private static void importType() throws Throwable
 	{
-		for (Iterator<Pair> i = type.iterator(); i.hasNext();)
-		{
-			Pair p = i.next();
-			if (!p.processed)
-			{
-				if (!inheritance.contains(p))
-				{
+		for (Pair p : type) {
+			if (!p.processed) {
+				if (!inheritance.contains(p)) {
 					fa.get(p.i).inheritSlots(node.get(p.where).frame, node.get(p.i).frame, node.get(p.i).frame.builder, cx.get(p.i));
 				}
 				p.processed = true;
@@ -750,18 +688,14 @@ public class ScriptCompiler
 
     private static void importExpr() throws Throwable
     {
-        for (Iterator<Pair> i = expr.iterator(); i.hasNext();)
-        {
-            Pair p = i.next();
-            if (!p.processed)
-            {
-                if (!inheritance.contains(p))
-                {
-                    fa.get(p.i).inheritSlots(node.get(p.where).frame, node.get(p.i).frame, node.get(p.i).frame.builder, cx.get(p.i));
-                }
-                p.processed = true;
-            }
-        }
+		for (Pair p : expr) {
+			if (!p.processed) {
+				if (!inheritance.contains(p)) {
+					fa.get(p.i).inheritSlots(node.get(p.where).frame, node.get(p.i).frame, node.get(p.i).frame.builder, cx.get(p.i));
+				}
+				p.processed = true;
+			}
+		}
     }
 
     private static void md()
@@ -899,41 +833,35 @@ public class ScriptCompiler
 	{
 		for (int i = 0, length = node.size(); i < length; i++)
 		{
-			for (Iterator<ReferenceValue> k = node.get(i).rt_unresolved.iterator(); k.hasNext();)
-			{
-				ReferenceValue ref = k.next();
+			for (ReferenceValue ref : node.get(i).rt_unresolved) {
+				if (ref.isAttributeIdentifier())
+					continue;
 
-                if(ref.isAttributeIdentifier())
-                    continue;
-
-                boolean found = false;
-				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++)
-				{
+				boolean found = false;
+				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++) {
 					QName qname = new QName(ref.getImmutableNamespaces().get(j), ref.name);
-                    if (qname.ns instanceof UnresolvedNamespace && ((UnresolvedNamespace) qname.ns).resolved)
-					{
+					if (qname.ns instanceof UnresolvedNamespace && ((UnresolvedNamespace) qname.ns).resolved) {
 						found = true;
 						break;
 					}
 					int where = findDefinition(qname);
-					if (where != -1)
-					{
-                        Pair p = new Pair(i, where);
-                        if (!expr.contains(p))
-                        {
-                            expr.add(p);
-                        }
+					if (where != -1) {
+						Pair p = new Pair(i, where);
+						if (!expr.contains(p)) {
+							expr.add(p);
+						}
 						found = true;
 						break;
 					}
 				}
 /*              Expressions might not be resolved at CT for any number of valid reasons - strict mode will catch
-                the error cases if there are any.
+				the error cases if there are any.
 				if (!found)
 				{
 					System.err.println(ref.toMultiName() + " on line " + cx.get(i).getInputLine(ref.getPosition()) + " of file " + file.get(i) + " not resolved");
 				}
-*/			}
+*/
+			}
 
 			node.get(i).rt_unresolved.clear();
 		}

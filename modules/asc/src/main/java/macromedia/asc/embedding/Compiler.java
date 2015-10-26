@@ -252,10 +252,8 @@ public class Compiler implements ErrorConstants
 			ObjectList<DocCommentNode> comments = printer.doccomments;
 			int numComments = comments.size();
             Node prev = null;
-            for(int x = 0; x < numComments; x++)
-			{
-                DocCommentNode d = comments.get(x);
-                d.emit(cx,out);
+            for (DocCommentNode d : comments) {
+                d.emit(cx, out);
                 prev = d.def;
             }
 			out.append(newline).append("</asdoc>").append(newline);

@@ -696,38 +696,29 @@ public class TextHelper
         ArrayList<String> finalTabStops = new ArrayList<String>(tabStops.length);
         int iFinal = -1;
         boolean escaped = false;
-        for (int i=0; i<tabStops.length; i++)
-        {
-            if (escaped)
-            {
-                finalTabStops.add(iFinal, finalTabStops.get(iFinal)+tabStops[i]);
-            }
-            else
-            {
-                finalTabStops.add(tabStops[i]);
+        for (String tabStop : tabStops) {
+            if (escaped) {
+                finalTabStops.add(iFinal, finalTabStops.get(iFinal) + tabStop);
+            } else {
+                finalTabStops.add(tabStop);
                 iFinal++;
             }
-            escaped = tabStops[i].endsWith("\\")? true: false;
+            escaped = tabStop.endsWith("\\") ? true : false;
         }
         
         String tabStopsVal = null;
-        for (int i=0; i<finalTabStops.size(); i++)
-        {
-            tabStopsVal = finalTabStops.get(i);
-            if (!matchPattern(tabStopsVal, tabstopsExceptDNumericPattern))
-            {
-                if (!matchPattern(tabStopsVal, tabstopsExceptDScientificPattern))
-                {
-                    if (!matchPattern(tabStopsVal, tabstopsDNumericPattern))
-                    {
-                        if (!matchPattern(tabStopsVal, tabstopsDScientificPattern))
-                        {
+        for (String finalTabStop : finalTabStops) {
+            tabStopsVal = finalTabStop;
+            if (!matchPattern(tabStopsVal, tabstopsExceptDNumericPattern)) {
+                if (!matchPattern(tabStopsVal, tabstopsExceptDScientificPattern)) {
+                    if (!matchPattern(tabStopsVal, tabstopsDNumericPattern)) {
+                        if (!matchPattern(tabStopsVal, tabstopsDScientificPattern)) {
                             //Exception: Malformed tab stops ''{0}'' - must be 
                             // an array of tab stops where each tab stop is 
                             // delimited by one or more spaces. A tab stop 
                             // takes the following string-based form: 
                             // [alignment type][alignment position]|[alignment token]. 
-                            throw new FXGException(node.getStartLine(), node.getStartColumn(), "InvalidTabStops", value);                            
+                            throw new FXGException(node.getStartLine(), node.getStartColumn(), "InvalidTabStops", value);
                         }
                     }
                 }

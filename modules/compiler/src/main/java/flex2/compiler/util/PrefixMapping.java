@@ -97,11 +97,8 @@ public class PrefixMapping
      */
     public static int getNamespaceId(String nsUri, Stack<PrefixMapping> namespaces)
     {
-        for (int i = 0, size = namespaces.size(); i < size; i++)
-        {
-            PrefixMapping pm = namespaces.get(i);
-            if (pm.equals(nsUri))
-            {
+        for (PrefixMapping pm : namespaces) {
+            if (pm.equals(nsUri)) {
                 return pm.getNs();
             }
         }       
@@ -121,9 +118,7 @@ public class PrefixMapping
      */
     public static void pushNamespaces(BindingExpression be, Stack<PrefixMapping> namespaces)
     {
-        for (int i = 0, count = namespaces.size(); i < count; i++)
-        {
-            PrefixMapping pm = namespaces.get(i);
+        for (PrefixMapping pm : namespaces) {
             be.addNamespace(pm.getUri(), pm.getNs());
         }
     }    

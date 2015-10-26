@@ -340,9 +340,7 @@ public class SwcChecksums
 
         if (swcDefSignatureChecksums != null)
         {
-            for (Iterator<QName> iter = unit.topLevelDefinitions.iterator(); iter.hasNext();)
-            {
-                QName qname = iter.next();
+            for (QName qname : unit.topLevelDefinitions) {
                 swcDefSignatureChecksums.put(qname, signatureChecksum);
             }
         }

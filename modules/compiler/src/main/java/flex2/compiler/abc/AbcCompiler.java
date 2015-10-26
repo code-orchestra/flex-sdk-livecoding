@@ -245,12 +245,10 @@ public class AbcCompiler extends AbstractSubCompiler implements flex2.compiler.S
 		treeEvaluator.setLocalizationManager(ThreadLocalToolkit.getLocalizationManager());
 		node.evaluate(cx, treeEvaluator);
 
-		for (int i = 0, length = compilerExtensions.size(); i < length; i++)
-		{
-			compilerExtensions.get(i).parse1(unit, null);
+		for (Extension compilerExtension : compilerExtensions) {
+			compilerExtension.parse1(unit, null);
 
-			if (ThreadLocalToolkit.errorCount() > 0)
-			{
+			if (ThreadLocalToolkit.errorCount() > 0) {
 				return null;
 			}
 		}
@@ -271,12 +269,10 @@ public class AbcCompiler extends AbstractSubCompiler implements flex2.compiler.S
 			return;
 		}
 
-		for (int i = 0, length = compilerExtensions.size(); i < length; i++)
-		{
-			compilerExtensions.get(i).parse2(unit, null);
+		for (Extension compilerExtension : compilerExtensions) {
+			compilerExtension.parse2(unit, null);
 
-			if (ThreadLocalToolkit.errorCount() > 0)
-			{
+			if (ThreadLocalToolkit.errorCount() > 0) {
 				return;
 			}
 		}
@@ -324,12 +320,10 @@ public class AbcCompiler extends AbstractSubCompiler implements flex2.compiler.S
 
 		unit.typeInfo = node.frame;
 
-		for (int i = 0, length = compilerExtensions.size(); i < length; i++)
-		{
-			compilerExtensions.get(i).analyze1(unit, null);
+		for (Extension compilerExtension : compilerExtensions) {
+			compilerExtension.analyze1(unit, null);
 
-			if (ThreadLocalToolkit.errorCount() > 0)
-			{
+			if (ThreadLocalToolkit.errorCount() > 0) {
 				return;
 			}
 		}
@@ -373,12 +367,10 @@ public class AbcCompiler extends AbstractSubCompiler implements flex2.compiler.S
 			return;
 		}
 
-		for (int i = 0, length = compilerExtensions.size(); i < length; i++)
-		{
-			compilerExtensions.get(i).analyze2(unit, null);
+		for (Extension compilerExtension : compilerExtensions) {
+			compilerExtension.analyze2(unit, null);
 
-			if (ThreadLocalToolkit.errorCount() > 0)
-			{
+			if (ThreadLocalToolkit.errorCount() > 0) {
 				return;
 			}
 		}
@@ -418,12 +410,10 @@ public class AbcCompiler extends AbstractSubCompiler implements flex2.compiler.S
 		    return;
 		}
 
-		for (int i = 0, length = compilerExtensions.size(); i < length; i++)
-		{
-			compilerExtensions.get(i).analyze3(unit, null);
+		for (Extension compilerExtension : compilerExtensions) {
+			compilerExtension.analyze3(unit, null);
 
-			if (ThreadLocalToolkit.errorCount() > 0)
-			{
+			if (ThreadLocalToolkit.errorCount() > 0) {
 				return;
 			}
 		}
@@ -492,10 +482,9 @@ public class AbcCompiler extends AbstractSubCompiler implements flex2.compiler.S
 		if (symbolTable != null)
 		{
 			Map classMap = typeTable.createClasses(node.clsdefs, unit.topLevelDefinitions);
-			for (Iterator i = classMap.keySet().iterator(); i.hasNext();)
-			{
-				String className = (String) i.next();
-				flex2.compiler.abc.AbcClass c = (flex2.compiler.abc.AbcClass) classMap.get(className);
+			for (Object o : classMap.keySet()) {
+				String className = (String) o;
+				AbcClass c = (AbcClass) classMap.get(className);
 				symbolTable.registerClass(className, c);
 				unit.classTable.put(className, c);
 			}
@@ -513,12 +502,10 @@ public class AbcCompiler extends AbstractSubCompiler implements flex2.compiler.S
 			As3Compiler.evaluateLoaderClassBase(unit, typeTable);
 		}
 
-		for (int i = 0, length = compilerExtensions.size(); i < length; i++)
-		{
-			compilerExtensions.get(i).analyze4(unit, typeTable);
+		for (Extension compilerExtension : compilerExtensions) {
+			compilerExtension.analyze4(unit, typeTable);
 
-			if (ThreadLocalToolkit.errorCount() > 0)
-			{
+			if (ThreadLocalToolkit.errorCount() > 0) {
 				return;
 			}
 		}
@@ -537,12 +524,10 @@ public class AbcCompiler extends AbstractSubCompiler implements flex2.compiler.S
 			return;
 		}
 
-		for (int i = 0, length = compilerExtensions.size(); i < length; i++)
-		{
-			compilerExtensions.get(i).generate(unit, null);
+		for (Extension compilerExtension : compilerExtensions) {
+			compilerExtension.generate(unit, null);
 
-			if (ThreadLocalToolkit.errorCount() > 0)
-			{
+			if (ThreadLocalToolkit.errorCount() > 0) {
 				return;
 			}
 		}

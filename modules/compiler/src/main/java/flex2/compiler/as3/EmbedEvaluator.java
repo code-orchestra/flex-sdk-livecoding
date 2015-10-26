@@ -346,9 +346,7 @@ class EmbedEvaluator extends EvaluatorAdapter
         Map<QName, Source> sources = new HashMap<QName, Source>();
         EmbedData embedData = getEmbedData();
 
-        for (Iterator<Map.Entry<String, Map<String, Object>>> iterator = embedData.class2params.entrySet().iterator(); iterator.hasNext();)
-        {
-            Map.Entry<String, Map<String, Object>> e = iterator.next();
+        for (Map.Entry<String, Map<String, Object>> e : embedData.class2params.entrySet()) {
             String className = e.getKey();
             Map<String, Object> params = e.getValue();
 
@@ -440,20 +438,14 @@ class EmbedEvaluator extends EvaluatorAdapter
         List<Transcoder.TranscodingResults> childAssets = asset.additionalAssets;
         if (childAssets != null)
         {
-            for (int i = 0; i < childAssets.size(); i++)
-            {
-                Transcoder.TranscodingResults childAsset = childAssets.get(i);
+            for (Transcoder.TranscodingResults childAsset : childAssets) {
                 String qualifiedClassName = childAsset.className;
-                if (qualifiedClassName != null)
-                {
+                if (qualifiedClassName != null) {
                     int dot = qualifiedClassName.lastIndexOf('.');
-                    if (dot == -1)
-                    {
+                    if (dot == -1) {
                         className = qualifiedClassName;
                         packageName = "";
-                    }
-                    else
-                    {
+                    } else {
                         className = qualifiedClassName.substring(dot + 1);
                         packageName = qualifiedClassName.substring(0, dot);
                     }

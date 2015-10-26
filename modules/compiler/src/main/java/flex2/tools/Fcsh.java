@@ -182,8 +182,8 @@ public class Fcsh extends Tool {
             String id = s.substring("clear".length()).trim();
             if (id.length() == 0) {
                 HashSet<String> keys = new HashSet<String>(targets.keySet());
-                for (Iterator<String> i = keys.iterator(); i.hasNext(); ) {
-                    clear(i.next());
+                for (String key : keys) {
+                    clear(key);
                 }
             } else if (targets.containsKey(id)) {
                 clear(id);
@@ -194,8 +194,8 @@ public class Fcsh extends Tool {
             String id = s.substring("info".length()).trim();
             if (id.length() == 0) {
                 HashSet<String> keys = new HashSet<String>(targets.keySet());
-                for (Iterator<String> i = keys.iterator(); i.hasNext(); ) {
-                    info(i.next());
+                for (String key : keys) {
+                    info(key);
                 }
             } else if (targets.containsKey(id)) {
                 info(id);
@@ -249,8 +249,8 @@ public class Fcsh extends Tool {
             }
         } else if (s.equals("quit")) {
             Set<String> names = new HashSet<String>(targets.keySet());
-            for (Iterator<String> i = names.iterator(); i.hasNext(); ) {
-                process("clear " + i.next());
+            for (String name : names) {
+                process("clear " + name);
             }
 
             exit = true;

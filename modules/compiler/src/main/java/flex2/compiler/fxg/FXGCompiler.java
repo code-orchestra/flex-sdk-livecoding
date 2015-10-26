@@ -163,9 +163,8 @@ public class FXGCompiler extends AbstractSubCompiler
      */
     public boolean isSupported(String mimeType)
     {
-        for (int i = 0; i < mimeTypes.length; i++)
-        {
-            if (mimeTypes[i].equals(mimeType))
+        for (String mimeType1 : mimeTypes) {
+            if (mimeType1.equals(mimeType))
                 return true;
         }
         return false;

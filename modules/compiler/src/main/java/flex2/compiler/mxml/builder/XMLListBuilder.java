@@ -137,53 +137,43 @@ public class XMLListBuilder extends AbstractBuilder
             //[Matt] I think this value is wrong but I can't see where it's used so we'll leave it for now.
             String destinationProperty = createExpression(destinationPropertyStack);
 
-            for (Iterator<QName> i = attributeBindings.keySet().iterator(); i.hasNext();)
-            {
-                QName attrName = i.next();
-                
+            for (QName attrName : attributeBindings.keySet()) {
                 String attrExpr;
                 int nsId = 0;
-                
+
                 // If the attribute node has a namespace use that.  Otherwise 
                 // use the namespace of the element node.
                 String nsUri = attrName.getNamespace();
-                if (nsUri.length() > 0)
-                {
-                    nsId = PrefixMapping.getNamespaceId(nsUri, namespaces);                        
-                }
-                else
-                {
+                if (nsUri.length() > 0) {
+                    nsId = PrefixMapping.getNamespaceId(nsUri, namespaces);
+                } else {
                     PrefixMapping pm = (PrefixMapping) namespaces.peek();
                     nsUri = pm.getUri();
                     nsId = pm.getNs();
                 }
-                
-                if (nsId > 0)
-                {
+
+                if (nsId > 0) {
                     attrExpr = e4xElementsByLocalName + ".@ns" + nsId + "::" + attrName.getLocalPart();
-                }
-                else
-                {
+                } else {
                     attrExpr = e4xElementsByLocalName + ".@" + attrName.getLocalPart();
                 }
 
                 BindingExpression be = attributeBindings.get(attrName);
-                
+
                 be.setDestinationLValue(attrExpr);
                 be.setDestinationProperty(destinationProperty + "[" + node.getIndex() + "]");
                 be.setDestination(xmlList);
                 be.setDestinationXMLAttribute(true);
-                
+
                 // So be.getDestination() will use LValue.  The destinationProperty is wrong.                
                 be.setDestinationE4X(true);
-                
+
                 //System.out.println("cdata: LValue=" + e4xElementsByLocalName + " prop=" + be.getDestinationProperty()));
 
                 xmlList.setHasBindings(true);
 
                 PrefixMapping.pushNamespaces(be, namespaces);
-                if (nsUri.length() > 0)
-                {
+                if (nsUri.length() > 0) {
                     be.addNamespace(nsUri, nsId);
                 }
             }
@@ -368,11 +358,9 @@ public class XMLListBuilder extends AbstractBuilder
         }
         
         // now update the definitions in the attribute map
-        for(Iterator<QName> iter = attributeResources.keySet().iterator(); iter.hasNext();)
-        {
-            final QName qname = iter.next();
+        for (final QName qname : attributeResources.keySet()) {
             final AtResource atResource = attributeResources.get(qname);
-            
+
             // attributes are in a LinkedHashMap, so this just updates the existing mapping
             // with the qname -> AtResource. When Element.toStartElement() is emitting the
             // attribute's value, it will notice the special case of an AtResource object

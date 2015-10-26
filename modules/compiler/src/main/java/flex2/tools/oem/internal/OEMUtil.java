@@ -477,13 +477,10 @@ public class OEMUtil
 	{
 		List<Object[]> positions = cfgbuf.getPositions();
         List<Object> newArgs = new ArrayList<Object>();
-		for (int i = 0, length = positions.size(); i < length; i++)
-		{
-			Object[] a = positions.get(i);
+		for (Object[] a : positions) {
 			String var = (String) a[0];
 			int iStart = ((Integer) a[1]).intValue(), iEnd = ((Integer) a[2]).intValue();
-			if (!excludes.contains(var))
-			{
+			if (!excludes.contains(var)) {
 				newArgs.addAll(Arrays.asList(args).subList(iStart, iEnd));
 			}
 		}
@@ -558,13 +555,11 @@ public class OEMUtil
 		if (units != null)
 		{
 			data.swcDefSignatureChecksums = new HashMap<QName, Long>();
-			for (Iterator iter = units.iterator(); iter.hasNext();) 
-			{
-				CompilationUnit unit = (CompilationUnit)iter.next();
+			for (Object unit1 : units) {
+				CompilationUnit unit = (CompilationUnit) unit1;
 				Source source = unit == null ? null : unit.getSource();
-				if (source != null && source.isSwcScriptOwner() && !source.isInternal())
-				{
-					addSignatureChecksumToData(data, unit); 
+				if (source != null && source.isSwcScriptOwner() && !source.isInternal()) {
+					addSignatureChecksumToData(data, unit);
 				}
 			}
 		}
@@ -584,12 +579,11 @@ public class OEMUtil
 		}
 		
 		data.swcFileChecksums = new HashMap<String, Long>();
-		for (Iterator iter = swcContext.getFiles().entrySet().iterator(); iter.hasNext();) 
-		{
-			Map.Entry entry = (Map.Entry)iter.next();
-			String filename = (String)entry.getKey();
-			VirtualFile file = (VirtualFile)entry.getValue();
-			data.swcFileChecksums.put(filename, new Long(file.getLastModified())); 
+		for (Map.Entry<String, VirtualFile> stringVirtualFileEntry : swcContext.getFiles().entrySet()) {
+			Map.Entry entry = (Map.Entry) stringVirtualFileEntry;
+			String filename = (String) entry.getKey();
+			VirtualFile file = (VirtualFile) entry.getValue();
+			data.swcFileChecksums.put(filename, new Long(file.getLastModified()));
 		}
 
         for (VirtualFile themeStyleSheet : swcContext.getThemeStyleSheets())
@@ -648,61 +642,50 @@ public class OEMUtil
 	    	}
 	    	else
 	    	{
-		    	for (Iterator iter = signatureChecksums.entrySet().iterator(); iter.hasNext();)
-		    	{
-		    		Map.Entry entry = (Map.Entry)iter.next();
-		    		
-		    		// lookup definition in swc context 
-                    QName qName = (QName) entry.getKey();
-		    		Long dataSignatureChecksum = (Long)entry.getValue();
-		    		Long swcSignatureChecksum = swcContext.getChecksum(qName);
-                    if (swcSignatureChecksum == null && qName != null)
-                    {
-                        Source source = swcContext.getSource(qName.getNamespace(), qName.getLocalPart());
-                        if (source != null)
-                        {
-                            swcSignatureChecksum = new Long(source.getLastModified());
-                        }
-                    }
-		    		if (Trace.swcChecksum)
-			    	{
-			    		if (dataSignatureChecksum == null)
-			    		{
-			    			throw new IllegalStateException("dataSignatureChecksum should never be null");
-			    		}
-			    	}
+				for (Object o : signatureChecksums.entrySet()) {
+					Map.Entry entry = (Map.Entry) o;
 
-			    	if (dataSignatureChecksum != null && swcSignatureChecksum == null)
-		    		{
-				    	if (Trace.swcChecksum)
-				    	{
-					        Trace.trace("isRecompilationNeeded: signature checksums not equal, recompile");	    		
-				    		Trace.trace("compare " + entry.getKey());
-				    		Trace.trace("data =  " + dataSignatureChecksum);
-				    		Trace.trace("swc  =  " + swcSignatureChecksum);
-				    	}
-		    			return true;
-		    		}
-		    		
-		    		if (dataSignatureChecksum != null)
-		    		{
-		    			if (dataSignatureChecksum.longValue() != swcSignatureChecksum.longValue())
-		    			{
-					    	if (Trace.swcChecksum)
-					    	{
-						        Trace.trace("isRecompilationNeeded: signature checksums not equal, recompile");	    		
-					    		Trace.trace("compare " + entry.getKey());
-					    		Trace.trace("data =  " + dataSignatureChecksum);
-					    		Trace.trace("swc  =  " + swcSignatureChecksum);
-					    	}
-		    				return true;
-		    			}
-		    		}
-		    		else {
-		    			// dataSignatureChecksum should never be null, but if it is then recompile.
-		    			return true;
-		    		}
-		    	}
+					// lookup definition in swc context
+					QName qName = (QName) entry.getKey();
+					Long dataSignatureChecksum = (Long) entry.getValue();
+					Long swcSignatureChecksum = swcContext.getChecksum(qName);
+					if (swcSignatureChecksum == null && qName != null) {
+						Source source = swcContext.getSource(qName.getNamespace(), qName.getLocalPart());
+						if (source != null) {
+							swcSignatureChecksum = new Long(source.getLastModified());
+						}
+					}
+					if (Trace.swcChecksum) {
+						if (dataSignatureChecksum == null) {
+							throw new IllegalStateException("dataSignatureChecksum should never be null");
+						}
+					}
+
+					if (dataSignatureChecksum != null && swcSignatureChecksum == null) {
+						if (Trace.swcChecksum) {
+							Trace.trace("isRecompilationNeeded: signature checksums not equal, recompile");
+							Trace.trace("compare " + entry.getKey());
+							Trace.trace("data =  " + dataSignatureChecksum);
+							Trace.trace("swc  =  " + swcSignatureChecksum);
+						}
+						return true;
+					}
+
+					if (dataSignatureChecksum != null) {
+						if (dataSignatureChecksum.longValue() != swcSignatureChecksum.longValue()) {
+							if (Trace.swcChecksum) {
+								Trace.trace("isRecompilationNeeded: signature checksums not equal, recompile");
+								Trace.trace("compare " + entry.getKey());
+								Trace.trace("data =  " + dataSignatureChecksum);
+								Trace.trace("swc  =  " + swcSignatureChecksum);
+							}
+							return true;
+						}
+					} else {
+						// dataSignatureChecksum should never be null, but if it is then recompile.
+						return true;
+					}
+				}
 	    	}
 
 	    	boolean result = !areSwcFileChecksumsEqual(data, swcContext);
@@ -759,11 +742,9 @@ public class OEMUtil
 
 		if (data.swcDefSignatureChecksums != null)
 		{
-			for (Iterator iter = unit.topLevelDefinitions.iterator(); iter.hasNext();)
-	    	{
-	    		QName qname = (QName) iter.next();
-	        	data.swcDefSignatureChecksums.put(qname, signatureChecksum);
-	    	}
+			for (QName qname : unit.topLevelDefinitions) {
+				data.swcDefSignatureChecksums.put(qname, signatureChecksum);
+			}
 		}
 	}
 
@@ -806,45 +787,40 @@ public class OEMUtil
         	
     		return false;    		
     	}
-    	
-    	for (Iterator iter = dataSet.iterator(); iter.hasNext();) 
-    	{
-    		Map.Entry entry = (Map.Entry)iter.next();
-    		String filename = (String)entry.getKey();
 
-            // When we are reusing cached SWC's, the catalog.xml and
-            // library.swf are updated each time we save the
-            // SwcDynamicArchive, but we don't want to reload the SWC
-            // from disk, because all the compilation units
-            // represented by catalog.xml should be cached.  If any of
-            // the cached CompilationUnit's becomes out of data,
-            // CompilerAPI.validateCompilationUnits() will handle
-            // removing the cached CompilationUnit, which will cause
-            // it to be reloaded from disk.
-            if (!filename.equals(Swc.CATALOG_XML) &&
-                !filename.equals(Swc.LIBRARY_SWF))
-            {
-                Long dataFileLastModified = (Long)entry.getValue();
-                Long swcFileLastModified = null;
-                VirtualFile swcFile = (VirtualFile)swcFiles.get(filename);
-                if (swcFile != null)
-                {
-                    swcFileLastModified = new Long(swcFile.getLastModified());
-                }
-    		
-                if (!dataFileLastModified.equals(swcFileLastModified))
-                {
-                    if (Trace.swcChecksum)
-                    {
-                        Trace.trace("areSwcFileChecksumsEqual: not equal");
-                        Trace.trace("filename = " + filename);
-                        Trace.trace("last modified1 = " + dataFileLastModified);
-                        Trace.trace("last modified2 = " + swcFileLastModified);
-                    }
-                    return false;
-                }
-            }
-        }
+		for (Object aDataSet : dataSet) {
+			Map.Entry entry = (Map.Entry) aDataSet;
+			String filename = (String) entry.getKey();
+
+			// When we are reusing cached SWC's, the catalog.xml and
+			// library.swf are updated each time we save the
+			// SwcDynamicArchive, but we don't want to reload the SWC
+			// from disk, because all the compilation units
+			// represented by catalog.xml should be cached.  If any of
+			// the cached CompilationUnit's becomes out of data,
+			// CompilerAPI.validateCompilationUnits() will handle
+			// removing the cached CompilationUnit, which will cause
+			// it to be reloaded from disk.
+			if (!filename.equals(Swc.CATALOG_XML) &&
+					!filename.equals(Swc.LIBRARY_SWF)) {
+				Long dataFileLastModified = (Long) entry.getValue();
+				Long swcFileLastModified = null;
+				VirtualFile swcFile = (VirtualFile) swcFiles.get(filename);
+				if (swcFile != null) {
+					swcFileLastModified = new Long(swcFile.getLastModified());
+				}
+
+				if (!dataFileLastModified.equals(swcFileLastModified)) {
+					if (Trace.swcChecksum) {
+						Trace.trace("areSwcFileChecksumsEqual: not equal");
+						Trace.trace("filename = " + filename);
+						Trace.trace("last modified1 = " + dataFileLastModified);
+						Trace.trace("last modified2 = " + swcFileLastModified);
+					}
+					return false;
+				}
+			}
+		}
     	
     	if (Trace.swcChecksum)
     	{

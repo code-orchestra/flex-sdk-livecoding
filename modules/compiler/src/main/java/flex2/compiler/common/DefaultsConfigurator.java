@@ -60,10 +60,9 @@ public class DefaultsConfigurator
 
     static private void set( ConfigurationBuffer cfgbuf, String[] vars, String val ) throws ConfigurationException
     {
-        for (int i = 0; i < vars.length; ++i)
-        {
-            set( cfgbuf, vars[i], val );
-        }
+		for (String var : vars) {
+			set(cfgbuf, var, val);
+		}
     }
 
 	// load defaults for normal compile

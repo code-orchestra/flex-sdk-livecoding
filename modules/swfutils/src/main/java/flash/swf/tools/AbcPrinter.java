@@ -1540,8 +1540,7 @@ public class AbcPrinter
 				s += (typeName != null) ? typeName.toString() : "nullTypeName";
 				if (types != null)
 				{
-					for (int t = 0; t < types.length; t++)
-						s += (types[t] != null) ? types[t].toString() : "nullType";
+					for (MultiName type : types) s += (type != null) ? type.toString() : "nullType";
 				}
 				else {
 					s += "no types";

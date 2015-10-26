@@ -266,24 +266,17 @@ public class CompilerConfiguration implements As3Configuration,
 		ArrayList<VirtualFile> list = new ArrayList<VirtualFile>(pathlist.length);
 
 		// Process each path element.
-		for (int i = 0; i < pathlist.length; i++)
-		{
-			String pathElement = pathlist[i];
-
+		for (String pathElement : pathlist) {
 			// Look for "{locale}".
 			int localeTokenIndex = pathElement.indexOf(LOCALE_TOKEN);
-			if (localeTokenIndex != -1)
-			{
+			if (localeTokenIndex != -1) {
 				// Expand this {locale}-containing path element
 				// into 0, 1, or N path elements.
-				for (int j = 0; j < locales.length; j++)
-				{
-					String pathElementWithSubstitution = StringUtils.substitute(pathElement, LOCALE_TOKEN, locales[j]);
+				for (String locale : locales) {
+					String pathElementWithSubstitution = StringUtils.substitute(pathElement, LOCALE_TOKEN, locale);
 					addPathElementToListAsVirtualFile(pathElementWithSubstitution, list, cv);
 				}
-			}
-			else
-			{
+			} else {
 				addPathElementToListAsVirtualFile(pathElement, list, cv);
 			}
 		}
@@ -802,13 +795,10 @@ public class CompilerConfiguration implements As3Configuration,
     public void cfgExternalLibraryPath( ConfigurationValue cv, String[] pathlist ) throws ConfigurationException
     {
 		// We are "compiling for AIR" if airglobal.swc is in the pathlist.
-		for (int i = 0; i < pathlist.length; i++)
-		{
-			String path = pathlist[i];
+		for (String path : pathlist) {
 			if (path.equals(StandardDefs.SWC_AIRGLOBAL) ||
-				path.endsWith("/" + StandardDefs.SWC_AIRGLOBAL) ||
-				path.endsWith("\\" + StandardDefs.SWC_AIRGLOBAL))
-			{
+					path.endsWith("/" + StandardDefs.SWC_AIRGLOBAL) ||
+					path.endsWith("\\" + StandardDefs.SWC_AIRGLOBAL)) {
 				compilingForAIR = true;
 				break;
 			}
@@ -1022,13 +1012,11 @@ public class CompilerConfiguration implements As3Configuration,
     {
         if( as3metadata != null )
         {
-            for( int i = 0; i < as3metadata.length; ++i )
-            {
-                if(StandardDefs.MD_EMBED.equals(as3metadata[i]))
-                {
-                    return true;
-                }
-            }
+			for (String anAs3metadata : as3metadata) {
+				if (StandardDefs.MD_EMBED.equals(anAs3metadata)) {
+					return true;
+				}
+			}
         }
         return false;
     }
@@ -1990,31 +1978,23 @@ public class CompilerConfiguration implements As3Configuration,
         checkNewSourcePathElements(newPathElements, cv);
         sourcePath = (VirtualFile[])merge(sourcePath, newPathElements, VirtualFile.class);
 
-		for (int i = 0; i < locales.length; i++)
-		{
-			String locale = locales[i];
-			newPathElements = expandTokens(pathlist, new String[] { locale }, cv);
+		for (String locale : locales) {
+			newPathElements = expandTokens(pathlist, new String[]{locale}, cv);
 			checkNewSourcePathElements(newPathElements, cv);
 			VirtualFile[] bundlePath = resourceBundlePaths.get(locale);
-			bundlePath = (VirtualFile[])merge(bundlePath, newPathElements, VirtualFile.class);
+			bundlePath = (VirtualFile[]) merge(bundlePath, newPathElements, VirtualFile.class);
 			resourceBundlePaths.put(locale, bundlePath);
 		}
 	}
 
 	private void checkNewSourcePathElements(VirtualFile[] newPathElements, ConfigurationValue cv) throws ConfigurationException
 	{
-        for (int i = 0; i < newPathElements.length; i++)
-		{
-			VirtualFile pathElement = newPathElements[i];
-			if (!pathElement.isDirectory())
-			{
-				if (cv == null)
-				{
+		for (VirtualFile pathElement : newPathElements) {
+			if (!pathElement.isDirectory()) {
+				if (cv == null) {
 					throw new ConfigurationException.NotDirectory(
 							pathElement.getName(), null, null, -1);
-				}
-				else
-				{
+				} else {
 					throw new ConfigurationException.NotDirectory(
 							pathElement.getName(), cv.getVar(), cv.getSource(), cv.getLine());
 				}
@@ -2120,19 +2100,17 @@ public class CompilerConfiguration implements As3Configuration,
         VirtualFile[] vfa = new VirtualFile[paths.size()];
 
         int i = 0;
-        for (Iterator it = paths.iterator(); it.hasNext();)
-        {
-            String path = (String) it.next();
-            addThemeName(path);
-            VirtualFile theme = ConfigurationPathResolver.getVirtualFile( path,
-                                                                          configResolver,
-                                                                          cv );
-            if (theme == null)
-            {
-                throw new ConfigurationException.ConfigurationIOError( path, cv.getVar(), cv.getSource(), cv.getLine() );
-            }
-            vfa[i++] = theme;
-        }
+		for (Object path1 : paths) {
+			String path = (String) path1;
+			addThemeName(path);
+			VirtualFile theme = ConfigurationPathResolver.getVirtualFile(path,
+					configResolver,
+					cv);
+			if (theme == null) {
+				throw new ConfigurationException.ConfigurationIOError(path, cv.getVar(), cv.getSource(), cv.getLine());
+			}
+			vfa[i++] = theme;
+		}
         themeFiles = (VirtualFile[])merge( themeFiles, vfa, VirtualFile.class );
     }
 
@@ -2223,24 +2201,22 @@ public class CompilerConfiguration implements As3Configuration,
         final int defaultsCssFilesLastIndex = defaultsCssFiles.size();
         
         // verify and add the paths given
-        for (Iterator it = paths.iterator(); it.hasNext();)
-        {
-            final String path = (String) it.next();
-            VirtualFile css = ConfigurationPathResolver.getVirtualFile(path,
-                                                                       configResolver,
-                                                                       cv);
-            if (css == null)
-            {
-                throw new ConfigurationException.ConfigurationIOError(path,
-                                                                      cv.getVar(),
-                                                                      cv.getSource(),
-                                                                      cv.getLine());
-            }
+		for (Object path1 : paths) {
+			final String path = (String) path1;
+			VirtualFile css = ConfigurationPathResolver.getVirtualFile(path,
+					configResolver,
+					cv);
+			if (css == null) {
+				throw new ConfigurationException.ConfigurationIOError(path,
+						cv.getVar(),
+						cv.getSource(),
+						cv.getLine());
+			}
 
-            // I start from defaultsCssFilesLastIndex so that the paths are in the correct
-            // precedence order (see the javadoc for defaultsCssFiles)
-            defaultsCssFiles.add(defaultsCssFilesLastIndex, css);
-        }
+			// I start from defaultsCssFilesLastIndex so that the paths are in the correct
+			// precedence order (see the javadoc for defaultsCssFiles)
+			defaultsCssFiles.add(defaultsCssFilesLastIndex, css);
+		}
     }
 
     public static ConfigurationInfo getDefaultsCssFilesInfo()

@@ -212,24 +212,19 @@ public class I18nCompiler extends AbstractSubCompiler implements flex2.compiler.
                 {
                     @SuppressWarnings("unchecked")
                 	Map<String, VirtualFile> archiveFiles = (Map<String, VirtualFile>)context.getAttribute(CompilerContext.L10N_ARCHIVE_FILES);
-                    
-                	for (Iterator j = atEmbeds.iterator(); j.hasNext(); )
-                	{
-                		AtEmbed e = (AtEmbed) j.next();
-                		String src = (String) e.getAttributes().get(Transcoder.SOURCE);
-                		String original = (String) e.getAttributes().get(Transcoder.ORIGINAL);
-                		if (src != null)
-                		{
-                			if (source.getRelativePath().length() == 0)
-                			{
-                				archiveFiles.put("locale/" + locales[i] + "/" + original, new LocalFile(new File(src)));
-                			}
-                			else
-                			{
-                				archiveFiles.put("locale/" + locales[i] + "/" + source.getRelativePath() + "/" + original, new LocalFile(new File(src)));
-                			}
-                		}
-                	}
+
+					for (Object atEmbed : atEmbeds) {
+						AtEmbed e = (AtEmbed) atEmbed;
+						String src = (String) e.getAttributes().get(Transcoder.SOURCE);
+						String original = (String) e.getAttributes().get(Transcoder.ORIGINAL);
+						if (src != null) {
+							if (source.getRelativePath().length() == 0) {
+								archiveFiles.put("locale/" + locales[i] + "/" + original, new LocalFile(new File(src)));
+							} else {
+								archiveFiles.put("locale/" + locales[i] + "/" + source.getRelativePath() + "/" + original, new LocalFile(new File(src)));
+							}
+						}
+					}
                 }
         	}
         }

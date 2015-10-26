@@ -99,9 +99,8 @@ public class MovieDecoder extends TagHandler
 	{
 		// we only care what tags were exported in this frame, because all the
 		// code in this frame could depend on those definitions.
-		for (Iterator i = tag.exports.iterator(); i.hasNext();)
-		{
-			DefineTag def = (DefineTag) i.next();
+		for (Tag export : tag.exports) {
+			DefineTag def = (DefineTag) export;
 			frame.addExport(def);
 		}
 	}

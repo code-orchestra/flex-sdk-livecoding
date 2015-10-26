@@ -103,10 +103,9 @@ public class CopyLocale
 		System.out.println("In Flex SDK at " + sdkDir + " ...");
 		
 		int n = projects.length;
-		for (int i = 0; i < n; i++)
-		{
-			copyPropertiesFiles(projects[i]);
-			compileSWC(projects[i]);
+		for (String project : projects) {
+			copyPropertiesFiles(project);
+			compileSWC(project);
 		}
     }
     
@@ -140,19 +139,16 @@ public class CopyLocale
 		File[] projectDirs = projectsDir.listFiles();
 		ArrayList<String> projectList = new ArrayList<String>();
 		int n = projectDirs.length;
-		for (int i = 0; i < n; i++)
-		{
-			File projectDir = projectDirs[i];
+		for (File projectDir : projectDirs) {
 			File bundlesDir = new File(projectDir, "bundles");
 			if (!bundlesDir.exists())
 				continue;
-			
+
 			String project = projectDir.getName();
 			projectList.add(project);
 
 			File srcLocaleDir = new File(bundlesDir, srcLocale);
-			if (!srcLocaleDir.exists())
-			{
+			if (!srcLocaleDir.exists()) {
 				System.err.println("Error: Directory \"" + srcLocaleDir + "\" does not exist");
 				success = false;
 			}
@@ -173,11 +169,9 @@ public class CopyLocale
 		
 		ArrayList<String> bundleNameList = new ArrayList<String>();
 		int m = propertiesFiles.length;
-		for (int j = 0; j < m; j++)
-		{
-			String name = propertiesFiles[j].getName();
-			if (name.endsWith(".properties"))
-			{
+		for (File propertiesFile : propertiesFiles) {
+			String name = propertiesFile.getName();
+			if (name.endsWith(".properties")) {
 				String bundleName = name.substring(0, name.length() - 11);
 				bundleNameList.add(bundleName);
 			}
@@ -212,11 +206,10 @@ public class CopyLocale
             
 			String[] children = fromDir.list();
 			int n = children.length;
-			for (int i = 0; i < n; i++)
-			{
-				copyDirectory(new File(fromDir, children[i]),
-							  new File(toDir, children[i]));
-            }
+			for (String aChildren : children) {
+				copyDirectory(new File(fromDir, aChildren),
+						new File(toDir, aChildren));
+			}
         }
 		else
 		{

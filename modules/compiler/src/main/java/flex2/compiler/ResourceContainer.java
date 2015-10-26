@@ -140,15 +140,11 @@ public final class ResourceContainer
 	public void refresh()
 	{
 		qname2source.clear();
-		
-		for (Iterator<Source> i = name2source.values().iterator(); i.hasNext();)
-		{
-			Source s = i.next();
+
+		for (Source s : name2source.values()) {
 			CompilationUnit u = s.getCompilationUnit();
-			if (u != null)
-			{
-				for (int j = 0, size = u.topLevelDefinitions.size(); j < size; j++)
-				{
+			if (u != null) {
+				for (int j = 0, size = u.topLevelDefinitions.size(); j < size; j++) {
 					QName qName = u.topLevelDefinitions.get(j);
 					qname2source.put(qName, s);
 				}

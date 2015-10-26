@@ -59,15 +59,13 @@ public class ResourceFile implements VirtualFile
 		defaultFile = null;
 		defaultRoot = null;
 		currentLocale = null;
-		
-		for (int i = 0, len = this.locales.length; i < len; i++)
-		{
-			if (locales[i] != null && files.get(locales[i]) != null && defaultLocale == null && defaultFile == null && defaultRoot == null)
-			{
-				defaultLocale = locales[i];
-				defaultFile = files.get(locales[i]);
-				defaultRoot = roots.get(locales[i]);
-				
+
+		for (String locale : this.locales) {
+			if (locale != null && files.get(locale) != null && defaultLocale == null && defaultFile == null && defaultRoot == null) {
+				defaultLocale = locale;
+				defaultFile = files.get(locale);
+				defaultRoot = roots.get(locale);
+
 				break;
 			}
 		}
@@ -173,13 +171,10 @@ public class ResourceFile implements VirtualFile
 	public long getLastModified()
 	{
 		long ts = -1;
-		
-		for (Iterator<String> i = files.keySet().iterator(); i.hasNext(); )
-		{
-			String locale = i.next();
+
+		for (String locale : files.keySet()) {
 			VirtualFile f = files.get(locale);
-			if (f != null && f.getLastModified() > ts)
-			{
+			if (f != null && f.getLastModified() > ts) {
 				ts = f.getLastModified();
 			}
 		}
@@ -292,10 +287,8 @@ public class ResourceFile implements VirtualFile
 	
 	public boolean complete()
 	{
-		for (int i = 0, len = locales.length; i < len; i++)
-		{
-			if (files.get(locales[i]) == null)
-			{
+		for (String locale : locales) {
+			if (files.get(locale) == null) {
 				return false;
 			}
 		}

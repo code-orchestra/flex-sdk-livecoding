@@ -49,10 +49,9 @@ public final class FlashUUID
     private static String stringify(byte buf[])
     {
         StringBuilder sb = new StringBuilder(2 * buf.length);
-        for (int i = 0; i < buf.length; i++)
-        {
-            int h = (buf[i] & 0xf0) >> 4;
-            int l = (buf[i] & 0x0f);
+        for (byte aBuf : buf) {
+            int h = (aBuf & 0xf0) >> 4;
+            int l = (aBuf & 0x0f);
             sb.append((char) ((h > 9) ? 'A' + h - 10 : '0' + h));
             sb.append((char) ((l > 9) ? 'A' + l - 10 : '0' + l));
         }
@@ -63,9 +62,8 @@ public final class FlashUUID
     {
         int length = bytes.length;
         int code = length;
-        for (int i=0; i < length; i++)
-        {
-            code = (code << 1) ^ bytes[i];
+        for (byte aByte : bytes) {
+            code = (code << 1) ^ aByte;
         }
         return code;
     }

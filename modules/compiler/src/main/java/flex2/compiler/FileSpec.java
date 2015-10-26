@@ -81,29 +81,21 @@ public final class FileSpec
 	{
 		List<Source> sources = new ArrayList<Source>(this.sources.size());
 
-		for (Iterator<String> i = this.sources.keySet().iterator(); i.hasNext();)
-		{
-			String name = i.next();
+		for (String name : this.sources.keySet()) {
 			Source s = this.sources.get(name);
 			CompilationUnit u = (s != null) ? s.getCompilationUnit() : null;
 
-			if (s != null && !s.exists())
-			{
+			if (s != null && !s.exists()) {
 				// C: This is a FileSpec. If the source doesn't exist, the compiler should get a warning...
 				s = null;
-			}
-			else if ((u != null && !u.isDone()) || (s != null && s.isUpdated()))
-			{
+			} else if ((u != null && !u.isDone()) || (s != null && s.isUpdated())) {
 				// s.removeCompilationUnit();
-			}
-			else if (u != null)
-			{
+			} else if (u != null) {
 				s = s.copy();
 				assert s != null;
 			}
 
-			if (s != null)
-			{
+			if (s != null) {
 				sources.add(s);
 			}
 		}
@@ -113,10 +105,8 @@ public final class FileSpec
 
 	private boolean isSupported(VirtualFile file)
 	{
-		for (int i = 0, length = mimeTypes.length; i < length; i++)
-		{
-			if (mimeTypes[i].equals(file.getMimeType()))
-			{
+		for (String mimeType : mimeTypes) {
+			if (mimeType.equals(file.getMimeType())) {
 				return true;
 			}
 		}

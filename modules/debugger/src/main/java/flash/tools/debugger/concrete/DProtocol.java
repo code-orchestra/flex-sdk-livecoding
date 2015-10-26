@@ -197,15 +197,10 @@ public class DProtocol implements Runnable
 		{
 			listeners = m_listeners.values().toArray(new DProtocolNotifierIF[m_listeners.size()]); // copy the list to avoid multithreading problems
 		}
-		for (int i=0; i<listeners.length; ++i)
-		{
-			DProtocolNotifierIF elem = listeners[i];
-			try
-			{
+		for (DProtocolNotifierIF elem : listeners) {
+			try {
 				elem.disconnected();
-			}
-			catch(Exception exc) /* catch unchecked exceptions */
-			{
+			} catch (Exception exc) /* catch unchecked exceptions */ {
 				if (Trace.error)
 					exc.printStackTrace();
 			}
@@ -271,20 +266,15 @@ public class DProtocol implements Runnable
 				{
 					listeners = m_listeners.values().toArray(listeners); // copy the array to avoid multithreading problems
 				}
-				for (int i=0; i<listeners.length; ++i)
-				{
-					DProtocolNotifierIF elem = listeners[i];
-					try
-					{
+				for (DProtocolNotifierIF elem : listeners) {
+					try {
 						elem.messageArrived(msg, this);
-					}
-					catch (Exception exc) /* catch unchecked exceptions */
-					{
+					} catch (Exception exc) /* catch unchecked exceptions */ {
 //						if (Trace.error) 
 //						{
-							System.err.println("Error in listener parsing incoming message :"); //$NON-NLS-1$
-							System.err.println(msg.inToString(16));
-							exc.printStackTrace(); 
+						System.err.println("Error in listener parsing incoming message :"); //$NON-NLS-1$
+						System.err.println(msg.inToString(16));
+						exc.printStackTrace();
 //						}
 					}
 					msg.reset();  /* allow others to reparse the message */

@@ -41,8 +41,7 @@ public class EmbedDigest {
         if (!source.startsWith("/")) {
             String[] relativePathSplit = source.trim().split("\\/");
 
-            for (int i = 0; i < relativePathSplit.length; i++) {
-                String pathSegment = relativePathSplit[i];
+            for (String pathSegment : relativePathSplit) {
                 if (pathSegment.equals("..")) {
                     file = file.getParentFile();
                 } else {

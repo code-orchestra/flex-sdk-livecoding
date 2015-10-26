@@ -97,30 +97,23 @@ public class PropertyText extends OrderedProperties
     public void load(Reader reader) throws IOException
     {
     	super.load(reader);
-    	
-    	for (Iterator i = keySet().iterator(); i.hasNext(); )
-    	{
-    		String key = (String) i.next(), value = getProperty(key);
-    		Object valueObject;
-    		
-            if (value.startsWith(CLASS_REFERENCE))
-            {
-                valueObject = processClassReference(key, value);
-            }
-            else if (value.startsWith(EMBED))
-            {
-                valueObject = processEmbed(key, value);
-            }
-            else
-            {
-            	valueObject = value;
-            }
-            
-            if (valueObject != null)
-            {
-            	put(key, valueObject);
-            }
-    	}
+
+		for (Object o : keySet()) {
+			String key = (String) o, value = getProperty(key);
+			Object valueObject;
+
+			if (value.startsWith(CLASS_REFERENCE)) {
+				valueObject = processClassReference(key, value);
+			} else if (value.startsWith(EMBED)) {
+				valueObject = processEmbed(key, value);
+			} else {
+				valueObject = value;
+			}
+
+			if (valueObject != null) {
+				put(key, valueObject);
+			}
+		}
     }
     
     /*

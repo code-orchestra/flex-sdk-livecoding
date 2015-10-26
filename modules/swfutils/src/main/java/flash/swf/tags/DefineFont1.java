@@ -115,8 +115,7 @@ public class DefineFont1 extends DefineFont
     {
         List<Tag> refs = new LinkedList<Tag>();
 
-        for (int i = 0; i < glyphShapeTable.length; i++)
-            glyphShapeTable[i].getReferenceList(refs);
+        for (Shape aGlyphShapeTable : glyphShapeTable) aGlyphShapeTable.getReferenceList(refs);
 
         return refs.iterator();
     }

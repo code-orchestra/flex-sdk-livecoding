@@ -143,9 +143,8 @@ class VectorBuilder extends AbstractBuilder
         }
         else
         {
-            for (Iterator iter = nodes.iterator(); iter.hasNext(); )
-            {
-                elementNodeHandler.invoke(assignableProperty, (Node)iter.next(), document);
+            for (Object node : nodes) {
+                elementNodeHandler.invoke(assignableProperty, (Node) node, document);
             }
         }
     }

@@ -250,18 +250,14 @@ public abstract class FontManager
 
         if (managerClasses != null)
         {
-            for (int i = 0; i < managerClasses.size(); i++)
-            {
-                try
-                {
-                    Object className = managerClasses.get(i);
-                    if (className != null)
-                    {
+            for (Object managerClass : managerClasses) {
+                try {
+                    Object className = managerClass;
+                    if (className != null) {
                         Class clazz = Class.forName(className.toString());
                         Object obj = clazz.newInstance();
-                        if (obj instanceof FontManager)
-                        {
-                            FontManager fm = (FontManager)obj;
+                        if (obj instanceof FontManager) {
+                            FontManager fm = (FontManager) obj;
                             fm.initialize(map);
 
                             if (manager != null)
@@ -273,11 +269,8 @@ public abstract class FontManager
                             manager = fm;
                         }
                     }
-                }
-                catch (Throwable t)
-                {
-                    if (Trace.font)
-                    {
+                } catch (Throwable t) {
+                    if (Trace.font) {
                         Trace.trace(t.getMessage());
                     }
                 }

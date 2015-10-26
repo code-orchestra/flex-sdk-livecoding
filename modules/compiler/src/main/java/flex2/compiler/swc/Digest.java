@@ -118,11 +118,9 @@ public class Digest
 
 		byte[] digestBytes = digest.digest(byteArray);
 		StringBuilder buf = new StringBuilder();
-		for (int i = 0; i < digestBytes.length; i++)
-		{
-			String s = Integer.toHexString((digestBytes[i] & 0xff));
-			if (s.length() == 1)
-			{
+		for (byte digestByte : digestBytes) {
+			String s = Integer.toHexString((digestByte & 0xff));
+			if (s.length() == 1) {
 				buf.append("0");
 			}
 

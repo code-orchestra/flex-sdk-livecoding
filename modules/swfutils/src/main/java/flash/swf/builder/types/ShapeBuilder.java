@@ -477,9 +477,8 @@ public final class ShapeBuilder
 
     private boolean exceedsEdgeRecordLimit(int[] values)
     {
-        for (int i = 0; i < values.length; i++)
-        {
-            if (Math.abs(values[i]) > EdgeRecord.MAX_DELTA_IN_TWIPS)
+        for (int value : values) {
+            if (Math.abs(value) > EdgeRecord.MAX_DELTA_IN_TWIPS)
                 return true;
         }
 

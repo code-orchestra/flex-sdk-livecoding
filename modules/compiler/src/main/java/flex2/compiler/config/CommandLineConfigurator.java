@@ -383,10 +383,8 @@ public class CommandLineConfigurator
         Map<String, String> aliases = getAliases( cfgbuf );
 
         Map<String, String> sesaila = new HashMap<String, String>();
-        for (Iterator<Map.Entry<String, String>> it = aliases.entrySet().iterator(); it.hasNext();)
-        {
-            Map.Entry<String, String> e = it.next();
-            sesaila.put( e.getValue(), e.getKey() );
+        for (Map.Entry<String, String> e : aliases.entrySet()) {
+            sesaila.put(e.getValue(), e.getKey());
         }
 
         TreeSet<String> printSet = new TreeSet<String>();
@@ -399,82 +397,61 @@ public class CommandLineConfigurator
 
         // figure out behavior..
         Set<String> newSet = new HashSet<String>();
-        for (Iterator<String> kit = keywords.iterator(); kit.hasNext();)
-        {
-            String keyword = kit.next();
-
-            if (keyword.equals( "list" ))
-            {
+        for (String keyword : keywords) {
+            if (keyword.equals("list")) {
                 all = true;
-                newSet.add( "*" );
-            }
-            else if (keyword.equals( "advanced" ))
-            {
+                newSet.add("*");
+            } else if (keyword.equals("advanced")) {
                 advanced = true;
-                if (keywords.size() == 1)
-                {
+                if (keywords.size() == 1) {
                     all = true;
-                    newSet.add( "*" );
+                    newSet.add("*");
                 }
-            }
-            else if (keyword.equals( "details" ))
-            {
+            } else if (keyword.equals("details")) {
                 details = true;
-            }
-            else if (keyword.equals( "syntax" ))
-            {
+            } else if (keyword.equals("syntax")) {
                 syntax = true;
-            }
-            else if (keyword.equals( "aliases" ))
-            {
+            } else if (keyword.equals("aliases")) {
                 printaliases = true;
-            }
-            else
-            {
+            } else {
                 details = true;
-                newSet.add( keyword );
+                newSet.add(keyword);
             }
         }
         if (syntax)
         {
             List lines = ConfigurationBuffer.formatText( getSyntaxDescription( program, defaultVar, advanced, lmgr,  l10nPrefix ), 78 );
             StringBuilder text = new StringBuilder( 512 );
-            for (Iterator it = lines.iterator(); it.hasNext();)
-            {
-                text.append( it.next() );
-                text.append( "\n" );
+            for (Object line : lines) {
+                text.append(line);
+                text.append("\n");
             }
             return text.toString();
         }
         keywords = newSet;
 
         // accumulate set to print
-        for (Iterator<String> kit = keywords.iterator(); kit.hasNext();)
-        {
-            String keyword = kit.next().toLowerCase();
+        for (String keyword1 : keywords) {
+            String keyword = keyword1.toLowerCase();
 
-            for (Iterator varit = cfgbuf.getVarIterator(); varit.hasNext(); )
-            {
+            for (Iterator varit = cfgbuf.getVarIterator(); varit.hasNext(); ) {
                 String var = (String) varit.next();
-                ConfigurationInfo info = cfgbuf.getInfo( var );
+                ConfigurationInfo info = cfgbuf.getInfo(var);
 
-                String description = getDescription( cfgbuf, var, lmgr, l10nPrefix);
+                String description = getDescription(cfgbuf, var, lmgr, l10nPrefix);
 
                 if ((all
-                        || (var.indexOf( keyword ) != -1)
-                        || ((description != null) && (description.toLowerCase().indexOf( keyword ) != -1))
-                        || (keyword.matches( var ) )
-                        || ((sesaila.get( var ) != null) && (sesaila.get( var )).indexOf( keyword ) != -1))
-                     && (!info.isHidden())
-                     && (advanced || !info.isAdvanced()))
-                {
-                    if (printaliases && sesaila.containsKey( var ))
-                        printSet.add( sesaila.get( var ));
+                        || (var.indexOf(keyword) != -1)
+                        || ((description != null) && (description.toLowerCase().indexOf(keyword) != -1))
+                        || (keyword.matches(var))
+                        || ((sesaila.get(var) != null) && (sesaila.get(var)).indexOf(keyword) != -1))
+                        && (!info.isHidden())
+                        && (advanced || !info.isAdvanced())) {
+                    if (printaliases && sesaila.containsKey(var))
+                        printSet.add(sesaila.get(var));
                     else
-                        printSet.add( var );
-                }
-                else
-                {
+                        printSet.add(var);
+                } else {
                     /*
                     for (int i = 0; i < info.getAliases().length; ++i)
                     {
@@ -497,114 +474,92 @@ public class CommandLineConfigurator
             output.append( nkm );
             output.append( "\n" );
         }
-        else for (Iterator<String> it = printSet.iterator(); it.hasNext();)
-        {
-            String avar = it.next();
+        else for (String avar : printSet) {
             String var = avar;
-            if (aliases.containsKey( avar ))
-                var = aliases.get( avar );
+            if (aliases.containsKey(avar))
+                var = aliases.get(avar);
 
-            ConfigurationInfo info = cfgbuf.getInfo( var );
+            ConfigurationInfo info = cfgbuf.getInfo(var);
             assert info != null;
 
-            output.append( "-" );
-            output.append( avar );
+            output.append("-");
+            output.append(avar);
 
-            int count = cfgbuf.getVarArgCount( var );
-            if ((count >= 1) && (!isBoolean( cfgbuf, var )))
-            {
-                for (int i = 0; i < count; ++i)
-                {
-                    output.append( " <" );
-                    output.append( cfgbuf.getVarArgName( var, i ) );
-                    output.append( ">" );
+            int count = cfgbuf.getVarArgCount(var);
+            if ((count >= 1) && (!isBoolean(cfgbuf, var))) {
+                for (int i = 0; i < count; ++i) {
+                    output.append(" <");
+                    output.append(cfgbuf.getVarArgName(var, i));
+                    output.append(">");
                 }
-            }
-            else if (count == -1)
-            {
+            } else if (count == -1) {
                 String last = "";
-                for (int i = 0; i < 5; ++i)
-                {
-                    String argname = cfgbuf.getVarArgName( var, i );
-                    if (!argname.equals( last ))
-                    {
-                        output.append( " [" );
-                        output.append( argname );
-                        output.append( "]" );
+                for (int i = 0; i < 5; ++i) {
+                    String argname = cfgbuf.getVarArgName(var, i);
+                    if (!argname.equals(last)) {
+                        output.append(" [");
+                        output.append(argname);
+                        output.append("]");
                         last = argname;
-                    }
-                    else
-                    {
-                        output.append( " [...]" );
+                    } else {
+                        output.append(" [...]");
                         break;
                     }
                 }
             }
 
-            output.append( "\n" );
+            output.append("\n");
 
-            if (details)
-            {
-                StringBuilder description = new StringBuilder( 160 );
-                if (printaliases)
-                {
-                    if (aliases.containsKey( avar ))
-                    {
-                        String fullname = lmgr.getLocalizedTextString( l10nPrefix + ".FullName" );
-                        description.append( fullname );
-                        description.append( " -" );
-                        description.append( aliases.get( avar ));
-                        description.append( "\n" );
+            if (details) {
+                StringBuilder description = new StringBuilder(160);
+                if (printaliases) {
+                    if (aliases.containsKey(avar)) {
+                        String fullname = lmgr.getLocalizedTextString(l10nPrefix + ".FullName");
+                        description.append(fullname);
+                        description.append(" -");
+                        description.append(aliases.get(avar));
+                        description.append("\n");
                     }
-                }
-                else if (sesaila.containsKey( var ))
-                {
-                    String alias = lmgr.getLocalizedTextString( l10nPrefix + ".Alias" );
-                    description.append( alias );
-                    description.append( " -" );
-                    description.append( sesaila.get( var ));
-                    description.append( "\n" );
+                } else if (sesaila.containsKey(var)) {
+                    String alias = lmgr.getLocalizedTextString(l10nPrefix + ".Alias");
+                    description.append(alias);
+                    description.append(" -");
+                    description.append(sesaila.get(var));
+                    description.append("\n");
                 }
 
                 String d = getDescription(cfgbuf, var, lmgr, l10nPrefix);
-                if (var.equals( "help" ) && (printSet.size() > 2))
-                {
-                    String helpKeywords = lmgr.getLocalizedTextString( l10nPrefix + ".HelpKeywords" );
-                    description.append( helpKeywords );
-                }
-                else if (d != null)
-                    description.append( d );
+                if (var.equals("help") && (printSet.size() > 2)) {
+                    String helpKeywords = lmgr.getLocalizedTextString(l10nPrefix + ".HelpKeywords");
+                    description.append(helpKeywords);
+                } else if (d != null)
+                    description.append(d);
 
                 String flags = "";
-                if (info.isAdvanced())
-                {
-                    String advancedString = lmgr.getLocalizedTextString( l10nPrefix + ".Advanced" );
-                    flags += (((flags.length() == 0)? " (" : ", ") + advancedString );
+                if (info.isAdvanced()) {
+                    String advancedString = lmgr.getLocalizedTextString(l10nPrefix + ".Advanced");
+                    flags += (((flags.length() == 0) ? " (" : ", ") + advancedString);
                 }
-                if (info.allowMultiple())
-                {
-                    String repeatableString = lmgr.getLocalizedTextString( l10nPrefix + ".Repeatable" );
-                    flags += (((flags.length() == 0)? " (" : ", ") + repeatableString );
+                if (info.allowMultiple()) {
+                    String repeatableString = lmgr.getLocalizedTextString(l10nPrefix + ".Repeatable");
+                    flags += (((flags.length() == 0) ? " (" : ", ") + repeatableString);
                 }
-                if ((defaultVar != null) && var.equals( defaultVar ))
-                {
-                    String defaultString = lmgr.getLocalizedTextString( l10nPrefix + ".Default" );
-                    flags += (((flags.length() == 0)? " (" : ", ") + defaultString );
+                if ((defaultVar != null) && var.equals(defaultVar)) {
+                    String defaultString = lmgr.getLocalizedTextString(l10nPrefix + ".Default");
+                    flags += (((flags.length() == 0) ? " (" : ", ") + defaultString);
                 }
-                if (flags.length() != 0)
-                {
+                if (flags.length() != 0) {
                     flags += ")";
                 }
-                description.append( flags );
+                description.append(flags);
 
 
-                List descriptionLines = ConfigurationBuffer.formatText( description.toString(), 70 );
+                List descriptionLines = ConfigurationBuffer.formatText(description.toString(), 70);
 
-                for (Iterator descit = descriptionLines.iterator(); descit.hasNext();)
-                {
-                    output.append( "    " );
-                    output.append( (String) descit.next() );
-                    output.append( "\n" );
+                for (Object descriptionLine : descriptionLines) {
+                    output.append("    ");
+                    output.append((String) descriptionLine);
+                    output.append("\n");
                 }
             }
         }

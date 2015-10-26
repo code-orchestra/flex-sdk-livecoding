@@ -114,27 +114,21 @@ public class SourcePath extends SourcePathBase
 		}
 		
 		boolean thisPath = false;
-		
-		for (int i = 0, size = directories.size(); i < size; i++)
-		{
-			File d = directories.get(i), f = null;
-			if (pathRoot.equals(FileUtil.getCanonicalPath(d)))
-			{
+
+		for (File directory : directories) {
+			File d = directory, f = null;
+			if (pathRoot.equals(FileUtil.getCanonicalPath(d))) {
 				thisPath = true;
 			}
-			
-			try
-			{
+
+			try {
 				f = findFile(d, relativePath, mimeTypes);
-			}
-			catch (CompilerException ex)
-			{
+			} catch (CompilerException ex) {
 				removeSource(s);
 				return false;
 			}
 
-			if (f != null && !thisPath)
-			{
+			if (f != null && !thisPath) {
 				removeSource(s);
 				return false;
 			}
@@ -148,12 +142,10 @@ public class SourcePath extends SourcePathBase
 		String p = className.replace(':', '.').replace('.', File.separatorChar);
 		Source s = null;
 
-		for (int i = 0, size = directories.size(); i < size; i++)
-		{
-			File f, d = directories.get(i);
+		for (File directory : directories) {
+			File f, d = directory;
 
-			if ((f = findFile(d, p, mimeTypes)) != null)
-			{
+			if ((f = findFile(d, p, mimeTypes)) != null) {
 				sources.put(className, s = newSource(f, d, namespaceURI, localPart));
 				return s;
 			}
@@ -164,11 +156,8 @@ public class SourcePath extends SourcePathBase
 	
 	public boolean hasPackage(String packageName)
 	{
-		for (int i = 0, size = directories.size(); i < size; i++)
-		{
-			File d = directories.get(i);
-			if (hasDirectory(d, packageName))
-			{
+		for (File d : directories) {
+			if (hasDirectory(d, packageName)) {
 				return true;
 			}
 		}
@@ -192,20 +181,15 @@ public class SourcePath extends SourcePathBase
 
 		String p = className.replace(':', '.').replace('.', File.separatorChar);
 
-		for (int i = 0, size = directories.size(); i < size; i++)
-		{
-			File f, d = directories.get(i);
+		for (File directory : directories) {
+			File f, d = directory;
 
-			try
-			{
-				if ((f = findFile(d, p, mimeTypes)) != null)
-				{
+			try {
+				if ((f = findFile(d, p, mimeTypes)) != null) {
 					hits.add(className);
 					return true;
 				}
-			}
-			catch (CompilerException ex)
-			{
+			} catch (CompilerException ex) {
 			}
 		}
 
@@ -445,17 +429,13 @@ abstract class SourcePathBase
 	{
 		File found = null;
 
-		for (int k = 0, length = mimeTypes.length; k < length; k++)
-		{
-			File f = findFile(directory, relativePath, mimeTypes[k]);
+		for (String mimeType : mimeTypes) {
+			File f = findFile(directory, relativePath, mimeType);
 
-			if (f != null && found == null)
-			{
+			if (f != null && found == null) {
 				found = f;
 				// break;
-			}
-			else if (f != null)
-			{
+			} else if (f != null) {
 				throw new MoreThanOneComponentOfTheSameName(found.getAbsolutePath(), f.getAbsolutePath());
 			}
 		}
@@ -537,11 +517,9 @@ abstract class SourcePathBase
 	{
 		// + 1 removes the leading /
 		String relativePath = s.getName().substring(s.getPathRoot().getName().length() + 1);
-		for (int k = 0, length = mimeTypes.length; k < length; k++)
-		{
-			String ext = MimeMappings.getExtension(mimeTypes[k]);
-			if (relativePath.endsWith(ext))
-			{
+		for (String mimeType : mimeTypes) {
+			String ext = MimeMappings.getExtension(mimeType);
+			if (relativePath.endsWith(ext)) {
 				relativePath = relativePath.substring(0, relativePath.length() - ext.length());
 				return relativePath;
 			}
@@ -597,9 +575,8 @@ abstract class SourcePathBase
 	
 	public void displayWarnings()
 	{
-		for (int i = 0, size = warnings.size(); i < size; i++)
-		{
-			ThreadLocalToolkit.log(warnings.get(i));
+		for (ClasspathOverlap warning : warnings) {
+			ThreadLocalToolkit.log(warning);
 		}
 	}
 

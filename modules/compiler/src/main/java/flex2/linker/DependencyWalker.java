@@ -20,6 +20,7 @@
 package flex2.linker;
 
 import flex2.compiler.util.graph.Visitor;
+import macromedia.abc.Optimizer;
 
 import java.util.*;
 
@@ -52,35 +53,28 @@ public class DependencyWalker
 
             // Build the defname -> linkable map and check for non-unique linkables
 
-            for (Iterator li = linkables.iterator(); li.hasNext();)
-            {
-                Linkable l = (Linkable) li.next();
+            for (Object linkable : linkables) {
+                Linkable l = (Linkable) linkable;
 
-                if (lmap.containsKey( l.getName() ))
-                {
-                    throw new LinkerException.DuplicateSymbolException( l.getName() );
+                if (lmap.containsKey(l.getName())) {
+                    throw new LinkerException.DuplicateSymbolException(l.getName());
                 }
-                LinkableContext lc = new LinkableContext( l );
-                lmap.put( l.getName(), lc);
+                LinkableContext lc = new LinkableContext(l);
+                lmap.put(l.getName(), lc);
 
                 String external = null;
-                for (Iterator di = l.getDefinitions(); di.hasNext();)
-                {
+                for (Iterator di = l.getDefinitions(); di.hasNext(); ) {
                     String def = (String) di.next();
-					LinkableContext c = defs.get( def );
-                    if (c != null)
-                    {
-                        throw new LinkerException.MultipleDefinitionsException( def, l.getName(), c.l.getName() ); 
+                    LinkableContext c = defs.get(def);
+                    if (c != null) {
+                        throw new LinkerException.MultipleDefinitionsException(def, l.getName(), c.l.getName());
                     }
-                    defs.put( def, lc );
+                    defs.put(def, lc);
 
-                    if (extdefs.contains( def ))
-                    {
+                    if (extdefs.contains(def)) {
                         external = def;
-                    }
-                    else if (external != null)
-                    {
-                         throw new LinkerException.PartialExternsException( lc.l.getName(), def, external );
+                    } else if (external != null) {
+                        throw new LinkerException.PartialExternsException(lc.l.getName(), def, external);
                     }
                 }
             }
@@ -140,12 +134,9 @@ public class DependencyWalker
             defs = new LinkedList<String>();
             if (!includeInheritanceDependenciesOnly)
             {
-                for (Iterator<String> it = state.getDefNames().iterator(); it.hasNext();)
-                {
-                    String def = it.next();
-                    if (!state.getExternal().contains( def ))
-                    {
-                        defs.add( def );
+                for (String def : state.getDefNames()) {
+                    if (!state.getExternal().contains(def)) {
+                        defs.add(def);
                     }
                 }
             }
@@ -153,25 +144,22 @@ public class DependencyWalker
 
 	    if (exportIncludes)
 	    {
-		    for (Iterator iterator = state.getIncludes().iterator(); iterator.hasNext();)
-		    {
-			    String def = (String)iterator.next();
-			    defs.add( def );
-		    }
+            for (Object o : state.getIncludes()) {
+                String def = (String) o;
+                defs.add(def);
+            }
 	    }
 
         Stack<LinkableContext> stack = new Stack<LinkableContext>();           // holds contexts
         LinkedList<LinkableContext> queue = new LinkedList<LinkableContext>(); // holds contexts
 
-        for (Iterator<String> it = defs.iterator(); it.hasNext();)
-        {
-            String defname = it.next();
-            LinkableContext start = resolve( defname, state, allowExternal, exportIncludes, 
-                                            includeInheritanceDependenciesOnly);
+        for (String defname : defs) {
+            LinkableContext start = resolve(defname, state, allowExternal, exportIncludes,
+                    includeInheritanceDependenciesOnly);
             if (start == null)
                 continue;
-            
-            queue.add( start );
+
+            queue.add(start);
         }
 
         while (!queue.isEmpty())
@@ -289,52 +277,45 @@ public class DependencyWalker
         StringBuilder buf = new StringBuilder( 2048 );
         buf.append( "<report>\n" );
         buf.append( "  <scripts>\n" );
-        for (Iterator<Linkable> scripts = state.getVisitedLinkables().iterator(); scripts.hasNext();)
-        {
-            CULinkable l = (CULinkable) scripts.next();
+        for (Linkable linkable : state.getVisitedLinkables()) {
+            CULinkable l = (CULinkable) linkable;
 
-            buf.append( "    <script name=\"")
-               .append(l.getName())
-               .append("\" mod=\"")
-               .append(l.getLastModified())
-               .append("\" size=\"")
-               .append(l.getSize())
-               // optimizedsize is often considerably smaller than size
-               .append("\" optimizedsize=\"")
-               .append(macromedia.abc.Optimizer.optimize(l.getUnit().bytes).size())
-               .append("\">\n");
-            
-            for (Iterator defs = l.getDefinitions(); defs.hasNext();)
-            {
+            buf.append("    <script name=\"")
+                    .append(l.getName())
+                    .append("\" mod=\"")
+                    .append(l.getLastModified())
+                    .append("\" size=\"")
+                    .append(l.getSize())
+                    // optimizedsize is often considerably smaller than size
+                    .append("\" optimizedsize=\"")
+                    .append(Optimizer.optimize(l.getUnit().bytes).size())
+                    .append("\">\n");
+
+            for (Iterator defs = l.getDefinitions(); defs.hasNext(); ) {
                 buf.append("      <def id=\"").append((String) defs.next()).append("\" />\n");
             }
-            for (Iterator pre = l.getPrerequisites(); pre.hasNext();)
-            {
+            for (Iterator pre = l.getPrerequisites(); pre.hasNext(); ) {
                 buf.append("      <pre id=\"").append((String) pre.next()).append("\" />\n");
             }
-            for (Iterator dep = l.getDependencies(); dep.hasNext();)
-            {
+            for (Iterator dep = l.getDependencies(); dep.hasNext(); ) {
                 buf.append("      <dep id=\"").append((String) dep.next()).append("\" />\n");
             }
-            buf.append( "    </script>\n" );
+            buf.append("    </script>\n");
         }
         buf.append( "  </scripts>\n" );
 
         if ((state.getExternal() != null) || (state.getUnresolved() != null))
         {
             buf.append( "  <external-defs>\n");
-            for (Iterator external = state.getExternal().iterator(); external.hasNext();)
-            {
-                String ext = (String) external.next();
-                if (!state.getUnresolved().contains( ext ))    // only print exts we actually depended on
+            for (Object o : state.getExternal()) {
+                String ext = (String) o;
+                if (!state.getUnresolved().contains(ext))    // only print exts we actually depended on
                     continue;
 
                 buf.append("    <ext id=\"").append(ext).append("\" />\n");
             }
-            for (Iterator<String> unresolved = state.getUnresolved().iterator(); unresolved.hasNext();)
-            {
-                String unr = unresolved.next();
-                if (state.getExternal().contains( unr ))
+            for (String unr : state.getUnresolved()) {
+                if (state.getExternal().contains(unr))
                     continue;
                 buf.append("    <missing id=\"").append(unr).append("\" />\n");
             }

@@ -400,20 +400,15 @@ public final class StatesModel
             Collection<String> extraStates = checkForExtraStates(currentModel, model, states);
             if (!extraStates.isEmpty())
             {
-                for (Iterator<String> iter = extraStates.iterator(); iter.hasNext(); )
-                {
-                    String state = iter.next();
-                    Model reparent =  getReparentForState(currentModel, state);
-                    if (reparent != null)
-                    {
+                for (String state : extraStates) {
+                    Model reparent = getReparentForState(currentModel, state);
+                    if (reparent != null) {
                         Collection<String> reparentState = new ArrayList<String>();
                         reparentState.add(state);
                         boolean result = ensureCompatibleAncestors(model, reparent, reparentState, startNode);
                         if (!result) return false;
-                    }
-                    else
-                    {
-                        ThreadLocalToolkit.log(new IncompatibleState(state), 
+                    } else {
+                        ThreadLocalToolkit.log(new IncompatibleState(state),
                                 document.getSourcePath(), model.getXmlLineNumber());
                         return false;
                     }
@@ -448,9 +443,7 @@ public final class StatesModel
         Collection<String> results = new ArrayList<String>();
         if (ancestor.isStateSpecific())
         {
-            for (Iterator<String> iter = states.iterator(); iter.hasNext(); )
-            {
-                String state = iter.next();
+            for (String state : states) {
                 if (!ancestor.hasState(state))
                     results.add(state);
             }
@@ -467,21 +460,15 @@ public final class StatesModel
         List<ReparentInfo> list = reparentNodes.get(target.getId());
         
         // First check the list of states set on the target model itself.
-        for (Iterator<String> iter = states.iterator(); iter.hasNext(); )
-        {
-            String currentState = iter.next();
-            if ((!target.isStateSpecific()) || target.hasState(currentState))
-            {
+        for (String currentState : states) {
+            if ((!target.isStateSpecific()) || target.hasState(currentState)) {
                 ThreadLocalToolkit.log(new InvalidReparentState(currentState, target.getId()), document.getSourcePath(), reparentNode.model.getXmlLineNumber());
                 return false;
             }
-            
+
             // Now ensure this reparent node isn't conflicting with another.
-            for (Iterator<ReparentInfo> listIter = list.iterator(); listIter.hasNext(); )
-            {
-                ReparentInfo node = (ReparentInfo) listIter.next();
-                if ((node != reparentNode) && node.states.contains(currentState))
-                {
+            for (ReparentInfo node : list) {
+                if ((node != reparentNode) && node.states.contains(currentState)) {
                     ThreadLocalToolkit.log(new ConflictingReparentTags(currentState, target.getId()), document.getSourcePath(), reparentNode.model.getXmlLineNumber());
                     return false;
                 }
@@ -613,16 +600,11 @@ public final class StatesModel
     {
         Set<String> expandedStates = new HashSet<String>();
         Map <String, Collection<String>> groupMap = info.getStateGroups();
-        
-        for (Iterator<String> iter = stateList.iterator(); iter.hasNext(); )
-        {
-            String state = iter.next();
-            if (groupMap.containsKey(state))
-            {
+
+        for (String state : stateList) {
+            if (groupMap.containsKey(state)) {
                 expandedStates.addAll(groupMap.get(state));
-            }
-            else
-            {
+            } else {
                 expandedStates.add(state);
             }
         }
@@ -654,23 +636,17 @@ public final class StatesModel
     {
         if (reparentNodes != null && !reparentNodes.isEmpty())
         {
-            for (Iterator<String> iter = reparentNodes.keySet().iterator(); iter.hasNext(); )
-            {
-                List<ReparentInfo> list = reparentNodes.get(iter.next());
-                for (Iterator<ReparentInfo> listIter = list.iterator(); listIter.hasNext(); )
-                {
-                    ReparentInfo node = listIter.next();
+            for (String s : reparentNodes.keySet()) {
+                List<ReparentInfo> list = reparentNodes.get(s);
+                for (ReparentInfo node : list) {
                     String target = node.model.getId();
                     PropertyDeclaration decl = document.getDeclaration(target);
-                    if (decl != null && decl instanceof ValueInitializer)
-                    {
+                    if (decl != null && decl instanceof ValueInitializer) {
                         ValueInitializer initializedDecl = (ValueInitializer) decl;
                         Model model = (Model) initializedDecl.getValue();
                         if (!processReparentNode(node, model))
                             return false;
-                    }
-                    else
-                    {
+                    } else {
                         ThreadLocalToolkit.log(new TargetResolutionError(target), document.getSourcePath(), node.model.getXmlLineNumber());
                         return false;
                     }
@@ -686,9 +662,7 @@ public final class StatesModel
      */
     public void processStatefulModels()
     {
-        for (Iterator<Model> models = statefulModels.iterator(); models.hasNext(); )
-        {
-            Model model = models.next();
+        for (Model model : statefulModels) {
             ensureCompatibleAncestors(model, model.getParent(), model.getStates(), model);
         } 
     }
@@ -710,11 +684,8 @@ public final class StatesModel
             Boolean intersects = false;
             if (sibling.isStateSpecific())
             {
-                for (Iterator<String> iter = sibling.getStates().iterator(); iter.hasNext(); )
-                {
-                    String state = iter.next();
-                    if (model.hasState(state))
-                    {
+                for (String state : sibling.getStates()) {
+                    if (model.hasState(state)) {
                         intersects = true;
                         break;
                     }
@@ -786,14 +757,12 @@ public final class StatesModel
                 }
             }
         }
-        
-        for (Iterator<String> iter = stateNames.iterator(); iter.hasNext(); )
-        {
-            State state = stateByName(iter.next());
-            if (state != null)
-            {
+
+        for (String stateName1 : stateNames) {
+            State state = stateByName(stateName1);
+            if (state != null) {
                 SetPropertyOverride override = isStyle ? new SetStyleOverride(model, property, value, factory) :
-                    new SetPropertyOverride(model, property, value, factory);
+                        new SetPropertyOverride(model, property, value, factory);
                 postProcessBindingInstance(value, override);
                 state.addOverride(override, model != null ? model.getXmlLineNumber() : 0);
             }
@@ -808,11 +777,9 @@ public final class StatesModel
     public void registerStateSpecificEventHandler(Model model, String event, EventInitializer value, String stateName)
     {
         Collection<String> stateNames = expandState(stateName);
-        for (Iterator<String> iter = stateNames.iterator(); iter.hasNext(); )
-        {
-            State state = stateByName(iter.next());
-            if (state != null)
-            {
+        for (String stateName1 : stateNames) {
+            State state = stateByName(stateName1);
+            if (state != null) {
                 SetEventOverride override = new SetEventOverride(model, event, value);
                 state.addOverride(override, model != null ? model.getXmlLineNumber() : 0);
             }
@@ -859,14 +826,12 @@ public final class StatesModel
 
         // Enforce set semantics for our state list and construct representative overrides for each state.
         Set<Object> states = new HashSet<Object>(statesList);
-        for (Iterator<Object> iter = states.iterator(); iter.hasNext(); )
-        {
-            State state = stateByName((String)iter.next());
-            if (state != null)
-            {
+        for (Object state1 : states) {
+            State state = stateByName((String) state1);
+            if (state != null) {
                 AddItemsOverride override =
-                    new AddItemsOverride(parent, parentIndex, parentId, model.getDefinitionName(),
-                                         position, relativeNodes, isStyle, isArray, vectorClassName, model);
+                        new AddItemsOverride(parent, parentIndex, parentId, model.getDefinitionName(),
+                                position, relativeNodes, isStyle, isArray, vectorClassName, model);
                 state.addOverride(override, model != null ? model.getXmlLineNumber() : 0);
             }
         }
@@ -928,10 +893,8 @@ public final class StatesModel
         Collection<String> inverse = new TreeSet<String>(); 
         Set<String> all = info.getStateNames(); 
         Set<String> expandedList = expandStateList(list);
-        
-        for (Iterator<String> iter = all.iterator(); iter.hasNext(); )
-        {
-            String name = iter.next();
+
+        for (String name : all) {
             if (!expandedList.contains(name))
                 inverse.add(name);
         }
@@ -961,9 +924,7 @@ public final class StatesModel
         if (reparentNodes != null)
         {
             List<ReparentInfo> list = reparentNodes.get(model.getId());
-            for (Iterator<ReparentInfo> iter = list.iterator(); iter.hasNext(); )
-            {
-                ReparentInfo ri = iter.next();
+            for (ReparentInfo ri : list) {
                 if (ri.states.contains(state))
                     return ri.model;
             }
@@ -978,12 +939,9 @@ public final class StatesModel
     {
         Collection<String> groups = new ArrayList<String>();
         Map<String, Collection<String>> stateGroups = info.getStateGroups();
-        
-        for (Iterator<String> iter = stateGroups.keySet().iterator(); iter.hasNext(); )
-        {
-            String groupName = iter.next();
-            if (stateGroups.get(groupName).contains(name))
-            {
+
+        for (String groupName : stateGroups.keySet()) {
+            if (stateGroups.get(groupName).contains(name)) {
                 groups.add(groupName);
             }
         }
@@ -1000,29 +958,22 @@ public final class StatesModel
         IteratorList iterList = new IteratorList();
 
         Set<String> states = info.getStateNames();
-        for (Iterator<String> iter = states.iterator(); iter.hasNext();  )
-        {
-            State state = (State) stateByName(iter.next());
-            if (state != null)
-            {
+        for (String state1 : states) {
+            State state = (State) stateByName(state1);
+            if (state != null) {
                 // State event initializers
-                for (Iterator<Initializer> eventList = state.getEvents(); eventList.hasNext(); )
-                {
+                for (Iterator<Initializer> eventList = state.getEvents(); eventList.hasNext(); ) {
                     EventInitializer ei = (EventInitializer) eventList.next();
-                    iterList.add(ei.getDefinitionsIterator());                  
+                    iterList.add(ei.getDefinitionsIterator());
                 }
-                
-                
+
+
                 // Override value initializers
-                for (Iterator<StatesModel.Override> items = state.overrides.iterator(); items.hasNext(); )
-                {
-                    StatesModel.Override override = items.next();
-                    if (override instanceof SetPropertyOverride)
-                    { 
-                        ValueInitializer initializer = ((SetPropertyOverride)override).value;
+                for (Override override : state.overrides) {
+                    if (override instanceof SetPropertyOverride) {
+                        ValueInitializer initializer = ((SetPropertyOverride) override).value;
                         Object rvalue = initializer.getValue();
-                        if (rvalue instanceof Model && !initializedModels.contains(rvalue))
-                        {
+                        if (rvalue instanceof Model && !initializedModels.contains(rvalue)) {
                             iterList.add(initializer.getDefinitionsIterator());
                             initializedModels.add(rvalue);
                         }
@@ -1044,25 +995,19 @@ public final class StatesModel
 
         // Override Initializers
         Set<String> states = info.getStateNames();
-        for (Iterator<String> iter = states.iterator(); iter.hasNext();  )
-        {
-            State state = (State) stateByName(iter.next());
-            if (state != null)
-            {
+        for (String state1 : states) {
+            State state = (State) stateByName(state1);
+            if (state != null) {
                 // State event initializers
-                iterList.add(state.getEvents());  
-                
+                iterList.add(state.getEvents());
+
                 // Override value initializers
                 ArrayList<Initializer> values = new ArrayList<Initializer>();
-                for (Iterator<StatesModel.Override> items = state.overrides.iterator(); items.hasNext(); )
-                {
-                    StatesModel.Override override = items.next();
-                    if (override instanceof SetPropertyOverride)
-                    { 
-                        ValueInitializer initializer = ((SetPropertyOverride)override).value;
+                for (Override override : state.overrides) {
+                    if (override instanceof SetPropertyOverride) {
+                        ValueInitializer initializer = ((SetPropertyOverride) override).value;
                         Object rvalue = initializer.getValue();
-                        if (rvalue instanceof Model && !initializedModels.contains(rvalue))
-                        {
+                        if (rvalue instanceof Model && !initializedModels.contains(rvalue)) {
                             values.add(initializer);
                             initializedModels.add(rvalue);
                         }
@@ -1215,10 +1160,9 @@ public final class StatesModel
             if (!groups.isEmpty())
             {
                 ArgumentListNode groupArguments = null;
-                for (Iterator<String> iter = groups.iterator(); iter.hasNext(); )
-                {
-                     LiteralStringNode sibling = nodeFactory.literalString(iter.next());
-                     groupArguments = nodeFactory.argumentList(groupArguments, sibling);       
+                for (String group : groups) {
+                    LiteralStringNode sibling = nodeFactory.literalString(group);
+                    groupArguments = nodeFactory.argumentList(groupArguments, sibling);
                 }
                 LiteralArrayNode relArray = nodeFactory.literalArray(groupArguments);
                 IdentifierNode relIdentifier = nodeFactory.identifier(STATEGROUPS, false);
@@ -1228,17 +1172,14 @@ public final class StatesModel
             
             // overrides
             ArgumentListNode overridesArgumentList = null;
-            for (Iterator<StatesModel.Override> iter = overrides.iterator(); iter.hasNext(); )
-            {
-                StatesModel.Override override = iter.next();
+            for (Override override : overrides) {
                 MemberExpressionNode memberExpression =
-                    override.generateDefinitionBody(nodeFactory, configNamespaces, generateDocComments);
+                        override.generateDefinitionBody(nodeFactory, configNamespaces, generateDocComments);
                 overridesArgumentList = nodeFactory.argumentList(overridesArgumentList, memberExpression);
-                
+
                 // If this override is to be declared we know that it is a binding target.
                 // Queue a binding initializer up for this object.
-                if (override.declaration != null)
-                {
+                if (override.declaration != null) {
                     bindingsQueue.add(override);
                 }
             }
@@ -1266,31 +1207,24 @@ public final class StatesModel
         {
             if (isPropertyOverride(override))
             {
-                for (Iterator<Override> iter = overrides.iterator(); iter.hasNext(); )
-                {
-                    Override current = iter.next();
-                    if (override.getDeclaredType() == current.getDeclaredType())
-                    {
+                for (Override current : overrides) {
+                    if (override.getDeclaredType() == current.getDeclaredType()) {
                         boolean conflict = false;
                         String property = "";
-                                                
-                        if (override instanceof SetPropertyOverride)
-                        {
-                            Model context = ((SetPropertyOverride)override).context;
-                            property = ((SetPropertyOverride)override).property;
-                            conflict = (((SetPropertyOverride)current).property == property &&
-                                          ((SetPropertyOverride)current).context == context);
+
+                        if (override instanceof SetPropertyOverride) {
+                            Model context = ((SetPropertyOverride) override).context;
+                            property = ((SetPropertyOverride) override).property;
+                            conflict = (((SetPropertyOverride) current).property == property &&
+                                    ((SetPropertyOverride) current).context == context);
+                        } else if (override instanceof SetEventOverride) {
+                            Model context = ((SetEventOverride) override).context;
+                            property = ((SetEventOverride) override).event;
+                            conflict = (((SetEventOverride) current).event == property &&
+                                    ((SetEventOverride) current).context == context);
                         }
-                        else if (override instanceof SetEventOverride)
-                        {
-                            Model context = ((SetEventOverride)override).context;
-                            property = ((SetEventOverride)override).event;
-                            conflict = (((SetEventOverride)current).event == property &&
-                                          ((SetEventOverride)current).context == context);
-                        }
-                        
-                        if (conflict)
-                        {
+
+                        if (conflict) {
                             ThreadLocalToolkit.log(new MultipleInitializers(property, name), document.getSourcePath(), line);
                             return true;
                         }
@@ -1556,10 +1490,9 @@ public final class StatesModel
                 if (position.equals("after") && !relativeNodes.isEmpty())
                 {
                     ArgumentListNode relArguments = null;
-                    for (int i = 0; i < relativeNodes.size(); i++)
-                    {
-                        LiteralStringNode sibling = nodeFactory.literalString(relativeNodes.get(i).getId());
-                        relArguments = nodeFactory.argumentList(relArguments, sibling);                 
+                    for (Model relativeNode : relativeNodes) {
+                        LiteralStringNode sibling = nodeFactory.literalString(relativeNode.getId());
+                        relArguments = nodeFactory.argumentList(relArguments, sibling);
                     } 
                     LiteralArrayNode relArray = nodeFactory.literalArray(relArguments);
                     IdentifierNode relIdentifier = nodeFactory.identifier(RELATIVETO, false);

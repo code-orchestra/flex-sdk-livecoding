@@ -183,10 +183,9 @@ public class Toolkit
 		if (files == null) return null;
 		
 		List<VirtualFile> vFiles = new ArrayList<VirtualFile>(files.length);
-		for (int i = 0; i < files.length; i++)
-		{
-		    if (files[i] != null)
-		        vFiles.add(new LocalFile(files[i]));
+		for (File file : files) {
+			if (file != null)
+				vFiles.add(new LocalFile(file));
 		}
 		
 		return vFiles.toArray(new VirtualFile[vFiles.size()]);

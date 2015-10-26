@@ -192,28 +192,19 @@ public final class FlowGraphEmitter extends Emitter
 		BitSet gen_bits = null;
 		BitSet kill_bits = null;
 
-		for (int i = 0, size = blocks.size(); i < size; i++)
-		{
-			Block block = blocks.get(i);
-
+		for (Block block : blocks) {
 			final BitSet defbits = block.def_bits;
-		
+
 			// Iterate only over set bits
-			for(int n=nextSetBit(defbits,0); n>=0; n=nextSetBit(defbits,n+1))
-			{
+			for (int n = nextSetBit(defbits, 0); n >= 0; n = nextSetBit(defbits, n + 1)) {
 				Node node = defs.get(n);
-				if (node != null)
-				{
+				if (node != null) {
 					Slot slot = node.getRef(cx).getSlot(cx, GET_TOKEN);
-					if (slot != null)
-					{
+					if (slot != null) {
 						gen_bits = set(null, n, true);
-						if (slot.getDefBits() != null)
-						{
+						if (slot.getDefBits() != null) {
 							kill_bits = xor(slot.getDefBits(), gen_bits);
-						}
-						else
-						{
+						} else {
 							kill_bits = gen_bits;
 						}
 					}
@@ -226,9 +217,7 @@ public final class FlowGraphEmitter extends Emitter
 
 	public void calcInAndOut(Context cx)
 	{
-		for (int i = 0, size = blocks.size(); i < size; i++)
-		{
-			Block block = blocks.get(i);
+		for (Block block : blocks) {
 			block.in_bits = null;
 			block.out_bits = copy(block.gen_bits);
 		}
@@ -239,21 +228,16 @@ public final class FlowGraphEmitter extends Emitter
 		{
 			change = false;
 
-			for (int i = 0, size = blocks.size(); i < size; ++i)
-			{
-				Block block = blocks.get(i);
-
+			for (Block block : blocks) {
 				// For each pred
 				int terminalPreds = 0;
-				for (int n = 0; n < block.preds.size(); ++n)
-				{
+				for (int n = 0; n < block.preds.size(); ++n) {
 					Block pred = blocks.get(block.preds.get(n));
 					block.in_bits = set(block.in_bits, pred.out_bits);
 					if (block.preds.get(n) != 0 && pred.preds.size() == 0)
 						++terminalPreds;
 				}
-				if (terminalPreds == block.preds.size() && block.is_terminal == false)
-				{
+				if (terminalPreds == block.preds.size() && block.is_terminal == false) {
 					block.is_terminal = true;
 					block.preds.clear();
 					change = true;
@@ -261,8 +245,7 @@ public final class FlowGraphEmitter extends Emitter
 
 				BitSet out_bits = copy(block.in_bits);
 				out_bits = reset_set(out_bits, block.kill_bits, block.gen_bits);
-				if (!BitSet.equals(block.out_bits, out_bits))
-				{
+				if (!BitSet.equals(block.out_bits, out_bits)) {
 					change = true;
 					block.out_bits = out_bits;
 				}

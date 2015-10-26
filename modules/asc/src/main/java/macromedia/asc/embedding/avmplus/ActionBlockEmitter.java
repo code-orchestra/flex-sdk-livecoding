@@ -1110,9 +1110,8 @@ public class ActionBlockEmitter extends Emitter
         {
             flags |= METHOD_HasParamNames;
             param_names = new IntList(arg_names.length);
-            for( int x = 0; x < arg_names.length; ++x )
-            {
-                param_names.add(ab.addUtf8Constant(bytecodeFactory.ConstantUtf8Info(arg_names[x])));
+            for (String arg_name : arg_names) {
+                param_names.add(ab.addUtf8Constant(bytecodeFactory.ConstantUtf8Info(arg_name)));
             }
         }
         // This is modifying the ab->methods table directly and does not need to call
@@ -3097,9 +3096,8 @@ public class ActionBlockEmitter extends Emitter
 
         }
         code_out.print(namespace_set.size() + " {");
-        for(Iterator<String> it = namespace_set.iterator(); it.hasNext(); )
-        {
-            code_out.print(" " + it.next() );
+        for (String aNamespace_set : namespace_set) {
+            code_out.print(" " + aNamespace_set);
         }
         code_out.print(" }");
     }

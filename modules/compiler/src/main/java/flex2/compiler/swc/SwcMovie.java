@@ -72,9 +72,8 @@ public class SwcMovie extends SimpleMovie
     {
         List<CULinkable> linkables = new LinkedList<CULinkable>();
 
-        for (Iterator<CompilationUnit> it = units.iterator(); it.hasNext();)
-        {
-            linkables.add( new CULinkable( it.next() ) );
+        for (CompilationUnit unit : units) {
+            linkables.add(new CULinkable(unit));
         }
 
         frames = new ArrayList<Frame>();
@@ -118,12 +117,9 @@ public class SwcMovie extends SimpleMovie
 
             if (unresolved.size() != 0)
             {
-                for (Iterator<String> it = unresolved.iterator(); it.hasNext();)
-                {
-                    String u = it.next();
-                    if (!externs.contains( u ))
-                    {
-                        ThreadLocalToolkit.log(  new LinkerException.UndefinedSymbolException( u ) );
+                for (String u : unresolved) {
+                    if (!externs.contains(u)) {
+                        ThreadLocalToolkit.log(new LinkerException.UndefinedSymbolException(u));
                     }
                 }
             }

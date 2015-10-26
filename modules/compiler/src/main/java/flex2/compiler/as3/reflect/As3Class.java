@@ -21,6 +21,7 @@ package flex2.compiler.as3.reflect;
 
 import flex2.compiler.SymbolTable;
 import flex2.compiler.abc.*;
+import flex2.compiler.abc.MetaData;
 import macromedia.asc.embedding.avmplus.InstanceBuilder;
 import macromedia.asc.parser.*;
 import macromedia.asc.semantics.*;
@@ -339,13 +340,11 @@ public final class As3Class implements AbcClass
 	{
 		if (metadata != null)
 		{
-			for (int i = 0, length = metadata.size(); i < length; i++)
-			{
-				if (id.equals(metadata.get(i).getID()))
-				{
-					list.add(metadata.get(i));
-				}
-			}
+            for (MetaData aMetadata : metadata) {
+                if (id.equals(aMetadata.getID())) {
+                    list.add(aMetadata);
+                }
+            }
 		}
 
 		if (inherited)
@@ -376,22 +375,17 @@ public final class As3Class implements AbcClass
 	    {
 	        int size = interfaceNames.length;
 
-	        for (int i = 0; i < size; i++)
-	        {
-	            if (interfaceName.equals(interfaceNames[i]))
-	            {
-	                result = true;
-	            }
-	            else
-	            {
-	                As3Class interfaceType = (As3Class) typeTable.getClass(interfaceNames[i]);
+            for (String interfaceName1 : interfaceNames) {
+                if (interfaceName.equals(interfaceName1)) {
+                    result = true;
+                } else {
+                    As3Class interfaceType = (As3Class) typeTable.getClass(interfaceName1);
 
-	                if (interfaceType.isAssignableTo(interfaceName))
-	                {
-	                    result = true;
-	                }
-	            }
-	        }
+                    if (interfaceType.isAssignableTo(interfaceName)) {
+                        result = true;
+                    }
+                }
+            }
 	    }
 
 	    if (!result)

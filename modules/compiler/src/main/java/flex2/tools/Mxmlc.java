@@ -754,15 +754,13 @@ public final class Mxmlc extends Tool implements FlexTool
         {
             Set<String> keywords = new HashSet<String>();
             List vals = cfgbuf.getVar( "help" );
-            for (Iterator it = vals.iterator(); it.hasNext();)
-            {
-                ConfigurationValue val = (ConfigurationValue) it.next();
-                for (Object element : val.getArgs())
-                {
+            for (Object val1 : vals) {
+                ConfigurationValue val = (ConfigurationValue) val1;
+                for (Object element : val.getArgs()) {
                     String keyword = (String) element;
-                    while (keyword.startsWith( "-" ))
-                        keyword = keyword.substring( 1 );
-                    keywords.add( keyword );
+                    while (keyword.startsWith("-"))
+                        keyword = keyword.substring(1);
+                    keywords.add(keyword);
                 }
             }
             if (keywords.size() == 0)

@@ -206,10 +206,9 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
     
     public boolean isSupported(String mimeType)
     {
-        for (int i = 0; i < mimeTypes.length; i++)
-        {
-            if (mimeTypes[i].equals(mimeType))
-                    return true;
+        for (String mimeType1 : mimeTypes) {
+            if (mimeType1.equals(mimeType))
+                return true;
         }
         return false;
     }
@@ -496,9 +495,8 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
             Set<Node> newCheckNodes = new HashSet<Node>();
             Set<MultiName> newTypeRequests = new HashSet<MultiName>();
             DependencyAnalyzer analyzer = new DependencyAnalyzer(unit, typeTable, info, newCheckNodes, newTypeRequests, allTypeRequests);
-            for (Iterator<Node> i = checkNodes.iterator(); i.hasNext(); )
-            {
-                i.next().analyze(analyzer);
+            for (Node checkNode : checkNodes) {
+                checkNode.analyze(analyzer);
             }
 
             unit.getContext().setAttribute(MxmlCompiler.CHECK_NODES, newCheckNodes);
@@ -806,18 +804,13 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
 
 				//	create SourceCode wrappers for scripts
 				Set<SourceCode> scriptSet = new LinkedHashSet<SourceCode>();
-				for (Iterator iter = info.getScripts().iterator(); iter.hasNext(); )
-				{
-					Script script = (Script) iter.next();
-					if (!script.isEmbedded())
-					{
-						scriptSet.add(new SourceCode(script.getText(), script.getXmlLineNumber(), out, map));
-					}
-					else
-					{
-						// use Source.getName() to construct the new VirtualFile name
-						String n = source.getName().replace('\\', '/') + ":" + script.getXmlLineNumber() + "," + script.getEndXmlLineNumber();
-						VirtualFile f = new TextFile(script.getText(), n, source.getParent(), MimeMappings.AS, source.getLastModified());
+                for (Script script : info.getScripts()) {
+                    if (!script.isEmbedded()) {
+                        scriptSet.add(new SourceCode(script.getText(), script.getXmlLineNumber(), out, map));
+                    } else {
+                        // use Source.getName() to construct the new VirtualFile name
+                        String n = source.getName().replace('\\', '/') + ":" + script.getXmlLineNumber() + "," + script.getEndXmlLineNumber();
+                        VirtualFile f = new TextFile(script.getText(), n, source.getParent(), MimeMappings.AS, source.getLastModified());
 
                         // line number map is for error reporting, so the names must come from error reporting...
                         LineNumberMap m = new LineNumberMap(source.getNameForReporting(), n);
@@ -837,43 +830,32 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
 
                 //  create SourceCode wrappers for metadata entries
                 Set<SourceCode> metadataSet = new LinkedHashSet<SourceCode>();
-                for (Iterator iter = info.getMetadata().iterator(); iter.hasNext(); )
-                {
-                    Script script = (Script)iter.next();
+                for (Script script : info.getMetadata()) {
                     metadataSet.add(new SourceCode(script.getText(), script.getXmlLineNumber(), out, map));
                 }
 
                 //  create SourceCode wrappers for variable declarations
                 Map<String, SourceCode> varDeclMap = new LinkedHashMap<String, SourceCode>();
-                for (Iterator iter = info.getVarDecls().values().iterator(); iter.hasNext(); )
-                {
-                    DocumentInfo.VarDecl varDecl = (DocumentInfo.VarDecl)iter.next();
+                for (DocumentInfo.VarDecl varDecl : info.getVarDecls().values()) {
                     varDeclMap.put(varDecl.name, new SourceCode(varDecl.className, varDecl.line, out, map));
                 }
 
                 int superClassLineNumber = 1;
 
                 Set<SourceCode> importNameSet = new LinkedHashSet<SourceCode>();
-                for (Iterator i = info.getImportNames().iterator(); i.hasNext();)
-                {
-                    DocumentInfo.NameInfo importName = (DocumentInfo.NameInfo) i.next();
+                for (NameInfo importName : info.getImportNames()) {
                     importNameSet.add(new SourceCode(importName.getName(), importName.getLine(), out, map));
 
-                    if (importName.getName().equals(info.getQualifiedSuperClassName()))
-                    {
+                    if (importName.getName().equals(info.getQualifiedSuperClassName())) {
                         superClassLineNumber = importName.getLine();
                     }
                 }
-                for (Iterator<String> i = bogusImports.iterator(); i.hasNext();)
-                {
-                    String importName = i.next();
+                for (String importName : bogusImports) {
                     importNameSet.add(new SourceCode(importName, 1, out, map));
                 }
 
                 Set<SourceCode> interfaceNameSet = new LinkedHashSet<SourceCode>();
-                for (Iterator i = info.getInterfaceNames().iterator(); i.hasNext();)
-                {
-                    DocumentInfo.NameInfo interfaceName = (DocumentInfo.NameInfo) i.next();
+                for (NameInfo interfaceName : info.getInterfaceNames()) {
                     interfaceNameSet.add(new SourceCode(interfaceName.getName(), interfaceName.getLine(), out, map));
                 }
 
@@ -1115,8 +1097,7 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
             if (node instanceof DocumentNode)
             {
                 List<DesignLayerNode> layers = ((DocumentNode)node).layerDeclarationNodes;
-                for (Iterator<DesignLayerNode> i = layers.iterator(); i.hasNext();)
-                    this.registerVariableForId(i.next(), null);
+                for (DesignLayerNode layer : layers) this.registerVariableForId(layer, null);
             }
         }
 
@@ -1614,13 +1595,11 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
             		// Process all state groups referenced for this node.
             		String groups = (String)node.getAttributeValue(StandardDefs.PROP_STATE_GROUPS);
             		Collection<String> stateGroups = TextParser.parseStringList(groups);
-            		for (Iterator<String> iter = stateGroups.iterator(); iter.hasNext(); )
-                    {
-                        String groupName = iter.next();
+                    for (String groupName : stateGroups) {
                         if (TextParser.isValidStateIdentifier(groupName))
-                        	docInfo.addStateGroup(groupName, stateName, line);
+                            docInfo.addStateGroup(groupName, stateName, line);
                         else
-                        	log(node, line, new InvalidIdentifier(groupName));
+                            log(node, line, new InvalidIdentifier(groupName));
                     }
             	}
             	else

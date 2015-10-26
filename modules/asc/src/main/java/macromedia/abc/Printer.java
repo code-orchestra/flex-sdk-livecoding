@@ -772,9 +772,8 @@ public class Printer
 		public void OP_lookupswitch(int defaultPos, int[] casePos, int pos, int p2)
 		{
 			String caseList = "";
-			for (int i = 0, len = casePos.length; i < len; i++)
-			{
-				caseList += casePos[i] + ",";
+			for (int casePo : casePos) {
+				caseList += casePo + ",";
 			}
 			printOpcode(opNames[OP_lookupswitch] + " defaultPos=" + defaultPos + " casePos=" + caseList);
 		}

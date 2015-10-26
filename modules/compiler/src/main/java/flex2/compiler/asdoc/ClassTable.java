@@ -140,76 +140,61 @@ public class ClassTable implements DocCommentTable {
         String otherPackage = null;
         
         //sorting all the comments and pulling out other classes that are out of the package
-        for (int i = 0; i < comments.size(); i++)
-        {
-            DocCommentNode current = (DocCommentNode)comments.get(i);
+        for (Object comment : comments) {
+            DocCommentNode current = (DocCommentNode) comment;
             String pkg = "";  //package name
             String cls = "";  //class name
             String debug;
-            if (current.def instanceof PackageDefinitionNode)
-            {
+            if (current.def instanceof PackageDefinitionNode) {
                 mainClass.add(current);
                 continue;
-            }
-            else if (current.def instanceof ClassDefinitionNode)
-            {
-                ClassDefinitionNode cd = (ClassDefinitionNode)current.def;
-                
+            } else if (current.def instanceof ClassDefinitionNode) {
+                ClassDefinitionNode cd = (ClassDefinitionNode) current.def;
+
                 debug = cd.debug_name;
                 int colon = debug.indexOf(':');
                 if (colon < 0) //empty package
                 {
                     pkg = "";
                     cls = debug.intern();
-                }
-                else
-                {
+                } else {
                     pkg = debug.substring(0, colon).intern();
                     cls = debug.substring(colon + 1).intern();
                 }
                 if (cls.equals(className) && pkg.equals(packageName))
                     mainDef = true;
-                else
-                {
+                else {
                     if (otherPackage == null)
                         otherPackage = pkg;
-                    
+
                     //if not the public class, we need to create our own inheritance set
-                    Set<QName> inherit = new HashSet<QName>(); 
+                    Set<QName> inherit = new HashSet<QName>();
                     otherInheritance.put(cls, inherit);
                     List inherited = cd.used_def_namespaces;
-                    for (int j = 0; j < inherited.size(); j++)
-                    {
-                        String s = inherited.get(j).toString().intern();
+                    for (Object anInherited : inherited) {
+                        String s = anInherited.toString().intern();
                         //Make sure that the inheritance list doesn't contain itself or a package.
-                        if (!s.equals(debug) && !s.equals(otherPackage))
-                        {
+                        if (!s.equals(debug) && !s.equals(otherPackage)) {
                             QName q = new QName(s);
-                            if (!q.getLocalPart().isEmpty())
-                            {
+                            if (!q.getLocalPart().isEmpty()) {
                                 assert !((q.getLocalPart().equals(cls)) && (q.getNamespace().equals(pkg))) : "same class";
                                 inherit.add(q);
                             }
                         }
                     }
                 }
-            }
-            else if (current.def instanceof FunctionDefinitionNode)
-            {
-                FunctionDefinitionNode fd = (FunctionDefinitionNode)current.def;
+            } else if (current.def instanceof FunctionDefinitionNode) {
+                FunctionDefinitionNode fd = (FunctionDefinitionNode) current.def;
                 debug = fd.fexpr.debug_name;
                 int colon = debug.indexOf(':');
                 int slash = debug.indexOf('/');
-                if (colon < 0)
-                {
+                if (colon < 0) {
                     pkg = "";
                     if (slash < 0) //when there's only a name (Ex. debug == Foobar)
                         cls = "";
                     else  //when there happens to be a slash (Ex. debug == Class/Function)
                         cls = debug.substring(0, slash).intern();
-                }
-                else
-                {
+                } else {
                     pkg = debug.substring(0, colon).intern();
                     if (slash < 0)   //when you have debug == packageName:Function
                         cls = "";
@@ -217,42 +202,33 @@ public class ClassTable implements DocCommentTable {
                     {
                         pkg = "";
                         cls = debug.substring(0, slash).intern();
-                    }
-                    else  //when debug == packageName:className/Function
+                    } else  //when debug == packageName:className/Function
                         cls = debug.substring(colon + 1, slash).intern();
                 }
-            }
-            else if (current.def instanceof VariableDefinitionNode)
-            {
-                VariableBindingNode vb = (VariableBindingNode)(((VariableDefinitionNode)current.def).list.items.get(0));
+            } else if (current.def instanceof VariableDefinitionNode) {
+                VariableBindingNode vb = (VariableBindingNode) (((VariableDefinitionNode) current.def).list.items.get(0));
                 debug = vb.debug_name;
                 int colon = debug.indexOf(':');
                 int slash = debug.indexOf('/');
-                if (colon < 0)
-                {
+                if (colon < 0) {
                     pkg = "";
                     if (slash < 0)
                         cls = "";
                     else
                         cls = debug.substring(0, slash).intern();
-                }
-                else
-                {
+                } else {
                     pkg = debug.substring(0, colon).intern();
                     if (slash < 0)
                         cls = "";
-                    else if (slash < colon)
-                    {
+                    else if (slash < colon) {
                         pkg = "";
                         cls = debug.substring(0, slash).intern();
-                    }
-                    else
+                    } else
                         cls = debug.substring(colon + 1, slash).intern();
                 }
             }
             //Add to list for other classes (they will be in a separate package)
-            if (!pkg.equals(packageName))
-            {
+            if (!pkg.equals(packageName)) {
                 if (cls.isEmpty())
                     cls = "null";
                 List<DocCommentNode> l = otherClasses.get(cls);
@@ -260,8 +236,7 @@ public class ClassTable implements DocCommentTable {
                     l = new ArrayList<DocCommentNode>();
                 l.add(current);
                 otherClasses.put(cls, l);
-            }
-            else  //Add to list for public class
+            } else  //Add to list for public class
                 mainClass.add(current);
         }
         
@@ -296,11 +271,9 @@ public class ClassTable implements DocCommentTable {
         }
         
         int temp = comments.size();
-        for (int i = 0; i < temp; i++)
-        {
-            DocCommentNode tempNode = comments.get(i);
+        for (DocCommentNode tempNode : comments) {
             DocComment tempComment = table.addComment(tempNode);
-            
+
             //keep a reference to the first packageEntry encountered for each package.
             if (packageTable.get(name.getNamespace()) == null && tempComment != null)
                 if (tempComment.getType() == DocComment.PACKAGE)

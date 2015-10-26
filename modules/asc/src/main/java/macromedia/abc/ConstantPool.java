@@ -111,11 +111,10 @@ public class ConstantPool
         int preferredSize = 0;
         boolean hasDecimal = false;
 
-        for (int i = 0, size = pools.length; i < size; i++)
-        {
-            if (pools[i].decimalpositions.length > 0)
+        for (ConstantPool pool : pools) {
+            if (pool.decimalpositions.length > 0)
                 hasDecimal = true;
-            preferredSize += pools[i].mnEnd;
+            preferredSize += pool.mnEnd;
         }
 
         ConstantPool newPool = new ConstantPool(hasDecimal); // make room for decimal in the one we create

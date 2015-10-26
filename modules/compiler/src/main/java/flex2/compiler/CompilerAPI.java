@@ -415,15 +415,10 @@ public final class CompilerAPI
         List<Source> targets = new ArrayList<Source>(sources.size());
 
         units.clear();
-        for (int i = 0, size = sources.size(); i < size; i++)
-        {
-            Source s = sources.get(i);
-            if (s != null && s.isCompiled())
-            {
+        for (Source s : sources) {
+            if (s != null && s.isCompiled()) {
                 units.add(s.getCompilationUnit());
-            }
-            else
-            {
+            } else {
                 units.add(null);
             }
         }
@@ -1113,38 +1108,30 @@ public final class CompilerAPI
             return true;
         }
 
-        for (Iterator<Name> i = types.iterator(); i.hasNext();)
-        {
-            Name name = i.next();
-
-            if (name instanceof QName)
-            {
+        for (Name name : types) {
+            if (name instanceof QName) {
                 QName qName = (QName) name;
                 Source s = symbolTable.findSourceByQName(qName);
                 CompilationUnit u = (s != null) ? s.getCompilationUnit() : null;
 
                 // a compilation unit should not have itself as the dependency.
                 // let's continue and let the compiler catch the problem later.
-                if (unit == u)
-                {
+                if (unit == u) {
                     continue;
                 }
 
                 // workflow
-                if (u == null || (u.getWorkflow() & workflow) == 0)
-                {
+                if (u == null || (u.getWorkflow() & workflow) == 0) {
                     return false;
                 }
 
                 // type info
-                if (u == null || u.typeInfo == null)
-                {
+                if (u == null || u.typeInfo == null) {
                     return false;
                 }
 
                 // error count
-                if (s.getLogger() != null && s.getLogger().errorCount() > 0)
-                {
+                if (s.getLogger() != null && s.getLogger().errorCount() > 0) {
                     return false;
                 }
             }
@@ -1174,30 +1161,23 @@ public final class CompilerAPI
             return false;
         }
 
-        for (Iterator<Name> i = types.iterator(); i.hasNext();)
-        {
-            Name name = i.next();
-
-            if (name instanceof QName)
-            {
+        for (Name name : types) {
+            if (name instanceof QName) {
                 QName qName = (QName) name;
                 Source s = symbolTable.findSourceByQName(qName);
                 CompilationUnit u = (s != null) ? s.getCompilationUnit() : null;
 
-                if (u == null)
-                {
+                if (u == null) {
                     return false;
                 }
 
                 // a compilation unit should not have itself as the dependency.
                 // let's continue and let the compiler catch the problem later.
-                if (unit == u || processed.contains(s.getName()))
-                {
+                if (unit == u || processed.contains(s.getName())) {
                     continue;
                 }
 
-                if (!checkInheritance(u, u.inheritance, symbolTable, workflow, processed))
-                {
+                if (!checkInheritance(u, u.inheritance, symbolTable, workflow, processed)) {
                     return false;
                 }
             }
@@ -1224,40 +1204,31 @@ public final class CompilerAPI
             return false;
         }
 
-        for (Iterator<Name> i = types.iterator(); i.hasNext();)
-        {
-            Name name = i.next();
-
-            if (name instanceof QName)
-            {
+        for (Name name : types) {
+            if (name instanceof QName) {
                 QName qName = (QName) name;
                 Source s = symbolTable.findSourceByQName(qName);
                 CompilationUnit u = (s != null) ? s.getCompilationUnit() : null;
 
-                if (u == null)
-                {
+                if (u == null) {
                     return false;
                 }
 
                 // a compilation unit should not have itself as the dependency.
                 // let's continue and let the compiler catch the problem later.
-                if (unit == u || processed.contains(s.getName()))
-                {
+                if (unit == u || processed.contains(s.getName())) {
                     continue;
                 }
 
-                if (!checkDeep(u, INHERITANCE, u.inheritance, symbolTable, processed))
-                {
+                if (!checkDeep(u, INHERITANCE, u.inheritance, symbolTable, processed)) {
                     return false;
                 }
 
-                if (!checkDeep(u, TYPES, u.types, symbolTable, processed))
-                {
+                if (!checkDeep(u, TYPES, u.types, symbolTable, processed)) {
                     return false;
                 }
 
-                if (!checkDeep(u, EXPRESSIONS, u.expressions, symbolTable, processed))
-                {
+                if (!checkDeep(u, EXPRESSIONS, u.expressions, symbolTable, processed)) {
                     return false;
                 }
             }
@@ -1303,9 +1274,8 @@ public final class CompilerAPI
 
             if (swcContext.errorLocations().size() > 0)
             {
-                for (Iterator it = swcContext.errorLocations().iterator(); it.hasNext();)
-                {
-                    ThreadLocalToolkit.log(new IncompatibleSWCArchive((String) it.next()));
+                for (String s : swcContext.errorLocations()) {
+                    ThreadLocalToolkit.log(new IncompatibleSWCArchive(s));
                 }
             }
 
@@ -1712,11 +1682,9 @@ public final class CompilerAPI
                                                 SymbolTable symbolTable, SourceList sourceList, SourcePath sourcePath,
                                                 ResourceContainer resources, CompilerSwcContext swcContext)
     {
-        for (int i = 0, size = multiNames.length; i < size; i++)
-        {
-            QName qName = resolveMultiName("builtin", multiNames[i], sources, sourceList, sourcePath, resources, swcContext, symbolTable);
-            if (qName != null)
-            {
+        for (MultiName multiName : multiNames) {
+            QName qName = resolveMultiName("builtin", multiName, sources, sourceList, sourcePath, resources, swcContext, symbolTable);
+            if (qName != null) {
                 Source tailSource = symbolTable.findSourceByQName(qName);
                 addVertexToGraphs(tailSource, tailSource.getCompilationUnit(), igraph, dgraph);
             }
@@ -1732,22 +1700,17 @@ public final class CompilerAPI
         ServicesDependenciesWrapper services = configuration.getCompilerConfiguration().getServicesDependencies();
         if (services != null)
         {
-            for (Iterator i = services.getChannelClasses().iterator(); i.hasNext();)
-            {
-                String clientType = (String) i.next();
+            for (Object o : services.getChannelClasses()) {
+                String clientType = (String) o;
 
-                if (clientType != null)
-                {
+                if (clientType != null) {
                     QName qName = resolveMultiName("messaging", new MultiName(NameFormatter.toColon(clientType)), sources,
-                                                   sourceList, sourcePath, resources, swcContext, symbolTable);
+                            sourceList, sourcePath, resources, swcContext, symbolTable);
 
-                    if (qName == null)
-                    {
+                    if (qName == null) {
                         ThreadLocalToolkit.log(new ChannelDefinitionNotFound(clientType),
-                                               configuration.getCompilerConfiguration().getServices().getNameForReporting());
-                    }
-                    else
-                    {
+                                configuration.getCompilerConfiguration().getServices().getNameForReporting());
+                    } else {
                         Source s = symbolTable.findSourceByQName(qName);
                         addVertexToGraphs(s, s.getCompilationUnit(), igraph, dgraph);
                     }
@@ -1764,22 +1727,17 @@ public final class CompilerAPI
     private static int unitsReset(List<CompilationUnit> units)
     {
         int resetCount = 0;
-        for (int i = 0, n = units.size(); i < n; i++)
-        {
-            CompilationUnit unit = units.get(i);
+        for (CompilationUnit unit : units) {
             // CodeOrchestra: added if
             if (unit == null) {
                 continue;
             }
             Source source = unit.getSource();
 
-            if (!source.isInternal() && !source.isCompiled())
-            {
+            if (!source.isInternal() && !source.isCompiled()) {
                 unit.reset();
                 resetCount++;
-            }
-            else if (!source.isInternal())
-            {
+            } else if (!source.isInternal()) {
                 unit.checkBits = 0;
             }
         }
@@ -2277,9 +2235,8 @@ public final class CompilerAPI
             }
         }
 
-        for (Iterator<String> i = includeUpdated.iterator(); i.hasNext();)
-        {
-            ThreadLocalToolkit.getLogger().includedFileUpdated(i.next());
+        for (String anIncludeUpdated : includeUpdated) {
+            ThreadLocalToolkit.getLogger().includedFileUpdated(anIncludeUpdated);
         }
 
         int affectedCount = affected.size();
@@ -2689,11 +2646,8 @@ public final class CompilerAPI
 
     private static void addVerticesToGraphs(List<Source> sources, DependencyGraph<CompilationUnit> igraph, DependencyGraph<Source> dgraph)
     {
-        for (int i = 0, size = sources.size(); i < size; i++)
-        {
-            Source s = sources.get(i);
-            if (s != null)
-            {
+        for (Source s : sources) {
+            if (s != null) {
                 addVertexToGraphs(s, s.getCompilationUnit(), igraph, dgraph);
             }
         }
@@ -3454,11 +3408,8 @@ public final class CompilerAPI
 
         if (units.size() > tsort.size())
         {
-            for (int i = 0, size = units.size(); i < size; i++)
-            {
-                CompilationUnit u = units.get(i);
-                if (!tsort.contains(u))
-                {
+            for (CompilationUnit u : units) {
+                if (!tsort.contains(u)) {
                     ThreadLocalToolkit.log(new CircularInheritance(), u.getSource());
                     success = false;
                 }
@@ -3469,9 +3420,7 @@ public final class CompilerAPI
         {
             sources.clear();
             units.clear();
-            for (int i = 0, size = tsort.size(); i < size; i++)
-            {
-                CompilationUnit u = tsort.get(i);
+            for (CompilationUnit u : tsort) {
                 sources.add(u.getSource());
                 units.add(u);
             }
@@ -3484,9 +3433,7 @@ public final class CompilerAPI
     {
         final Map<String, Source> tsort = new HashMap<String, Source>(sources.size());
 
-        for (int i = 0, size = sources.size(); i < size; i++)
-        {
-            Source s = sources.get(i);
+        for (Source s : sources) {
             tsort.put(s.getName(), s);
         }
 
@@ -3501,12 +3448,9 @@ public final class CompilerAPI
 
         if (tsort.size() > 0)
         {
-            for (Iterator<String> i = tsort.keySet().iterator(); i.hasNext();)
-            {
-                String name = i.next();
+            for (String name : tsort.keySet()) {
                 Source s = tsort.get(name);
-                if (!s.hasError())
-                {
+                if (!s.hasError()) {
                     ThreadLocalToolkit.log(new CircularInheritance(), name);
                 }
             }
@@ -3831,43 +3775,31 @@ public final class CompilerAPI
     {
         // C: A temporary fix for the issue when the true QName of the top level definition in a source file
         //    from the classpath is not known until the source file is parsed...
-        for (int i = 0, size = units.size(); i < size; i++)
-        {
-            CompilationUnit u = units.get(i);
-
-            if (u != null && u.isDone() && (u.getWorkflow() & adjustQNames) == 0)
-            {
-                for (Name name : u.inheritance)
-                {
-                    if (name instanceof QName)
-                    {
+        for (CompilationUnit u : units) {
+            if (u != null && u.isDone() && (u.getWorkflow() & adjustQNames) == 0) {
+                for (Name name : u.inheritance) {
+                    if (name instanceof QName) {
                         QName qName = (QName) name;
                         adjustQName(qName, igraph, symbolTable);
                     }
                 }
 
-                for (Name name : u.namespaces)
-                {
-                    if (name instanceof QName)
-                    {
+                for (Name name : u.namespaces) {
+                    if (name instanceof QName) {
                         QName qName = (QName) name;
                         adjustQName(qName, igraph, symbolTable);
                     }
                 }
 
-                for (Name name : u.types)
-                {
-                    if (name instanceof QName)
-                    {
+                for (Name name : u.types) {
+                    if (name instanceof QName) {
                         QName qName = (QName) name;
                         adjustQName(qName, igraph, symbolTable);
                     }
                 }
 
-                for (Name name : u.expressions)
-                {
-                    if (name instanceof QName)
-                    {
+                for (Name name : u.expressions) {
+                    if (name instanceof QName) {
                         QName qName = (QName) name;
                         adjustQName(qName, igraph, symbolTable);
                     }
@@ -3916,42 +3848,32 @@ public final class CompilerAPI
         String[] namespaceURI = multiName.getNamespace();
         String localPart = multiName.getLocalPart();
 
-        for (int j = 0, length = namespaceURI.length; j < length; j++)
-        {
-            Source s = symbolTable.findSourceByQName(namespaceURI[j], localPart);
+        for (String aNamespaceURI : namespaceURI) {
+            Source s = symbolTable.findSourceByQName(aNamespaceURI, localPart);
             int where = -1;
 
-            if (s == null)
-            {
-                try
-                {
-                    where = findDefinition(sources, sourceList, sourcePath, resources, swcContext, namespaceURI[j], localPart);
-                }
-                catch (CompilerException ex)
-                {
+            if (s == null) {
+                try {
+                    where = findDefinition(sources, sourceList, sourcePath, resources, swcContext, aNamespaceURI, localPart);
+                } catch (CompilerException ex) {
                     ThreadLocalToolkit.logError(ex.getMessage());
                 }
 
-                if (where != -1)
-                {
+                if (where != -1) {
                     s = sources.get(where);
                 }
             }
 
-            if (s != null)
-            {
-                if (qName == null)
-                {
-                    qName = new QName(namespaceURI[j], localPart);
+            if (s != null) {
+                if (qName == null) {
+                    qName = new QName(aNamespaceURI, localPart);
                     source = s;
 
                     // C: comment out the break statement to enforce ambiguity checks...
                     // break;
-                }
-                else if (!qName.equals(namespaceURI[j], localPart))
-                {
+                } else if (!qName.equals(aNamespaceURI, localPart)) {
                     hasAmbiguity = true;
-                    qName2 = new QName(namespaceURI[j], localPart);
+                    qName2 = new QName(aNamespaceURI, localPart);
                     source2 = s;
                     break;
                 }
@@ -4189,24 +4111,17 @@ public final class CompilerAPI
     {
         Set<String> includes = new LinkedHashSet<String>();
         includes.addAll( configuration.getIncludes() );
-        for (Iterator<FrameInfo> it = configuration.getFrameList().iterator(); it.hasNext();)
-        {
-            FramesConfiguration.FrameInfo f = it.next();
-            includes.addAll( f.frameClasses );
+        for (FrameInfo f : configuration.getFrameList()) {
+            includes.addAll(f.frameClasses);
         }
-        for (Iterator<String> it = includes.iterator(); it.hasNext();)
-        {
-            String className = it.next();
+        for (String className : includes) {
             MultiName mName = new MultiName(className);
             QName qName = resolveMultiName("configuration", mName, sources, sourceList, sourcePath, resources, swcContext, symbolTable);
 
-            if (qName != null)
-            {
+            if (qName != null) {
                 Source tailSource = symbolTable.findSourceByQName(qName);
                 addVertexToGraphs(tailSource, tailSource.getCompilationUnit(), igraph, dgraph);
-            }
-            else
-            {
+            } else {
                 ThreadLocalToolkit.log(new UnableToResolveClass("include", className));
             }
         }
@@ -4218,19 +4133,16 @@ public final class CompilerAPI
         Map resourceIncludes = swcContext.getResourceIncludes();
         String[] locales = configuration.getCompilerConfiguration().getLocales();
 
-        for (Iterator it = resourceIncludes.keySet().iterator(); it.hasNext();)
-        {
-            String rbName = NameFormatter.toColon((String) it.next());
+        for (Object o : resourceIncludes.keySet()) {
+            String rbName = NameFormatter.toColon((String) o);
             QName[] qNames = resolveResourceBundleName(rbName, sources, null, bundlePath,
-                                                       null, swcContext, symbolTable, locales);
-            if (qNames != null)
-            {
+                    null, swcContext, symbolTable, locales);
+            if (qNames != null) {
                 Source source = symbolTable.findSourceByResourceBundleName(rbName);
                 addVertexToGraphs(source, source.getCompilationUnit(), igraph, dgraph);
 
-                for (int i = 0; i < qNames.length; i++)
-                {
-                    configuration.getIncludes().add(qNames[i].toString());
+                for (QName qName : qNames) {
+                    configuration.getIncludes().add(qName.toString());
                 }
             }
         }
@@ -4296,14 +4208,12 @@ public final class CompilerAPI
         {
             String[] locales = configuration.getCompilerConfiguration().getLocales();
 
-            for (Iterator it = u.resourceBundleHistory.iterator(); it.hasNext();)
-            {
-                String rbName = NameFormatter.toColon((String) it.next());
+            for (String aResourceBundleHistory : u.resourceBundleHistory) {
+                String rbName = NameFormatter.toColon(aResourceBundleHistory);
                 Source source = null;
                 QName[] qNames = resolveResourceBundleName(rbName, sources, null, bundlePath,
-                                                           null, swcContext, symbolTable, locales);
-                if (qNames != null)
-                {
+                        null, swcContext, symbolTable, locales);
+                if (qNames != null) {
                     source = symbolTable.findSourceByResourceBundleName(rbName);
                     addVertexToGraphs(source, source.getCompilationUnit(), igraph, dgraph);
                     continue;
@@ -4311,9 +4221,8 @@ public final class CompilerAPI
 
                 MultiName mName = new MultiName(rbName);
                 QName qName = resolveMultiName(u.getSource().getNameForReporting(), mName, sources, null, sourcePath,
-                                               null, null, symbolTable);
-                if (qName != null)
-                {
+                        null, null, symbolTable);
+                if (qName != null) {
                     source = symbolTable.findSourceByQName(qName);
                     addVertexToGraphs(source, source.getCompilationUnit(), igraph, dgraph);
 
@@ -4323,20 +4232,15 @@ public final class CompilerAPI
 
                 mName = new MultiName(rbName + I18nUtils.CLASS_SUFFIX);
                 qName = resolveMultiName(u.getSource().getNameForReporting(), mName, sources, null, null,
-                                         null, swcContext, symbolTable);
-                if (qName != null)
-                {
+                        null, swcContext, symbolTable);
+                if (qName != null) {
                     source = symbolTable.findSourceByQName(qName);
                     addVertexToGraphs(source, source.getCompilationUnit(), igraph, dgraph);
 
                     symbolTable.register(rbName, qNames, source);
-                }
-                else if (locales.length == 1)
-                {
+                } else if (locales.length == 1) {
                     ThreadLocalToolkit.log(new UnableToResolveResourceBundleForLocale(rbName, locales[0]));
-                }
-                else if (locales.length > 1)
-                {
+                } else if (locales.length > 1) {
                     ThreadLocalToolkit.log(new UnableToResolveResourceBundle(rbName));
                 }
             }
@@ -4346,50 +4250,41 @@ public final class CompilerAPI
 
         if ((u.licensedClassReqs != null) && (u.licensedClassReqs.size() > 0))
         {
-            for (Iterator it = u.licensedClassReqs.entrySet().iterator(); it.hasNext();)
-            {
-                Map.Entry e = (Map.Entry) it.next();
+            for (Entry<String, String> stringStringEntry : u.licensedClassReqs.entrySet()) {
+                Entry e = (Entry) stringStringEntry;
                 String id = (String) e.getKey();
                 String handler = (String) e.getValue();
 
-                    MultiName mName = new MultiName(handler);
-                    QName qName = resolveMultiName(u.getSource().getNameForReporting(), mName, sources, sourceList,
-                                                   sourcePath, resources, swcContext, symbolTable);
-                    configuration.getIncludes().add(handler);
-                    configuration.getExterns().remove(handler);   // don't let them try to extern it
+                MultiName mName = new MultiName(handler);
+                QName qName = resolveMultiName(u.getSource().getNameForReporting(), mName, sources, sourceList,
+                        sourcePath, resources, swcContext, symbolTable);
+                configuration.getIncludes().add(handler);
+                configuration.getExterns().remove(handler);   // don't let them try to extern it
 
-                    if (qName != null)
-                    {
-                        // if the license is missing, we still may be able to be in
-                        // a "demo" mode under control of the license handler
-                        Source tailSource = symbolTable.findSourceByQName(qName);
-                        addVertexToGraphs(tailSource, tailSource.getCompilationUnit(), igraph, dgraph);
-                    }
-                    else
-                    {
-                        // no license, no handler, no SWF
-                        ThreadLocalToolkit.log(new UnableToResolveClass("RequiresLicense handler", handler));
-                    }
+                if (qName != null) {
+                    // if the license is missing, we still may be able to be in
+                    // a "demo" mode under control of the license handler
+                    Source tailSource = symbolTable.findSourceByQName(qName);
+                    addVertexToGraphs(tailSource, tailSource.getCompilationUnit(), igraph, dgraph);
+                } else {
+                    // no license, no handler, no SWF
+                    ThreadLocalToolkit.log(new UnableToResolveClass("RequiresLicense handler", handler));
+                }
 
             }
         }
 
         if ((u.extraClasses != null) && (u.extraClasses.size() > 0))
         {
-            for (Iterator it = u.extraClasses.iterator(); it.hasNext();)
-            {
-                String className = (String) it.next();
+            for (String className : u.extraClasses) {
                 MultiName mName = new MultiName(className);
                 QName qName = resolveMultiName(u.getSource().getNameForReporting(), mName, sources, sourceList,
-                                               sourcePath, resources, swcContext, symbolTable);
+                        sourcePath, resources, swcContext, symbolTable);
 
-                if (qName != null)
-                {
+                if (qName != null) {
                     Source tailSource = symbolTable.findSourceByQName(qName);
                     addVertexToGraphs(tailSource, tailSource.getCompilationUnit(), igraph, dgraph);
-                }
-                else
-                {
+                } else {
                     ThreadLocalToolkit.log(new UnableToResolveNeededClass(className));
                 }
             }
@@ -4401,21 +4296,14 @@ public final class CompilerAPI
     private static void checkResourceBundles(List<Source> sources, SymbolTable symbolTable)
             throws CompilerException
     {
-        for (Iterator<Source> iterator = sources.iterator(); iterator.hasNext();)
-        {
-            Source s = iterator.next();
+        for (Source s : sources) {
             CompilationUnit u = (s != null) ? s.getCompilationUnit() : null;
-            if (u != null && u.resourceBundleHistory.size() > 0)
-            {
-                for (Iterator it = u.resourceBundleHistory.iterator(); it.hasNext();)
-                {
-                    String rbName = (String) it.next();
+            if (u != null && u.resourceBundleHistory.size() > 0) {
+                for (String rbName : u.resourceBundleHistory) {
                     Source rbSource = symbolTable.findSourceByResourceBundleName(rbName);
-                    if (rbSource != null)
-                    {
+                    if (rbSource != null) {
                         CompilationUnit rbUnit = rbSource.getCompilationUnit();
-                        for (int j = 0, size = rbUnit == null ? 0 : rbUnit.topLevelDefinitions.size(); j < size; j++)
-                        {
+                        for (int j = 0, size = rbUnit == null ? 0 : rbUnit.topLevelDefinitions.size(); j < size; j++) {
                             u.resourceBundles.add(rbUnit.topLevelDefinitions.get(j).toString());
                         }
                     }
@@ -4521,11 +4409,9 @@ public final class CompilerAPI
 			VirtualFile f = list.get(i);
 			array[(SourceList.calculatePathRoot(f, directories) == null) ? 0 : 1].add(f);
 		}
-		for (Iterator<VirtualFile> j = stylesheets.iterator(); j.hasNext(); )
-		{
-			VirtualFile f = j.next();
-			array[(SourceList.calculatePathRoot(f, directories) == null) ? 0 : 1].add(f);
-		}
+        for (VirtualFile f : stylesheets) {
+            array[(SourceList.calculatePathRoot(f, directories) == null) ? 0 : 1].add(f);
+        }
 
         return array;
     }
@@ -4570,39 +4456,29 @@ public final class CompilerAPI
 		{
 			fileSet = new HashSet<VirtualFile>(paths.size());
 		}
-		for (Iterator<?> iter = paths.iterator(); iter.hasNext(); )
-		{
-			Object next = iter.next();
-			VirtualFile file;
-			if (next instanceof VirtualFile)
-			{
-				file = (VirtualFile) next;
-			}
-			else
-			{
-				String path = (next instanceof File) ? ((File)next).getAbsolutePath() : (String)next;
+        for (Object next : paths) {
+            VirtualFile file;
+            if (next instanceof VirtualFile) {
+                file = (VirtualFile) next;
+            } else {
+                String path = (next instanceof File) ? ((File) next).getAbsolutePath() : (String) next;
 
-				file = getVirtualFile(path);
+                file = getVirtualFile(path);
 
-                if(excludedPaths != null && excludedPaths.contains(file)) {
+                if (excludedPaths != null && excludedPaths.contains(file)) {
                     excludedPaths.remove(file);
                     file = null;
                 }
-			}
+            }
 
-			if (file != null)
-			{
-				if (recurse && file.isDirectory())
-				{
-					File dir = FileUtil.openFile(file.getName());
-					if (dir == null)
-					{
-						throw new ConfigurationException.IOError(file.getName());
-					}
+            if (file != null) {
+                if (recurse && file.isDirectory()) {
+                    File dir = FileUtil.openFile(file.getName());
+                    if (dir == null) {
+                        throw new ConfigurationException.IOError(file.getName());
+                    }
                     fileSetFromPaths(Arrays.asList(dir.listFiles()), true, mimeTypes, fileSet, excludedPaths);
-                }
-                else if (topLevel || mimeTypes == null || mimeTypes.contains(file.getMimeType()))
-                {
+                } else if (topLevel || mimeTypes == null || mimeTypes.contains(file.getMimeType())) {
                     fileSet.add(file);
                 }
             }
@@ -4674,9 +4550,8 @@ public final class CompilerAPI
     public static void encode(ConsoleApplication app, OutputStream out) throws IOException
     {
         List abcList = app.getABCs();
-        for (int i = 0, size = abcList.size(); i < size; i++)
-        {
-            out.write((byte[]) abcList.get(i));
+        for (Object anAbcList : abcList) {
+            out.write((byte[]) anAbcList);
         }
 
         if (ThreadLocalToolkit.getBenchmark() != null)

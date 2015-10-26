@@ -128,143 +128,100 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
 
     void PreprocessDefinitionTypeInfo(Context cx, ObjectList<Node> defList, boolean static_context)
     {
-	    for (int i = 0, size = defList.size(); i < size; i++)
-        {
-	        Node it = defList.get(i);
-			if (it instanceof LabeledStatementNode)
-			{
-				it = ((LabeledStatementNode)it).statement;
-			}
-			DefinitionNode dn = it instanceof DefinitionNode ? (DefinitionNode)it : null;
+        for (Node it : defList) {
+            if (it instanceof LabeledStatementNode) {
+                it = ((LabeledStatementNode) it).statement;
+            }
+            DefinitionNode dn = it instanceof DefinitionNode ? (DefinitionNode) it : null;
 
             if (dn != null && ((dn.attrs != null && dn.attrs.hasStatic == static_context) ||
-                               (static_context == false && (dn.attrs == null || dn.attrs.hasStatic == false))))
-            {
+                    (static_context == false && (dn.attrs == null || dn.attrs.hasStatic == false)))) {
                 if (dn instanceof ClassDefinitionNode)
-                    PreprocessDefinitionTypeInfo(cx,(ClassDefinitionNode)dn);
+                    PreprocessDefinitionTypeInfo(cx, (ClassDefinitionNode) dn);
                 else if (dn instanceof FunctionDefinitionNode)
-                    PreprocessDefinitionTypeInfo(cx,(FunctionDefinitionNode)dn);
+                    PreprocessDefinitionTypeInfo(cx, (FunctionDefinitionNode) dn);
                 else if (dn instanceof VariableDefinitionNode)
-                    PreprocessDefinitionTypeInfo(cx,(VariableDefinitionNode)dn);
+                    PreprocessDefinitionTypeInfo(cx, (VariableDefinitionNode) dn);
                 // else we don't care
-            }
-            else if (it instanceof MemberExpressionNode)
-            {
-                MemberExpressionNode me = (MemberExpressionNode)it;
-                if (me.selector instanceof SetExpressionNode)
-                {
-                    SetExpressionNode se = (SetExpressionNode)(me.selector);
+            } else if (it instanceof MemberExpressionNode) {
+                MemberExpressionNode me = (MemberExpressionNode) it;
+                if (me.selector instanceof SetExpressionNode) {
+                    SetExpressionNode se = (SetExpressionNode) (me.selector);
                     Node firstArg = (se.args != null && se.args.items != null) ? se.args.items.get(0) : null;
-                    if (firstArg instanceof FunctionDefinitionNode)
-                    {
-                        PreprocessDefinitionTypeInfo(cx,(FunctionDefinitionNode)firstArg);
+                    if (firstArg instanceof FunctionDefinitionNode) {
+                        PreprocessDefinitionTypeInfo(cx, (FunctionDefinitionNode) firstArg);
+                    } else if (firstArg instanceof FunctionCommonNode) {
+                        PreprocessDefinitionTypeInfo(cx, (FunctionCommonNode) firstArg);
                     }
-                    else if(firstArg instanceof FunctionCommonNode)
-                    {
-                        PreprocessDefinitionTypeInfo(cx,(FunctionCommonNode)firstArg);
-                    }
-                }
-                else
-                if (me.selector instanceof CallExpressionNode)
-                {
-                    CallExpressionNode se = (CallExpressionNode)(me.selector);
-                    if( se.args != null )
-                    for(Node arg : se.args.items)
-                    {
-                        if (arg instanceof FunctionDefinitionNode)
-                        {
-                            PreprocessDefinitionTypeInfo(cx,(FunctionDefinitionNode)arg);
+                } else if (me.selector instanceof CallExpressionNode) {
+                    CallExpressionNode se = (CallExpressionNode) (me.selector);
+                    if (se.args != null)
+                        for (Node arg : se.args.items) {
+                            if (arg instanceof FunctionDefinitionNode) {
+                                PreprocessDefinitionTypeInfo(cx, (FunctionDefinitionNode) arg);
+                            } else if (arg instanceof FunctionCommonNode) {
+                                PreprocessDefinitionTypeInfo(cx, (FunctionCommonNode) arg);
+                            }
                         }
-                        else if(arg instanceof FunctionCommonNode)
-                        {
-                            PreprocessDefinitionTypeInfo(cx,(FunctionCommonNode)arg);
-                        }
-                    }
                 }
-            }
-            else if (it instanceof ExpressionStatementNode)
-            {
-                ExpressionStatementNode expr_node = (ExpressionStatementNode)it;
-                if( expr_node.expr instanceof ListNode)
-                {
-                    PreprocessDefinitionTypeInfo(cx, ((ListNode)expr_node.expr).items);
+            } else if (it instanceof ExpressionStatementNode) {
+                ExpressionStatementNode expr_node = (ExpressionStatementNode) it;
+                if (expr_node.expr instanceof ListNode) {
+                    PreprocessDefinitionTypeInfo(cx, ((ListNode) expr_node.expr).items);
                 }
-            }
-            else if( it instanceof BinaryProgramNode )
-            {
-                PreprocessDefinitionTypeInfo(cx, ((BinaryProgramNode)it));
-            }
-            else if( it instanceof StatementListNode )
-            {
-                PreprocessDefinitionTypeInfo(cx, ((StatementListNode)it).items, static_context);
-            }
-            else if (static_context == false)
-            {   // deal with blocks created for for, with, try, catch, and finally clauses.
+            } else if (it instanceof BinaryProgramNode) {
+                PreprocessDefinitionTypeInfo(cx, ((BinaryProgramNode) it));
+            } else if (it instanceof StatementListNode) {
+                PreprocessDefinitionTypeInfo(cx, ((StatementListNode) it).items, static_context);
+            } else if (static_context == false) {   // deal with blocks created for for, with, try, catch, and finally clauses.
                 //  Their statementLists are included as elements within the host statementlist
                 //  and can contain their own definitions.
-                StatementListNode    stln = it instanceof StatementListNode ? (StatementListNode)it : null;
-                CatchClauseNode        ccn = it instanceof CatchClauseNode ? (CatchClauseNode)it : null;
-                FinallyClauseNode    fcn = it instanceof FinallyClauseNode ? (FinallyClauseNode)it : null;
-                SwitchStatementNode ssn = it instanceof SwitchStatementNode ? (SwitchStatementNode)it : null;
-                TryStatementNode    tsn = it instanceof TryStatementNode ? (TryStatementNode)it : null;
-                ForStatementNode    fsn = it instanceof ForStatementNode ? (ForStatementNode)it : null;
-                WhileStatementNode    wsn = it instanceof WhileStatementNode ? (WhileStatementNode)it : null;
-                IfStatementNode        isn = it instanceof IfStatementNode ? (IfStatementNode)it : null;
-                DoStatementNode		dsn = it instanceof DoStatementNode ? (DoStatementNode)it : null;
+                StatementListNode stln = it instanceof StatementListNode ? (StatementListNode) it : null;
+                CatchClauseNode ccn = it instanceof CatchClauseNode ? (CatchClauseNode) it : null;
+                FinallyClauseNode fcn = it instanceof FinallyClauseNode ? (FinallyClauseNode) it : null;
+                SwitchStatementNode ssn = it instanceof SwitchStatementNode ? (SwitchStatementNode) it : null;
+                TryStatementNode tsn = it instanceof TryStatementNode ? (TryStatementNode) it : null;
+                ForStatementNode fsn = it instanceof ForStatementNode ? (ForStatementNode) it : null;
+                WhileStatementNode wsn = it instanceof WhileStatementNode ? (WhileStatementNode) it : null;
+                IfStatementNode isn = it instanceof IfStatementNode ? (IfStatementNode) it : null;
+                DoStatementNode dsn = it instanceof DoStatementNode ? (DoStatementNode) it : null;
 
-                if (stln != null)
-                {
-                    PreprocessDefinitionTypeInfo(cx,stln.items,false);
-                }
-                else if (isn != null)
-                {
-                    StatementListNode sln = isn.thenactions instanceof StatementListNode ? (StatementListNode)(isn.thenactions) : null;
+                if (stln != null) {
+                    PreprocessDefinitionTypeInfo(cx, stln.items, false);
+                } else if (isn != null) {
+                    StatementListNode sln = isn.thenactions instanceof StatementListNode ? (StatementListNode) (isn.thenactions) : null;
                     if (sln != null)
-                        PreprocessDefinitionTypeInfo(cx,sln.items,false);
-                    sln = isn.elseactions instanceof StatementListNode ? (StatementListNode)(isn.elseactions) : null;
+                        PreprocessDefinitionTypeInfo(cx, sln.items, false);
+                    sln = isn.elseactions instanceof StatementListNode ? (StatementListNode) (isn.elseactions) : null;
                     if (sln != null)
-                        PreprocessDefinitionTypeInfo(cx,sln.items,false);
-                }
-                else if (fsn != null)
-                {
-                    StatementListNode sln = fsn.statement instanceof StatementListNode ? (StatementListNode)(fsn.statement) : null;
+                        PreprocessDefinitionTypeInfo(cx, sln.items, false);
+                } else if (fsn != null) {
+                    StatementListNode sln = fsn.statement instanceof StatementListNode ? (StatementListNode) (fsn.statement) : null;
                     if (sln != null)
-                        PreprocessDefinitionTypeInfo(cx,sln.items,false);
-                }
-                else if (wsn != null)
-                {
-                    StatementListNode sln = wsn.statement instanceof StatementListNode ? (StatementListNode)(wsn.statement) : null;
+                        PreprocessDefinitionTypeInfo(cx, sln.items, false);
+                } else if (wsn != null) {
+                    StatementListNode sln = wsn.statement instanceof StatementListNode ? (StatementListNode) (wsn.statement) : null;
                     if (sln != null)
-                        PreprocessDefinitionTypeInfo(cx,sln.items,false);
-                }
-                else if ( dsn != null )
-                {
-                    StatementListNode sln = dsn.statements instanceof StatementListNode ? (StatementListNode)(dsn.statements) : null;
+                        PreprocessDefinitionTypeInfo(cx, sln.items, false);
+                } else if (dsn != null) {
+                    StatementListNode sln = dsn.statements instanceof StatementListNode ? (StatementListNode) (dsn.statements) : null;
                     if (sln != null)
-                        PreprocessDefinitionTypeInfo(cx,sln.items,false);
-                }
-                else if (ccn != null && ccn.statements != null)
-                {
+                        PreprocessDefinitionTypeInfo(cx, sln.items, false);
+                } else if (ccn != null && ccn.statements != null) {
                     cx.pushScope(ccn.activation);
-                    PreprocessDefinitionTypeInfo(cx,ccn.statements.items,false);
+                    PreprocessDefinitionTypeInfo(cx, ccn.statements.items, false);
                     cx.popScope();
-                }
-                else if (fcn != null && fcn.statements != null)
-                {
-                    PreprocessDefinitionTypeInfo(cx,fcn.statements.items,false);
-                }
-                else if (ssn != null && ssn.statements != null)
-                {
-                    PreprocessDefinitionTypeInfo(cx,ssn.statements.items,false);
-                }
-                else if (tsn != null)
-                {
+                } else if (fcn != null && fcn.statements != null) {
+                    PreprocessDefinitionTypeInfo(cx, fcn.statements.items, false);
+                } else if (ssn != null && ssn.statements != null) {
+                    PreprocessDefinitionTypeInfo(cx, ssn.statements.items, false);
+                } else if (tsn != null) {
                     if (tsn.tryblock != null)
-                        PreprocessDefinitionTypeInfo(cx,tsn.tryblock.items,false);
+                        PreprocessDefinitionTypeInfo(cx, tsn.tryblock.items, false);
                     if (tsn.catchlist != null)
-                        PreprocessDefinitionTypeInfo(cx,tsn.catchlist.items,false);
+                        PreprocessDefinitionTypeInfo(cx, tsn.catchlist.items, false);
                     if (tsn.finallyblock != null && tsn.finallyblock.statements != null)
-                        PreprocessDefinitionTypeInfo(cx,tsn.finallyblock.statements.items,false);
+                        PreprocessDefinitionTypeInfo(cx, tsn.finallyblock.statements.items, false);
                 }
             }
         }

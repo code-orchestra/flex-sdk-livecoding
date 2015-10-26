@@ -784,16 +784,12 @@ public class PlayerSessionManager implements SessionManager2
 		// they don't agree with that -- they want HKEY_LOCAL_MACHINE first.
 
 		String[] roots = { "HKEY_LOCAL_MACHINE", "HKEY_CURRENT_USER" }; //$NON-NLS-1$ //$NON-NLS-2$
-		for (int i=0; i<roots.length; ++i)
-		{
-			try
-			{
-				String path = m_debuggerCallbacks.queryWindowsRegistry(roots[i] + KEY, PATH);
+		for (String root : roots) {
+			try {
+				String path = m_debuggerCallbacks.queryWindowsRegistry(root + KEY, PATH);
 				if (path != null)
-					return  new File(path);
-			}
-			catch (IOException e)
-			{
+					return new File(path);
+			} catch (IOException e) {
 				// ignore
 			}
 		}

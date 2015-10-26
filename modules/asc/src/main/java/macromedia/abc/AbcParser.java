@@ -754,19 +754,17 @@ public final class AbcParser
         int[] interfaces = iinfo.getInterfaces();
         ListNode interface_nodes = null;
 		if(debug&&interfaces.length>0) System.out.println("parsing " + interfaces);
-        for( int i = 0; i < interfaces.length; ++i )
-        {
-            int int_index = interfaces[i];
+        for (int int_index : interfaces) {
             AbcData.BinaryMN intMN = getBinaryMNFromCPool(int_index);
-			String simpleIntName = getStringFromCPool(intMN.nameID);
-			Namespaces intNamespaces;
-			if(intMN.nsIsSet)
-				intNamespaces = getNamespaces(intMN.nsID);
-			else {
-				intNamespaces = new Namespaces(1); 
-				intNamespaces.add(getNamespace(intMN.nsID));
-			}
-		
+            String simpleIntName = getStringFromCPool(intMN.nameID);
+            Namespaces intNamespaces;
+            if (intMN.nsIsSet)
+                intNamespaces = getNamespaces(intMN.nsID);
+            else {
+                intNamespaces = new Namespaces(1);
+                intNamespaces.add(getNamespace(intMN.nsID));
+            }
+
             IdentifierNode ident = nf.identifier(simpleIntName);
 
             ident.ref = new ReferenceValue(ctx, null, simpleIntName, intNamespaces);
@@ -1108,9 +1106,8 @@ public final class AbcParser
     {
         int[] ns_ids = this.abcData.getNamespaceSet(namespaceSetID).getNamespaceIds();
         Namespaces val = new Namespaces(ns_ids.length);
-        for(int i = 0; i < ns_ids.length; ++i)
-        {
-            val.add(getNamespace(ns_ids[i]));
+        for (int ns_id : ns_ids) {
+            val.add(getNamespace(ns_id));
         }
         return val;
     }

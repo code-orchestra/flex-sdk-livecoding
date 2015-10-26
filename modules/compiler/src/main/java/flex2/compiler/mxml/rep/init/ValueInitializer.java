@@ -1176,17 +1176,15 @@ public abstract class ValueInitializer implements Initializer, Cloneable
 		IdentifierNode childDescriptorsIdentifier = nodeFactory.identifier(CHILD_DESCRIPTORS, false);
 		ArgumentListNode visualChildArgumentList = null;
 
-		for (Iterator childIter = movieClip.children().iterator(); childIter.hasNext(); )
-		{
+		for (VisualChildInitializer init : movieClip.children()) {
 			//DescriptorGenerator.addDescriptorInitializerFragments(list, (MovieClip)init.getValue(), "\t\t");
-			VisualChildInitializer init = (VisualChildInitializer) childIter.next();
 			Model model = (MovieClip) init.getValue();
 			MemberExpressionNode memberExpression =
-				ImplementationGenerator.addDescriptorInitializerFragments(nodeFactory, configNamespaces,
-                                                                          generateDocComments, movieClip,
-                                                                          null, true);
+					ImplementationGenerator.addDescriptorInitializerFragments(nodeFactory, configNamespaces,
+							generateDocComments, movieClip,
+							null, true);
 			visualChildArgumentList = nodeFactory.argumentList(visualChildArgumentList,
-															   memberExpression);
+					memberExpression);
 		}
 
 		LiteralArrayNode literalArray = nodeFactory.literalArray(visualChildArgumentList);

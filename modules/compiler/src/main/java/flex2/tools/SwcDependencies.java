@@ -100,11 +100,10 @@ public class SwcDependencies extends Tool
             if (moreFiles != null)
             {
                 // remove the css files and keep the swcs
-                List<VirtualFile> themeSwcs = new ArrayList<VirtualFile>(moreFiles.length); 
-                for (int i = 0; i < moreFiles.length; i++)
-                {
-                    if (moreFiles[i].getName().endsWith(".swc"))
-                        themeSwcs.add(moreFiles[i]);
+                List<VirtualFile> themeSwcs = new ArrayList<VirtualFile>(moreFiles.length);
+                for (VirtualFile moreFile : moreFiles) {
+                    if (moreFile.getName().endsWith(".swc"))
+                        themeSwcs.add(moreFile);
                 }
                 
                 if (themeSwcs.size() > 0)

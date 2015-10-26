@@ -50,10 +50,8 @@ public class XercesClassLoader extends URLClassLoader
         boolean retValue = false;
         if (list != null)
         {
-            for (int i = 0; i < list.length; i++)
-            {
-                if (name.startsWith(list[i]))
-                {
+            for (String aList : list) {
+                if (name.startsWith(aList)) {
                     retValue = true;
                     break;
                 }

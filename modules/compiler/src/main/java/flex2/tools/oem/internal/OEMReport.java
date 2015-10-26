@@ -300,14 +300,11 @@ public class OEMReport implements Report
 	
 	public boolean contentUpdated()
 	{
-		for (Iterator<String> i = timestamps.keySet().iterator(); i.hasNext(); )
-		{
-			String path = i.next();
+		for (String path : timestamps.keySet()) {
 			Long ts = timestamps.get(path);
 			File f = new File(path);
-			
-			if (!f.exists() || f.lastModified() != ts.longValue())
-			{
+
+			if (!f.exists() || f.lastModified() != ts.longValue()) {
 				return true;
 			}
 		}
@@ -648,9 +645,8 @@ public class OEMReport implements Report
 				if (s.isFileSpecOwner() || s.isResourceBundlePathOwner() || s.isSourceListOwner() ||
 					s.isSourcePathOwner() || s.isSwcScriptOwner())
 				{
-					for (Iterator k = u.topLevelDefinitions.iterator(); k.hasNext(); )
-					{
-						String definitionName = k.next().toString();
+					for (QName topLevelDefinition : u.topLevelDefinitions) {
+						String definitionName = topLevelDefinition.toString();
 						dList.add(definitionName);
 					}
 				}
@@ -675,12 +671,9 @@ public class OEMReport implements Report
 		if (messages != null && messages.size() > 0)
 		{
 			List<Message> filtered = new ArrayList<Message>();
-			
-			for (int i = 0, length = messages.size(); i < length; i++)
-			{
-				Message m = messages.get(i);
-				if (m != null && !Message.INFO.equals(m.getLevel()))
-				{
+
+			for (Message m : messages) {
+				if (m != null && !Message.INFO.equals(m.getLevel())) {
 					filtered.add(m);
 				}
 			}

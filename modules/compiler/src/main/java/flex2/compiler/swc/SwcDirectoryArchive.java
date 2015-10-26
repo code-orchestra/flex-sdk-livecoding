@@ -76,11 +76,10 @@ public class SwcDirectoryArchive implements SwcArchive
         {
             File[] files = FileUtils.listFiles( f );
 
-            for (int i = 0; i < files.length; ++i )
-            {
-                String relpath = FileUtils.addPathComponents( current, files[i].getName(), File.separatorChar );
-                File absFile = new File( filePath( relpath ) );
-                readFiles( s, relpath, absFile );
+            for (File file : files) {
+                String relpath = FileUtils.addPathComponents(current, file.getName(), File.separatorChar);
+                File absFile = new File(filePath(relpath));
+                readFiles(s, relpath, absFile);
             }
         }
         else

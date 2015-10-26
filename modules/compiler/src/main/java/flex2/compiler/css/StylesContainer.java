@@ -773,10 +773,7 @@ public class StylesContainer extends StyleModule
         }
 
         // Load the theme styles next, so they can override the defaults
-        for (Iterator<VirtualFile> it = mxmlConfiguration.getThemeCssFiles().iterator(); it.hasNext();)
-        {
-            VirtualFile themeCssFile = it.next();
-
+        for (VirtualFile themeCssFile : mxmlConfiguration.getThemeCssFiles()) {
             // Make sure that we resolve things in the theme relative
             // to the theme SWC first.
             ThreadLocalToolkit.getPathResolver().addSinglePathResolver(0, themeCssFile);

@@ -339,12 +339,8 @@ public class I18nUtils
 		// Loop over both the locales and the bundle names,
 		// to build a list of class names.
 		ArrayList<String> classNames = new ArrayList<String>();
-		for (int i = 0; i < locales.length; i++)
-		{
-			String locale = locales[i];
-			for (Iterator<String> iter = bundleNames.iterator(); iter.hasNext(); )
-			{
-				String bundleName = iter.next();
+		for (String locale : locales) {
+			for (String bundleName : bundleNames) {
 				String className = I18nUtils.getClassName(locale, bundleName);
 				classNames.add(className);
 			}

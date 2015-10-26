@@ -100,37 +100,30 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 		if( s != null && s.getMetadata() != null )
 		{
 			ArrayList<MetaData> md = s.getMetadata();
-			for( int i =0, size = md.size(); i < size; ++i )
-			{
-				MetaData md_node = md.get(i);
-				if( "Deprecated".equals(md_node.id) )
-				{
-                    String since       = null;
-                    String message     = null;
-                    String replacement = null;
-                    
-                    for( int r = 0, val_size = md_node.count(); r < val_size; ++r )
-                    {
-                        final Value val = md_node.values[r];
-                        if( val instanceof MetaDataEvaluator.KeyValuePair )
-                        {
-                            final MetaDataEvaluator.KeyValuePair temp = (MetaDataEvaluator.KeyValuePair)val;
-                            if( "message".equals(temp.key) )
-                                message = temp.obj;
-                            else if ( "replacement".equals(temp.key) )
-                                replacement = temp.obj;
-                            else if ( "since".equals(temp.key) )
-                                since = temp.obj;
-                        }
-                        else if( val instanceof MetaDataEvaluator.KeylessValue )
-                        {
-                            // [Deprecated("foo")]
-                            final MetaDataEvaluator.KeylessValue temp = (MetaDataEvaluator.KeylessValue)val;
-                            message = temp.obj;
-                        }
-                    }
-                    
-                    logDeprecationWarning(node, cx, ref.name, since, message, replacement);
+			for (MetaData md_node : md) {
+				if ("Deprecated".equals(md_node.id)) {
+					String since = null;
+					String message = null;
+					String replacement = null;
+
+					for (int r = 0, val_size = md_node.count(); r < val_size; ++r) {
+						final Value val = md_node.values[r];
+						if (val instanceof MetaDataEvaluator.KeyValuePair) {
+							final MetaDataEvaluator.KeyValuePair temp = (MetaDataEvaluator.KeyValuePair) val;
+							if ("message".equals(temp.key))
+								message = temp.obj;
+							else if ("replacement".equals(temp.key))
+								replacement = temp.obj;
+							else if ("since".equals(temp.key))
+								since = temp.obj;
+						} else if (val instanceof MetaDataEvaluator.KeylessValue) {
+							// [Deprecated("foo")]
+							final MetaDataEvaluator.KeylessValue temp = (MetaDataEvaluator.KeylessValue) val;
+							message = temp.obj;
+						}
+					}
+
+					logDeprecationWarning(node, cx, ref.name, since, message, replacement);
 				}
 			}
 		}

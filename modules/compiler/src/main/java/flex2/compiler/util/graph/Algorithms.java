@@ -53,9 +53,7 @@ public final class Algorithms
 		@SuppressWarnings("unchecked")
 		Vertex<VertexWeight,EdgeWeight>[] vertices = new Vertex[inDegree.length];
 
-		for (Iterator<Vertex<VertexWeight,EdgeWeight>> i = g.getVertices().iterator(); i.hasNext();)
-		{
-			Vertex<VertexWeight,EdgeWeight> v = i.next();
+		for (Vertex<VertexWeight, EdgeWeight> v : g.getVertices()) {
 			vertices[v.id] = v;
 			inDegree[v.id] = v.inDegrees();
 		}
@@ -80,12 +78,9 @@ public final class Algorithms
 			}
 			if (v.getSuccessors() != null)
 			{
-				for (Iterator<Vertex<VertexWeight,EdgeWeight>> i = v.getSuccessors().iterator(); i.hasNext();)
-				{
-					Vertex<VertexWeight,EdgeWeight> head = i.next();
+				for (Vertex<VertexWeight, EdgeWeight> head : v.getSuccessors()) {
 					inDegree[head.id] -= 1;
-					if (inDegree[head.id] == 0)
-					{
+					if (inDegree[head.id] == 0) {
 						queue.add(head);
 					}
 				}

@@ -137,223 +137,130 @@ public class BuilderApplication extends Application
 					}
 					
 					List positions = cfgbuf.getPositions();
-					for (int i = 0, length = positions.size(); i < length; i++)
-					{
-						Object[] a = (Object[]) positions.get(i);
+					for (Object position : positions) {
+						Object[] a = (Object[]) position;
 						String var = (String) a[0];
-						
-						if ("link-report".equals(var))
-						{
+
+						if ("link-report".equals(var)) {
 							config.keepLinkReport(true);
-						}
-						else if ("compiler.debug".equals(var))
-						{
-							try
-							{
+						} else if ("compiler.debug".equals(var)) {
+							try {
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
 								String debugPassword = cfgbuf.peekSimpleConfigurationVar("debug-password");
-								if ("true".equals(value))
-								{
+								if ("true".equals(value)) {
 									config.enableDebugging(true, debugPassword);
-								}
-								else if ("false".equals(value))
-								{
+								} else if ("false".equals(value)) {
 									config.enableDebugging(false, debugPassword);
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("compiler.verbose-stacktraces".equals(var))
-						{
-							try
-							{
+						} else if ("compiler.verbose-stacktraces".equals(var)) {
+							try {
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
-								if ("true".equals(value))
-								{
+								if ("true".equals(value)) {
 									config.enableVerboseStacktraces(true);
-								}
-								else if ("false".equals(value))
-								{
+								} else if ("false".equals(value)) {
 									config.enableVerboseStacktraces(false);
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}							
-						}
-						else if ("compiler.accessible".equals(var))
-						{
-							try
-							{
+						} else if ("compiler.accessible".equals(var)) {
+							try {
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
-								if ("true".equals(value))
-								{
+								if ("true".equals(value)) {
 									config.enableAccessibility(true);
-								}
-								else if ("false".equals(value))
-								{
+								} else if ("false".equals(value)) {
 									config.enableAccessibility(false);
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("compiler.strict".equals(var))
-						{
-							try
-							{
+						} else if ("compiler.strict".equals(var)) {
+							try {
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
-								if ("true".equals(value))
-								{
+								if ("true".equals(value)) {
 									config.enableStrictChecking(true);
-								}
-								else if ("false".equals(value))
-								{
+								} else if ("false".equals(value)) {
 									config.enableStrictChecking(false);
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("help".equals(var))
-						{
+						} else if ("help".equals(var)) {
 							// do nothing
-						}
-						else if ("output".equals(var))
-						{
-							try
-							{
+						} else if ("output".equals(var)) {
+							try {
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
 								setOutput(new File(value));
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("size-report".equals(var))
-						{
+						} else if ("size-report".equals(var)) {
 							config.keepSizeReport(true);
-						}
-						else if ("version".equals(var))
-						{
+						} else if ("version".equals(var)) {
 							// do nothing
-						}
-						else if ("warnings".equals(var))
-						{
-							try
-							{
+						} else if ("warnings".equals(var)) {
+							try {
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
-								if ("true".equals(value))
-								{
+								if ("true".equals(value)) {
 									config.showActionScriptWarnings(true);
 									config.showBindingWarnings(true);
 									config.showDeprecationWarnings(true);
 									config.showUnusedTypeSelectorWarnings(true);
-								}
-								else if ("false".equals(value))
-								{
+								} else if ("false".equals(value)) {
 									config.showActionScriptWarnings(false);
 									config.showBindingWarnings(false);
 									config.showDeprecationWarnings(false);
 									config.showUnusedTypeSelectorWarnings(false);
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("compiler.show-actionscript-warnings".equals(var))
-						{
-							try
-							{
+						} else if ("compiler.show-actionscript-warnings".equals(var)) {
+							try {
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
-								if ("true".equals(value))
-								{
+								if ("true".equals(value)) {
 									config.showActionScriptWarnings(true);
-								}
-								else if ("false".equals(value))
-								{
+								} else if ("false".equals(value)) {
 									config.showActionScriptWarnings(false);
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("compiler.show-deprecation-warnings".equals(var))
-						{
-							try
-							{
+						} else if ("compiler.show-deprecation-warnings".equals(var)) {
+							try {
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
-								if ("true".equals(value))
-								{
+								if ("true".equals(value)) {
 									config.showDeprecationWarnings(true);
-								}
-								else if ("false".equals(value))
-								{
+								} else if ("false".equals(value)) {
 									config.showDeprecationWarnings(false);
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-                        else if ("compiler.show-shadowed-device-font-warnings".equals(var))
-                        {
-                            try
-                            {
-                                String value = cfgbuf.peekSimpleConfigurationVar(var);
-                                if ("true".equals(value))
-                                {
-                                    config.showShadowedDeviceFontWarnings(true);
-                                }
-                                else if ("false".equals(value))
-                                {
-                                    config.showShadowedDeviceFontWarnings(false);
-                                }
-                            }
-                            catch (ConfigurationException ex)
-                            {
-                            }
-                        }
-                        else if ("compiler.show-binding-warnings".equals(var))
-						{
-							try
-							{
+						} else if ("compiler.show-shadowed-device-font-warnings".equals(var)) {
+							try {
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
-								if ("true".equals(value))
-								{
-									config.showBindingWarnings(true);
+								if ("true".equals(value)) {
+									config.showShadowedDeviceFontWarnings(true);
+								} else if ("false".equals(value)) {
+									config.showShadowedDeviceFontWarnings(false);
 								}
-								else if ("false".equals(value))
-								{
+							} catch (ConfigurationException ex) {
+							}
+						} else if ("compiler.show-binding-warnings".equals(var)) {
+							try {
+								String value = cfgbuf.peekSimpleConfigurationVar(var);
+								if ("true".equals(value)) {
+									config.showBindingWarnings(true);
+								} else if ("false".equals(value)) {
 									config.showBindingWarnings(false);
 								}
+							} catch (ConfigurationException ex) {
 							}
-							catch (ConfigurationException ex)
-							{
-							}
-						}
-						else if ("compiler.show-unused-type-selector-warnings".equals(var))
-						{
-							try
-							{
+						} else if ("compiler.show-unused-type-selector-warnings".equals(var)) {
+							try {
 								String value = cfgbuf.peekSimpleConfigurationVar(var);
-								if ("true".equals(value))
-								{
+								if ("true".equals(value)) {
 									config.showUnusedTypeSelectorWarnings(true);
-								}
-								else if ("false".equals(value))
-								{
+								} else if ("false".equals(value)) {
 									config.showUnusedTypeSelectorWarnings(false);
 								}
-							}
-							catch (ConfigurationException ex)
-							{
+							} catch (ConfigurationException ex) {
 							}
 						}
 					}

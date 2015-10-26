@@ -95,10 +95,9 @@ public final class ConfigurationBuffer
 
         loadCache( configClass, null, filter );
         assert ( varCache.size() > 0 ) : "coding error: nothing was configurable in the provided object!";
-        for (Iterator it = aliases.entrySet().iterator(); it.hasNext(); )
-        {
-            Map.Entry e = (Map.Entry) it.next();
-            addAlias( (String) e.getKey(), (String) e.getValue() );
+        for (Map.Entry<String, String> stringStringEntry : aliases.entrySet()) {
+            Map.Entry e = (Map.Entry) stringStringEntry;
+            addAlias((String) e.getKey(), (String) e.getValue());
         }
     }
 
@@ -163,98 +162,83 @@ public final class ConfigurationBuffer
     public void clearSourceVars( String source )
     {
         List<String> remove = new LinkedList<String>();
-        for (Iterator it = varMap.entrySet().iterator(); it.hasNext();)
-        {
-            Map.Entry e = (Map.Entry) it.next();
+        for (Map.Entry<String, List> stringListEntry : varMap.entrySet()) {
+            Map.Entry e = (Map.Entry) stringListEntry;
             String var = (String) e.getKey();
             List vals = (List) e.getValue();
 
             List<ConfigurationValue> newvals = new LinkedList<ConfigurationValue>();
-            for (Iterator vi = vals.iterator(); vi.hasNext();)
-            {
-                ConfigurationValue val = (ConfigurationValue) vi.next();
+            for (Object val1 : vals) {
+                ConfigurationValue val = (ConfigurationValue) val1;
 
-                if (!val.getSource().equals( source ))
-                {
-                    newvals.add( val );
+                if (!val.getSource().equals(source)) {
+                    newvals.add(val);
                 }
             }
             if (newvals.size() > 0)
-                varMap.put( var, newvals );
+                varMap.put(var, newvals);
             else
-                remove.add( var );
+                remove.add(var);
         }
-        for (Iterator<String> it = remove.iterator(); it.hasNext();)
-        {
-            varMap.remove( it.next() );
+        for (String aRemove : remove) {
+            varMap.remove(aRemove);
         }
     }
 
     public List<String> processValues( String var, List<String> args, String source, int line ) throws ConfigurationException
     {
         List<String> newArgs = new LinkedList<String>();
-        for (Iterator<String> it = args.iterator(); it.hasNext();)
-        {
-            String arg = it.next();
-
+        for (String arg : args) {
             int depth = 100;
-            while (depth-- > 0)
-            {
-                int o = arg.indexOf( "${" );
+            while (depth-- > 0) {
+                int o = arg.indexOf("${");
                 if (o == -1)
                     break;
 
-                int c = arg.indexOf( "}", o );
+                int c = arg.indexOf("}", o);
 
-                if (c == -1)
-                {
+                if (c == -1) {
                     throw new ConfigurationException.Token(ConfigurationException.Token.MISSING_DELIMITER,
-                                                           null, var, source, line );
+                            null, var, source, line);
                 }
-                String token = arg.substring( o + 2, c );
-                String value = getToken( token );
+                String token = arg.substring(o + 2, c);
+                String value = getToken(token);
 
-                if (value == null)
-                {
-                    if (false && isValidVar( token ))
-                    {
-                        if (varMap.containsKey( token ))
-                        {
-                            List vals = varMap.get( token );
-                            assert ( vals.size() > 0 );
-                            if (vals.size() > 1)
-                            {
-                                throw new ConfigurationException.Token( ConfigurationException.Token.MULTIPLE_VALUES,
-                                                                        token, var, source, line );
+                if (value == null) {
+                    if (false && isValidVar(token)) {
+                        if (varMap.containsKey(token)) {
+                            List vals = varMap.get(token);
+                            assert (vals.size() > 0);
+                            if (vals.size() > 1) {
+                                throw new ConfigurationException.Token(ConfigurationException.Token.MULTIPLE_VALUES,
+                                        token, var, source, line);
                             }
-                            ConfigurationValue first = (ConfigurationValue) vals.get( 0 );
-                            if (first.getArgs().size() != 1)
-                            {
-                                throw new ConfigurationException.Token( ConfigurationException.Token.MULTIPLE_VALUES,
-                                                                        token, var, source, line );
+                            ConfigurationValue first = (ConfigurationValue) vals.get(0);
+                            if (first.getArgs().size() != 1) {
+                                throw new ConfigurationException.Token(ConfigurationException.Token.MULTIPLE_VALUES,
+                                        token, var, source, line);
 
                             }
-                            value = first.getArgs().get( 0 );
+                            value = first.getArgs().get(0);
                         }
                     }
                     if (value == null)
 
                     {
-                        throw new ConfigurationException.Token( ConfigurationException.Token.UNKNOWN_TOKEN,
-                                                                token, var, source, line );
+                        throw new ConfigurationException.Token(ConfigurationException.Token.UNKNOWN_TOKEN,
+                                token, var, source, line);
                     }
 
                 }
-                arg = arg.substring( 0, o ) + value + arg.substring( c + 1 );
+                arg = arg.substring(0, o) + value + arg.substring(c + 1);
 
             }
-            if (depth == 0)
-            {
-                throw new ConfigurationException.Token( ConfigurationException.Token.RECURSION_LIMIT,
-                                                        null, var, source, line );
+            if (depth == 0) {
+                throw new ConfigurationException.Token(ConfigurationException.Token.RECURSION_LIMIT,
+                        null, var, source, line);
             }
 
-            newArgs.add( arg );
+            newArgs.add(arg);
         }
         return newArgs;
     }
@@ -334,17 +318,11 @@ public final class ConfigurationBuffer
     {
         assert isChildConfig( prefix ) : "coding error: " + prefix + " is not a child configuration object.";
 
-        for (Iterator<Map.Entry<String, List>> it = child.varMap.entrySet().iterator(); it.hasNext();)
-        {
-            Map.Entry<String, List> e = it.next();
-
-            varMap.put( prefix + "." + e.getKey(), e.getValue() );
+        for (Map.Entry<String, List> e : child.varMap.entrySet()) {
+            varMap.put(prefix + "." + e.getKey(), e.getValue());
         }
-        for (Iterator<String> it = child.committed.iterator(); it.hasNext();)
-        {
-            String var = it.next();
-
-            committed.add( prefix + "." + var );
+        for (String var : child.committed) {
+            committed.add(prefix + "." + var);
         }
     }
 
@@ -513,57 +491,43 @@ public final class ConfigurationBuffer
 
         // First, find all vars at this level.
         Method methods[] = cfg.getMethods();
-        for (int m = 0; m < methods.length; ++m)
-        {
-            Method method = methods[m];
-
-            if (method.getName().startsWith( SET_PREFIX ))
-            {
+        for (Method method : methods) {
+            if (method.getName().startsWith(SET_PREFIX)) {
                 Class[] pt = method.getParameterTypes();
 
-                if ((pt.length > 1) && (pt[0] == ConfigurationValue.class))
-                {
+                if ((pt.length > 1) && (pt[0] == ConfigurationValue.class)) {
                     // This is an autoconfiguration setter!
 
-                    ConfigurationInfo info = createInfo( method );
+                    ConfigurationInfo info = createInfo(method);
 
-                    String leafname = c2h( method.getName().substring( SET_PREFIX.length() ) );
-                    String name = varname( leafname, basename );
+                    String leafname = c2h(method.getName().substring(SET_PREFIX.length()));
+                    String name = varname(leafname, basename);
 
-                    if (filter == null || filter.select(name))
-                    {
-                        varCache.put( name, info );
-                        varList.add( name );
-                        if (info.isRequired())
-                        {
-                            requiredList.add( name );
+                    if (filter == null || filter.select(name)) {
+                        varCache.put(name, info);
+                        varList.add(name);
+                        if (info.isRequired()) {
+                            requiredList.add(name);
                         }
-                        ++count;                    	
+                        ++count;
                     }
                 }
             }
         }
 
         // Now find all children.
-        for (int m = 0; m < methods.length; ++m)
-        {
-            Method method = methods[m];
+        for (Method method : methods) {
+            if (method.getName().startsWith(GET_PREFIX)
+                    && method.getName().endsWith(CONFIGURATION_SUFFIX)) {
+                String leafname = c2h(method.getName().substring(GET_PREFIX.length(),
+                        method.getName().length() - CONFIGURATION_SUFFIX.length()));
+                String fullname = varname(leafname, basename);
 
-            if (method.getName().startsWith( GET_PREFIX )
-                    && method.getName().endsWith( CONFIGURATION_SUFFIX ))
-            {
-                String leafname = c2h( method.getName().substring( GET_PREFIX.length(),
-                                                                   method.getName().length() - CONFIGURATION_SUFFIX.length()));
-                String fullname = varname( leafname, basename );
-
-                if (loadCache( method.getReturnType(), fullname, filter ))
-                {
-                    childCache.put( fullname, method.getReturnType() );
+                if (loadCache(method.getReturnType(), fullname, filter)) {
+                    childCache.put(fullname, method.getReturnType());
                     ++count;
                 }
-            }
-            else
-            {
+            } else {
                 continue;
             }
         }
@@ -649,12 +613,9 @@ public final class ConfigurationBuffer
         assert ( config.getClass() == configClass ) : ( "coding error: configuration " + config.getClass() + " != template " + configClass );
         Set<String> done = new HashSet<String>();
 
-        for (Iterator<String> vars = varList.iterator(); vars.hasNext(); )
-        {
-            String var = vars.next();
-            if (varMap.containsKey( var ))
-            {
-                commitVariable( config, var, done );
+        for (String var : varList) {
+            if (varMap.containsKey(var)) {
+                commitVariable(config, var, done);
             }
         }
 
@@ -673,13 +634,9 @@ public final class ConfigurationBuffer
             }
         }
 
-        for (Iterator<String> reqs = requiredList.iterator(); reqs.hasNext();)
-        {
-            String req = reqs.next();
-
-            if (!committed.contains( req ))
-            {
-                throw new ConfigurationException.MissingRequirement( req, null, null, -1 );
+        for (String req : requiredList) {
+            if (!committed.contains(req)) {
+                throw new ConfigurationException.MissingRequirement(req, null, null, -1);
             }
         }
     }
@@ -711,40 +668,32 @@ public final class ConfigurationBuffer
         {
             assert ( info.allowMultiple() );   // assumed to have been previously checked
         }
-        for (Iterator valit = vals.iterator(); valit.hasNext();)
-        {
-            ConfigurationValue val = (ConfigurationValue) valit.next();
+        for (Object val1 : vals) {
+            ConfigurationValue val = (ConfigurationValue) val1;
 
-            try
-            {
-                Object targetconfig = getParentConfiguration( config, var );
-                Object[] args = buildArgList( info, val );
+            try {
+                Object targetconfig = getParentConfiguration(config, var);
+                Object[] args = buildArgList(info, val);
 
-                info.getSetterMethod().invoke( targetconfig, args );
+                info.getSetterMethod().invoke(targetconfig, args);
 
                 if (Fcsh.livecodingSession && !cachedStrings) {
                     calculateChecksum(targetconfig, info, var, args);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Throwable t = e;
 
-                if (e instanceof InvocationTargetException)
-                {
-                    t = ((InvocationTargetException)e).getTargetException();
+                if (e instanceof InvocationTargetException) {
+                    t = ((InvocationTargetException) e).getTargetException();
                 }
 
                 if (Trace.error)
                     t.printStackTrace();
 
-                if (t instanceof ConfigurationException)
-                {
-                    throw (ConfigurationException)t;
-                }
-                else
-                {
-                    throw new ConfigurationException.OtherThrowable(t, var, val.getSource(), val.getLine() );
+                if (t instanceof ConfigurationException) {
+                    throw (ConfigurationException) t;
+                } else {
+                    throw new ConfigurationException.OtherThrowable(t, var, val.getSource(), val.getLine());
                 }
             }
         }
@@ -756,39 +705,32 @@ public final class ConfigurationBuffer
 	{
 		if (prerequisites != null)
 		{
-			for (int p = 0; p < prerequisites.length; ++p)
-			{
-				String depvar = prerequisites[p];
+            for (String prerequisite : prerequisites) {
+                String depvar = prerequisite;
 
-				// Dependencies can only go downward.
-				int dot = var.lastIndexOf( '.' );
+                // Dependencies can only go downward.
+                int dot = var.lastIndexOf('.');
 
-				if (dot >= 0)
-				{
-					String car = var.substring( 0, dot );
-					//String cdr = var.substring( dot + 1 );
+                if (dot >= 0) {
+                    String car = var.substring(0, dot);
+                    //String cdr = var.substring( dot + 1 );
 
-					depvar = car + "." + depvar;
-				}
+                    depvar = car + "." + depvar;
+                }
 
-				if (!done.contains( depvar ))
-				{
-					if (!isValidVar( depvar ))
-					{
-						assert false : ( "invalid " + var + " dependency " + depvar );
-						continue;
-					}
-					if (varMap.containsKey( depvar ))
-					{
-						commitVariable( config, depvar, done );
-					}
-					else if (required && !committed.contains( depvar ))
-					{
+                if (!done.contains(depvar)) {
+                    if (!isValidVar(depvar)) {
+                        assert false : ("invalid " + var + " dependency " + depvar);
+                        continue;
+                    }
+                    if (varMap.containsKey(depvar)) {
+                        commitVariable(config, depvar, done);
+                    } else if (required && !committed.contains(depvar)) {
                         // FIXME - can we get source/line for this?
                         throw new ConfigurationException.MissingRequirement(depvar, var, null, -1);
-					}
-				}
-			}
+                    }
+                }
+            }
 		}
 	}
 
@@ -839,8 +781,7 @@ public final class ConfigurationBuffer
         String[] sa = new String[args.size()];
 
         int i = 0;
-        for (Iterator<String> it = args.iterator(); it.hasNext();)
-            sa[i++] = it.next();
+        for (String arg : args) sa[i++] = arg;
 
         return sa;
     }
@@ -926,9 +867,8 @@ public final class ConfigurationBuffer
 
         Field[] fields = c.getFields();
 
-        for (int f = 0; f < fields.length; ++f)
-        {
-            if (!isSupportedSimpleType( fields[f].getType() ))
+        for (Field field : fields) {
+            if (!isSupportedSimpleType(field.getType()))
                 return false;
         }
         return true;
@@ -1111,14 +1051,13 @@ public final class ConfigurationBuffer
             return null;
 
         List<ConfigurationValue> dstList = new LinkedList<ConfigurationValue>();
-        for (Iterator it = srcList.iterator(); it.hasNext();)
-        {
-			ConfigurationValue srcVal = (ConfigurationValue) it.next();
+        for (Object aSrcList : srcList) {
+            ConfigurationValue srcVal = (ConfigurationValue) aSrcList;
             List<String> args = processValues(avar, srcVal.getArgs(), srcVal.getSource(), srcVal.getLine());
 
-            ConfigurationValue dstVal = new ConfigurationValue( srcVal.getBuffer(), avar, args, srcVal.getSource(), srcVal.getLine(), srcVal.getContext());
-            dstList.add( dstVal );
-		}
+            ConfigurationValue dstVal = new ConfigurationValue(srcVal.getBuffer(), avar, args, srcVal.getSource(), srcVal.getLine(), srcVal.getContext());
+            dstList.add(dstVal);
+        }
 		return dstList;
 	}
 
@@ -1197,22 +1136,20 @@ public final class ConfigurationBuffer
 			if (args[i] instanceof Object[])
 			{
 				Object[] a = (Object[]) args[i];
-				for (int j = 0; j < a.length; j++)
-				{
-					if (info.doChecksum())
-						compile_checksum.append(a[j]);
-					link_checksum.append(a[j]);
-				}
+                for (Object anA : a) {
+                    if (info.doChecksum())
+                        compile_checksum.append(anA);
+                    link_checksum.append(anA);
+                }
 			}
 			else if (args[i] instanceof List)
 			{
 				List l = (List) args[i];
-				for (int j = 0; j < l.size(); j++)
-				{
-					if (info.doChecksum())
-						compile_checksum.append(l.get(j));
-					link_checksum.append(l.get(j));
-				}
+                for (Object aL : l) {
+                    if (info.doChecksum())
+                        compile_checksum.append(aL);
+                    link_checksum.append(aL);
+                }
 			}
 			else
 			{
@@ -1294,10 +1231,9 @@ public final class ConfigurationBuffer
 		int checksum = 0;
 
         //TODO Better checksum algorithm
-		for (int i = 0; i < b.length; i++)
-		{
-			checksum += b[i];
-		}
+        for (byte aB : b) {
+            checksum += aB;
+        }
 
 		return checksum;
 	}

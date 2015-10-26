@@ -29,9 +29,7 @@ public final class Algorithms
 		int[] inDegree = new int[g.getVertices().size()];
 		Vertex[] vertices = new Vertex[inDegree.length];
 
-		for (Iterator<Vertex> i = g.getVertices().iterator(); i.hasNext();)
-		{
-			Vertex v = i.next();
+		for (Vertex v : (Iterable<Vertex>) g.getVertices()) {
 			vertices[v.id] = v;
 			inDegree[v.id] = v.inDegrees();
 		}
@@ -56,12 +54,9 @@ public final class Algorithms
 			}
 			if (v.getSuccessors() != null)
 			{
-				for (Iterator<Vertex> i = v.getSuccessors().iterator(); i.hasNext();)
-				{
-					Vertex head = i.next();
+				for (Vertex head : (Iterable<Vertex>) v.getSuccessors()) {
 					inDegree[head.id] -= 1;
-					if (inDegree[head.id] == 0)
-					{
+					if (inDegree[head.id] == 0) {
 						queue.add(head);
 					}
 				}

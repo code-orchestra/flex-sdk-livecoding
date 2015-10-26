@@ -69,9 +69,8 @@ public class ConstantPool extends Action
     {
         StringBuilder sb = new StringBuilder();
         sb.append("ConstantPool[ pool = { ");
-        for (int i = 0; i < pool.length; i++)
-        {
-            sb.append(pool[i]);
+        for (String aPool : pool) {
+            sb.append(aPool);
             sb.append(", ");
         }
         sb.append("} ]");

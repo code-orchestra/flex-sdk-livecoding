@@ -626,12 +626,11 @@ public class AbstractSyntaxTreeUtil
     {
         PackageIdentifiersNode packageIdentifiers = null;
 
-        for (int i = 0; i < splitName.length; i++)
-        {
-            assert splitName[i].intern() == splitName[i];
-            IdentifierNode identifier = nodeFactory.identifier(splitName[i], false);
+        for (String aSplitName : splitName) {
+            assert aSplitName.intern() == aSplitName;
+            IdentifierNode identifier = nodeFactory.identifier(aSplitName, false);
             packageIdentifiers = nodeFactory.packageIdentifiers(packageIdentifiers, identifier,
-                                                                isDefinition);
+                    isDefinition);
         }
 
         return nodeFactory.packageName(packageIdentifiers, position);

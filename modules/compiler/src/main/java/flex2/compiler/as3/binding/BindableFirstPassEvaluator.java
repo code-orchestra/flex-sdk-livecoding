@@ -72,33 +72,24 @@ public class BindableFirstPassEvaluator extends GenerativeFirstPassEvaluator
 	public Value evaluate(Context context, ProgramNode programNode)
 	{
         //  first, note any [Managed] classes - need to have these in hand for check below
-        for (Iterator iter = metaData.iterator(); iter.hasNext(); )
-        {
-            MetaDataNode metaDataNode = (MetaDataNode)iter.next();
-            if (StandardDefs.MD_MANAGED.equals(metaDataNode.getId()))
-            {
-                if (metaDataNode.def instanceof ClassDefinitionNode)
-                {
-                    registerManagedClass(metaDataNode.def);
-                }
-            }
-        }
+		for (Object aMetaData1 : metaData) {
+			MetaDataNode metaDataNode = (MetaDataNode) aMetaData1;
+			if (StandardDefs.MD_MANAGED.equals(metaDataNode.getId())) {
+				if (metaDataNode.def instanceof ClassDefinitionNode) {
+					registerManagedClass(metaDataNode.def);
+				}
+			}
+		}
 
         //  now [Bindable] classes - check, then register
-        for (Iterator iter = metaData.iterator(); iter.hasNext(); )
-		{
-			MetaDataNode metaDataNode = (MetaDataNode)iter.next();
-			if (StandardDefs.MD_BINDABLE.equals(metaDataNode.getId()))
-			{
-				if (metaDataNode.def instanceof ClassDefinitionNode)
-				{
-					if (isManagedClass(metaDataNode.def))
-					{
+		for (Object aMetaData : metaData) {
+			MetaDataNode metaDataNode = (MetaDataNode) aMetaData;
+			if (StandardDefs.MD_BINDABLE.equals(metaDataNode.getId())) {
+				if (metaDataNode.def instanceof ClassDefinitionNode) {
+					if (isManagedClass(metaDataNode.def)) {
 						context.localizedWarning2(metaDataNode.pos(), new ClassBindableUnnecessaryOnManagedClass());
-					}
-					else if (getEventName(metaDataNode, context) == null)
-					{
-						registerBindableClass((ClassDefinitionNode)metaDataNode.def);
+					} else if (getEventName(metaDataNode, context) == null) {
+						registerBindableClass((ClassDefinitionNode) metaDataNode.def);
 					}
 				}
 			}

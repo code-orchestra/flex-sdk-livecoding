@@ -92,9 +92,8 @@ public class OverviewsHandler extends DefaultHandler
 				{
 					writer.newLine();
 					writer.write("<packages>");
-					for (Iterator iterator = packages.iterator(); iterator.hasNext();)
-					{
-						PackageInfo info = (PackageInfo)iterator.next();
+					for (Object aPackage : packages) {
+						PackageInfo info = (PackageInfo) aPackage;
 						writer.newLine();
 						writer.write("<package name=\"" + info.name + "\">");
 						writer.newLine();

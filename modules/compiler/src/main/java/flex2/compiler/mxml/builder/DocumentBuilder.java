@@ -200,11 +200,9 @@ public class DocumentBuilder extends ComponentBuilder implements MXMLNamespaces
 			//	TODO add BindingExpression factory functions which set destination stuff up
 			//  immediately, then shift this addImport() into MxmlDocument.addBindingExpression().
 			//
-			for (Iterator iter = document.getBindingExpressions().iterator(); iter.hasNext(); )
-			{
-				BindingExpression bexpr = (BindingExpression)iter.next();
-				document.addImport(bexpr.getDestinationTypeName(), bexpr.getXmlLineNumber());
-			}
+            for (BindingExpression bexpr : document.getBindingExpressions()) {
+                document.addImport(bexpr.getDestinationTypeName(), bexpr.getXmlLineNumber());
+            }
 		}
 	}
 	
@@ -562,16 +560,13 @@ public class DocumentBuilder extends ComponentBuilder implements MXMLNamespaces
     public void postProcessDesignLayers()
     {
     	List<DesignLayerNode> layers = document.getLayerDeclarationNodes();
-    	
-        for (Iterator<DesignLayerNode> i = layers.iterator(); i.hasNext();)
-        {
-        	DesignLayerNode node = i.next();
-        	if (document.getLayerModel(node) == null)
-        	{
-        	    ComponentBuilder builder = new ComponentBuilder(unit, typeTable, mxmlConfiguration, 
-        			document, component, null, null, true, null);
+
+        for (DesignLayerNode node : layers) {
+            if (document.getLayerModel(node) == null) {
+                ComponentBuilder builder = new ComponentBuilder(unit, typeTable, mxmlConfiguration,
+                        document, component, null, null, true, null);
                 node.analyze(builder);
-        	}
+            }
         }
     }
     
@@ -909,20 +904,18 @@ public class DocumentBuilder extends ComponentBuilder implements MXMLNamespaces
         StringBuffer buf = new StringBuffer( 50 );
         buf.append( "[SWF( " );
         boolean more = false;
-        for (Iterator<String> it = varmap.keySet().iterator(); it.hasNext(); )
-        {
-            String var = it.next();
-            Object val = varmap.get( var );
+        for (String var : varmap.keySet()) {
+            Object val = varmap.get(var);
 
             if (more)
-                buf.append( ", " );
+                buf.append(", ");
             else
                 more = true;
 
-            buf.append( var );
-            buf.append( "='" );
-            buf.append( val );
-            buf.append( "'" );
+            buf.append(var);
+            buf.append("='");
+            buf.append(val);
+            buf.append("'");
         }
         buf.append( ")]" );
 

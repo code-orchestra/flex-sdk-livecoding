@@ -1033,32 +1033,23 @@ public class TopLevelClassesGenerator
             apiVersion.appendChild(apiLanguage);
         }
 
-        for (int ix = 0; ix < playerVersion.size(); ix++)
-        {
-            String[] playerVersionArr = playerVersion.get(ix);
+        for (String[] playerVersionArr : playerVersion) {
             StringBuilder versionDescription = new StringBuilder();
 
-            if (playerVersionArr.length > 2)
-            {
-                for (int iy = 2; iy < playerVersionArr.length; iy++)
-                {
-                    if (playerVersionArr[iy] != null && !playerVersionArr[iy].isEmpty() && !"\n".equals(playerVersionArr[iy]))
-                    {
-                        if ((iy != playerVersionArr.length - 1) && !playerVersionArr[iy].matches("\\s"))
-                        {
+            if (playerVersionArr.length > 2) {
+                for (int iy = 2; iy < playerVersionArr.length; iy++) {
+                    if (playerVersionArr[iy] != null && !playerVersionArr[iy].isEmpty() && !"\n".equals(playerVersionArr[iy])) {
+                        if ((iy != playerVersionArr.length - 1) && !playerVersionArr[iy].matches("\\s")) {
                             versionDescription.append(playerVersionArr[iy].replaceAll("\\s", ""));
                             versionDescription.append(" ");
-                        }
-                        else
-                        {
+                        } else {
                             versionDescription.append(playerVersionArr[iy].replaceAll("\\s", ""));
                         }
                     }
                 }
             }
 
-            if (playerVersionArr.length > 1)
-            {
+            if (playerVersionArr.length > 1) {
                 Element apiPlatform = outputObject.createElement("apiPlatform");
                 apiPlatform.setAttribute("name", playerVersionArr[0]);
                 apiPlatform.setAttribute("version", playerVersionArr[1].replaceAll("\\s", ""));
@@ -1067,32 +1058,23 @@ public class TopLevelClassesGenerator
             }
         }
 
-        for (int ix = 0; ix < productVersion.size(); ix++)
-        {
-            String[] productVersionArr = productVersion.get(ix);
+        for (String[] productVersionArr : productVersion) {
             StringBuilder versionDescription = new StringBuilder();
 
-            if (productVersionArr.length > 2)
-            {
-                for (int iy = 2; iy < productVersionArr.length; iy++)
-                {
-                    if (productVersionArr[iy] != null && !productVersionArr[iy].isEmpty() && !"\n".equals(productVersionArr[iy]))
-                    {
-                        if ((iy != productVersionArr.length - 1) && !productVersionArr[iy].matches("\\s"))
-                        {
+            if (productVersionArr.length > 2) {
+                for (int iy = 2; iy < productVersionArr.length; iy++) {
+                    if (productVersionArr[iy] != null && !productVersionArr[iy].isEmpty() && !"\n".equals(productVersionArr[iy])) {
+                        if ((iy != productVersionArr.length - 1) && !productVersionArr[iy].matches("\\s")) {
                             versionDescription.append(productVersionArr[iy].replaceAll("\\s", ""));
                             versionDescription.append(" ");
-                        }
-                        else
-                        {
+                        } else {
                             versionDescription.append(productVersionArr[iy].replaceAll("\\s", ""));
                         }
                     }
                 }
             }
-            
-            if (productVersionArr.length > 1)
-            {
+
+            if (productVersionArr.length > 1) {
                 Element apiTool = outputObject.createElement("apiTool");
                 apiTool.setAttribute("name", productVersionArr[0]);
                 apiTool.setAttribute("version", productVersionArr[1].replaceAll("\\s", ""));
@@ -1101,11 +1083,8 @@ public class TopLevelClassesGenerator
             }
         }
 
-        for (int ix = 0; ix < toolVersion.size(); ix++)
-        {
-            String[] toolVersionArr = toolVersion.get(ix);
-            if (toolVersionArr.length > 1)
-            {
+        for (String[] toolVersionArr : toolVersion) {
+            if (toolVersionArr.length > 1) {
                 Element apiTool = outputObject.createElement("apiTool");
                 apiTool.setAttribute("name", toolVersionArr[0]);
                 apiTool.setAttribute("version", toolVersionArr[1].replaceAll("\\s", ""));
@@ -1535,9 +1514,8 @@ public class TopLevelClassesGenerator
             if (includeExamplesFound)
             {
                 Element detailNode = asDocUtil.getDetailNode(target);
-                for (int ix = 0; ix < includeExamples.size(); ix++)
-                {
-                    detailNode.appendChild(includeExamples.get(ix));
+                for (Element includeExample : includeExamples) {
+                    detailNode.appendChild(includeExample);
                 }
             }
 
@@ -2392,38 +2370,28 @@ public class TopLevelClassesGenerator
                         playerVersionStr = playerVersionStr.replaceAll("\\s+", " ");
 
                         String[] playerVersionArr = playerVersionStr.split(",");
-                        for (int ix = 0; ix < playerVersionArr.length; ix++)
-                        {
-                            String tmpPlayerVersion = playerVersionArr[ix].trim();
+                        for (String aPlayerVersionArr : playerVersionArr) {
+                            String tmpPlayerVersion = aPlayerVersionArr.trim();
                             playerVersion.add(tmpPlayerVersion.split(" "));
                         }
 
-                        for (int ix = 0; ix < playerVersion.size(); ix++)
-                        {
-                            String[] tempPlayerVersionArr = playerVersion.get(ix);
+                        for (String[] tempPlayerVersionArr : playerVersion) {
                             StringBuilder versionDescription = new StringBuilder();
 
-                            if (tempPlayerVersionArr.length > 2)
-                            {
-                                for (int iy = 2; iy < tempPlayerVersionArr.length; iy++)
-                                {
-                                    if (tempPlayerVersionArr[iy] != null && !tempPlayerVersionArr[iy].isEmpty() && !"\n".equals(tempPlayerVersionArr[iy]))
-                                    {
-                                        if ((iy != tempPlayerVersionArr.length - 1) && !tempPlayerVersionArr[iy].matches("\\s"))
-                                        {
+                            if (tempPlayerVersionArr.length > 2) {
+                                for (int iy = 2; iy < tempPlayerVersionArr.length; iy++) {
+                                    if (tempPlayerVersionArr[iy] != null && !tempPlayerVersionArr[iy].isEmpty() && !"\n".equals(tempPlayerVersionArr[iy])) {
+                                        if ((iy != tempPlayerVersionArr.length - 1) && !tempPlayerVersionArr[iy].matches("\\s")) {
                                             versionDescription.append(tempPlayerVersionArr[iy].replaceAll("\\s", ""));
                                             versionDescription.append(" ");
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             versionDescription.append(tempPlayerVersionArr[iy].replaceAll("\\s", ""));
                                         }
                                     }
                                 }
                             }
 
-                            if (tempPlayerVersionArr.length > 1)
-                            {
+                            if (tempPlayerVersionArr.length > 1) {
                                 Element apiPlatform = outputObject.createElement("apiPlatform");
                                 apiPlatform.setAttribute("name", tempPlayerVersionArr[0]);
                                 apiPlatform.setAttribute("version", tempPlayerVersionArr[1].replaceAll("\\s", ""));
@@ -2459,38 +2427,28 @@ public class TopLevelClassesGenerator
                         productVersionStr = productVersionStr.replaceAll("\\s+", " ");
 
                         String[] productVersionArr = productVersionStr.split(",");
-                        for (int ix = 0; ix < productVersionArr.length; ix++)
-                        {
-                            String tmpProductVersion = productVersionArr[ix].trim();
+                        for (String aProductVersionArr : productVersionArr) {
+                            String tmpProductVersion = aProductVersionArr.trim();
                             productVersion.add(tmpProductVersion.split(" "));
                         }
 
-                        for (int ix = 0; ix < productVersion.size(); ix++)
-                        {
-                            String[] tmpProductVersionArr = productVersion.get(ix);
+                        for (String[] tmpProductVersionArr : productVersion) {
                             StringBuilder versionDescription = new StringBuilder();
 
-                            if (tmpProductVersionArr.length > 2)
-                            {
-                                for (int iy = 2; iy < tmpProductVersionArr.length; iy++)
-                                {
-                                    if (tmpProductVersionArr[iy] != null && !tmpProductVersionArr[iy].isEmpty() && !"\n".equals(tmpProductVersionArr[iy]))
-                                    {
-                                        if ((iy != tmpProductVersionArr.length - 1) && !tmpProductVersionArr[iy].matches("\\s"))
-                                        {
+                            if (tmpProductVersionArr.length > 2) {
+                                for (int iy = 2; iy < tmpProductVersionArr.length; iy++) {
+                                    if (tmpProductVersionArr[iy] != null && !tmpProductVersionArr[iy].isEmpty() && !"\n".equals(tmpProductVersionArr[iy])) {
+                                        if ((iy != tmpProductVersionArr.length - 1) && !tmpProductVersionArr[iy].matches("\\s")) {
                                             versionDescription.append(tmpProductVersionArr[iy].replaceAll("\\s", ""));
                                             versionDescription.append(" ");
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             versionDescription.append(tmpProductVersionArr[iy].replaceAll("\\s", ""));
                                         }
                                     }
                                 }
                             }
 
-                            if (tmpProductVersionArr.length > 1)
-                            {
+                            if (tmpProductVersionArr.length > 1) {
                                 Element apiTool = outputObject.createElement("apiTool");
                                 apiTool.setAttribute("name", tmpProductVersionArr[0]);
                                 apiTool.setAttribute("version", tmpProductVersionArr[1].replaceAll("\\s", ""));
@@ -5206,18 +5164,15 @@ public class TopLevelClassesGenerator
             {
                 String[] interfaces = asClass.getInterfaceStr().split(";");
 
-                for (int ix = 0; ix < interfaces.length; ix++)
-                {
+                for (String anInterface : interfaces) {
 
-                    if (interfaces[ix] != null)
-                    {
+                    if (anInterface != null) {
                         Element apiBaseInterface = outputObject.createElement("apiBaseInterface");
-                        apiBaseInterface.setTextContent(interfaces[ix]);
+                        apiBaseInterface.setTextContent(anInterface);
                         defNode.appendChild(apiBaseInterface);
 
-                        AsClass interfaceClass = classTable.get(interfaces[ix]);
-                        if (interfaceClass != null)
-                        {
+                        AsClass interfaceClass = classTable.get(anInterface);
+                        if (interfaceClass != null) {
                             asDocUtil.processAncestorClass(interfaceClass, asClass);
                         }
                     }

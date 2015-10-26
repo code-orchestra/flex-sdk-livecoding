@@ -731,20 +731,17 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
         // outputs a new variable declaration for each variable in a list
         // e.g. 'var a,b,c' => var a; var b; var c
-        for(final Iterator<Node> iter = node.list.items.iterator(); iter.hasNext();)
-        {
-            final VariableBindingNode variableBinding = (VariableBindingNode)iter.next();
+        for (Node item : node.list.items) {
+            final VariableBindingNode variableBinding = (VariableBindingNode) item;
 
             // ATTRIBUTES and KIND
-            if (humanReadable)
-            {
+            if (humanReadable) {
                 out.append(indent());
             }
 
             out.append(NodeMagic.setToString(sortedAttributeSet, " "));
 
-            if (humanReadable)
-            {
+            if (humanReadable) {
                 out.append(" ");
             }
 
@@ -755,20 +752,15 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
             // TYPE
             // if there is an annotation...
-            if(variableBinding.variable.no_anno == false)
-            {
-                if (humanReadable)
-                {
+            if (variableBinding.variable.no_anno == false) {
+                if (humanReadable) {
                     out.append(":");
                 }
 
-                if (variableBinding.variable.type != null)
-                {
+                if (variableBinding.variable.type != null) {
                     // :Object
                     variableBinding.variable.type.evaluate(cx, this);
-                }
-                else
-                {
+                } else {
                     // :*
                     out.append(SymbolTable.NOTYPE);
                 }
@@ -790,15 +782,13 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
             // For now, I will, with "=..." -- I might need to sort those with initializers separately.
 
             // INITIALIZER
-            if (variableBinding.initializer != null)
-            {
+            if (variableBinding.initializer != null) {
                 //TODO do I need this at all?
                 out.append("=...");
                 // variableBinding.initializer.evaluate(cx, this);
             }
 
-            if (humanReadable)
-            {
+            if (humanReadable) {
                 out.append(NEWLINE);
             }
         }

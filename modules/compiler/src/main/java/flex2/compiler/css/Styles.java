@@ -81,9 +81,8 @@ public class Styles
 	public void addStyles(Styles styles)
 			throws StyleConflictException
     {
-		for (Iterator i = styles.declMap.entrySet().iterator(); i.hasNext();)
-        {
-			Map.Entry e = (Map.Entry) i.next();
+		for (Map.Entry<String, MetaData> stringMetaDataEntry : styles.declMap.entrySet()) {
+			Map.Entry e = (Map.Entry) stringMetaDataEntry;
 			String name = (String) e.getKey();
 			addStyle(name, (MetaData) e.getValue(), styles.getLocation(name));
 		}

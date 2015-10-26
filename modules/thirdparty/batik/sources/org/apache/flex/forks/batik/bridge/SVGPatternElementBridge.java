@@ -309,9 +309,8 @@ public class SVGPatternElementBridge extends AnimatableGenericSVGBridge
      * @param urls the list of ParsedURLs
      * @param key the url to search for */
     private static boolean contains(List urls, ParsedURL key) {
-        Iterator iter = urls.iterator();
-        while (iter.hasNext()) {
-            if (key.equals(iter.next()))
+        for (Object url : urls) {
+            if (key.equals(url))
                 return true;
         }
         return false;

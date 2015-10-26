@@ -1036,9 +1036,8 @@ public class WMFPainter extends AbstractWMFPainter {
     /** Just to be consistent with PolyPolygon filling.
      */
     private void drawPolyPolygon(Graphics2D g2d, List pols) {
-        Iterator it = pols.iterator();
-        while (it.hasNext()) {
-            Polygon2D pol = (Polygon2D)(it.next());
+        for (Object pol1 : pols) {
+            Polygon2D pol = (Polygon2D) (pol1);
             g2d.draw(pol);
         }
     }

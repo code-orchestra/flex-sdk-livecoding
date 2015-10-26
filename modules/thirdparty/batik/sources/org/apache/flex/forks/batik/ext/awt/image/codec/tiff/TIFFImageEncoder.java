@@ -709,9 +709,8 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         TIFFField[] extraFields = encodeParam.getExtraFields();
         if(extraFields != null) {
             List extantTags = new ArrayList(fields.size());
-            Iterator fieldIter = fields.iterator();
-            while(fieldIter.hasNext()) {
-                TIFFField fld = (TIFFField)fieldIter.next();
+            for (Object field : fields) {
+                TIFFField fld = (TIFFField) field;
                 extantTags.add(fld.getTag());
             }
 
@@ -1345,16 +1344,15 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         int dirSize = 2 + numEntries*12 + 4;
 
         // Loop over fields adding the size of all values > 4 bytes.
-        Iterator iter = fields.iterator();
-        while(iter.hasNext()) {
+        for (Object field1 : fields) {
             // Get the field.
-            TIFFField field = (TIFFField)iter.next();
+            TIFFField field = (TIFFField) field1;
 
             // Determine the size of the field value.
-            int valueSize = field.getCount()*sizeOfType[field.getType()];
+            int valueSize = field.getCount() * sizeOfType[field.getType()];
 
             // Add any excess size.
-            if(valueSize > 4) {
+            if (valueSize > 4) {
                 dirSize += valueSize;
             }
         }
@@ -1390,11 +1388,10 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         // Write number of fields in the IFD
         writeUnsignedShort(numEntries);
 
-        Iterator iter = fields.iterator();
-        while(iter.hasNext()) {
+        for (Object field1 : fields) {
 
             // 12 byte field entry TIFFField
-            TIFFField field = (TIFFField)iter.next();
+            TIFFField field = (TIFFField) field1;
 
             // byte 0-1 Tag that identifies a field
             int tag = field.getTag();

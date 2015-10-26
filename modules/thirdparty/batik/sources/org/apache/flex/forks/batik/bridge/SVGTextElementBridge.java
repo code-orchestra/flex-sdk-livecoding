@@ -1030,11 +1030,10 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                 strippedSome = true;
             }
             if (strippedSome) {
-                Iterator iter = elemTPI.values().iterator();
-                while (iter.hasNext()) {
-                    TextPaintInfo tpi = (TextPaintInfo)iter.next();
+                for (Object o1 : elemTPI.values()) {
+                    TextPaintInfo tpi = (TextPaintInfo) o1;
                     if (tpi.endChar >= asb.length()) {
-                        tpi.endChar = asb.length()-1;
+                        tpi.endChar = asb.length() - 1;
                         if (tpi.startChar > tpi.endChar)
                             tpi.startChar = tpi.endChar;
                     }
@@ -1232,9 +1231,8 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
             }
 
             StringBuffer sb = new StringBuffer( strings.size() * 5 );
-            Iterator it = strings.iterator();
-            while (it.hasNext()) {
-                sb.append((String)it.next());
+            for (Object string : strings) {
+                sb.append((String) string);
             }
 
             AttributedString result = new AttributedString(sb.toString());
@@ -1270,9 +1268,8 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
             }
 
             StringBuffer sb = new StringBuffer( strings.size() * 5 );
-            Iterator it = strings.iterator();
-            while (it.hasNext()) {
-                sb.append((String)it.next());
+            for (Object string : strings) {
+                sb.append((String) string);
             }
             return sb.toString();
         }

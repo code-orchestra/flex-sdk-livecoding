@@ -507,16 +507,15 @@ public class OutputManager {
                 printCharacter(ai.delimiter);
             }
         } else {
-            Iterator it = attributes.iterator();
-            while (it.hasNext()) {
-                AttributeInfo ai = (AttributeInfo)it.next();
+            for (Object attribute : attributes) {
+                AttributeInfo ai = (AttributeInfo) attribute;
 
                 if (ai.isAttribute("xml:space")) {
                     xmlSpace.set(0, (ai.value.equals("preserve")
-                                     ? Boolean.TRUE
-                                     : Boolean.FALSE));
+                            ? Boolean.TRUE
+                            : Boolean.FALSE));
                 }
-            
+
                 printSpaces(ai.space, false);
                 printCharacters(ai.name);
 

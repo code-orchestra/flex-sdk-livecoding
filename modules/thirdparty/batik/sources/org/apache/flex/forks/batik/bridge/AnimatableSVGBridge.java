@@ -87,10 +87,9 @@ public abstract class AnimatableSVGBridge
         if (targetListeners != null) {
             LinkedList ll = (LinkedList) targetListeners.get(pn);
             if (ll != null) {
-                Iterator it = ll.iterator();
-                while (it.hasNext()) {
+                for (Object aLl : ll) {
                     AnimationTargetListener l =
-                        (AnimationTargetListener) it.next();
+                            (AnimationTargetListener) aLl;
                     l.baseValueChanged((AnimationTarget) e, null, pn, true);
                 }
             }

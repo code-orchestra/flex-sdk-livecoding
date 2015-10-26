@@ -66,9 +66,8 @@ public class GlyfCompositeDescript extends GlyfDescript {
         int firstIndex = 0;
         int firstContour = 0;
 
-        Iterator i = components.iterator();
-        while (i.hasNext()) {
-            GlyfCompositeComp comp = (GlyfCompositeComp)i.next();
+        for (Object component : components) {
+            GlyfCompositeComp comp = (GlyfCompositeComp) component;
             comp.setFirstIndex(firstIndex);
             comp.setFirstContour(firstContour);
 
@@ -76,7 +75,7 @@ public class GlyfCompositeDescript extends GlyfDescript {
             desc = parentTable.getDescription(comp.getGlyphIndex());
             if (desc != null) {
                 desc.resolve();
-                firstIndex   += desc.getPointCount();
+                firstIndex += desc.getPointCount();
                 firstContour += desc.getContourCount();
             }
         }

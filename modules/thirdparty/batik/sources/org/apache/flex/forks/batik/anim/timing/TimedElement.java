@@ -606,16 +606,15 @@ public abstract class TimedElement implements SMILConstants {
 
         // First, process any events that occurred since the last sampling,
         // taking into account event sensitivity.
-        Iterator i = handledEvents.entrySet().iterator();
-        while (i.hasNext()) {
-            Map.Entry e = (Map.Entry) i.next();
+        for (Object o : handledEvents.entrySet()) {
+            Map.Entry e = (Map.Entry) o;
             Event evt = (Event) e.getKey();
             Set ts = (Set) e.getValue();
             Iterator j = ts.iterator();
             boolean hasBegin = false, hasEnd = false;
             while (j.hasNext() && !(hasBegin && hasEnd)) {
                 EventLikeTimingSpecifier t =
-                    (EventLikeTimingSpecifier) j.next();
+                        (EventLikeTimingSpecifier) j.next();
                 if (t.isBegin()) {
                     hasBegin = true;
                 } else {
@@ -627,7 +626,7 @@ public abstract class TimedElement implements SMILConstants {
                 useBegin = !isActive || restartMode == RESTART_ALWAYS;
                 useEnd = !useBegin;
             } else if (hasBegin && (!isActive ||
-                        restartMode == RESTART_ALWAYS)) {
+                    restartMode == RESTART_ALWAYS)) {
                 useBegin = true;
                 useEnd = false;
             } else if (hasEnd && isActive) {
@@ -639,7 +638,7 @@ public abstract class TimedElement implements SMILConstants {
             j = ts.iterator();
             while (j.hasNext()) {
                 EventLikeTimingSpecifier t =
-                    (EventLikeTimingSpecifier) j.next();
+                        (EventLikeTimingSpecifier) j.next();
                 boolean isBegin = t.isBegin();
                 if (isBegin && useBegin || !isBegin && useEnd) {
                     t.resolve(evt);

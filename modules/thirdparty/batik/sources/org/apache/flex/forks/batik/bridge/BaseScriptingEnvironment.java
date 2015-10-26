@@ -132,9 +132,8 @@ public class BaseScriptingEnvironment {
      */
     public static boolean isDynamicElement
         (Element elt, BridgeContext ctx, List bridgeExtensions) {
-        Iterator i = bridgeExtensions.iterator();
-        while (i.hasNext()) {
-            BridgeExtension bridgeExtension = (BridgeExtension) i.next();
+        for (Object bridgeExtension1 : bridgeExtensions) {
+            BridgeExtension bridgeExtension = (BridgeExtension) bridgeExtension1;
             if (bridgeExtension.isDynamicElement(elt)) {
                 return true;
             }

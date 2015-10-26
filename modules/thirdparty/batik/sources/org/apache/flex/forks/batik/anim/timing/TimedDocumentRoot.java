@@ -221,9 +221,8 @@ public abstract class TimedDocumentRoot extends TimeContainer {
      * timegraph listeners.
      */
     void fireElementAdded(TimedElement e) {
-        Iterator i = listeners.iterator();
-        while (i.hasNext()) {
-            ((TimegraphListener) i.next()).elementAdded(e);
+        for (Object listener : listeners) {
+            ((TimegraphListener) listener).elementAdded(e);
         }
     }
 
@@ -232,9 +231,8 @@ public abstract class TimedDocumentRoot extends TimeContainer {
      * timegraph listeners.
      */
     void fireElementRemoved(TimedElement e) {
-        Iterator i = listeners.iterator();
-        while (i.hasNext()) {
-            ((TimegraphListener) i.next()).elementRemoved(e);
+        for (Object listener : listeners) {
+            ((TimegraphListener) listener).elementRemoved(e);
         }
     }
 

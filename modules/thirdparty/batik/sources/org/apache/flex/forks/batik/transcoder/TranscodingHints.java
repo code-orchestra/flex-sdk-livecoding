@@ -129,9 +129,8 @@ public class TranscodingHints extends HashMap {
         if (m instanceof TranscodingHints) {
             putAll(((TranscodingHints) m));
         } else {
-            Iterator iter = m.entrySet().iterator();
-            while (iter.hasNext()) {
-                Map.Entry entry = (Map.Entry) iter.next();
+            for (Object o : m.entrySet()) {
+                Entry entry = (Entry) o;
                 put(entry.getKey(), entry.getValue());
             }
         }

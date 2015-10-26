@@ -587,12 +587,9 @@ abstract class SourcePathBase
     public String toString()
     {
         StringBuilder buffer = new StringBuilder("SourcePath: \n");
-		Iterator<Source> iterator = sources.values().iterator();
 
-        while (iterator.hasNext())
-		{
-            Source source = iterator.next();
-            buffer.append("\tsource = ").append(source).append(", cu = ").append(source.getCompilationUnit()).append("\n");
+		for (Source source : sources.values()) {
+			buffer.append("\tsource = ").append(source).append(", cu = ").append(source.getCompilationUnit()).append("\n");
 		}
 
         return buffer.toString();

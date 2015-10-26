@@ -161,13 +161,9 @@ abstract class Info
 
         if (functions != null)
         {
-            Iterator<QName> iterator = functions.iterator();
 
-            while ( iterator.hasNext() )
-            {
-                QName qName = iterator.next();
-                if ( functionName.equals( qName.getLocalPart() ) )
-                {
+            for (QName qName : functions) {
+                if (functionName.equals(qName.getLocalPart())) {
                     result = true;
                 }
             }
@@ -182,13 +178,9 @@ abstract class Info
 
         if (getters != null)
         {
-            Iterator<QName> iterator = getters.iterator();
 
-            while ( iterator.hasNext() )
-            {
-                QName qName = iterator.next();
-                if ( getterName.equals( qName.getLocalPart() ) )
-                {
+            for (QName qName : getters) {
+                if (getterName.equals(qName.getLocalPart())) {
                     result = true;
                 }
             }
@@ -203,13 +195,9 @@ abstract class Info
 
         if (setters != null)
         {
-            Iterator<QName> iterator = setters.iterator();
 
-            while ( iterator.hasNext() )
-            {
-                QName qName = iterator.next();
-                if ( setterName.equals( qName.getLocalPart() ) )
-                {
+            for (QName qName : setters) {
+                if (setterName.equals(qName.getLocalPart())) {
                     result = true;
                 }
             }
@@ -236,12 +224,8 @@ abstract class Info
 
             if (interfaceNames != null)
             {
-                Iterator<String> iterator = interfaceNames.iterator();
 
-                while ( iterator.hasNext() )
-                {
-                    String interfaceName = iterator.next();
-
+                for (String interfaceName : interfaceNames) {
                     MultiName interfaceMultiName = getMultiName(interfaceName);
 
                     interfaceMultiNames.add(interfaceMultiName);
@@ -301,22 +285,13 @@ abstract class Info
 
         if (interfaceInfoList != null)
         {
-            Iterator<InterfaceInfo> iterator = interfaceInfoList.iterator();
 
-            while ( iterator.hasNext() )
-            {
-                InterfaceInfo interfaceInfo = iterator.next();
-
-                if (interfaceInfo.getInterfaceName().equals(namespace + ":" + interfaceName))
-                {
+            for (InterfaceInfo interfaceInfo : interfaceInfoList) {
+                if (interfaceInfo.getInterfaceName().equals(namespace + ":" + interfaceName)) {
                     result = true;
-                }
-                else if (interfaceInfo.extendsInterface(namespace, interfaceName))
-                {
+                } else if (interfaceInfo.extendsInterface(namespace, interfaceName)) {
                     result = true;
-                }
-                else if (interfaceInfo.implementsInterface(namespace, interfaceName))
-                {
+                } else if (interfaceInfo.implementsInterface(namespace, interfaceName)) {
                     result = true;
                 }
             }

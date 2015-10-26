@@ -115,15 +115,10 @@ public class CodeFragmentsInputBuffer extends InputBuffer
 
         if (pos != -1)
         {
-            Iterator<CodeFragment> iterator = codeFragments.iterator();
 
-            while (iterator.hasNext())
-            {
-                CodeFragment codeFragment = iterator.next();
-            
+            for (CodeFragment codeFragment : codeFragments) {
                 if ((codeFragment.startPosition <= pos) &&
-                    (pos < codeFragment.endPosition))
-                {
+                        (pos < codeFragment.endPosition)) {
                     result = codeFragment;
                     break;
                 }

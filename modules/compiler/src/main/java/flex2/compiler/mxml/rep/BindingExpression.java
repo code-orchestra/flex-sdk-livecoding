@@ -626,17 +626,14 @@ public class BindingExpression implements Comparable<BindingExpression>
     {
         String repeatableSourceExpression = sourceExpression;
         List repeaterParents = destination.getRepeaterParents();
-        Iterator iterator = repeaterParents.iterator();
 
-        while ( iterator.hasNext() )
-        {
-            Model repeater = (Model) iterator.next();
+        for (Object repeaterParent : repeaterParents) {
+            Model repeater = (Model) repeaterParent;
             int repeaterLevel = repeater.getRepeaterLevel();
             StringBuilder buffer = new StringBuilder();
             int i;
 
-            for (i = 0; i < repeaterLevel; i++)
-            {
+            for (i = 0; i < repeaterLevel; i++) {
                 buffer.append("[instanceIndices[");
                 buffer.append(i);
                 buffer.append("]]");
@@ -647,10 +644,10 @@ public class BindingExpression implements Comparable<BindingExpression>
             buffer.append("])");
 
             repeatableSourceExpression = repeatableSourceExpression.replaceAll(repeater.getId() + "\\.currentItem",
-                                                                               repeater.getId() + buffer.toString());
+                    repeater.getId() + buffer.toString());
 
             repeatableSourceExpression = repeatableSourceExpression.replaceAll(repeater.getId() + "\\.currentIndex",
-                                                                               "repeaterIndices[" + i + "]");
+                    "repeaterIndices[" + i + "]");
         }
 
         return repeatableSourceExpression;

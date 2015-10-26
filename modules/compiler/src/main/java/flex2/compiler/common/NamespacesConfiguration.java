@@ -65,16 +65,10 @@ public class NamespacesConfiguration
         {
             List<VirtualFile> fileList = new ArrayList<VirtualFile>();
 
-            Iterator<List<VirtualFile>> iterator = manifestMappings.values().iterator();
-            while (iterator.hasNext())
-            {
-                List<VirtualFile> files = iterator.next();
-                if (files != null)
-                {
-                    Iterator<VirtualFile> f = files.iterator();
-                    while ( f.hasNext())
-                    {
-                        fileList.add(f.next());
+            for (List<VirtualFile> files : manifestMappings.values()) {
+                if (files != null) {
+                    for (VirtualFile file : files) {
+                        fileList.add(file);
                     }
                 }
             }

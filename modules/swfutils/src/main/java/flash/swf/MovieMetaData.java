@@ -546,10 +546,8 @@ public final class MovieMetaData extends TagHandler
 	{
 		if (actions != null)
 		{
-			Iterator it = actions.clipActionRecords.iterator();
-			while (it.hasNext())
-			{
-				ClipActionRecord record = (ClipActionRecord) it.next();
+			for (Object clipActionRecord : actions.clipActionRecords) {
+				ClipActionRecord record = (ClipActionRecord) clipActionRecord;
 				collectActions(record.actionList);
 			}
 		}

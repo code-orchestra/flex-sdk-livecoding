@@ -194,13 +194,9 @@ public class ClassInfo extends Info
 
         if (variables != null)
         {
-            Iterator<QName> iterator = variables.iterator();
 
-            while ( iterator.hasNext() )
-            {
-                QName qName = iterator.next();
-                if ( variableName.equals( qName.getLocalPart() ) )
-                {
+            for (QName qName : variables) {
+                if (variableName.equals(qName.getLocalPart())) {
                     result = true;
                 }
             }

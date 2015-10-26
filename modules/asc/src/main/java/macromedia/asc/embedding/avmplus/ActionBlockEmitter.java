@@ -2660,13 +2660,10 @@ public class ActionBlockEmitter extends Emitter
         if( metadata != null && metadata.size() > 0 )
         {
             metaDataIndices = new IntList(metadata.size());
-            Iterator<MetaData> it = metadata.iterator();
-            while( it.hasNext() )
-            {
-                MetaData entry = it.next();
+            for (MetaData entry : metadata) {
                 String id = entry.id;
                 Value[] values = entry.values;
-                int metaDataIndex = addMetadataInfo(id, values) ;
+                int metaDataIndex = addMetadataInfo(id, values);
                 metaDataIndices.add(metaDataIndex);
             }
         }

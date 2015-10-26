@@ -5277,45 +5277,34 @@ public class TopLevelClassesGenerator
     {
 
         Collection<AsClass> classes = classTable.values();
-        Iterator<AsClass> classIterator = classes.iterator();
-        while (classIterator.hasNext())
-        {
-            AsClass asClass = classIterator.next();
-            if (verbose)
-            {
+        for (AsClass asClass : classes) {
+            if (verbose) {
                 System.out.println("assembling " + asClass.getFullName());
             }
 
-            if (asClass.getNode() == null)
-            {
+            if (asClass.getNode() == null) {
                 continue;
             }
 
             // assign unique ids if we have more then one constructor
-            if (asClass.getConstructorCount() > 1)
-            {
+            if (asClass.getConstructorCount() > 1) {
                 NodeList apiConstructorList = asClass.getConstructors().getElementsByTagName("apiConstructor");
 
-                if (apiConstructorList != null && apiConstructorList.getLength() != 0)
-                {
-                    for (int ix = 0; ix < apiConstructorList.getLength(); ix++)
-                    {
-                        Element apiConstructor = (Element)apiConstructorList.item(ix);
+                if (apiConstructorList != null && apiConstructorList.getLength() != 0) {
+                    for (int ix = 0; ix < apiConstructorList.getLength(); ix++) {
+                        Element apiConstructor = (Element) apiConstructorList.item(ix);
                         apiConstructor.setAttribute("id", apiConstructor.getAttribute("id") + "_" + ix);
 
                     }
                 }
             }
 
-            if (asClass.getConstructorCount() > 0)
-            {
+            if (asClass.getConstructorCount() > 0) {
                 NodeList apiConstructorList = asClass.getConstructors().getElementsByTagName("apiConstructor");
 
-                if (apiConstructorList != null && apiConstructorList.getLength() != 0)
-                {
-                    for (int ix = 0; ix < apiConstructorList.getLength(); ix++)
-                    {
-                        Element apiConstructor = (Element)apiConstructorList.item(ix);
+                if (apiConstructorList != null && apiConstructorList.getLength() != 0) {
+                    for (int ix = 0; ix < apiConstructorList.getLength(); ix++) {
+                        Element apiConstructor = (Element) apiConstructorList.item(ix);
                         asClass.getNode().appendChild(apiConstructor.cloneNode(true));
                     }
                 }
@@ -5323,28 +5312,23 @@ public class TopLevelClassesGenerator
             }
 
             // if the class has methods then attach them to the class node
-            if (asClass.getMethodCount() > 0)
-            {
+            if (asClass.getMethodCount() > 0) {
                 NodeList apiOperationList = asClass.getMethods().getElementsByTagName("apiOperation");
 
-                if (apiOperationList != null && apiOperationList.getLength() != 0)
-                {
-                    for (int ix = 0; ix < apiOperationList.getLength(); ix++)
-                    {
-                        Element apiOperation = (Element)apiOperationList.item(ix);
+                if (apiOperationList != null && apiOperationList.getLength() != 0) {
+                    for (int ix = 0; ix < apiOperationList.getLength(); ix++) {
+                        Element apiOperation = (Element) apiOperationList.item(ix);
                         asClass.getNode().appendChild(apiOperation.cloneNode(true));
                     }
                 }
             }
 
             // if the class has fields then attach them to the class node
-            if (asClass.getFieldCount() > 0)
-            {
+            if (asClass.getFieldCount() > 0) {
 
                 NodeList apiValueList = asClass.getFields().getElementsByTagName("apiValue");
 
-                if (apiValueList != null && apiValueList.getLength() != 0)
-                {
+                if (apiValueList != null && apiValueList.getLength() != 0) {
 
                     // special post-process necessary to denote read-only or
                     // write-only properties
@@ -5352,15 +5336,13 @@ public class TopLevelClassesGenerator
                     // Only then can you be
                     // sure that you found a getter but not a setter or visa
                     // versa
-                    for (int ix = 0; ix < apiValueList.getLength(); ix++)
-                    {
+                    for (int ix = 0; ix < apiValueList.getLength(); ix++) {
 
-                        Element apiValue = (Element)apiValueList.item(ix);
+                        Element apiValue = (Element) apiValueList.item(ix);
                         Element apiName = asDocUtil.getElementByTagName(apiValue, "apiName");
 
                         Integer val = asClass.getFieldGetSet().get(apiName.getTextContent());
-                        if (val == null)
-                        {
+                        if (val == null) {
                             asClass.getNode().appendChild(apiValue.cloneNode(true));
                             // probably a normal field.
                             continue;
@@ -5376,29 +5358,22 @@ public class TopLevelClassesGenerator
                         Element apiValueAccess = null;
 
                         apiValueDetail = asDocUtil.getElementByTagName(apiValue, "apiValueDetail");
-                        if (apiValueDetail != null)
-                        {
+                        if (apiValueDetail != null) {
                             apiValueDef = asDocUtil.getElementByTagName(apiValueDetail, "apiValueDef");
-                            if (apiValueDef != null)
-                            {
+                            if (apiValueDef != null) {
                                 apiValueAccess = asDocUtil.getElementByTagName(apiValueDef, "apiValueAccess");
-                                if (apiValueAccess == null)
-                                {
+                                if (apiValueAccess == null) {
                                     apiValueAccess = outputObject.createElement("apiValueAccess");
                                     apiValueDef.appendChild(apiValueAccess);
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 apiValueAccess = outputObject.createElement("apiValueAccess");
                                 apiValueDef = outputObject.createElement("apiValueDef");
 
                                 apiValueDef.appendChild(apiValueAccess);
                                 apiValueDetail.appendChild(apiValueDef);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             apiValueAccess = outputObject.createElement("apiValueAccess");
                             apiValueDef = outputObject.createElement("apiValueDef");
                             apiValueDetail = outputObject.createElement("apiValueDetail");
@@ -5408,16 +5383,11 @@ public class TopLevelClassesGenerator
                             apiValue.appendChild(apiValueDetail);
                         }
 
-                        if (val == 1)
-                        {
+                        if (val == 1) {
                             apiValueAccess.setAttribute("value", "read");
-                        }
-                        else if (val == 2)
-                        {
+                        } else if (val == 2) {
                             apiValueAccess.setAttribute("value", "write");
-                        }
-                        else if (val == 3)
-                        {
+                        } else if (val == 3) {
                             apiValueAccess.setAttribute("value", "readwrite");
                         }
                         asClass.getNode().appendChild(apiValue.cloneNode(true));
@@ -5472,15 +5442,10 @@ public class TopLevelClassesGenerator
         Element packages = outputObject.createElement("packages");
 
         Set<String> keySet = packageContentsTable.keySet();
-        Iterator<String> keyIterator = keySet.iterator();
-        while (keyIterator.hasNext())
-        {
-            String key = keyIterator.next();
-
+        for (String key : keySet) {
             Element packageElement = packageTable.get(key); // use asDoc comment for package, if available.
 
-            if (packageElement == null)
-            {
+            if (packageElement == null) {
                 String packageName = key.replaceAll("\\$", "_");
                 packageElement = outputObject.createElement("apiPackage");
                 packageElement.setAttribute("id", packageName);
@@ -5492,37 +5457,30 @@ public class TopLevelClassesGenerator
             }
 
             NodeList privateChilds = packageElement.getElementsByTagName("private");
-            if ((privateChilds != null && privateChilds.getLength() != 0) || asDocUtil.hidePackage(key, hiddenPackages))
-            {
+            if ((privateChilds != null && privateChilds.getLength() != 0) || asDocUtil.hidePackage(key, hiddenPackages)) {
                 continue;
             }
 
-            if (!key.isEmpty())
-            {
+            if (!key.isEmpty()) {
                 packageContents = packageContentsTable.get(key);
 
                 classes = packageContents.values();
                 classIterator = classes.iterator();
-                while (classIterator.hasNext())
-                {
+                while (classIterator.hasNext()) {
                     AsClass asClass = classIterator.next();
-                    if (verbose)
-                    {
+                    if (verbose) {
                         System.out.println("post-processing class " + asClass.getName() + " in package " + key);
                     }
 
                     // if its the fake class created to hold top level methods
                     // and fields of a package
-                    if (asClass.getName().charAt(0) == '$' && asClass.getName().charAt(1) == '$')
-                    { // add the fake class's list of methods/fields to the
+                    if (asClass.getName().charAt(0) == '$' && asClass.getName().charAt(1) == '$') { // add the fake class's list of methods/fields to the
                         // package
                         NodeList childrenOfNode = asClass.getNode().getElementsByTagName("apiOperation");
 
-                        if (childrenOfNode != null && childrenOfNode.getLength() != 0)
-                        {
-                            for (int ix = 0; ix < childrenOfNode.getLength(); ix++)
-                            {
-                                Element apiOperation = (Element)childrenOfNode.item(ix);
+                        if (childrenOfNode != null && childrenOfNode.getLength() != 0) {
+                            for (int ix = 0; ix < childrenOfNode.getLength(); ix++) {
+                                Element apiOperation = (Element) childrenOfNode.item(ix);
                                 apiOperation.setAttribute("id", "globalOperation:" + apiOperation.getAttribute("id"));
                                 packageElement.appendChild(apiOperation.cloneNode(true));
                             }
@@ -5530,23 +5488,17 @@ public class TopLevelClassesGenerator
 
                         childrenOfNode = asClass.getNode().getElementsByTagName("apiValue");
 
-                        if (childrenOfNode != null && childrenOfNode.getLength() != 0)
-                        {
-                            for (int ix = 0; ix < childrenOfNode.getLength(); ix++)
-                            {
-                                Element apiValue = (Element)childrenOfNode.item(ix);
+                        if (childrenOfNode != null && childrenOfNode.getLength() != 0) {
+                            for (int ix = 0; ix < childrenOfNode.getLength(); ix++) {
+                                Element apiValue = (Element) childrenOfNode.item(ix);
                                 apiValue.setAttribute("id", "globalValue:" + apiValue.getAttribute("id"));
                                 packageElement.appendChild(apiValue.cloneNode(true));
                             }
                         }
-                    }
-                    else if (!asClass.isInnerClass())
-                    {
+                    } else if (!asClass.isInnerClass()) {
                         Element apiAccess = asDocUtil.getElementByTagName(asClass.getNode(), "apiAccess");
-                        if (apiAccess != null)
-                        {
-                            if (!apiAccess.getAttribute("value").equals("private") || includePrivate)
-                            {
+                        if (apiAccess != null) {
+                            if (!apiAccess.getAttribute("value").equals("private") || includePrivate) {
                                 packageElement.appendChild(asClass.getNode());
                             }
                         }
@@ -5558,16 +5510,11 @@ public class TopLevelClassesGenerator
             NodeList apiValueList = packageElement.getElementsByTagName("apiValue");
             NodeList apiOperationList = packageElement.getElementsByTagName("apiOperation");
 
-            if (apiClassifierList != null && apiClassifierList.getLength() != 0)
-            {
+            if (apiClassifierList != null && apiClassifierList.getLength() != 0) {
                 packages.appendChild(packageElement);
-            }
-            else if (apiValueList != null && apiValueList.getLength() != 0)
-            {
+            } else if (apiValueList != null && apiValueList.getLength() != 0) {
                 packages.appendChild(packageElement);
-            }
-            else if (apiOperationList != null && apiOperationList.getLength() != 0)
-            {
+            } else if (apiOperationList != null && apiOperationList.getLength() != 0) {
                 packages.appendChild(packageElement);
             }
         }

@@ -26,14 +26,15 @@ import flex2.compiler.as3.BytecodeEmitter;
 import flex2.compiler.mxml.lang.FrameworkDefs;
 import flex2.compiler.mxml.rep.DocumentInfo;
 import flex2.compiler.mxml.rep.VariableDeclaration;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
 import macromedia.asc.embedding.ConfigVar;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.ContextStatics;
 import macromedia.asc.util.ObjectList;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * This class handles the direct AST generation for the first pass
@@ -81,11 +82,8 @@ public class InterfaceGenerator extends AbstractGenerator
     private Set<String> createInterfaceNames()
     {
         Set<String> result = new TreeSet<String>();
-        Iterator iterator = docInfo.getInterfaceNames().iterator();
 
-        while (iterator.hasNext())
-        {
-            DocumentInfo.NameInfo interfaceName = (DocumentInfo.NameInfo) iterator.next();
+        for (DocumentInfo.NameInfo interfaceName : docInfo.getInterfaceNames()) {
             result.add(interfaceName.getName());
         }
 
@@ -138,29 +136,18 @@ public class InterfaceGenerator extends AbstractGenerator
     {
         StatementListNode result = statementList;
 
-        Iterator<String[]> splitImportIterator = docInfo.getSplitImportNames().iterator();
-
-        while (splitImportIterator.hasNext())
-        {
-            String[] splitImport = splitImportIterator.next();
+        for (String[] splitImport : docInfo.getSplitImportNames()) {
             ImportDirectiveNode importDirective = AbstractSyntaxTreeUtil.generateImport(context, splitImport);
             result = nodeFactory.statementList(result, importDirective);
         }
 
-        Iterator<DocumentInfo.NameInfo> nameInfoIterator = docInfo.getImportNames().iterator();
-
-        while (nameInfoIterator.hasNext())
-        {
-            String name = nameInfoIterator.next().getName();
+        for (DocumentInfo.NameInfo nameInfo : docInfo.getImportNames()) {
+            String name = nameInfo.getName();
             ImportDirectiveNode importDirective = AbstractSyntaxTreeUtil.generateImport(context, name);
             result = nodeFactory.statementList(result, importDirective);
         }
 
-        Iterator<String> importIterator = bogusImports.iterator();
-
-        while (importIterator.hasNext())
-        {
-            String name = importIterator.next();
+        for (String name : bogusImports) {
             ImportDirectiveNode importDirective = AbstractSyntaxTreeUtil.generateImport(context, name);
             result = nodeFactory.statementList(result, importDirective);
         }
@@ -171,23 +158,21 @@ public class InterfaceGenerator extends AbstractGenerator
     private StatementListNode generateInstanceVariables(StatementListNode statementList)
     {
         StatementListNode result = statementList;
-        Iterator<DocumentInfo.VarDecl> iterator = docInfo.getVarDecls().values().iterator();
 
-        while (iterator.hasNext())
-        {
+        for (DocumentInfo.VarDecl varDecl1 : docInfo.getVarDecls().values()) {
             MetaDataNode bindableMetaData =
-                AbstractSyntaxTreeUtil.generateMetaData(nodeFactory, BINDABLE);
+                    AbstractSyntaxTreeUtil.generateMetaData(nodeFactory, BINDABLE);
             result = nodeFactory.statementList(result, bindableMetaData);
 
-            DocumentInfo.VarDecl varDecl = iterator.next();
+            DocumentInfo.VarDecl varDecl = varDecl1;
 
             int position = AbstractSyntaxTreeUtil.lineNumberToPosition(nodeFactory, varDecl.line);
 
             TypeExpressionNode typeExpression =
-                AbstractSyntaxTreeUtil.generateTypeExpression(nodeFactory, varDecl.className,
-                                                              true, position);
+                    AbstractSyntaxTreeUtil.generateTypeExpression(nodeFactory, varDecl.className,
+                            true, position);
             Node variableDefinition =
-                AbstractSyntaxTreeUtil.generatePublicVariable(context, typeExpression, varDecl.name);
+                    AbstractSyntaxTreeUtil.generatePublicVariable(context, typeExpression, varDecl.name);
             result = nodeFactory.statementList(result, variableDefinition);
         }
 

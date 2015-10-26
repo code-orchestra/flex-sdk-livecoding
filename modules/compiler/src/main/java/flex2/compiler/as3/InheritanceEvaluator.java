@@ -334,12 +334,8 @@ public class InheritanceEvaluator extends EvaluatorAdapter
     {
         if (inheritanceNames != null)
         {
-            Iterator<String> iterator = inheritanceNames.iterator();
 
-            while ( iterator.hasNext() )
-            {
-                String inheritanceName = iterator.next();
-
+            for (String inheritanceName : inheritanceNames) {
                 MultiName inheritanceMultiName = getMultiName(inheritanceName);
 
                 inheritanceMultiNames.add(inheritanceMultiName);
@@ -354,19 +350,13 @@ public class InheritanceEvaluator extends EvaluatorAdapter
         {
             MultiName inheritanceMultiName = (MultiName) inheritanceIterator.next();
             String[] namespaces = inheritanceMultiName.getNamespace();
-            Iterator<MultiName> definitionIterator = definitionMultiNames.iterator();
 
-            while ( definitionIterator.hasNext() )
-            {
-                MultiName definitionMultiName = definitionIterator.next();
+            for (MultiName definitionMultiName : definitionMultiNames) {
                 String namespace = definitionMultiName.getNamespace()[0];
 
-                if (inheritanceMultiName.getLocalPart().equals(definitionMultiName.getLocalPart()))
-                {
-                    for (int i = 0; i < inheritanceMultiName.namespaceURI.length; i++)
-                    {
-                        if (namespaces[i].equals(namespace))
-                        {
+                if (inheritanceMultiName.getLocalPart().equals(definitionMultiName.getLocalPart())) {
+                    for (int i = 0; i < inheritanceMultiName.namespaceURI.length; i++) {
+                        if (namespaces[i].equals(namespace)) {
                             inheritanceIterator.remove();
                         }
                     }

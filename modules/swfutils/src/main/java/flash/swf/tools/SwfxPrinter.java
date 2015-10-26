@@ -19,6 +19,13 @@
 
 package flash.swf.tools;
 
+import flash.swf.*;
+import flash.swf.tags.*;
+import flash.swf.types.*;
+import flash.util.Base64;
+import flash.util.FileUtils;
+import flash.util.SwfImageUtils;
+import flash.util.Trace;
 import macromedia.abc.AbcParser;
 import macromedia.asc.embedding.CompilerHandler;
 import macromedia.asc.embedding.avmplus.ActionBlockEmitter;
@@ -28,57 +35,8 @@ import macromedia.asc.semantics.TypeValue;
 import macromedia.asc.util.Context;
 import macromedia.asc.util.ContextStatics;
 import macromedia.asc.util.StringPrintWriter;
-import flash.swf.ActionDecoder;
-import flash.swf.Dictionary;
-import flash.swf.Header;
-import flash.swf.SwfDecoder;
-import flash.swf.Tag;
-import flash.swf.TagDecoder;
-import flash.swf.TagEncoder;
-import flash.swf.TagHandler;
-import flash.swf.TagValues;
-import flash.swf.tags.*;
-import flash.swf.types.ActionList;
-import flash.swf.types.ButtonCondAction;
-import flash.swf.types.ButtonRecord;
-import flash.swf.types.ClipActionRecord;
-import flash.swf.types.CurvedEdgeRecord;
-import flash.swf.types.EdgeRecord;
-import flash.swf.types.FillStyle;
-import flash.swf.types.Filter;
-import flash.swf.types.GlyphEntry;
-import flash.swf.types.GradRecord;
-import flash.swf.types.ImportRecord;
-import flash.swf.types.LineStyle;
-import flash.swf.types.MorphFillStyle;
-import flash.swf.types.MorphGradRecord;
-import flash.swf.types.MorphLineStyle;
-import flash.swf.types.Shape;
-import flash.swf.types.ShapeRecord;
-import flash.swf.types.ShapeWithStyle;
-import flash.swf.types.SoundInfo;
-import flash.swf.types.StraightEdgeRecord;
-import flash.swf.types.StyleChangeRecord;
-import flash.swf.types.TextRecord;
-import flash.swf.types.FocalGradient;
-import flash.swf.types.KerningRecord;
-import flash.util.Base64;
-import flash.util.FileUtils;
-import flash.util.SwfImageUtils;
-import flash.util.Trace;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DateFormat;
@@ -544,12 +502,8 @@ public final class SwfxPrinter extends TagHandler
 			out.print(" matrix='" + tag.matrix + "'");
 			
 			end();
-			
-			Iterator it = tag.records.iterator();
-			
-			while (it.hasNext())
-			{
-				TextRecord tr = (TextRecord)it.next();
+
+			for (TextRecord tr : tag.records) {
 				printTextRecord(tr, tag.code);
 			}
 			
@@ -904,10 +858,8 @@ public final class SwfxPrinter extends TagHandler
 		
 		private void printLineStyles(ArrayList linestyles, boolean alpha)
 		{
-			Iterator it = linestyles.iterator();
-			while (it.hasNext())
-			{
-				LineStyle lineStyle = (LineStyle)it.next();
+			for (Object linestyle : linestyles) {
+				LineStyle lineStyle = (LineStyle) linestyle;
 				indent();
 				out.print("<linestyle ");
 				String color = alpha ? printRGBA(lineStyle.color) : printRGB(lineStyle.color);
@@ -915,12 +867,10 @@ public final class SwfxPrinter extends TagHandler
 				out.print("width='" + lineStyle.width + "' ");
 				if (lineStyle.flags != 0)
 					out.print("flags='" + lineStyle.flags + "' ");
-				if (lineStyle.hasMiterJoint())
-				{
+				if (lineStyle.hasMiterJoint()) {
 					out.print("miterLimit='" + lineStyle.miterLimit + "' ");
 				}
-				if (lineStyle.hasFillStyle())
-				{
+				if (lineStyle.hasFillStyle()) {
 					out.println(">");
 					indent();
 					ArrayList<FillStyle> fillStyles = new ArrayList<FillStyle>(1);
@@ -928,9 +878,7 @@ public final class SwfxPrinter extends TagHandler
 					printFillStyles(fillStyles, alpha);
 					indent();
 					out.println("</linestyle>");
-				}
-				else
-				{
+				} else {
 					out.println("/>");
 				}
 			}
@@ -938,29 +886,24 @@ public final class SwfxPrinter extends TagHandler
 		
 		private void printFillStyles(ArrayList fillstyles, boolean alpha)
 		{
-			Iterator it = fillstyles.iterator();
-			while (it.hasNext())
-			{
-				FillStyle fillStyle = (FillStyle)it.next();
+			for (Object fillstyle : fillstyles) {
+				FillStyle fillStyle = (FillStyle) fillstyle;
 				indent();
 				out.print("<fillstyle");
 				out.print(" type='" + fillStyle.getType() + "'");
-				if (fillStyle.getType() == FillStyle.FILL_SOLID)
-				{
+				if (fillStyle.getType() == FillStyle.FILL_SOLID) {
 					out.print(" color='" + (alpha ? printRGBA(fillStyle.color) : printRGB(fillStyle.color)) + "'");
 				}
-				if ((fillStyle.getType() & FillStyle.FILL_LINEAR_GRADIENT) != 0)
-				{
+				if ((fillStyle.getType() & FillStyle.FILL_LINEAR_GRADIENT) != 0) {
 					if (fillStyle.getType() == FillStyle.FILL_RADIAL_GRADIENT)
-						out.print( " typeName='radial'");
+						out.print(" typeName='radial'");
 					else if (fillStyle.getType() == FillStyle.FILL_FOCAL_RADIAL_GRADIENT)
-						out.print( " typeName='focal' focalPoint='" + ((FocalGradient)fillStyle.gradient).focalPoint + "'");
+						out.print(" typeName='focal' focalPoint='" + ((FocalGradient) fillStyle.gradient).focalPoint + "'");
 					// todo print linear or radial or focal
 					out.print(" gradient='" + formatGradient(fillStyle.gradient.records, alpha) + "'");
 					out.print(" matrix='" + fillStyle.matrix + "'");
 				}
-				if ((fillStyle.getType() & FillStyle.FILL_BITS) != 0)
-				{
+				if ((fillStyle.getType() & FillStyle.FILL_BITS) != 0) {
 					// todo print tiled or clipped
 					out.print(" idref='" + idRef(fillStyle.bitmap) + "'");
 					out.print(" matrix='" + fillStyle.matrix + "'");
@@ -1037,33 +980,25 @@ public final class SwfxPrinter extends TagHandler
 		    if (shapes == null)
 		        return;
 
-			Iterator it = shapes.shapeRecords.iterator();
-			while (it.hasNext())
-			{
+			for (ShapeRecord shapeRecord : shapes.shapeRecords) {
 				indent();
-				ShapeRecord shape = (ShapeRecord)it.next();
-				if (shape instanceof StyleChangeRecord)
-				{
-					StyleChangeRecord styleChange = (StyleChangeRecord)shape;
+				ShapeRecord shape = shapeRecord;
+				if (shape instanceof StyleChangeRecord) {
+					StyleChangeRecord styleChange = (StyleChangeRecord) shape;
 					out.print("<styleChange ");
-					if (styleChange.stateMoveTo)
-					{
+					if (styleChange.stateMoveTo) {
 						out.print("dx='" + styleChange.moveDeltaX + "' dy='" + styleChange.moveDeltaY + "' ");
 					}
-					if (styleChange.stateFillStyle0)
-					{
+					if (styleChange.stateFillStyle0) {
 						out.print("fillStyle0='" + styleChange.fillstyle0 + "' ");
 					}
-					if (styleChange.stateFillStyle1)
-					{
+					if (styleChange.stateFillStyle1) {
 						out.print("fillStyle1='" + styleChange.fillstyle1 + "' ");
 					}
-					if (styleChange.stateLineStyle)
-					{
+					if (styleChange.stateLineStyle) {
 						out.print("lineStyle='" + styleChange.linestyle + "' ");
 					}
-					if (styleChange.stateNewStyles)
-					{
+					if (styleChange.stateNewStyles) {
 						out.println(">");
 						indent++;
 						printFillStyles(styleChange.fillstyles, alpha);
@@ -1071,23 +1006,16 @@ public final class SwfxPrinter extends TagHandler
 						indent--;
 						indent();
 						out.println("</styleChange>");
-					}
-					else
-					{
+					} else {
 						out.println("/>");
 					}
-				}
-				else
-				{
-					EdgeRecord edge = (EdgeRecord)shape;
-					if (edge instanceof StraightEdgeRecord)
-					{
-						StraightEdgeRecord straightEdge = (StraightEdgeRecord)edge;
+				} else {
+					EdgeRecord edge = (EdgeRecord) shape;
+					if (edge instanceof StraightEdgeRecord) {
+						StraightEdgeRecord straightEdge = (StraightEdgeRecord) edge;
 						out.println("<line dx='" + straightEdge.deltaX + "' dy='" + straightEdge.deltaY + "' />");
-					}
-					else
-					{
-						CurvedEdgeRecord curvedEdge = (CurvedEdgeRecord)edge;
+					} else {
+						CurvedEdgeRecord curvedEdge = (CurvedEdgeRecord) edge;
 						out.print("<curve ");
 						out.print("cdx='" + curvedEdge.controlDeltaX + "' cdy='" + curvedEdge.controlDeltaY + "' ");
 						out.print("dx='" + curvedEdge.anchorDeltaX + "' dy='" + curvedEdge.anchorDeltaY + "' ");
@@ -1211,12 +1139,8 @@ public final class SwfxPrinter extends TagHandler
 			open(tag);
 			out.print(" id='" + id(tag) + "'");
 			end();
-			
-			Iterator it = tag.records.iterator();
-			
-			while (it.hasNext())
-			{
-				TextRecord tr = (TextRecord)it.next();
+
+			for (TextRecord tr : tag.records) {
 				printTextRecord(tr, tag.code);
 			}
 			
@@ -1742,11 +1666,9 @@ public final class SwfxPrinter extends TagHandler
 		{
 			open(tag);
 			end();
-			
-			Iterator it = tag.exports.iterator();
-			while (it.hasNext())
-			{
-				DefineTag ref = (DefineTag)it.next();
+
+			for (Object export : tag.exports) {
+				DefineTag ref = (DefineTag) export;
 				indent();
 				out.println("<Export idref='" + dict.getId(ref) + "' name='" + ref.name + "' />");
 			}
@@ -1758,13 +1680,11 @@ public final class SwfxPrinter extends TagHandler
 		{
 			open(tag);
 			end();
-			
-			Iterator it = tag.class2tag.entrySet().iterator();
-			while (it.hasNext())
-			{
-				Map.Entry e = (Map.Entry)it.next();
-				String className = (String)e.getKey();
-				DefineTag ref = (DefineTag)e.getValue();
+
+			for (Object o : tag.class2tag.entrySet()) {
+				Map.Entry e = (Map.Entry) o;
+				String className = (String) e.getKey();
+				DefineTag ref = (DefineTag) e.getValue();
 				indent();
 				out.println("<Symbol idref='" + dict.getId(ref) + "' className='" + className + "' />");
 			}
@@ -1784,11 +1704,8 @@ public final class SwfxPrinter extends TagHandler
 			open(tag);
 			out.print(" url='" + tag.url + "'");
 			end();
-			
-			Iterator it = tag.importRecords.iterator();
-			while (it.hasNext())
-			{
-				ImportRecord record = (ImportRecord)it.next();
+
+			for (DefineTag record : tag.importRecords) {
 				indent();
 				out.println("<Import name='" + record.name + "' id='" + dict.getId(record) + "' />");
 			}

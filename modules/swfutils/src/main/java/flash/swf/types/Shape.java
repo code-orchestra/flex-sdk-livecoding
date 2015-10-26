@@ -33,22 +33,16 @@ public class Shape
 
     public void visitDependents(TagHandler h)
     {
-        Iterator<ShapeRecord> it = shapeRecords.iterator();
-        while (it.hasNext())
-        {
-            ShapeRecord rec = it.next();
+        for (ShapeRecord rec : shapeRecords) {
             rec.visitDependents(h);
         }
     }
 
     public void getReferenceList( List<Tag> refs )
     {
-        Iterator<ShapeRecord> it = shapeRecords.iterator();
 
-        while (it.hasNext())
-        {
-            ShapeRecord rec = it.next();
-            rec.getReferenceList( refs );
+        for (ShapeRecord rec : shapeRecords) {
+            rec.getReferenceList(refs);
         }
     }
 

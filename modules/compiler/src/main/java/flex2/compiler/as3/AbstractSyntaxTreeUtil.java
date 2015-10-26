@@ -143,26 +143,20 @@ public class AbstractSyntaxTreeUtil
         NodeFactory nodeFactory = context.getNodeFactory();
         nodeFactory.StartClassDefs();
         ListNode interfaces = null;
-        Iterator<String> iterator = interfaceNames.iterator();
 
-        while (iterator.hasNext())
-        {
-            String interfaceName = iterator.next();
+        for (String interfaceName : interfaceNames) {
             int index = interfaceName.lastIndexOf(DOT);
 
-            if (index > 0)
-            {
+            if (index > 0) {
                 interfaces = nodeFactory.list(interfaces,
-                                              generateGetterSelector(nodeFactory,
-                                                                     interfaceName.substring(0, index),
-                                                                     interfaceName.substring(index + 1),
-                                                                     true));
-            }
-            else
-            {
+                        generateGetterSelector(nodeFactory,
+                                interfaceName.substring(0, index),
+                                interfaceName.substring(index + 1),
+                                true));
+            } else {
                 interfaces = nodeFactory.list(interfaces, generateGetterSelector(nodeFactory,
-                                                                                 interfaceName,
-                                                                                 true));
+                        interfaceName,
+                        true));
             }
         }
 
@@ -548,19 +542,15 @@ public class AbstractSyntaxTreeUtil
         IdentifierNode identifier = nodeFactory.identifier(name, false);
         ArgumentListNode callExpressionArgumentList = null;
 
-        Iterator<Map.Entry<String, Object>> iterator = attributes.entrySet().iterator();
-
-        while (iterator.hasNext())
-        {
-            Map.Entry<String, Object> entry = iterator.next();
+        for (Map.Entry<String, Object> entry : attributes.entrySet()) {
             IdentifierNode attributeIdentifier = nodeFactory.identifier(entry.getKey());
             LiteralStringNode literalString = nodeFactory.literalString(entry.getValue().toString());
             ArgumentListNode attributeArgumentList = nodeFactory.argumentList(null, literalString);
             SetExpressionNode setExpression = nodeFactory.setExpression(attributeIdentifier,
-                                                                        attributeArgumentList, false);
+                    attributeArgumentList, false);
             MemberExpressionNode memberExpression = nodeFactory.memberExpression(null, setExpression);
             callExpressionArgumentList = nodeFactory.argumentList(callExpressionArgumentList,
-                                                                  memberExpression);
+                    memberExpression);
         }
 
         CallExpressionNode callExpression =

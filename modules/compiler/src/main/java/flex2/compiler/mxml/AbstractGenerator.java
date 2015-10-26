@@ -57,31 +57,21 @@ public abstract class AbstractGenerator
                                                  List<Script> scripts)
     {
         StatementListNode result = programStatementList;
-        Iterator<Script> scriptIterator = scripts.iterator();
 
-        while (scriptIterator.hasNext())
-        {
-            Script script = scriptIterator.next();
+        for (Script script : scripts) {
             String text = script.getText();
             int xmlLineNumber = script.getXmlLineNumber();
             List<Node> list = AbstractSyntaxTreeUtil.parse(context, configNamespaces, text,
-                                                           xmlLineNumber, generateDocComments);
-            Iterator<Node> nodeIterator = list.iterator();
+                    xmlLineNumber, generateDocComments);
 
-            while (nodeIterator.hasNext())
-            {
-                Node node = nodeIterator.next();
-
-                if (node instanceof MetaDataNode)
-                {
+            for (Node node : list) {
+                if (node instanceof MetaDataNode) {
                     result = nodeFactory.statementList(result, node);
-                }
-                else
-                {
+                } else {
                     CompilerMessage m = new NodeMagic.OnlyMetadataIsAllowed();
                     m.setPath(getPath());
                     m.setLine(context.input.getLnNum(node.pos()) + script.getXmlLineNumber() - 1);
-                    ThreadLocalToolkit.log(m);                    
+                    ThreadLocalToolkit.log(m);
                 }
             }
         }
@@ -100,15 +90,12 @@ public abstract class AbstractGenerator
     protected StatementListNode generateScripts(StatementListNode statementList, List<Script> scripts)
     {
         StatementListNode result = statementList;
-        Iterator<Script> iterator = scripts.iterator();
 
-        while (iterator.hasNext())
-        {
-            Script script = iterator.next();
+        for (Script script : scripts) {
             String text = script.getText();
             int xmlLineNumber = script.getXmlLineNumber();
             List<Node> list = AbstractSyntaxTreeUtil.parse(context, configNamespaces, text,
-                                                           xmlLineNumber, generateDocComments);
+                    xmlLineNumber, generateDocComments);
             // Don't use NodeFactory.statementList() here, because it
             // handles IncludeDirectives by inlining them and if we
             // use it here, they will get inlined a second time.

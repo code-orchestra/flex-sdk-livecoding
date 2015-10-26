@@ -91,23 +91,20 @@ public abstract class GenerativeSecondPassEvaluator extends EvaluatorAdapter
 
         if (functionNames != null)
         {
-            Iterator iterator = functionNames.iterator();
-        
-            while ( iterator.hasNext() )
-            {
-                QName qName = (QName) iterator.next();
-                String functionName = qName.getLocalPart();
 
-                if (!functionName.equals("$construct") && 
-                    classInfo.definesFunction(functionName, true))
-                {
-                    context.localizedError2(node.pos(),
-                                            new ExistingMethodError(interfaceInfo.getInterfaceName(),
-                                                                    node.name.name,
-                                                                    functionName));
-                    result = true;
-                }
-            }
+			for (Object functionName1 : functionNames) {
+				QName qName = (QName) functionName1;
+				String functionName = qName.getLocalPart();
+
+				if (!functionName.equals("$construct") &&
+						classInfo.definesFunction(functionName, true)) {
+					context.localizedError2(node.pos(),
+							new ExistingMethodError(interfaceInfo.getInterfaceName(),
+									node.name.name,
+									functionName));
+					result = true;
+				}
+			}
         }
 
 		return result;

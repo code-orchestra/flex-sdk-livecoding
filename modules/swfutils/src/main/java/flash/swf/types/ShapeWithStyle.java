@@ -19,11 +19,10 @@
 
 package flash.swf.types;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import flash.swf.Tag;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A value object for a shape with style data.
@@ -63,14 +62,9 @@ public class ShapeWithStyle extends Shape
 
         if (fillstyles != null)
         {
-            Iterator it = fillstyles.iterator();
-            while (it.hasNext())
-            {
-                FillStyle style = (FillStyle) it.next();
-    
-                if (style.hasBitmapId() && style.bitmap != null)
-                {
-                    refs.add( style.bitmap );
+            for (FillStyle style : fillstyles) {
+                if (style.hasBitmapId() && style.bitmap != null) {
+                    refs.add(style.bitmap);
                 }
             }
         }

@@ -252,10 +252,7 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 					{
 						buffer.add(key);
 						buffer.add(k);
-						Iterator it = ((List)v).iterator();
-						while (it.hasNext())
-						{
-							Object next = it.next();
+						for (Object next : ((List) v)) {
 							if (next != null)
 								buffer.add(next.toString());
 						}
@@ -470,12 +467,9 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 					
 					if (v instanceof List)
 					{
-						Iterator it = ((List)v).iterator();
-						while (it.hasNext())
-						{
-							Object next = it.next();
+						for (Object next : ((List) v)) {
 							if (next != null)
-                                buffer.add(key + "+=" + k + "," + next.toString());
+								buffer.add(key + "+=" + k + "," + next.toString());
 						}
 					}
 					else if (v != null)
@@ -494,12 +488,9 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 					
 					if (v instanceof List)
 					{
-						Iterator it = ((List)v).iterator();
-						while (it.hasNext())
-						{
-							Object next = it.next();
+						for (Object next : ((List) v)) {
 							if (next != null)
-                                buffer.add(key + "+=" + k + "," + next.toString());
+								buffer.add(key + "+=" + k + "," + next.toString());
 						}
 					}
 					else if (v != null)
@@ -2467,20 +2458,15 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 
 		if (manifestMappings != null)
 		{
-		    Iterator<Entry<String, List<VirtualFile>>> iterator = manifestMappings.entrySet().iterator();
-			while (iterator.hasNext())
-			{
-				Entry<String, List<VirtualFile>> entry = iterator.next();
-			    String uri = entry.getKey();
-			    List<VirtualFile> virtualFiles = entry.getValue();
-			    List<File> files = new ArrayList<File>(virtualFiles.size());
+			for (Entry<String, List<VirtualFile>> entry : manifestMappings.entrySet()) {
+				String uri = entry.getKey();
+				List<VirtualFile> virtualFiles = entry.getValue();
+				List<File> files = new ArrayList<File>(virtualFiles.size());
 
-			    Iterator<VirtualFile> vi = virtualFiles.iterator();
-			    while (vi.hasNext())
-			    {
-	                files.add(toFile(vi.next()));
-			    }
-                setComponentManifests(uri, files);
+				for (VirtualFile virtualFile : virtualFiles) {
+					files.add(toFile(virtualFile));
+				}
+				setComponentManifests(uri, files);
 			}
 		}
 	}

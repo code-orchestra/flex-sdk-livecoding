@@ -519,10 +519,7 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
     {
         target.add(NameFormatter.toMultiName(docInfo.getQualifiedSuperClassName()));
 
-        Iterator iterator = docInfo.getInterfaceNames().iterator();
-        while (iterator.hasNext())
-        {
-            NameInfo nameInfo = (NameInfo) iterator.next();
+        for (NameInfo nameInfo : docInfo.getInterfaceNames()) {
             target.add(NameFormatter.toMultiName(nameInfo.getName()));
         }
     }

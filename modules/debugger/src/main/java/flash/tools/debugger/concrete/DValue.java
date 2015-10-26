@@ -289,10 +289,7 @@ public class DValue implements Value
 		if (count > 0)
 		{
 			count = 0;
-			Iterator<DVariable> itr = m_members.values().iterator();
-			while(itr.hasNext())
-			{
-				DVariable  sf = itr.next();
+			for (DVariable sf : m_members.values()) {
 				ar[count++] = sf;
 			}
 
@@ -327,13 +324,9 @@ public class DValue implements Value
 					((PlayerSession)s).obtainMembers(id, m_isolateId);
 				if (m_members != null)
 				{
-					Iterator<DVariable> iter = m_members.values().iterator();
-					while (iter.hasNext())
-					{
-						Object next = iter.next();
-						if (next instanceof DVariable)
-						{
-							((DVariable)next).setSession(s);
+					for (DVariable next : m_members.values()) {
+						if (next instanceof DVariable) {
+							((DVariable) next).setSession(s);
 						}
 					}
 				}
@@ -490,10 +483,7 @@ public class DValue implements Value
 			sb.append(PlayerSessionManager.getLocalizationManager().getLocalizedTextString("empty")); //$NON-NLS-1$
 		else
 		{
-			Iterator<DVariable> itr = m_members.values().iterator();
-			while(itr.hasNext())
-			{
-				DVariable  sf = itr.next();
+			for (DVariable sf : m_members.values()) {
 				sb.append(sf);
 				sb.append(",\n"); //$NON-NLS-1$
 			}
@@ -518,11 +508,8 @@ public class DValue implements Value
 			return new DVariable[0];
 		
 		ArrayList<DVariable> finalList = new ArrayList<DVariable>();
-		
-		Iterator<List<DVariable>> itr = m_inheritedPrivates.values().iterator();
-		while(itr.hasNext())
-		{
-			List<DVariable>  varList = itr.next();
+
+		for (List<DVariable> varList : m_inheritedPrivates.values()) {
 			finalList.addAll(varList);
 		}
 		

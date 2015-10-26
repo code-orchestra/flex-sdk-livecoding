@@ -395,10 +395,8 @@ public class NodeMagic
     public static TreeSet<String> getSortedAttributes(AttributeListNode node)
     {
         final TreeSet<String> attrs = new TreeSet<String>();
-        
-        final Iterator<String> iter = getAttributes(node).iterator();
-        while (iter.hasNext())
-            attrs.add(iter.next());
+
+        for (String s : getAttributes(node)) attrs.add(s);
 
         return attrs;
     }
@@ -508,26 +506,21 @@ public class NodeMagic
     public static String getUserNamespace(DefinitionNode definition)
     {
         String result = QName.DEFAULT_NAMESPACE;
-        final Iterator<String> iterator = getAttributes(definition.attrs).iterator();
 
-        while ( iterator.hasNext() )
-        {
-            String attribute = iterator.next();
-
+        for (String attribute : getAttributes(definition.attrs)) {
             if (!(attribute.equals(CONST) ||
-                  attribute.equals(DYNAMIC) ||
-                  attribute.equals(FINAL) ||
-                  attribute.equals(INTERNAL) ||
-                  attribute.equals(INTRINSIC) ||
-                  attribute.equals(NATIVE) ||
-                  attribute.equals(OVERRIDE) ||
-                  attribute.equals(PRIVATE) ||
-                  attribute.equals(PROTECTED) ||
-                  attribute.equals(PROTOTYPE) ||
-                  attribute.equals(PUBLIC) ||
-                  attribute.equals(STATIC) ||
-                  attribute.equals(VIRTUAL)))
-            {
+                    attribute.equals(DYNAMIC) ||
+                    attribute.equals(FINAL) ||
+                    attribute.equals(INTERNAL) ||
+                    attribute.equals(INTRINSIC) ||
+                    attribute.equals(NATIVE) ||
+                    attribute.equals(OVERRIDE) ||
+                    attribute.equals(PRIVATE) ||
+                    attribute.equals(PROTECTED) ||
+                    attribute.equals(PROTOTYPE) ||
+                    attribute.equals(PUBLIC) ||
+                    attribute.equals(STATIC) ||
+                    attribute.equals(VIRTUAL))) {
                 result = attribute;
                 break;
             }

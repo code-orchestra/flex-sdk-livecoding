@@ -97,36 +97,28 @@ public final class DefineShapeBuilder implements TagBuilder
 			int y = 0;
 			boolean firstMove = true;
 
-            Iterator it = records.iterator();
-			while (it.hasNext())
-			{
-				ShapeRecord r = (ShapeRecord)it.next();
+			for (Object record : records) {
+				ShapeRecord r = (ShapeRecord) record;
 				if (r == null)
 					continue;
 
-				if (r instanceof StyleChangeRecord)
-				{
-					StyleChangeRecord scr = (StyleChangeRecord)r;
+				if (r instanceof StyleChangeRecord) {
+					StyleChangeRecord scr = (StyleChangeRecord) r;
 					x = scr.moveDeltaX;
 					y = scr.moveDeltaY;
-					if (firstMove)
-					{
+					if (firstMove) {
 						x1 = x;
 						y1 = y;
 						x2 = x;
 						y2 = y;
 						firstMove = false;
 					}
-				}
-				else if (r instanceof StraightEdgeRecord)
-				{
-					StraightEdgeRecord ser = (StraightEdgeRecord)r;
+				} else if (r instanceof StraightEdgeRecord) {
+					StraightEdgeRecord ser = (StraightEdgeRecord) r;
 					x = x + ser.deltaX;
 					y = y + ser.deltaY;
-				}
-				else if (r instanceof CurvedEdgeRecord)
-				{
-					CurvedEdgeRecord cer = (CurvedEdgeRecord)r;
+				} else if (r instanceof CurvedEdgeRecord) {
+					CurvedEdgeRecord cer = (CurvedEdgeRecord) r;
 					x = x + cer.controlDeltaX + cer.anchorDeltaX;
 					y = y + cer.controlDeltaY + cer.anchorDeltaY;
 				}
@@ -139,7 +131,7 @@ public final class DefineShapeBuilder implements TagBuilder
 
 			if (lineStyles != null && lineStyles.size() > 0)
 			{
-				it = lineStyles.iterator();
+				Iterator it = lineStyles.iterator();
 				int width = SwfConstants.TWIPS_PER_PIXEL;
 				while (it.hasNext())
 				{

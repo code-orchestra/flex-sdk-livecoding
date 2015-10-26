@@ -211,17 +211,12 @@ public class FontsConfiguration
         resolvedLocalFontPaths = new ArrayList<String>();
         if (list != null)
         {
-            Iterator iterator = list.iterator();
-            while (iterator.hasNext())
-            {
-                String path = (String)iterator.next();
-                try
-                {
+            for (Object aList : list) {
+                String path = (String) aList;
+                try {
                     VirtualFile file = ConfigurationPathResolver.getVirtualFile(path, configResolver, cv);
                     resolvedLocalFontPaths.add(file.getName());
-                }
-                catch (ConfigurationException ex)
-                {
+                } catch (ConfigurationException ex) {
                     // Invalid local font paths are ignored
                 }
             }

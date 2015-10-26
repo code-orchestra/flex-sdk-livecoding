@@ -273,11 +273,9 @@ public class ClassTable implements DocCommentTable {
         //for classes outside the package but in the same sourcefile (should be private, but we exclude anyway)
         if (otherPackage != null)
         {
-            Iterator<String> iter = otherClasses.keySet().iterator();
-            while (iter.hasNext())
-            {
+            for (String s : otherClasses.keySet()) {
                 //Add other classes under asc generated package name
-                String cls = iter.next().intern();
+                String cls = s.intern();
                 this.put(new QName(otherPackage, cls), otherClasses.get(cls), otherInheritance.get(cls), true, cx, abcClass);
             }
         }
@@ -348,23 +346,18 @@ public class ClassTable implements DocCommentTable {
         if (packageName == null)
             packageName = "";
         Map<String, DocComment> comments = new LinkedHashMap<String, DocComment>();
-        Iterator<String> iter = classTable.keySet().iterator();
-        while (iter.hasNext())
-        {
-            String key = iter.next();
+        for (String key : classTable.keySet()) {
             int dot = key.lastIndexOf(".");
-            
+
             //Case when in empty package. ("null" package signifies top-level functions/variables)
             // we also want the "null" key - that is for top level functions.. 
-            if (dot < 0 && packageName.isEmpty())
-            {
+            if (dot < 0 && packageName.isEmpty()) {
                 CommentsTable temp1 = classTable.get(key);
                 if (!temp1.isInterface() && c)
                     comments.put(key, temp1.get(new KeyPair(key, DocComment.CLASS)));
                 else if (i)
                     comments.put(key, temp1.get(new KeyPair(key, DocComment.INTERFACE)));
-            }
-            else if (dot >= 0 && (key.substring(0, dot)).equals(packageName))  //must match packageName
+            } else if (dot >= 0 && (key.substring(0, dot)).equals(packageName))  //must match packageName
             {
                 CommentsTable temp1 = classTable.get(key);
                 String key2 = key.substring(dot + 1);

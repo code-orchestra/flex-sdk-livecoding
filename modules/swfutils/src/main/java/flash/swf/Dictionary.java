@@ -65,10 +65,8 @@ public class Dictionary
                 // When we're decoding, we don't fill in the tags map, and so we'll have
                 // to search for the tag to see what it had when we read it in.
 
-                Iterator iterator = ids.entrySet().iterator();
-                while (iterator.hasNext())
-                {
-                    Entry entry = (Entry) iterator.next();
+                for (Object o : ids.entrySet()) {
+                    Entry entry = (Entry) o;
 
                     // [ets 1/14/04] we use an exact comparison here instead of equals() because this point
                     // should only be reached during *decoding*, by tools that want to report the id
@@ -79,8 +77,7 @@ public class Dictionary
                     // for example the ExportAssets may not have been reached, so the tag might not have its
                     // name yet, and therefore compare equal to another unique but yet-unnamed tag.
 
-                    if (entry.getValue() == tag)
-                    {
+                    if (entry.getValue() == tag) {
                         idobj = entry.getKey();
                         break;
                     }

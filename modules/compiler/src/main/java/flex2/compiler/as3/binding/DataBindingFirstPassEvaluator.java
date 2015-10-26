@@ -128,30 +128,21 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
         if (bindables != null)
         {
-            Iterator bindablesIterator = bindables.iterator();
 
-            while ( bindablesIterator.hasNext() )
-            {
-                MetaData metaData = (MetaData) bindablesIterator.next();
+            for (Object bindable : bindables) {
+                MetaData metaData = (MetaData) bindable;
 
-                if ("true".equals(metaData.getValue(STYLE)))
-                {
-                    if (watcher instanceof FunctionReturnWatcher)
-                    {
+                if ("true".equals(metaData.getValue(STYLE))) {
+                    if (watcher instanceof FunctionReturnWatcher) {
                         ((FunctionReturnWatcher) watcher).setStyleWatcher(true);
                         addedBindable = true;
                     }
-                }
-                else
-                {
+                } else {
                     String event = getEventName(metaData);
 
-                    if (event != null)
-                    {
+                    if (event != null) {
                         watcher.addChangeEvent(event);
-                    }
-                    else
-                    {
+                    } else {
                         watcher.addChangeEvent(StandardDefs.MDPARAM_PROPERTY_CHANGE);
                     }
 
@@ -203,14 +194,11 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
         if (changeEvents != null)
         {
-            Iterator changeEventIterator = changeEvents.iterator();
 
-            while ( changeEventIterator.hasNext() )
-            {
-                MetaData metaData = (MetaData) changeEventIterator.next();
+            for (Object changeEvent : changeEvents) {
+                MetaData metaData = (MetaData) changeEvent;
                 String event = metaData.getValue(0);
-                if (event != null)
-                {
+                if (event != null) {
                     watcher.addChangeEvent(event);
                     addedChangeEvent = true;
                 }
@@ -226,14 +214,11 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
         if (changeEvents != null)
         {
-            Iterator changeEventIterator = changeEvents.iterator();
 
-            while ( changeEventIterator.hasNext() )
-            {
-                MetaData metaData = (MetaData) changeEventIterator.next();
+            for (Object changeEvent : changeEvents) {
+                MetaData metaData = (MetaData) changeEvent;
                 String event = metaData.getValue(0);
-                if (event != null)
-                {
+                if (event != null) {
                     watcher.addChangeEvent(event, false);
                     addedChangeEvent = true;
                 }

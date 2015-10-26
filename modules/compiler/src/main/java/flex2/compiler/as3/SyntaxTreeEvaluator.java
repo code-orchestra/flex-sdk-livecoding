@@ -314,28 +314,20 @@ public class SyntaxTreeEvaluator extends EvaluatorAdapter
         List getterMetaDataList = NodeMagic.getMetaData(getter);
         List setterMetaDataList = NodeMagic.getMetaData(setter);
 
-        Iterator getterMetaDataIterator = getterMetaDataList.iterator();
-
-        while ( getterMetaDataIterator.hasNext() )
-        {
-            MetaDataNode getterMetaDataNode = (MetaDataNode) getterMetaDataIterator.next();
-            if (! (getterMetaDataNode instanceof DocCommentNode))
-            {
-                Iterator setterMetaDataIterator = setterMetaDataList.iterator();
-                while ( setterMetaDataIterator.hasNext() )
-                {
-					//	NOTE: MetaDataNode gives no way of iterating over name/value param pairs,
-					//	so we have no way to determine whether param lists are or aren't equal.
-					//	Since there are many legal cases of multiple metadata names (e.g. ChangeEvent, etc.)
-					//	all we can really test, in the absence of a way of getting at the complete
-					// 	param list, is 0-arg metadata.
-                    MetaDataNode setterMetaDataNode = (MetaDataNode) setterMetaDataIterator.next();
-                    if (! (setterMetaDataNode instanceof DocCommentNode))
-                    {
+        for (Object aGetterMetaDataList : getterMetaDataList) {
+            MetaDataNode getterMetaDataNode = (MetaDataNode) aGetterMetaDataList;
+            if (!(getterMetaDataNode instanceof DocCommentNode)) {
+                for (Object aSetterMetaDataList : setterMetaDataList) {
+                    //	NOTE: MetaDataNode gives no way of iterating over name/value param pairs,
+                    //	so we have no way to determine whether param lists are or aren't equal.
+                    //	Since there are many legal cases of multiple metadata names (e.g. ChangeEvent, etc.)
+                    //	all we can really test, in the absence of a way of getting at the complete
+                    // 	param list, is 0-arg metadata.
+                    MetaDataNode setterMetaDataNode = (MetaDataNode) aSetterMetaDataList;
+                    if (!(setterMetaDataNode instanceof DocCommentNode)) {
                         if (getterMetaDataNode.getId().equals(setterMetaDataNode.getId()) &&
                                 isFlexMetaData(setterMetaDataNode.getId()) &&
-                                getterMetaDataNode.count() == 0 && setterMetaDataNode.count() == 0)
-                        {
+                                getterMetaDataNode.count() == 0 && setterMetaDataNode.count() == 0) {
                             String functionName = NodeMagic.getFunctionName(setter);
                             // Change this to an error once mx/rpc/soap/mxml/WebService removes
                             // the duplicate Deprecated metadata on serviceName.
@@ -344,8 +336,8 @@ public class SyntaxTreeEvaluator extends EvaluatorAdapter
                                             functionName,
                                             setterMetaDataNode.getId()));
                         }
+                    }
                 }
-            }
             }
         }
     }

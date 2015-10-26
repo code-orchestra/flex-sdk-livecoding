@@ -186,19 +186,14 @@ public class CompilerSwcContext
 
     private void addResourceIncludes(Map<String, VirtualFile> files)
     {
-        Iterator<String> iterator = files.keySet().iterator();
 
-        while (iterator.hasNext())
-        {
-            String fileName = iterator.next();
-
-            if (fileName.startsWith(LOCALE_SLASH) && fileName.endsWith(DOT_PROPERTIES))
-            {
+        for (String fileName : files.keySet()) {
+            if (fileName.startsWith(LOCALE_SLASH) && fileName.endsWith(DOT_PROPERTIES)) {
                 int begin = LOCALE_SLASH.length();
                 begin = fileName.indexOf("/", begin) + 1;
                 int end = fileName.length() - DOT_PROPERTIES.length();
                 resourceIncludes.put(fileName.substring(begin, end).replace('/', '.'),
-                                     files.get(fileName));
+                        files.get(fileName));
             }
         }
     }

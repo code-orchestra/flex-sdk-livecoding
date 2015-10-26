@@ -178,13 +178,10 @@ public class EventInitializer implements Initializer
         List<Node> list =
             AbstractSyntaxTreeUtil.parseExpression(context, configNamespaces, text,
                                                    xmlLineNumber, generateDocComments);
-        Iterator<Node> nodeIterator = list.iterator();
 
-        while (nodeIterator.hasNext())
-        {
-            Node node = nodeIterator.next();
-            functionStatementList = nodeFactory.statementList(functionStatementList, node);
-        }
+		for (Node node : list) {
+			functionStatementList = nodeFactory.statementList(functionStatementList, node);
+		}
 
         int position = AbstractSyntaxTreeUtil.lineNumberToPosition(nodeFactory, getLineRef());
         

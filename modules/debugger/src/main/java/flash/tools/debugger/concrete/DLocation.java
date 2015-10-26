@@ -44,17 +44,17 @@ public class DLocation implements Location
 	public int			getId() { return encodeId(getFile().getId(), getLine()); }
 
 	/* encode /decode */
-	public static final int encodeId(int fileId, int line)
+	public static int encodeId(int fileId, int line)
 	{
 		return ( (line << 16) | fileId );
 	}
 	
-	public static final int decodeFile(long id)
+	public static int decodeFile(long id)
 	{
 		return (int)(id & 0xffff);
 	}
 
-	public static final int decodeLine(long id)
+	public static int decodeLine(long id)
 	{
 		return (int)(id >> 16 & 0xffff);
 	}

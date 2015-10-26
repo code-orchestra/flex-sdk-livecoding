@@ -358,7 +358,7 @@ public class StringUtils
 	 * @param buffer
 	 * @return
 	 */
-	public static final int countLines(String buffer)
+	public static int countLines(String buffer)
 	{
 		int count = 0;
 		int index = buffer.indexOf('\n');

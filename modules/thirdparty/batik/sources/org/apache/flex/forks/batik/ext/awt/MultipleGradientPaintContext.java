@@ -1408,7 +1408,7 @@ abstract class MultipleGradientPaintContext implements PaintContext {
      * rasters for use by any other instance, as long as they are sufficiently
      * large.
      */
-    protected static final
+    protected static
     synchronized WritableRaster getCachedRaster
         (ColorModel cm, int w, int h) {
         if (cm == cachedModel) {
@@ -1433,7 +1433,7 @@ abstract class MultipleGradientPaintContext implements PaintContext {
      * rasters for use by any other instance, as long as they are sufficiently
      * large.
      */
-    protected static final
+    protected static
     synchronized void putCachedRaster(ColorModel cm,
                                              WritableRaster ras) {
         if (cached != null) {

@@ -93,7 +93,7 @@ public class Token implements Serializable
    * to the following switch statement. Then you can cast matchedToken
    * variable to the appropriate type and use it in your lexical actions.
    */
-  public static final Token newToken(int ofKind)
+  public static Token newToken(int ofKind)
   {
      switch(ofKind)
      {

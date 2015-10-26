@@ -37,7 +37,7 @@ public class Escape
     /**
      * Do the escaping.
      */
-    public static final String getText(String st)
+    public static String getText(String st)
     {
         StringBuffer buff = new StringBuffer();
         char[] block = st.toCharArray();

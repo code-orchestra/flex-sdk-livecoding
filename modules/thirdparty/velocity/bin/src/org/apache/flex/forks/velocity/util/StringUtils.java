@@ -434,8 +434,8 @@ public class StringUtils
       * @param String replace oldString with this.
       * @return String string with replacements.
       */
-    public static final String sub(String line, String oldString,
-            String newString)
+    public static String sub(String line, String oldString,
+                             String newString)
     {
         int i = 0;
         if ((i = line.indexOf(oldString, i)) >= 0)
@@ -465,7 +465,7 @@ public class StringUtils
      * @param e A Throwable.
      * @return A String.
      */
-    public static final String stackTrace(Throwable e)
+    public static String stackTrace(Throwable e)
     {
         String foo = null;
         try
@@ -492,7 +492,7 @@ public class StringUtils
      * @param path Path to be normalized
      * @return String normalized path
      */
-    public static final String normalizePath(String path)
+    public static String normalizePath(String path)
     {
         // Normalize the slashes and add leading slash if necessary
         String normalized = path;

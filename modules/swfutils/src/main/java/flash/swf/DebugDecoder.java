@@ -308,12 +308,12 @@ public class DebugDecoder
 	 *
 	 * @param d
 	 */
-	protected static final void adjustModuleName(DebugModule d)
+	protected static void adjustModuleName(DebugModule d)
 	{
 		d.name = adjustModuleName(d.name);
 	}
 
-	public static final String adjustModuleName(String name)
+	public static String adjustModuleName(String name)
 	{
 		if (name.startsWith("<") && name.endsWith(">"))
 		{

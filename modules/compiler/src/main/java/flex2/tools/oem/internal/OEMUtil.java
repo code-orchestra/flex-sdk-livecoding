@@ -68,7 +68,7 @@ public class OEMUtil
 	/**
 	 * 
 	 */
-    public static final LocalizationManager setupLocalizationManager()
+    public static LocalizationManager setupLocalizationManager()
     {
         LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
 
@@ -88,11 +88,11 @@ public class OEMUtil
 	 * @param logger
 	 * @param mimeMappings
 	 */
-	public static final void init(Logger logger,
-								  MimeMappings mimeMappings,
-								  ProgressMeter meter,
-								  PathResolver resolver,
-								  CompilerControl cc)
+	public static void init(Logger logger,
+							MimeMappings mimeMappings,
+							ProgressMeter meter,
+							PathResolver resolver,
+							CompilerControl cc)
 	{
         CompilerAPI.useAS3();
         CompilerAPI.usePathResolver(resolver != null ? new OEMPathResolver(resolver) : null);
@@ -107,7 +107,7 @@ public class OEMUtil
 	 * 
 	 *
 	 */
-	public static final void clean()
+	public static void clean()
 	{
 		CompilerAPI.removePathResolver();
 		ThreadLocalToolkit.setLogger(null);
@@ -124,7 +124,7 @@ public class OEMUtil
 	 * @return
 	 * @throws IOException
 	 */
-	public static final String load(InputStream in, String cacheName) throws IOException
+	public static String load(InputStream in, String cacheName) throws IOException
 	{
 		// grab the data and put it in a temp file...
 		File temp = null;
@@ -149,7 +149,7 @@ public class OEMUtil
 	 * @return
 	 * @throws IOException
 	 */
-	public static final long save(OutputStream out, String cacheName, ApplicationData data) throws IOException
+	public static long save(OutputStream out, String cacheName, ApplicationData data) throws IOException
 	{
 		if (cacheName == null)
 		{
@@ -210,9 +210,9 @@ public class OEMUtil
 	 * @param mimeMappings
 	 * @return
 	 */
-	public static final OEMConfiguration getApplicationConfiguration(String[] args, boolean keepLinkReport, 
-			                                                         boolean keepSizeReport, Logger logger, PathResolver resolver,
-																	 MimeMappings mimeMappings)
+	public static OEMConfiguration getApplicationConfiguration(String[] args, boolean keepLinkReport,
+															   boolean keepSizeReport, Logger logger, PathResolver resolver,
+															   MimeMappings mimeMappings)
 	{
 		return getApplicationConfiguration(args, keepLinkReport, keepSizeReport, logger, resolver, mimeMappings, true);
 	}
@@ -225,9 +225,9 @@ public class OEMUtil
 	 * @param processDefaults
 	 * @return
 	 */
-	public static final OEMConfiguration getApplicationConfiguration(String[] args, boolean keepLinkReport, boolean keepSizeReport, 
-			                                                         Logger logger, PathResolver resolver, MimeMappings mimeMappings,
-																	 boolean processDefaults)
+	public static OEMConfiguration getApplicationConfiguration(String[] args, boolean keepLinkReport, boolean keepSizeReport,
+															   Logger logger, PathResolver resolver, MimeMappings mimeMappings,
+															   boolean processDefaults)
 	{
 		if (!processDefaults)
 		{
@@ -292,9 +292,9 @@ public class OEMUtil
 	 * @param mimeMappings
 	 * @return
 	 */
-	public static final OEMConfiguration getLibraryConfiguration(String[] args, boolean keepLinkReport, 
-			                                                     boolean keepSizeReport, Logger logger, PathResolver resolver,
-																 MimeMappings mimeMappings)
+	public static OEMConfiguration getLibraryConfiguration(String[] args, boolean keepLinkReport,
+														   boolean keepSizeReport, Logger logger, PathResolver resolver,
+														   MimeMappings mimeMappings)
 	{
 		return getLibraryConfiguration(args, keepLinkReport, keepSizeReport, logger, resolver, mimeMappings, true);
 	}
@@ -307,10 +307,10 @@ public class OEMUtil
 	 * @param processDefaults
 	 * @return
 	 */
-	public static final OEMConfiguration getLibraryConfiguration(String[] args, boolean keepLinkReport, 
-			                                                     boolean keepSizeReport, Logger logger,
-																 PathResolver resolver, MimeMappings mimeMappings,
-																 boolean processDefaults)
+	public static OEMConfiguration getLibraryConfiguration(String[] args, boolean keepLinkReport,
+														   boolean keepSizeReport, Logger logger,
+														   PathResolver resolver, MimeMappings mimeMappings,
+														   boolean processDefaults)
 	{
 		if (!processDefaults)
 		{
@@ -374,11 +374,11 @@ public class OEMUtil
 	 * @param mimeMappings
 	 * @return
 	 */
-	public static final OEMConfiguration getLinkerConfiguration(String[] args, boolean keepLinkReport, boolean keepSizeReport,
-																Logger logger, MimeMappings mimeMappings,
-																PathResolver resolver,
-																flex2.compiler.common.Configuration c,
-																Set newLinkerOptions, Set<String> includes, Set<String> excludes)
+	public static OEMConfiguration getLinkerConfiguration(String[] args, boolean keepLinkReport, boolean keepSizeReport,
+														  Logger logger, MimeMappings mimeMappings,
+														  PathResolver resolver,
+														  flex2.compiler.common.Configuration c,
+														  Set newLinkerOptions, Set<String> includes, Set<String> excludes)
 	{
 		OEMUtil.init(logger, mimeMappings, null, resolver, null);
 		
@@ -431,7 +431,7 @@ public class OEMUtil
 		}
 	}
 
-	public static final ConfigurationBuffer getCommandLineConfigurationBuffer(Logger logger, PathResolver resolver, String[] args)
+	public static ConfigurationBuffer getCommandLineConfigurationBuffer(Logger logger, PathResolver resolver, String[] args)
 	{
 		ConfigurationBuffer cfgbuf = null;
 		
@@ -452,7 +452,7 @@ public class OEMUtil
         return cfgbuf;
 	}
 	
-	public static final ConfigurationBuffer getCompcConfigurationBuffer(Logger logger, PathResolver resolver, String[] args)
+	public static ConfigurationBuffer getCompcConfigurationBuffer(Logger logger, PathResolver resolver, String[] args)
 	{
 		ConfigurationBuffer cfgbuf = null;
 		
@@ -489,12 +489,12 @@ public class OEMUtil
 		return args;
 	}
 	
-	public static final Logger getLogger(Logger logger, List<Message> messages)
+	public static Logger getLogger(Logger logger, List<Message> messages)
 	{
 		return new BuilderLogger(logger == null ? new OEMConsole() : logger, messages);
 	}
 	
-	public static final String formatConfigurationBuffer(ConfigurationBuffer cfgbuf)
+	public static String formatConfigurationBuffer(ConfigurationBuffer cfgbuf)
 	{
 		return FileConfigurator.formatBuffer(cfgbuf, "flex-config",
 											 OEMUtil.setupLocalizationManager(), "flex2.configuration");
@@ -505,12 +505,12 @@ public class OEMUtil
 	 * @param configuration
 	 * @return
 	 */
-	public static final Map getLicenseMap(ToolsConfiguration configuration)
+	public static Map getLicenseMap(ToolsConfiguration configuration)
 	{
 		return configuration.getLicensesConfiguration().getLicenseMap();
 	}
 	
-	public static final void setGeneratedDirectory(CompilerConfiguration compilerConfig, File output)
+	public static void setGeneratedDirectory(CompilerConfiguration compilerConfig, File output)
 	{
         if (compilerConfig.keepGeneratedActionScript())
         {

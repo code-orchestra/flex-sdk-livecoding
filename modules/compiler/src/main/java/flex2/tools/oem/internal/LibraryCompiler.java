@@ -176,21 +176,21 @@ public class LibraryCompiler
         return (CompcConfiguration) obj;
 	}
 	
-	static final void init()
+	static void init()
 	{
         CompilerAPI.useAS3();
         CompilerAPI.usePathResolver();
         setupLocalizationManager();
 	}
     
-    static final void clean()
+    static void clean()
     {
         CompilerAPI.removePathResolver();
         ThreadLocalToolkit.setLogger(null);
         ThreadLocalToolkit.setLocalizationManager(null);
     }
 
-	static final LocalizationManager setupLocalizationManager()
+	static LocalizationManager setupLocalizationManager()
 	{
         // set up for localizing messages
 		LocalizationManager l10n = new LocalizationManager();

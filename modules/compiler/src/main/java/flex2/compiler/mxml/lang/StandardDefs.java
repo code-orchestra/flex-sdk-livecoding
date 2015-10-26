@@ -680,7 +680,7 @@ public abstract class StandardDefs
     /**
      * true iff passed string is a reserved word
      */
-    public static final boolean isReservedWord(String s)
+    public static boolean isReservedWord(String s)
     {
         return as3ReservedWords.contains(s);
     }
@@ -716,7 +716,7 @@ public abstract class StandardDefs
     /**
      * true iff passed string is the name of a built-in type
      */
-    public static final boolean isBuiltInTypeName(String s)
+    public static boolean isBuiltInTypeName(String s)
     {
         return as3BuiltInTypeNames.contains(s);
     }
@@ -731,7 +731,7 @@ public abstract class StandardDefs
         stageProperties.add("colorCorrection");
     }
     
-    public static final boolean isStageProperty(String s)
+    public static boolean isStageProperty(String s)
     {
         return stageProperties.contains(s);
     }

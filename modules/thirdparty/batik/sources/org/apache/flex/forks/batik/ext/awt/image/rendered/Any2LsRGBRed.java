@@ -72,7 +72,7 @@ public class Any2LsRGBRed extends AbstractRed {
     private static final double LFACT = 1.0/12.92;
 
 
-    public static final double sRGBToLsRGB(double value) {
+    public static double sRGBToLsRGB(double value) {
         if(value <= 0.003928)
             return value*LFACT;
         return Math.pow((value+0.055)/1.055, GAMMA);

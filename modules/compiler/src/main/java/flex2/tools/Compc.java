@@ -450,7 +450,7 @@ public class Compc extends Tool implements FlexTool
         return benchmark;
     }
 
-    public static final void displayStartMessage()
+    public static void displayStartMessage()
     {
         LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
 

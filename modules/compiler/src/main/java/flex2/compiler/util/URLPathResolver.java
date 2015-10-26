@@ -38,7 +38,7 @@ public class URLPathResolver implements SinglePathResolver
     {
     }
 
-    public static final URLPathResolver getSingleton()
+    public static URLPathResolver getSingleton()
     {
         return singleton;
     }

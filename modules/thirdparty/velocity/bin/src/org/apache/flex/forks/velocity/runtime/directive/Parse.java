@@ -122,7 +122,7 @@ public class Parse extends InputBase
 
             for( int i = 0; i < templateStack.length; ++i)
             {
-                path.append( " > " + templateStack[i] );
+                path.append(" > ").append(templateStack[i]);
             }
 
             rsvc.error( "Max recursion depth reached (" + 

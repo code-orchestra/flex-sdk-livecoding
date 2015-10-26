@@ -147,7 +147,7 @@ public class Log4JLogSystem implements LogSystem
         int remotePort = 
             rsvc.getInt(RuntimeConstants.LOGSYSTEM_LOG4J_REMOTE_PORT, 1099);
         
-        if (remoteHost == null || remoteHost.trim().equals("") || 
+        if (remoteHost == null || remoteHost.trim().isEmpty() ||
             remotePort <= 0)
         {
             return;
@@ -169,7 +169,7 @@ public class Log4JLogSystem implements LogSystem
         String syslogFacility = 
             rsvc.getString(RuntimeConstants.LOGSYSTEM_LOG4J_SYSLOGD_FACILITY);
         
-        if (syslogHost == null || syslogHost.trim().equals("") || 
+        if (syslogHost == null || syslogHost.trim().isEmpty() ||
             syslogFacility == null )
         {
             return;
@@ -201,11 +201,11 @@ public class Log4JLogSystem implements LogSystem
         String bufferSize = 
             rsvc.getString(RuntimeConstants.LOGSYSTEM_LOG4J_EMAIL_BUFFER_SIZE);
 
-        if (smtpHost == null || smtpHost.trim().equals("")
-                || emailFrom == null || smtpHost.trim().equals("")
-                || emailTo == null || emailTo.trim().equals("")
-                || emailSubject == null || emailSubject.trim().equals("")
-                || bufferSize == null || bufferSize.trim().equals("") )
+        if (smtpHost == null || smtpHost.trim().isEmpty()
+                || emailFrom == null || smtpHost.trim().isEmpty()
+                || emailTo == null || emailTo.trim().isEmpty()
+                || emailSubject == null || emailSubject.trim().isEmpty()
+                || bufferSize == null || bufferSize.trim().isEmpty())
         {
             return;
         }

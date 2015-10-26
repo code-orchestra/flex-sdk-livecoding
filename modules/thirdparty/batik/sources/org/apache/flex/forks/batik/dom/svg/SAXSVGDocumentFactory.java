@@ -385,7 +385,7 @@ public class SAXSVGDocumentFactory
                     dtdProps.getProperty(KEY_SYSTEM_ID +
                                          publicId.replace(' ', '_'));
 
-                if (localSystemId != null && !"".equals(localSystemId)) {
+                if (localSystemId != null && !localSystemId.isEmpty()) {
                     return new InputSource
                         (getClass().getResource(localSystemId).toString());
                 }

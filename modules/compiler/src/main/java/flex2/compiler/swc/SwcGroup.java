@@ -199,7 +199,7 @@ public class SwcGroup
 
 				if (namespaceURI == null) continue;
 				
-				if ("".equals(namespaceURI))
+				if (namespaceURI != null && namespaceURI.isEmpty())
 				{
 					if (name != null)
 					{

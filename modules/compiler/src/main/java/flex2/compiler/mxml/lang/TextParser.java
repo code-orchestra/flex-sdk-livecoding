@@ -296,7 +296,7 @@ public abstract class TextParser
         {
             // no lead, no tail other than whitespace (which technically makes this
             // an expression but one-way allows it and trims it so do the same here)
-            if (!s.substring(0, atIdx).trim().equals("") || !s.substring(closeBraceIdx + 1).trim().equals(""))
+            if (!s.substring(0, atIdx).trim().isEmpty() || !s.substring(closeBraceIdx + 1).trim().isEmpty())
             {
                 error(ErrInvalidTwoWayBind, s, null, null);
                 return null;                                                        
@@ -321,7 +321,7 @@ public abstract class TextParser
         String lead = s.substring(0, openBraceIdx);
 
         //only if there was non-whitespace
-        if (!lead.trim().equals(""))
+        if (!lead.trim().isEmpty())
         {
             String text = cleanupBindingEscapes(lead);
             text = cleanupAtFunctionEscapes(text);
@@ -335,7 +335,7 @@ public abstract class TextParser
             //attach this { } (don't include the braces but do use parentheses to group the thing together)
             buf.append("(");
             String contents = s.substring(openBraceIdx + 1, closeBraceIdx);
-            if (contents.trim().equals(""))
+            if (contents.trim().isEmpty())
             {
                 //  logWarning("Empty {} in binding expression.");
                 contents = "''";
@@ -365,7 +365,7 @@ public abstract class TextParser
             else
             {
                 String tail = s.substring(lastClose + 1);
-                if (!tail.trim().equals(""))
+                if (!tail.trim().isEmpty())
                 {
                     buf.append(" + ");
                     String text = cleanupBindingEscapes(tail);

@@ -240,7 +240,7 @@ public class AsDocUtil
     void decomposeFullName(String name, QualifiedNameInfo fullName,
             String namespace)
     {
-        if (name == null || name.equals(""))
+        if (name == null || name.isEmpty())
         {
             return;
         }
@@ -474,7 +474,7 @@ public class AsDocUtil
         {
             CDATASection cdataSection = (CDATASection)descendants.item(0);
             String inputString = cdataSection.getData();
-            if (inputString != null && !inputString.equals(""))
+            if (inputString != null && !inputString.isEmpty())
             {
                 Document targetDocument = null;
                 TransformerFactory transfac = TransformerFactory.newInstance();
@@ -883,7 +883,7 @@ public class AsDocUtil
      */
     boolean hidePackage(String packageName, String hiddenPackages)
     {
-        if (packageName == null || packageName.equals(""))
+        if (packageName == null || packageName.isEmpty())
             return false;
         else if (hiddenPackages.indexOf(":" + packageName + ":") != -1)
             return (hiddenPackages.indexOf(":" + packageName + ":true:") != -1);
@@ -1033,7 +1033,7 @@ public class AsDocUtil
      */
     boolean hideNamespace(String namespace, String namespaces)
     {
-        if (namespace == null || namespace.equals(""))
+        if (namespace == null || namespace.isEmpty())
         {
             return false;
         }
@@ -1306,7 +1306,7 @@ public class AsDocUtil
                     Element shortdesc = getElementByTagName(apiConstructor, "shortdesc");
                     if (shortdesc != null)
                     {
-                        if (!shortdesc.getAttribute("conref").equals(""))
+                        if (!shortdesc.getAttribute("conref").isEmpty())
                         {
                             processCopyNode(apiConstructor, shortdesc.getAttribute("conref"), currentClass, classTable);
                         }
@@ -1328,7 +1328,7 @@ public class AsDocUtil
                     Element shortdesc = getElementByTagName(apiOperation, "shortdesc");
                     if (shortdesc != null)
                     {
-                        if (!shortdesc.getAttribute("conref").equals(""))
+                        if (!shortdesc.getAttribute("conref").isEmpty())
                         {
                             processCopyNode(apiOperation, shortdesc.getAttribute("conref"), currentClass, classTable);
                         }
@@ -1540,7 +1540,7 @@ public class AsDocUtil
         Element shortdesc = getElementByTagName(fromNode, "shortdesc");
         if (shortdesc != null)
         {
-            if (!shortdesc.getTextContent().equals(""))
+            if (!shortdesc.getTextContent().isEmpty())
             {
                 Element apiOperationDef2 = null;
 
@@ -1665,7 +1665,7 @@ public class AsDocUtil
                     }
                 }
                 
-                if(!shortdesc.getAttribute("conref").equals(""))
+                if(!shortdesc.getAttribute("conref").isEmpty())
                 {
                     return true;
                 }

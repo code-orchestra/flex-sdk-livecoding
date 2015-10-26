@@ -623,7 +623,7 @@ public final class Mxmlc extends Tool implements FlexTool
         String buildNumber = cfgbuf.getToken( "build.number" );
         if (buildNumber == null)
         {
-            if ("".equals(VersionInfo.getBuild()))
+            if (VersionInfo.getBuild() != null && VersionInfo.getBuild().isEmpty())
                {
                 buildNumber = "workspace";
                }

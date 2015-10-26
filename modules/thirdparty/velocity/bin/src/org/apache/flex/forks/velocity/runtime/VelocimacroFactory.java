@@ -162,7 +162,7 @@ public class VelocimacroFactory
                       * only if it's a non-empty string do we bother
                       */
 
-                     if (lib != null && !lib.equals(""))
+                     if (lib != null && !lib.isEmpty())
                      {
                          /*
                           *  let the VMManager know that the following is coming

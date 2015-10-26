@@ -497,7 +497,7 @@ public class DocCommentNode extends MetaDataNode
 			}
 		}
 
-		if (!"".equals(tagname))
+		if (tagname != null && !tagname.isEmpty())
 		{
 			buf.append("\n</");
 		    buf.append(tagname);

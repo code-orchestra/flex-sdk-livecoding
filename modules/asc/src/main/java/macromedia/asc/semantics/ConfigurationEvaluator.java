@@ -304,7 +304,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 			else if( tv == cx.stringType() )
 			{
 				String s = obj.getValue();
-				if( s == null || "".equals(s) )
+				if( s == null || s.isEmpty())
 					ret = Boolean.FALSE;
 				else
 					ret = Boolean.TRUE;

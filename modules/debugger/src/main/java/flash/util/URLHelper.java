@@ -219,7 +219,7 @@ public class URLHelper
 				String name = (String) entry.getKey();
 				String value = String.valueOf(entry.getValue());
 				queryString.append(name);
-				if ((value != null) && (!value.equals(""))) //$NON-NLS-1$
+				if ((value != null) && (!value.isEmpty())) //$NON-NLS-1$
 				{
 					queryString.append('=');
 					queryString.append(value);

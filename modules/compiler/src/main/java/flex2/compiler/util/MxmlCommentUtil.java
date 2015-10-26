@@ -31,7 +31,7 @@ public class MxmlCommentUtil
 {
     public static String commentToXmlComment(String comment)
     {
-        if(!comment.equals(""))
+        if(!comment.isEmpty())
         {
             // replace all asterisk at the beginning of the line. Some users may
             // copy paste comments from as to mxml.
@@ -83,7 +83,7 @@ public class MxmlCommentUtil
                 }
 
                 // if there is a tag name. lets wrap content inside the tag.
-                if (!tagName.trim().equals(""))
+                if (!tagName.trim().isEmpty())
                 {
                     commentBuilder.append("<");
                     commentBuilder.append(tagName);

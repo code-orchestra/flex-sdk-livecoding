@@ -302,7 +302,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 				Value argTypeVal = arg.evaluate(cx, this);
 				if (argTypeVal == cx.stringType()
 					&& (arg instanceof LiteralStringNode)
-					&& "".equals(((LiteralStringNode)arg).value.trim())) 
+					&& ((LiteralStringNode) arg).value.trim() != null && ((LiteralStringNode) arg).value.trim().isEmpty())
 				{
 					warning(node.getPosition(), cx.input, kWarning_NumberFromStringChanges);
 				}
@@ -415,7 +415,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 				returnVal = cx.doubleType();	// RES don't bother with numberUsage issues here
 				if (argTypeVal == cx.stringType()
 						&& (arg instanceof LiteralStringNode)
-						&& "".equals(((LiteralStringNode)arg).value.trim()))
+						&& ((LiteralStringNode) arg).value.trim() != null && ((LiteralStringNode) arg).value.trim().isEmpty())
 				{
 					warning(node.getPosition(), cx.input, kWarning_NumberFromStringChanges);
 				}

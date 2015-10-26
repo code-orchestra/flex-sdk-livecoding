@@ -202,7 +202,7 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 			else if (value instanceof File)
 			{
 				String p = ((File) value).getPath();
-				if (!"".equals(p))
+				if (p != null && !p.isEmpty())
 				{
 					buffer.add(key);
 					buffer.add(p);
@@ -215,7 +215,7 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 			else if (value instanceof URL)
 			{
 				String u = ((URL) value).toExternalForm();
-				if (!"".equals(u))
+				if (u != null && !u.isEmpty())
 				{
 					buffer.add(key);
 					buffer.add(u);

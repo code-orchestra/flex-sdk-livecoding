@@ -151,7 +151,7 @@ public class DefineFont3Face extends CachedFontFace
         if (tag.license != null)
         {
             String fontName = tag.license.fontName;
-            if (fontName != null && !"".equals(fontName))
+            if (fontName != null && !fontName.isEmpty())
                 family = tag.license.fontName;
         }
         return family;

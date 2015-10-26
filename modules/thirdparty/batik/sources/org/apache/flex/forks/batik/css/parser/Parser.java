@@ -555,7 +555,7 @@ public class Parser implements ExtendedParser, Localizable {
 
         // Record prefix mappings for qualified element selector names 
         if (uri != null) {
-            if (prefix == null || "".equals(prefix))
+            if (prefix == null || prefix.isEmpty())
                 defaultNamespace = uri;
             else
                 namespaces.put(prefix, uri);
@@ -893,7 +893,7 @@ public class Parser implements ExtendedParser, Localizable {
             next();
 
             if (current == LexicalUnits.NAMESPACE_QUALIFIED) {
-                if (name == null || "".equals(name))
+                if (name == null || name.isEmpty())
                     uri = ""; // No namespace
                 else if ("*".equals(name))
                     uri = null; // All namespaces, including no namespace

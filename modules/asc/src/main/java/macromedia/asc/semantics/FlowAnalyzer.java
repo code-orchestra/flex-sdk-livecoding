@@ -347,7 +347,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
                 ns = default_namespaces.back();
             }
 
-            if( !node.name.equals("") )   // otherwise it is a QualifiedExpression with no name and no corresponding reference value
+            if(!node.name.isEmpty())   // otherwise it is a QualifiedExpression with no name and no corresponding reference value
             {
                 if( nss != null /* protected = multiname */ )
                 {

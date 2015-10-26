@@ -37,7 +37,7 @@ public class ProvidedPackages {
     }
 
     public static boolean isProvidedPackage(String packageName) {
-        if ("".equals(packageName)) {
+        if (packageName != null && packageName.isEmpty()) {
             return false;
         }
 

@@ -214,15 +214,10 @@ public abstract class AbstractContext extends InternalContextBase
      * @param key The key to look for.
      * @return true if the key is in the context, false if not.
      */
-    public boolean containsKey(Object key)
-    {
-        if (key == null)
-        {
-            return false;
-        }
+    public boolean containsKey(Object key) {
+        return key != null && internalContainsKey(key);
 
-        return internalContainsKey(key);
-    }        
+    }
 
     /**
      *  Get all the keys for the values in the context

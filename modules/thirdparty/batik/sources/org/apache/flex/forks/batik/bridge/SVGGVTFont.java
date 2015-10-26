@@ -296,10 +296,7 @@ public final class SVGGVTFont implements GVTFont, SVGConstants {
      * rendered by this font object.
      */
     private boolean orientationMatches(String glyphOrientation) {
-        if (glyphOrientation == null || glyphOrientation.length() == 0) {
-            return true;
-        }
-        return glyphOrientation.equals(orientation);
+        return glyphOrientation == null || glyphOrientation.length() == 0 || glyphOrientation.equals(orientation);
     }
 
 
@@ -323,11 +320,11 @@ public final class SVGGVTFont implements GVTFont, SVGConstants {
         }
 
         char c = aci.setIndex(currentIndex);
-        Integer form = (Integer)aci.getAttribute
-            (GVTAttributedCharacterIterator.TextAttribute.ARABIC_FORM);
+        Integer form = (Integer) aci.getAttribute
+                (GVTAttributedCharacterIterator.TextAttribute.ARABIC_FORM);
 
         if (form == null || form.equals
-            (GVTAttributedCharacterIterator.TextAttribute.ARABIC_NONE)) {
+                (GVTAttributedCharacterIterator.TextAttribute.ARABIC_NONE)) {
             // the glyph has an arabic form and the current character
             // form is "none" so don't match
             return false;
@@ -352,31 +349,31 @@ public final class SVGGVTFont implements GVTFont, SVGConstants {
 
                 // ligature matches, now check that the arabic forms are ok
                 aci.setIndex(currentIndex + glyphUnicode.length() - 1);
-                Integer lastForm = (Integer)aci.getAttribute(
-                    GVTAttributedCharacterIterator.TextAttribute.ARABIC_FORM);
+                Integer lastForm = (Integer) aci.getAttribute(
+                        GVTAttributedCharacterIterator.TextAttribute.ARABIC_FORM);
 
                 // reset the aci again
                 aci.setIndex(currentIndex);
 
                 if (form != null && lastForm != null) {
                     if (form.equals(GVTAttributedCharacterIterator.
-                                    TextAttribute.ARABIC_TERMINAL) &&
-                        lastForm.equals(GVTAttributedCharacterIterator.
-                                        TextAttribute.ARABIC_INITIAL)) {
+                            TextAttribute.ARABIC_TERMINAL) &&
+                            lastForm.equals(GVTAttributedCharacterIterator.
+                                    TextAttribute.ARABIC_INITIAL)) {
                         // return true if the glyph form is isolated
                         return glyphForm.equals
-                            (SVGConstants.SVG_ISOLATED_VALUE);
+                                (SVGConstants.SVG_ISOLATED_VALUE);
 
                     } else if (form.equals(GVTAttributedCharacterIterator.
-                                           TextAttribute.ARABIC_TERMINAL)) {
+                            TextAttribute.ARABIC_TERMINAL)) {
                         // return true if the glyph form is terminal
                         return glyphForm.equals
-                            (SVGConstants.SVG_TERMINAL_VALUE);
+                                (SVGConstants.SVG_TERMINAL_VALUE);
 
                     } else if (form.equals(GVTAttributedCharacterIterator.
-                                           TextAttribute.ARABIC_MEDIAL) &&
-                               lastForm.equals(GVTAttributedCharacterIterator.
-                                               TextAttribute.ARABIC_MEDIAL)) {
+                            TextAttribute.ARABIC_MEDIAL) &&
+                            lastForm.equals(GVTAttributedCharacterIterator.
+                                    TextAttribute.ARABIC_MEDIAL)) {
                         // return true if the glyph form is medial
                         return glyphForm.equals(SVGConstants.SVG_MEDIAL_VALUE);
                     }
@@ -386,22 +383,18 @@ public final class SVGGVTFont implements GVTFont, SVGConstants {
         }
 
         if (form.equals(GVTAttributedCharacterIterator.
-                        TextAttribute.ARABIC_ISOLATED)) {
+                TextAttribute.ARABIC_ISOLATED)) {
             return glyphForm.equals(SVGConstants.SVG_ISOLATED_VALUE);
         }
         if (form.equals(GVTAttributedCharacterIterator.
-                        TextAttribute.ARABIC_TERMINAL)) {
+                TextAttribute.ARABIC_TERMINAL)) {
             return glyphForm.equals(SVGConstants.SVG_TERMINAL_VALUE);
         }
         if (form.equals(GVTAttributedCharacterIterator.
-                        TextAttribute.ARABIC_INITIAL)) {
+                TextAttribute.ARABIC_INITIAL)) {
             return glyphForm.equals(SVGConstants.SVG_INITIAL_VALUE);
         }
-        if (form.equals(GVTAttributedCharacterIterator.
-                        TextAttribute.ARABIC_MEDIAL)) {
-            return glyphForm.equals(SVGConstants.SVG_MEDIAL_VALUE);
-        }
-        return false;
+        return form.equals(GVTAttributedCharacterIterator.TextAttribute.ARABIC_MEDIAL) && glyphForm.equals(SVGConstants.SVG_MEDIAL_VALUE);
     }
 
     /**

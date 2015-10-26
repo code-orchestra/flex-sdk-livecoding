@@ -1960,11 +1960,8 @@ public class GlyphLayout implements TextSpanLayout {
     protected boolean isGlyphOrientationAuto() {
         if (!isVertical()) return false;
         aci.first();
-        Integer vOrient = (Integer)aci.getAttribute(VERTICAL_ORIENTATION);
-        if (vOrient != null) {
-            return (vOrient == ORIENTATION_AUTO);
-        }
-        return true;
+        Integer vOrient = (Integer) aci.getAttribute(VERTICAL_ORIENTATION);
+        return vOrient == null || (vOrient == ORIENTATION_AUTO);
     }
 
     /**

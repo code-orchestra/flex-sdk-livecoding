@@ -196,10 +196,8 @@ public class ShapeNode extends AbstractGraphicsNode {
         case STROKE:
         case ALL: {
             Rectangle2D b = getSensitiveBounds();
-            if (b == null || !b.contains(p))
-                return false;
+            return !(b == null || !b.contains(p)) && inSensitiveArea(p);
 
-            return inSensitiveArea(p);
         }
         case NONE:
         default:
@@ -215,12 +213,7 @@ public class ShapeNode extends AbstractGraphicsNode {
      */
     public boolean intersects(Rectangle2D r) {
         Rectangle2D b = getBounds();
-        if (b != null) {
-            return (b.intersects(r) &&
-                    paintedArea != null &&
-                    paintedArea.intersects(r));
-        }
-        return false;
+        return b != null && (b.intersects(r) && paintedArea != null && paintedArea.intersects(r));
     }
 
     /**

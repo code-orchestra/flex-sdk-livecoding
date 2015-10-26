@@ -223,10 +223,7 @@ public abstract class SVGUtilities implements SVGConstants, ErrorConstants {
         while (st.hasMoreTokens()) {
             String t = st.nextToken();
             if (s.startsWith(t)) {
-                if (s.length() > t.length()) {
-                    return (s.charAt(t.length()) == '-');
-                }
-                return true;
+                return s.length() <= t.length() || (s.charAt(t.length()) == '-');
             }
         }
         return false;

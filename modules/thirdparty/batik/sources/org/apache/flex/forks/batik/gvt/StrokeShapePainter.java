@@ -141,11 +141,9 @@ public class StrokeShapePainter implements ShapePainter {
     /**
      * Returns the bounds of the area covered by this shape painter
      */
-    public boolean inPaintedArea(Point2D pt){
+    public boolean inPaintedArea(Point2D pt) {
         Shape painted = getPaintedArea();
-        if (painted == null)
-            return false;
-        return painted.contains(pt);
+        return painted != null && painted.contains(pt);
     }
         
     /**
@@ -177,11 +175,9 @@ public class StrokeShapePainter implements ShapePainter {
      * Returns the bounds of the area covered by this shape painter
      * (even if not painted).
      */
-    public boolean inSensitiveArea(Point2D pt){
+    public boolean inSensitiveArea(Point2D pt) {
         Shape sensitive = getSensitiveArea();
-        if (sensitive == null)
-            return false;
-        return sensitive.contains(pt);
+        return sensitive != null && sensitive.contains(pt);
     }
         
     /**

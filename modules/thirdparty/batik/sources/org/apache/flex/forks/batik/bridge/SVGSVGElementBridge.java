@@ -854,9 +854,7 @@ public class SVGSVGElementBridge
     }
     public boolean      unsuspendRedraw ( int suspend_handle_id ) {
         UpdateManager um = ctx.getUpdateManager();
-        if (um != null)
-            return um.releaseRedrawSuspension(suspend_handle_id);
-        return false; // no UM so couldn't have issued an id...
+        return um != null && um.releaseRedrawSuspension(suspend_handle_id);
     }
     public void         unsuspendRedrawAll (  ) {
         UpdateManager um = ctx.getUpdateManager();

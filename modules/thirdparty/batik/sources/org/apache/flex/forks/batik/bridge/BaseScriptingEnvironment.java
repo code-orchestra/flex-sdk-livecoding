@@ -94,30 +94,26 @@ public class BaseScriptingEnvironment {
         if ((elt != null) &&
             SVGConstants.SVG_NAMESPACE_URI.equals(elt.getNamespaceURI())) {
             if (elt.getAttributeNS
-                (null, SVGConstants.SVG_ONABORT_ATTRIBUTE).length() > 0) {
+                    (null, SVGConstants.SVG_ONABORT_ATTRIBUTE).length() > 0) {
                 return true;
             }
             if (elt.getAttributeNS
-                (null, SVGConstants.SVG_ONERROR_ATTRIBUTE).length() > 0) {
+                    (null, SVGConstants.SVG_ONERROR_ATTRIBUTE).length() > 0) {
                 return true;
             }
             if (elt.getAttributeNS
-                (null, SVGConstants.SVG_ONRESIZE_ATTRIBUTE).length() > 0) {
+                    (null, SVGConstants.SVG_ONRESIZE_ATTRIBUTE).length() > 0) {
                 return true;
             }
             if (elt.getAttributeNS
-                (null, SVGConstants.SVG_ONUNLOAD_ATTRIBUTE).length() > 0) {
+                    (null, SVGConstants.SVG_ONUNLOAD_ATTRIBUTE).length() > 0) {
                 return true;
             }
             if (elt.getAttributeNS
-                (null, SVGConstants.SVG_ONSCROLL_ATTRIBUTE).length() > 0) {
+                    (null, SVGConstants.SVG_ONSCROLL_ATTRIBUTE).length() > 0) {
                 return true;
             }
-            if (elt.getAttributeNS
-                (null, SVGConstants.SVG_ONZOOM_ATTRIBUTE).length() > 0) {
-                return true;
-            }
-            return isDynamicElement(ctx, doc.getDocumentElement());
+            return elt.getAttributeNS(null, SVGConstants.SVG_ONZOOM_ATTRIBUTE).length() > 0 || isDynamicElement(ctx, doc.getDocumentElement());
         }
         return false;
     }

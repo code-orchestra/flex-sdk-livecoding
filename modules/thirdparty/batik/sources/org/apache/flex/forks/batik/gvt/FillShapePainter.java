@@ -106,11 +106,9 @@ public class FillShapePainter implements ShapePainter {
     /**
      * Returns true if pt is in the area painted by this shape painter
      */
-    public boolean inPaintedArea(Point2D pt){
-        if ((paint == null) || (shape == null))
-            return  false;
+    public boolean inPaintedArea(Point2D pt) {
+        return !((paint == null) || (shape == null)) && shape.contains(pt);
 
-        return shape.contains(pt);
     }
 
     /**
@@ -134,10 +132,8 @@ public class FillShapePainter implements ShapePainter {
     /**
      * Returns true if pt is in the area painted by this shape painter
      */
-    public boolean inSensitiveArea(Point2D pt){
-        if (shape == null)
-            return  false;
-        return shape.contains(pt);
+    public boolean inSensitiveArea(Point2D pt) {
+        return shape != null && shape.contains(pt);
     }
 
     /**

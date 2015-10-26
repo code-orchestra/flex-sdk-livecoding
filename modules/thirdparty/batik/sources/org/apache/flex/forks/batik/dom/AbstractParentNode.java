@@ -701,10 +701,7 @@ public abstract class AbstractParentNode extends AbstractNode {
             if (s1 == null || s2 == null) {
                 return false;
             }
-            if (s1.equals("*")) {
-                return true;
-            }
-            return s1.equals(s2);
+            return s1.equals("*") || s1.equals(s2);
         }
     }
 

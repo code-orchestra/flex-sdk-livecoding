@@ -597,7 +597,7 @@ public abstract class AbstractGraphicsNode implements GraphicsNode {
      */
     protected boolean isAntialiasedClip(AffineTransform usr2dev,
                                         RenderingHints hints,
-                                        Shape clip){
+                                        Shape clip) {
         // Antialias clip if:
         // + The KEY_CLIP_ANTIALIASING is true.
         // *and*
@@ -613,13 +613,9 @@ public abstract class AbstractGraphicsNode implements GraphicsNode {
         if (clip == null) return false;
 
         Object val = hints.get(RenderingHintsKeyExt.KEY_TRANSCODING);
-        if ((val == RenderingHintsKeyExt.VALUE_TRANSCODING_PRINTING) ||
-            (val == RenderingHintsKeyExt.VALUE_TRANSCODING_VECTOR))
-            return false;
+        return !((val == RenderingHintsKeyExt.VALUE_TRANSCODING_PRINTING) ||
+                (val == RenderingHintsKeyExt.VALUE_TRANSCODING_VECTOR)) && !(clip instanceof Rectangle2D && usr2dev.getShearX() == 0 && usr2dev.getShearY() == 0);
 
-        return !(clip instanceof Rectangle2D &&
-                usr2dev.getShearX() == 0 &&
-                usr2dev.getShearY() == 0);
     }
 
     //
@@ -940,9 +936,8 @@ public abstract class AbstractGraphicsNode implements GraphicsNode {
      */
     public boolean intersects(Rectangle2D r) {
         Rectangle2D b = getBounds();
-        if (b == null) return false;
+        return b != null && b.intersects(r);
 
-        return b.intersects(r);
     }
 
     /**

@@ -914,11 +914,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
             if (preserve) {
                 prevEndsWithSpace = false;
             } else {
-                if (asb.length() == 0) {
-                    prevEndsWithSpace = true;
-                } else {
-                    prevEndsWithSpace = (asb.getLastChar() == ' ');
-                }
+                prevEndsWithSpace = asb.length() == 0 || (asb.getLastChar() == ' ');
             }
 
             switch (n.getNodeType()) {

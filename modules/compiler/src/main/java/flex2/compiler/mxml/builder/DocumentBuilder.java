@@ -1109,7 +1109,7 @@ public class DocumentBuilder extends ComponentBuilder implements MXMLNamespaces
 
 			if (value != null)
 			{
-				document.setUsePreloader(((Boolean)value).booleanValue());
+				document.setUsePreloader((Boolean) value);
 			}
 		}
 

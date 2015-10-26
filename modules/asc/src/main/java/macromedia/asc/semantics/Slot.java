@@ -133,7 +133,7 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
 		{
 			for (int i=0; i<auxDataItems.length; i+=2)
 			{
-				if (((Integer)auxDataItems[i]).intValue() == type)
+				if ((Integer) auxDataItems[i] == type)
 				{
 					auxDataItems[i+1] = value;
 					return;
@@ -162,7 +162,7 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
 		{
 			for (int i=0; i<auxDataItems.length; i+=2)
 			{
-				if (((Integer)auxDataItems[i]).intValue() == type)
+				if ((Integer) auxDataItems[i] == type)
 				{
 					return auxDataItems[i+1];
 				}
@@ -241,7 +241,7 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
 			assert false;
 			break;
 		}
-		return (value != null) ? value.intValue() : 0;
+		return (value != null) ? value : 0;
 	}
 
 	public final void overload(TypeValue t1, int slot_index)
@@ -698,7 +698,7 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
                 // Integer type
                 auxDataItems_cloned[i - 1] = auxDataItems[i - 1];
 
-                switch (((Integer)auxDataItems[i - 1]).intValue()) {
+                switch ((Integer) auxDataItems[i - 1]) {
                     case AUX_OverriddenSlot:
                         // value is Slot
                         auxDataItems_cloned[i] = ((Slot)auxDataItems[i]).clone();

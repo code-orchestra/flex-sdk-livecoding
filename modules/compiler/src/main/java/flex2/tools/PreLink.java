@@ -604,7 +604,7 @@ public class PreLink implements flex2.compiler.PreLink
     
                                 try
                                 {
-                                    result = Integer.decode(backgroundColor).intValue();
+                                    result = Integer.decode(backgroundColor);
                                 }
                                 catch (NumberFormatException numberFormatException)
                                 {
@@ -668,7 +668,7 @@ public class PreLink implements flex2.compiler.PreLink
     
                                                 try
                                                 {
-                                                    result = Integer.decode(backgroundColor).intValue();
+                                                    result = Integer.decode(backgroundColor);
                                                 }
                                                 catch (NumberFormatException numberFormatException)
                                                 {
@@ -803,7 +803,7 @@ public class PreLink implements flex2.compiler.PreLink
             {
                 try
                 {
-                    cfg.setBackgroundColor(Integer.decode(backgroundColor).intValue());
+                    cfg.setBackgroundColor(Integer.decode(backgroundColor));
                 }
                 catch (NumberFormatException numberFormatException)
                 {
@@ -1457,7 +1457,7 @@ public class PreLink implements flex2.compiler.PreLink
             Boolean isSigned = (Boolean)info.getSignedFlags().get(i);
             Digest digest = swc.getDigest(Swc.LIBRARY_SWF,
                     Digest.SHA_256,
-                    isSigned.booleanValue());
+                    isSigned);
 
             if (digest == null || !digest.hasDigest())
             {
@@ -1465,7 +1465,7 @@ public class PreLink implements flex2.compiler.PreLink
                 // "No digest found in catalog.xml. Either compile the application with
                 // the -verify-digests=false or compile the library with
                 // -create-digest=true"
-                if (isSigned.booleanValue()) {
+                if (isSigned) {
                     ThreadLocalToolkit.log(new MissingSignedLibraryDigest(swc.getLocation()));
                 }
                 else {

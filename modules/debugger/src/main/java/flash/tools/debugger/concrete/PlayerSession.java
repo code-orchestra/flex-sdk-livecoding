@@ -257,7 +257,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	{
 		Object prefValue = getPreferenceAsObject(preferenceName);
 		if (prefValue != null)
-			return ((Integer)prefValue).intValue();
+			return (Integer) prefValue;
 		else
 			return defaultValue;
 	}
@@ -267,7 +267,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	{
 		Object prefValue = getPreferenceAsObject(preferenceName);
 		if (prefValue != null)
-			return ((Integer)prefValue).intValue() != 0 ? true : false;
+			return (Integer) prefValue != 0 ? true : false;
 		else
 			return defaultValue;
 	}
@@ -289,7 +289,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 		if (i == null)
 			throw new NullPointerException();
 		else
-			val = i.intValue();
+			val = i;
 		return val;
 	}
 
@@ -1983,7 +1983,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	{
 		if (m_playerSupportsWatchpoints == null)
 			m_playerSupportsWatchpoints = getOption("can_set_watchpoints", false, isolateId); //$NON-NLS-1$
-		return m_playerSupportsWatchpoints.booleanValue();
+		return m_playerSupportsWatchpoints;
 	}
 
 	public boolean playerCanBreakOnAllExceptions()
@@ -1995,14 +1995,14 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	{
 		if (m_playerCanBreakOnAllExceptions == null)
 			m_playerCanBreakOnAllExceptions = getOption("can_break_on_all_exceptions", false, isolateId); //$NON-NLS-1$
-		return m_playerCanBreakOnAllExceptions.booleanValue();
+		return m_playerCanBreakOnAllExceptions;
 	}
 	
 	public boolean supportsConcurrency(int isolateId)
 	{
 		if (m_playerSupportsConcurrency == null)
 			m_playerSupportsConcurrency = getOption("concurrent_player", false, isolateId); //$NON-NLS-1$
-		return m_playerSupportsConcurrency.booleanValue();
+		return m_playerSupportsConcurrency;
 	}
 	
 	public boolean supportsConcurrency()
@@ -2019,7 +2019,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	{
 		if (m_playerSupportsWideLine == null)
 			m_playerSupportsWideLine = getOption("wide_line_player", false, isolateId); //$NON-NLS-1$
-		return m_playerSupportsWideLine.booleanValue();
+		return m_playerSupportsWideLine;
 	}
 
 	public boolean playerCanTerminate()
@@ -2036,7 +2036,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	{
 		if (m_playerCanCallFunctions == null)
 			m_playerCanCallFunctions = getOption("can_call_functions", false, isolateId); //$NON-NLS-1$
-		return m_playerCanCallFunctions.booleanValue();
+		return m_playerCanCallFunctions;
 	}
 
 	/**
@@ -2053,7 +2053,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 		String optionValue = getOption(optionName, null, isolateId);
 
 		if (optionValue != null)
-			retval = Boolean.valueOf(optionValue).booleanValue();
+			retval = Boolean.valueOf(optionValue);
 
 		return retval;
 	}
@@ -2664,7 +2664,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 			m_evalIsAndInstanceofCache.put(key, retval);
 		}
 
-		return retval.booleanValue();
+		return retval;
 	}
 
 	private boolean evalIsOrInstanceof(BinaryOp op, Value value, String type, int isolateId) throws PlayerDebugException, PlayerFaultException
@@ -2681,7 +2681,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 			m_evalIsAndInstanceofCache.put(key, retval);
 		}
 
-		return retval.booleanValue();
+		return retval;
 	}
 
 	public boolean evalIn(Value property, Value object) throws PlayerDebugException, PlayerFaultException

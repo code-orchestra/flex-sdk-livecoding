@@ -479,7 +479,7 @@ public class OEMUtil
         List<Object> newArgs = new ArrayList<Object>();
 		for (Object[] a : positions) {
 			String var = (String) a[0];
-			int iStart = ((Integer) a[1]).intValue(), iEnd = ((Integer) a[2]).intValue();
+			int iStart = (Integer) a[1], iEnd = (Integer) a[2];
 			if (!excludes.contains(var)) {
 				newArgs.addAll(Arrays.asList(args).subList(iStart, iEnd));
 			}

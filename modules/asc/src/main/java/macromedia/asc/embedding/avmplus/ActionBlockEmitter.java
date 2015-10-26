@@ -462,7 +462,8 @@ public class ActionBlockEmitter extends Emitter
         public boolean hasFinally = false;           // set if try block has a finally
         public int cur_locals = 0;
         public int loop_index = -1;
-    };
+    }
+
     protected ObjectList<ExceptionBlock> exceptionBlocks = new ObjectList<ExceptionBlock>();
 
     protected IntList if_addrs = new IntList();

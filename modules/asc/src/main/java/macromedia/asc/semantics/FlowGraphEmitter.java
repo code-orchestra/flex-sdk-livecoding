@@ -237,7 +237,7 @@ public final class FlowGraphEmitter extends Emitter
 					if (block.preds.get(n) != 0 && pred.preds.size() == 0)
 						++terminalPreds;
 				}
-				if (terminalPreds == block.preds.size() && block.is_terminal == false) {
+				if (terminalPreds == block.preds.size() && !block.is_terminal) {
 					block.is_terminal = true;
 					block.preds.clear();
 					change = true;

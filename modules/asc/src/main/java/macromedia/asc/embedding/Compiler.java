@@ -415,7 +415,7 @@ public class Compiler implements ErrorConstants
         	System.err.println();
             System.err.println(error_count + " errors found");
         }
-        else if (show_parsetrees == false && emit_doc_info == false)
+        else if (!show_parsetrees && !emit_doc_info)
 		{
 			if (show_instructions)
 			{

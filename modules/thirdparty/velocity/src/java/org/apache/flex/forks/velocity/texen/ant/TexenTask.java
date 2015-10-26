@@ -359,7 +359,7 @@ public class TexenTask
         throws BuildException
     {
         // Make sure the template path is set.
-        if (templatePath == null && useClasspath == false)
+        if (templatePath == null && !useClasspath)
         {
             throw new BuildException(
                 "The template path needs to be defined if you are not using " +

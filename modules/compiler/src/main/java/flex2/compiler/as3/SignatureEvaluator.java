@@ -752,7 +752,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
             // TYPE
             // if there is an annotation...
-            if (variableBinding.variable.no_anno == false) {
+            if (!variableBinding.variable.no_anno) {
                 if (humanReadable) {
                     out.append(":");
                 }

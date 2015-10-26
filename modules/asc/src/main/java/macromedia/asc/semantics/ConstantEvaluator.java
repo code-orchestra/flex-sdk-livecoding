@@ -103,7 +103,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         // Mxmlc needs to call PreprocessTypeInfo on all source files prior to the 
         //  normal CE evaluation of each source file.  This flag prevents us from performing 
         //  this step twice in that case.
-        if (typeInfoPreprocessing_complete == false)
+        if (!typeInfoPreprocessing_complete)
         {
             PreprocessDefinitionTypeInfo(cx, pn.statements.items, false);
             cx.processUnresolvedNamespaces();
@@ -135,7 +135,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
             DefinitionNode dn = it instanceof DefinitionNode ? (DefinitionNode) it : null;
 
             if (dn != null && ((dn.attrs != null && dn.attrs.hasStatic == static_context) ||
-                    (static_context == false && (dn.attrs == null || dn.attrs.hasStatic == false)))) {
+                    (!static_context && (dn.attrs == null || !dn.attrs.hasStatic)))) {
                 if (dn instanceof ClassDefinitionNode)
                     PreprocessDefinitionTypeInfo(cx, (ClassDefinitionNode) dn);
                 else if (dn instanceof FunctionDefinitionNode)
@@ -173,7 +173,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
                 PreprocessDefinitionTypeInfo(cx, ((BinaryProgramNode) it));
             } else if (it instanceof StatementListNode) {
                 PreprocessDefinitionTypeInfo(cx, ((StatementListNode) it).items, static_context);
-            } else if (static_context == false) {   // deal with blocks created for for, with, try, catch, and finally clauses.
+            } else if (!static_context) {   // deal with blocks created for for, with, try, catch, and finally clauses.
                 //  Their statementLists are included as elements within the host statementlist
                 //  and can contain their own definitions.
                 StatementListNode stln = it instanceof StatementListNode ? (StatementListNode) it : null;
@@ -2822,7 +2822,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
             }
         }
         boolean old_in_anonymous_function = this.in_anonymous_function;
-        this.in_anonymous_function = (node.isFunctionDefinition() == false); // set flag if we are processing an anonymous function
+        this.in_anonymous_function = (!node.isFunctionDefinition()); // set flag if we are processing an anonymous function
         if (this.in_anonymous_function)
             this_contexts.push_back(global_this);
 
@@ -2850,7 +2850,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
             if (scope_depth > 0)                        //   If the scope is at least that big.
             {
                 ObjectValue scope = cx.scope(scope_depth); // and the builder is a ClassBuilder
-                boolean is_interface_method = (scope.builder instanceof ClassBuilder) && ((ClassBuilder)(scope.builder)).is_interface == true;
+                boolean is_interface_method = (scope.builder instanceof ClassBuilder) && ((ClassBuilder) (scope.builder)).is_interface;
                 if (!is_interface_method) // don't evaulate default "return void 0" body of interface defs here, it will just generate bogus return type errors in !
                     node.body.evaluate(cx,this);
             }
@@ -3263,7 +3263,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
             for (ParameterNode item : node.items)
             {
 
-                if ((item instanceof RestParameterNode) == false)
+                if (!(item instanceof RestParameterNode))
                 {
                     val  = PreprocessDefinitionTypeInfo(cx,item);
                     obj  = (val.getValue(cx) instanceof ObjectValue) ? (ObjectValue) val.getValue(cx) : null;
@@ -3311,7 +3311,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         currentDecimalContext = new Decimal128Context(); // for use in constant folding
 
         // preprocess all definitions to set their slot.type, types, and decl_styles correctly.
-        if (typeInfoPreprocessing_complete == false)  // only true when Flex calls us, false for normal asc usage.
+        if (!typeInfoPreprocessing_complete)  // only true when Flex calls us, false for normal asc usage.
         {
             node.cx.processUnresolvedNamespaces();
             PreprocessDefinitionTypeInfo(cx,node.statements.items);

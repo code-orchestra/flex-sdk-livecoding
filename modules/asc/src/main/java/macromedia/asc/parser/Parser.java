@@ -2947,7 +2947,7 @@ XMLElementContent
         //TODO: These sorts of special cases could be handled in the scanner.
         
         case LOGICALANDASSIGN_TOKEN: case LOGICALXORASSIGN_TOKEN: case LOGICALORASSIGN_TOKEN:
-            if (HAS_LOGICALASSIGNMENT==false)
+            if (!HAS_LOGICALASSIGNMENT)
             {
                 break;
             }
@@ -4211,7 +4211,7 @@ XMLElementContent
                 break;
                 
             case INTERFACE_TOKEN:
-                if (HAS_INTERFACEDEFINITIONS==false)
+                if (!HAS_INTERFACEDEFINITIONS)
                 {
                 	// 'interface' is treated as an identifier on this path.
                     result = parseAnnotatedDirectiveOrStatement(mode);
@@ -6246,7 +6246,7 @@ XMLElementContent
         PackageNameNode first = null;
         final boolean has_packagename = (lookahead()!=LEFTBRACE_TOKEN);
         
-        if (has_packagename==true)
+        if (has_packagename)
         {
             first = parsePackageName(false);
         }
@@ -6296,7 +6296,7 @@ XMLElementContent
             
         // Add importDirective AFTER useDirectives...if there is no packagename...
 
-        if (has_packagename == false && ctx.statics.es4_vectors && result != null)
+        if (!has_packagename && ctx.statics.es4_vectors && result != null)
         {
         	result.statements.items.add(1, importDirective);
         }
@@ -6311,7 +6311,7 @@ XMLElementContent
 
         // Or add the importDirective BEFORE, why? who knows...
 
-        if (has_packagename == true && ctx.statics.es4_vectors && result != null)
+        if (has_packagename && ctx.statics.es4_vectors && result != null)
         {
         	result.statements.items.add(1, importDirective);
         }

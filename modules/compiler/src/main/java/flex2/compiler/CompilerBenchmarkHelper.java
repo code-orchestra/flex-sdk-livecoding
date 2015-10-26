@@ -116,7 +116,7 @@ public class CompilerBenchmarkHelper
             // verbose
             String name = (compilerName == null) ? "unknown" : compilerName;
             boolean isabc = name.equals("abc");
-            if (isabc == false || Trace.phaseabc)
+            if (!isabc || Trace.phaseabc)
             {
                 // trace the compiler name and file name
                 Trace.trace("Start compiler " + name + " phase[" + getPhaseName(phase) + "] with: " + source);

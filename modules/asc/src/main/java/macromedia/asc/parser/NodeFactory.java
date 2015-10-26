@@ -1979,7 +1979,7 @@ public final class NodeFactory implements ErrorConstants
                         break;
                     }
                 }
-                if (has_doc == false && create_default_doc_comments)
+                if (!has_doc && create_default_doc_comments)
                 {
                     DocCommentNode dcn = docComment(literalArray(null),pos);
                     DefinitionNode def = (DefinitionNode) item;

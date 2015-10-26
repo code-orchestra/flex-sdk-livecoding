@@ -2034,7 +2034,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         //       by NodeFactory in order to make finally blocks work.  Don't call
         //       FlowGraphEmitter's Throw() in that case because we aren't really
         //       exiting the block.  Basically a bandaid over a hack
-        if (node.isSynthetic() == false)
+        if (!node.isSynthetic())
             Throw();
 
         if( super_context.last() == super_statement )
@@ -2734,13 +2734,13 @@ else
         {
             // node.clsdefs have the baseclass.cframe resolved, i.e. we've got fully-qualified class names.
             // sort the class names based on "extends" and "implements"...
-            if (found_circular_or_duplicate_class_definition == false)
+            if (!found_circular_or_duplicate_class_definition)
             {
                 node.clsdefs = sortClassDefinitions(node.cx, node.clsdefs);
             }
             // now that node.clsdefs are in topological order, check for overrides and other steps that
             // require resolved supertypes should be more accurate...
-            if (found_circular_or_duplicate_class_definition == false)
+            if (!found_circular_or_duplicate_class_definition)
             {
                 for (ClassDefinitionNode n : node.clsdefs)
                 {
@@ -2903,7 +2903,7 @@ else
 
         if( node.publicNamespace == null )
         {
-            if( doingPackage() && import_context.back() != true )
+            if( doingPackage() && !import_context.back())
             {
                 cx.error(node.pos(), kError_NestedPackage);
                 return null;
@@ -3239,7 +3239,7 @@ else
             Value val = node.variable.identifier.evaluate(cx,this);
             node.ref = (val instanceof ReferenceValue) ? (ReferenceValue) val : null;
 
-            if (node.inPackage() == false && cx.getScopes().size() == 1 && node.attrs != null)
+            if (!node.inPackage() && cx.getScopes().size() == 1 && node.attrs != null)
             {
                 if( node.attrs.hasAttribute(PUBLIC) )
                     cx.error(node.attrs.pos(), kError_InvalidPublic);
@@ -4952,7 +4952,7 @@ else
                 // sort the class names based on "extends" and "implements"...
                 node.clsdefs = sortClassDefinitions(node.cx, node.clsdefs);
 
-                if (found_circular_or_duplicate_class_definition == false)
+                if (!found_circular_or_duplicate_class_definition)
                 {
                     for (ClassDefinitionNode clsdef : node.clsdefs)
                     {

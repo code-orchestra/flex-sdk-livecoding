@@ -1019,7 +1019,7 @@ public final class Scanner implements ErrorConstants
                 				if ( c == '\r' || c == '\n' )
                 				{
                 					isFirstTokenOnLine = true;
-                					if (save_comments == false)
+                					if (!save_comments)
                 					{
                 						break line_comment;
                 					}
@@ -1030,7 +1030,7 @@ public final class Scanner implements ErrorConstants
                 		continue;
 
                 	case '*':
-                		if (save_comments == false)
+                		if (!save_comments)
                 		{
                 			block_comment:
                 				while ( (c=nextchar()) != 0)

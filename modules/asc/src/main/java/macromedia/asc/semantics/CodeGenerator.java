@@ -2333,7 +2333,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
 
         If(cx,node.condition);  // if false, jump past then actions
         node.thenexpr.evaluate(cx, this);
-        if (node.thenexpr.inTerminalBlock() == false)
+        if (!node.thenexpr.inTerminalBlock())
             Else(); // jump past else actions
         //else
         //    System.out.print("\n// +ConditionalExpressionNode, skiping Else jump");
@@ -2341,7 +2341,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         PatchIf(getIP());  // patch target of if jump
         node.elseexpr.evaluate(cx, this);
 
-        if (node.thenexpr.inTerminalBlock() == false)
+        if (!node.thenexpr.inTerminalBlock())
             PatchElse(getIP()); // patch target of else jumps
 
         if (debug)
@@ -2683,7 +2683,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
             }
             if (node.elseactions != null)
             {
-                if (node.thenactions == null || node.thenactions.inTerminalBlock() == false)
+                if (node.thenactions == null || !node.thenactions.inTerminalBlock())
                     Else(); // jump past else actions
                 //else
                 //    System.out.print("\n// +IfStatementNode, skiping Else jump");
@@ -2691,7 +2691,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
                 PatchIf(getIP());  // patch target of if jump
                 node.elseactions.evaluate(cx, this);
 
-                if (node.thenactions == null || node.thenactions.inTerminalBlock() == false)
+                if (node.thenactions == null || !node.thenactions.inTerminalBlock())
                     PatchElse(getIP()); // patch target of else jump
             }
             else
@@ -2771,7 +2771,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
                         default_index = case_index;
                     }
                     PushCaseIndex(case_index);
-                    if (expr == null || expr.inTerminalBlock() == false)
+                    if (expr == null || !expr.inTerminalBlock())
                     {
                         Else(); // jump past else actions
                         patch_else.push_back(true);
@@ -2790,7 +2790,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
             PushCaseIndex(default_index);
             while (case_index-- != 0)
             {
-                if (patch_else.back() == true)
+                if (patch_else.back())
                     PatchElse(getIP()); // patch target of else jumps
                 patch_else.pop_back();
 
@@ -3813,7 +3813,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
                 node.default_dxns.evaluate(cx,this);
             }
             boolean old_in_anonymous_function = this.in_anonymous_function;
-            this.in_anonymous_function = (node.isFunctionDefinition() == false); // set flag if we are processing an anonymous function
+            this.in_anonymous_function = (!node.isFunctionDefinition()); // set flag if we are processing an anonymous function
             node.body.evaluate(cx,this);
             this.in_anonymous_function = old_in_anonymous_function;
         }
@@ -4001,7 +4001,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
 
         StartMethod(frame.functionName, frame.maxParams, frame.maxLocals);
         clearPositionInfo();
-        if (node.statements.definesCV() && node.statements.was_empty != true)
+        if (node.statements.definesCV() && !node.statements.was_empty)
         {
             temp_cv_reg = allocateTemp();
         }
@@ -5030,7 +5030,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
     public boolean isClassInitializerReference(Context cx, Value value)
     {
         if (value != null && value instanceof TypeValue && ((TypeValue)value).builder instanceof ClassBuilder
-            && this.in_anonymous_function == false) // cn: don't return true when inside body of anonymous function
+            && !this.in_anonymous_function) // cn: don't return true when inside body of anonymous function
                                                     //     created within the class cinit.  See bug #137176 for details
         {
             int scope_depth = cx.getScopes().size();

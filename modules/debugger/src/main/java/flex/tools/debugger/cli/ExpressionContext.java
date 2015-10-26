@@ -263,12 +263,12 @@ public class ExpressionContext implements Context
 			for (int c=0; c<classHierarchy.length; ++c)
 			{
 				String classname = classHierarchy[c];
-				sb.append(m_newline + "(Members of " + classname + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+				sb.append(m_newline).append("(Members of ").append(classname).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
 				for (int i=0; i<mems.length; ++i)
 				{
 					if (classname.equals(mems[i].getDefiningClass()))
 					{
-			  			sb.append(m_newline + " "); //$NON-NLS-1$
+			  			sb.append(m_newline).append(" "); //$NON-NLS-1$
                         m_cache.appendVariable(sb, mems[i], m_isolateId);
 						if (attrs)
 							ExpressionCache.appendVariableAttributes(sb, mems[i]);
@@ -280,7 +280,7 @@ public class ExpressionContext implements Context
 		{
 	  		for(int i=0; i<mems.length; i++)
 	  		{
-	  			sb.append(m_newline + " "); //$NON-NLS-1$
+	  			sb.append(m_newline).append(" "); //$NON-NLS-1$
                 m_cache.appendVariable(sb, mems[i], m_isolateId);
 				if (attrs)
 					ExpressionCache.appendVariableAttributes(sb, mems[i]);

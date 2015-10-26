@@ -25,9 +25,9 @@ package org.apache.flex.forks.velocity.context;
 public interface InternalWrapperContext
 {
     /** returns the wrapped user context */
-    public Context getInternalUserContext();
+    Context getInternalUserContext();
 
     /** returns the base full context impl */
-    public InternalContextAdapter getBaseContext();
+    InternalContextAdapter getBaseContext();
     
 }

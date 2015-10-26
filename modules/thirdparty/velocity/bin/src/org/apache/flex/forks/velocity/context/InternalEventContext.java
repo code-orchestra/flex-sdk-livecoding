@@ -30,6 +30,6 @@ import org.apache.flex.forks.velocity.app.event.EventCartridge;
  */
 public interface InternalEventContext
 {
-    public EventCartridge attachEventCartridge( EventCartridge ec);
-    public EventCartridge getEventCartridge();
+    EventCartridge attachEventCartridge(EventCartridge ec);
+    EventCartridge getEventCartridge();
 }

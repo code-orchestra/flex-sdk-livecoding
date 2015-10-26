@@ -33,5 +33,5 @@ public interface NullSetEventHandler extends EventHandler
      *  @param rhs  reference literal of right-hand-side of set statement
      *  @return true if log message should be written, false otherwise
      */
-    public boolean shouldLogOnNullSet( String lhs, String rhs );
+    boolean shouldLogOnNullSet(String lhs, String rhs);
 }

@@ -2624,7 +2624,7 @@ public class DebugCLI implements Runnable, SourceLocator {
      * Session.stepOut(), or Session.stepContinue().
      */
     private interface AnyKindOfStep {
-        public void step() throws PlayerDebugException;
+        void step() throws PlayerDebugException;
     }
 
     /**

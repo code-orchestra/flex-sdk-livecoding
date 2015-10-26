@@ -34,7 +34,7 @@ public interface VelPropertySet
      *  @param arg value to be set
      *  @return the value returned from the set operation (impl specific)
      */
-    public Object invoke(Object o, Object arg) throws Exception;
+    Object invoke(Object o, Object arg) throws Exception;
 
     /**
      *  specifies if this VelPropertySet is cacheable and able to be
@@ -42,10 +42,10 @@ public interface VelPropertySet
      *
      *  @return true if can be reused for this class, false if not
      */
-    public boolean isCacheable();
+    boolean isCacheable();
 
     /**
      *  returns the method name used to set this 'property'
      */
-    public String getMethodName();
+    String getMethodName();
 }

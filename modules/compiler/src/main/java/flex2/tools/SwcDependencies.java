@@ -38,10 +38,7 @@ import flex2.compiler.util.SwcDependencyUtil;
 import flex2.compiler.util.SwcExternalScriptInfo;
 import flex2.compiler.util.ThreadLocalToolkit;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -360,10 +357,7 @@ public class SwcDependencies extends Tool
         
         public void cfgTypes( ConfigurationValue cfgval, String[] types ) throws ConfigurationException
         {
-            for (int i = 0; i < types.length; ++i)
-            {
-                desiredTypes.add( types[i] );
-            }
+            Collections.addAll(desiredTypes, types);
         }
 
         public static ConfigurationInfo getTypesInfo()
@@ -393,10 +387,7 @@ public class SwcDependencies extends Tool
         
         public void cfgShowSwcs( ConfigurationValue cfgval, String[] swcs ) throws ConfigurationException
         {
-            for (int i = 0; i < swcs.length; ++i)
-            {
-                showSwcs.add( swcs[i] );
-            }
+            Collections.addAll(showSwcs, swcs);
         }
 
         public static ConfigurationInfo getShowSwcsInfo()

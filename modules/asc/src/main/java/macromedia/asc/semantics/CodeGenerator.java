@@ -17,31 +17,16 @@
 
 package macromedia.asc.semantics;
 
-import macromedia.asc.embedding.avmplus.ActivationBuilder;
-import macromedia.asc.embedding.avmplus.CatchBuilder;
-import macromedia.asc.embedding.avmplus.ClassBuilder;
-import macromedia.asc.embedding.avmplus.Features;
-import macromedia.asc.embedding.avmplus.InstanceBuilder;
-import macromedia.asc.embedding.avmplus.WithBuilder;
 import macromedia.asc.embedding.ErrorConstants;
+import macromedia.asc.embedding.avmplus.*;
 import macromedia.asc.parser.*;
-import macromedia.asc.util.Context;
-import macromedia.asc.util.Namespaces;
-import macromedia.asc.util.ObjectList;
-import macromedia.asc.util.NumberConstant;
-import macromedia.asc.util.IntNumberConstant;
-import macromedia.asc.util.UintNumberConstant;
-import macromedia.asc.util.DoubleNumberConstant;
-import macromedia.asc.util.DecimalNumberConstant;
-import macromedia.asc.util.Decimal128;
+import macromedia.asc.util.*;
 
-
-import java.util.ListIterator;
 import java.io.File;
 
 import static macromedia.asc.embedding.avmplus.RuntimeConstants.*;
-import static macromedia.asc.semantics.Slot.*;
 import static macromedia.asc.parser.Tokens.*;
+import static macromedia.asc.semantics.Slot.*;
 
 public final class CodeGenerator extends Emitter implements Evaluator, ErrorConstants
 {
@@ -1261,7 +1246,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
 
             Builder bui                  = base_index>0?cx.scope(base_index).builder:null; // get the builder from lexical scope, null if object reference
 
-            boolean is_constinit         = node.is_constinit || ((is_ctor && node.isThis()) ? true : (bui instanceof InstanceBuilder) ? true : false);
+            boolean is_constinit         = node.is_constinit || is_ctor && node.isThis() || bui instanceof InstanceBuilder;
             boolean is_const             = slot != null && slot.isConst();
 
             boolean is_localref          = isLocalScope(cx, base_index);

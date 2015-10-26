@@ -190,8 +190,8 @@ class EmbedEvaluator extends EvaluatorAdapter
 
                                 if (input != null)
                                 {
-                                    values.put( Transcoder.LINE, new Integer(line).toString() );
-                                    values.put( Transcoder.COLUMN, new Integer(col).toString() );
+                                    values.put( Transcoder.LINE, Integer.toString(line));
+                                    values.put( Transcoder.COLUMN, Integer.toString(col));
                                 }
                             }
 
@@ -249,8 +249,8 @@ class EmbedEvaluator extends EvaluatorAdapter
 
                     if (input != null)
                     {
-                        values.put( Transcoder.LINE, new Integer(line).toString() );
-                        values.put( Transcoder.COLUMN, new Integer(col).toString() );
+                        values.put( Transcoder.LINE, Integer.toString(line));
+                        values.put( Transcoder.COLUMN, Integer.toString(col));
                     }
                 }
 

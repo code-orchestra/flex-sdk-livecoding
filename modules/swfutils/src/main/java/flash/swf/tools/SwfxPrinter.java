@@ -2097,14 +2097,11 @@ public final class SwfxPrinter extends TagHandler
 					URL url = url1;
 					if (saveOption) {
 						try (InputStream in = new BufferedInputStream(url.openStream())) {
-							OutputStream fileOut = new BufferedOutputStream(new FileOutputStream(outfile));
-							try {
+							try (OutputStream fileOut = new BufferedOutputStream(new FileOutputStream(outfile))) {
 								int c;
 								while ((c = in.read()) != -1) {
 									fileOut.write(c);
 								}
-							} finally {
-								fileOut.close();
 							}
 						}
 					}

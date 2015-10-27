@@ -120,8 +120,8 @@ public class ParseException extends Exception {
           if (maxSize < expectedTokenSequence.length) {
               maxSize = expectedTokenSequence.length;
           }
-          for (int j = 0; j < expectedTokenSequence.length; j++) {
-              expected += tokenImage[expectedTokenSequence[j]] + " ";
+          for (int anExpectedTokenSequence : expectedTokenSequence) {
+              expected += tokenImage[anExpectedTokenSequence] + " ";
           }
           if (expectedTokenSequence[expectedTokenSequence.length - 1] != 0) {
               expected += "...";
@@ -199,7 +199,6 @@ public class ParseException extends Exception {
               } else {
                  retval.append(ch);
               }
-              continue;
         }
       }
       return retval.toString();

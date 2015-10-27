@@ -237,7 +237,7 @@ public class SVGImageElementBridge extends AbstractGraphicsNodeBridge {
          * it hides the mark/reset methods so only we get to
          * use them.
          */
-        ProtectedStream reference = null;
+        ProtectedStream reference;
         try {
             reference = openStream(e, purl);
         } catch (SecurityException secEx ) {
@@ -268,7 +268,6 @@ public class SVGImageElementBridge extends AbstractGraphicsNodeBridge {
             reference.retry();
         } catch (IOException ioe) {
             reference.release();
-            reference = null;
             try {
                 // Couldn't reset stream so reopen it.
                 reference = openStream(e, purl);
@@ -304,7 +303,6 @@ public class SVGImageElementBridge extends AbstractGraphicsNodeBridge {
             reference.retry();
         } catch (IOException ioe) {
             reference.release();
-            reference = null;
             try {
                 // Couldn't reset stream so reopen it.
                 reference = openStream(e, purl);

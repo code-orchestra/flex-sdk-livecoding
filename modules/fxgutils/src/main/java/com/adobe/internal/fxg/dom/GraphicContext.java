@@ -102,7 +102,7 @@ public class GraphicContext implements Cloneable
      */
     public Object clone()
     {
-        GraphicContext copy = null;
+        GraphicContext copy;
         try
         {
             copy = (GraphicContext)super.clone();

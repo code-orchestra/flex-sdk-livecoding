@@ -534,7 +534,7 @@ public class DocumentBuilder extends ComponentBuilder implements MXMLNamespaces
      */
     protected Attribute getSpecialAttribute(Node node, String localPart)
     {
-        Attribute attr = null;
+        Attribute attr;
 
         if (document.getVersion() < 4)
         {

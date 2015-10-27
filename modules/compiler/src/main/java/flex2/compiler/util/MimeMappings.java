@@ -117,7 +117,7 @@ public final class MimeMappings
     	}
     	
     	Object value = mimeMappings.get(mimeType);
-    	String[] a = null;
+    	String[] a;
     	if (value instanceof String[])
     	{
     		String[] old = (String[]) value;
@@ -154,7 +154,7 @@ public final class MimeMappings
     	}
     	
     	Object value = mimeMappings.get(mimeType);
-    	String[] a = null;
+    	String[] a;
     	if (value instanceof String[])
     	{
     		String[] old = (String[]) value;

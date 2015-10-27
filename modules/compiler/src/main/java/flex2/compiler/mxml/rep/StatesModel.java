@@ -1450,7 +1450,7 @@ public final class StatesModel
             }
             
             // destination
-            macromedia.asc.parser.Node valueNode = null;
+            macromedia.asc.parser.Node valueNode;
             IdentifierNode destIdentifier = nodeFactory.identifier(DESTINATION, false);
             valueNode = (parent != null) ? nodeFactory.literalString(parent.getId()) 
                     : nodeFactory.literalNull();
@@ -1665,7 +1665,7 @@ public final class StatesModel
                 }
                 else
                 {
-                    macromedia.asc.parser.Node valueNode = null;
+                    macromedia.asc.parser.Node valueNode;
                     IdentifierNode valueIdentifier = nodeFactory.identifier(VALUE, false);
                     if (value == null || value.isBinding())
                     {

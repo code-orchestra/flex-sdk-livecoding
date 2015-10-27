@@ -217,7 +217,7 @@ public class DefaultDebuggerCallbacks implements IDebuggerCallbacks
 			String[] cmd = new String[] { "cmd", "/d", "/c", "ftype", type }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			Process p = Runtime.getRuntime().exec(cmd);
 			LineNumberReader lnr = new LineNumberReader(new InputStreamReader(p.getInputStream()));
-			String line = null;
+			String line;
 			type += "="; //$NON-NLS-1$
 			while( it == null && (line = lnr.readLine()) != null)
 			{
@@ -350,7 +350,7 @@ public class DefaultDebuggerCallbacks implements IDebuggerCallbacks
 	 */
 	public String queryWindowsRegistry(String key, String value, int registryBitMode) throws IOException
 	{
-		Process p = null;
+		Process p;
 		String result = null;
 
 		List<String> arguments = new ArrayList<>(6);
@@ -402,7 +402,6 @@ public class DefaultDebuggerCallbacks implements IDebuggerCallbacks
 			if (p != null)
 			{
 				p.destroy();
-				p = null;
 			}
 		}
 

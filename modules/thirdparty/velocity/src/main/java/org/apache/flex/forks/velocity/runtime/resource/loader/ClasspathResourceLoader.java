@@ -93,7 +93,7 @@ public class ClasspathResourceLoader extends ResourceLoader
     public synchronized InputStream getResourceStream( String name )
         throws ResourceNotFoundException
     {
-        InputStream result = null;
+        InputStream result;
         
         if (name == null || name.length() == 0)
         {

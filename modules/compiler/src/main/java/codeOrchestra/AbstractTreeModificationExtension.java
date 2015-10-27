@@ -163,7 +163,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
             classCONode.interfaces.add("IMethodCodeUpdate");
         }
         classCONode.addImport("codeOrchestra.actionScript.logging.logUtil", "LogUtil");
-        MemberExpressionNode memberExpressionNode = null;
+        MemberExpressionNode memberExpressionNode;
 
         if (!incremental) {
             /*

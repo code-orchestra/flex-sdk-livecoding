@@ -192,7 +192,7 @@ public class CompilerBenchmarkHelper
      */
     private static String getPhaseName(int phase)
     {
-        String result = null;
+        String result;
 
         switch (phase)
         {

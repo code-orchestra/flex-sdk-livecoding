@@ -1495,7 +1495,7 @@ public class Library implements Builder, Cloneable
         }
 
         // If --include-sources is different, rebuild.
-        Set<VirtualFile> fileSet = null;
+        Set<VirtualFile> fileSet;
         if ((fileSet = processSources(compilerConfig)) == null)
         {
             clean(false /* cleanData */, false /* cleanCache */, false /* cleanOutput */);
@@ -1565,7 +1565,7 @@ public class Library implements Builder, Cloneable
                                                          tempOEMConfiguration.configuration);
 
         Map<String, Source> classes = new TreeMap<>();
-        Set<SwcComponent> nsComponents = null;
+        Set<SwcComponent> nsComponents;
 
         if ((nsComponents = processInputs(swcContext, copy, classes)) == null)
         {
@@ -1795,7 +1795,7 @@ public class Library implements Builder, Cloneable
         }
 
         boolean hasChanged = oemConfiguration != null && oemConfiguration.hasChanged();
-        flex2.compiler.common.Configuration config = null;
+        flex2.compiler.common.Configuration config;
 
         if (hasChanged)
         {

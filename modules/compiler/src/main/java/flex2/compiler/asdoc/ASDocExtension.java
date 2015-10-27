@@ -96,8 +96,7 @@ public class ASDocExtension implements Extension
         DocCommentGenerator g = new TopLevelGenerator(); // new
         g.generate(tab); // new
         xml = g.toString(); // new
-        g = null; // new
-        
+
         if(restoreBuiltinClasses && xml != null)
         {
             xml = xml.replaceAll("_ASDoc2", "");
@@ -249,7 +248,7 @@ public class ASDocExtension implements Extension
 
         inheritance.addAll(unit.inheritance.stream().filter(name -> name instanceof QName).map(name -> (QName) name).collect(Collectors.toList()));
 
-        boolean flag = false;
+        boolean flag;
         if (!exclude && !unit.getSource().isInternal())
         {
             if (Trace.asdoc)

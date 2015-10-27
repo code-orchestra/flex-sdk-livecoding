@@ -278,7 +278,7 @@ public class StrokingTextPainter extends BasicTextPainter {
 
         while (aci.setIndex(chunkStartIndex) != CharacterIterator.DONE) {
             TextPath prevTextPath = null;
-            for (int start=chunkStartIndex, end=0;
+            for (int start = chunkStartIndex, end;
                  aci.setIndex(start) != CharacterIterator.DONE; start=end) {
 
                 TextPath textPath = (TextPath) aci.getAttribute(TEXTPATH);
@@ -574,7 +574,6 @@ public class StrokingTextPainter extends BasicTextPainter {
             if (aci.setIndex(end) == AttributedCharacterIterator.DONE) {
                 moreChunks = false;
             }
-            start = end;
         }
         if (as != null)
             return as.getIterator();
@@ -603,7 +602,7 @@ public class StrokingTextPainter extends BasicTextPainter {
         Point2D.Float offset        = new Point2D.Float(0,0);
         Point2D.Float advance       = new Point2D.Float(0,0);
         boolean isChunkStart  = true;
-        TextSpanLayout layout = null;
+        TextSpanLayout layout;
         do {
             int start = aci.getRunStart(extendedAtts);
             int end   = aci.getRunLimit(extendedAtts);
@@ -1581,7 +1580,6 @@ public class StrokingTextPainter extends BasicTextPainter {
         if (beginIndex > endIndex) {
             // Swap them...
             BasicTextPainter.BasicMark tmpMark = begin;
-            begin = end; end = tmpMark;
 
             int tmpIndex = beginIndex;
             beginIndex = endIndex; endIndex = tmpIndex;

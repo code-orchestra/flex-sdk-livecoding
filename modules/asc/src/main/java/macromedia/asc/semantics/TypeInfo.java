@@ -83,7 +83,7 @@ public class TypeInfo implements Serializable, Cloneable // CodeOrchestra: made 
     }
 
     public boolean includes(Context cx, TypeInfo other_type) {
-        boolean result = false;
+        boolean result;
 
         result = !(cx.statics.es4_nullability && !this.is_nullable && other_type.is_nullable) && this.type.includes(cx, other_type.type);
 

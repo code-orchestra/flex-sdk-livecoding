@@ -416,7 +416,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 			else if ( ((baseType == cx.nullType()) && ("String".equals(node.ref.name)) && (numArgs == 1))
 					|| ((baseType != cx.nullType()) && ("toString".equals(node.ref.name)) && (numArgs == 0)) )
 			{
-				TypeValue argTypeVal = null;
+				TypeValue argTypeVal;
 
 				if (numArgs == 1)
 				{
@@ -610,8 +610,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
                     (types[kErrorType] != null && types[kErrorType].includes(cx,basetype)))  // these types are dynamic for backwards compatability, so ! doesn't catch this.  Its unlikely anyone is adding dynamic props to them
                 {
                     warning(node.pos(), cx.input, kWarning_BadES3TypeProp, node.ref.name, basetype.name.name);
-                    unsupported = true;
-                }
+				}
                 else
                 {
                     Map<TypeValue,Integer> search = unsupportedPropsMap.get(node.ref.name);
@@ -644,8 +643,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 
                     if ( !unsupported && node.ref.name.startsWith("_level") && (node.base == null) )
                     {
-                        unsupported = true;
-                        warning(node.getPosition(), cx.input, kWarning_LevelNotSupported);
+						warning(node.getPosition(), cx.input, kWarning_LevelNotSupported);
                     }
 
                     // return * for the value type if we are accessing a prop of a dynamic class instance
@@ -824,8 +822,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
                                 if (type != null && type.includes(cx,searchType))  // it's defining Type matches one of the warning cases
                                 {
                                     warning(pos, cx.input, kWarning_DepricatedEventHandlerError, warningConstantsMap.get(search.get(type)));
-                                    unsupported = true;
-                                }
+								}
                             }
                         }
                     }
@@ -900,7 +897,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 
 		int this_context = this_contexts.last();
 
-		ObjectValue  this_value = null;
+		ObjectValue  this_value;
 
 		switch( this_context )
 		{
@@ -1270,7 +1267,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
   		if ( numDeclaredParams != 0 && node.expected_types.at(0).getTypeValue() != cx.voidType()) // void is used for class based method which declares no arguments
    		{
   			int param_count = 0;
-  			TypeValue expectedType = null;
+  			TypeValue expectedType;
 
 		   for (int i = 0, size = node.items.size(); i < size; i++)
   			{
@@ -1768,7 +1765,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 			if (node.typeref == null && node.ref != null && node.variable.no_anno)
 				warning(node.getPosition(),cx.input, kWarning_NoTypeDecl, "variable", node.ref.name);
 			
-			Slot type_slot = null;
+			Slot type_slot;
 			if( node.typeref != null && (type_slot = node.typeref.getSlot(cx)) != null )
 			{
 				checkDeprecatedSlot(cx, node.variable.type, node.typeref, type_slot);
@@ -1888,7 +1885,6 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 				}
 				else if (s != null)
 				{
-					s = null;
 				}
 			}
 
@@ -2374,8 +2370,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 				}
                 else
                 {
-                    has_instance_methods = true;
-                }
+				}
 
 				fn.evaluate(cx,this);
 				if (fn.ref.name.equals("$construct") && !node.isInterface() && !fn.isSynthetic() && !body_has_super)
@@ -2507,7 +2502,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 	public Value evaluate( Context cx, SuperExpressionNode node )
 	{
 		TypeValue  super_type = cx.noType();
-		TypeValue  this_value = null;
+		TypeValue  this_value;
 
 		// All error cases handled by flow analyzer
 		if( node.expr != null )
@@ -3125,7 +3120,6 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 			// c++ variant accesses union member typValue directly, java stores value in objValue
 			TypeValue t = (s != null && s.getObjectValue() instanceof TypeValue) ? (TypeValue)(s.getObjectValue()) : null;
 			types[ typeDescriptors[x].code ] = t;
-			typeRef = null;
 		}
 
 		types[kVoidType] = cx.nullType();

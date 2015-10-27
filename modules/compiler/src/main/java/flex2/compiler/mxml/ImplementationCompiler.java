@@ -207,7 +207,6 @@ class ImplementationCompiler extends flex2.compiler.AbstractSubCompiler
 
 			// C: null out MxmlDocument after generation
 			document.getStylesContainer().setMxmlDocument(null);
-			document = null;
 			// C: MXML DOM no longer needed
 			unit.setSyntaxTree(null);
 			
@@ -242,7 +241,6 @@ class ImplementationCompiler extends flex2.compiler.AbstractSubCompiler
 
 			// C: null out MxmlDocument after generation
 			document.getStylesContainer().setMxmlDocument(null);
-			document = null;
 			// C: MXML DOM no longer needed
 			unit.setSyntaxTree(null);
 			

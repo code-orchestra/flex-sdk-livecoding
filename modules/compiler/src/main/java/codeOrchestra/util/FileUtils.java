@@ -98,7 +98,7 @@ public class FileUtils {
 
             StringBuilder result = new StringBuilder();
 
-            String line = null;
+            String line;
             while ((line = r.readLine()) != null) {
                 result.append(line).append("\n");
             }
@@ -122,7 +122,7 @@ public class FileUtils {
         try {
             r = new BufferedReader(reader);
 
-            String line = null;
+            String line;
             int currentLine = 0;
             while ((line = r.readLine()) != null) {
                 if (currentLine == lineNo) {

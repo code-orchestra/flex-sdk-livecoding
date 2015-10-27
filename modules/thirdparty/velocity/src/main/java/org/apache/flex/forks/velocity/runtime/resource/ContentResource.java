@@ -60,7 +60,7 @@ public class ContentResource extends Resource
                                       encoding));
             
             char buf[] = new char[1024];
-            int len = 0;
+            int len;
             
             while ( ( len = reader.read( buf, 0, 1024 )) != -1)
                 sw.write( buf, 0, len );

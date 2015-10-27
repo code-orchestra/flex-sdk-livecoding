@@ -110,7 +110,7 @@ public class DependencyGraph<EdgeWeight> extends Graph<String, EdgeWeight>
 
 	public void addDependency(String name, String dep)
 	{
-		Vertex<String,EdgeWeight> tail = null, head = null;
+		Vertex<String,EdgeWeight> tail, head;
 
 		if ((head = vertices.get(name)) == null)
 		{
@@ -128,7 +128,7 @@ public class DependencyGraph<EdgeWeight> extends Graph<String, EdgeWeight>
 	}
 
 	public boolean dependencyExists(String name, String dep) {
-		Vertex<String, EdgeWeight> tail = null, head = null;
+		Vertex<String, EdgeWeight> tail, head;
 
 		if ((head = vertices.get(name)) == null) {
 			return false;
@@ -151,7 +151,7 @@ public class DependencyGraph<EdgeWeight> extends Graph<String, EdgeWeight>
 	 */
 	public Set<String> getDependencies(String name)
 	{
-        Vertex<String,EdgeWeight> head = null;
+        Vertex<String,EdgeWeight> head;
 
         if ((head = vertices.get(name)) == null)
         {

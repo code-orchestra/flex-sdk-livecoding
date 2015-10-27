@@ -1393,7 +1393,7 @@ final class PersistenceStore
 
 		length = readU32();
 		String[] bundleNames = new String[length];
-		String[] sources = new String[length], list = null, list2 = null;
+		String[] sources = new String[length], list, list2;
 		Object[] rFiles = new Object[length], rRoots = new Object[length];
 
 		// filename
@@ -1913,7 +1913,7 @@ final class PersistenceStore
 				String className = (String) pool[readU32(in)];
 				String pathName = (String) pool[readU32(in)];
 
-				VirtualFile f = null;
+				VirtualFile f;
 				if (pathName.length() == 0)
 				{
 					f = null;

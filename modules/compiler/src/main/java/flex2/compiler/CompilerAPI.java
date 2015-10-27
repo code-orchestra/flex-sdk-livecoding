@@ -2203,7 +2203,6 @@ public final class CompilerAPI
                         reasons.put(s.getName(), l10n.getLocalizedTextString(new InvalidImportStatement(defName.toString())));
                         iterator.remove();
                         namespaces.add(defName.toString());
-                        valid = false;
                         break;
                     }
                 }
@@ -2548,7 +2547,7 @@ public final class CompilerAPI
 
         // create a new CompilationUnit if no error occur
         // then grab the signature if no signature error occur
-        CompilationUnit u = null;
+        CompilationUnit u;
 
         // this is needed by Source.Resolver.resolve().
         ThreadLocalToolkit.setCompatibilityVersion(configuration.getCompatibilityVersion());
@@ -3294,7 +3293,6 @@ public final class CompilerAPI
             }
             else
             {
-                rf1 = rf3;
                 s1 = s3;
             }
         }
@@ -4152,7 +4150,7 @@ public final class CompilerAPI
 
             for (String aResourceBundleHistory : u.resourceBundleHistory) {
                 String rbName = NameFormatter.toColon(aResourceBundleHistory);
-                Source source = null;
+                Source source;
                 QName[] qNames = resolveResourceBundleName(rbName, sources, null, bundlePath,
                         null, swcContext, symbolTable, locales);
                 if (qNames != null) {

@@ -86,7 +86,7 @@ public class ImageTagRegistry implements ErrorConstants {
         // I just realized that this whole thing could
         boolean needRawData = (colorSpace != null);
 
-        Filter      ret        = null;
+        Filter      ret;
         URLImageCache cache;
         if (needRawData) cache = rawCache;
         else             cache = imgCache;

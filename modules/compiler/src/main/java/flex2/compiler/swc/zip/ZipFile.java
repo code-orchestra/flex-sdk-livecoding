@@ -497,7 +497,7 @@ public class ZipFile {
             if (len > remaining) {
                 len = (int) remaining;
             }
-            int ret = -1;
+            int ret;
             synchronized (archive) {
                 archive.seek(loc);
                 ret = archive.read(b, off, len);

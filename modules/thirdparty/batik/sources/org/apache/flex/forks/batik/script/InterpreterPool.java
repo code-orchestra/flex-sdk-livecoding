@@ -62,7 +62,7 @@ public class InterpreterPool {
     static {
         Iterator iter = Service.providers(InterpreterFactory.class);
         while (iter.hasNext()) {
-            InterpreterFactory factory = null;
+            InterpreterFactory factory;
             factory = (InterpreterFactory)iter.next();
             String[] mimeTypes = factory.getMimeTypes();
             for (String mimeType : mimeTypes) {

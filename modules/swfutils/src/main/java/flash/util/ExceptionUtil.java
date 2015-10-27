@@ -189,7 +189,7 @@ public class ExceptionUtil
     private static Throwable getRootCauseWithReflection(Throwable t)
     {
         for (String unwrapMethod : unwrapMethods) {
-            Method m = null;
+            Method m;
 
             try {
                 m = t.getClass().getMethod(unwrapMethod, (Class[]) null);

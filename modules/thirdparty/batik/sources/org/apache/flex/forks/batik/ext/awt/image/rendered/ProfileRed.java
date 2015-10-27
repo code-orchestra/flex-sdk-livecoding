@@ -174,7 +174,6 @@ public class ProfileRed extends AbstractRed {
                 g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
                                    RenderingHints.VALUE_COLOR_RENDER_QUALITY);
                 g.drawImage(srcImg, 0, 0, null);
-                img = imgComp;
                 imgCM = imgCompCM;
                 srcWR = wr.createWritableTranslatedChild(minX, minY);
             }

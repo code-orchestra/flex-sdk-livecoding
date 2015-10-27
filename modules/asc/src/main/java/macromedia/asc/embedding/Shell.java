@@ -483,7 +483,7 @@ public class Shell
 		try
 		{
 			file = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
-			String s = null;
+			String s;
 			while ((s = file.readLine()) != null)
 			{
 				buffer.append(s);

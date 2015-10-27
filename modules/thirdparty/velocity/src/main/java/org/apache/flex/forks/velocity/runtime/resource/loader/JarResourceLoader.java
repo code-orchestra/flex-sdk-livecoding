@@ -171,7 +171,7 @@ public class JarResourceLoader extends ResourceLoader
     public synchronized InputStream getResourceStream( String source )
         throws ResourceNotFoundException
     {
-        InputStream results = null;
+        InputStream results;
 
         if ( source == null || source.length() == 0)
         {

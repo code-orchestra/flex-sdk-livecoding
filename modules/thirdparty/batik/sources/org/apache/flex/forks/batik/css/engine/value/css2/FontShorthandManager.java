@@ -161,7 +161,7 @@ public class FontShorthandManager
         LexicalUnit fontWeight  = null;
         LexicalUnit fontSize    = null;
         LexicalUnit lineHeight  = null;
-        LexicalUnit fontFamily  = null;
+        LexicalUnit fontFamily;
 
         ValueManager[]vMgrs = eng.getValueManagers();
         int fst, fv, fw, fsz, lh;

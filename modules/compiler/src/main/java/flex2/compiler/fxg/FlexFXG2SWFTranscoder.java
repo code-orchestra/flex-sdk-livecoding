@@ -402,7 +402,7 @@ public class FlexFXG2SWFTranscoder extends FXG2SWFTranscoder
         buf.append("{\n\n");
 
         // Determine Base Class
-        String baseClassName = null;
+        String baseClassName;
         if (symbolClassType == SymbolClassType.SPRITE)
         {
             buf.append("import flash.display.Sprite;\n");
@@ -805,7 +805,7 @@ public class FlexFXG2SWFTranscoder extends FXG2SWFTranscoder
         if (children != null && children.size() > 0)
         {
             for (TextNode aChildren : children) {
-                String elementVar = null;
+                String elementVar;
 
                 // FXG 2.0
                 if (aChildren instanceof RichTextNode) {

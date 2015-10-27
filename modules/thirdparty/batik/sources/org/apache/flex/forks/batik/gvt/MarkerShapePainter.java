@@ -321,7 +321,7 @@ public class MarkerShapePainter implements ShapePainter {
 
         // Get initial point on the path
         double[] coords = new double[7];
-        int segType = 0;
+        int segType;
 
         if (iter.isDone()) {
             return null;
@@ -341,7 +341,7 @@ public class MarkerShapePainter implements ShapePainter {
         if (Double.isNaN(rotation)) {
             if (!iter.isDone()) {
                 double[] next = new double[7];
-                int nextSegType = 0;
+                int nextSegType;
                 nextSegType = iter.currentSegment(next);
                 if(nextSegType == PathIterator.SEG_CLOSE){
                     nextSegType = PathIterator.SEG_LINETO;
@@ -386,7 +386,7 @@ public class MarkerShapePainter implements ShapePainter {
 
         double[] coords = new double[7];
         double[] moveTo = new double[2];
-        int segType = 0;
+        int segType;
         segType = iter.currentSegment(coords);
         if (segType != ExtendedPathIterator.SEG_MOVETO) {
             return null;
@@ -401,7 +401,7 @@ public class MarkerShapePainter implements ShapePainter {
         double[] lastButOne = new double[7];
         double[] last = {coords[0], coords[1], coords[2],
                          coords[3], coords[4], coords[5], coords[6] };
-        double[] tmp = null;
+        double[] tmp;
         int lastSegType = segType;
         int lastButOneSegType = 0;
 
@@ -466,8 +466,8 @@ public class MarkerShapePainter implements ShapePainter {
 
         double[] prev = new double[7];
         double[] curr = new double[7];
-        double[] next = new double[7], tmp = null;
-        int prevSegType = 0, currSegType = 0, nextSegType = 0;
+        double[] next = new double[7], tmp;
+        int prevSegType, currSegType, nextSegType;
 
         // Get the first three points on the path
         if (iter.isDone()) {
@@ -618,8 +618,8 @@ public class MarkerShapePainter implements ShapePainter {
         // Compute point into which the slope runs
         Point2D currEndPoint = getSegmentTerminatingPoint(curr, currSegType);
 
-        double dx = 0;
-        double dy = 0;
+        double dx;
+        double dy;
 
         switch(currSegType){
         case PathIterator.SEG_LINETO: {

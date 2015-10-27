@@ -710,7 +710,7 @@ public class SVGSVGElementBridge
             ati = ati.createInverse();
         } catch (NoninvertibleTransformException ignored) {  }
 
-        SVGContext svgctx = null;
+        SVGContext svgctx;
         if (element instanceof SVGOMElement) {
             svgctx  = ((SVGOMElement)element).getSVGContext();
             if ((svgctx instanceof SVGTextElementBridge) ||
@@ -750,7 +750,7 @@ public class SVGSVGElementBridge
     public boolean checkEnclosure (Element element, SVGRect svgRect ) {
         GraphicsNode gn    = ctx.getGraphicsNode(element);
         Rectangle2D gnBounds = null;
-        SVGContext svgctx = null;
+        SVGContext svgctx;
         if (element instanceof SVGOMElement) {
             svgctx  = ((SVGOMElement)element).getSVGContext();
             if ((svgctx instanceof SVGTextElementBridge) ||

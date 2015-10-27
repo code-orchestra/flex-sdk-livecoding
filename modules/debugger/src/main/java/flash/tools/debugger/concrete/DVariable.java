@@ -345,7 +345,7 @@ public class DVariable implements Variable, Comparable
 	 */
 	public static String typeNameFor(int type)
 	{
-		String s = "string"; //$NON-NLS-1$
+		String s; //$NON-NLS-1$
 		switch(type)
 		{
 			case VariableType.NUMBER:

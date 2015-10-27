@@ -165,7 +165,7 @@ public class ExpressionCache
 	 */
 	public Object get(String s) throws NumberFormatException, ArrayIndexOutOfBoundsException, NoSuchElementException
 	{
-		Object exp = null;
+		Object exp;
 
 		// should be of form '$n' where n is a number 0..size()
 		if (s.charAt(0) != '$')

@@ -518,7 +518,6 @@ public final class TurbulencePatternRed extends AbstractRed {
 
             py = pointY+PerlinN;
             b0 = ((int)py) & BM;
-            b1 = (b0+1) & BM;
 
             b1 = ((j + b0)&BM)<<3;
             b0 = ((i + b0)&BM)<<3;
@@ -853,7 +852,6 @@ public final class TurbulencePatternRed extends AbstractRed {
 
             py = pointY+PerlinN;
             b0 = ((int)py) & BM;
-            b1 = (b0+1) & BM;
 
             b1 = ((j + b0)&BM)<<3;
             b0 = ((i + b0)&BM)<<3;

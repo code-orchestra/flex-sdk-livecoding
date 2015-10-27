@@ -117,7 +117,7 @@ public class AtResource implements LineNumberMapped
      */
     public static AtResource create(TypeTable typeTable, Source sourceFile, int beginLine, String value, Type type)
     {
-        String methodName = null;
+        String methodName;
         if (type.isAssignableTo(typeTable.stringType))
         {
         	methodName = "getString";

@@ -147,7 +147,7 @@ public class LogManager
          *  then take a wack at the AvalonLogSystem as a last resort.
          */
 
-        LogSystem als = null;
+        LogSystem als;
 
         try
         {

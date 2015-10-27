@@ -77,7 +77,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
     public void logInfo(String path, String info)
     {
-        LineNumberMap map = null;
+        LineNumberMap map;
         if ((map = matchPath(path)) != null)
         {
             original.logInfo(map.getOldName(), info);
@@ -90,7 +90,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
     public void logDebug(String path, String debug)
     {
-        LineNumberMap map = null;
+        LineNumberMap map;
         if ((map = matchPath(path)) != null)
         {
             original.logDebug(map.getOldName(), debug);
@@ -103,7 +103,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
     public void logWarning(String path, String warning)
     {
-        LineNumberMap map = null;
+        LineNumberMap map;
         if ((map = matchPath(path)) != null)
         {
             original.logWarning(map.getOldName(), warning);
@@ -116,7 +116,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
 	public void logWarning(String path, String warning, int errorCode)
 	{
-	    LineNumberMap map = null;
+	    LineNumberMap map;
 	    if ((map = matchPath(path)) != null)
 	    {
 	        original.logWarning(map.getOldName(), warning, errorCode);
@@ -129,7 +129,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
     public void logError(String path, String error)
     {
-        LineNumberMap map = null;
+        LineNumberMap map;
         if ((map = matchPath(path)) != null)
         {
             original.logError(map.getOldName(), error);
@@ -142,7 +142,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
 	public void logError(String path, String error, int errorCode)
 	{
-	    LineNumberMap map = null;
+	    LineNumberMap map;
 	    if ((map = matchPath(path)) != null)
 	    {
 	        original.logError(map.getOldName(), error, errorCode);
@@ -155,7 +155,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
     public void logInfo(String path, int line, String info)
     {
-        LineNumberMap map = null;
+        LineNumberMap map;
         if ((map = matchPath(path)) != null)
         {
             if (isUserDefined(map, line))
@@ -175,7 +175,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
     public void logDebug(String path, int line, String debug)
     {
-        LineNumberMap map = null;
+        LineNumberMap map;
         if ((map = matchPath(path)) != null)
         {
             if (isUserDefined(map, line))
@@ -195,7 +195,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
     public void logWarning(String path, int line, String warning)
     {
-        LineNumberMap map = null;
+        LineNumberMap map;
         if ((map = matchPath(path)) != null)
         {
             if (isUserDefined(map, line))
@@ -215,7 +215,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
 	public void logWarning(String path, int line, String warning, int errorCode)
 	{
-	    LineNumberMap map = null;
+	    LineNumberMap map;
 	    if ((map = matchPath(path)) != null)
 	    {
 	        if (isUserDefined(map, line))
@@ -235,7 +235,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
     public void logError(String path, int line, String error)
     {
-        LineNumberMap map = null;
+        LineNumberMap map;
         if ((map = matchPath(path)) != null)
         {
             if (isUserDefined(map, line))
@@ -255,7 +255,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
 	public void logError(String path, int line, String error, int errorCode)
 	{
-	    LineNumberMap map = null;
+	    LineNumberMap map;
 	    if ((map = matchPath(path)) != null)
 	    {
 	        if (isUserDefined(map, line))
@@ -275,7 +275,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
     public void logInfo(String path, int line, int col, String info)
     {
-        LineNumberMap map = null;
+        LineNumberMap map;
         if ((map = matchPath(path)) != null)
         {
             if (isUserDefined(map, line))
@@ -295,7 +295,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
     public void logDebug(String path, int line, int col, String debug)
     {
-        LineNumberMap map = null;
+        LineNumberMap map;
         if ((map = matchPath(path)) != null)
         {
             if (isUserDefined(map, line))
@@ -315,7 +315,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
     public void logWarning(String path, int line, int col, String warning)
     {
-        LineNumberMap map = null;
+        LineNumberMap map;
         if ((map = matchPath(path)) != null)
         {
             if (isUserDefined(map, line))
@@ -335,7 +335,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
     public void logError(String path, int line, int col, String error)
     {
-        LineNumberMap map = null;
+        LineNumberMap map;
         if ((map = matchPath(path)) != null)
         {
             if (isUserDefined(map, line))
@@ -357,7 +357,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
     {
         warning = mapRenamedVariables(warning);
 
-        LineNumberMap map = null;
+        LineNumberMap map;
         if ((map = matchPath(path)) != null)
         {
             if (isUserDefined(map, line))
@@ -389,7 +389,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 	{
 	    warning = mapRenamedVariables(warning);
 
-	    LineNumberMap map = null;
+	    LineNumberMap map;
 	    if ((map = matchPath(path)) != null)
 	    {
 	        if (isUserDefined(map, line))
@@ -419,7 +419,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
     public void logError(String path, int line, int col, String error, String source)
     {
-        LineNumberMap map = null;
+        LineNumberMap map;
         if ((map = matchPath(path)) != null)
         {
             if (isUserDefined(map, line))
@@ -450,7 +450,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 
 	public void logError(String path, int line, int col, String error, String source, int errorCode)
 	{
-	    LineNumberMap map = null;
+	    LineNumberMap map;
 	    if ((map = matchPath(path)) != null)
 	    {
 	        if (isUserDefined(map, line))
@@ -487,7 +487,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 	public void log( ILocalizableMessage m, String source)
 	{
 	    // C: If we encounter the asserts, we'll have to fix ILocalizableMessage.
-	    LineNumberMap map = null;
+	    LineNumberMap map;
 	    if ((map = matchPath(m.getPath())) != null)
 	    {
 	        if (isUserDefined(map, m.getLine()))

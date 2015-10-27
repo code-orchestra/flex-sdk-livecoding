@@ -387,7 +387,7 @@ public abstract class TextParser
     {
         boolean isint = false, isuint = false;  //  temps
 
-        Object result = null;
+        Object result;
 
         if (type.equals(typeTable.noType) || type.equals(typeTable.objectType))
         {

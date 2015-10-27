@@ -276,11 +276,11 @@ public class TopLevelClassesGenerator
             ex.printStackTrace(System.err);
         }
 
-        StringWriter sw = null;
+        StringWriter sw;
         // create string from xml tree
-        StreamResult result = null;
-        DOMSource source = null;
-        String fileName = null;
+        StreamResult result;
+        DOMSource source;
+        String fileName;
 
         Element packages = asDocUtil.getElementByTagName(root, "packages");
         if (packages != null)
@@ -628,7 +628,7 @@ public class TopLevelClassesGenerator
 
         nuClass.appendChild(apiClassifierDetail);
 
-        String interfaceStr = "";
+        String interfaceStr;
         if (isInterface)
         {
             Element apiInterface = outputObject.createElement("apiInterface");
@@ -971,8 +971,8 @@ public class TopLevelClassesGenerator
             return;
         }
 
-        Element asMetadata = null;
-        Element apiVersion = null;
+        Element asMetadata;
+        Element apiVersion;
 
         // we need to get to the apiVersion Node. if not present then create
         // it.. it should go to prolog.asMetadata.apiVersion.
@@ -1519,7 +1519,7 @@ public class TopLevelClassesGenerator
 
             if (customsFound)
             {
-                Element asCustoms = null;
+                Element asCustoms;
                 // we need to get to the asCustoms Node. if not present then
                 // create it.. it should go to prolog..
                 // if prolog is not present then create it and add asCustoms.
@@ -1674,7 +1674,7 @@ public class TopLevelClassesGenerator
 
     private Element processSeeTag(String fullName, String seeStr)
     {
-        String labelStr = "";
+        String labelStr;
         String hrefStr = "";
         String invalidHrefStr = null;
 
@@ -1731,7 +1731,7 @@ public class TopLevelClassesGenerator
 
                 int colonLoc = hrefStr.indexOf(":");
                 String packageNameStr = "";
-                String className = "";
+                String className;
 
                 boolean isValidLink = true;
 
@@ -2026,11 +2026,11 @@ public class TopLevelClassesGenerator
             codePart = codePart.replaceAll("\\t", "    ");
 
             StringBuilder output = new StringBuilder();
-            int descBegin = 0;
-            int descEnd = 0;
-            int descEnd1 = 0;
+            int descBegin;
+            int descEnd;
+            int descEnd1;
             String descText = null;
-            String descText2 = null;
+            String descText2;
 
             descBegin = codePart.indexOf("@exampleText");
             if (descBegin != -1)
@@ -2108,7 +2108,7 @@ public class TopLevelClassesGenerator
                 }
             }
 
-            int codeEnd = -1;
+            int codeEnd;
 
             //depending upon the extension of the external examples file.. the comment beginning will also be different.
             if (codeFileName.endsWith(".mxml"))
@@ -2125,7 +2125,7 @@ public class TopLevelClassesGenerator
                 codeBegin = 0;
             }
 
-            String codeBlock = "";
+            String codeBlock;
             if (codeEnd == -1)
             {
                 codeBlock = codePart.substring(codeBegin);
@@ -2308,7 +2308,7 @@ public class TopLevelClassesGenerator
                 {
                     int idx = tagIndexs.indexOf(langVersionIdx);
 
-                    String langVersion = "";
+                    String langVersion;
                     if (idx != tagLength - 1)
                     {
                         langVersion = versionStr.substring(langVersionIdx + 12, tagIndexs.get(idx + 1));
@@ -2347,7 +2347,7 @@ public class TopLevelClassesGenerator
                 {
                     int idx = tagIndexs.indexOf(playerVersionIdx);
 
-                    String playerVersionStr = "";
+                    String playerVersionStr;
                     if (idx != tagLength - 1)
                     {
                         playerVersionStr = versionStr.substring(playerVersionIdx + 14, tagIndexs.get(idx + 1));
@@ -2404,7 +2404,7 @@ public class TopLevelClassesGenerator
                 {
                     int idx = tagIndexs.indexOf(productVersionIdx);
 
-                    String productVersionStr = "";
+                    String productVersionStr;
                     if (idx != tagLength - 1)
                     {
                         productVersionStr = versionStr.substring(productVersionIdx + 15, tagIndexs.get(idx + 1));
@@ -2521,7 +2521,7 @@ public class TopLevelClassesGenerator
             if (ownerClass != null)
             {
                 Element node = ownerClass.getNode();
-                Element asMetadata = null;
+                Element asMetadata;
 
                 // we need to get to the asMetadata Node. if not present then
                 // create it.. it should go to prolog..
@@ -2747,7 +2747,7 @@ public class TopLevelClassesGenerator
                 apiValueDef.appendChild(apiType);
             }
 
-            String fullDesc = null;
+            String fullDesc;
 
             NodeList descriptionList = ((Element)parent).getElementsByTagName("description");
             if (descriptionList != null && descriptionList.getLength() != 0)
@@ -2882,11 +2882,11 @@ public class TopLevelClassesGenerator
     // </apiException>
     private Element createCanThrow(Element source, QualifiedNameInfo qualifiedFullName)
     {
-        String throwComment = "";
+        String throwComment;
         String fullThrows = source.getTextContent();
         int nextSpaceIndex = fullThrows.indexOf(" ");
 
-        String errorClassStr = null;
+        String errorClassStr;
         if (nextSpaceIndex == -1)
         {
             errorClassStr = "Error";
@@ -3181,8 +3181,8 @@ public class TopLevelClassesGenerator
                     return;
                 }
 
-                AsClass fieldTypeClass = null;
-                String type = null;
+                AsClass fieldTypeClass;
+                String type;
 
                 if (qualifiedFullName.getGetterSetter().equals("Get"))
                 {
@@ -3294,7 +3294,7 @@ public class TopLevelClassesGenerator
                             boolean replaceFlag = false;
                             if (getterSetterFullDesc != null && getterSetterFullDesc.trim().length() != 0)
                             {
-                                Element foundApiDesc = null;
+                                Element foundApiDesc;
                                 Element foundApiValueDetail = asDocUtil.getElementByTagName(foundField, "apiValueDetail");
 
                                 if (foundApiValueDetail != null)
@@ -3321,8 +3321,8 @@ public class TopLevelClassesGenerator
 
                             if (!replaceFlag)
                             {
-                                Element foundApiValueDef = null;
-                                Element foundApiValueDetail = null;
+                                Element foundApiValueDef;
+                                Element foundApiValueDetail;
 
                                 Element apiType = asDocUtil.getElementByTagName(apiValueDef, "apiType");
                                 if (apiType != null)
@@ -3402,11 +3402,11 @@ public class TopLevelClassesGenerator
                     return;
                 }
 
-                Element apiOperation = null;
-                Element detailNode = null;
-                Element defNode = null;
-                Element shortdesc = null;
-                Element prolog = null;
+                Element apiOperation;
+                Element detailNode;
+                Element defNode;
+                Element shortdesc;
+                Element prolog;
                 boolean isConstructor = false;
 
                 if (qualifiedFullName.getClassNames() != null && qualifiedFullName.getClassNames().size() != 0 && name.equals(qualifiedFullName.getClassNames().get(qualifiedFullName.getClassNames().size() - 1)))
@@ -3708,7 +3708,7 @@ public class TopLevelClassesGenerator
 
                 if (isConstructor)
                 {
-                    Element constructors = null;
+                    Element constructors;
                     if (myClass.getConstructorCount() == 0)
                     {
                         constructors = outputObject.createElement("constructors");
@@ -3720,7 +3720,7 @@ public class TopLevelClassesGenerator
                 }
                 else
                 {
-                    Element methods = null;
+                    Element methods;
                     if (myClass.getMethodCount() == 0)
                     {
                         methods = outputObject.createElement("methods");
@@ -3878,7 +3878,7 @@ public class TopLevelClassesGenerator
                     text = text.replaceAll("\\s+", "");
 
                     descriptionList = newStyleElement.getElementsByTagName("description");
-                    Element descriptionElement = null;
+                    Element descriptionElement;
                     if (descriptionList != null && descriptionList.getLength() != 0)
                     {
                         descriptionElement = (Element)descriptionList.item(0);
@@ -3903,8 +3903,8 @@ public class TopLevelClassesGenerator
                     newStyleElement.removeChild(childrenOfStyle.item(0));
                 }
 
-                Element stylesElement = null;
-                Element asMetadata = null;
+                Element stylesElement;
+                Element asMetadata;
 
                 if (prolog != null)
                 {
@@ -4032,7 +4032,7 @@ public class TopLevelClassesGenerator
                     text = text.replaceAll("[\\n\\s]", "");
 
                     descriptionList = newEffectElement.getElementsByTagName("description");
-                    Element descriptionElement = null;
+                    Element descriptionElement;
                     if (descriptionList != null && descriptionList.getLength() != 0)
                     {
                         descriptionElement = (Element)descriptionList.item(0);
@@ -4047,8 +4047,8 @@ public class TopLevelClassesGenerator
                     newEffectElement.removeChild(childrenOfEffect.item(0));
                 }
 
-                Element effectsElement = null;
-                Element asMetadata = null;
+                Element effectsElement;
+                Element asMetadata;
 
                 if (prolog != null)
                 {
@@ -4158,7 +4158,7 @@ public class TopLevelClassesGenerator
                     fullDesc = descriptionElement.getTextContent();
                 }
 
-                String eventId = null;
+                String eventId;
 
                 if (eventType != null)
                 {
@@ -4309,9 +4309,9 @@ public class TopLevelClassesGenerator
                             if (apiValueElement.getAttribute("id").equals(asDocUtil.formatId(fullName)))
                             {
 
-                                Element apiValueDetail = null;
-                                Element apiValueDef = null;
-                                Element apiProperty = null;
+                                Element apiValueDetail;
+                                Element apiValueDef;
+                                Element apiProperty;
 
                                 NodeList apiValueDetailList = apiValueElement.getElementsByTagName("apiValueDetail");
                                 if (apiValueDetailList != null && apiValueDetailList.getLength() != 0)
@@ -4420,7 +4420,7 @@ public class TopLevelClassesGenerator
                 {
 
                     Element node = myClass.getNode();
-                    Element asMetadata = null;
+                    Element asMetadata;
 
                     Element defaultProperty = outputObject.createElement("DefaultProperty");
                     defaultProperty.setAttribute("name", defaultPropertyElement.getAttribute("name"));
@@ -4570,8 +4570,8 @@ public class TopLevelClassesGenerator
                 {
                     Element node = myClass.getNode();
 
-                    Element skinStatesElement = null;
-                    Element asMetadata = null;
+                    Element skinStatesElement;
+                    Element asMetadata;
                     Element prolog = asDocUtil.getElementByTagName(node, "prolog");
                     if (prolog != null)
                     {
@@ -4674,7 +4674,7 @@ public class TopLevelClassesGenerator
                         text = text.replaceAll("\\s+", "");
 
                         descriptionList = newSkinStateElement.getElementsByTagName("description");
-                        Element descriptionElement = null;
+                        Element descriptionElement;
                         if (descriptionList != null && descriptionList.getLength() != 0)
                         {
                             descriptionElement = (Element)descriptionList.item(0);
@@ -4722,8 +4722,8 @@ public class TopLevelClassesGenerator
                 {
                     Element node = myClass.getNode();
 
-                    Element skinPartsElement = null;
-                    Element asMetadata = null;
+                    Element skinPartsElement;
+                    Element asMetadata;
                     Element prolog = asDocUtil.getElementByTagName(node, "prolog");
                     if (prolog != null)
                     {
@@ -4830,7 +4830,7 @@ public class TopLevelClassesGenerator
                         text = text.replaceAll("\\s+", "");
 
                         descriptionList = newSkinPartElement.getElementsByTagName("description");
-                        Element descriptionElement = null;
+                        Element descriptionElement;
                         if (descriptionList != null && descriptionList.getLength() != 0)
                         {
                             descriptionElement = (Element)descriptionList.item(0);
@@ -4869,7 +4869,7 @@ public class TopLevelClassesGenerator
                 if (myClass != null)
                 {
                     Element node = myClass.getNode();
-                    Element asMetadata = null;
+                    Element asMetadata;
 
                     Element prolog = asDocUtil.getElementByTagName(node, "prolog");
                     if (prolog != null)
@@ -4935,7 +4935,7 @@ public class TopLevelClassesGenerator
                         text = text.replaceAll("\\s+", "");
 
                         descriptionList = alternative.getElementsByTagName("description");
-                        Element descriptionElement = null;
+                        Element descriptionElement;
                         if (descriptionList != null && descriptionList.getLength() != 0)
                         {
                             descriptionElement = (Element)descriptionList.item(0);
@@ -4969,8 +4969,8 @@ public class TopLevelClassesGenerator
                 if (myClass != null) {
                     Element node = myClass.getNode();
 
-                    Element profilesElement = null;
-                    Element asMetadata = null;
+                    Element profilesElement;
+                    Element asMetadata;
                     Element prolog = asDocUtil.getElementByTagName(node, "prolog");
                     if (prolog != null) {
                         asMetadata = asDocUtil.getElementByTagName(prolog, "asMetadata");
@@ -5018,8 +5018,8 @@ public class TopLevelClassesGenerator
                 {
                     Element node = myClass.getNode();
 
-                    Element profilesElement = null;
-                    Element asMetadata = null;
+                    Element profilesElement;
+                    Element asMetadata;
                     Element prolog = asDocUtil.getElementByTagName(node, "prolog");
                     if (prolog != null)
                     {
@@ -5110,7 +5110,7 @@ public class TopLevelClassesGenerator
                         text = text.replaceAll("\\s+", "");
 
                         descriptionList = discouragedForProfile.getElementsByTagName("description");
-                        Element descriptionElement = null;
+                        Element descriptionElement;
                         if (descriptionList != null && descriptionList.getLength() != 0)
                         {
                             descriptionElement = (Element)descriptionList.item(0);
@@ -5306,9 +5306,9 @@ public class TopLevelClassesGenerator
                         // apiValue.apiValueDetail.apiValueDef
                         // if apiValueDetail or apiValueDef are not present then
                         // create them and add apiValuseAccess.
-                        Element apiValueDetail = null;
-                        Element apiValueDef = null;
-                        Element apiValueAccess = null;
+                        Element apiValueDetail;
+                        Element apiValueDef;
+                        Element apiValueAccess;
 
                         apiValueDetail = asDocUtil.getElementByTagName(apiValue, "apiValueDetail");
                         if (apiValueDetail != null) {

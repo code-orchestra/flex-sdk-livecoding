@@ -101,7 +101,7 @@ public class ScriptText
 		int startAt = 0;
 		int endAt = 0;
 		int length = m_text.length();
-		char c = '\0';
+		char c;
 		while(i < length)
 		{
 			/* end of line */
@@ -140,7 +140,7 @@ public class ScriptText
 		int i = 0;
 		int lineNum = 0;
 		int length = s.length();
-		char c = '\0';
+		char c;
 		while(i < length)
 		{
 			/* end of line */

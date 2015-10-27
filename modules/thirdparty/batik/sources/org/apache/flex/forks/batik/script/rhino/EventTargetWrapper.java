@@ -451,7 +451,7 @@ class EventTargetWrapper extends NativeJavaObject {
     // several EventTargetWrapper may be created for the exact
     // same underlying Java object.
     public Map initMap() {
-        Map map = null;
+        Map map;
         if (mapOfListenerMap == null)
             mapOfListenerMap = new WeakHashMap(10);
         if ((map = (Map)mapOfListenerMap.get(unwrap())) == null) {

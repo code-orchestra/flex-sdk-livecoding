@@ -46,7 +46,7 @@ public class ManifestParser
             return;
         }
 
-        InputStream in = null;
+        InputStream in;
 
         try
         {

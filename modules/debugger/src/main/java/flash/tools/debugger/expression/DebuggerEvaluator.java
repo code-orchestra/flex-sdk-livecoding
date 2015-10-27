@@ -357,7 +357,7 @@ class DebuggerEvaluator implements Evaluator
 				node.getMode() == Tokens.EMPTY_TOKEN || // expr
 				node.getMode() == Tokens.DOT_TOKEN); // base.expr
 
-		DebuggerValue func = null;
+		DebuggerValue func;
 		Context context = eeContext(cx);
 		func = (DebuggerValue) node.expr.evaluate(cx, this);
 

@@ -232,7 +232,7 @@ public final class AbcParser
 
     private MemberExpressionNode memberExprFromMN(AbcData.BinaryMN mn)
     {
-        MemberExpressionNode typeExpr = null;
+        MemberExpressionNode typeExpr;
         QName typeName = getFullName(mn);
         NodeFactory nf = ctx.getNodeFactory();
         
@@ -774,7 +774,7 @@ public final class AbcParser
         boolean isDynamic = ( flags & ActionBlockConstants.CLASS_FLAG_sealed ) == 0;
         boolean isInterface = (flags & ActionBlockConstants.CLASS_FLAG_interface) != 0;
  
-        ClassDefinitionNode cdn = null;
+        ClassDefinitionNode cdn;
         IdentifierNode idNode = nf.identifier(className);
         idNode.ref = new ReferenceValue(ctx, null, idNode.name, ns);
         
@@ -1109,7 +1109,7 @@ public final class AbcParser
 
     ObjectValue getNamespace(int namespaceID)
     {
-        ObjectValue ns = null;
+        ObjectValue ns;
         if( namespaceID == 0 )
         {
             ns = ctx.anyNamespace();
@@ -1125,12 +1125,10 @@ public final class AbcParser
             {
             case ActionBlockConstants.CONSTANT_Namespace:
                 //vers.add(getVersion(uri));
-                ns_kind = Context.NS_PUBLIC;
                 ns = ctx.getNamespace(uri);
                 break;
             case ActionBlockConstants.CONSTANT_PackageNamespace:
                 //vers.add(getVersion(uri));
-                ns_kind = Context.NS_PUBLIC;
                 ns = ctx.getNamespace(uri);
                 ns.setPackage(true);
                 break;
@@ -1346,7 +1344,7 @@ public final class AbcParser
      
          // Read in the bytes
          int offset = 0;
-         int numRead = 0;
+         int numRead;
          while (offset < bytes.length
                 && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) 
          {

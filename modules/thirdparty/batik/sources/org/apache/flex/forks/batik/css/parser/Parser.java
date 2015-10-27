@@ -394,7 +394,7 @@ public class Parser implements ExtendedParser, Localizable {
 	throws CSSException, IOException {
         nextIgnoreSpaces();
         
-        LexicalUnit exp = null;
+        LexicalUnit exp;
 
         try {
             exp = parseExpression(false);
@@ -492,7 +492,7 @@ public class Parser implements ExtendedParser, Localizable {
      * Parses an import rule. Assumes the current token is '@import'.
      */
     protected void parseImportRule() {
-        String uri = null;
+        String uri;
         switch (current) {
         default:
             reportError("string.or.uri");
@@ -769,7 +769,7 @@ public class Parser implements ExtendedParser, Localizable {
      * Parses a ruleset.
      */
     protected void parseRuleSet() {
-        SelectorList sl = null;
+        SelectorList sl;
 
         try {
             sl = parseSelectorList();
@@ -961,7 +961,7 @@ public class Parser implements ExtendedParser, Localizable {
                 case LexicalUnits.EQUAL:
                 case LexicalUnits.INCLUDES:
                 case LexicalUnits.DASHMATCH:
-                    String val = null;
+                    String val;
                     switch (nextIgnoreSpaces()) {
                     default:
                         throw createCSSParseException("identifier.or.string");
@@ -1098,7 +1098,7 @@ public class Parser implements ExtendedParser, Localizable {
             }
             nextIgnoreSpaces();
         
-            LexicalUnit exp = null;
+            LexicalUnit exp;
             
             try {
                 exp = parseExpression(false);
@@ -1654,7 +1654,7 @@ public class Parser implements ExtendedParser, Localizable {
     protected LexicalUnit hexcolor(LexicalUnit prev) {
         String val = scanner.getStringValue();
         int len = val.length();
-        LexicalUnit params = null;
+        LexicalUnit params;
         switch (len) {
         case 3:
             char rc = Character.toLowerCase(val.charAt(0));

@@ -886,7 +886,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
         String s = XMLSupport.getXMLSpace(element);
         boolean preserve = s.equals(SVG_PRESERVE_VALUE);
         boolean prevEndsWithSpace;
-        Element nodeElement = element;
+        Element nodeElement;
         int elementStartChar = asb.length();
 
         if (top) {
@@ -2615,7 +2615,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                 AffineTransform glyphTransform = it.getGlyphTransform(k);
                 if ( glyphTransform == null ) continue;
 
-                double glyphAngle = 0.0;
+                double glyphAngle;
                 double cosTheta = glyphTransform.getScaleX();
                 double sinTheta = glyphTransform.getShearX();
 

@@ -404,7 +404,7 @@ public final class ConfigurationBuffer
 	    String getterMethodName = GET_PREFIX + setterMethod.getName().substring( SET_PREFIX.length() );
         Class cfgClass = setterMethod.getDeclaringClass();
 
-        Method infoMethod = null, getterMethod = null;
+        Method infoMethod, getterMethod = null;
         try
         {
             infoMethod = cfgClass.getMethod( infoMethodName, (Class[])null);
@@ -434,13 +434,13 @@ public final class ConfigurationBuffer
 
     private static ConfigurationInfo createChildInfo( Method childGetMethod )
     {
-        ConfigurationInfo info = null;
+        ConfigurationInfo info;
         int cfgIndex = childGetMethod.getName().lastIndexOf( CONFIGURATION_SUFFIX );
         assert cfgIndex != -1;
         String infoMethodName = childGetMethod.getName().substring( 0, cfgIndex ) + INFO_SUFFIX;
         Class cfgClass = childGetMethod.getDeclaringClass();
 
-        Method infoMethod = null;
+        Method infoMethod;
         try
         {
             infoMethod = cfgClass.getMethod( infoMethodName, (Class[])null);
@@ -1210,7 +1210,7 @@ public final class ConfigurationBuffer
 
 	private int calculateChecksum(String str)
 	{
-		byte[] b = null;
+		byte[] b;
 
 		try
 		{
@@ -1263,7 +1263,7 @@ public final class ConfigurationBuffer
         int lineStart = -1;
         int lineEnd = -1;
         int wordStart = -1;
-        int wordEnd = -1;
+        int wordEnd;
         boolean start = true;
         boolean preserve = true;
 
@@ -1369,7 +1369,6 @@ public final class ConfigurationBuffer
                     if (((wordEnd - lineStart) < columns) // current word fits
                             || (wordEnd == lineEnd))      // or one long word
                     {
-                        lineEnd = wordEnd;
                         lines.add( input.substring( lineStart, wordEnd ));
                     }
                     else // didn't fit, multiple words

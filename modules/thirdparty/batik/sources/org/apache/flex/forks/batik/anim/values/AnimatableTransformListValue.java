@@ -188,7 +188,7 @@ public class AnimatableTransformListValue extends AnimatableValue {
                         res.transforms.setElementAt(t, index);
                     }
                 }
-                float x, y, r = 0;
+                float x, y, r;
                 switch (type) {
                     case SVGTransform.SVG_TRANSFORM_SKEWX:
                     case SVGTransform.SVG_TRANSFORM_SKEWY:

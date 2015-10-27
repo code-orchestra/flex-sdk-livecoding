@@ -454,7 +454,7 @@ public class LanguageDialog extends JDialog implements ActionMap {
 
         private static Icon computeCountryIcon(Class ref,
                                                String code) {
-            ImageIcon icon = null;
+            ImageIcon icon;
             try {
                 if ((icon = (ImageIcon)iconMap.get(code)) != null)
                     return icon;

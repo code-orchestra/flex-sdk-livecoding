@@ -92,7 +92,7 @@ public class ExternalLoggerTest extends TestCase implements LogSystem
 
     public void logVelocityMessage(int level, String message)
     {
-        String out = "";
+        String out;
 
         /*
          * Start with the appropriate prefix

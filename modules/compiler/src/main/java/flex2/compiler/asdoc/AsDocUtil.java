@@ -348,7 +348,7 @@ public class AsDocUtil
         output = output.replaceAll("<br\\s*/?>", "");
 
         TransformerFactory transfac = TransformerFactory.newInstance();
-        Transformer trans = null;
+        Transformer trans;
 
         try
         {
@@ -782,7 +782,7 @@ public class AsDocUtil
         convertTableChilds(targetDocument, input, input);
 
         int colCount = 0;
-        int currentRowLength = 0;
+        int currentRowLength;
 
         childNodes = input.getElementsByTagName("row");
         if (childNodes != null)
@@ -1713,8 +1713,8 @@ public class AsDocUtil
     {
         ArrayList<String> alreadyAdded = new ArrayList<>();
         Element apiMap = outputObject.createElement("apiMap");
-        String addedPackage = null;
-        String currentPackage = null;
+        String addedPackage;
+        String currentPackage;
         Iterator<String> packages = packageNames.iterator();
         if (packages == null)
         {

@@ -391,7 +391,7 @@ public class Encoder implements Visitor
 				break;
 			}
 
-			int newIndex = 0;
+			int newIndex;
 
 			switch(value_kinds[i])
 			{
@@ -715,7 +715,7 @@ public class Encoder implements Visitor
 			break;
 		}
 
-		int newIndex = 0;
+		int newIndex;
 		switch(value_kind)
 		{
 		case 0:

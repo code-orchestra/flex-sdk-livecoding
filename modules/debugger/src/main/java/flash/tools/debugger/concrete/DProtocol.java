@@ -337,8 +337,8 @@ public class DProtocol implements Runnable
      */
 	private DMessage rxMessage() throws IOException
 	{
-        int size = -1;
-		int command = 0;
+        int size;
+		int command;
 
 		try 
 		{

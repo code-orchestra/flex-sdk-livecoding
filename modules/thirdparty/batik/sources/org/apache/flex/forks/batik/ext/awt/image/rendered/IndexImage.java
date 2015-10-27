@@ -704,7 +704,6 @@ public class IndexImage{
         Counter[][] colorTbl = convertColorList( colors );
 
         // this is no longer needed: discard
-        colors = null;
 
         int nCubes=1;
         int fCube=0;

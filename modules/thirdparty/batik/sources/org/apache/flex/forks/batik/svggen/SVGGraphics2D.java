@@ -672,7 +672,7 @@ public class SVGGraphics2D extends AbstractGraphics2D
         if (xform == null) {
             domGroupManager.addElement(imageElement);
         } else {
-            AffineTransform inverseTransform = null;
+            AffineTransform inverseTransform;
             try {
                 inverseTransform = xform.createInverse();
             } catch(NoninvertibleTransformException e) {
@@ -735,7 +735,7 @@ public class SVGGraphics2D extends AbstractGraphics2D
         if (xform == null) {
             domGroupManager.addElement(imageElement);
         } else {
-            AffineTransform inverseTransform = null;
+            AffineTransform inverseTransform;
             try {
                 inverseTransform = xform.createInverse();
             } catch(NoninvertibleTransformException e) {
@@ -838,12 +838,12 @@ public class SVGGraphics2D extends AbstractGraphics2D
     public boolean drawImage(Image img,
                              AffineTransform xform,
                              ImageObserver obs){
-        boolean retVal = true;
+        boolean retVal;
 
         if (xform == null) {
             retVal = drawImage(img, 0, 0, null);
         } else if(xform.getDeterminant() != 0){
-            AffineTransform inverseTransform = null;
+            AffineTransform inverseTransform;
             try{
                 inverseTransform = xform.createInverse();
             }   catch(NoninvertibleTransformException e){
@@ -1036,7 +1036,7 @@ public class SVGGraphics2D extends AbstractGraphics2D
         if(xform == null) {
             domGroupManager.addElement(image);
         } else if(xform.getDeterminant() != 0){
-            AffineTransform inverseTransform = null;
+            AffineTransform inverseTransform;
             try{
                 inverseTransform = xform.createInverse();
             }catch(NoninvertibleTransformException e){
@@ -1116,7 +1116,7 @@ public class SVGGraphics2D extends AbstractGraphics2D
         if (xform == null) {
             domGroupManager.addElement(image);
         } else if(xform.getDeterminant() != 0){
-            AffineTransform inverseTransform = null;
+            AffineTransform inverseTransform;
             try{
                 inverseTransform = xform.createInverse();
             }catch(NoninvertibleTransformException e){

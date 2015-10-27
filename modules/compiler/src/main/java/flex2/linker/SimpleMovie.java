@@ -283,7 +283,7 @@ public class SimpleMovie extends Movie
             }
         }
 
-        DoABC tag = null;
+        DoABC tag;
         // FIXME: shouldn't we only be giving a name to SWFs created for a SWC?
         String name = NameFormatter.nameFromSource(u.getSource());
         if (u.getSource().isEntryPoint() || !lazy)

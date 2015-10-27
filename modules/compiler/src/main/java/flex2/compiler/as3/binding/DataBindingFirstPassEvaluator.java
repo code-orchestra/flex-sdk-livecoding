@@ -770,7 +770,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
     private static Method getGetter(Context cx, AbcClass watchedClass, ReferenceValue ref, MultiName multiName)
     {
-        Method meth = null;
+        Method meth;
         Slot s;
         // if ref.slot is non-null then the reference has already been resolved.
         if( ref != null )
@@ -801,7 +801,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
     private static Method getMethod(Context cx, AbcClass watchedClass, ReferenceValue ref, MultiName multiName)
     {
-        Method meth = null;
+        Method meth;
         if( ref != null )
         {
             meth = getMethodFromRef(cx, watchedClass, ref, Tokens.EMPTY_TOKEN);
@@ -1476,7 +1476,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
     private PropertyWatcher watchExpressionStringAsProperty(String value)
     {
-        PropertyWatcher watcher = null;
+        PropertyWatcher watcher;
 
         if (watcherList.isEmpty())
         {

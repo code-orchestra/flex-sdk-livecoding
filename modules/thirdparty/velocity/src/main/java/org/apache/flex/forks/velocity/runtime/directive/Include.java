@@ -147,7 +147,7 @@ public class Include extends InputBase {
 	private boolean renderOutput(Node node, InternalContextAdapter context,
 			Writer writer) throws IOException, MethodInvocationException,
 			ResourceNotFoundException {
-		String arg = "";
+		String arg;
 
 		if (node == null) {
 			rsvc.error("#include() error :  null argument");

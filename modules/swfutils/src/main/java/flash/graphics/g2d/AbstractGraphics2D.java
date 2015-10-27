@@ -186,7 +186,7 @@ public abstract class AbstractGraphics2D extends Graphics2D
 	{
 		if (image != null)
 		{
-			BufferedImage bufferedImage = null;
+			BufferedImage bufferedImage;
 
 			if(image instanceof BufferedImage)
 			{

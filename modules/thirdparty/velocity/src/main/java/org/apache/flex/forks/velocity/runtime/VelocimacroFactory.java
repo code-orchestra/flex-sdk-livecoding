@@ -484,7 +484,7 @@ public class VelocimacroFactory
      */
     public Directive getVelocimacro( String vmName, String sourceTemplate )
     {
-        VelocimacroProxy vp = null;
+        VelocimacroProxy vp;
 
         synchronized( this ) 
         {

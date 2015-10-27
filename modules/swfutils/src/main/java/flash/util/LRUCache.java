@@ -87,7 +87,7 @@ public abstract class LRUCache extends AbstractCache
      */
     public Object get(Object key)
     {
-        Object value = null;
+        Object value;
 
         synchronized (this)
         {

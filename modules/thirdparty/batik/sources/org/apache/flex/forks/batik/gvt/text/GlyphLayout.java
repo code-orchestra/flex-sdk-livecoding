@@ -575,7 +575,7 @@ public class GlyphLayout implements TextSpanLayout {
                     // isn't met we are SOL.
                     float [] pts = new float[6];
                     int count = 0;
-                    int type = -1;
+                    int type;
 
                     PathIterator pi = gbounds.getPathIterator(null);
                     Point2D.Float firstPt = null;
@@ -1150,7 +1150,7 @@ public class GlyphLayout implements TextSpanLayout {
             // computed on the basis of baseline-shifts, etc.
             float ox = 0f;
             float oy = 0f;
-            float glyphOrientationRotation = 0f;
+            float glyphOrientationRotation;
             float glyphRotation = 0f;
 
 
@@ -1275,7 +1275,7 @@ public class GlyphLayout implements TextSpanLayout {
             } else {
                 // Apply the advance if the current char is not transparent
                 if (vertical) {
-                    float advanceY = 0;
+                    float advanceY;
                     if (glyphOrientationAuto) {
                         if (isLatinChar(ch)) {
                             advanceY = gm.getHorizontalAdvance();
@@ -1299,7 +1299,7 @@ public class GlyphLayout implements TextSpanLayout {
                     }
                     curr_y_pos += advanceY;
                 } else {
-                    float advanceX = 0;
+                    float advanceX;
                     if (glyphOrientationAngle ==   0) {
                         advanceX = gm.getHorizontalAdvance();
                     } else if (glyphOrientationAngle == 180) {
@@ -1518,8 +1518,8 @@ public class GlyphLayout implements TextSpanLayout {
 
         int numGlyphs = gv.getNumGlyphs();
 
-        float dx = 0f;
-        float dy = 0f;
+        float dx;
+        float dy;
         Point2D[] newPositions = new Point2D[numGlyphs+1];
         Point2D prevPos = gv.getGlyphPosition(0);
         int prevCode    = gv.getGlyphCode(0);
@@ -1584,8 +1584,6 @@ public class GlyphLayout implements TextSpanLayout {
             }
 
             // now do word spacing
-            dx = 0f;
-            dy = 0f;
             prevPos = gv.getGlyphPosition(0);
             x = (float) prevPos.getX();
             y = (float) prevPos.getY();
@@ -1771,7 +1769,7 @@ public class GlyphLayout implements TextSpanLayout {
         // 0 if the glyph is on the path (ie. not adjusted by a dy or
         // dx)
         Point2D firstGlyphPosition = gv.getGlyphPosition(0);
-        float glyphOffset = 0;   // offset perpendicular to path
+        float glyphOffset;   // offset perpendicular to path
         float currentPosition;
         if (horizontal) {
             glyphOffset     = (float)(firstGlyphPosition.getY());
@@ -1794,8 +1792,8 @@ public class GlyphLayout implements TextSpanLayout {
             // calculate the advance and offset for the next glyph, do it
             // now before we modify the current glyph position
 
-            float glyphAdvance = 0;  // along path
-            float nextGlyphOffset = 0;  // perpendicular to path eg dy or dx
+            float glyphAdvance;  // along path
+            float nextGlyphOffset;  // perpendicular to path eg dy or dx
             Point2D nextGlyphPosition = gv.getGlyphPosition(i+1);
             if (horizontal) {
                 glyphAdvance    = (float)(nextGlyphPosition.getX() -

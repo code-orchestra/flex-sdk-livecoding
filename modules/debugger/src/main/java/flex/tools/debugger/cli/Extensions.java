@@ -107,7 +107,7 @@ public class Extensions
 	{
 		StringBuilder sb = new StringBuilder();
 
-		String arg = null;
+		String arg;
 		FileInfoCache fileInfo = cli.getFileCache();
 
 		// we take an optional single arg which specifies a module

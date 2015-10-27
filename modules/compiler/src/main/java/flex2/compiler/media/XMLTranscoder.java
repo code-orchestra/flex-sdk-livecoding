@@ -94,7 +94,7 @@ public class XMLTranscoder extends AbstractTranscoder
 			Reader reader = new InputStreamReader(in, FileUtils.consumeBOM(in, encoding));
 
             char[] line = new char[2000];
-            int count = 0;
+            int count;
 
             while ((count = reader.read(line, 0, line.length)) >= 0)
             {

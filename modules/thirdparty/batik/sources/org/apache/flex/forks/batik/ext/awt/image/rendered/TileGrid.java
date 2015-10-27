@@ -124,7 +124,7 @@ public class TileGrid implements TileStore {
 
         Raster       ras  = null;
         TileLRUMember [] row  = rasters[y];
-        TileLRUMember    item = null;
+        TileLRUMember    item;
         if (row != null) {
             item = row[x];
             if (item != null)

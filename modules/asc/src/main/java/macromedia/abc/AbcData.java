@@ -403,18 +403,15 @@ public class AbcData implements java.io.Externalizable
 		
 		Set<Integer> getVersions()
 		{
-			Namespace ns = null;
+			Namespace ns;
 			
 			// If the name's a multiname, get the first namespace
 			// since they all share the same base URI.
 			if ( ActionBlockConstants.CONSTANT_Multiname == kind || ActionBlockConstants.CONSTANT_MultinameA == kind )
 			{
 				int[] nss = AbcData.this.namespaceSets[this.params[1]].namespaceIds;
-				ns = (nss.length > 0)? namespaces[nss[0]]: null;
 			}
-			else
-				ns = namespaces[params[0]];
-			
+
 			switch ( kind )
     		{
             case ActionBlockConstants.CONSTANT_Qname:
@@ -514,9 +511,9 @@ public class AbcData implements java.io.Externalizable
         if ( null == this.binaryMultinames[idx] )
         {
             NameData nd = this.nameData[idx];
-            int name_index = 0;
-            int name_space = 0;
-            boolean ns_is_set = false;
+            int name_index;
+            int name_space;
+            boolean ns_is_set;
             
             switch ( nd.kind )
             {

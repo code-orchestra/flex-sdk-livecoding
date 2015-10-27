@@ -500,7 +500,7 @@ public abstract class AbstractGraphicsNode implements GraphicsNode {
                 // Render on this canvas.
                 primitivePaint(g2d);
             } else {
-                Filter filteredImage = null;
+                Filter filteredImage;
 
                 if(filter == null){
                     filteredImage = getGraphicsNodeRable(true);

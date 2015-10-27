@@ -240,7 +240,7 @@ public final class SignatureExtension implements Extension
     {
         final Context cx = unit.getContext().getAscContext();
         
-        String sigString = null;
+        String sigString;
         {
             // good estimate of buffer size for a signature
             final int powerOfTwoBufferSize

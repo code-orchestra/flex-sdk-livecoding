@@ -78,8 +78,8 @@ public class Main
 
 	public static void main(String[] args) throws Exception
 	{
-		String filename = "";
-		String ext = "";
+		String filename;
+		String ext;
 
 		if (args.length == 0)
 		{

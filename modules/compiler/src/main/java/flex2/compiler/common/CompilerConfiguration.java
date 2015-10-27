@@ -174,7 +174,7 @@ public class CompilerConfiguration implements As3Configuration,
     private Properties loadEnvPropertyFile()
     {
         Properties properties = null;
-        InputStream in = null;
+        InputStream in;
          
         try 
         {

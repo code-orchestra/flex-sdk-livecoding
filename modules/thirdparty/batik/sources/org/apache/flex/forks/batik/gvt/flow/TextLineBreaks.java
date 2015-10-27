@@ -74,7 +74,7 @@ public class TextLineBreaks {
         char ch = aci.current(), prevCh = (char)-1;
         byte         cls = getCharCharClass(ch);
         if (cls == CHAR_CLASS_LF) cls = CHAR_CLASS_BK;
-        byte      curCls = cls;
+        byte      curCls;
         byte     prevCls = cls;
         byte prevPrevCls = -1;
         int  wordCnt = 0;
@@ -197,7 +197,6 @@ public class TextLineBreaks {
         // always break at the end
         as.addAttribute(WORD_LIMIT, wordCnt++,
                         wordBegin, ich);
-        wordBegin = ich;
         // pbrk[ich-1] = BREAK_ACTION_DIRECT;
 
         return;

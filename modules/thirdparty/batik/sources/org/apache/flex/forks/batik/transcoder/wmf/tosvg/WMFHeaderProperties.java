@@ -138,7 +138,7 @@ public class WMFHeaderProperties extends AbstractWMFReader {
     protected boolean readRecords(DataInputStream is) throws IOException {
         // effective reading of the rest of the file
         short functionId = 1;
-        int recSize = 0;
+        int recSize;
         int gdiIndex; // the last Object index
         int brushObject = -1; // the last brush
         int penObject = -1; // the last pen
@@ -239,7 +239,6 @@ public class WMFHeaderProperties extends AbstractWMFReader {
                         x2 =  (int)(readShort( is ) * scaleXY);
                         y2 =  readShort( is );
                         read += 4;
-                        clipped = true;
                     }
                     byte[] bstr = new byte[ lenText ];
                     int i = 0;

@@ -440,7 +440,7 @@ public class CompilerSwcContext
 
 	public int checksum()
 	{
-		byte[] b = null;
+		byte[] b;
 
 		try
 		{

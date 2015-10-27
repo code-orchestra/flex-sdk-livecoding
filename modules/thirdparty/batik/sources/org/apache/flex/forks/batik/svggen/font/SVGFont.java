@@ -301,7 +301,7 @@ public class SVGFont implements XMLConstants, SVGConstants, ScriptTags, FeatureT
         ps.print(getSVGFontFaceElement(font));
 
         // Decide upon a cmap table to use for our character to glyph look-up
-        CmapFormat cmapFmt = null;
+        CmapFormat cmapFmt;
         if (forceAscii) {
             // We've been asked to use the ASCII/Macintosh cmap format
             cmapFmt = font.getCmapTable().getCmapFormat(
@@ -683,7 +683,7 @@ public class SVGFont implements XMLConstants, SVGConstants, ScriptTags, FeatureT
             String testCard = parseArgs(args, ARG_KEY_TESTCARD);
             String outPath = parseArgs(args, ARG_KEY_OUTPUT_PATH);
             String autoRange = parseArgs(args, ARG_KEY_AUTO_RANGE);
-            PrintStream ps = null;
+            PrintStream ps;
             FileOutputStream fos = null;
 
             // What are we outputting to?

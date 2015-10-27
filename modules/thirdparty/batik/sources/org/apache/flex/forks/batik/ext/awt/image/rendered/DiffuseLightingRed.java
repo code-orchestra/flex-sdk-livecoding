@@ -116,13 +116,13 @@ public class DiffuseLightingRed extends AbstractRed{
         final int scanStride = sppsm.getScanlineStride();
         final int adjust = scanStride - w;
         int p = offset;
-        int r=0, g=0, b=0;
-        int i=0, j=0;
+        int r, g, b;
+        int i, j;
 
         // System.out.println("Getting diffuse red : " + minX + "/" + minY + "/" + w + "/" + h);
         double x = scaleX*minX;
         double y = scaleY*minY;
-        double NL = 0;
+        double NL;
 
         // final double[] L = new double[3];
         final double[][][] NA = bumpMap.getNormalArray(minX, minY, w, h);

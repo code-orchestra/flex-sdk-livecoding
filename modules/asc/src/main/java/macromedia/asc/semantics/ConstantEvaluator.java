@@ -322,7 +322,6 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
                         Slot ctor_slot = func_def.fexpr.ref.getSlot(cx, func_def.fexpr.kind);
                         if (ctor_slot != null)
                         {
-                            ctor_types = ctor_slot.getTypes();
                             ctor_decls = ctor_slot.getDeclStyles();
                             class_slot.setTypes(ctor_slot.getTypes());
                             class_slot.setDeclStyles(ctor_slot.getDeclStyles());
@@ -351,7 +350,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         if( node.typeref != null )
         {
             Slot typeslot = node.typeref.getSlot(cx);
-            TypeValue type_val = null;
+            TypeValue type_val;
             TypeInfo type = null;
 
             if ( typeslot != null && typeslot.getValue() instanceof TypeValue )
@@ -990,7 +989,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
         // + function - is passed in by the caller, its ct type is object
         // All error cases should have been caught by flow analyzer
 
-        ObjectValue this_value = null;
+        ObjectValue this_value;
         int scope_depth = cx.getScopes().size()-1;
 
         switch (this_contexts.last())
@@ -1152,7 +1151,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
             Value base = node.base.evaluate(cx, this);
             // cn: if base is a conditional or otherwise untypeable, force coerce to Object.
             //  i.e. (a > b ? "1" : 22.22).toString()
-            TypeInfo type = null;
+            TypeInfo type;
             if (base == null)
             {
                 TypeInfo[] actual = new TypeInfo[]{null};
@@ -2310,7 +2309,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
 
     public Value evaluate(Context cx, IfStatementNode node)
     {
-        Value val = null;
+        Value val;
 
         if( node.is_true )
         {
@@ -2538,7 +2537,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
 
     public Value evaluate(Context cx, VariableBindingNode node)
     {
-        TypeInfo type = null;
+        TypeInfo type;
         Slot slot = node.ref.getSlot(cx);
 
         if( node.typeref != null )
@@ -2821,7 +2820,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
 
         if( node.signature.inits != null )
         {
-            ObjectValue iframe = null;
+            ObjectValue iframe;
             int scope_depth = cx.getScopeDepth();
             iframe = cx.scope(scope_depth-2);
             
@@ -3905,7 +3904,7 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
     public Value evaluate(Context cx, SuperExpressionNode node)
     {
         Value super_value = ObjectValue.objectPrototype;
-        TypeValue this_value = null;
+        TypeValue this_value;
 
         // All error cases handled by flow analyzer
 

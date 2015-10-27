@@ -161,7 +161,7 @@ public class ExpressionContext implements Context
 	 */
 	public Object lookup(Object o) throws NoSuchVariableException, PlayerFaultException
 	{
-		Object result = null;
+		Object result;
 		try
 		{
 			// first see if it is an internal property (avoids player calls)
@@ -221,9 +221,9 @@ public class ExpressionContext implements Context
 	/* returns a string consisting of formatted member names and values */
 	public Object lookupMembers(Object o) throws NoSuchVariableException
 	{
-		Variable var = null;
-		Value val = null;
-  		Variable[] mems = null;
+		Variable var;
+		Value val;
+  		Variable[] mems;
 		try
 		{
 			var = resolveToVariable(o);
@@ -428,7 +428,7 @@ public class ExpressionContext implements Context
 	 */
 	Variable memberNamed(long id, String name) throws NoSuchVariableException, PlayerDebugException
 	{
-		Variable v = null;
+		Variable v;
 		Value parent = getSession().getWorkerSession(m_isolateId).getValue(id);
 
 		if (parent == null)
@@ -476,9 +476,9 @@ public class ExpressionContext implements Context
 			baseId -= depth;
 
 			// obtain data about our current state
-			Variable contextVar = null;
-			Value contextVal = null;
-			Value val = null;
+			Variable contextVar;
+			Value contextVal;
+			Value val;
 
 			// look for 'name' starting from local scope
 			if ( (val = locateParentForNamed(baseId, name, false)) != null)
@@ -578,7 +578,6 @@ public class ExpressionContext implements Context
 			}
 			catch(NoSuchVariableException nse)
 			{
-				v = null;
 			}
 		}
 

@@ -79,7 +79,7 @@ public final class DependencyGraph<T> extends Graph<String, Object>
 
 	public void addDependency(String name, String dep)
 	{
-		Vertex<String> tail = null, head = null;
+		Vertex<String> tail, head;
 
 		if ((head = vertices.get(name)) == null)
 		{

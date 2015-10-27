@@ -293,7 +293,7 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
                 try
                 {
                     in = new BufferedInputStream(source.getInputStream());
-                    Parser parser = null;
+                    Parser parser;
                     if (as3Configuration.doc())
                     {
                         if (as3Configuration.getEncoding() == null)

@@ -76,7 +76,7 @@ public final class As3Class implements AbcClass
 
 	public flex2.compiler.abc.Variable getVariable(String[] namespaces, String name, boolean inherited)
 	{
-        flex2.compiler.abc.Variable variable = null;
+        flex2.compiler.abc.Variable variable;
         Namespaces nsset = convertNamespaces(namespaces);
 
         name = name.intern();
@@ -260,7 +260,7 @@ public final class As3Class implements AbcClass
 
     public flex2.compiler.abc.Method getGetter(String[] namespaces, String name, boolean inherited)
 	{
-        flex2.compiler.abc.Method method = null;
+        flex2.compiler.abc.Method method;
         Namespaces nsset = convertNamespaces(namespaces);
 
         name = name.intern();
@@ -279,7 +279,7 @@ public final class As3Class implements AbcClass
 
 	public flex2.compiler.abc.Method getSetter(String[] namespaces, String name, boolean inherited)
 	{
-        flex2.compiler.abc.Method method = null;
+        flex2.compiler.abc.Method method;
         Namespaces nsset = convertNamespaces(namespaces);
 
         name = name.intern();

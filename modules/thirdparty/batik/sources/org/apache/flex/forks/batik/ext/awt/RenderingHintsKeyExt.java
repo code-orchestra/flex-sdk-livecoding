@@ -79,7 +79,7 @@ public final class RenderingHintsKeyExt {
 
     static {
         int base = 10100;
-        RenderingHints.Key trans=null, aoi=null, bi=null, cs=null, atp=null;
+        RenderingHints.Key trans, aoi, bi, cs, atp;
         while (true) {
             int val = base;
 

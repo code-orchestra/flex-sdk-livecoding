@@ -110,9 +110,9 @@ public final class BumpMap {
         final int scanStride = sppsm.getScanlineStride();
         final int scanStridePP = scanStride + 1;
         final int scanStrideMM = scanStride - 1;
-        double prpc=0, prcc=0, prnc=0;
-        double crpc=0, crcc=0, crnc=0;
-        double nrpc=0, nrcc=0, nrnc=0;
+        double prpc, prcc, prnc;
+        double crpc, crcc, crnc;
+        double nrpc, nrcc, nrnc;
         double invNorm;
 
         final double quarterSurfaceScaleX = surfaceScaleX / 4f;

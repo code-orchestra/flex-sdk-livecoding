@@ -740,7 +740,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
   }
 
   final public Token parseModel() throws ParseException {
-    Token t, obj = null;
+    Token t, obj;
     List children = null;
     t = jj_consume_token(START_MODEL);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -803,7 +803,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
   }
 
   final public Token parseXML() throws ParseException {
-    Token t, obj = null;
+    Token t, obj;
     List children = null;
     t = jj_consume_token(START_XML);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -834,7 +834,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
   }
 
   final public Token parseXMLList() throws ParseException {
-    Token t, obj = null;
+    Token t, obj;
     List children = null;
     t = jj_consume_token(START_XMLLIST);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -865,7 +865,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
   }
 
   final public Token parseArray() throws ParseException {
-    Token t, obj = null;
+    Token t, obj;
     List children = null;
     t = jj_consume_token(START_ARRAY);
     label_9:
@@ -936,7 +936,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
   }
 
   final public Token parseVector() throws ParseException {
-    Token t, obj = null;
+    Token t, obj;
     List children = null;
     t = jj_consume_token(START_VECTOR);
     label_10:
@@ -1016,7 +1016,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
   }
 
   final public Token parseAnonymousObject() throws ParseException {
-    Token t, obj = null;
+    Token t, obj;
     List children = null;
     t = jj_consume_token(START_ELEMENT);
     label_11:
@@ -1294,7 +1294,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
  * So to be completely free of special processing, we'd need to add that as a metadata-triggered option as well.
  */
   final public Token parseArguments() throws ParseException {
-    Token t, child = null;
+    Token t, child;
     List children = null;
     t = jj_consume_token(START_ARGUMENTS);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -1439,7 +1439,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
  * TODO: add metadata-driven ability to parse any property-initializing child tag as a key/value map.
  */
   final public Token parseRequest() throws ParseException {
-    Token t, child = null;
+    Token t, child;
     List children = null;
     t = jj_consume_token(START_REQUEST);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -1603,7 +1603,7 @@ public class Parser implements MXMLNamespaces, ParserConstants {
  * May have zero or more child Definitions.
  */
   final public Token parseLibrary() throws ParseException {
-    Token lib, child = null;
+    Token lib, child;
     List children = null;
     lib = jj_consume_token(START_LIBRARY);
     label_20:

@@ -68,7 +68,7 @@ public class SVGClip extends AbstractSVGConverter {
     public SVGDescriptor toSVG(GraphicContext gc) {
         Shape clip = gc.getClip();
 
-        SVGClipDescriptor clipDesc = null;
+        SVGClipDescriptor clipDesc;
 
         if (clip != null) {
             StringBuilder clipPathAttrBuf = new StringBuilder(URL_PREFIX);

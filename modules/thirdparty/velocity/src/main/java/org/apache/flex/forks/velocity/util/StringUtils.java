@@ -100,7 +100,7 @@ public class StringUtils
      */
     static public String removeUnderScores (String data)
     {
-        String temp = null;
+        String temp;
         StringBuilder out = new StringBuilder();
         temp = data;
 
@@ -157,7 +157,7 @@ public class StringUtils
      */
     static public String removeAndHump (String data,String replaceThis)
     {
-        String temp = null;
+        String temp;
         StringBuilder out = new StringBuilder();
         temp = data;
 

@@ -621,7 +621,6 @@ public class SyntaxAnalyzer extends AnalyzerAdapter
 
 				if (n != null)
 				{
-					cdata = n;
 					node.setSourceFile(n);
 				}
 			}
@@ -662,7 +661,6 @@ public class SyntaxAnalyzer extends AnalyzerAdapter
 
 				if (n != null)
 				{
-					cdata = n;
 					node.setSourceFile(n);
 				}
 			}
@@ -743,7 +741,7 @@ public class SyntaxAnalyzer extends AnalyzerAdapter
                                                               charsetName));
 			StringWriter buffer = new StringWriter();
 			PrintWriter out = new PrintWriter(buffer);
-			String str = null;
+			String str;
 			while ((str = reader.readLine()) != null)
 			{
 				out.println(str);

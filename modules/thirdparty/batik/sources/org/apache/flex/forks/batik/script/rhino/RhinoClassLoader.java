@@ -137,8 +137,8 @@ public class RhinoClassLoader extends URLClassLoader implements GeneratedClassLo
         }
 
         if (documentURL != null && perms != null) {
-            Permission p = null;
-            Permission dirPerm = null;
+            Permission p;
+            Permission dirPerm;
             try {
                 p = documentURL.openConnection().getPermission();
             } catch (IOException e){

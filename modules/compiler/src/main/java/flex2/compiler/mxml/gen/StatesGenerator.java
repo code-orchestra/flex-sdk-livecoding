@@ -98,7 +98,7 @@ public class StatesGenerator {
                                                       boolean generateDocComments,
                                                       StatementListNode statementList)
     {
-        StatementListNode results = statementList;
+        StatementListNode results;
         results = genSharedFactoriesAST(model, nodeFactory, statementList);
         results = genStatesAST(model, nodeFactory, configNamespaces,
                                generateDocComments, results);

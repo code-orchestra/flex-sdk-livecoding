@@ -133,7 +133,7 @@ public class MxmlConfiguration
 
 		for (int i = 0; i < results.length; i++)
 		{
-			int versionNum = 0;
+			int versionNum;
 			
 			try
 			{
@@ -231,7 +231,7 @@ public class MxmlConfiguration
 		
 		for (int i = 0; i < results.length; i++)
 		{
-			int versionNum = 0;
+			int versionNum;
 			
 			try
 			{

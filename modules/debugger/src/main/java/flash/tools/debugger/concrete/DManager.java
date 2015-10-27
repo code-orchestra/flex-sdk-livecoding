@@ -210,7 +210,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 		if (isolateId == Isolate.DEFAULT_ID)
 			return m_mainState;
 		
-		DManagerIsolateState isolateState = null;
+		DManagerIsolateState isolateState;
 		if (!m_isolateState.containsKey(isolateId)) {
 			isolateState = new DManagerIsolateState();
 			m_isolateState.put(isolateId, isolateState);
@@ -950,9 +950,9 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 	 * Variable.hasValueChanged() can work correctly for local variables.
 	 */
 	private void mapOldFramesToNew(int isolateId) {
-		ArrayList<DStackContext> previousFrames = null;
-		ArrayList<DStackContext> frames = null;
-		Map<Long, DValue> previousValues = null;
+		ArrayList<DStackContext> previousFrames;
+		ArrayList<DStackContext> frames;
+		Map<Long, DValue> previousValues;
 
 		previousFrames = getIsolateState(isolateId).m_previousFrames;
 		frames = getIsolateState(isolateId).m_frames;
@@ -1256,7 +1256,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 											// format
 			String text = msg.getString();
 			int swfIndex = -1;
-			int isolateIndex = -1;
+			int isolateIndex;
 
 			/* new in flash player 9: player tells us what swf this is for */
 			if (msg.getRemaining() >= 4)
@@ -1360,7 +1360,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 					line = (int)lineNumber;
 				}
 
-				DModule file = null;
+				DModule file;
 				file = getSource(fileId, targetIsolate);
 
 				DLocation l = new DLocation(file, line, targetIsolate);
@@ -1451,7 +1451,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 					module = (int)wideModulei;
 					line = (int)wideLinei;
 				}
-				DModule m = null;
+				DModule m;
 				m = getSource(module, targetIsolate);
 				DStackContext c = new DStackContext(module, line, m, id, stack,
 						depth, targetIsolate);
@@ -1477,7 +1477,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 		case DMessage.InFrame: {
 			// For InFrame the first element is really our frame id
 			DValue frame = null;
-			DVariable child = null;
+			DVariable child;
 			ArrayList<DVariable> v = new ArrayList<>();
 			ArrayList<DVariable> registers = new ArrayList<>();
 			int targetIsolate = msg.getTargetIsolate();
@@ -1553,7 +1553,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 			// For InGetVariable the first element is the original entity we
 			// requested
 			DValue parent = null;
-			DVariable child = null;
+			DVariable child;
 			String definingClass = null;
 			int level = 0;
 			int targetIsolate = msg.getTargetIsolate();
@@ -1760,7 +1760,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 				long id = msg.getPtr();
 
 				// get it
-				DSwfInfo info = null;
+				DSwfInfo info;
 
 				info = getOrCreateSwfInfo((int) index, targetIsolate);
 				getIsolateState(targetIsolate).m_lastSwfInfo = info;
@@ -1896,7 +1896,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 			// requested
 			DValue parent = null;
 			int targetIsolate = msg.getTargetIsolate();
-			DVariable child = null;
+			DVariable child;
 			String definingClass = null;
 			int level = 0;
 			int highestLevelWithMembers = -1;
@@ -2347,7 +2347,6 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 				try {
 					Date dateObj = dFormat.parse(dateVal);
 					if (dateObj != null && dateObj.getTime() != 0) {
-						oType = DMessage.kDateType;
 						typeName = "Date" + typeName.substring(atIndex); //$NON-NLS-1$
 					}
 				}

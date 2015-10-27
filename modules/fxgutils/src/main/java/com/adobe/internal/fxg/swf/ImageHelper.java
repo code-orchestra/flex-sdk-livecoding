@@ -223,7 +223,7 @@ public class ImageHelper
             throw new IOException("Unsupported MIME type");
         }
 
-        PixelGrabber pixelGrabber = null;
+        PixelGrabber pixelGrabber;
         try
         {
             pixelGrabber = ImageUtil.getPixelGrabber(image, null);

@@ -168,7 +168,7 @@ public class FlowTextPainter extends StrokingTextPainter {
         }
 
         Iterator frIter = flowRects.iterator();
-        RegionInfo currentRegion = null;
+        RegionInfo currentRegion;
         int currWord = 0;
         int chunk = 0;
         List lineInfos = new LinkedList();
@@ -350,7 +350,6 @@ public class FlowTextPainter extends StrokingTextPainter {
                 cWordMap[i] = cWordMap[word];
             }
         }
-        wordMap = null;
         WordInfo [] wordInfos = new WordInfo[words];
         for (int i=0; i<=maxWord; i++) {
             WordInfo wi = cWordMap[i];
@@ -450,7 +449,6 @@ public class FlowTextPainter extends StrokingTextPainter {
             wordGlyphCounts[cWord]++;
         }
 
-        cWordMap = null;
         int [][]wordGlyphs = new int [words][];
         int []wordGlyphGroupsCounts = new int [words];
         for (int i=0; i<numGlyphs; i++) {

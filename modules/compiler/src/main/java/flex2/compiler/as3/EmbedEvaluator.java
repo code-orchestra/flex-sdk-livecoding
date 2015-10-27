@@ -160,7 +160,7 @@ class EmbedEvaluator extends EvaluatorAdapter
                                 return null;
                             }
                             String name = variableBinding.variable.identifier.name;
-                            String className = null;
+                            String className;
                             
                             // If this is an embedded css asset then prefix the 
                             // name with a generic "_class" instead of the name

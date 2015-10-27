@@ -371,7 +371,7 @@ public class CompositeGraphicsNode extends AbstractGraphicsNode
             gb = children[i++].getTransformedGeometryBounds(t);
         }
 
-        Rectangle2D cgb = null;
+        Rectangle2D cgb;
         while (i < count) {
             cgb = children[i++].getTransformedGeometryBounds(t);
             if (cgb != null) {
@@ -461,7 +461,7 @@ public class CompositeGraphicsNode extends AbstractGraphicsNode
         Rectangle2D bounds = getSensitiveBounds();
         if (count > 0 && bounds != null && bounds.contains(p)) {
             Point2D pt = null;
-            Point2D cp = null; // Propagated to children
+            Point2D cp; // Propagated to children
             for (int i=0; i < count; ++i) {
                 AffineTransform t = children[i].getInverseTransform();
                 if(t != null){
@@ -491,7 +491,7 @@ public class CompositeGraphicsNode extends AbstractGraphicsNode
         if (count > 0 && bounds != null && bounds.contains(p)) {
             // Go backward because the children are in rendering order
             Point2D pt = null;
-            Point2D cp = null; // Propagated to children
+            Point2D cp; // Propagated to children
             for (int i=count-1; i >= 0; --i) {
                 AffineTransform t = children[i].getInverseTransform();
                 if(t != null){

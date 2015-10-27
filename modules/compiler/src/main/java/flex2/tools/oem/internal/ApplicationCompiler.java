@@ -57,7 +57,7 @@ public class ApplicationCompiler
 			int result = compile(incremental);
 			if (result == OK || result == LINK)
 			{
-				long size = 0;
+				long size;
 				
 				size = link(debugOut);
 				System.out.println("(" + size + " bytes)");

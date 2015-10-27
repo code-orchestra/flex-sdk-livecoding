@@ -70,7 +70,7 @@ public class WMFRecordStore extends AbstractWMFReader {
     protected boolean readRecords( DataInputStream is ) throws IOException {
 
         short functionId = 1;
-        int recSize = 0;
+        int recSize;
         short recData;
 
         numRecords = 0;

@@ -368,7 +368,7 @@ public class Parser/*@bgen(jjtree)*/implements ParserTreeConstants, ParserConsta
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-        Token t = null;
+        Token t;
       t = jj_consume_token(ESCAPE_DIRECTIVE);
       jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
@@ -396,7 +396,7 @@ public class Parser/*@bgen(jjtree)*/implements ParserTreeConstants, ParserConsta
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-        Token t = null;
+        Token t;
         int count = 0;
         boolean control = false;
       label_2:
@@ -600,9 +600,9 @@ public class Parser/*@bgen(jjtree)*/implements ParserTreeConstants, ParserConsta
  /*@bgen(jjtree) Directive */
     ASTDirective jjtn000 = new ASTDirective(this, JJTDIRECTIVE);
     boolean jjtc000 = true;
-    jjtree.openNodeScope(jjtn000);Token t = null;
+    jjtree.openNodeScope(jjtn000);Token t;
     int argType;
-    int argPos = 0;
+    int argPos;
     Directive d;
     int directiveType;
     boolean isVM = false;

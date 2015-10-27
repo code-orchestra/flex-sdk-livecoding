@@ -131,9 +131,9 @@ public class WMFPainter extends AbstractWMFPainter {
         float penWidth = 0;
         float startX = 0;
         float startY = 0;
-        int brushObject = -1;
-        int penObject = -1;
-        int fontObject = -1;
+        int brushObject;
+        int penObject;
+        int fontObject;
         Font font = null;
         int lastObjectIdx;
         Stack dcStack = new Stack();
@@ -277,8 +277,6 @@ public class WMFPainter extends AbstractWMFPainter {
 
                         if ( size < 0 ) size = -size /* * -1.3 */;
                         int objIndex = 0;
-
-                        fontHeight = size;
 
                         Font f = new Font(face, style, (int)size);
                         f = f.deriveFont(size);
@@ -552,7 +550,7 @@ public class WMFPainter extends AbstractWMFPainter {
                         TextLayout layout = new TextLayout( sr, g2d.getFont(), frc );
 
                         int flag = mr.elementAt( 2 );
-                        int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+                        int x1, y1, x2, y2;
                         boolean clipped = false;
                         Shape clip = null;
                         // process clipped texts
@@ -714,8 +712,6 @@ public class WMFPainter extends AbstractWMFPainter {
                                 float endY = scaleY * ( vpY + yOffset + mr.elementAt( j6+8 ) );
 
                                 gp.curveTo( cp1X, cp1Y, cp2X, cp2Y, endX, endY );
-                                _startX = endX;
-                                _startY = endY;
                             }
                                 //gp.closePath();
                             g2d.setStroke( solid );
@@ -1094,7 +1090,6 @@ public class WMFPainter extends AbstractWMFPainter {
         if ( penObject >= 0 ) {
             GdiObject gdiObj = currentStore.getObject( penObject );
             g2d.setColor( (Color)gdiObj.obj );
-            penObject = -1;
         }
     }
 
@@ -1113,7 +1108,6 @@ public class WMFPainter extends AbstractWMFPainter {
             if (gdiObj.obj instanceof Color) g2d.setColor( (Color)gdiObj.obj );
             else if (gdiObj.obj instanceof Paint) g2d.setPaint( (Paint)gdiObj.obj );
             else g2d.setPaint(getPaint((byte[])gdiObj.obj));
-            brushObject = -1;
         }
     }
 

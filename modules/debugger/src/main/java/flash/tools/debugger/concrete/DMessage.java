@@ -539,7 +539,7 @@ public class DMessage
 	{
 		int size = getSize();
 		byte[] data = getData();
-		int i = 0;
+		int i;
 
 		// First, output formatted content -- content for which some of the other functions
 		// in this class, such as getDWord and getString, did formatting.

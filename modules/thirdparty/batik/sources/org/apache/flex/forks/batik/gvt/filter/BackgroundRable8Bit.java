@@ -319,7 +319,7 @@ public class BackgroundRable8Bit
         if (srcs.size() == 0)
             return null;
 
-        Filter ret = null;
+        Filter ret;
         if (srcs.size() == 1)
             ret = (Filter)srcs.get(0);
         else

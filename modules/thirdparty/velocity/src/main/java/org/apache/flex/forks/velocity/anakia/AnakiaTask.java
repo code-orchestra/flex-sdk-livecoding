@@ -302,7 +302,7 @@ public class AnakiaTask extends MatchingTask
         throws BuildException
     {
         File   outFile=null;
-        File   inFile=null;
+        File   inFile;
         Writer writer = null;
         try
         {

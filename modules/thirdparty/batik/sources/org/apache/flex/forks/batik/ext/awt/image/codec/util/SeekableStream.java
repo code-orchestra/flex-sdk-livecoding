@@ -101,7 +101,7 @@ public abstract class SeekableStream extends InputStream implements DataInput {
      */
     public static SeekableStream wrapInputStream(InputStream is,
                                                  boolean canSeekBackwards) {
-        SeekableStream stream = null;
+        SeekableStream stream;
 
         if (canSeekBackwards) {
             try {

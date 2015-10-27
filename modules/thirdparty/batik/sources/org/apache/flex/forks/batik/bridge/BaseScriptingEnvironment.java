@@ -391,7 +391,7 @@ public class BaseScriptingEnvironment {
 
             try {
                 String href = XLinkSupport.getXLinkHref(script);
-                String desc = null;
+                String desc;
                 Reader reader = null;
 
                 if (href.length() > 0) {
@@ -580,7 +580,6 @@ public class BaseScriptingEnvironment {
         if (checkCanRun) {
             // Check that it is ok to run embeded scripts
             checkCompatibleScriptURL(lang, docPURL);
-            checkCanRun = false; // we only check once for onload handlers
         }
 
         DocumentLoader dl = bridgeContext.getDocumentLoader();

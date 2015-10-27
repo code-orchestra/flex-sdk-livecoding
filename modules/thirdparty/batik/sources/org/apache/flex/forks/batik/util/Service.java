@@ -136,19 +136,16 @@ public class Service {
                     try {
                         is.close();
                     } catch ( IOException ignored ){}
-                    is = null;
                 }
                 if ( r != null ){
                     try{
                         r.close();
                     } catch ( IOException ignored ){}
-                    r = null;
                 }
                 if ( br == null ){
                     try{
                         br.close();
                     } catch ( IOException ignored ){}
-                    br = null;
                 }
             }
         }

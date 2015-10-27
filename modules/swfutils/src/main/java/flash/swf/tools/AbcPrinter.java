@@ -1231,7 +1231,7 @@ public class AbcPrinter
             int stopAt = codeLength + offset;
             while (offset < stopAt)
             {
-                String s = "";
+                String s;
                 start = offset;
                 printOffset();
                 int opcode = abc[offset++] & 0xFF;

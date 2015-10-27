@@ -1252,7 +1252,7 @@ public final class SwfxPrinter extends TagHandler
                 try
                 {
                     FileOutputStream image = new FileOutputStream(path, false);
-                    SwfImageUtils.JPEG jpeg = null;
+                    SwfImageUtils.JPEG jpeg;
 
                     if (tag.jpegTables != null)
                     {

@@ -106,7 +106,7 @@ public class ASTMethod extends SimpleNode
          *  but if we are careful, we can do it in the context.
          */
 
-        VelMethod method = null;
+        VelMethod method;
 
         Object [] params = new Object[paramCount];
 

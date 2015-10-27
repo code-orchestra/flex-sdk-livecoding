@@ -85,7 +85,7 @@ public final class SimplePool
      */
     public  Object get() 
     {
-        int idx = -1;
+        int idx;
         
         synchronized( this ) 
         {

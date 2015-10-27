@@ -350,7 +350,7 @@ public abstract class DefaultCachedImageHandler
         //
         // Create an buffered image if necessary
         //
-        BufferedImage buf = null;
+        BufferedImage buf;
         if (image instanceof BufferedImage
             &&
             ((BufferedImage)image).getType() == getBufferedImageType()){

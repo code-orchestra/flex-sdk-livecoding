@@ -52,8 +52,7 @@ public class DigestConfiguration
 	    String appHome = System.getProperty("application.home");
 	    if (appHome == null)
 	    {
-		    appHome = ".";
-	    }
+		}
     }
 
 	//

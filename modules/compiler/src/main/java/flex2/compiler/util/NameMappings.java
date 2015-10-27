@@ -127,7 +127,7 @@ public class NameMappings
 
     public boolean addClass(String namespaceURI, String localPart, String className)
     {
-        Map<String, String> classMap = null;
+        Map<String, String> classMap;
 
         if (namespaceMap.containsKey(namespaceURI))
         {

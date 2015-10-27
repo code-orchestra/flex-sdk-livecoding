@@ -23,7 +23,7 @@ public final class XMLUtils {
 
     public static String documentToString(Document document) {
         TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = null;
+        Transformer transformer;
         try {
             transformer = tf.newTransformer();
         } catch (TransformerConfigurationException e) {

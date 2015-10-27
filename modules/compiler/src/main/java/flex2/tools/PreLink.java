@@ -1097,9 +1097,9 @@ public class PreLink implements flex2.compiler.PreLink
         // a system manager in sync with compiling a MXML application from source;
         // otherwise, the generated class is assumed to already exist!
 
-        String generateLoaderClass = null;
-        String baseLoaderClass = null;
-        String windowClass = null;
+        String generateLoaderClass;
+        String baseLoaderClass;
+        String windowClass;
         //String preloaderClass = null;
         Map<String, Object> rootAttributes = null;
         Map<String, Object> rootAttributeEmbedVars = null;

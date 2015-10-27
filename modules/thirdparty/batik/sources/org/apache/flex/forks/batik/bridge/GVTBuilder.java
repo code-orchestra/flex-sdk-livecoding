@@ -64,7 +64,7 @@ public class GVTBuilder implements SVGConstants {
             // create the root node
             rootNode = dBridge.createGraphicsNode(ctx, document);
             Element svgElement = document.getDocumentElement();
-            GraphicsNode topNode = null;
+            GraphicsNode topNode;
 
             // get the appropriate bridge according to the specified element
             Bridge bridge = ctx.getBridge(svgElement);

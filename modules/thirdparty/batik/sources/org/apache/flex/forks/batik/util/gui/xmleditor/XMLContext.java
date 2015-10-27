@@ -155,7 +155,7 @@ public class XMLContext extends StyleContext {
     }
     
     public String getSyntaxName(int ctx) {
-        String name = CHARACTER_DATA_STYLE;
+        String name;
         switch (ctx) {
             case XMLScanner.XML_DECLARATION_CONTEXT:
                 name = XML_DECLARATION_STYLE;

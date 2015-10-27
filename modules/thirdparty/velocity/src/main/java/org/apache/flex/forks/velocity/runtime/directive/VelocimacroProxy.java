@@ -301,8 +301,8 @@ public class VelocimacroProxy extends Directive
          *  eat the args
          */
         int i = 0;
-        Token t = null;
-        Token tLast = null;
+        Token t;
+        Token tLast;
     
         while( i <  numArgs ) 
         {

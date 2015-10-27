@@ -288,7 +288,7 @@ public class Decimal128 {
 		
 		byte[] getRep() {
 			if (!finalized) {
-				int combo = 0;
+				int combo;
 				if (negative)
 					data[0] |= 0x80000000;
 				if (infinite)

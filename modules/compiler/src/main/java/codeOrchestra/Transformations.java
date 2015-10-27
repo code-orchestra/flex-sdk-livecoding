@@ -77,7 +77,7 @@ public class Transformations {
         MethodCONode listener = new MethodCONode(listenerName, null, classDefinitionNode.cx);
         listener.addParameter("e", "MethodUpdateEvent");
 
-        Node firstStatement = null;
+        Node firstStatement;
         MemberExpressionNode methodCall = TreeUtil.createCall(null, functionDefinitionNode.name.identifier.name, null);
         if ("*".equals(classFqn)) {
             firstStatement = new ExpressionStatementNode(new ListNode(null, methodCall, -1));

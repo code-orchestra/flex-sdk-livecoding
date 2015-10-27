@@ -209,7 +209,7 @@ public class TIFFDirectory implements Serializable {
             int tag = readUnsignedShort(stream);
             int type = readUnsignedShort(stream);
             int count = (int)(readUnsignedInt(stream));
-            int value = 0;
+            int value;
 
             // The place to return to to read the next tag
             nextTagOffset = stream.getFilePointer() + 4;

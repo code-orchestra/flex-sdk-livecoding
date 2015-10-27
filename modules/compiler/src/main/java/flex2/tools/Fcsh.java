@@ -527,9 +527,7 @@ public class Fcsh extends Tool {
         } catch (ConfigurationException ex) {
             Compc.displayStartMessage();
             Mxmlc.processConfigurationException(ex, "compc");
-        } catch (CompilerException ex) {
-            assert ThreadLocalToolkit.errorCount() > 0;
-        } catch (SwcException ex) {
+        } catch (CompilerException | SwcException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
         } catch (Throwable t) // IOException, Throwable
         {
@@ -651,9 +649,7 @@ public class Fcsh extends Tool {
             }
         } catch (ConfigurationException ex) {
             Mxmlc.processConfigurationException(ex, "mxmlc");
-        } catch (CompilerException ex) {
-            assert ThreadLocalToolkit.errorCount() > 0;
-        } catch (SwcException ex) {
+        } catch (CompilerException | SwcException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
         } catch (Throwable t) // IOException, Throwable
         {
@@ -982,11 +978,7 @@ public class Fcsh extends Tool {
             }
         } catch (ConfigurationException ex) {
             Mxmlc.processConfigurationException(ex, "mxmlc");
-        } catch (CompilerException ex) {
-            assert ThreadLocalToolkit.errorCount() > 0;
-        } catch (LinkerException ex) {
-            assert ThreadLocalToolkit.errorCount() > 0;
-        } catch (SwcException ex) {
+        } catch (CompilerException | SwcException | LinkerException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
         } catch (Throwable thr) // IOException, Throwable
         {
@@ -1157,11 +1149,7 @@ public class Fcsh extends Tool {
         } catch (ConfigurationException ex) {
             Compc.displayStartMessage();
             Mxmlc.processConfigurationException(ex, "compc");
-        } catch (CompilerException ex) {
-            assert ThreadLocalToolkit.errorCount() > 0;
-        } catch (LinkerException ex) {
-            assert ThreadLocalToolkit.errorCount() > 0;
-        } catch (SwcException ex) {
+        } catch (CompilerException | SwcException | LinkerException ex) {
             assert ThreadLocalToolkit.errorCount() > 0;
         } catch (Throwable t) // IOException, Throwable
         {

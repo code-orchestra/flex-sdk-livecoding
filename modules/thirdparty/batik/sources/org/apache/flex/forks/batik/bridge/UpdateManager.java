@@ -61,8 +61,7 @@ public class UpdateManager  {
             String s = System.getProperty
             ("org.apache.flex.forks.batik.min_repaint_time", "20");
             value = Integer.parseInt(s);
-        } catch (SecurityException se) {
-        } catch (NumberFormatException nfe){
+        } catch (SecurityException | NumberFormatException se) {
         } finally {
             MIN_REPAINT_TIME = value;
         }

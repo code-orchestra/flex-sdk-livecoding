@@ -128,9 +128,7 @@ public class Service {
                     }
                     line = br.readLine();
                 }
-            } catch (Exception ex) {
-                // Just try the next file...
-            } catch (LinkageError le) {
+            } catch (Exception | LinkageError ex) {
                 // Just try the next file...
             } finally {
                 // close and release all io-resources to avoid leaks

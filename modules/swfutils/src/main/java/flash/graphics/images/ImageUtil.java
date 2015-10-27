@@ -38,19 +38,11 @@ public class ImageUtil
 		{
             image = Toolkit.getDefaultToolkit().createImage(bytes);
         }
-        catch (InternalError ie)
+        catch (InternalError | NoClassDefFoundError ie)
         {
             if (Trace.error)
             {
                 ie.printStackTrace();
-            }
-            throw new InternalError("An error occurred because there is no graphics environment available.  Please set the headless-server setting in the Flex configuration file to true.");
-        }
-        catch (NoClassDefFoundError ce)
-        {
-            if (Trace.error)
-            {
-                ce.printStackTrace();
             }
             throw new InternalError("An error occurred because there is no graphics environment available.  Please set the headless-server setting in the Flex configuration file to true.");
         }

@@ -99,9 +99,7 @@ public class SAXParserFactoryMMImpl extends SAXParserFactory {
         SAXParserMMImpl saxParserImpl;
         try {
             saxParserImpl = new SAXParserMMImpl(this, features);
-        } catch (SAXNotSupportedException e) {
-            throw e;
-        } catch (SAXNotRecognizedException e) {
+        } catch (SAXNotSupportedException | SAXNotRecognizedException e) {
             throw e;
         } catch (SAXException se) {
             throw new ParserConfigurationException(se.getMessage());
@@ -149,11 +147,7 @@ public class SAXParserFactoryMMImpl extends SAXParserFactory {
         try {
             newSAXParserImpl();
         } 
-        catch (SAXNotSupportedException e) {
-            features.remove(name);
-            throw e;
-        } 
-        catch (SAXNotRecognizedException e) {
+        catch (SAXNotSupportedException | SAXNotRecognizedException e) {
             features.remove(name);
             throw e;
         }

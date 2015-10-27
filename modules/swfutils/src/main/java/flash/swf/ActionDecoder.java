@@ -119,15 +119,10 @@ public class ActionDecoder
             // keep track of the end too
             factory.setActionOffset(actionCount, reader.getOffset());
 		}
-		catch(ArrayIndexOutOfBoundsException aio) 
+		catch(ArrayIndexOutOfBoundsException | SwfFormatException aio)
 		{
 			if (throwExceptions)
 				throw aio;
-		}
-		catch(SwfFormatException swf) 
-		{
-			if (throwExceptions)
-				throw swf;
 		}
 
         return factory.createActionList(keepOffsets);

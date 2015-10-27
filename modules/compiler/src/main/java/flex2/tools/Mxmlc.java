@@ -422,19 +422,10 @@ public final class Mxmlc extends Tool implements FlexTool
         	ThreadLocalToolkit.logInfo( getStartMessage( "mxmlc" ) );
             processConfigurationException(ex, "mxmlc");
         }
-        catch (CompilerException ex)
+        catch (CompilerException | SwcException | LinkerException ex)
         {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (LinkerException ex)
-        {
-            assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (SwcException ex)
-        {
-            assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (Throwable t) // IOException, Throwable
+        } catch (Throwable t) // IOException, Throwable
         {
             ThreadLocalToolkit.logError(t.getLocalizedMessage());
 

@@ -885,21 +885,7 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
  				TextFile textFile = new TextFile(generated, filename, source.getParent(),
  												 MimeMappings.AS, source.getLastModified());
  				return new Source(textFile, source);
-            }
-            catch (ResourceNotFoundException ex)
-            {
-                ThreadLocalToolkit.logError(path, FileUtil.getExceptionMessage(ex));
-            }
-            catch (ParseErrorException ex)
-            {
-                ThreadLocalToolkit.logError(path, FileUtil.getExceptionMessage(ex));
-            }
-            catch (MethodInvocationException ex)
-            {
-                ThreadLocalToolkit.logError(path, FileUtil.getExceptionMessage(ex));
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 ThreadLocalToolkit.logError(path, FileUtil.getExceptionMessage(ex));
             }
         }

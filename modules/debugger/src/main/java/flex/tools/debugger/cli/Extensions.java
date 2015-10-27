@@ -142,17 +142,9 @@ public class Extensions
 		{
 			cli.err(getLocalizationManager().getLocalizedTextString("key19")); //$NON-NLS-1$
 		}
-		catch(ParseException pe)
+		catch(ParseException | NoMatchException | AmbiguousException pe)
 		{
 			cli.err(pe.getMessage());
-		}
-		catch(AmbiguousException ae)
-		{
-			cli.err(ae.getMessage());
-		}
-		catch(NoMatchException nme)
-		{
-			cli.err(nme.getMessage());
 		}
 	}
 
@@ -496,23 +488,14 @@ public class Extensions
 			args.put("arg7", Integer.toString(numLines)); //$NON-NLS-1$
  			cli.err(getLocalizationManager().getLocalizedTextString("key32", args)); //$NON-NLS-1$
  		}
- 		catch(AmbiguousException ae)
+ 		catch(AmbiguousException | NoMatchException | ParseException ae)
  		{
  			cli.err(ae.getMessage());
  		}
  		catch(NullPointerException npe)
  		{
  			cli.err(getLocalizationManager().getLocalizedTextString("key33")); //$NON-NLS-1$
- 		}
- 		catch(ParseException pe)
- 		{
- 			cli.err(pe.getMessage());
- 		}
-		catch(NoMatchException nme)
-		{
-			cli.err(nme.getMessage());
-		}
- 		catch(SuspendedException se)
+ 		} catch(SuspendedException se)
  		{
 			cli.err(getLocalizationManager().getLocalizedTextString("key34")); //$NON-NLS-1$
  		}

@@ -62,23 +62,14 @@ public class JPEGImage extends BitmapImage
 
 			init(image);
 		}
-        catch (InternalError ie)
+        catch (InternalError | NoClassDefFoundError ie)
         {
             if (Trace.error)
             {
                 ie.printStackTrace();
             }
             throw new InternalError("An error occurred because there is no graphics environment available.  Please set the headless-server setting in the configuration file to true.");
-        }
-        catch (NoClassDefFoundError ce)
-        {
-            if (Trace.error)
-            {
-                ce.printStackTrace();
-            }
-            throw new InternalError("An error occurred because there is no graphics environment available.  Please set the headless-server setting in the configuration file to true.");
-        }
-		catch (Exception ex)
+        } catch (Exception ex)
 		{
 			throw new RuntimeException("Error reading image from file " + location + ". " + ex.getMessage());
 		}
@@ -98,23 +89,14 @@ public class JPEGImage extends BitmapImage
 
 			init(image);
 		}
-        catch (InternalError ie)
+        catch (InternalError | NoClassDefFoundError ie)
         {
             if (Trace.error)
             {
                 ie.printStackTrace();
             }
             throw new InternalError("An error occurred because there is no graphics environment available.  Please set the headless-server setting in the configuration file to true.");
-        }
-        catch (NoClassDefFoundError ce)
-        {
-            if (Trace.error)
-            {
-                ce.printStackTrace();
-            }
-            throw new InternalError("An error occurred because there is no graphics environment available.  Please set the headless-server setting in the configuration file to true.");
-        }
-		catch (Exception ex)
+        } catch (Exception ex)
 		{
 			throw new RuntimeException("Error reading image from URL. " + location + ". " + ex.getMessage());
 		}

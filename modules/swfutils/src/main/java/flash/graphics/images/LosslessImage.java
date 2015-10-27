@@ -62,23 +62,14 @@ public class LosslessImage extends BitmapImage
 			location = imageURL.toString();
 			modified = conn.getLastModified();
 		}
-        catch (InternalError ie)
+        catch (InternalError | NoClassDefFoundError ie)
         {
             if (Trace.error)
             {
                 ie.printStackTrace();
             }
             throw new InternalError("An error occurred because there is no graphics environment available.  Please set the headless-server setting in the configuration file to true.");
-        }
-        catch (NoClassDefFoundError ce)
-        {
-            if (Trace.error)
-            {
-                ce.printStackTrace();
-            }
-            throw new InternalError("An error occurred because there is no graphics environment available.  Please set the headless-server setting in the configuration file to true.");
-        }
-		catch (IOException ioe)
+        } catch (IOException ioe)
 		{
 			throw new RuntimeException("Error reading image from URL. " + ioe.getMessage());
 		}

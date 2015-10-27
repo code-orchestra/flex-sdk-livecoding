@@ -222,8 +222,6 @@ public class WMFTranscoder extends ToSVGAbstractTranscoder {
                 URL url = new URL(uri);
                 in = url.openStream();
                 return new DataInputStream(new BufferedInputStream(in));
-            } catch (MalformedURLException e){
-                handler.fatalError(new TranscoderException(e));
             } catch (IOException e){
                 handler.fatalError(new TranscoderException(e));
             }
@@ -260,8 +258,6 @@ public class WMFTranscoder extends ToSVGAbstractTranscoder {
                     TranscoderInput input = new TranscoderInput(inputFile.toURL().toString());
                     TranscoderOutput output = new TranscoderOutput(new FileOutputStream(outputFile));
                     transcoder.transcode(input, output);
-                } catch (MalformedURLException e) {
-                    throw new TranscoderException(e);
                 } catch (IOException e) {
                     throw new TranscoderException(e);
                 }

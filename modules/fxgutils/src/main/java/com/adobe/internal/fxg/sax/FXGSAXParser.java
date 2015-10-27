@@ -88,15 +88,10 @@ public class FXGSAXParser implements FXGParser
             FXGNode node = scanner.getRootNode();
             return node;
         }
-        catch (ParserConfigurationException ex)
+        catch (ParserConfigurationException | SAXException ex)
         {
             throw new FXGException(scanner.getStartLine(), scanner.getStartColumn(), "ErrorParsingFXG", ex.getLocalizedMessage(), ex);
-        }
-        catch (SAXException ex)
-        {
-            throw new FXGException(scanner.getStartLine(), scanner.getStartColumn(), "ErrorParsingFXG", ex.getLocalizedMessage(), ex);
-        }
-        finally
+        } finally
         {
             stream.close();
         }

@@ -2716,7 +2716,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
 
         int reg_offset = getRegisterOffset(cx);
 
-        case_exprs.add(new ObjectList<Node>());
+        case_exprs.add(new ObjectList<>());
         SwitchBegin();                    // jump past statements
         if (node.statements != null)
         {

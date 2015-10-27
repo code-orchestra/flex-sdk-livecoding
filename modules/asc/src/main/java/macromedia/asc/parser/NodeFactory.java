@@ -365,7 +365,7 @@ public final class NodeFactory implements ErrorConstants
     private boolean needs_prototype_ns;
     public void StartClassDefs()
 	{
-        clsdefs_sets.add(new ObjectList<ClassDefinitionNode>());
+        clsdefs_sets.add(new ObjectList<>());
         needs_prototype_ns = true;
     }
 

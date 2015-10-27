@@ -477,7 +477,7 @@ public class AbcThunkGen
 		
 		String sig = thunkSig(m);
 		if (!unique_thunks.containsKey(sig))
-			unique_thunks.put(sig, new HashMap<String, Method>());
+			unique_thunks.put(sig, new HashMap<>());
 		unique_thunks.get(sig).put(native_name, m);
 	}
 

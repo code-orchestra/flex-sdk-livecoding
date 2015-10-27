@@ -82,7 +82,7 @@ public class FlexMovie extends SimpleMovie
             mapAll(def2unit, unit.topLevelDefinitions.getStringSet(), unit);
         }
 
-        buildFrames( def2unit, mainDef, new HashSet<String>() );
+        buildFrames( def2unit, mainDef, new HashSet<>() );
 
         frameInfoList.addAll( configFrameInfoList );
 

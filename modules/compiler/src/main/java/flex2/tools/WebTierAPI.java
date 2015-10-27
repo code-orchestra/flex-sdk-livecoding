@@ -157,7 +157,7 @@ public final class WebTierAPI extends Tool
 			// compile
 			target.units = flex2.compiler.CompilerAPI.compile(target.fileSpec, target.sourceList, null, target.sourcePath, target.resources,
 													  target.bundlePath, swcContext, symbolTable, mappings, configuration, compilers,
-													  new PreLink(), licenseMap, new ArrayList<Source>());
+													  new PreLink(), licenseMap, new ArrayList<>());
 
 			return target;
 		}

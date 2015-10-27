@@ -69,8 +69,8 @@ public class Optimizer implements FlexTool
 		final String[] configVars = new String[]{"help", "version", "load-config", "input", "output",
 											   "compiler.keep-as3-metadata", "compiler.debug"};
 		Arrays.sort(configVars);
-		ConfigurationBuffer cfgbuf = new ConfigurationBuffer(OptimizerConfiguration.class, 
-				new HashMap<String, String>(),
+		ConfigurationBuffer cfgbuf = new ConfigurationBuffer(OptimizerConfiguration.class,
+				new HashMap<>(),
 				name -> Arrays.binarySearch(configVars, name) >= 0);
 		
         cfgbuf.setDefaultVar("input");

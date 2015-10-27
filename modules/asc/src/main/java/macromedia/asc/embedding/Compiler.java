@@ -655,7 +655,7 @@ public class Compiler implements ErrorConstants
             mainplug.use_namespaces,
 		    mainplug.language,
             mainplug.configs,
-            new ObjectList<CompilerPlug>(),
+                new ObjectList<>(),
             mainplug.handler,
 		    mainplug.emit_doc_info, /*=false*/
             mainplug.emit_debug_info, /*=false*/

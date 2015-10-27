@@ -73,7 +73,7 @@ public final class ConfigurationBuffer
 {
     public ConfigurationBuffer( Class configClass )
     {
-        this( configClass, new HashMap<String, String>() );
+        this( configClass, new HashMap<>() );
     }
 
     public ConfigurationBuffer( Class configClass, Map<String, String> aliases )
@@ -106,7 +106,7 @@ public final class ConfigurationBuffer
     {
         this.configClass = copyFrom.configClass;
         this.varMap = new HashMap<>(copyFrom.varMap);
-        this.committed = copyCommitted? new HashSet<>(copyFrom.committed) : new HashSet<String>();
+        this.committed = copyCommitted? new HashSet<>(copyFrom.committed) : new HashSet<>();
         this.varCache = copyFrom.varCache;     // doesn't change after creation
         this.childCache = copyFrom.childCache; // doesn't change after creation;
         this.varList = copyFrom.varList;       // doesn't change after creation

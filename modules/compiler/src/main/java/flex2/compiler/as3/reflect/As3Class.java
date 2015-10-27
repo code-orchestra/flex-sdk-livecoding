@@ -334,7 +334,7 @@ public final class As3Class implements AbcClass
 
     public List<flex2.compiler.abc.MetaData> getMetaData(String id, boolean inherited)
 	{
-		return getMetaData(id, inherited, new ArrayList<flex2.compiler.abc.MetaData>(inherited ? 10 : (metadata != null) ? metadata.size() : 1));
+		return getMetaData(id, inherited, new ArrayList<>(inherited ? 10 : (metadata != null) ? metadata.size() : 1));
 	}
 
 	private List<flex2.compiler.abc.MetaData> getMetaData(String id, boolean inherited, List<flex2.compiler.abc.MetaData> list)

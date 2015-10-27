@@ -81,7 +81,7 @@ public class ConsoleApplication
 
 			dependencies.put(path, u);
 			if (!dependencies.containsVertex(s.getName())) {
-				dependencies.addVertex(new Vertex<String, CompilationUnit>(path));
+				dependencies.addVertex(new Vertex<>(path));
 			}
 
 			// register QName --> VirtualFile.getName()

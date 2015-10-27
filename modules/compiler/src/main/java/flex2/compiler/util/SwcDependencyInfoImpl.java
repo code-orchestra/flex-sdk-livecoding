@@ -87,7 +87,7 @@ class SwcDependencyInfoImpl implements SwcDependencyInfo
         
         if (!dependencies.containsVertex(name))
         {
-            dependencies.addVertex(new Vertex<String,SwcExternalScriptInfo>(name));
+            dependencies.addVertex(new Vertex<>(name));
         }
     }
     

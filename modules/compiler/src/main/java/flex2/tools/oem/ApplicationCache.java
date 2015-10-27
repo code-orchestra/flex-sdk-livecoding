@@ -378,14 +378,12 @@ public class ApplicationCache extends CacheBase
     {
         if (trigger == null)
         {
-            trigger = new SoftReference<Object>(new Object()
-                {
-                    protected void finalize()
-                        throws Throwable
-                    {
-                        prune();
-                    }
-                });
+            trigger = new SoftReference<>(new Object() {
+                protected void finalize()
+                        throws Throwable {
+                    prune();
+                }
+            });
         }
     }
 

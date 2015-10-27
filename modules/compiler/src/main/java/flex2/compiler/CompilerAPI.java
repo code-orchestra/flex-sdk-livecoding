@@ -1317,7 +1317,7 @@ public final class CompilerAPI
                        compilers,
                        preLink,
                        licenseMap,
-                       new ArrayList<Source>());
+                new ArrayList<>());
     }
 
     public static List<CompilationUnit>
@@ -1348,7 +1348,7 @@ public final class CompilerAPI
                        compilers,
                        preLink,
                        licenseMap,
-                       new ArrayList<Source>());
+                new ArrayList<>());
     }
 
     // full compilation
@@ -1897,7 +1897,7 @@ public final class CompilerAPI
             for (QName qName : u.topLevelDefinitions)
             {
                 qNames.put(qName, source);
-                dependents.put(qName, new HashMap<String, Source>());
+                dependents.put(qName, new HashMap<>());
             }
         }
 
@@ -2638,7 +2638,7 @@ public final class CompilerAPI
 
         if (!igraph.containsVertex(name))
         {
-            igraph.addVertex(new Vertex<String,CompilationUnit>(name));
+            igraph.addVertex(new Vertex<>(name));
         }
 
         if (dgraph != null)
@@ -2646,7 +2646,7 @@ public final class CompilerAPI
             dgraph.put(name, s);
             if (!dgraph.containsVertex(name))
             {
-                dgraph.addVertex(new Vertex<String,Source>(name));
+                dgraph.addVertex(new Vertex<>(name));
             }
         }
     }

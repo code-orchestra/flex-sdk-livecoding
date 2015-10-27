@@ -506,7 +506,7 @@ public class Fcsh extends Tool {
                         symbolTable, mappings, configuration, compilers,
                         new CompcPreLink(rbFiles, configuration.getIncludeResourceBundles(),
                                 false),
-                        licenseMap, new ArrayList<Source>());
+                        licenseMap, new ArrayList<>());
 
                 if (benchmark != null) {
                     benchmark.startTime(Benchmark.POSTCOMPILE);
@@ -626,11 +626,11 @@ public class Fcsh extends Tool {
                 if (projector != null && projector.getName().endsWith("avmplus.exe")) {
                     s.units = CompilerAPI.compile(s.fileSpec, s.sourceList, null, s.sourcePath, s.resources, s.bundlePath,
                             swcContext, symbolTable, mappings, configuration, compilers,
-                            null, licenseMap, new ArrayList<Source>());
+                            null, licenseMap, new ArrayList<>());
                 } else {
                     s.units = CompilerAPI.compile(s.fileSpec, s.sourceList, null, s.sourcePath, s.resources, s.bundlePath,
                             swcContext, symbolTable, mappings, configuration, compilers,
-                            new PreLink(), licenseMap, new ArrayList<Source>());
+                            new PreLink(), licenseMap, new ArrayList<>());
                 }
 
                 if (benchmark != null) {
@@ -912,7 +912,7 @@ public class Fcsh extends Tool {
 
                 List<CompilationUnit> units = CompilerAPI.compile(s.fileSpec, s.sourceList, null, s.sourcePath, s.resources, s.bundlePath,
                         swcContext, symbolTable, mappings, configuration, compilers,
-                        null, licenseMap, new ArrayList<Source>());
+                        null, licenseMap, new ArrayList<>());
 
                 if (benchmark != null) {
                     benchmark.startTime(Benchmark.POSTCOMPILE);
@@ -943,7 +943,7 @@ public class Fcsh extends Tool {
 
                 List<CompilationUnit> units = CompilerAPI.compile(s.fileSpec, s.sourceList, null, s.sourcePath, s.resources, s.bundlePath,
                         swcContext, symbolTable, mappings, configuration, compilers,
-                        new PreLink(), licenseMap, new ArrayList<Source>());
+                        new PreLink(), licenseMap, new ArrayList<>());
 
                 if (benchmark != null) {
                     benchmark.startTime(Benchmark.POSTCOMPILE);
@@ -1120,7 +1120,7 @@ public class Fcsh extends Tool {
                     mappings, configuration, compilers,
                     new CompcPreLink(rbFiles, configuration.getIncludeResourceBundles(),
                             false),
-                    licenseMap, new ArrayList<Source>());
+                    licenseMap, new ArrayList<>());
 
             if (benchmark != null) {
                 benchmark.startTime(Benchmark.POSTCOMPILE);

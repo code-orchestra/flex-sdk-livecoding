@@ -142,7 +142,7 @@ public class Toolkit
 
         try
         {
-        	OEMUtil.init(OEMUtil.getLogger(null, new ArrayList<Message>()), new MimeMappings(), null, null, null);
+        	OEMUtil.init(OEMUtil.getLogger(null, new ArrayList<>()), new MimeMappings(), null, null, null);
         	
             CompilerSwcContext swcContext = new CompilerSwcContext();
             SwcCache cache = new SwcCache();

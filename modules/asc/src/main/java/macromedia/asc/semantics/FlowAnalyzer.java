@@ -2314,9 +2314,9 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
             // Start processing a new function. Add an empty function set to the
             // function sets.
 
-            fexprs_sets.add(new ObjectList<FunctionCommonNode>());
-            staticfexprs_sets.push_back(new ObjectList<FunctionCommonNode>());
-            instanceinits_sets.push_back(new ObjectList<Node>());
+            fexprs_sets.add(new ObjectList<>());
+            staticfexprs_sets.push_back(new ObjectList<>());
+            instanceinits_sets.push_back(new ObjectList<>());
 
             // Create a reference to the name.
 
@@ -2618,10 +2618,10 @@ if (node.state == ProgramNode.Inheritance)
         // The variable that references them is initialized at the beginning
         // of the block.
 
-        fexprs_sets.add(new ObjectList<FunctionCommonNode>());
-        clsdefs_sets.add(new ObjectList<ClassDefinitionNode>());
-        staticfexprs_sets.add(new ObjectList<FunctionCommonNode>());
-        instanceinits_sets.add(new ObjectList<Node>());
+        fexprs_sets.add(new ObjectList<>());
+        clsdefs_sets.add(new ObjectList<>());
+        staticfexprs_sets.add(new ObjectList<>());
+        instanceinits_sets.add(new ObjectList<>());
 
         package_unresolved_sets.push_back(node.package_unresolved);
         import_def_unresolved_sets.push_back(node.import_def_unresolved);
@@ -4469,7 +4469,7 @@ else
             node.init = nodeFactory.expressionStatement(nodeFactory.assignmentExpression(qualifiedIdentifier, CONST_TOKEN, node));
             node.init.isVarStatement(true);
 
-            clsdefs_sets.push_back(new ObjectList<ClassDefinitionNode>()); // make dummy
+            clsdefs_sets.push_back(new ObjectList<>()); // make dummy
             cx.pushStaticClassScopes(node);
             ObjectList<String> namespace_ids = new ObjectList<>();
             if( node.namespaces.size() != 0 )
@@ -4779,9 +4779,9 @@ else
             // The variable that references them is initialized at the beginning
             // of the block.
 
-            fexprs_sets.add(new ObjectList<FunctionCommonNode>());
-            staticfexprs_sets.add(new ObjectList<FunctionCommonNode>());
-            instanceinits_sets.add(new ObjectList<Node>());
+            fexprs_sets.add(new ObjectList<>());
+            staticfexprs_sets.add(new ObjectList<>());
+            instanceinits_sets.add(new ObjectList<>());
 
             // Copy the set of nested functions into the node for use
             // by later phases.

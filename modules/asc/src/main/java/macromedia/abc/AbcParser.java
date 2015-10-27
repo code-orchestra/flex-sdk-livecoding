@@ -88,7 +88,7 @@ public final class AbcParser
             b.is_in_package = true; // cn: necessary for proper slot creation for top level functions
             program.frame = new ObjectValue(ctx, b, ctx.noType());
 			ctx.pushScope(program.frame);
-            clsdefs_sets.add(new ObjectList<ClassDefinitionNode>());
+            clsdefs_sets.add(new ObjectList<>());
             ce_unresolved_sets.push_back(program.ce_unresolved);
             region_name_stack.push_back("");
             
@@ -885,7 +885,7 @@ public final class AbcParser
             slot.setImplNode(cdn);
         }
 
-        clsdefs_sets.add(new ObjectList<ClassDefinitionNode>());
+        clsdefs_sets.add(new ObjectList<>());
 
         region_name_stack.push_back(fullNameString);
         

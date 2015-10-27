@@ -644,7 +644,7 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
                 {
                     in.close();
                 }
-                catch (IOException ex)
+                catch (IOException ignored)
                 {
                 }
             }

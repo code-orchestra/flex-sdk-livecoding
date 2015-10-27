@@ -76,7 +76,7 @@ public class SwcWriteOnlyArchive implements SwcArchive
         }
         finally
         {
-            try { if (zos != null) zos.close(); } catch(IOException ioe) {}
+            try { if (zos != null) zos.close(); } catch(IOException ignored) {}
         }
     }
 

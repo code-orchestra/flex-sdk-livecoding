@@ -117,7 +117,7 @@ public class OEMReport implements Report
                     {
                         widthPercent = Double.parseDouble(percent) / 100;
                     }
-                    catch(NumberFormatException ex) {}
+                    catch(NumberFormatException ignored) {}
                 }
             }
 
@@ -141,7 +141,7 @@ public class OEMReport implements Report
                     {
                         heightPercent = Double.parseDouble(percent) / 100;
                     }
-                    catch(NumberFormatException ex) {}
+                    catch(NumberFormatException ignored) {}
                 }
             }
 		}

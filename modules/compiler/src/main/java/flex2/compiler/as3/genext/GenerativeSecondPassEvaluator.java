@@ -262,7 +262,7 @@ public abstract class GenerativeSecondPassEvaluator extends EvaluatorAdapter
 		{
 			template = VelocityManager.getTemplate(getTemplatePath() + templateName);
 		}
-		catch(Exception e) {}
+		catch(Exception ignored) {}
 
 
 		if (template != null)
@@ -312,7 +312,7 @@ public abstract class GenerativeSecondPassEvaluator extends EvaluatorAdapter
 							{
 								fileWriter.close();
 							}
-							catch (IOException ex)
+							catch (IOException ignored)
 							{
 							}
 						}

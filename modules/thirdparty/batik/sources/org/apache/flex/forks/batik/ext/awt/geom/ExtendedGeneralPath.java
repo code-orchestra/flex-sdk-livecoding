@@ -697,7 +697,7 @@ public class ExtendedGeneralPath implements ExtendedShape, Cloneable {
             result.numSeg = numSeg;
 
             return result;
-        } catch (CloneNotSupportedException ex) {}
+        } catch (CloneNotSupportedException ignored) {}
         return null;
     }
 

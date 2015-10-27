@@ -72,7 +72,7 @@ public class ParserTestCase extends TestCase
             ve.evaluate(new VelocityContext(), new StringWriter(), "foo", template);
             assertTrue(false);
         }
-        catch(ParseErrorException pe)
+        catch(ParseErrorException ignored)
         {
         }
     }
@@ -106,7 +106,7 @@ public class ParserTestCase extends TestCase
             ve.evaluate(new VelocityContext(), new StringWriter(), "foo", template);
             assertTrue(false);
         }
-        catch(ParseErrorException pe)
+        catch(ParseErrorException ignored)
         {
         }
     }

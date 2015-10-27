@@ -443,7 +443,7 @@ public abstract class BridgeEventSupport implements SVGConstants {
                 // place coords in text node coordinate system
                 try {
                     node.getGlobalTransform().createInverse().transform(pt, pt);
-                } catch (NoninvertibleTransformException ex) {
+                } catch (NoninvertibleTransformException ignored) {
                 }
                 if (list != null){
                     for (Object aList : list) {

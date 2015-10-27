@@ -595,7 +595,7 @@ public class ResourceManagerImpl implements ResourceManager
                 if (is != null) {
                     try {
                         is.close();
-                    } catch (IOException ioe) {
+                    } catch (IOException ignored) {
                     }
                 }
             }

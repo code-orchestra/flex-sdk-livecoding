@@ -1312,7 +1312,7 @@ public class Library implements Builder, Cloneable
         }
         finally
         {
-            if (cacheFile != null) try { cacheFile.close(); } catch (IOException ex) {}
+            if (cacheFile != null) try { cacheFile.close(); } catch (IOException ignored) {}
         }
 
         return true;

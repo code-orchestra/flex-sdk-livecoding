@@ -98,7 +98,7 @@ public class ExpressionCache
 		setSession(s);
 
 		// propagates our properties to the session / non-critical if fails
-		try { ((flash.tools.debugger.concrete.PlayerSession)s).setPreferences(m_props.map()); } catch(Exception e) {}
+		try { ((flash.tools.debugger.concrete.PlayerSession)s).setPreferences(m_props.map()); } catch(Exception ignored) {}
 	}
 
 	public EvaluationResult evaluate(ValueExp e, int isolateId) throws NumberFormatException, NoSuchVariableException, PlayerFaultException, PlayerDebugException

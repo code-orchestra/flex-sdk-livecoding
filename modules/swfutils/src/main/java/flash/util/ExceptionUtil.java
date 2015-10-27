@@ -143,7 +143,7 @@ public class ExceptionUtil
 	    }
 	    return call.toString();
 	}
-	catch(NoSuchElementException e) {}
+	catch(NoSuchElementException ignored) {}
 
 	return "unknown";
     }

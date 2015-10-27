@@ -237,7 +237,7 @@ public class Extensions
 		int index = ((PlayerSession)session).getSuspendActionIndex();
 
 		SwfInfo info = null;
-		try { info = fileInfo.getSwfs(isolateId)[index]; } catch(ArrayIndexOutOfBoundsException oobe) {}
+		try { info = fileInfo.getSwfs(isolateId)[index]; } catch(ArrayIndexOutOfBoundsException ignored) {}
 		if (info != null)
 		{
 			Map<String, String> args = new HashMap<>();

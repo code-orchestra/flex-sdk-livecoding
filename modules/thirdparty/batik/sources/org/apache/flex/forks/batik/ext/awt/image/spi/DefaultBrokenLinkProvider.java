@@ -51,7 +51,7 @@ public class DefaultBrokenLinkProvider
             // may not work (depends on security and relationship
             // of base's class loader to this class's class loader.
             cl = base.getClass().getClassLoader();
-        } catch (SecurityException se) {
+        } catch (SecurityException ignored) {
         }
         LocalizableSupport ls;
         ls = new LocalizableSupport(MESSAGE_RSRC, base.getClass(), cl);

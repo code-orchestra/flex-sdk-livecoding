@@ -112,7 +112,7 @@ public class XMLTranscoder extends AbstractTranscoder
                 if (in != null)
                     in.close();
             }
-            catch (Throwable t)
+            catch (Throwable ignored)
             {
             }
         }

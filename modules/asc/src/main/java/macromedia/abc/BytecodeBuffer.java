@@ -52,7 +52,7 @@ public class BytecodeBuffer
 				{
 					in.close();
 				}
-				catch (IOException ex)
+				catch (IOException ignored)
 				{
 				}
 			}

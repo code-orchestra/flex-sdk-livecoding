@@ -106,7 +106,7 @@ public class SVGTranscoder extends AbstractTranscoder
 				{
 					is.close();
 				}
-				catch (IOException e)
+				catch (IOException ignored)
 				{
 				}
 			}

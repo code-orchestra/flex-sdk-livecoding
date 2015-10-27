@@ -256,7 +256,7 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
                 {
                     in.close();
                 }
-                catch (IOException ex)
+                catch (IOException ignored)
                 {
 
                 }

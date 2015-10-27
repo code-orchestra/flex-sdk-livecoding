@@ -54,7 +54,7 @@ public abstract class Platform {
                             Integer.TYPE);
                 int i = (Integer) m1.invoke(f, (Object[]) null);
                 m2.invoke(f, i & ~6);
-            } catch (java.lang.reflect.InvocationTargetException | IllegalAccessException | NoSuchMethodException ite) {
+            } catch (java.lang.reflect.InvocationTargetException | IllegalAccessException | NoSuchMethodException ignored) {
             }
         }
     }

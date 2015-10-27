@@ -215,7 +215,7 @@ public class ScriptCompiler
 							default:
 								break;
 						}
-					} catch (Exception e) {
+					} catch (Exception ignored) {
 					}
 					break;
 				case "-versioncheck":

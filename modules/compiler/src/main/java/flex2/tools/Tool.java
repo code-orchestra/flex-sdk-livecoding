@@ -71,7 +71,7 @@ public class Tool
                 {
                     in.close();
                 }
-                catch (IOException ioe)
+                catch (IOException ignored)
                 {
                 }
             }

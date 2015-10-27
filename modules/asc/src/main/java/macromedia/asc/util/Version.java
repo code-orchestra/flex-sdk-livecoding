@@ -57,7 +57,7 @@ public class Version
                 build = p.getProperty("build");
             }
         }
-        catch (Throwable t)
+        catch (Throwable ignored)
         {
         }
         finally
@@ -68,7 +68,7 @@ public class Version
                 {
                     in.close();
                 }
-                catch (IOException ex)
+                catch (IOException ignored)
                 {
                 }
             }

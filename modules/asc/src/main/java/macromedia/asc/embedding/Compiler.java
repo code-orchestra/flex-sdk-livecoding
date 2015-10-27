@@ -117,7 +117,7 @@ public class Compiler implements ErrorConstants
                 if (import_in != null)
                 {
                     try { import_in.close(); } 
-                    catch (IOException ex) {}
+                    catch (IOException ignored) {}
                 }
             }
 
@@ -279,7 +279,7 @@ public class Compiler implements ErrorConstants
 						warningOut.close();
 						System.err.println("wrote .xml doc file: " + cx.path() + "/" + cx.scriptName() + ".xml" );
 					}
-					catch (IOException ex) {}
+					catch (IOException ignored) {}
 				}
 			}
 			// this is not the end of the method -- just an early return if the IF is taken
@@ -466,7 +466,7 @@ public class Compiler implements ErrorConstants
 							{
 								code_out.close();
 							}
-							catch (IOException ex)
+							catch (IOException ignored)
 							{
 							}
 						}
@@ -536,7 +536,7 @@ public class Compiler implements ErrorConstants
                     {
                         swf_out.close();
                     }
-                    catch (IOException ex)
+                    catch (IOException ignored)
                     {
                     }
                 }
@@ -727,7 +727,7 @@ public class Compiler implements ErrorConstants
 				{
 					exe_in.close();
 				}
-				catch (IOException ex)
+				catch (IOException ignored)
 				{
 				}
 			}
@@ -737,7 +737,7 @@ public class Compiler implements ErrorConstants
 				{
 					exe_out.close();
 				}
-				catch (IOException ex)
+				catch (IOException ignored)
 				{
 				}
 			}
@@ -770,7 +770,7 @@ public class Compiler implements ErrorConstants
                     {
                         out.close();
                     }
-                    catch (IOException ex)
+                    catch (IOException ignored)
                     {
                     }
                 }

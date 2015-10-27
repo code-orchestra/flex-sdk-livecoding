@@ -233,7 +233,7 @@ public class GVTACIImpl
                         ((Map) mapList.get(ndx - 1)).get(attribute)) )
                     --ndx;
             }
-        } catch(IndexOutOfBoundsException e) {
+        } catch(IndexOutOfBoundsException ignored) {
         }
         return ndx;
     }
@@ -248,7 +248,7 @@ public class GVTACIImpl
         int ndx = currentIndex;
         try {
             while (attributes.equals(mapList.get(ndx - 1))) --ndx;
-        } catch(IndexOutOfBoundsException e) {
+        } catch(IndexOutOfBoundsException ignored) {
         }
         return ndx;
     }

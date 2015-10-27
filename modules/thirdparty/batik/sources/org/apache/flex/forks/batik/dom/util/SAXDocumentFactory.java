@@ -562,12 +562,12 @@ public class SAXDocumentFactory
             try {
                 isStandalone = parser.getFeature
                     ("http://xml.org/sax/features/is-standalone");
-            } catch (SAXNotRecognizedException ex) {
+            } catch (SAXNotRecognizedException ignored) {
             }
             try {
                 xmlVersion = (String) parser.getProperty
                     ("http://xml.org/sax/properties/document-xml-version");
-            } catch (SAXNotRecognizedException ex) {
+            } catch (SAXNotRecognizedException ignored) {
             }
         }
 

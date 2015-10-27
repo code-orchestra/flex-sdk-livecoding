@@ -52,7 +52,7 @@ public class ResourceBundleLocalizer implements ILocalizer
                     return new ResourceBundleText( bundle.getObject( suffix ).toString() );
                 }
             }
-            catch (MissingResourceException e)
+            catch (MissingResourceException ignored)
             {
             }
         }

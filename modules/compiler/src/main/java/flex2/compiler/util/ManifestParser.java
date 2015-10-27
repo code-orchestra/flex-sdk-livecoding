@@ -82,7 +82,7 @@ public class ManifestParser
                 {
                     in.close();
                 }
-                catch (IOException ex)
+                catch (IOException ignored)
                 {
                 }
             }

@@ -71,7 +71,7 @@ public abstract class CachedFontManager extends FontManager
                 {
                     maxEntries = Short.parseShort(prop);
                 }
-                catch (Throwable t)
+                catch (Throwable ignored)
                 {
                 }
             }
@@ -83,7 +83,7 @@ public abstract class CachedFontManager extends FontManager
                 {
                     maxGlyphsPerFace = Short.parseShort(prop);
                 }
-                catch (Throwable t)
+                catch (Throwable ignored)
                 {
                 }
             }

@@ -153,7 +153,7 @@ public class SVGSVGElementBridge
                 AffineTransform vtInv = viewingTransform.createInverse();
                 actualWidth = (float) (w*vtInv.getScaleX());
                 actualHeight = (float) (h*vtInv.getScaleY());
-            } catch (NoninvertibleTransformException ex) {}
+            } catch (NoninvertibleTransformException ignored) {}
 
             AffineTransform positionTransform =
                 AffineTransform.getTranslateInstance(x, y);
@@ -197,7 +197,7 @@ public class SVGSVGElementBridge
                     clip = at.createTransformedShape(clip);
                     Filter filter = cgn.getGraphicsNodeRable(true);
                     cgn.setClip(new ClipRable8Bit(filter, clip));
-                } catch (NoninvertibleTransformException ex) {}
+                } catch (NoninvertibleTransformException ignored) {}
             }
             RenderingHints hints = null;
             hints = CSSUtilities.convertColorRendering(e, hints);
@@ -380,7 +380,7 @@ public class SVGSVGElementBridge
                                     clip = at.createTransformedShape(clip);
                                     Filter filter = cgn.getGraphicsNodeRable(true);
                                     cgn.setClip(new ClipRable8Bit(filter, clip));
-                                } catch (NoninvertibleTransformException ex) {
+                                } catch (NoninvertibleTransformException ignored) {
                                 }
                             }
                         }
@@ -458,7 +458,7 @@ public class SVGSVGElementBridge
         AffineTransform ati = svgGN.getGlobalTransform();
         try {
             ati = ati.createInverse();
-        } catch (NoninvertibleTransformException e) {
+        } catch (NoninvertibleTransformException ignored) {
         }
         
         Element curr;
@@ -592,7 +592,7 @@ public class SVGSVGElementBridge
         AffineTransform ati = svgGN.getGlobalTransform();
         try {
             ati = ati.createInverse();
-        } catch (NoninvertibleTransformException e) {
+        } catch (NoninvertibleTransformException ignored) {
         }
         
         Element curr;
@@ -708,7 +708,7 @@ public class SVGSVGElementBridge
 
         try {
             ati = ati.createInverse();
-        } catch (NoninvertibleTransformException e) {  }
+        } catch (NoninvertibleTransformException ignored) {  }
 
         SVGContext svgctx = null;
         if (element instanceof SVGOMElement) {
@@ -780,7 +780,7 @@ public class SVGSVGElementBridge
         AffineTransform ati = svgGN.getGlobalTransform();
         try {
             ati = ati.createInverse();
-        } catch (NoninvertibleTransformException e) {  }
+        } catch (NoninvertibleTransformException ignored) {  }
 
         AffineTransform at = gn.getGlobalTransform();
         at.preConcatenate(ati);

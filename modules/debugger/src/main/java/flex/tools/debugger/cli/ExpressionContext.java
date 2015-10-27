@@ -89,7 +89,7 @@ public class ExpressionContext implements Context
 			Integer o = (Integer)m_cache.get(DebugCLI.LIST_MODULE);
 			s = m_cache.getPackageName(o);
 		}
-		catch(NullPointerException | ClassCastException npe)
+		catch(NullPointerException | ClassCastException ignored)
 		{
 		}
 		return s;
@@ -301,7 +301,7 @@ public class ExpressionContext implements Context
 			String key = (String)o;
 			Object value = null;
 
-			try { value = m_cache.get(key); } catch(Exception e) {}
+			try { value = m_cache.get(key); } catch(Exception ignored) {}
 			return new InternalProperty(key, value);
 		}
 

@@ -2211,7 +2211,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 					try {
 						nArgs = ((Number) (v.getValue().getValueAsObject()))
 								.intValue();
-					} catch (NumberFormatException nfe) {
+					} catch (NumberFormatException ignored) {
 					}
 					break;
 				case SCOPE_CHAIN_MARKER:
@@ -2296,7 +2296,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 			double dval = Double.NaN;
 			try {
 				dval = Double.parseDouble(s);
-			} catch (NumberFormatException nfe) {
+			} catch (NumberFormatException ignored) {
 			}
 
 			value = dval;

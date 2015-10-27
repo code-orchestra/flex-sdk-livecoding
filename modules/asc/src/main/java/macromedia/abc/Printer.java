@@ -1347,7 +1347,7 @@ public class Printer
 				{
 					in.close();
 				}
-				catch (IOException ex)
+				catch (IOException ignored)
 				{
 				}
 			}

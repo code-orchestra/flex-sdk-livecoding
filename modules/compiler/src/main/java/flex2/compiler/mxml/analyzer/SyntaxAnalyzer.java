@@ -704,7 +704,7 @@ public class SyntaxAnalyzer extends AnalyzerAdapter
 				{
 					in.close();
 				}
-				catch (IOException ex)
+				catch (IOException ignored)
 				{
 				}
 			}
@@ -769,7 +769,7 @@ public class SyntaxAnalyzer extends AnalyzerAdapter
 				{
 					reader.close();
 				}
-				catch (IOException ex)
+				catch (IOException ignored)
 				{
 				}
 			}

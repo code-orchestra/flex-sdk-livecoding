@@ -96,7 +96,7 @@ public class InterpreterPool {
         try {
             URL url = new URL(svgDoc.getDocumentURI());
             interpreter = factory.createInterpreter(url, svgDoc.isSVG12());
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException ignored) {
         }
 
         if (interpreter == null) return null;

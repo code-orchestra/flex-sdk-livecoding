@@ -72,7 +72,7 @@ public class ServicesDependenciesWrapper
             		System.err.println(e3);
             }
         }
-        catch (NoSuchMethodException e2)
+        catch (NoSuchMethodException ignored)
         {
         	
         }
@@ -89,7 +89,7 @@ public class ServicesDependenciesWrapper
                 arglist[0] = destination;
                 return (Set)method.invoke(servicesDependenciesInstance, arglist);   			
     		}
-    		catch (Throwable e)
+    		catch (Throwable ignored)
     		{
     			
     		}
@@ -110,7 +110,7 @@ public class ServicesDependenciesWrapper
                 arglist[1] = associationProp;
                 method.invoke(servicesDependenciesInstance, arglist);   			
     		}
-    		catch (Throwable e)
+    		catch (Throwable ignored)
     		{
     			
     		}
@@ -127,7 +127,7 @@ public class ServicesDependenciesWrapper
     			Object arglist[] = new Object[0];
                 return (String)method.invoke(servicesDependenciesInstance, arglist);   			
     		}
-    		catch (Throwable e)
+    		catch (Throwable ignored)
     		{
     			
     		}
@@ -146,7 +146,7 @@ public class ServicesDependenciesWrapper
     			Object arglist[] = new Object[0];
                 return (String)method.invoke(servicesDependenciesInstance, arglist);   			
     		}
-    		catch (Throwable e)
+    		catch (Throwable ignored)
     		{
     			
     		}
@@ -165,7 +165,7 @@ public class ServicesDependenciesWrapper
     			Object arglist[] = new Object[0];
                 return (String)method.invoke(servicesDependenciesInstance, arglist);   			
     		}
-    		catch (Throwable e)
+    		catch (Throwable ignored)
     		{
     			
     		}
@@ -184,7 +184,7 @@ public class ServicesDependenciesWrapper
     			Object arglist[] = new Object[0];
                 return (List)method.invoke(servicesDependenciesInstance, arglist);   			
     		}
-    		catch (Throwable e)
+    		catch (Throwable ignored)
     		{
     			
     		}
@@ -203,7 +203,7 @@ public class ServicesDependenciesWrapper
     			Object arglist[] = new Object[0];
                 method.invoke(servicesDependenciesInstance, arglist);   			
     		}
-    		catch (Throwable e)
+    		catch (Throwable ignored)
     		{
     			
     		}
@@ -222,7 +222,7 @@ public class ServicesDependenciesWrapper
     			arglist[1] = modified;
                 method.invoke(servicesDependenciesInstance, arglist);   			
     		}
-    		catch (Throwable e)
+    		catch (Throwable ignored)
     		{
     			
     		}
@@ -239,7 +239,7 @@ public class ServicesDependenciesWrapper
     			Object arglist[] = new Object[0];
                 return (Map)method.invoke(servicesDependenciesInstance, arglist);   			
     		}
-    		catch (Throwable e)
+    		catch (Throwable ignored)
     		{
     			
     		}

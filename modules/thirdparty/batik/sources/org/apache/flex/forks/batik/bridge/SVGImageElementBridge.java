@@ -906,7 +906,7 @@ public class SVGImageElementBridge extends AbstractGraphicsNodeBridge {
                     Filter filter = node.getGraphicsNodeRable(true);
                     clip = at.createTransformedShape(clip);
                     node.setClip(new ClipRable8Bit(filter, clip));
-                } catch (java.awt.geom.NoninvertibleTransformException ex) {}
+                } catch (java.awt.geom.NoninvertibleTransformException ignored) {}
             }
         } catch (LiveAttributeException ex) {
             throw new BridgeException(ctx, ex);

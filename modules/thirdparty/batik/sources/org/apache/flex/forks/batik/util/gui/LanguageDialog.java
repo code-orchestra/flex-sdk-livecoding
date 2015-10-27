@@ -464,7 +464,7 @@ public class LanguageDialog extends JDialog implements ActionMap {
                     iconMap.put(code, icon = new ImageIcon(url));
                     return icon;
                 }
-            } catch (MissingResourceException e) {
+            } catch (MissingResourceException ignored) {
             }
             return new ImageIcon(ref.getResource("resources/blank.gif"));
         }

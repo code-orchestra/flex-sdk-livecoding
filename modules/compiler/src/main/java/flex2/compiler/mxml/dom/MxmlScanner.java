@@ -98,7 +98,7 @@ public class MxmlScanner extends DefaultHandler implements TokenManager,
                 ETagRequired = rb.getString("ETagRequired");
             }
         }
-        catch (Exception ex)
+        catch (Exception ignored)
         {
         }
         finally
@@ -138,7 +138,7 @@ public class MxmlScanner extends DefaultHandler implements TokenManager,
             parser.setProperty("http://xml.org/sax/properties/lexical-handler", cdataHandler);
             parser.parse(in, this);
         }
-        catch (ParserConfigurationException | IOException ex)
+        catch (ParserConfigurationException | IOException ignored)
         {
         }
         catch (SAXException ex)
@@ -635,7 +635,7 @@ public class MxmlScanner extends DefaultHandler implements TokenManager,
                     line = Integer.parseInt(lineNumMethod.invoke(attributes, new Object[] {i}).toString());
                 }
             }
-            catch (IllegalAccessException | InvocationTargetException ex)
+            catch (IllegalAccessException | InvocationTargetException ignored)
             {
             }
 

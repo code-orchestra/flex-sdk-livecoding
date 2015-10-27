@@ -388,7 +388,7 @@ public class DebugDecoder
 				}
 				token2 = FileUtils.toURL(f).toString();
 			}
-			catch (IOException ex)
+			catch (IOException ignored)
 			{
 			}
 		}

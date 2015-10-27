@@ -164,7 +164,7 @@ public class LocalizationManager
 
                 try {
                     parameters.put(f.getName(), f.get(object));
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
             }
             c = c.getSuperclass();

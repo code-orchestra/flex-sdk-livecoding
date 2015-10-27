@@ -189,7 +189,7 @@ public class SourcePath extends SourcePathBase
 					hits.add(className);
 					return true;
 				}
-			} catch (CompilerException ex) {
+			} catch (CompilerException ignored) {
 			}
 		}
 

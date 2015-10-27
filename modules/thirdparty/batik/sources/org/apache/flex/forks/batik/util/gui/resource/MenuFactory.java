@@ -380,7 +380,7 @@ public class MenuFactory extends ResourceManager {
         try {
             result.setSelected(getSpecializedBoolean(name + SELECTED_SUFFIX,
                                                      specialization));
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ignored) {
         }
 
         return result;
@@ -432,7 +432,7 @@ public class MenuFactory extends ResourceManager {
         try {
             result.setSelected(getSpecializedBoolean(name + SELECTED_SUFFIX,
                                                      specialization));
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ignored) {
         }
 
         return result;
@@ -466,7 +466,7 @@ public class MenuFactory extends ResourceManager {
             if (a instanceof JComponentModifier) {
                 ((JComponentModifier)a).addJComponent(item);
             }
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ignored) {
         }
 
         // Icon
@@ -476,7 +476,7 @@ public class MenuFactory extends ResourceManager {
             if (url != null) {
                 item.setIcon(new ImageIcon(url));
             }
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ignored) {
         }
 
         // Mnemonic
@@ -490,7 +490,7 @@ public class MenuFactory extends ResourceManager {
                                                   bundle.getClass().getName(),
                                                   name+MNEMONIC_SUFFIX);
             }
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ignored) {
         }
 
         // Accelerator
@@ -508,14 +508,14 @@ public class MenuFactory extends ResourceManager {
                          name+ACCELERATOR_SUFFIX);
                 }
             }
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ignored) {
         }
 
         // is the item enabled?
         try {
             item.setEnabled(getSpecializedBoolean(name + ENABLED_SUFFIX,
                                                   specialization));
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ignored) {
         }
     }
 }

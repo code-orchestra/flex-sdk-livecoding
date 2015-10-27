@@ -143,7 +143,7 @@ public class BuilderLibrary extends Library
 								} else if ("false".equals(value)) {
 									config.enableDebugging(false, debugPassword);
 								}
-							} catch (ConfigurationException ex) {
+							} catch (ConfigurationException ignored) {
 							}
 						} else if ("compiler.verbose-stacktraces".equals(var)) {
 							try {
@@ -153,7 +153,7 @@ public class BuilderLibrary extends Library
 								} else if ("false".equals(value)) {
 									config.enableVerboseStacktraces(false);
 								}
-							} catch (ConfigurationException ex) {
+							} catch (ConfigurationException ignored) {
 							}
 						} else if ("compiler.accessible".equals(var)) {
 							try {
@@ -163,7 +163,7 @@ public class BuilderLibrary extends Library
 								} else if ("false".equals(value)) {
 									config.enableAccessibility(false);
 								}
-							} catch (ConfigurationException ex) {
+							} catch (ConfigurationException ignored) {
 							}
 						} else if ("compiler.strict".equals(var)) {
 							try {
@@ -173,7 +173,7 @@ public class BuilderLibrary extends Library
 								} else if ("false".equals(value)) {
 									config.enableStrictChecking(false);
 								}
-							} catch (ConfigurationException ex) {
+							} catch (ConfigurationException ignored) {
 							}
 						} else if ("help".equals(var)) {
 							// do nothing
@@ -186,7 +186,7 @@ public class BuilderLibrary extends Library
 								} else {
 									setOutput(new File(value));
 								}
-							} catch (ConfigurationException ex) {
+							} catch (ConfigurationException ignored) {
 							}
 						} else if ("size-report".equals(var)) {
 							config.keepSizeReport(true);
@@ -204,7 +204,7 @@ public class BuilderLibrary extends Library
 										this.addComponent((String) valArgs.get(k));
 									}
 								}
-							} catch (ConfigurationException ex) {
+							} catch (ConfigurationException ignored) {
 							}
 						} else if ("include-file".equals(var)) {
 							try {
@@ -214,7 +214,7 @@ public class BuilderLibrary extends Library
 									List valArgs = val.getArgs();
 									this.addArchiveFile((String) valArgs.get(0), new File((String) valArgs.get(1)));
 								}
-							} catch (ConfigurationException ex) {
+							} catch (ConfigurationException ignored) {
 							}
 						} else if ("include-namespaces".equals(var)) {
 							try {
@@ -230,7 +230,7 @@ public class BuilderLibrary extends Library
 										}
 									}
 								}
-							} catch (ConfigurationException ex) {
+							} catch (ConfigurationException ignored) {
 							}
 						} else if ("include-resource-bundles".equals(var)) {
 							try {
@@ -242,7 +242,7 @@ public class BuilderLibrary extends Library
 										this.addResourceBundle((String) valArgs.get(k));
 									}
 								}
-							} catch (ConfigurationException ex) {
+							} catch (ConfigurationException ignored) {
 							}
 						} else if ("include-sources".equals(var)) {
 							try {
@@ -254,7 +254,7 @@ public class BuilderLibrary extends Library
 										this.addComponent(new File((String) valArgs.get(k)));
 									}
 								}
-							} catch (ConfigurationException ex) {
+							} catch (ConfigurationException ignored) {
 							}
 						}
 					}

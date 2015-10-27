@@ -42,7 +42,7 @@ public class JaclInterpreter implements org.apache.flex.forks.batik.script.Inter
         interpreter = new Interp();
         try {
             interpreter.eval("package require java", 0);
-        } catch (TclException e) {
+        } catch (TclException ignored) {
         }
     }
 

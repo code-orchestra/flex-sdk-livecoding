@@ -327,7 +327,7 @@ public abstract class PaintServer
         try {
             paint = convertURIPaint(paintedElement, paintedNode,
                                     paintDef, opacity, ctx);
-        } catch (BridgeException ex) {
+        } catch (BridgeException ignored) {
         }
         return paint;
     }

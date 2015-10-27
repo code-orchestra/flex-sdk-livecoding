@@ -450,7 +450,7 @@ public final class FileUtils
                 if (in != null)
                     in.close();
             }
-            catch (IOException ex)
+            catch (IOException ignored)
             {
             }
         }
@@ -497,7 +497,7 @@ public final class FileUtils
 				{
 					fileWriter.close();
 				}
-				catch (IOException ex)
+				catch (IOException ignored)
 				{
 				}
 			}

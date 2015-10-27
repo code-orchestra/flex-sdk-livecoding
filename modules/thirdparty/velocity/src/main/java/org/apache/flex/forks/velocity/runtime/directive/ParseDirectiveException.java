@@ -57,7 +57,7 @@ public class ParseDirectiveException extends Exception
                 returnStr += " -> ";
             }
         }
-        catch( Exception e)
+        catch( Exception ignored)
         {
         }
 

@@ -397,7 +397,7 @@ B4[label="B4"]
 				{
 					out.close();
 				}
-				catch (IOException ex)
+				catch (IOException ignored)
 				{
 				}
 			}

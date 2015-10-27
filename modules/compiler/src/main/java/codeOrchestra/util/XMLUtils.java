@@ -76,7 +76,7 @@ public final class XMLUtils {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             return builder.newDocument();
-        } catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException ignored) {
         }
         return null;
     }

@@ -413,7 +413,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 		m_protocol.unbind();
 
 		// kill the socket
-		try { m_socket.close(); } catch(IOException io) {}
+		try { m_socket.close(); } catch(IOException ignored) {}
 
 		m_isConnected = false;
 		m_isHalted = false;
@@ -540,7 +540,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 			// currently never terminate when you tell it to, but the AIR player will
 			// terminate.
 			playerWillTerminateItself = unbind(true);
-		} catch(Exception e)
+		} catch(Exception ignored)
 		{
 		}
 
@@ -642,7 +642,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 			try {
 				m_process.waitFor();
 			}
-			catch (Exception e) {
+			catch (Exception ignored) {
 			}
 		}
 
@@ -2370,7 +2370,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
     	while(isConnected())
     	{
     		// try every 250ms
-    		try { Thread.sleep(250); } catch(InterruptedException ie) {}
+    		try { Thread.sleep(250); } catch(InterruptedException ignored) {}
 
     		try
     		{
@@ -2523,7 +2523,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 				m_trace.flush();
 			}
 		}
-		catch(Exception e) {}
+		catch(Exception ignored) {}
 	}
 
 	// i/o for tracing

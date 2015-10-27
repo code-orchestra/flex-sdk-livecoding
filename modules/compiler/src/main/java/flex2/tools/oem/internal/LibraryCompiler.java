@@ -125,7 +125,7 @@ public class LibraryCompiler
             // load() wipes out our ThreadLocal and we lose our logger
             ThreadLocalToolkit.setLogger(console);
 		}
-		catch (IOException ex)
+		catch (IOException ignored)
 		{
 		}
         

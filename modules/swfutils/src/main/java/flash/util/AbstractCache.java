@@ -61,7 +61,7 @@ public abstract class AbstractCache implements Serializable
 				{
 					lock.wait();
 				}
-				catch (InterruptedException e)
+				catch (InterruptedException ignored)
 				{
 				}
 			}

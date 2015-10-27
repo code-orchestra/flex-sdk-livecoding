@@ -69,7 +69,7 @@ public class JPEGTranscoder extends ImageTranscoder
 		        if (image != null)
 		            image.dispose();
 		    }
-		    catch (Throwable t)
+		    catch (Throwable ignored)
 		    {
 		    }
 		}

@@ -332,7 +332,7 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
                         {
                             in.close();
                         }
-                        catch (IOException ex)
+                        catch (IOException ignored)
                         {
                         }
                     }

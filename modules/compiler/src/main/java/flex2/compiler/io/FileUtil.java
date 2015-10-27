@@ -375,7 +375,7 @@ public final class FileUtil
 				{
 					file.close();
 				}
-				catch (IOException ex)
+				catch (IOException ignored)
 				{
 				}
 			}
@@ -407,7 +407,7 @@ public final class FileUtil
 				{
 					file.close();
 				}
-				catch (IOException ex)
+				catch (IOException ignored)
 				{
 				}
 			}
@@ -490,7 +490,7 @@ public final class FileUtil
 		}
 		finally
 		{
-			if (in != null) { try { in.close(); } catch (IOException ex) {} }
+			if (in != null) { try { in.close(); } catch (IOException ignored) {} }
 		}
 	}
 	

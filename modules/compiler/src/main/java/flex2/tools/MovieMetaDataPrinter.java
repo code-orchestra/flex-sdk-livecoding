@@ -653,7 +653,7 @@ public class MovieMetaDataPrinter
 					locations.put(currentDefinition, value);
 				}
 			}
-			catch (DecoderException ex)
+			catch (DecoderException ignored)
 			{
 			}
 		}

@@ -121,7 +121,7 @@ public class JDKRegistryEntry extends AbstractRegistryEntry
                         filt = ImageTagRegistry.getBrokenLinkImage(JDKRegistryEntry.this, errCode, errParam);
                         dr.setSource(filt);
                         throw td;
-                    } catch (Throwable t) { }
+                    } catch (Throwable ignored) { }
                     if (filt == null)
                         filt = ImageTagRegistry.getBrokenLinkImage(JDKRegistryEntry.this, errCode, errParam);
                     dr.setSource(filt);

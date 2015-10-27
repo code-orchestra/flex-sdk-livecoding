@@ -2711,7 +2711,7 @@ public abstract class AbstractDocument
         } catch (Exception e) {
             try {
                 implementation = (DOMImplementation)c.newInstance();
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
             }
         }
     }

@@ -419,7 +419,7 @@ public final class ConfigurationBuffer
 
 	        getterMethod = cfgClass.getMethod( getterMethodName, (Class[])null);
         }
-        catch (Exception e)
+        catch (Exception ignored)
         {}
 
         if (info == null)

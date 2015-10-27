@@ -367,7 +367,7 @@ public class FontFaceRule extends Rule
                     if (w >= 700)
                         bold = true;
                 }
-                catch (Throwable t)
+                catch (Throwable ignored)
                 {
                 }
             }

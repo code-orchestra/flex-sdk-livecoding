@@ -299,7 +299,7 @@ public class Compc extends Tool implements FlexTool
                         {
                             incrementalFile.close();
                         }
-                        catch (IOException ex)
+                        catch (IOException ignored)
                         {
                         }
                         // If the load failed, or recompilation is needed, reset
@@ -418,7 +418,7 @@ public class Compc extends Tool implements FlexTool
                         {
                             incrementalFile.close();
                         }
-                        catch (IOException ex)
+                        catch (IOException ignored)
                         {
                         }
                     }

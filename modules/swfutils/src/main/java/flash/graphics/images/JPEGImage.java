@@ -138,7 +138,7 @@ public class JPEGImage extends BitmapImage
 		{
 			inputStream.close();
 		}
-		catch (IOException ioe)
+		catch (IOException ignored)
 		{
 		}
 	}

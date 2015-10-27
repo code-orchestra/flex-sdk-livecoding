@@ -252,7 +252,7 @@ public class LocalizableSupport implements Localizable {
         if (cl != null) {
             try {
                 rb = ResourceBundle.getBundle(bundle, usedLocale, cl);
-            } catch (MissingResourceException mre) {
+            } catch (MissingResourceException ignored) {
             }
             if (rb != null)
                 return rb;
@@ -261,14 +261,14 @@ public class LocalizableSupport implements Localizable {
         if (theClass != null) {
             try {
                 cl = theClass.getClassLoader();
-            } catch (SecurityException se) {
+            } catch (SecurityException ignored) {
             }
         }
         if (cl == null)
             cl = getClass().getClassLoader();
         try {
             rb = ResourceBundle.getBundle(bundle, usedLocale, cl);
-        } catch (MissingResourceException mre) {
+        } catch (MissingResourceException ignored) {
         }
         return rb;
     }
@@ -309,7 +309,7 @@ public class LocalizableSupport implements Localizable {
             try {
                 String ret = rb.getString(key);
                 if (ret != null) return ret;
-            } catch (MissingResourceException mre) {
+            } catch (MissingResourceException ignored) {
             }
         }
         String classStr = (cls != null)?cls.toString():bundleName;

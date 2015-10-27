@@ -104,7 +104,7 @@ public class Toolkit
 		}
 		finally
 		{
-			try { if (in != null) in.close(); } catch (IOException ex) {}
+			try { if (in != null) in.close(); } catch (IOException ignored) {}
 		}
 
 		return info;

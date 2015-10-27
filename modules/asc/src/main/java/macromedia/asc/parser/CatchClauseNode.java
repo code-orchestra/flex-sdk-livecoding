@@ -88,8 +88,7 @@ public class CatchClauseNode extends Node
 		if (activation != null ? !activation.equals(that.activation) : that.activation != null) return false;
 		if (default_namespace != null ? !default_namespace.equals(that.default_namespace) : that.default_namespace != null)
 			return false;
-		if (parameter != null ? !parameter.equals(that.parameter) : that.parameter != null) return false;
-		return !(statements != null ? !statements.equals(that.statements) : that.statements != null) && !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
+		return !(parameter != null ? !parameter.equals(that.parameter) : that.parameter != null) && !(statements != null ? !statements.equals(that.statements) : that.statements != null) && !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
 
 	}
 

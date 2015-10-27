@@ -76,8 +76,7 @@ public class TypedIdentifierNode extends Node
 
 		TypedIdentifierNode that = (TypedIdentifierNode) o;
 
-		if (no_anno != that.no_anno) return false;
-		return !(identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) && !(type != null ? !type.equals(that.type) : that.type != null);
+		return no_anno == that.no_anno && !(identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) && !(type != null ? !type.equals(that.type) : that.type != null);
 
 	}
 

@@ -108,8 +108,7 @@ public class CallExpressionNode extends SelectorNode
 
 		CallExpressionNode that = (CallExpressionNode) o;
 
-		if (is_new != that.is_new) return false;
-		return void_result == that.void_result && !(args != null ? !args.equals(that.args) : that.args != null);
+		return is_new == that.is_new && void_result == that.void_result && !(args != null ? !args.equals(that.args) : that.args != null);
 
 	}
 

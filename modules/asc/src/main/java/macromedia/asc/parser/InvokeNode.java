@@ -72,8 +72,7 @@ public class InvokeNode extends SelectorNode
 
 		InvokeNode that = (InvokeNode) o;
 
-		if (index != that.index) return false;
-		return !(args != null ? !args.equals(that.args) : that.args != null) && !(name != null ? !name.equals(that.name) : that.name != null);
+		return index == that.index && !(args != null ? !args.equals(that.args) : that.args != null) && !(name != null ? !name.equals(that.name) : that.name != null);
 
 	}
 

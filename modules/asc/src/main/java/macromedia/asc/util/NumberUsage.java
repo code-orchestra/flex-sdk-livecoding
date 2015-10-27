@@ -165,8 +165,7 @@ public class NumberUsage implements Cloneable {
 		NumberUsage that = (NumberUsage) o;
 
 		if (floating_usage != that.floating_usage) return false;
-		if (precision != that.precision) return false;
-		return rounding == that.rounding && usage == that.usage;
+		return precision == that.precision && rounding == that.rounding && usage == that.usage;
 
 	}
 

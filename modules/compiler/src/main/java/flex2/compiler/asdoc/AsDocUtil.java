@@ -1035,14 +1035,10 @@ public class AsDocUtil
         {
             return (namespaces.contains(":" + namespace + ":true:"));
         }
-        else if (namespace.equals("public"))
-        {
+        else if (namespace.equals("public")) {
             return false;
-        }
-        else if (namespace.equals("private")) {
-            return true;
         } else
-            return namespace.equals("$internal") || namespace.equals("internal");
+            return namespace.equals("private") || namespace.equals("$internal") || namespace.equals("internal");
     }
 
     /**

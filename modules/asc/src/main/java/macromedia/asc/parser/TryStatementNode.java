@@ -100,8 +100,7 @@ public class TryStatementNode extends Node
 		if (finallyInserted != that.finallyInserted) return false;
 		if (loop_index != that.loop_index) return false;
 		if (skip != that.skip) return false;
-		if (catchlist != null ? !catchlist.equals(that.catchlist) : that.catchlist != null) return false;
-		return !(finallyblock != null ? !finallyblock.equals(that.finallyblock) : that.finallyblock != null) && !(tryblock != null ? !tryblock.equals(that.tryblock) : that.tryblock != null);
+		return !(catchlist != null ? !catchlist.equals(that.catchlist) : that.catchlist != null) && !(finallyblock != null ? !finallyblock.equals(that.finallyblock) : that.finallyblock != null) && !(tryblock != null ? !tryblock.equals(that.tryblock) : that.tryblock != null);
 
 	}
 

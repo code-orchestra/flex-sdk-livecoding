@@ -650,12 +650,8 @@ public class TypeTable
          *    If we want to stop infinite recursion in this code, we just need to pass a HashSet down the recursion,
          *    detect when the code is processing something that already exists in the HashSet.
          */
-        public boolean isSubclassOf(Type baseType)
-        {
-            if (baseType == this) {
-                return true;
-            } else
-                return baseType != noType && baseType != null && isSubclassOf(baseType.getName());
+        public boolean isSubclassOf(Type baseType) {
+            return baseType == this || baseType != noType && baseType != null && isSubclassOf(baseType.getName());
         }
 
         public boolean isSubclassOf(String baseName) {

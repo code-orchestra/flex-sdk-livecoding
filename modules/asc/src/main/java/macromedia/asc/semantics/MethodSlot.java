@@ -110,8 +110,7 @@ public class MethodSlot extends Slot
 
 		MethodSlot that = (MethodSlot) o;
 
-		if (method_id != that.method_id) return false;
-		return !(decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) && !(method_name != null ? !method_name.equals(that.method_name) : that.method_name != null);
+		return method_id == that.method_id && !(decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) && !(method_name != null ? !method_name.equals(that.method_name) : that.method_name != null);
 
 	}
 

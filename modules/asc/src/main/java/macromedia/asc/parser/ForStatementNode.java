@@ -113,8 +113,7 @@ public class ForStatementNode extends Node implements HasBody, LoopStatement
 		if (is_forin != that.is_forin) return false;
 		if (loop_index != that.loop_index) return false;
 		if (increment != null ? !increment.equals(that.increment) : that.increment != null) return false;
-		if (initialize != null ? !initialize.equals(that.initialize) : that.initialize != null) return false;
-		return !(statement != null ? !statement.equals(that.statement) : that.statement != null) && !(test != null ? !test.equals(that.test) : that.test != null);
+		return !(initialize != null ? !initialize.equals(that.initialize) : that.initialize != null) && !(statement != null ? !statement.equals(that.statement) : that.statement != null) && !(test != null ? !test.equals(that.test) : that.test != null);
 
 	}
 

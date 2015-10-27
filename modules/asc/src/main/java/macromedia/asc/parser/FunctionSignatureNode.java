@@ -117,8 +117,7 @@ public class FunctionSignatureNode extends Node
 		if (void_anno != that.void_anno) return false;
 		if (inits != null ? !inits.equals(that.inits) : that.inits != null) return false;
 		if (parameter != null ? !parameter.equals(that.parameter) : that.parameter != null) return false;
-		if (result != null ? !result.equals(that.result) : that.result != null) return false;
-		return !(type != null ? !type.equals(that.type) : that.type != null) && !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
+		return !(result != null ? !result.equals(that.result) : that.result != null) && !(type != null ? !type.equals(that.type) : that.type != null) && !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
 
 	}
 

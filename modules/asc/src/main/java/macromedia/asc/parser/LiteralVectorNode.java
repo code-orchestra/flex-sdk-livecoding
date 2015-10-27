@@ -87,8 +87,7 @@ public class LiteralVectorNode extends Node
 		LiteralVectorNode that = (LiteralVectorNode) o;
 
 		if (void_result != that.void_result) return false;
-		if (elementlist != null ? !elementlist.equals(that.elementlist) : that.elementlist != null) return false;
-		return !(type != null ? !type.equals(that.type) : that.type != null) && !(value != null ? !value.equals(that.value) : that.value != null);
+		return !(elementlist != null ? !elementlist.equals(that.elementlist) : that.elementlist != null) && !(type != null ? !type.equals(that.type) : that.type != null) && !(value != null ? !value.equals(that.value) : that.value != null);
 
 	}
 

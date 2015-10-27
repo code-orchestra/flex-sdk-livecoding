@@ -158,8 +158,7 @@ public class MemberExpressionNode extends Node
         MemberExpressionNode that = (MemberExpressionNode) o;
 
         if (authOrigToken != that.authOrigToken) return false;
-        if (base != null ? !base.equals(that.base) : that.base != null) return false;
-        return !(ref != null ? !ref.equals(that.ref) : that.ref != null) && !(selector != null ? !selector.equals(that.selector) : that.selector != null);
+        return !(base != null ? !base.equals(that.base) : that.base != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null) && !(selector != null ? !selector.equals(that.selector) : that.selector != null);
 
     }
 

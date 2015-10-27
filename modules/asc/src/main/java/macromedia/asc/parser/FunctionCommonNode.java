@@ -306,8 +306,7 @@ public class FunctionCommonNode extends Node
 			return false;
 		if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
 		if (scope_chain != null ? !scope_chain.equals(that.scope_chain) : that.scope_chain != null) return false;
-		if (signature != null ? !signature.equals(that.signature) : that.signature != null) return false;
-		return !(use_stmts != null ? !use_stmts.equals(that.use_stmts) : that.use_stmts != null) && !(used_namespaces != null ? !used_namespaces.equals(that.used_namespaces) : that.used_namespaces != null);
+		return !(signature != null ? !signature.equals(that.signature) : that.signature != null) && !(use_stmts != null ? !use_stmts.equals(that.use_stmts) : that.use_stmts != null) && !(used_namespaces != null ? !used_namespaces.equals(that.used_namespaces) : that.used_namespaces != null);
 
 	}
 

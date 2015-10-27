@@ -79,8 +79,7 @@ public class CoerceNode extends Node
 
 		if (is_explicit != that.is_explicit) return false;
 		if (void_result != that.void_result) return false;
-		if (actual != null ? !actual.equals(that.actual) : that.actual != null) return false;
-		return !(expected != null ? !expected.equals(that.expected) : that.expected != null) && !(expr != null ? !expr.equals(that.expr) : that.expr != null);
+		return !(actual != null ? !actual.equals(that.actual) : that.actual != null) && !(expected != null ? !expected.equals(that.expected) : that.expected != null) && !(expr != null ? !expr.equals(that.expr) : that.expr != null);
 
 	}
 

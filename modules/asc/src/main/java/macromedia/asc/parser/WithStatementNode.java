@@ -76,8 +76,7 @@ public class WithStatementNode extends Node
 
 		WithStatementNode that = (WithStatementNode) o;
 
-		if (activation != null ? !activation.equals(that.activation) : that.activation != null) return false;
-		return !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(statement != null ? !statement.equals(that.statement) : that.statement != null);
+		return !(activation != null ? !activation.equals(that.activation) : that.activation != null) && !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(statement != null ? !statement.equals(that.statement) : that.statement != null);
 
 	}
 

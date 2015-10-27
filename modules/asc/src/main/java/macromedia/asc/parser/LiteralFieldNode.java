@@ -77,8 +77,7 @@ public class LiteralFieldNode extends Node
 
 		LiteralFieldNode that = (LiteralFieldNode) o;
 
-		if (name != null ? !name.equals(that.name) : that.name != null) return false;
-		return !(ref != null ? !ref.equals(that.ref) : that.ref != null) && !(value != null ? !value.equals(that.value) : that.value != null);
+		return !(name != null ? !name.equals(that.name) : that.name != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null) && !(value != null ? !value.equals(that.value) : that.value != null);
 
 	}
 

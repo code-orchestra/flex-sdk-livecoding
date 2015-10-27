@@ -494,8 +494,7 @@ public final class Names implements Serializable, Cloneable // CodeOrchestra: ma
         if (!Arrays.equals(hashTable, names.hashTable)) return false;
         if (!Arrays.equals(name, names.name)) return false;
         if (!Arrays.equals(namespace, names.namespace)) return false;
-        if (!Arrays.equals(next, names.next)) return false;
-        return Arrays.equals(slot, names.slot) && Arrays.equals(type, names.type);
+        return Arrays.equals(next, names.next) && Arrays.equals(slot, names.slot) && Arrays.equals(type, names.type);
 
     }
 

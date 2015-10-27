@@ -469,8 +469,7 @@ public final class TypeValue extends ObjectValue
             return false;
         if (indexed_type != null ? !indexed_type.equals(typeValue.indexed_type) : typeValue.indexed_type != null)
             return false;
-        if (name != null ? !name.equals(typeValue.name) : typeValue.name != null) return false;
-        return !(parameterizedTypes != null ? !parameterizedTypes.equals(typeValue.parameterizedTypes) : typeValue.parameterizedTypes != null) && !(prototype != null ? !prototype.equals(typeValue.prototype) : typeValue.prototype != null);
+        return !(name != null ? !name.equals(typeValue.name) : typeValue.name != null) && !(parameterizedTypes != null ? !parameterizedTypes.equals(typeValue.parameterizedTypes) : typeValue.parameterizedTypes != null) && !(prototype != null ? !prototype.equals(typeValue.prototype) : typeValue.prototype != null);
 
     }
 

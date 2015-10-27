@@ -156,8 +156,7 @@ public class FunctionDefinitionNode extends DefinitionNode
 		//if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
 		if (fexpr != null ? !fexpr.equals(that.fexpr) : that.fexpr != null) return false;
 		if (fun != null ? !fun.equals(that.fun) : that.fun != null) return false;
-		if (init != null ? !init.equals(that.init) : that.init != null) return false;
-		return !(name != null ? !name.equals(that.name) : that.name != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
+		return !(init != null ? !init.equals(that.init) : that.init != null) && !(name != null ? !name.equals(that.name) : that.name != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
 	}
 

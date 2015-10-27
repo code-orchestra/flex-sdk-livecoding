@@ -127,9 +127,7 @@ public class NamespaceDefinitionNode extends DefinitionNode
 		if (debug_name != null ? !debug_name.equals(that.debug_name) : that.debug_name != null) return false;
 		if (gen_bits != null ? !gen_bits.equals(that.gen_bits) : that.gen_bits != null) return false;
 		if (name != null ? !name.equals(that.name) : that.name != null) return false;
-		if (qualifiedname != null ? !qualifiedname.equals(that.qualifiedname) : that.qualifiedname != null)
-			return false;
-		return !(ref != null ? !ref.equals(that.ref) : that.ref != null) && !(value != null ? !value.equals(that.value) : that.value != null);
+		return !(qualifiedname != null ? !qualifiedname.equals(that.qualifiedname) : that.qualifiedname != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null) && !(value != null ? !value.equals(that.value) : that.value != null);
 
 	}
 

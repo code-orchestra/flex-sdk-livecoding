@@ -194,18 +194,11 @@ public class ImageHelper
         if (fill == null) 
     		return false;
     	
-    	if (fill instanceof BitmapFillNode)
-    	{
-    		BitmapFillNode bFill = (BitmapFillNode) fill;
-    		if (ImageHelper.bitmapFillModeIsRepeat(bFill))
-    		{
-    			return false;
-    		}
-    		else {
-                return !((bFill.getFileVersion().equalTo(FXGVersion.v2_0)) && (bFill.fillMode == FillMode.SCALE)) || !(Double.isNaN(bFill.scaleX) && Double.isNaN(bFill.scaleY) && Double.isNaN(bFill.x) && Double.isNaN(bFill.y) && (Double.isNaN(bFill.rotation) || Math.abs(bFill.rotation) < AbstractFXGNode.EPSILON) && bFill.matrix == null);
-            }
-    		
-    	}
+    	if (fill instanceof BitmapFillNode) {
+            BitmapFillNode bFill = (BitmapFillNode) fill;
+            return !ImageHelper.bitmapFillModeIsRepeat(bFill) && (!((bFill.getFileVersion().equalTo(FXGVersion.v2_0)) && (bFill.fillMode == FillMode.SCALE)) || !(Double.isNaN(bFill.scaleX) && Double.isNaN(bFill.scaleY) && Double.isNaN(bFill.x) && Double.isNaN(bFill.y) && (Double.isNaN(bFill.rotation) || Math.abs(bFill.rotation) < AbstractFXGNode.EPSILON) && bFill.matrix == null));
+
+        }
     	return false;
     	
     }

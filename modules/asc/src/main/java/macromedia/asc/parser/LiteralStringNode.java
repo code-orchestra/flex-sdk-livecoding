@@ -125,8 +125,7 @@ public class LiteralStringNode extends Node
 
 		LiteralStringNode that = (LiteralStringNode) o;
 
-		if (delimiterType != that.delimiterType) return false;
-		return void_result == that.void_result && !(value != null ? !value.equals(that.value) : that.value != null);
+		return delimiterType == that.delimiterType && void_result == that.void_result && !(value != null ? !value.equals(that.value) : that.value != null);
 
 	}
 

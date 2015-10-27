@@ -91,8 +91,7 @@ public abstract class DefinitionNode extends Node
         DefinitionNode that = (DefinitionNode) o;
 
         if (skip != that.skip) return false;
-        if (attrs != null ? !attrs.equals(that.attrs) : that.attrs != null) return false;
-        return !(metaData != null ? !metaData.equals(that.metaData) : that.metaData != null) && !(pkgdef != null ? !pkgdef.equals(that.pkgdef) : that.pkgdef != null);
+        return !(attrs != null ? !attrs.equals(that.attrs) : that.attrs != null) && !(metaData != null ? !metaData.equals(that.metaData) : that.metaData != null) && !(pkgdef != null ? !pkgdef.equals(that.pkgdef) : that.pkgdef != null);
 
     }
 

@@ -77,8 +77,7 @@ public class UntypedVariableBindingNode extends Node
 
 		UntypedVariableBindingNode that = (UntypedVariableBindingNode) o;
 
-		if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
-		return !(initializer != null ? !initializer.equals(that.initializer) : that.initializer != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
+		return !(identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) && !(initializer != null ? !initializer.equals(that.initializer) : that.initializer != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
 	}
 

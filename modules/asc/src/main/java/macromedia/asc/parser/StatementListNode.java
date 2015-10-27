@@ -148,10 +148,7 @@ public class StatementListNode extends Node
     
     public void voidResult()
     {
-        for (Node n : items)
-        {
-            n.voidResult();
-        }
+        items.forEach(Node::voidResult);
         if( items.last() instanceof LoadRegisterNode )
         {
             // voidResult on LoadRegister does nothing, which is usually correct

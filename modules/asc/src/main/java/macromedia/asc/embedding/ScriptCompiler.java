@@ -439,12 +439,10 @@ public class ScriptCompiler
 
 	private static void sortInheritance() throws Throwable
 	{
-		for (Pair p : inheritance) {
-			if (!p.processed) {
-				fa.get(p.i).inheritSlots(node.get(p.where).frame, node.get(p.i).frame, node.get(p.i).frame.builder, cx.get(p.i));
-				p.processed = true;
-			}
-		}
+		inheritance.stream().filter(p -> !p.processed).forEach(p -> {
+			fa.get(p.i).inheritSlots(node.get(p.where).frame, node.get(p.i).frame, node.get(p.i).frame.builder, cx.get(p.i));
+			p.processed = true;
+		});
 
 		final DependencyGraph<Integer> g = new DependencyGraph<>();
 
@@ -656,26 +654,22 @@ public class ScriptCompiler
 
 	private static void importType() throws Throwable
 	{
-		for (Pair p : type) {
-			if (!p.processed) {
-				if (!inheritance.contains(p)) {
-					fa.get(p.i).inheritSlots(node.get(p.where).frame, node.get(p.i).frame, node.get(p.i).frame.builder, cx.get(p.i));
-				}
-				p.processed = true;
+		type.stream().filter(p -> !p.processed).forEach(p -> {
+			if (!inheritance.contains(p)) {
+				fa.get(p.i).inheritSlots(node.get(p.where).frame, node.get(p.i).frame, node.get(p.i).frame.builder, cx.get(p.i));
 			}
-		}
+			p.processed = true;
+		});
 	}
 
     private static void importExpr() throws Throwable
     {
-		for (Pair p : expr) {
-			if (!p.processed) {
-				if (!inheritance.contains(p)) {
-					fa.get(p.i).inheritSlots(node.get(p.where).frame, node.get(p.i).frame, node.get(p.i).frame.builder, cx.get(p.i));
-				}
-				p.processed = true;
+		expr.stream().filter(p -> !p.processed).forEach(p -> {
+			if (!inheritance.contains(p)) {
+				fa.get(p.i).inheritSlots(node.get(p.where).frame, node.get(p.i).frame, node.get(p.i).frame.builder, cx.get(p.i));
 			}
-		}
+			p.processed = true;
+		});
     }
 
     private static void md()

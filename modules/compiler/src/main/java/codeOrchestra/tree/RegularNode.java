@@ -8,6 +8,7 @@ import macromedia.asc.util.ObjectList;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Anton.I.Neverov
@@ -214,12 +215,7 @@ public class RegularNode {
     }
 
     public List<RegularNode> getChildren(String role) {
-        ArrayList<RegularNode> nodes = new ArrayList<>();
-        for (RegularNode myChild : myChildren) {
-            if (myChild.myRole.equals(role)) {
-                nodes.add(myChild);
-            }
-        }
+        ArrayList<RegularNode> nodes = myChildren.stream().filter(myChild -> myChild.myRole.equals(role)).collect(Collectors.toCollection(ArrayList::new));
         return nodes;
     }
 

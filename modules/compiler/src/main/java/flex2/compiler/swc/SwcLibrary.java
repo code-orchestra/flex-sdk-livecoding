@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.io.InputStream;
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 import flash.swf.TagDecoder;
 import flash.swf.Tag;
@@ -247,11 +248,7 @@ public class SwcLibrary
     		    Tag r = (Tag)i.next();
     			if (r != null)
     			{
-                    for (String className : def2symbol.keySet()) {
-                        if (def2symbol.get(className) == r) {
-                            symbolClasses.add(NameFormatter.toColon(className));
-                        }
-                    }
+                    symbolClasses.addAll(def2symbol.keySet().stream().filter(className -> def2symbol.get(className) == r).map(NameFormatter::toColon).collect(Collectors.toList()));
     			}
     			getReferencedSymbolClasses(r, symbolClasses, visited);
     		}

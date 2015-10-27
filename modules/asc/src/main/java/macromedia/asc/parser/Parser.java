@@ -21,6 +21,7 @@ import java.io.*;
 import java.util.HashSet;
 import java.util.ListIterator;
 import java.util.BitSet;
+import java.util.stream.Collectors;
 
 import macromedia.asc.semantics.ReferenceValue;
 import macromedia.asc.util.*;
@@ -6486,9 +6487,7 @@ XMLElementContent
         {
         	//the parser comments are needed after the parser is gone
 
-			for (Node comment : comments) {
-				ctx.comments.add(comment);
-			}
+			ctx.comments.addAll(comments.stream().collect(Collectors.toList()));
         }
         
         clearUnusedBuffers();  

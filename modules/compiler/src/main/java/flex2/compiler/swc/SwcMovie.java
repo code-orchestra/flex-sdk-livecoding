@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
+
 import flash.swf.Frame;
 import flash.swf.tags.FrameLabel;
 
@@ -70,11 +72,7 @@ public class SwcMovie extends SimpleMovie
     }
     public void generate( List<CompilationUnit> units ) throws LinkerException
     {
-        List<CULinkable> linkables = new LinkedList<>();
-
-        for (CompilationUnit unit : units) {
-            linkables.add(new CULinkable(unit));
-        }
+        List<CULinkable> linkables = units.stream().map(CULinkable::new).collect(Collectors.toCollection(LinkedList::new));
 
         frames = new ArrayList<Frame>();
 
@@ -117,11 +115,9 @@ public class SwcMovie extends SimpleMovie
 
             if (unresolved.size() != 0)
             {
-                for (String u : unresolved) {
-                    if (!externs.contains(u)) {
-                        ThreadLocalToolkit.log(new LinkerException.UndefinedSymbolException(u));
-                    }
-                }
+                unresolved.stream().filter(u -> !externs.contains(u)).forEach(u -> {
+                    ThreadLocalToolkit.log(new LinkerException.UndefinedSymbolException(u));
+                });
             }
             topLevelClass = formatSymbolClassName( rootClassName );
             

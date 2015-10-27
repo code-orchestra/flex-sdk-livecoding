@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This class represents a set of QNames.  It includes handy methods,
@@ -72,10 +73,9 @@ public class QNameSet extends HashSet<QName>
 
     public Set<String> getStringSet()
     {
-        HashSet<String> set = new HashSet<>();
-		for (QName qName : this) set.add(qName.toString());
+        HashSet<String> set = this.stream().map(QName::toString).collect(Collectors.toCollection(HashSet::new));
 
-        assert set.size() == this.size();
+		assert set.size() == this.size();
         return set;
     }
 

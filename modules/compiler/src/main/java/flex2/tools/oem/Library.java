@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.util.*;
 import java.net.URI;
+import java.util.stream.Collectors;
 
 import flash.util.Trace;
 import flex2.compiler.CompilationUnit;
@@ -685,13 +686,9 @@ public class Library implements Builder, Cloneable
         {
             Set<ILibraryExtension> extensions = ExtensionManager.getLibraryExtensions( oemConfiguration.getExtensions() );
 
-            for ( ILibraryExtension extension : extensions )
-            {
-                if (ThreadLocalToolkit.errorCount() == 0)
-                {
-                    extension.run( this.clone(), oemConfiguration.clone() );
-                }
-            }
+            extensions.stream().filter(extension -> ThreadLocalToolkit.errorCount() == 0).forEach(extension -> {
+                extension.run(this.clone(), oemConfiguration.clone());
+            });
         }
     }
 
@@ -830,11 +827,7 @@ public class Library implements Builder, Cloneable
         data.swcArchiveFiles = new HashMap<>(swcContext.getIncludeFiles());
         
         // The ToolsConfiguration expects class names in QName format.
-        Set<String> qNameClasses = new HashSet<>();
-        for (String className : classes)
-        {
-            qNameClasses.add(NameFormatter.toColon(className));
-        }
+        Set<String> qNameClasses = classes.stream().map(NameFormatter::toColon).collect(Collectors.toSet());
 
         // Allow -include-classes to override the -external-library-path.
         localOEMConfiguration.configuration.removeExterns(qNameClasses);
@@ -1141,9 +1134,7 @@ public class Library implements Builder, Cloneable
     private List<String> toStrings(Set<URI> set)
     {
         List<String> a = new ArrayList<>(set.size());
-        for (URI uri : set) {
-            a.add(uri.toString());
-        }
+        a.addAll(set.stream().map(URI::toString).collect(Collectors.toList()));
         return a;
     }
 
@@ -1572,13 +1563,9 @@ public class Library implements Builder, Cloneable
         data.swcArchiveFiles = new HashMap<>(swcContext.getIncludeFiles());
 
         // The ToolsConfiguration expects class names in QName format.
-        Set<String> qNameClasses = new HashSet<>();
-        for (String className : classes)
-        {
-            qNameClasses.add(NameFormatter.toColon(className));
-        }
+        Set<String> qNameClasses = classes.stream().map(NameFormatter::toColon).collect(Collectors.toSet());
 
-        // Allow -include-classes to override the -external-library-path.
+            // Allow -include-classes to override the -external-library-path.
         tempOEMConfiguration.configuration.removeExterns(qNameClasses);
 
         // If we want only inheritance dependencies of -include-classes then

@@ -312,9 +312,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
     {
         if (nodes == null) return;
 
-        for (GraphicContentNode node : nodes) {
-            graphicContentNode(node);
-        }
+        nodes.forEach(this::graphicContentNode);
     }
 
     protected PlaceObject graphicContentNode(GraphicContentNode node)

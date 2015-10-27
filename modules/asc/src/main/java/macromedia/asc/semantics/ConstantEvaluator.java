@@ -343,13 +343,9 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
 
     void PreprocessDefinitionTypeInfo(Context cx, VariableDefinitionNode  node)
     {
-        for(Node it : node.list.items)
-        {
-            if (it instanceof VariableBindingNode)
-            {
-                PreprocessDefinitionTypeInfo(cx, (VariableBindingNode)it);
-            }
-        }
+        node.list.items.stream().filter(it -> it instanceof VariableBindingNode).forEach(it -> {
+            PreprocessDefinitionTypeInfo(cx, (VariableBindingNode) it);
+        });
     }
 
     void PreprocessDefinitionTypeInfo(Context cx, VariableBindingNode  node)
@@ -3832,13 +3828,9 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
 
     public Value evaluate(Context cx, AttributeListNode node)
     {
-        for (Node n : node.items)
-        {
-            if (n != null)
-            {
-                n.evaluate(cx, this);
-            }
-        }
+        node.items.stream().filter(n -> n != null).forEach(n -> {
+            n.evaluate(cx, this);
+        });
 
         return ObjectValue.undefinedValue;
     }

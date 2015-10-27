@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This class represents a list of QNames.  It includes handy methods,
@@ -121,9 +122,7 @@ public class QNameList extends ArrayList<QName>
     {
         Set<String> set = new LinkedHashSet<>(size());
 
-		for (QName qName : this) {
-			set.add(qName.toString());
-		}
+		set.addAll(this.stream().map(QName::toString).collect(Collectors.toList()));
 
         assert set.size() == this.size();
         return set;

@@ -516,13 +516,9 @@ public class Application implements Builder
         {
             Set<IApplicationExtension> extensions = ExtensionManager.getApplicationExtensions(oemConfiguration.getExtensions());
 
-            for ( IApplicationExtension extension : extensions )
-            {
-                if (ThreadLocalToolkit.errorCount() == 0)
-                {
-                    extension.run( (Configuration) oemConfiguration.clone() );
-                }
-            }
+            extensions.stream().filter(extension -> ThreadLocalToolkit.errorCount() == 0).forEach(extension -> {
+                extension.run((Configuration) oemConfiguration.clone());
+            });
         }
     }
 

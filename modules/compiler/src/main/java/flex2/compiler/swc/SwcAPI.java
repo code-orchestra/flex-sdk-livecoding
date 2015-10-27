@@ -261,15 +261,13 @@ public class SwcAPI
             Map<String, SwcComponent> allClassComp = new HashMap<>();
             //Map refClassComp = new HashMap();
 
-            for (CompilationUnit unit : m.getExportedUnits()) {
-                if (unit.getSource().isSwcScriptOwner()) {
-                    Swc unitswc = ((SwcScript) unit.getSource().getOwner()).getLibrary().getSwc();
-                    for (Iterator ci = unitswc.getComponentIterator(); ci.hasNext(); ) {
-                        SwcComponent c = (SwcComponent) ci.next();
-                        allClassComp.put(c.getClassName(), c);
-                    }
+            m.getExportedUnits().stream().filter(unit -> unit.getSource().isSwcScriptOwner()).forEach(unit -> {
+                Swc unitswc = ((SwcScript) unit.getSource().getOwner()).getLibrary().getSwc();
+                for (Iterator ci = unitswc.getComponentIterator(); ci.hasNext(); ) {
+                    SwcComponent c = (SwcComponent) ci.next();
+                    allClassComp.put(c.getClassName(), c);
                 }
-            }
+            });
 
             for (Object nsComponent : nsComponents) {
                 SwcComponent c = (SwcComponent) nsComponent;

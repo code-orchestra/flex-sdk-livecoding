@@ -92,9 +92,7 @@ public class LibraryCompiler
 		// transfer the value of compute-digest from CompcConfiguration to OEMConfiguration.
 		c1.enableDigestComputation(c2.getComputeDigest());
 
-		for (String s2 : c2.getClasses()) {
-			lib.addComponent(s2);
-		}
+		c2.getClasses().forEach(lib::addComponent);
 		
 		List fileList = flex2.compiler.CompilerAPI.getVirtualFileList(c2.getIncludeSources(),
 				new HashSet<>(Arrays.asList(flex2.tools.WebTierAPI.getSourcePathMimeTypes())));
@@ -109,9 +107,7 @@ public class LibraryCompiler
 			lib.addStyleSheet(key, new File(((VirtualFile) ss.get(key)).getName()));
 		}
 
-		for (String s1 : c2.getIncludeResourceBundles()) {
-			lib.addResourceBundle(s1);
-		}
+		c2.getIncludeResourceBundles().forEach(lib::addResourceBundle);
 
 		for (String s : c2.getNamespaces()) {
 			lib.addComponent(new URI(s));

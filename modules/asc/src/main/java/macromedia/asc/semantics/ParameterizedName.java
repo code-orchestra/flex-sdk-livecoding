@@ -21,6 +21,8 @@ package macromedia.asc.semantics;
 
 import macromedia.asc.util.ObjectList;
 
+import java.util.stream.Collectors;
+
 /**
  * Created by IntelliJ IDEA.
  * User: tierney
@@ -38,8 +40,7 @@ public class ParameterizedName extends QName
     {
         super(ns, name);
         this.type_params = new ObjectList<>(type_params.size());
-        for( TypeValue t : type_params )
-            this.type_params.add(t.name);
+        this.type_params.addAll(type_params.stream().map(t -> t.name).collect(Collectors.toList()));
     }
 
     public ParameterizedName(ObjectList<QName> type_names, ObjectValue ns, String name)

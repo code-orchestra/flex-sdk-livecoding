@@ -23,6 +23,7 @@ import flash.swf.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A value object for a shape with style data.
@@ -62,11 +63,7 @@ public class ShapeWithStyle extends Shape
 
         if (fillstyles != null)
         {
-            for (FillStyle style : fillstyles) {
-                if (style.hasBitmapId() && style.bitmap != null) {
-                    refs.add(style.bitmap);
-                }
-            }
+            refs.addAll(fillstyles.stream().filter(style -> style.hasBitmapId() && style.bitmap != null).map(style -> style.bitmap).collect(Collectors.toList()));
         }
     }
 }

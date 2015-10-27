@@ -245,10 +245,7 @@ public class StyleDeclaration
         sb.append('(');
         if (mediaList != null)
         {
-            for (String query : mediaList.getQueries())
-            {
-                sb.append(query);
-            }
+            mediaList.getQueries().forEach(sb::append);
         }
         sb.append(')');
         return sb.toString();

@@ -561,13 +561,11 @@ public class DocumentBuilder extends ComponentBuilder implements MXMLNamespaces
     {
     	List<DesignLayerNode> layers = document.getLayerDeclarationNodes();
 
-        for (DesignLayerNode node : layers) {
-            if (document.getLayerModel(node) == null) {
-                ComponentBuilder builder = new ComponentBuilder(unit, typeTable, mxmlConfiguration,
-                        document, component, null, null, true, null);
-                node.analyze(builder);
-            }
-        }
+        layers.stream().filter(node -> document.getLayerModel(node) == null).forEach(node -> {
+            ComponentBuilder builder = new ComponentBuilder(unit, typeTable, mxmlConfiguration,
+                    document, component, null, null, true, null);
+            node.analyze(builder);
+        });
     }
     
 	/**

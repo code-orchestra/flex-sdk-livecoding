@@ -25,6 +25,7 @@ import flash.swf.Tag;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class extends ShapeRecord by adding support for x and y move
@@ -145,10 +146,7 @@ public class StyleChangeRecord extends ShapeRecord
     {
         if (fillstyles != null)
         {
-            for (FillStyle style : fillstyles) {
-                if (style.hasBitmapId() && style.bitmap != null)
-                    list.add(style.bitmap);
-            }
+            list.addAll(fillstyles.stream().filter(style -> style.hasBitmapId() && style.bitmap != null).map(style -> style.bitmap).collect(Collectors.toList()));
         }
 
     }

@@ -101,13 +101,7 @@ public class StyleModule
 
         for (StyleDef styleDef : styleDefs.values())
         {
-            for (AtEmbed atEmbed : styleDef.getAtEmbeds())
-            {
-                if (!result.contains(atEmbed))
-                {
-                    result.add(atEmbed);
-                }
-            }
+            styleDef.getAtEmbeds().stream().filter(atEmbed -> !result.contains(atEmbed)).forEach(result::add);
         }
 
         return result;
@@ -294,11 +288,9 @@ public class StyleModule
         List<Rule> childRules = mediaRule.getRules();
 
         // Aggregate rules by selector
-        for (Rule rule : childRules) {
-            if (rule instanceof StyleRule) {
-                addStyleRule((StyleRule) rule, mediaRule.getMediaList(), isLocal);
-            }
-        }
+        childRules.stream().filter(rule -> rule instanceof StyleRule).forEach(rule -> {
+            addStyleRule((StyleRule) rule, mediaRule.getMediaList(), isLocal);
+        });
     }
 
     //--------------------------------------------------------------------------

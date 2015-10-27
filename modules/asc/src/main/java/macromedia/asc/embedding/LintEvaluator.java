@@ -1882,14 +1882,11 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 
 				if (baseType != null && s != null && !slot_GetRegisteredForEvent(s)) // it wasn't seen in an addEventListener call during first_pass
 				{
-					for(TypeValue type : search.keySet())
-					{
-						if (type != null && type.includes(cx,baseType))  // it's defining Type matches one of the warning cases
-						{
-							int pos = (node.identifier != null) ? node.identifier.getPosition() : node.getPosition();
-							warning(pos, cx.input, kWarning_DepricatedEventHandlerError, warningConstantsMap.get(search.get(type)));
-						}
-					}
+					// it's defining Type matches one of the warning cases
+					search.keySet().stream().filter(type -> type != null && type.includes(cx, baseType)).forEach(type -> {
+						int pos = (node.identifier != null) ? node.identifier.getPosition() : node.getPosition();
+						warning(pos, cx.input, kWarning_DepricatedEventHandlerError, warningConstantsMap.get(search.get(type)));
+					});
 				}
 				else if (s != null)
 				{
@@ -2875,10 +2872,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 		pWarnings.clear();
 		warningsByLoc.clear();
 		undefinedLiteral = null;
-		for (Slot s : slotsToClean)
-		{
-			clear_lintData(s);
-		}
+		slotsToClean.forEach(LintEvaluator::clear_lintData);
 	}
 
 	/**

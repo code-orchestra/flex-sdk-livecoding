@@ -42,6 +42,7 @@ import flex2.tools.oem.Library;
 import macromedia.asc.parser.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This class is responsible for maintaining a record of all state-specific nodes and 
@@ -443,10 +444,7 @@ public final class StatesModel
         Collection<String> results = new ArrayList<>();
         if (ancestor.isStateSpecific())
         {
-            for (String state : states) {
-                if (!ancestor.hasState(state))
-                    results.add(state);
-            }
+            results.addAll(states.stream().filter(state -> !ancestor.hasState(state)).collect(Collectors.toList()));
         }
         return results;
     }
@@ -894,10 +892,7 @@ public final class StatesModel
         Set<String> all = info.getStateNames(); 
         Set<String> expandedList = expandStateList(list);
 
-        for (String name : all) {
-            if (!expandedList.contains(name))
-                inverse.add(name);
-        }
+        inverse.addAll(all.stream().filter(name -> !expandedList.contains(name)).collect(Collectors.toList()));
         return inverse;
     }
     
@@ -940,11 +935,7 @@ public final class StatesModel
         Collection<String> groups = new ArrayList<>();
         Map<String, Collection<String>> stateGroups = info.getStateGroups();
 
-        for (String groupName : stateGroups.keySet()) {
-            if (stateGroups.get(groupName).contains(name)) {
-                groups.add(groupName);
-            }
-        }
+        groups.addAll(stateGroups.keySet().stream().filter(groupName -> stateGroups.get(groupName).contains(name)).collect(Collectors.toList()));
            
         return groups;
     }
@@ -969,16 +960,14 @@ public final class StatesModel
 
 
                 // Override value initializers
-                for (Override override : state.overrides) {
-                    if (override instanceof SetPropertyOverride) {
-                        ValueInitializer initializer = ((SetPropertyOverride) override).value;
-                        Object rvalue = initializer.getValue();
-                        if (rvalue instanceof Model && !initializedModels.contains(rvalue)) {
-                            iterList.add(initializer.getDefinitionsIterator());
-                            initializedModels.add(rvalue);
-                        }
+                state.overrides.stream().filter(override -> override instanceof SetPropertyOverride).forEach(override -> {
+                    ValueInitializer initializer = ((SetPropertyOverride) override).value;
+                    Object rvalue = initializer.getValue();
+                    if (rvalue instanceof Model && !initializedModels.contains(rvalue)) {
+                        iterList.add(initializer.getDefinitionsIterator());
+                        initializedModels.add(rvalue);
                     }
-                }
+                });
             }
         }
         
@@ -1003,16 +992,14 @@ public final class StatesModel
 
                 // Override value initializers
                 ArrayList<Initializer> values = new ArrayList<>();
-                for (Override override : state.overrides) {
-                    if (override instanceof SetPropertyOverride) {
-                        ValueInitializer initializer = ((SetPropertyOverride) override).value;
-                        Object rvalue = initializer.getValue();
-                        if (rvalue instanceof Model && !initializedModels.contains(rvalue)) {
-                            values.add(initializer);
-                            initializedModels.add(rvalue);
-                        }
+                state.overrides.stream().filter(override -> override instanceof SetPropertyOverride).forEach(override -> {
+                    ValueInitializer initializer = ((SetPropertyOverride) override).value;
+                    Object rvalue = initializer.getValue();
+                    if (rvalue instanceof Model && !initializedModels.contains(rvalue)) {
+                        values.add(initializer);
+                        initializedModels.add(rvalue);
                     }
-                }
+                });
                 iterList.add(values.iterator());
             }
         }

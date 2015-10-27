@@ -52,9 +52,7 @@ public class CallGraph
 	{
 		searchMethod(t.init, traversed_methods);
 
-		for (Binding b1: t.defs.values())
-			if (b1.method != null)
-				searchMethod(b1.method, traversed_methods);
+		t.defs.values().stream().filter(b1 -> b1.method != null).forEach(b1 -> searchMethod(b1.method, traversed_methods));
 		
 	}
 		

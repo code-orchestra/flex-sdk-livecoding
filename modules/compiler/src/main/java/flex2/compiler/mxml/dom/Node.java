@@ -85,10 +85,7 @@ public class Node extends Element
     {
         if (processChildrenIndividually && children != null)
         {
-            for (Token child : children)
-            {
-                addChild(child);
-            }
+			children.forEach(this::addChild);
             return;
         }
 

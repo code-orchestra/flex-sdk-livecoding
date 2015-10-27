@@ -28,6 +28,7 @@ import macromedia.asc.semantics.*;
 import macromedia.asc.util.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * TypeTable implementation based on type information extracted from
@@ -340,11 +341,7 @@ public final class As3Class implements AbcClass
 	{
 		if (metadata != null)
 		{
-            for (MetaData aMetadata : metadata) {
-                if (id.equals(aMetadata.getID())) {
-                    list.add(aMetadata);
-                }
-            }
+            list.addAll(metadata.stream().filter(aMetadata -> id.equals(aMetadata.getID())).collect(Collectors.toList()));
 		}
 
 		if (inherited)

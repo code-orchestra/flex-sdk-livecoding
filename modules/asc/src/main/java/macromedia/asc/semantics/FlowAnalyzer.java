@@ -24,6 +24,7 @@ import macromedia.asc.util.*;
 import macromedia.asc.util.graph.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static macromedia.asc.parser.Tokens.*;
 import static macromedia.asc.semantics.Slot.*;
@@ -741,12 +742,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
             node.ref = ((value instanceof ReferenceValue) ? (ReferenceValue)value : null);
             if( node.typeArgs != null && node.typeArgs.values != null )
             {
-                ObjectList<ReferenceValue> typerefs = new ObjectList<>();
-                for ( Value v : node.typeArgs.values )
-                {
-                    if( v instanceof ReferenceValue )
-                        typerefs.add((ReferenceValue)v);
-                }
+                ObjectList<ReferenceValue> typerefs = node.typeArgs.values.stream().filter(v -> v instanceof ReferenceValue).map(v -> (ReferenceValue) v).collect(Collectors.toCollection(ObjectList::new));
                 if( typerefs.size() != node.typeArgs.values.size() )
                     node.ref = null;  //Something didn't resolve to a reference
                 if( node.ref != null )
@@ -2867,15 +2863,11 @@ else
         // if the sort returns fewer classes, that means some nodes form cycle(s)...
         if (clsdefs.size() > tsort.size())
         {
-            for (ClassDefinitionNode clsdef : clsdefs)
-            {
-                // output errors against the nodes in dependency cycles...
-                if (!tsort.contains(clsdef))
-                {
-                    cx.error(clsdef.pos(), kError_CircularReference, clsdef.cframe.builder.classname.name);
-                    found_circular_or_duplicate_class_definition = true;
-                }
-            }
+            // output errors against the nodes in dependency cycles...
+            clsdefs.stream().filter(clsdef -> !tsort.contains(clsdef)).forEach(clsdef -> {
+                cx.error(clsdef.pos(), kError_CircularReference, clsdef.cframe.builder.classname.name);
+                found_circular_or_duplicate_class_definition = true;
+            });
             return clsdefs;
         }
         else
@@ -6419,11 +6411,7 @@ else
 
     private boolean namespacesContains(Context cx, Namespaces outer, Namespaces inner)
     {
-        HashSet<ObjectValue> set = new HashSet<>();
-        for (ObjectValue ns : outer)
-        {
-            set.add(ns);
-        }
+        HashSet<ObjectValue> set = outer.stream().collect(Collectors.toCollection(HashSet::new));
         for (ObjectValue ns : inner)
         {
             if (!set.contains(ns))

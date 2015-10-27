@@ -28,6 +28,7 @@ import flash.swf.tags.DefineFont;
 import flash.swf.types.ActionList;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Represents one SWF frame.  Each frame runs its initActions,
@@ -69,9 +70,7 @@ public class Frame
 		ArrayList<Tag> list = new ArrayList<>();
 
 		// exported symbols
-		for (DefineTag def : exportDefs) {
-			list.add(def);
-		}
+		list.addAll(exportDefs.stream().collect(Collectors.toList()));
 
         list.addAll( symbolClass.class2tag.values() );
 

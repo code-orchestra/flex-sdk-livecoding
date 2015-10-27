@@ -284,20 +284,19 @@ abstract class AnonymousObjectGraphBuilder extends AbstractBuilder
     {
         Map<String, Array> arrays = new HashMap<>();
 
-        for (String localPart : counts.keySet()) {
-            if (counts.get(localPart) > 1) {
-                Array a = new Array(document, parent, parent.getXmlLineNumber(), typeTable.objectType);
-                a.setId(localPart, false);
-                a.setIsAnonymous(true);
+        // prepopulate with any properties definied as attributes
+        counts.keySet().stream().filter(localPart -> counts.get(localPart) > 1).forEach(localPart -> {
+            Array a = new Array(document, parent, parent.getXmlLineNumber(), typeTable.objectType);
+            a.setId(localPart, false);
+            a.setIsAnonymous(true);
 
-                // prepopulate with any properties definied as attributes
-                if (parent.hasProperty(localPart)) {
-                    a.addEntry(parent.getProperty(localPart), parent.getXmlLineNumber());
-                }
-
-                arrays.put(localPart, a);
+            // prepopulate with any properties definied as attributes
+            if (parent.hasProperty(localPart)) {
+                a.addEntry(parent.getProperty(localPart), parent.getXmlLineNumber());
             }
-        }
+
+            arrays.put(localPart, a);
+        });
 
         return arrays;
     }

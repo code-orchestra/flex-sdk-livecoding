@@ -11,6 +11,7 @@ import macromedia.asc.parser.*;
 import macromedia.asc.util.ObjectList;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Alexander Eliseyev
@@ -176,12 +177,7 @@ public class Transformations {
      * @return listener add statement
      */
     public static Node addAssetListeners(CompilationUnit unit, ClassDefinitionNode classDefinitionNode, List<VariableDefinitionNode> allEmbedFields, boolean isStatic) {
-        List<VariableDefinitionNode> embedFields = new ArrayList<>();
-        for (VariableDefinitionNode variableDefinitionNode : allEmbedFields) {
-            if (isStatic == TreeNavigator.isStaticField(variableDefinitionNode)) {
-                embedFields.add(variableDefinitionNode);
-            }
-        }
+        List<VariableDefinitionNode> embedFields = allEmbedFields.stream().filter(variableDefinitionNode -> isStatic == TreeNavigator.isStaticField(variableDefinitionNode)).collect(Collectors.toList());
         if (embedFields.isEmpty()) {
             return null;
         }

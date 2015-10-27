@@ -1012,11 +1012,9 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 	public ArrayList<SwfInfo> getIsolateSwfList() {
 		ArrayList<SwfInfo> result = new ArrayList<>();
 
-		for (DManagerIsolateState state : m_isolateState.values()) {
-			if (state.m_swfInfo != null) {
-				result.addAll(state.m_swfInfo);
-			}
-		}
+		m_isolateState.values().stream().filter(state -> state.m_swfInfo != null).forEach(state -> {
+			result.addAll(state.m_swfInfo);
+		});
 
 		return result;
 	}

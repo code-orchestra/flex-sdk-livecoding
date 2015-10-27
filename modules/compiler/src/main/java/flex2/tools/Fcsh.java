@@ -182,9 +182,7 @@ public class Fcsh extends Tool {
             String id = s.substring("clear".length()).trim();
             if (id.length() == 0) {
                 HashSet<String> keys = new HashSet<>(targets.keySet());
-                for (String key : keys) {
-                    clear(key);
-                }
+                keys.forEach(Fcsh::clear);
             } else if (targets.containsKey(id)) {
                 clear(id);
             } else {
@@ -194,9 +192,7 @@ public class Fcsh extends Tool {
             String id = s.substring("info".length()).trim();
             if (id.length() == 0) {
                 HashSet<String> keys = new HashSet<>(targets.keySet());
-                for (String key : keys) {
-                    info(key);
-                }
+                keys.forEach(Fcsh::info);
             } else if (targets.containsKey(id)) {
                 info(id);
             } else {

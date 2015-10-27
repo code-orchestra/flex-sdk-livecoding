@@ -95,16 +95,14 @@ public class ConsoleApplication
 			Source s = u.getSource();
 			String head = s.getName();
 
-			for (Name name : u.inheritance) {
-				if (name instanceof QName) {
-					QName qname = (QName) name;
-					String tail = qnames.get(qname);
+			u.inheritance.stream().filter(name -> name instanceof QName).forEach(name -> {
+				QName qname = (QName) name;
+				String tail = qnames.get(qname);
 
-					if (tail != null && !head.equals(tail) && !dependencies.dependencyExists(head, tail)) {
-						dependencies.addDependency(head, tail);
-					}
+				if (tail != null && !head.equals(tail) && !dependencies.dependencyExists(head, tail)) {
+					dependencies.addDependency(head, tail);
 				}
-			}
+			});
 		}
 
         return dependencies;

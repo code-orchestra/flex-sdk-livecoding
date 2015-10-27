@@ -27,6 +27,7 @@ import flex2.compiler.util.QName;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 /**
  * Represents a CompilationUnit wrapper, which exposes only the
@@ -110,13 +111,7 @@ public class CULinkable implements Linkable
     // todo - nuke this
     private void addDeps( Set<String> set, Set<Name> nameSet )
     {
-        for (Name name : nameSet)
-        {
-            if (name instanceof QName)
-            {
-                set.add( name.toString() );
-            }
-        }
+        set.addAll(nameSet.stream().filter(name -> name instanceof QName).map(Name::toString).collect(Collectors.toList()));
     }
 
     private final Set<String> defs = new HashSet<>();

@@ -54,6 +54,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
+
 import macromedia.asc.embedding.ConfigVar;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.ContextStatics;
@@ -545,11 +547,7 @@ public class ImplementationGenerator extends AbstractGenerator
 
     private Set<String> createInterfaceNames()
     {
-        Set<String> result = new TreeSet<>();
-
-        for (DocumentInfo.NameInfo nameInfo : mxmlDocument.getInterfaceNames()) {
-            result.add(nameInfo.getName());
-        }
+        Set<String> result = mxmlDocument.getInterfaceNames().stream().map(DocumentInfo.NameInfo::getName).collect(Collectors.toCollection(TreeSet::new));
 
         return result;
     }

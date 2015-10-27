@@ -470,32 +470,40 @@ public class DebugCLI implements Runnable, SourceLocator {
 //			System.out.println("arg["+i+"]= '"+arg+"'");
             if (arg.charAt(0) == '-') {
                 // its an option
-                if (arg.equals("-unit")) // unit-testing mode //$NON-NLS-1$
-                {
-                    System.setProperty("fdbunit", ""); //$NON-NLS-1$ //$NON-NLS-2$
-                } else if (arg.equals("-fullname") || arg.equals("-f")) //$NON-NLS-1$ //$NON-NLS-2$
-                {
-                    m_fullnameOption = true; // emacs mode
-                } else if (arg.equals("-cd")) //$NON-NLS-1$
-                {
-                    // consume the path
-                    if (i + 1 < args.length)
-                        m_cdPath = args[i++];
-                } else if (arg.equals("-p")) //$NON-NLS-1$
-                {
-                    // consume the port
-                    if (i + 1 < args.length)
-                        m_connectPort = args[++i];
-                } else if (arg.equals("-ide")) //$NON-NLS-1$
-                {
-                    m_isIde = true;
-                } else if (arg.equals("-lang")) //$NON-NLS-1$
-                {
-                    if (i + 1 < args.length)
-                        getLocalizationManager().setLocale(LocaleUtility.langToLocale(args[++i]));
-
-                } else {
-                    err("Unknown command-line argument: " + arg); //$NON-NLS-1$
+                switch (arg) {
+                    case "-unit":
+// unit-testing mode //$NON-NLS-1$
+                        System.setProperty("fdbunit", ""); //$NON-NLS-1$ //$NON-NLS-2$
+                        break;
+                    case "-fullname":
+                    case "-f":
+//$NON-NLS-1$ //$NON-NLS-2$
+                        m_fullnameOption = true; // emacs mode
+                        break;
+                    case "-cd":
+//$NON-NLS-1$
+                        // consume the path
+                        if (i + 1 < args.length)
+                            m_cdPath = args[i++];
+                        break;
+                    case "-p":
+//$NON-NLS-1$
+                        // consume the port
+                        if (i + 1 < args.length)
+                            m_connectPort = args[++i];
+                        break;
+                    case "-ide":
+//$NON-NLS-1$
+                        m_isIde = true;
+                        break;
+                    case "-lang":
+//$NON-NLS-1$
+                        if (i + 1 < args.length)
+                            getLocalizationManager().setLocale(LocaleUtility.langToLocale(args[++i]));
+                        break;
+                    default:
+                        err("Unknown command-line argument: " + arg); //$NON-NLS-1$
+                        break;
                 }
             } else {
                 // its a URI to run

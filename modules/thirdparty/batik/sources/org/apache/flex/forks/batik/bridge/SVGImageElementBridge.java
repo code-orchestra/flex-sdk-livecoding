@@ -430,30 +430,31 @@ public class SVGImageElementBridge extends AbstractGraphicsNodeBridge {
             String ns = alav.getNamespaceURI();
             String ln = alav.getLocalName();
             if (ns == null) {
-                if (ln.equals(SVG_X_ATTRIBUTE)
-                        || ln.equals(SVG_Y_ATTRIBUTE)) {
-                    updateImageBounds();
-                    return;
-                } else if (ln.equals(SVG_WIDTH_ATTRIBUTE)
-                        || ln.equals(SVG_HEIGHT_ATTRIBUTE)) {
-                    SVGImageElement ie = (SVGImageElement) e;
-                    ImageNode imageNode = (ImageNode) node;
-                    AbstractSVGAnimatedLength _attr;
-                    if (ln.charAt(0) == 'w') {
-                        _attr = (AbstractSVGAnimatedLength) ie.getWidth();
-                    } else {
-                        _attr = (AbstractSVGAnimatedLength) ie.getHeight();
-                    }
-                    float val = _attr.getCheckedValue();
-                    if (val == 0 || imageNode.getImage() instanceof ShapeNode) {
-                        rebuildImageNode();
-                    } else {
+                switch (ln) {
+                    case SVG_X_ATTRIBUTE:
+                    case SVG_Y_ATTRIBUTE:
                         updateImageBounds();
-                    }
-                    return;
-                } else if (ln.equals(SVG_PRESERVE_ASPECT_RATIO_ATTRIBUTE)) {
-                    updateImageBounds();
-                    return;
+                        return;
+                    case SVG_WIDTH_ATTRIBUTE:
+                    case SVG_HEIGHT_ATTRIBUTE:
+                        SVGImageElement ie = (SVGImageElement) e;
+                        ImageNode imageNode = (ImageNode) node;
+                        AbstractSVGAnimatedLength _attr;
+                        if (ln.charAt(0) == 'w') {
+                            _attr = (AbstractSVGAnimatedLength) ie.getWidth();
+                        } else {
+                            _attr = (AbstractSVGAnimatedLength) ie.getHeight();
+                        }
+                        float val = _attr.getCheckedValue();
+                        if (val == 0 || imageNode.getImage() instanceof ShapeNode) {
+                            rebuildImageNode();
+                        } else {
+                            updateImageBounds();
+                        }
+                        return;
+                    case SVG_PRESERVE_ASPECT_RATIO_ATTRIBUTE:
+                        updateImageBounds();
+                        return;
                 }
             } else if (ns.equals(XLINK_NAMESPACE_URI)
                     && ln.equals(XLINK_HREF_ATTRIBUTE)) {

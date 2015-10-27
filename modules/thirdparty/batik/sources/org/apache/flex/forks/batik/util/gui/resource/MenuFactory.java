@@ -18,27 +18,14 @@
  */
 package org.apache.flex.forks.batik.util.gui.resource;
 
+import org.apache.flex.forks.batik.util.resources.ResourceFormatException;
+import org.apache.flex.forks.batik.util.resources.ResourceManager;
+
+import javax.swing.*;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
-import javax.swing.AbstractButton;
-import javax.swing.Action;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JSeparator;
-import javax.swing.KeyStroke;
-
-import org.apache.flex.forks.batik.util.resources.ResourceFormatException;
-import org.apache.flex.forks.batik.util.resources.ResourceManager;
 
 /**
  * This class represents a menu factory which builds
@@ -235,21 +222,25 @@ public class MenuFactory extends ResourceManager {
             buttonGroup = null;
         }
 
-        if (type.equals(TYPE_MENU)) {
-            item = createJMenu(name, specialization);
-        } else if (type.equals(TYPE_ITEM)) {
-            item = createJMenuItem(name, specialization);
-        } else if (type.equals(TYPE_RADIO)) {
-            item = createJRadioButtonMenuItem(name, specialization);
-            buttonGroup.add((AbstractButton)item);
-        } else if (type.equals(TYPE_CHECK)) {
-            item = createJCheckBoxMenuItem(name, specialization);
-        } else {
-            throw new ResourceFormatException("Malformed resource",
-                                              bundle.getClass().getName(),
-                                              name+TYPE_SUFFIX);
+        switch (type) {
+            case TYPE_MENU:
+                item = createJMenu(name, specialization);
+                break;
+            case TYPE_ITEM:
+                item = createJMenuItem(name, specialization);
+                break;
+            case TYPE_RADIO:
+                item = createJRadioButtonMenuItem(name, specialization);
+                buttonGroup.add((AbstractButton) item);
+                break;
+            case TYPE_CHECK:
+                item = createJCheckBoxMenuItem(name, specialization);
+                break;
+            default:
+                throw new ResourceFormatException("Malformed resource",
+                        bundle.getClass().getName(),
+                        name + TYPE_SUFFIX);
         }
-
         return item;
     }
 

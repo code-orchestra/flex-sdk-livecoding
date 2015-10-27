@@ -695,15 +695,17 @@ public class ImplementationGenerator extends AbstractGenerator
                 //$var.namespace var $var.name : $var.type = $var.initializer;
                 String initializerString = variableDeclaration.getInitializer();
                 Node initializerNode = null;
-
-                if (initializerString.equals("[]")) {
-                    initializerNode = nodeFactory.literalArray(null);
-                } else if (initializerString.equals("{}")) {
-                    initializerNode = nodeFactory.literalObject(null);
-                } else {
-                    assert false : initializerString;
+                switch (initializerString) {
+                    case "[]":
+                        initializerNode = nodeFactory.literalArray(null);
+                        break;
+                    case "{}":
+                        initializerNode = nodeFactory.literalObject(null);
+                        break;
+                    default:
+                        assert false : initializerString;
+                        break;
                 }
-
                 String variableName = variableDeclaration.getName();
                 QualifiedIdentifierNode qualifiedIdentifier =
                         AbstractSyntaxTreeUtil.generateMxInternalQualifiedIdentifier(nodeFactory,
@@ -2276,18 +2278,17 @@ public class ImplementationGenerator extends AbstractGenerator
             ExpressionStatementNode sourceExpressionStatement = (ExpressionStatementNode) nodeList.get(0);
             ListNode list = (ListNode) sourceExpressionStatement.expr;
 
-            if (destinationTypeName.equals(STRING))
-            {
-                body = generateSourceFunctionStringConversion(body, destinationTypeName, list.items.get(0));
-            }
-            else if (destinationTypeName.equals(ARRAY))
-            {
-                body = generateSourceFunctionArrayConversion(body, destinationTypeName, list.items.get(0));
-            }
-            else
-            {
-                ReturnStatementNode returnStatement = nodeFactory.returnStatement(list);
-                body = nodeFactory.statementList(body, returnStatement);
+            switch (destinationTypeName) {
+                case STRING:
+                    body = generateSourceFunctionStringConversion(body, destinationTypeName, list.items.get(0));
+                    break;
+                case ARRAY:
+                    body = generateSourceFunctionArrayConversion(body, destinationTypeName, list.items.get(0));
+                    break;
+                default:
+                    ReturnStatementNode returnStatement = nodeFactory.returnStatement(list);
+                    body = nodeFactory.statementList(body, returnStatement);
+                    break;
             }
         }
 
@@ -2464,31 +2465,26 @@ public class ImplementationGenerator extends AbstractGenerator
         {
             ExpressionStatementNode sourceExpressionStatement = (ExpressionStatementNode) nodeList.get(0);
             ListNode list = (ListNode) sourceExpressionStatement.expr;
-
-            if (destinationTypeName.equals(STRING))
-            {
-                body = generateSourceFunctionStringConversion(body, destinationTypeName, list.items.get(0));
-            }
-            else if (destinationTypeName.equals(ARRAY))
-            {
-                body = generateSourceFunctionArrayConversion(body, destinationTypeName, list.items.get(0));
-            }
-            else
-            {
-                //if (${bindingExpression.getTwoWayCounterpart()})
-                //    ${bindingExpression.getTwoWayCounterpart().getNamespaceDeclarations()}
-                if (bindingExpression.getTwoWayCounterpart() != null &&
-                    bindingExpression.getTwoWayCounterpart().getNamespaceDeclarations().length() > 0)
-                {
-                    body = bindingExpression.getTwoWayCounterpart().generateNamespaceDeclarations(context, body);
-                }
-
-                //return $bindingExpression.sourceExpression;
-                ReturnStatementNode returnStatement = nodeFactory.returnStatement(list);
-                body = nodeFactory.statementList(body, returnStatement);
+            switch (destinationTypeName) {
+                case STRING:
+                    body = generateSourceFunctionStringConversion(body, destinationTypeName, list.items.get(0));
+                    break;
+                case ARRAY:
+                    body = generateSourceFunctionArrayConversion(body, destinationTypeName, list.items.get(0));
+                    break;
+                default:
+                    //if (${bindingExpression.getTwoWayCounterpart()})
+                    //    ${bindingExpression.getTwoWayCounterpart().getNamespaceDeclarations()}
+                    if (bindingExpression.getTwoWayCounterpart() != null &&
+                            bindingExpression.getTwoWayCounterpart().getNamespaceDeclarations().length() > 0) {
+                        body = bindingExpression.getTwoWayCounterpart().generateNamespaceDeclarations(context, body);
+                    }
+                    //return $bindingExpression.sourceExpression;
+                    ReturnStatementNode returnStatement = nodeFactory.returnStatement(list);
+                    body = nodeFactory.statementList(body, returnStatement);
+                    break;
             }
         }
-
         return nodeFactory.functionCommon(context, null, functionSignature, body);
     }
 

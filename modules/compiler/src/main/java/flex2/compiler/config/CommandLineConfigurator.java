@@ -398,24 +398,31 @@ public class CommandLineConfigurator
         // figure out behavior..
         Set<String> newSet = new HashSet<String>();
         for (String keyword : keywords) {
-            if (keyword.equals("list")) {
-                all = true;
-                newSet.add("*");
-            } else if (keyword.equals("advanced")) {
-                advanced = true;
-                if (keywords.size() == 1) {
+            switch (keyword) {
+                case "list":
                     all = true;
                     newSet.add("*");
-                }
-            } else if (keyword.equals("details")) {
-                details = true;
-            } else if (keyword.equals("syntax")) {
-                syntax = true;
-            } else if (keyword.equals("aliases")) {
-                printaliases = true;
-            } else {
-                details = true;
-                newSet.add(keyword);
+                    break;
+                case "advanced":
+                    advanced = true;
+                    if (keywords.size() == 1) {
+                        all = true;
+                        newSet.add("*");
+                    }
+                    break;
+                case "details":
+                    details = true;
+                    break;
+                case "syntax":
+                    syntax = true;
+                    break;
+                case "aliases":
+                    printaliases = true;
+                    break;
+                default:
+                    details = true;
+                    newSet.add(keyword);
+                    break;
             }
         }
         if (syntax)

@@ -19,9 +19,9 @@
 
 package flash.tools.debugger.concrete;
 
-import java.io.File;
-
 import flash.tools.debugger.Browser;
+
+import java.io.File;
 
 public class DBrowser implements Browser
 {
@@ -32,18 +32,31 @@ public class DBrowser implements Browser
 	{
 		m_path = exepath;
 		String exename = exepath.getName().toLowerCase();
-		if (exename.equals("iexplore.exe")) //$NON-NLS-1$
-			m_type = INTERNET_EXPLORER;
-		else if (exename.equals("mozilla.exe")) //$NON-NLS-1$
-			m_type = MOZILLA;
-		else if (exename.equals("firefox.exe")) //$NON-NLS-1$
-			m_type = MOZILLA_FIREFOX;
-		else if (exename.equals("opera.exe")) //$NON-NLS-1$
-			m_type = OPERA;
-		else if (exename.equals("netscape.exe")) //$NON-NLS-1$
-			m_type = NETSCAPE_NAVIGATOR;
-		else
-			m_type = UNKNOWN;
+		switch (exename) {
+			case "iexplore.exe":
+//$NON-NLS-1$
+				m_type = INTERNET_EXPLORER;
+				break;
+			case "mozilla.exe":
+//$NON-NLS-1$
+				m_type = MOZILLA;
+				break;
+			case "firefox.exe":
+//$NON-NLS-1$
+				m_type = MOZILLA_FIREFOX;
+				break;
+			case "opera.exe":
+//$NON-NLS-1$
+				m_type = OPERA;
+				break;
+			case "netscape.exe":
+//$NON-NLS-1$
+				m_type = NETSCAPE_NAVIGATOR;
+				break;
+			default:
+				m_type = UNKNOWN;
+				break;
+		}
 	}
 
 	/*

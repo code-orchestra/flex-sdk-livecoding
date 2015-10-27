@@ -85,12 +85,15 @@ public class YourKitController {
             String name = file.getName();
             name = name.substring(name.lastIndexOf("."));
             String dumpOrSnapshot;
-            if (name.equals(".hprof")) {
-                dumpOrSnapshot = "dump";
-            } else if (name.equals(".snapshot")) {
-                dumpOrSnapshot = "snapshot";
-            } else {
-                return path;
+            switch (name) {
+                case ".hprof":
+                    dumpOrSnapshot = "dump";
+                    break;
+                case ".snapshot":
+                    dumpOrSnapshot = "snapshot";
+                    break;
+                default:
+                    return path;
             }
             name = "COLT_compiler_" + dumpOrSnapshot + "_" + date + name;
             File newFile = new File(dir, name);

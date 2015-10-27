@@ -234,12 +234,13 @@ public abstract class SVGFontUtilities implements SVGConstants {
      *         e.g. "normal" becomes "400".
      */
     protected static String getFontWeightNumberString(String fontWeight) {
-        if (fontWeight.equals(SVG_NORMAL_VALUE)) {
-            return SVG_400_VALUE;
-        } else if (fontWeight.equals(SVG_BOLD_VALUE)) {
-            return SVG_700_VALUE;
-        } else if (fontWeight.equals(SVG_ALL_VALUE)) {
-            return "100, 200, 300, 400, 500, 600, 700, 800, 900";
+        switch (fontWeight) {
+            case SVG_NORMAL_VALUE:
+                return SVG_400_VALUE;
+            case SVG_BOLD_VALUE:
+                return SVG_700_VALUE;
+            case SVG_ALL_VALUE:
+                return "100, 200, 300, 400, 500, 600, 700, 800, 900";
         }
         return fontWeight;
     }

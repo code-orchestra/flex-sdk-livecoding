@@ -716,34 +716,53 @@ public class ClassTable implements DocCommentTable {
                             {
                                 MetaDataEvaluator.KeyValuePair kv = (MetaDataEvaluator.KeyValuePair)v;
                                 String s = kv.key.intern();
-                                if (s.equals("name"))
-                                    this.key.name = kv.obj;
-                                else if (s.equals("type"))
-                                    this.type_meta = kv.obj;
-                                else if (s.equals("event"))
-                                    this.event_meta = kv.obj;
-                                else if (s.equals("kind"))
-                                    this.kind_meta = kv.obj;
-                                else if (s.equals("arrayType"))
-                                    this.arrayType_meta = kv.obj;
-                                else if (s.equals("format"))
-                                    this.format_meta = kv.obj;
-                                else if (s.equals("inherit"))
-                                    this.inherit_meta = kv.obj;
-                                else if (s.equals("enumeration"))
-                                    this.enumeration_meta = kv.obj;
-                                else if (s.equals("message") || s.equals("deprecatedMessage"))
-                                    this.message_meta = kv.obj;
-                                else if (s.equals("replacement") || s.equals("deprecatedReplacement"))
-                                    this.replacement_meta = kv.obj;
-                                else if (s.equals("since")  || s.equals("deprecatedSince"))
-                                    this.since_meta = kv.obj;
-                                else if (s.equals("required"))
-                                    this.required_meta = kv.obj;
-                                else if (s.equals("theme"))
-                                    this.theme_meta = kv.obj;
-                                else if (s.equals("profile"))
-                                    this.key.name = kv.obj;
+                                switch (s) {
+                                    case "name":
+                                        this.key.name = kv.obj;
+                                        break;
+                                    case "type":
+                                        this.type_meta = kv.obj;
+                                        break;
+                                    case "event":
+                                        this.event_meta = kv.obj;
+                                        break;
+                                    case "kind":
+                                        this.kind_meta = kv.obj;
+                                        break;
+                                    case "arrayType":
+                                        this.arrayType_meta = kv.obj;
+                                        break;
+                                    case "format":
+                                        this.format_meta = kv.obj;
+                                        break;
+                                    case "inherit":
+                                        this.inherit_meta = kv.obj;
+                                        break;
+                                    case "enumeration":
+                                        this.enumeration_meta = kv.obj;
+                                        break;
+                                    case "message":
+                                    case "deprecatedMessage":
+                                        this.message_meta = kv.obj;
+                                        break;
+                                    case "replacement":
+                                    case "deprecatedReplacement":
+                                        this.replacement_meta = kv.obj;
+                                        break;
+                                    case "since":
+                                    case "deprecatedSince":
+                                        this.since_meta = kv.obj;
+                                        break;
+                                    case "required":
+                                        this.required_meta = kv.obj;
+                                        break;
+                                    case "theme":
+                                        this.theme_meta = kv.obj;
+                                        break;
+                                    case "profile":
+                                        this.key.name = kv.obj;
+                                        break;
+                                }
                                 
                                 continue;
                             }

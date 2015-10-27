@@ -17,34 +17,25 @@
 
 package macromedia.asc.util;
 
-import static macromedia.asc.parser.Tokens.*;
-import static macromedia.asc.util.BitSet.*;
-import macromedia.asc.parser.ClassDefinitionNode;
-import macromedia.asc.parser.InputBuffer;
-import macromedia.asc.parser.Node;
-import macromedia.asc.parser.NodeFactory;
-import macromedia.asc.parser.Parser;
-import macromedia.asc.parser.ConditionalExpressionNode;
-import macromedia.asc.parser.ListNode;
-import macromedia.asc.parser.BinaryExpressionNode;
-
-import macromedia.asc.semantics.*;
 import macromedia.asc.embedding.CompilerHandler;
 import macromedia.asc.embedding.ConfigVar;
-
-import macromedia.asc.embedding.avmplus.ClassBuilder;
 import macromedia.asc.embedding.ErrorConstants;
-
+import macromedia.asc.embedding.avmplus.ByteCodeFactory;
+import macromedia.asc.embedding.avmplus.ClassBuilder;
 import macromedia.asc.embedding.avmplus.GlobalBuilder;
 import macromedia.asc.embedding.avmplus.InstanceBuilder;
-import macromedia.asc.embedding.avmplus.ByteCodeFactory;
+import macromedia.asc.parser.*;
+import macromedia.asc.semantics.*;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.io.File;
 import java.util.*;
 
 import static macromedia.asc.embedding.avmplus.RuntimeConstants.*;
+import static macromedia.asc.parser.Tokens.*;
+import static macromedia.asc.util.BitSet.isEmpty;
+import static macromedia.asc.util.BitSet.nextSetBit;
 
 /**
  * Execution context.
@@ -968,25 +959,65 @@ public final class Context implements ErrorConstants
     public static int getLanguageID(String language)
     {
         int langID = ContextStatics.LANG_EN;
-        if (language.equals("EN")) langID = ContextStatics.LANG_EN;
-        else if (language.equals("CN")) langID = ContextStatics.LANG_CN;
-        else if (language.equals("CS")) langID = ContextStatics.LANG_CS;
-        else if (language.equals("DK")) langID = ContextStatics.LANG_DA;
-        else if (language.equals("DE")) langID = ContextStatics.LANG_DE;
-        else if (language.equals("ES")) langID = ContextStatics.LANG_ES;
-        else if (language.equals("FI")) langID = ContextStatics.LANG_FI;
-        else if (language.equals("FR")) langID = ContextStatics.LANG_FR;
-        else if (language.equals("IT")) langID = ContextStatics.LANG_IT;
-        else if (language.equals("JP")) langID = ContextStatics.LANG_JP;
-        else if (language.equals("KR")) langID = ContextStatics.LANG_KR;
-        else if (language.equals("NO")) langID = ContextStatics.LANG_NB;
-        else if (language.equals("NL")) langID = ContextStatics.LANG_NL;
-        else if (language.equals("PL")) langID = ContextStatics.LANG_PL;
-        else if (language.equals("BR")) langID = ContextStatics.LANG_PT;
-        else if (language.equals("RU")) langID = ContextStatics.LANG_RU;
-        else if (language.equals("SE")) langID = ContextStatics.LANG_SV;
-        else if (language.equals("TR")) langID = ContextStatics.LANG_TR;
-        else if (language.equals("TW")) langID = ContextStatics.LANG_TW;
+        switch (language) {
+            case "EN":
+                langID = ContextStatics.LANG_EN;
+                break;
+            case "CN":
+                langID = ContextStatics.LANG_CN;
+                break;
+            case "CS":
+                langID = ContextStatics.LANG_CS;
+                break;
+            case "DK":
+                langID = ContextStatics.LANG_DA;
+                break;
+            case "DE":
+                langID = ContextStatics.LANG_DE;
+                break;
+            case "ES":
+                langID = ContextStatics.LANG_ES;
+                break;
+            case "FI":
+                langID = ContextStatics.LANG_FI;
+                break;
+            case "FR":
+                langID = ContextStatics.LANG_FR;
+                break;
+            case "IT":
+                langID = ContextStatics.LANG_IT;
+                break;
+            case "JP":
+                langID = ContextStatics.LANG_JP;
+                break;
+            case "KR":
+                langID = ContextStatics.LANG_KR;
+                break;
+            case "NO":
+                langID = ContextStatics.LANG_NB;
+                break;
+            case "NL":
+                langID = ContextStatics.LANG_NL;
+                break;
+            case "PL":
+                langID = ContextStatics.LANG_PL;
+                break;
+            case "BR":
+                langID = ContextStatics.LANG_PT;
+                break;
+            case "RU":
+                langID = ContextStatics.LANG_RU;
+                break;
+            case "SE":
+                langID = ContextStatics.LANG_SV;
+                break;
+            case "TR":
+                langID = ContextStatics.LANG_TR;
+                break;
+            case "TW":
+                langID = ContextStatics.LANG_TW;
+                break;
+        }
 
         return langID;
     }

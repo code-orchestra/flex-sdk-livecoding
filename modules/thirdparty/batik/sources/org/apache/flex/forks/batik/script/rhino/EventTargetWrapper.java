@@ -426,21 +426,23 @@ class EventTargetWrapper extends NativeJavaObject {
      */
     public Object get(String name, Scriptable start) {
         Object method = super.get(name, start);
-        if (name.equals(ADD_NAME)) {
-            // prevent creating a Map for all JavaScript objects
-            // when we need it only from time to time...
-            method = new FunctionAddProxy(interpreter,
-                                          (Function)method, initMap());
-        } else if (name.equals(REMOVE_NAME)) {
-            // prevent creating a Map for all JavaScript objects
-            // when we need it only from time to time...
-            method = new FunctionRemoveProxy
-                ((Function)method, initMap());
-        } else if (name.equals(ADDNS_NAME)) {
-            method = new FunctionAddNSProxy(interpreter,
-                                            (Function) method, initMap());
-        } else if (name.equals(REMOVENS_NAME)) {
-            method = new FunctionRemoveNSProxy((Function) method, initMap());
+        switch (name) {
+            case ADD_NAME:
+                // prevent creating a Map for all JavaScript objects
+                // when we need it only from time to time...
+                method = new FunctionAddProxy(interpreter, (Function) method, initMap());
+                break;
+            case REMOVE_NAME:
+                // prevent creating a Map for all JavaScript objects
+                // when we need it only from time to time...
+                method = new FunctionRemoveProxy((Function) method, initMap());
+                break;
+            case ADDNS_NAME:
+                method = new FunctionAddNSProxy(interpreter, (Function) method, initMap());
+                break;
+            case REMOVENS_NAME:
+                method = new FunctionRemoveNSProxy((Function) method, initMap());
+                break;
         }
         return method;
     }

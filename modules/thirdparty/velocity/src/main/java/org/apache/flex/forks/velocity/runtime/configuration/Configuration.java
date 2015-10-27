@@ -1219,19 +1219,18 @@ public class Configuration extends Hashtable
      */
     public String testBoolean(String value)
     {
-        String s = ((String)value).toLowerCase();
-    
-        if (s.equals("true") || s.equals("on") || s.equals("yes"))
-        {
-            return "true";
-        }
-        else if (s.equals("false") || s.equals("off") || s.equals("no"))
-        {
-            return "false";
-        }
-        else
-        {
-            return null;
+        String s = value.toLowerCase();
+        switch (s) {
+            case "true":
+            case "on":
+            case "yes":
+                return "true";
+            case "false":
+            case "off":
+            case "no":
+                return "false";
+            default:
+                return null;
         }
     }
 

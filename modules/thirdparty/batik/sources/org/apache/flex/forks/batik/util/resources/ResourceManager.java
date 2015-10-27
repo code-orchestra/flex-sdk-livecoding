@@ -108,15 +108,13 @@ public class ResourceManager {
     public boolean getBoolean(String key)
         throws MissingResourceException, ResourceFormatException {
         String b = getString(key);
-
-        if (b.equals("true")) {
-            return true;
-        } else if (b.equals("false")) {
-            return false;
-        } else {
-            throw new ResourceFormatException("Malformed boolean",
-                                              bundle.getClass().getName(),
-                                              key);
+        switch (b) {
+            case "true":
+                return true;
+            case "false":
+                return false;
+            default:
+                throw new ResourceFormatException("Malformed boolean", bundle.getClass().getName(), key);
         }
     }
 

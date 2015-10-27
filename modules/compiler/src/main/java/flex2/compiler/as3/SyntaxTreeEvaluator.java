@@ -820,9 +820,7 @@ public class SyntaxTreeEvaluator extends EvaluatorAdapter
 
                         String name = variableBindingNode.variable.identifier.name;
 
-                        variableDeclarations.stream().filter(variableDeclaration -> name.equals(((VariableDeclaration) variableDeclaration).getName())).forEach(variableDeclaration -> {
-                            iterator.remove();
-                        });
+                        variableDeclarations.stream().filter(variableDeclaration -> name.equals(((VariableDeclaration) variableDeclaration).getName())).forEach(variableDeclaration -> iterator.remove());
                     }
                 }
             }

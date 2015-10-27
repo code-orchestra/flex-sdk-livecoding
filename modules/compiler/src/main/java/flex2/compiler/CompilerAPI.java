@@ -2393,7 +2393,7 @@ public final class CompilerAPI
 
         if (compilationUnit != null)
         {
-            compilationUnit.topLevelDefinitions.stream().filter(qName -> dependents.containsKey(qName)).forEach(qName -> {
+            compilationUnit.topLevelDefinitions.stream().filter(dependents::containsKey).forEach(qName -> {
                 for (Entry<String, Source> dependentEntry : dependents.get(qName).entrySet()) {
                     if (!updated.containsKey(dependentEntry.getKey()) &&
                             !affected.containsKey(dependentEntry.getKey())) {
@@ -2624,9 +2624,7 @@ public final class CompilerAPI
 
     private static void addVerticesToGraphs(List<Source> sources, DependencyGraph<CompilationUnit> igraph, DependencyGraph<Source> dgraph)
     {
-        sources.stream().filter(s -> s != null).forEach(s -> {
-            addVertexToGraphs(s, s.getCompilationUnit(), igraph, dgraph);
-        });
+        sources.stream().filter(s -> s != null).forEach(s -> addVertexToGraphs(s, s.getCompilationUnit(), igraph, dgraph));
     }
 
     private static void addVertexToGraphs(Source s, CompilationUnit u, DependencyGraph<CompilationUnit> igraph, DependencyGraph<Source> dgraph)

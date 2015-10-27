@@ -230,9 +230,7 @@ public class Library implements Builder, Cloneable
      */
     public Library()
     {
-        sources = new TreeSet<>((Comparator<VirtualFile>) (f0, f1) -> {
-            return f0.getName().compareTo(f1.getName());
-        });
+        sources = new TreeSet<>((Comparator<VirtualFile>) (f0, f1) -> f0.getName().compareTo(f1.getName()));
         classes = new TreeSet<>();
         namespaces = new TreeSet<>();
         resourceBundles = new TreeSet<>();
@@ -684,9 +682,7 @@ public class Library implements Builder, Cloneable
         {
             Set<ILibraryExtension> extensions = ExtensionManager.getLibraryExtensions( oemConfiguration.getExtensions() );
 
-            extensions.stream().filter(extension -> ThreadLocalToolkit.errorCount() == 0).forEach(extension -> {
-                extension.run(this.clone(), oemConfiguration.clone());
-            });
+            extensions.stream().filter(extension -> ThreadLocalToolkit.errorCount() == 0).forEach(extension -> extension.run(this.clone(), oemConfiguration.clone()));
         }
     }
 
@@ -1105,9 +1101,7 @@ public class Library implements Builder, Cloneable
             List<SwcComponent> list = SwcAPI.setupNamespaceComponents(toStrings(namespaces), mappings,
                                                                       data.sourcePath, data.sourceList,
                                                                       classes);
-            nsComponents = new TreeSet<>((Comparator<SwcComponent>) (c0, c1) -> {
-                return c0.getClassName().compareTo(c1.getClassName());
-            });
+            nsComponents = new TreeSet<>((Comparator<SwcComponent>) (c0, c1) -> c0.getClassName().compareTo(c1.getClassName()));
             nsComponents.addAll(list);
         }
         catch (ConfigurationException ex)
@@ -1226,9 +1220,7 @@ public class Library implements Builder, Cloneable
 
             List<VirtualFile> fileList =
                 CompilerAPI.getVirtualFileList(sources, new HashSet<>(Arrays.asList(WebTierAPI.getSourcePathMimeTypes())));
-            fileSet = new TreeSet<>((Comparator<VirtualFile>) (f0, f1) -> {
-                return f0.getName().compareTo(f1.getName());
-            });
+            fileSet = new TreeSet<>((Comparator<VirtualFile>) (f0, f1) -> f0.getName().compareTo(f1.getName()));
             fileSet.addAll(fileList);
         }
         catch (ConfigurationException ex)
@@ -1251,9 +1243,7 @@ public class Library implements Builder, Cloneable
         try
         {
             List<VirtualFile> fileList = CompilerAPI.getVirtualFileList(new ArrayList<>(stylesheets.values()), new HashSet<>(Arrays.asList(new String[]{MimeMappings.CSS})));
-            fileSet = new TreeSet<>((Comparator<VirtualFile>) (f0, f1) -> {
-                return f0.getName().compareTo(f1.getName());
-            });
+            fileSet = new TreeSet<>((Comparator<VirtualFile>) (f0, f1) -> f0.getName().compareTo(f1.getName()));
             fileSet.addAll(fileList);
         }
         catch (ConfigurationException ex)

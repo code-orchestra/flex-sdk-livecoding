@@ -901,9 +901,7 @@ public final class MxmlDocument
     {
         Map<Integer, String> allNs = new HashMap<>();
 
-        bindingExpressions.stream().filter(be -> be.getNamespaces() != null).forEach(be -> {
-            allNs.putAll(be.getNamespaces());
-        });
+        bindingExpressions.stream().filter(be -> be.getNamespaces() != null).forEach(be -> allNs.putAll(be.getNamespaces()));
         
         return allNs;
     }

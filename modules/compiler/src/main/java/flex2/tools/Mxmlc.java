@@ -409,9 +409,7 @@ public final class Mxmlc extends Tool implements FlexTool
             }
             
             Set<IMxmlcExtension> extensions = ExtensionManager.getMxmlcExtensions( configuration.getCompilerConfiguration().getExtensionsConfiguration().getExtensionMappings() );
-            extensions.stream().filter(extension -> ThreadLocalToolkit.errorCount() == 0).forEach(extension -> {
-                extension.run(args);
-            });
+            extensions.stream().filter(extension -> ThreadLocalToolkit.errorCount() == 0).forEach(extension -> extension.run(args));
         
         }
         catch (ConfigurationException ex)

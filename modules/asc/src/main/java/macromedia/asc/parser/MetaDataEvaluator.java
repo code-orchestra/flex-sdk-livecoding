@@ -487,9 +487,7 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 
 	public Value evaluate(Context cx, StatementListNode node)
 	{
-		node.items.stream().filter(n -> n != null).forEach(n -> {
-			n.evaluate(cx, this);
-		});
+		node.items.stream().filter(n -> n != null).forEach(n -> n.evaluate(cx, this));
 		return null;
 	}
 
@@ -969,9 +967,7 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 
 	public Value evaluate(Context cx, ProgramNode node)
 	{
-		node.pkgdefs.stream().filter(n -> n != null).forEach(n -> {
-			n.evaluate(cx, this);
-		});
+		node.pkgdefs.stream().filter(n -> n != null).forEach(n -> n.evaluate(cx, this));
 		if (node.statements != null)
 			node.statements.evaluate(cx,this);
 

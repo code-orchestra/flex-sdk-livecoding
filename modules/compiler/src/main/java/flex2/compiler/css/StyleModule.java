@@ -288,9 +288,7 @@ public class StyleModule
         List<Rule> childRules = mediaRule.getRules();
 
         // Aggregate rules by selector
-        childRules.stream().filter(rule -> rule instanceof StyleRule).forEach(rule -> {
-            addStyleRule((StyleRule) rule, mediaRule.getMediaList(), isLocal);
-        });
+        childRules.stream().filter(rule -> rule instanceof StyleRule).forEach(rule -> addStyleRule((StyleRule) rule, mediaRule.getMediaList(), isLocal));
     }
 
     //--------------------------------------------------------------------------

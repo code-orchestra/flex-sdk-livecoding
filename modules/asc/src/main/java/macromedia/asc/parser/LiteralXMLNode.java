@@ -81,8 +81,7 @@ public class LiteralXMLNode extends Node
 
 		LiteralXMLNode that = (LiteralXMLNode) o;
 
-		if (is_xmllist != that.is_xmllist) return false;
-		return void_result == that.void_result && !(list != null ? !list.equals(that.list) : that.list != null);
+		return is_xmllist == that.is_xmllist && void_result == that.void_result && !(list != null ? !list.equals(that.list) : that.list != null);
 
 	}
 

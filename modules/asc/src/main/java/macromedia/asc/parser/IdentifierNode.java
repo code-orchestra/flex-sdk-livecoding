@@ -158,8 +158,7 @@ public class IdentifierNode extends Node
 
 		IdentifierNode that = (IdentifierNode) o;
 
-		if (authOrigTypeToken != that.authOrigTypeToken) return false;
-		return !(name != null ? !name.equals(that.name) : that.name != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
+		return authOrigTypeToken == that.authOrigTypeToken && !(name != null ? !name.equals(that.name) : that.name != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
 	}
 

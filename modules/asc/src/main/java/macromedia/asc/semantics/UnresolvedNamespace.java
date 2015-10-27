@@ -59,8 +59,7 @@ public class UnresolvedNamespace extends NamespaceValue
         UnresolvedNamespace that = (UnresolvedNamespace) o;
 
         if (resolved != that.resolved) return false;
-        if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
-        return !(node != null ? !node.equals(that.node) : that.node != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
+        return !(cx != null ? !cx.equals(that.cx) : that.cx != null) && !(node != null ? !node.equals(that.node) : that.node != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
     }
 

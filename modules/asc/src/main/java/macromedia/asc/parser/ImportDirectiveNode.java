@@ -96,8 +96,7 @@ public class ImportDirectiveNode extends DefinitionNode
 		if (package_retrieved != that.package_retrieved) return false;
 		if (attrs != null ? !attrs.equals(that.attrs) : that.attrs != null) return false;
 		//if (cx != null ? !cx.equals(that.cx) : that.cx != null) return false;
-		if (name != null ? !name.equals(that.name) : that.name != null) return false;
-		return !(pkg_node != null ? !pkg_node.equals(that.pkg_node) : that.pkg_node != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
+		return !(name != null ? !name.equals(that.name) : that.name != null) && !(pkg_node != null ? !pkg_node.equals(that.pkg_node) : that.pkg_node != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
 	}
 

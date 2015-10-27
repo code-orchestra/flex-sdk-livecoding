@@ -58,10 +58,7 @@ public class LocalFont implements Serializable
 		if (fsType != localFont.fsType) {
 			return false;
 		}
-		if (copyright != null ? !copyright.equals(localFont.copyright) : localFont.copyright != null) {
-			return false;
-		}
-		return !(postscriptName != null ? !postscriptName.equals(localFont.postscriptName) : localFont.postscriptName != null) && !(trademark != null ? !trademark.equals(localFont.trademark) : localFont.trademark != null);
+		return !(copyright != null ? !copyright.equals(localFont.copyright) : localFont.copyright != null) && !(postscriptName != null ? !postscriptName.equals(localFont.postscriptName) : localFont.postscriptName != null) && !(trademark != null ? !trademark.equals(localFont.trademark) : localFont.trademark != null);
 
 	}
 }

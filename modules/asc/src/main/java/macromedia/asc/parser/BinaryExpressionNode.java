@@ -103,8 +103,7 @@ public class BinaryExpressionNode extends Node
 		if (lhs != null ? !lhs.equals(that.lhs) : that.lhs != null) return false;
 		if (lhstype != null ? !lhstype.equals(that.lhstype) : that.lhstype != null) return false;
 		if (numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) return false;
-		if (rhs != null ? !rhs.equals(that.rhs) : that.rhs != null) return false;
-		return !(rhstype != null ? !rhstype.equals(that.rhstype) : that.rhstype != null) && !(slot != null ? !slot.equals(that.slot) : that.slot != null);
+		return !(rhs != null ? !rhs.equals(that.rhs) : that.rhs != null) && !(rhstype != null ? !rhstype.equals(that.rhstype) : that.rhstype != null) && !(slot != null ? !slot.equals(that.slot) : that.slot != null);
 
 	}
 

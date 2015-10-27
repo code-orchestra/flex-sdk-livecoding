@@ -66,8 +66,7 @@ public class Block implements Cloneable
         if (in_bits != null ? !in_bits.equals(block.in_bits) : block.in_bits != null) return false;
         if (kill_bits != null ? !kill_bits.equals(block.kill_bits) : block.kill_bits != null) return false;
         if (out_bits != null ? !out_bits.equals(block.out_bits) : block.out_bits != null) return false;
-        if (preds != null ? !preds.equals(block.preds) : block.preds != null) return false;
-        return !(stmts != null ? !stmts.equals(block.stmts) : block.stmts != null) && !(succs != null ? !succs.equals(block.succs) : block.succs != null);
+        return !(preds != null ? !preds.equals(block.preds) : block.preds != null) && !(stmts != null ? !stmts.equals(block.stmts) : block.stmts != null) && !(succs != null ? !succs.equals(block.succs) : block.succs != null);
 
     }
 

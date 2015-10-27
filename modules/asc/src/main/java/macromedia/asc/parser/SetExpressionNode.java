@@ -146,8 +146,7 @@ public class SetExpressionNode extends SelectorNode
 		if (is_constinit != that.is_constinit) return false;
 		if (is_initializer != that.is_initializer) return false;
 		if (void_result != that.void_result) return false;
-		if (args != null ? !args.equals(that.args) : that.args != null) return false;
-		return !(gen_bits != null ? !gen_bits.equals(that.gen_bits) : that.gen_bits != null) && !(value_type != null ? !value_type.equals(that.value_type) : that.value_type != null);
+		return !(args != null ? !args.equals(that.args) : that.args != null) && !(gen_bits != null ? !gen_bits.equals(that.gen_bits) : that.gen_bits != null) && !(value_type != null ? !value_type.equals(that.value_type) : that.value_type != null);
 
 	}
 

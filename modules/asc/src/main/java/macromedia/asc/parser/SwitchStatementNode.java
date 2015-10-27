@@ -81,8 +81,7 @@ public class SwitchStatementNode extends Node
 
 		SwitchStatementNode that = (SwitchStatementNode) o;
 
-		if (loop_index != that.loop_index) return false;
-		return !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(statements != null ? !statements.equals(that.statements) : that.statements != null);
+		return loop_index == that.loop_index && !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(statements != null ? !statements.equals(that.statements) : that.statements != null);
 
 	}
 

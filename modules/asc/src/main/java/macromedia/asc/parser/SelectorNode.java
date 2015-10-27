@@ -160,8 +160,7 @@ public abstract class SelectorNode extends Node
 		if (flags != that.flags) return false;
 		if (is_package != that.is_package) return false;
 		if (skip != that.skip) return false;
-		if (base != null ? !base.equals(that.base) : that.base != null) return false;
-		return !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
+		return !(base != null ? !base.equals(that.base) : that.base != null) && !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
 	}
 

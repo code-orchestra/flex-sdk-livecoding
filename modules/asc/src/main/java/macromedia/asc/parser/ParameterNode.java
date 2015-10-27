@@ -95,8 +95,7 @@ public class ParameterNode extends Node
 		if (attrs != null ? !attrs.equals(that.attrs) : that.attrs != null) return false;
 		if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
 		if (init != null ? !init.equals(that.init) : that.init != null) return false;
-		if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
-		return !(type != null ? !type.equals(that.type) : that.type != null) && !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
+		return !(ref != null ? !ref.equals(that.ref) : that.ref != null) && !(type != null ? !type.equals(that.type) : that.type != null) && !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null);
 
 	}
 

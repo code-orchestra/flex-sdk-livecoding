@@ -100,8 +100,7 @@ public class DeleteExpressionNode extends SelectorNode
 
 		DeleteExpressionNode that = (DeleteExpressionNode) o;
 
-		if (op != that.op) return false;
-		return void_result == that.void_result && !(slot != null ? !slot.equals(that.slot) : that.slot != null);
+		return op == that.op && void_result == that.void_result && !(slot != null ? !slot.equals(that.slot) : that.slot != null);
 
 	}
 

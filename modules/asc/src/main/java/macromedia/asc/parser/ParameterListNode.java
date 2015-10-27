@@ -162,8 +162,7 @@ public class ParameterListNode extends Node
 		ParameterListNode that = (ParameterListNode) o;
 
 		if (count != that.count) return false;
-		if (decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) return false;
-		return !(items != null ? !items.equals(that.items) : that.items != null) && !(types != null ? !types.equals(that.types) : that.types != null);
+		return !(decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) && !(items != null ? !items.equals(that.items) : that.items != null) && !(types != null ? !types.equals(that.types) : that.types != null);
 
 	}
 

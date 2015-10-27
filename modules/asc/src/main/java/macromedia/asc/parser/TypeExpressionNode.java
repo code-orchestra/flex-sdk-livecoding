@@ -110,8 +110,7 @@ public class TypeExpressionNode extends Node
 
         TypeExpressionNode that = (TypeExpressionNode) o;
 
-        if (is_nullable != that.is_nullable) return false;
-        return nullable_annotation == that.nullable_annotation && !(expr != null ? !expr.equals(that.expr) : that.expr != null);
+        return is_nullable == that.is_nullable && nullable_annotation == that.nullable_annotation && !(expr != null ? !expr.equals(that.expr) : that.expr != null);
 
     }
 

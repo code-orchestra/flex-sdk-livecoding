@@ -72,8 +72,7 @@ public class ClassNameNode extends Node
 
 		ClassNameNode that = (ClassNameNode) o;
 
-		if (non_nullable != that.non_nullable) return false;
-		return !(ident != null ? !ident.equals(that.ident) : that.ident != null) && !(pkgname != null ? !pkgname.equals(that.pkgname) : that.pkgname != null);
+		return non_nullable == that.non_nullable && !(ident != null ? !ident.equals(that.ident) : that.ident != null) && !(pkgname != null ? !pkgname.equals(that.pkgname) : that.pkgname != null);
 
 	}
 

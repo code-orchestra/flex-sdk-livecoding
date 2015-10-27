@@ -81,8 +81,7 @@ public class LiteralArrayNode extends Node
 
 		LiteralArrayNode that = (LiteralArrayNode) o;
 
-		if (void_result != that.void_result) return false;
-		return !(elementlist != null ? !elementlist.equals(that.elementlist) : that.elementlist != null) && !(value != null ? !value.equals(that.value) : that.value != null);
+		return void_result == that.void_result && !(elementlist != null ? !elementlist.equals(that.elementlist) : that.elementlist != null) && !(value != null ? !value.equals(that.value) : that.value != null);
 
 	}
 

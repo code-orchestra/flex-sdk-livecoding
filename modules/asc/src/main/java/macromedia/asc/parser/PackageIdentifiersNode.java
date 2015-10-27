@@ -142,8 +142,7 @@ public class PackageIdentifiersNode extends Node
 
 		PackageIdentifiersNode that = (PackageIdentifiersNode) o;
 
-		if (def_part != null ? !def_part.equals(that.def_part) : that.def_part != null) return false;
-		return !(list != null ? !list.equals(that.list) : that.list != null) && !(pkg_part != null ? !pkg_part.equals(that.pkg_part) : that.pkg_part != null);
+		return !(def_part != null ? !def_part.equals(that.def_part) : that.def_part != null) && !(list != null ? !list.equals(that.list) : that.list != null) && !(pkg_part != null ? !pkg_part.equals(that.pkg_part) : that.pkg_part != null);
 
 	}
 

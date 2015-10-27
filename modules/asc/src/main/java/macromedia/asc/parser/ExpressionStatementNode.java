@@ -170,8 +170,7 @@ public class ExpressionStatementNode extends Node
 		if (skip != that.skip) return false;
 //        if (expected_type != null ? !expected_type.equals(that.expected_type) : that.expected_type != null)
 //            return false;
-		if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-		return !(gen_bits != null ? !gen_bits.equals(that.gen_bits) : that.gen_bits != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
+		return !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(gen_bits != null ? !gen_bits.equals(that.gen_bits) : that.gen_bits != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null);
 
 	}
 

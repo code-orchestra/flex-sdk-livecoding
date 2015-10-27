@@ -104,8 +104,7 @@ public class VariableBindingNode extends Node
 		if (attrs != null ? !attrs.equals(that.attrs) : that.attrs != null) return false;
 		if (debug_name != null ? !debug_name.equals(that.debug_name) : that.debug_name != null) return false;
 		if (initializer != null ? !initializer.equals(that.initializer) : that.initializer != null) return false;
-		if (ref != null ? !ref.equals(that.ref) : that.ref != null) return false;
-		return !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null) && !(variable != null ? !variable.equals(that.variable) : that.variable != null);
+		return !(ref != null ? !ref.equals(that.ref) : that.ref != null) && !(typeref != null ? !typeref.equals(that.typeref) : that.typeref != null) && !(variable != null ? !variable.equals(that.variable) : that.variable != null);
 
 	}
 

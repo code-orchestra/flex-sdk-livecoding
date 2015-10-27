@@ -71,8 +71,7 @@ public class EmbedDigest {
 
         EmbedDigest that = (EmbedDigest) o;
 
-        if (fullPath != null ? !fullPath.equals(that.fullPath) : that.fullPath != null) return false;
-        return !(mimeType != null ? !mimeType.equals(that.mimeType) : that.mimeType != null) && !(source != null ? !source.equals(that.source) : that.source != null);
+        return !(fullPath != null ? !fullPath.equals(that.fullPath) : that.fullPath != null) && !(mimeType != null ? !mimeType.equals(that.mimeType) : that.mimeType != null) && !(source != null ? !source.equals(that.source) : that.source != null);
 
     }
 

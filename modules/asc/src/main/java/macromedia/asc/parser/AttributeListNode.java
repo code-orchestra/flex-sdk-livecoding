@@ -179,9 +179,7 @@ public class AttributeListNode extends Node
 		if (hasStatic != that.hasStatic) return false;
 		if (hasVirtual != that.hasVirtual) return false;
 		if (items != null ? !items.equals(that.items) : that.items != null) return false;
-		if (namespace_ids != null ? !namespace_ids.equals(that.namespace_ids) : that.namespace_ids != null)
-			return false;
-		return !(namespaces != null ? !namespaces.equals(that.namespaces) : that.namespaces != null) && !(userNamespace != null ? !userNamespace.equals(that.userNamespace) : that.userNamespace != null);
+		return !(namespace_ids != null ? !namespace_ids.equals(that.namespace_ids) : that.namespace_ids != null) && !(namespaces != null ? !namespaces.equals(that.namespaces) : that.namespaces != null) && !(userNamespace != null ? !userNamespace.equals(that.userNamespace) : that.userNamespace != null);
 
 	}
 

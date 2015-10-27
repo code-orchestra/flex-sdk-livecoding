@@ -763,14 +763,13 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
 		if (id != slot.id) return false;
 		if (version != slot.version) return false;
 		/*
-        //TODO: need correct equals
+		//TODO: need correct equals
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
         if (!Arrays.equals(auxDataItems, slot.auxDataItems)) return false;
         */
 		//if (declaredBy != null ? !declaredBy.equals(slot.declaredBy) : slot.declaredBy != null) return false;
 		if (def_bits != null ? !def_bits.equals(slot.def_bits) : slot.def_bits != null) return false;
-		if (type != null ? !type.equals(slot.type) : slot.type != null) return false;
-		return !(types != null ? !types.equals(slot.types) : slot.types != null) && !(value != null ? !value.equals(slot.value) : slot.value != null);
+		return !(type != null ? !type.equals(slot.type) : slot.type != null) && !(types != null ? !types.equals(slot.types) : slot.types != null) && !(value != null ? !value.equals(slot.value) : slot.value != null);
 
 	}
 

@@ -102,8 +102,7 @@ public class WhileStatementNode extends Node implements HasBody, LoopStatement
 
 		WhileStatementNode that = (WhileStatementNode) o;
 
-		if (loop_index != that.loop_index) return false;
-		return !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(statement != null ? !statement.equals(that.statement) : that.statement != null);
+		return loop_index == that.loop_index && !(expr != null ? !expr.equals(that.expr) : that.expr != null) && !(statement != null ? !statement.equals(that.statement) : that.statement != null);
 
 	}
 

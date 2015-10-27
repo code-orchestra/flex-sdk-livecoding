@@ -116,8 +116,7 @@ public class ArgumentListNode extends Node
 		ArgumentListNode that = (ArgumentListNode) o;
 
 		if (is_bracket_selector != that.is_bracket_selector) return false;
-		if (decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) return false;
-		return !(expected_types != null ? !expected_types.equals(that.expected_types) : that.expected_types != null) && !(items != null ? !items.equals(that.items) : that.items != null);
+		return !(decl_styles != null ? !decl_styles.equals(that.decl_styles) : that.decl_styles != null) && !(expected_types != null ? !expected_types.equals(that.expected_types) : that.expected_types != null) && !(items != null ? !items.equals(that.items) : that.items != null);
 
 	}
 

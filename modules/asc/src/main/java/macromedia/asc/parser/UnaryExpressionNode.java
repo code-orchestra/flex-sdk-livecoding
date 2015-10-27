@@ -95,8 +95,7 @@ public class UnaryExpressionNode extends Node
 		if (op != that.op) return false;
 		if (void_result != that.void_result) return false;
 		if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
-		if (numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) return false;
-		return !(ref != null ? !ref.equals(that.ref) : that.ref != null) && !(slot != null ? !slot.equals(that.slot) : that.slot != null);
+		return !(numberUsage != null ? !numberUsage.equals(that.numberUsage) : that.numberUsage != null) && !(ref != null ? !ref.equals(that.ref) : that.ref != null) && !(slot != null ? !slot.equals(that.slot) : that.slot != null);
 
 	}
 

@@ -85,8 +85,7 @@ public class ConditionalExpressionNode extends Node
 
 		if (condition != null ? !condition.equals(that.condition) : that.condition != null) return false;
 		if (elseexpr != null ? !elseexpr.equals(that.elseexpr) : that.elseexpr != null) return false;
-		if (elsevalue != null ? !elsevalue.equals(that.elsevalue) : that.elsevalue != null) return false;
-		return !(thenexpr != null ? !thenexpr.equals(that.thenexpr) : that.thenexpr != null) && !(thenvalue != null ? !thenvalue.equals(that.thenvalue) : that.thenvalue != null);
+		return !(elsevalue != null ? !elsevalue.equals(that.elsevalue) : that.elsevalue != null) && !(thenexpr != null ? !thenexpr.equals(that.thenexpr) : that.thenexpr != null) && !(thenvalue != null ? !thenvalue.equals(that.thenvalue) : that.thenvalue != null);
 
 	}
 

@@ -193,14 +193,10 @@ public class StyleDef
         if (mediaList == null)
         {
             Map<String, StyleProperty> properties = block.getProperties();
-
             List<StyleDeclarationBlock> existingBlocks = existingDeclaration.getDeclarationBlocks();
             existingBlocks.stream().filter(existingBlock -> existingBlock != block).forEach(existingBlock -> {
                 Map<String, StyleProperty> existingProperties = existingBlock.getProperties();
-                for (String property : properties.keySet()) {
-                    if (existingProperties.get(property) != null)
-                        existingProperties.put(property, properties.get(property));
-                }
+                properties.keySet().stream().filter(property -> existingProperties.get(property) != null).forEach(property -> existingProperties.put(property, properties.get(property)));
             });
         }
     }
@@ -571,17 +567,14 @@ public class StyleDef
         }
     }
 
-    private Object processPropertyValue(Descriptor descriptor)
-        throws CompilerError
+    private Object processPropertyValue(Descriptor descriptor) throws CompilerError
     {
         String value = descriptor.getValueAsString();
         Object result = value;
 
         if (value.startsWith(EMBED))
         {
-            result = AtEmbed.create(perCompileData, source, value,
-                                    descriptor.getPath(), descriptor.getLineNumber(),
-                                    "_embed_css_");
+            result = AtEmbed.create(perCompileData, source, value, descriptor.getPath(), descriptor.getLineNumber(), "_embed_css_");
         }
         else if (value.startsWith(CLASS_REFERENCE))
         {
@@ -620,8 +613,7 @@ public class StyleDef
             // deprecated - Flex 1.5 support only
             if ( FrameworkDefs.isBuiltinEffectName(potentialProperty) )
             {
-                mxmlDocument.addTypeRef(mxmlDocument.getStandardDefs().getEffectsPackage() + '.' + potentialProperty,
-                                        descriptor.getLineNumber());
+                mxmlDocument.addTypeRef(mxmlDocument.getStandardDefs().getEffectsPackage() + '.' + potentialProperty, descriptor.getLineNumber());
             }
         }
 

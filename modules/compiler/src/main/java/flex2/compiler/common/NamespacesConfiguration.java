@@ -30,6 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 /**
  * This class handles namespace specific configuration options.
@@ -64,20 +65,11 @@ public class NamespacesConfiguration
         if (manifestMappings != null)
         {
             List<VirtualFile> fileList = new ArrayList<>();
-
-            manifestMappings.values().stream().filter(files -> files != null).forEach(files -> {
-                for (VirtualFile file : files) {
-                    fileList.add(file);
-                }
-            });
-
+            manifestMappings.values().stream().filter(files -> files != null).forEach(files -> fileList.addAll(files.stream().collect(Collectors.toList())));
             VirtualFile[] fileArray = new VirtualFile[fileList.size()];
             return fileList.toArray(fileArray);
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
     /**

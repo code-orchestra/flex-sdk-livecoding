@@ -6598,7 +6598,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             else if (size == 1 ||
                     input.length() == 1 ||
                     cmdList.getString((Integer) ar.get(0)).compareTo(input) == 0) {
-                cmd = cmdList.getInteger(((Integer) ar.get(0)).intValue());
+                cmd = cmdList.getInteger((Integer) ar.get(0));
             } else {
                 // matches more than one command dump message and go
                 StringBuilder sb = new StringBuilder();

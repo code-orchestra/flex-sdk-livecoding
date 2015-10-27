@@ -450,10 +450,7 @@ public final class CompilerAPI
 
                     if (benchmarkCompilingDetails > 4)
                     {
-                        benchmark.benchmark2(
-                                ThreadLocalToolkit.getLocalizationManager()
-                                .getLocalizedTextString(
-                                        new BatchTime("preprocess", s.getNameForReporting())));
+                        benchmark.benchmark2(ThreadLocalToolkit.getLocalizationManager().getLocalizedTextString(new BatchTime("preprocess", s.getNameForReporting())));
                     }
                 }
                 else if ((w & parse1) == 0)
@@ -464,10 +461,7 @@ public final class CompilerAPI
 
                     if (benchmarkCompilingDetails > 4)
                     {
-                        ThreadLocalToolkit.getBenchmark().benchmark2(
-                                ThreadLocalToolkit.getLocalizationManager().
-                                getLocalizedTextString(
-                                        new BatchTime("parse1", s.getNameForReporting())));
+                        ThreadLocalToolkit.getBenchmark().benchmark2(ThreadLocalToolkit.getLocalizationManager().getLocalizedTextString(new BatchTime("parse1", s.getNameForReporting())));
                     }
                 }
                 else if ((w & parse2) == 0)
@@ -581,8 +575,7 @@ public final class CompilerAPI
                     {
                         ThreadLocalToolkit.getBenchmark().benchmark2(
                                 ThreadLocalToolkit.getLocalizationManager().
-                                getLocalizedTextString(
-                                        new BatchTime("postprocess", s.getNameForReporting())));
+                                getLocalizedTextString(new BatchTime("postprocess", s.getNameForReporting())));
                     }
                 }
 
@@ -2393,19 +2386,14 @@ public final class CompilerAPI
 
         if (compilationUnit != null)
         {
-            compilationUnit.topLevelDefinitions.stream().filter(dependents::containsKey).forEach(qName -> {
-                for (Entry<String, Source> dependentEntry : dependents.get(qName).entrySet()) {
-                    if (!updated.containsKey(dependentEntry.getKey()) &&
-                            !affected.containsKey(dependentEntry.getKey())) {
-                        affected.put(dependentEntry.getKey(), dependentEntry.getValue());
-                        reasons.put(dependentEntry.getKey(),
-                                l10n.getLocalizedTextString(new DependentFileModified(affectedSource.getName())));
+            compilationUnit.topLevelDefinitions.stream().filter(dependents::containsKey).forEach(qName -> dependents.get(qName).entrySet().stream().filter(dependentEntry -> !updated.containsKey(dependentEntry.getKey()) &&
+                    !affected.containsKey(dependentEntry.getKey())).forEach(dependentEntry -> {
+                affected.put(dependentEntry.getKey(), dependentEntry.getValue());
+                reasons.put(dependentEntry.getKey(), l10n.getLocalizedTextString(new DependentFileModified(affectedSource.getName())));
 
-                        sources.remove(dependentEntry.getValue());
-                        dependentFileModified(dependentEntry.getValue(), dependents, updated, affected, reasons, sources);
-                    }
-                }
-            });
+                sources.remove(dependentEntry.getValue());
+                dependentFileModified(dependentEntry.getValue(), dependents, updated, affected, reasons, sources);
+            }));
         }
     }
 
@@ -3742,33 +3730,25 @@ public final class CompilerAPI
         // C: A temporary fix for the issue when the true QName of the top level definition in a source file
         //    from the classpath is not known until the source file is parsed...
         units.stream().filter(u -> u != null && u.isDone() && (u.getWorkflow() & adjustQNames) == 0).forEach(u -> {
-            for (Name name : u.inheritance) {
-                if (name instanceof QName) {
-                    QName qName = (QName) name;
-                    adjustQName(qName, igraph, symbolTable);
-                }
-            }
+            u.inheritance.stream().filter(name -> name instanceof QName).forEach(name -> {
+                QName qName = (QName) name;
+                adjustQName(qName, igraph, symbolTable);
+            });
 
-            for (Name name : u.namespaces) {
-                if (name instanceof QName) {
-                    QName qName = (QName) name;
-                    adjustQName(qName, igraph, symbolTable);
-                }
-            }
+            u.namespaces.stream().filter(name -> name instanceof QName).forEach(name -> {
+                QName qName = (QName) name;
+                adjustQName(qName, igraph, symbolTable);
+            });
 
-            for (Name name : u.types) {
-                if (name instanceof QName) {
-                    QName qName = (QName) name;
-                    adjustQName(qName, igraph, symbolTable);
-                }
-            }
+            u.types.stream().filter(name -> name instanceof QName).forEach(name -> {
+                QName qName = (QName) name;
+                adjustQName(qName, igraph, symbolTable);
+            });
 
-            for (Name name : u.expressions) {
-                if (name instanceof QName) {
-                    QName qName = (QName) name;
-                    adjustQName(qName, igraph, symbolTable);
-                }
-            }
+            u.expressions.stream().filter(name -> name instanceof QName).forEach(name -> {
+                QName qName = (QName) name;
+                adjustQName(qName, igraph, symbolTable);
+            });
 
             u.setWorkflow(adjustQNames);
         });
@@ -4368,11 +4348,9 @@ public final class CompilerAPI
         }
 
 		List<VirtualFile> list = new ArrayList<>(fileSetFromPaths(paths, true, mimeTypes, null, excludedPaths));
-		for (int i = 0, len = list == null ? 0 : list.size(); i < len; i++)
-		{
-			VirtualFile f = list.get(i);
-			array[(SourceList.calculatePathRoot(f, directories) == null) ? 0 : 1].add(f);
-		}
+        for (VirtualFile f : list) {
+            array[(SourceList.calculatePathRoot(f, directories) == null) ? 0 : 1].add(f);
+        }
         for (VirtualFile f : stylesheets) {
             array[(SourceList.calculatePathRoot(f, directories) == null) ? 0 : 1].add(f);
         }

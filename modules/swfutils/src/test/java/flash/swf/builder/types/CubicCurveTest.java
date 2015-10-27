@@ -64,10 +64,8 @@ public class CubicCurveTest extends TestCase
         //Run the test.
         File file = File.createTempFile("cubiccurvetest", "swf", null);
         file.deleteOnExit();
-        FileOutputStream fos = new FileOutputStream(file);
 
-        try
-        {
+        try (FileOutputStream fos = new FileOutputStream(file)) {
             //Build a new circle to test curves
             ShapeBuilder builder = new ShapeBuilder();
             builder.setCurrentFillStyle0(1);
@@ -92,7 +90,7 @@ public class CubicCurveTest extends TestCase
 
             //Create a SWF Movie shell
             Movie m = getMovie(1);
-            Frame frame1 = (Frame)m.frames.get(0);
+            Frame frame1 = (Frame) m.frames.get(0);
             Matrix mt = new Matrix(0, 0);
             frame1.controlTags.add(new PlaceObject(mt, tag, 1, null));
 
@@ -103,10 +101,6 @@ public class CubicCurveTest extends TestCase
 
             //Write to file
             tagEncoder.writeTo(fos);
-        }
-        finally
-        {
-            fos.close();
         }
     }
 

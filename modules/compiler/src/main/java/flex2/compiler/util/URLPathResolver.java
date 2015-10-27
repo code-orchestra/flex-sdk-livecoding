@@ -50,16 +50,11 @@ public class URLPathResolver implements SinglePathResolver
 		try
 		{
 			URL url = new URL(uri);
-            if (url != null)
-            {
-                location = new NetworkFile(url);
-            }            
-		}
-		catch (SecurityException securityException)
-		{
-	    } catch (IOException ioException)
-        {
+            location = new NetworkFile(url);
         }
+		catch (SecurityException | IOException ignored)
+		{
+	    }
 
         if ((location != null) && Trace.pathResolver)
         {

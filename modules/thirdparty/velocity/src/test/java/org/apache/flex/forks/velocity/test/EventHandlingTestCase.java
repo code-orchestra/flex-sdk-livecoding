@@ -192,14 +192,10 @@ public class EventHandlingTestCase extends TestCase implements ReferenceInsertio
 
             s = " $this.throwException()";
             w = new StringWriter();
-            
+
             try
             {
                 Velocity.evaluate( context, w, "mystring", s );
-            }
-            catch( MethodInvocationException mee )
-            {
-                fail("MethodExceptionEvent test 1");
             }
             catch( Exception e )
             {

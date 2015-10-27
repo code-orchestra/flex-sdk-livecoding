@@ -730,12 +730,10 @@ public class AsDocAPI
 	public static void copyFiles(String outputDir, String templatesPath) throws IOException
 	{
 		File templateFile = new File(templatesPath);
-		File[] temArr = templateFile.listFiles(new FilenameFilter() {
-			public boolean accept(File dir, String name)
-			{
-				name = name.toLowerCase();
-				return (name.endsWith(".js") || name.endsWith(".css"));
-			}}
+		File[] temArr = templateFile.listFiles((dir, name) -> {
+            name = name.toLowerCase();
+            return (name.endsWith(".js") || name.endsWith(".css"));
+        }
 		);
 		for (File f : temArr) {
 			copyFile(new File(templatesPath, f.getName()), new File(outputDir, f.getName()));
@@ -745,12 +743,9 @@ public class AsDocAPI
 		outImages.mkdir();
 
 		File temImages = new File(templatesPath, "images");
-		File[] imageArr = temImages.listFiles(new FileFilter() {
-            public boolean accept(File f)
-            {
-                //does not accept hidden files or files that cannot be read or .* files
-				return !(f.getName().startsWith(".") || f.isHidden() || !f.canRead() || f.isDirectory());
-			}
+		File[] imageArr = temImages.listFiles(f -> {
+            //does not accept hidden files or files that cannot be read or .* files
+            return !(f.getName().startsWith(".") || f.isHidden() || !f.canRead() || f.isDirectory());
         });
 		for (File f : imageArr) {
 			copyFile(new File(temImages, f.getName()), new File(outImages, f.getName()));

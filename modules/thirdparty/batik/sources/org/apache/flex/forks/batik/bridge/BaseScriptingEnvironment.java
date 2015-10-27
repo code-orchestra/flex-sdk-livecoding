@@ -593,24 +593,22 @@ public class BaseScriptingEnvironment {
                             SVGConstants.SVG_ONLOAD_ATTRIBUTE,
                      line});
 
-        EventListener l = new EventListener() {
-                public void handleEvent(Event evt) {
-                    try {
-                        Object event;
-                        if (evt instanceof ScriptEventWrapper) {
-                            event = ((ScriptEventWrapper) evt).getEventObject();
-                        } else {
-                            event = evt;
-                        }
-                        interp.bindObject(EVENT_NAME, event);
-                        interp.bindObject(ALTERNATE_EVENT_NAME, event);
-                        interp.evaluate(new StringReader(s), desc);
-                    } catch (IOException io) {
-                    } catch (InterpreterException e) {
-                        handleInterpreterException(e);
-                    }
+        EventListener l = evt -> {
+            try {
+                Object event;
+                if (evt instanceof ScriptEventWrapper) {
+                    event = ((ScriptEventWrapper) evt).getEventObject();
+                } else {
+                    event = evt;
                 }
-            };
+                interp.bindObject(EVENT_NAME, event);
+                interp.bindObject(ALTERNATE_EVENT_NAME, event);
+                interp.evaluate(new StringReader(s), desc);
+            } catch (IOException io) {
+            } catch (InterpreterException e) {
+                handleInterpreterException(e);
+            }
+        };
         t.addEventListenerNS
             (XMLConstants.XML_EVENTS_NAMESPACE_URI, type,
              l, false, null);

@@ -307,16 +307,12 @@ public class SimpleMovie extends Movie
 		if (cycles.size() == 0)
 		{
 			// export compilation units
-			Algorithms.topologicalSort(dependencies, new Visitor<Vertex<String,CompilationUnit>>()
-			{
-				public void visit(Vertex<String,CompilationUnit> v)
-				{
-					String fileName = v.getWeight();
-					CompilationUnit u = dependencies.get(fileName);
+			Algorithms.topologicalSort(dependencies, v -> {
+                String fileName = v.getWeight();
+                CompilationUnit u = dependencies.get(fileName);
 
-					exportUnitOnFrame( u, frame, lazyInit );
-				}
-			});
+                exportUnitOnFrame( u, frame, lazyInit );
+            });
 		}
 		else
 		{

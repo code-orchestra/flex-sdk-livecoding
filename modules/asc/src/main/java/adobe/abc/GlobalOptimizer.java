@@ -2382,34 +2382,26 @@ public class GlobalOptimizer
 				if ( num_linked_files > 1 )
 				{
 					classes = new Algorithms.TopologicalSort<Type>().toplogicalSort(
-							classes, 
-							new Algorithms.TopologicalSort.DependencyChecker<Type>()
-							{
-								public boolean depends(Type dep, Type parent)
-								{
-									return (dep.itype.isDerivedFrom(parent.itype));
-								}
-							}
-						);
+							classes,
+							(dep, parent) -> (dep.itype.isDerivedFrom(parent.itype))
+					);
 				}
 			}
 			else
 			{
 				//  HACK ALERT: This sort is incorrect, but the topological
 				//  sort causes tamarin-tracing builds to fail in shell.abc.
-				TreeSet<Type> cs = new TreeSet<>(new Comparator<Type>() {
-					public int compare(Type a, Type b) {
-						if (a == b) return 0;
+				TreeSet<Type> cs = new TreeSet<>((Comparator<Type>) (a, b) -> {
+                    if (a == b) return 0;
 // no, this is subtly wrong: we might be comparing two classes that have no parent-child relationship
 // (eg SyntaxError and EvalError). this logic will push UP subclasses and push DOWN no-rel-classes and superclasses.
 // it's more reliable to push DOWN superclasses and UP subclasses and no-rel-classes. (we can't just return 0
 // for no-rel because TreeSet will assume they are identical and eliminate one...)
 //					else if (istype(a.itype, b.itype)) return 1;
 //					else return -1;
-						else if (b.itype.extendsOrIsBase(a.itype)) return -1;
-						else return 1;
-					}
-				});
+                    else if (b.itype.extendsOrIsBase(a.itype)) return -1;
+                    else return 1;
+                });
 				cs.addAll(classes);
 				classes.clear();
 				classes.addAll(cs);
@@ -7327,11 +7319,7 @@ public class GlobalOptimizer
 		HashMap<Block,Deque<Object>> listings = new HashMap<>();
 		
 		// low postorder numbers are first, 
-		PriorityQueue<Block> work = new PriorityQueue<>(code.size(), new Comparator<Block>() {
-			public int compare(Block b1, Block b2) {
-				return b1.postorder - b2.postorder;
-			}
-		});
+		PriorityQueue<Block> work = new PriorityQueue<>(code.size(), (Comparator<Block>) (b1, b2) -> b1.postorder - b2.postorder);
 		
 		work.addAll(code);
 
@@ -7656,11 +7644,7 @@ public class GlobalOptimizer
 		HashMap<Block,Deque<Object>> listings = new HashMap<>();
 		
 		// low postorder numbers are first, 
-		PriorityQueue<Block> work = new PriorityQueue<>(code.size(), new Comparator<Block>() {
-			public int compare(Block b1, Block b2) {
-				return b1.postorder - b2.postorder;
-			}
-		});
+		PriorityQueue<Block> work = new PriorityQueue<>(code.size(), (Comparator<Block>) (b1, b2) -> b1.postorder - b2.postorder);
 		
 		work.addAll(code);
 		while (!work.isEmpty())

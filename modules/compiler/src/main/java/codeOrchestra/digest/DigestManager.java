@@ -116,50 +116,45 @@ public class DigestManager {
     }
 
     public Iterable<IClassDigest> getDescendants(final IClassDigest root) {
-        return new Iterable<IClassDigest>() {
+        return () -> new Iterator<IClassDigest>() {
+            {
+                directDescendants = new ArrayList<>();
+                setRoot(root);
+            }
+
+            private ArrayList<IClassDigest> directDescendants;
+            private Iterator<IClassDigest> directDescendantsIterator;
+
+            private void setRoot(IClassDigest currentRoot) {
+                directDescendants.clear();
+                directDescendants.addAll(digestsMap.values().stream().filter(classDigest -> classDigest instanceof SourceClassDigest && currentRoot.getFqName().equals(classDigest.getSuperClassFQName())).collect(Collectors.toList()));
+
+                directDescendantsIterator = directDescendants.iterator();
+            }
+
             @Override
-            public Iterator<IClassDigest> iterator() {
-                return new Iterator<IClassDigest>() {
-                    {
-                        directDescendants = new ArrayList<>();
-                        setRoot(root);
+            public boolean hasNext() {
+                boolean currentIteratorHasNext = directDescendantsIterator.hasNext();
+
+                if (!currentIteratorHasNext && !directDescendants.isEmpty()) {
+                    ArrayList<IClassDigest> savedDirectDescendants = new ArrayList<>(directDescendants);
+                    for (IClassDigest newRoot : savedDirectDescendants) {
+                        setRoot(newRoot);
+                        return hasNext();
                     }
+                }
 
-                    private ArrayList<IClassDigest> directDescendants;
-                    private Iterator<IClassDigest> directDescendantsIterator;
+                return currentIteratorHasNext;
+            }
 
-                    private void setRoot(IClassDigest currentRoot) {
-                        directDescendants.clear();
-                        directDescendants.addAll(digestsMap.values().stream().filter(classDigest -> classDigest instanceof SourceClassDigest && currentRoot.getFqName().equals(classDigest.getSuperClassFQName())).collect(Collectors.toList()));
+            @Override
+            public IClassDigest next() {
+                return directDescendantsIterator.next();
+            }
 
-                        directDescendantsIterator = directDescendants.iterator();
-                    }
-
-                    @Override
-                    public boolean hasNext() {
-                        boolean currentIteratorHasNext = directDescendantsIterator.hasNext();
-
-                        if (!currentIteratorHasNext && !directDescendants.isEmpty()) {
-                            ArrayList<IClassDigest> savedDirectDescendants = new ArrayList<>(directDescendants);
-                            for (IClassDigest newRoot : savedDirectDescendants) {
-                                setRoot(newRoot);
-                                return hasNext();
-                            }
-                        }
-
-                        return currentIteratorHasNext;
-                    }
-
-                    @Override
-                    public IClassDigest next() {
-                        return directDescendantsIterator.next();
-                    }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException();
-                    }
-                };
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         };
     }
@@ -253,12 +248,7 @@ public class DigestManager {
 
         // 2 - Load digests and fq names from SWCs
         File digestsDir = getSWCDigestsFolder();
-        List<File> digestFiles = FileUtils.listFileRecursively(digestsDir, new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return file.getName().endsWith(DIGEST_EXTENSION);
-            }
-        });
+        List<File> digestFiles = FileUtils.listFileRecursively(digestsDir, file -> file.getName().endsWith(DIGEST_EXTENSION));
         for (File digestFile : digestFiles) {
             Document document = XMLUtils.fileToDOM(digestFile);
             NodeList traitsList = document.getDocumentElement().getElementsByTagName("trait");

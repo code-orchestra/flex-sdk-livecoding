@@ -87,14 +87,10 @@ public class SwcMovie extends SimpleMovie
             final Frame frame = new Frame();
 
             DependencyWalker.traverse( null, state, true, true, getInheritanceDependenciesOnly(),
-                                       new Visitor<Linkable>()
-                                       {
-                                           public void visit( Linkable o )
-                                           {
-                                               CULinkable l = (CULinkable) o;
-                                               exportUnitOnFrame( l.getUnit(), frame, true );
-                                           }
-                                       } );
+                    o -> {
+                        CULinkable l = (CULinkable) o;
+                        exportUnitOnFrame( l.getUnit(), frame, true );
+                    });
 
             frames.add( frame );
             if (Swc.FNORD)

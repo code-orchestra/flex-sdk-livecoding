@@ -3371,15 +3371,11 @@ public final class CompilerAPI
         boolean success = true;
         final List<CompilationUnit> tsort = new ArrayList<>(units.size());
 
-        Algorithms.topologicalSort(graph, new Visitor<Vertex<String,CompilationUnit>>()
-        {
-            public void visit(Vertex<String,CompilationUnit> v)
-            {
-                String name = v.getWeight();
-                CompilationUnit u = graph.get(name);
-                assert u != null : name;
-                tsort.add(u);
-            }
+        Algorithms.topologicalSort(graph, v -> {
+            String name = v.getWeight();
+            CompilationUnit u = graph.get(name);
+            assert u != null : name;
+            tsort.add(u);
         });
 
         if (units.size() > tsort.size())
@@ -3413,13 +3409,9 @@ public final class CompilerAPI
             tsort.put(s.getName(), s);
         }
 
-        Algorithms.topologicalSort(graph, new Visitor<Vertex<String,CompilationUnit>>()
-        {
-            public void visit(Vertex<String,CompilationUnit> v)
-            {
-                String name = v.getWeight();
-                tsort.remove(name);
-            }
+        Algorithms.topologicalSort(graph, v -> {
+            String name = v.getWeight();
+            tsort.remove(name);
         });
 
         if (tsort.size() > 0)

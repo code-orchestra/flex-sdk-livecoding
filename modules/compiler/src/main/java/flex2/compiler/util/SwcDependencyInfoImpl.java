@@ -52,13 +52,9 @@ class SwcDependencyInfoImpl implements SwcDependencyInfo
     {
         final List<String> depOrder = new ArrayList<>(dependencies.size());
         
-        Algorithms.topologicalSort(dependencies, new Visitor<Vertex<String,SwcExternalScriptInfo>>()
-        {   
-            public void visit(Vertex<String,SwcExternalScriptInfo> v)
-            {
-                String name = v.getWeight();
-                depOrder.add(name);
-            }
+        Algorithms.topologicalSort(dependencies, v -> {
+            String name = v.getWeight();
+            depOrder.add(name);
         });
         
         return depOrder;

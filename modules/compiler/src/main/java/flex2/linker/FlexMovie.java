@@ -205,35 +205,31 @@ public class FlexMovie extends SimpleMovie
 
                 // note that we only allow externs on the last frame
                 DependencyWalker.traverse( frameInfo.frameClasses, state, !it.hasNext(), !it.hasNext(),
-                                           getInheritanceDependenciesOnly(), 
-                                           new Visitor<Linkable>()
-                {
-                    public void visit( Linkable o )
-                    {
-                        // FIXME - keep an eye on those lazy abcs... do we have loose script?
-						//	TODO yep! delete "false &&" once loose-script bootstrapping code has been eliminated - see note above
-                        CULinkable l = (CULinkable) o;
-                        // exportUnitOnFrame( l.getUnit(), f, false);// && !l.hasDefinition( frameClass ) );
-	                    exportUnitOnFrame( l.getUnit(), f, lazyInit);
-                        
-                        // for any scripts that we include from libraries, add the libraries keep-as3-metadata
-                        // to the list of metadata we will preserve in postlink.
-                        Source source = l.getUnit().getSource();
-                        if (source.isSwcScriptOwner() && !source.isInternal())
-                        {
-                            SwcScript script = (SwcScript)source.getOwner();
-                            SwcLibrary library = script.getLibrary();
-                 
-                            // lots of scripts, but not many swcs, so avoid adding the same metadata
-                            // over and over.
-                            if (!librariesProcessed.contains(library))
+                                           getInheritanceDependenciesOnly(),
+                        o -> {
+                            // FIXME - keep an eye on those lazy abcs... do we have loose script?
+                            //	TODO yep! delete "false &&" once loose-script bootstrapping code has been eliminated - see note above
+                            CULinkable l = (CULinkable) o;
+                            // exportUnitOnFrame( l.getUnit(), f, false);// && !l.hasDefinition( frameClass ) );
+                            exportUnitOnFrame( l.getUnit(), f, lazyInit);
+
+                            // for any scripts that we include from libraries, add the libraries keep-as3-metadata
+                            // to the list of metadata we will preserve in postlink.
+                            Source source = l.getUnit().getSource();
+                            if (source.isSwcScriptOwner() && !source.isInternal())
                             {
-                                librariesProcessed.add(library);
-                                metadata.addAll(library.getMetadata());
+                                SwcScript script = (SwcScript)source.getOwner();
+                                SwcLibrary library = script.getLibrary();
+
+                                // lots of scripts, but not many swcs, so avoid adding the same metadata
+                                // over and over.
+                                if (!librariesProcessed.contains(library))
+                                {
+                                    librariesProcessed.add(library);
+                                    metadata.addAll(library.getMetadata());
+                                }
                             }
-                        }
-                    }
-                });
+                        });
                 frames.add( f );
             }
 

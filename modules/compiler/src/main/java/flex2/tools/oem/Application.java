@@ -182,12 +182,8 @@ public class Application implements Builder
         try
         {
             File tempDir = File.createTempFile("Flex2_", "").getParentFile();
-            list = tempDir.listFiles(new FilenameFilter()
-            {
-                public boolean accept(File dir, String name)
-                {
-                    return name.startsWith("Flex2_");
-                }
+            list = tempDir.listFiles((dir, name) -> {
+                return name.startsWith("Flex2_");
             });
         }
         catch (Throwable e)

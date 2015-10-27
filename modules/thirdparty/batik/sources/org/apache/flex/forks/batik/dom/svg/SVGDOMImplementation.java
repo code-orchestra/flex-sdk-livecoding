@@ -223,17 +223,9 @@ public class SVGDOMImplementation
     public DocumentEventSupport createDocumentEventSupport() {
         DocumentEventSupport result =  new DocumentEventSupport();
         result.registerEventFactory("SVGEvents",
-                                    new DocumentEventSupport.EventFactory() {
-                                            public Event createEvent() {
-                                                return new SVGOMEvent();
-                                            }
-                                        });
+                () -> new SVGOMEvent());
         result.registerEventFactory("TimeEvent",
-                                    new DocumentEventSupport.EventFactory() {
-                                            public Event createEvent() {
-                                                return new DOMTimeEvent();
-                                            }
-                                        });
+                () -> new DOMTimeEvent());
         return result;
     }
 

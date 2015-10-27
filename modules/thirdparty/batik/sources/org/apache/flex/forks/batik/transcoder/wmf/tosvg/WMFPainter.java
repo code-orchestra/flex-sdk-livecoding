@@ -87,12 +87,7 @@ public class WMFPainter extends AbstractWMFPainter {
                            BasicStroke.CAP_BUTT,
                            BasicStroke.JOIN_ROUND );
 
-    private transient ImageObserver observer = new ImageObserver() {
-        public boolean imageUpdate(Image img, int flags, int x,
-            int y, int width, int height) {
-                return false;
-        }
-    };
+    private transient ImageObserver observer = (img, flags, x, y, width, height) -> false;
 
     /** Basic constructor.
      *  @param currentStore where the WMF records are stored

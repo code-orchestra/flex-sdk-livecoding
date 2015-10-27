@@ -111,26 +111,22 @@ public class ConsoleApplication
 	private void exportDependencies(final DependencyGraph<CompilationUnit> dependencies)
 	{
 		// export compilation units
-		Algorithms.topologicalSort(dependencies, new Visitor<Vertex<String,CompilationUnit>>()
-		{
-			public void visit(Vertex<String,CompilationUnit> v)
-			{
-				String fileName = v.getWeight();
-				CompilationUnit u = dependencies.get(fileName);
-				if (!u.getSource().isInternal())
-				{
-					if (u.isRoot())
-					{
-						main = u.getByteCodes();
-					}
-					else
-					{
-						abcList.add(u.getByteCodes());
-					}
-					exportedUnits.add(u);
-				}
-			}
-		});
+		Algorithms.topologicalSort(dependencies, v -> {
+            String fileName = v.getWeight();
+            CompilationUnit u = dependencies.get(fileName);
+            if (!u.getSource().isInternal())
+            {
+                if (u.isRoot())
+                {
+                    main = u.getByteCodes();
+                }
+                else
+                {
+                    abcList.add(u.getByteCodes());
+                }
+                exportedUnits.add(u);
+            }
+        });
 		
 		abcList.add(main);
 	}

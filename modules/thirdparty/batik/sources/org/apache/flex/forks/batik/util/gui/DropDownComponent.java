@@ -133,12 +133,8 @@ public class DropDownComponent extends JPanel {
             // the dropdown buttons should be disabled as well
             popupMenu.addPropertyChangeListener
                 ("enabled",
-                 new PropertyChangeListener() {
-                     public void propertyChange(PropertyChangeEvent evt) {
-                         setEnabled
-                            ((Boolean) evt.getNewValue());
-                     }
-                 });
+                        evt -> setEnabled
+                           ((Boolean) evt.getNewValue()));
 
             // Listens for the changes in the scrollable pop up menu
             popupMenu.addListener

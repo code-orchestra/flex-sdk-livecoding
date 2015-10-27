@@ -279,15 +279,11 @@ public class DModule implements SourceFile
 		sb.append(m_newline);
 
 		String[] funcNames = m_func2FirstLine.keySet().toArray(new String[m_func2FirstLine.size()]);
-		Arrays.sort(funcNames, new Comparator<String>() {
-
-			public int compare(String o1, String o2) {
-				int line1 = m_func2FirstLine.get(o1);
-				int line2 = m_func2FirstLine.get(o2);
-				return line1 - line2;
-			}
-			
-		});
+		Arrays.sort(funcNames, (o1, o2) -> {
+            int line1 = m_func2FirstLine.get(o1);
+            int line2 = m_func2FirstLine.get(o2);
+            return line1 - line2;
+        });
 
 		for (String name : funcNames) {
 			int firstLine = m_func2FirstLine.get(name);

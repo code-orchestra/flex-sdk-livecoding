@@ -2663,11 +2663,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             count = nextIntToken();
         DebugCLIIsolateState state = getIsolateState(m_activeIsolate);
         while (count-- > 0) {
-            stepWithTimeout(new AnyKindOfStep() {
-                public void step() throws PlayerDebugException {
-                    m_session.getWorkerSession(m_activeIsolate).stepInto();
-                }
-            }, m_activeIsolate);
+            stepWithTimeout(() -> m_session.getWorkerSession(m_activeIsolate).stepInto(), m_activeIsolate);
 
             for (; ; ) {
                 dumpStep();
@@ -2675,11 +2671,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 if (state.m_requestResume) // perhaps we hit a conditional breakpoint
                 {
                     state.m_requestResume = false;
-                    stepWithTimeout(new AnyKindOfStep() {
-                        public void step() throws PlayerDebugException {
-                            m_session.getWorkerSession(m_activeIsolate).stepContinue();
-                        }
-                    }, m_activeIsolate);
+                    stepWithTimeout(() -> m_session.getWorkerSession(m_activeIsolate).stepContinue(), m_activeIsolate);
                 } else {
                     break;
                 }
@@ -2704,11 +2696,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         DebugCLIIsolateState state = getIsolateState(m_activeIsolate);
         try {
             while (count-- > 0) {
-                stepWithTimeout(new AnyKindOfStep() {
-                    public void step() throws PlayerDebugException {
-                        m_session.getWorkerSession(m_activeIsolate).stepOver();
-                    }
-                }, m_activeIsolate);
+                stepWithTimeout(() -> m_session.getWorkerSession(m_activeIsolate).stepOver(), m_activeIsolate);
 
                 for (; ; ) {
                     dumpStep();
@@ -2716,11 +2704,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     if (state.m_requestResume) // perhaps we hit a conditional breakpoint
                     {
                         state.m_requestResume = false;
-                        stepWithTimeout(new AnyKindOfStep() {
-                            public void step() throws PlayerDebugException {
-                                m_session.getWorkerSession(m_activeIsolate).stepContinue();
-                            }
-                        }, m_activeIsolate);
+                        stepWithTimeout(() -> m_session.getWorkerSession(m_activeIsolate).stepContinue(), m_activeIsolate);
                     } else {
                         break;
                     }
@@ -2752,11 +2736,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             if (depth < 2)
                 err(getLocalizationManager().getLocalizedTextString("finishCommandNotMeaningfulOnOutermostFrame")); //$NON-NLS-1$
             else {
-                stepWithTimeout(new AnyKindOfStep() {
-                    public void step() throws PlayerDebugException {
-                        m_session.getWorkerSession(m_activeIsolate).stepOut();
-                    }
-                }, m_activeIsolate);
+                stepWithTimeout(() -> m_session.getWorkerSession(m_activeIsolate).stepOut(), m_activeIsolate);
 
                 for (; ; ) {
                     dumpStep();
@@ -2764,11 +2744,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     if (state.m_requestResume) // perhaps we hit a conditional breakpoint
                     {
                         state.m_requestResume = false;
-                        stepWithTimeout(new AnyKindOfStep() {
-                            public void step() throws PlayerDebugException {
-                                m_session.getWorkerSession(m_activeIsolate).stepContinue();
-                            }
-                        }, m_activeIsolate);
+                        stepWithTimeout(() -> m_session.getWorkerSession(m_activeIsolate).stepContinue(), m_activeIsolate);
                     } else {
                         break;
                     }

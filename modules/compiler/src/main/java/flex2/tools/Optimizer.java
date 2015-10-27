@@ -71,14 +71,7 @@ public class Optimizer implements FlexTool
 		Arrays.sort(configVars);
 		ConfigurationBuffer cfgbuf = new ConfigurationBuffer(OptimizerConfiguration.class, 
 				new HashMap<String, String>(),
-				new ConfigurationFilter() {
-
-			public boolean select(String name)
-			{
-				return Arrays.binarySearch(configVars, name) >= 0;
-			}
-
-		});
+				name -> Arrays.binarySearch(configVars, name) >= 0);
 		
         cfgbuf.setDefaultVar("input");
         try

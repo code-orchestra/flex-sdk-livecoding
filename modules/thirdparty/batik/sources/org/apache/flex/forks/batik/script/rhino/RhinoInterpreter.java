@@ -323,16 +323,14 @@ public class RhinoInterpreter implements Interpreter {
                     // forgotten since the compilation:
                     // compile it and store it for future use.
 
-                    PrivilegedAction compile = new PrivilegedAction() {
-                        public Object run() {
-                            try {
-                                return cx.compileReader
-                                    (new StringReader(scriptStr),
-                                     SOURCE_NAME_SVG, 1, rhinoClassLoader);
-                            } catch (IOException ioEx ) {
-                                // Should never happen: using a string
-                                throw new Error( ioEx.getMessage() );
-                            }
+                    PrivilegedAction compile = () -> {
+                        try {
+                            return cx.compileReader
+                                (new StringReader(scriptStr),
+                                 SOURCE_NAME_SVG, 1, rhinoClassLoader);
+                        } catch (IOException ioEx ) {
+                            // Should never happen: using a string
+                            throw new Error( ioEx.getMessage() );
                         }
                     };
                     script = (Script)AccessController.doPrivileged(compile);

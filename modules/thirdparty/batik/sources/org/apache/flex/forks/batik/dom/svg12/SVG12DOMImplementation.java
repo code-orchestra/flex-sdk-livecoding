@@ -147,17 +147,9 @@ public class SVG12DOMImplementation
     public DocumentEventSupport createDocumentEventSupport() {
         DocumentEventSupport result =  super.createDocumentEventSupport();
         result.registerEventFactory("WheelEvent",
-                                    new DocumentEventSupport.EventFactory() {
-                                        public Event createEvent() {
-                                            return new SVGOMWheelEvent();
-                                        }
-                                    });
+                () -> new SVGOMWheelEvent());
         result.registerEventFactory("ShadowTreeEvent",
-                                    new DocumentEventSupport.EventFactory() {
-                                        public Event createEvent() {
-                                            return new XBLOMShadowTreeEvent();
-                                        }
-                                    });
+                () -> new XBLOMShadowTreeEvent());
         return result;
     }
 

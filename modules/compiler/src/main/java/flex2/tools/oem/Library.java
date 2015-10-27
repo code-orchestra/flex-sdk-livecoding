@@ -230,10 +230,8 @@ public class Library implements Builder, Cloneable
      */
     public Library()
     {
-        sources = new TreeSet<>(new Comparator<VirtualFile>() {
-            public int compare(VirtualFile f0, VirtualFile f1) {
-                return f0.getName().compareTo(f1.getName());
-            }
+        sources = new TreeSet<>((Comparator<VirtualFile>) (f0, f1) -> {
+            return f0.getName().compareTo(f1.getName());
         });
         classes = new TreeSet<>();
         namespaces = new TreeSet<>();
@@ -1107,10 +1105,8 @@ public class Library implements Builder, Cloneable
             List<SwcComponent> list = SwcAPI.setupNamespaceComponents(toStrings(namespaces), mappings,
                                                                       data.sourcePath, data.sourceList,
                                                                       classes);
-            nsComponents = new TreeSet<>(new Comparator<SwcComponent>() {
-                public int compare(SwcComponent c0, SwcComponent c1) {
-                    return c0.getClassName().compareTo(c1.getClassName());
-                }
+            nsComponents = new TreeSet<>((Comparator<SwcComponent>) (c0, c1) -> {
+                return c0.getClassName().compareTo(c1.getClassName());
             });
             nsComponents.addAll(list);
         }
@@ -1230,10 +1226,8 @@ public class Library implements Builder, Cloneable
 
             List<VirtualFile> fileList =
                 CompilerAPI.getVirtualFileList(sources, new HashSet<>(Arrays.asList(WebTierAPI.getSourcePathMimeTypes())));
-            fileSet = new TreeSet<>(new Comparator<VirtualFile>() {
-                public int compare(VirtualFile f0, VirtualFile f1) {
-                    return f0.getName().compareTo(f1.getName());
-                }
+            fileSet = new TreeSet<>((Comparator<VirtualFile>) (f0, f1) -> {
+                return f0.getName().compareTo(f1.getName());
             });
             fileSet.addAll(fileList);
         }
@@ -1257,10 +1251,8 @@ public class Library implements Builder, Cloneable
         try
         {
             List<VirtualFile> fileList = CompilerAPI.getVirtualFileList(new ArrayList<>(stylesheets.values()), new HashSet<>(Arrays.asList(new String[]{MimeMappings.CSS})));
-            fileSet = new TreeSet<>(new Comparator<VirtualFile>() {
-                public int compare(VirtualFile f0, VirtualFile f1) {
-                    return f0.getName().compareTo(f1.getName());
-                }
+            fileSet = new TreeSet<>((Comparator<VirtualFile>) (f0, f1) -> {
+                return f0.getName().compareTo(f1.getName());
             });
             fileSet.addAll(fileList);
         }

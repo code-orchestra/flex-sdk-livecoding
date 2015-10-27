@@ -176,13 +176,11 @@ public class WindowWrapper extends ImporterTopLevel {
         AccessControlContext acc =
             ((RhinoInterpreter)window.getInterpreter()).getAccessControlContext();
 
-        Object ret = AccessController.doPrivileged( new PrivilegedAction() {
-                public Object run() {
-                    return window.parseXML
-                        ((String)Context.jsToJava(args[0], String.class),
-                         (Document)Context.jsToJava(args[1], Document.class));
-                }
-            }, acc);
+        Object ret = AccessController.doPrivileged((PrivilegedAction) () -> {
+            return window.parseXML
+                ((String)Context.jsToJava(args[0], String.class),
+                 (Document)Context.jsToJava(args[1], Document.class));
+        }, acc);
         return Context.toObject(ret, thisObj);
     }
 
@@ -216,21 +214,17 @@ public class WindowWrapper extends ImporterTopLevel {
             ((RhinoInterpreter)window.getInterpreter()).getAccessControlContext();
 
         if (len == 2) {
-            AccessController.doPrivileged(new PrivilegedAction() {
-                    public Object run(){
-                        window.getURL(uri, fw);
-                        return null;
-                    }
-                }, acc);
+            AccessController.doPrivileged((PrivilegedAction) () -> {
+                window.getURL(uri, fw);
+                return null;
+            }, acc);
         } else {
-            AccessController.doPrivileged(new PrivilegedAction() {
-                    public Object run() {
-                        window.getURL
-                            (uri, fw,
-                             (String)Context.jsToJava(args[2], String.class));
-                        return null;
-                    }
-                }, acc);
+            AccessController.doPrivileged((PrivilegedAction) () -> {
+                window.getURL
+                    (uri, fw,
+                     (String)Context.jsToJava(args[2], String.class));
+                return null;
+            }, acc);
         }
     }
 
@@ -266,33 +260,27 @@ public class WindowWrapper extends ImporterTopLevel {
 
         switch (len) {
         case 3:
-            AccessController.doPrivileged(new PrivilegedAction() {
-                    public Object run(){
-                        window.postURL(uri, content, fw);
-                        return null;
-                    }
-                }, acc);
+            AccessController.doPrivileged((PrivilegedAction) () -> {
+                window.postURL(uri, content, fw);
+                return null;
+            }, acc);
             break;
         case 4:
-            AccessController.doPrivileged(new PrivilegedAction() {
-                    public Object run() {
-                        window.postURL
-                            (uri, content, fw,
-                             (String)Context.jsToJava(args[3], String.class));
-                        return null;
-                    }
-                }, acc);
+            AccessController.doPrivileged((PrivilegedAction) () -> {
+                window.postURL
+                    (uri, content, fw,
+                     (String)Context.jsToJava(args[3], String.class));
+                return null;
+            }, acc);
             break;
         default:
-            AccessController.doPrivileged(new PrivilegedAction() {
-                    public Object run() {
-                        window.postURL
-                            (uri, content, fw,
-                             (String)Context.jsToJava(args[3], String.class),
-                             (String)Context.jsToJava(args[4], String.class));
-                        return null;
-                    }
-                }, acc);
+            AccessController.doPrivileged((PrivilegedAction) () -> {
+                window.postURL
+                    (uri, content, fw,
+                     (String)Context.jsToJava(args[3], String.class),
+                     (String)Context.jsToJava(args[4], String.class));
+                return null;
+            }, acc);
         }
     }
 

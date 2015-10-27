@@ -99,11 +99,7 @@ public class BatikSecurityController extends SecurityController {
             acc = loader.rhinoAccessControlContext;
         }
 
-        PrivilegedExceptionAction execAction = new PrivilegedExceptionAction() {
-            public Object run() {
-                return callable.call(cx, scope, thisObj, args);
-            }
-        };
+        PrivilegedExceptionAction execAction = () -> callable.call(cx, scope, thisObj, args);
         try {
             return AccessController.doPrivileged(execAction, acc);
         } catch (Exception e) {

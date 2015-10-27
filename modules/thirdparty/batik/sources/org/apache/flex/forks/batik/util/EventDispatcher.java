@@ -41,11 +41,7 @@ public class EventDispatcher {
                                  final Object evt,
                                  final boolean useEventQueue) {
         if (useEventQueue && !EventQueue.isDispatchThread()) {
-            Runnable r = new Runnable() {
-                    public void run() {
-                        fireEvent(dispatcher, listeners, evt, useEventQueue);
-                    }
-                };
+            Runnable r = () -> fireEvent(dispatcher, listeners, evt, useEventQueue);
             try {
                 EventQueue.invokeAndWait(r);
             } catch (InvocationTargetException e) {

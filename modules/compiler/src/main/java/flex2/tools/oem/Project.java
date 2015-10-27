@@ -160,13 +160,9 @@ public class Project
     {
         final List<Builder> buildOrder = new ArrayList<>(dependencies.size());
         
-        Algorithms.topologicalSort(dependencies, new Visitor<Vertex<String,Builder>>()
-        {   
-            public void visit(Vertex<String,Builder> v)
-            {
-                String name = v.getWeight();
-                buildOrder.add(dependencies.get(name));
-            }
+        Algorithms.topologicalSort(dependencies, v -> {
+            String name = v.getWeight();
+            buildOrder.add(dependencies.get(name));
         });
         
         return buildOrder.iterator();

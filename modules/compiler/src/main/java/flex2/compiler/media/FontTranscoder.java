@@ -155,8 +155,7 @@ public class FontTranscoder extends AbstractTranscoder
             embeddedFontShadowsDeviceFont.path = path;
             if (args.containsKey(Transcoder.LINE))
             {
-                int line = Integer.parseInt( (String) args.get(Transcoder.LINE) );
-                embeddedFontShadowsDeviceFont.line = line;
+                embeddedFontShadowsDeviceFont.line = Integer.parseInt( (String) args.get(Transcoder.LINE) );
             }
             ThreadLocalToolkit.log(embeddedFontShadowsDeviceFont);
         }
@@ -281,8 +280,7 @@ public class FontTranscoder extends AbstractTranscoder
                 }
                 exceptionWhileTranscoding.path = path;
                 if (args.containsKey(Transcoder.LINE)) {
-                    int line = Integer.parseInt((String) args.get(Transcoder.LINE));
-                    exceptionWhileTranscoding.line = line;
+                    exceptionWhileTranscoding.line = Integer.parseInt((String) args.get(Transcoder.LINE));
                 }
                 ThreadLocalToolkit.log(exceptionWhileTranscoding);
             }

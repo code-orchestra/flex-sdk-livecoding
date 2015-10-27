@@ -263,8 +263,7 @@ public class MovieTranscoder extends AbstractTranscoder
                 ignoringAS2.path = path;
                 if (args.containsKey(Transcoder.LINE))
                 {
-                    int line = Integer.parseInt( (String) args.get(Transcoder.LINE) );
-                    ignoringAS2.line = line; 
+                    ignoringAS2.line = Integer.parseInt( (String) args.get(Transcoder.LINE) );
                 }
                 ThreadLocalToolkit.log(ignoringAS2);
             }
@@ -353,8 +352,7 @@ public class MovieTranscoder extends AbstractTranscoder
             scalingGridAlreadyDefined.path = path;
             if (args.containsKey(Transcoder.LINE))
             {
-                int line = Integer.parseInt( (String) args.get(Transcoder.LINE) );
-                scalingGridAlreadyDefined.line = line; 
+                scalingGridAlreadyDefined.line = Integer.parseInt( (String) args.get(Transcoder.LINE) );
             }
             ThreadLocalToolkit.log(scalingGridAlreadyDefined);
         }

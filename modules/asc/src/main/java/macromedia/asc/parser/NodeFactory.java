@@ -823,9 +823,8 @@ public final class NodeFactory implements ErrorConstants
 		fexpr.needsArguments = has_rest ? METHOD_Needrest : (has_arguments ? METHOD_Arguments : 0);  // order is important, rest overrides arguments
 
 		fexpr.setPositionNonterminal(signature, pos);
-		FunctionCommonNode node = fexpr;
 
-		return node;
+		return fexpr;
 	}
 
 	public FunctionNameNode functionName(int kind, IdentifierNode name)
@@ -1280,8 +1279,7 @@ public final class NodeFactory implements ErrorConstants
 
 	public LiteralStringNode literalString(String value, boolean intern)
 	{
-		LiteralStringNode node = new LiteralStringNode(value, false, intern);
-		return node;
+		return new LiteralStringNode(value, false, intern);
 	}
 
 	public LiteralStringNode literalString(String value, int pos)
@@ -2532,8 +2530,7 @@ public final class NodeFactory implements ErrorConstants
     Node filterOperator( Node expr1, Node expr2, int pos )
     {
     	 if (cx.scriptAssistParsing){
-    		Node result = memberExpression(expr1, getExpression(expr2));
-    		return result;
+			 return memberExpression(expr1, getExpression(expr2));
     	 } else {
 	        RegisterNode var_reg = register(pos);    // p in for each ( var p in o ) { }
 	        RegisterNode tmp_reg = register(pos);    // holds the XMLList result

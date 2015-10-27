@@ -178,8 +178,7 @@ public class SVGTransform extends AbstractSVGConverter{
             transformStackBuffer.append(SPACE);
         }
 
-        String transformValue = transformStackBuffer.toString().trim();
-        return transformValue;
+        return transformStackBuffer.toString().trim();
     }
 
     /**

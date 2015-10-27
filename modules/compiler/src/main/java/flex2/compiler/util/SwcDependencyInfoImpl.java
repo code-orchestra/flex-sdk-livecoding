@@ -82,12 +82,11 @@ class SwcDependencyInfoImpl implements SwcDependencyInfo
         if (swcLocation == null || externals == null)
             throw new NullPointerException();
 
-        String name = swcLocation;
-        dependencies.put(name, externals);
+        dependencies.put(swcLocation, externals);
         
-        if (!dependencies.containsVertex(name))
+        if (!dependencies.containsVertex(swcLocation))
         {
-            dependencies.addVertex(new Vertex<>(name));
+            dependencies.addVertex(new Vertex<>(swcLocation));
         }
     }
     
@@ -101,14 +100,12 @@ class SwcDependencyInfoImpl implements SwcDependencyInfo
     {
         if (swcLocation1 == null || swcLocation2 == null)
             throw new NullPointerException();
-        
-        String head = swcLocation1;
-        String tail = swcLocation2;
-        if (!head.equals(tail) && dependencies.containsKey(head) && dependencies.containsKey(tail) &&
-            !dependencies.dependencyExists(head, tail))
+
+        if (!swcLocation1.equals(swcLocation2) && dependencies.containsKey(swcLocation1) && dependencies.containsKey(swcLocation2) &&
+            !dependencies.dependencyExists(swcLocation1, swcLocation2))
         {
             //System.out.println(swc1.getLocation() + " depends on " + swc2.getLocation());
-            dependencies.addDependency(head, tail);
+            dependencies.addDependency(swcLocation1, swcLocation2);
         }
     }
 

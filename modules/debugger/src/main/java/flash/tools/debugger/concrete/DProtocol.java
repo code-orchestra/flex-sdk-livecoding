@@ -119,8 +119,7 @@ public class DProtocol implements Runnable
 		BufferedInputStream in = new BufferedInputStream(s.getInputStream());
 		BufferedOutputStream out = new BufferedOutputStream(s.getOutputStream());
 
-		DProtocol dp = new DProtocol(in, out, s, detectBrokenSocket);
-		return dp;
+		return new DProtocol(in, out, s, detectBrokenSocket);
 	}
 
 	/**
@@ -465,9 +464,8 @@ public class DProtocol implements Runnable
 		int b1 = m_in.read();
 		int b2 = m_in.read();
 		int b3 = m_in.read();
-		
-		long value = ((b3 << 24) & 0xff000000) | ((b2 << 16) & 0xff0000) | ((b1 << 8) & 0xff00) | (b0 & 0xff);
-		return value;
+
+		return (long) (((b3 << 24) & 0xff000000) | ((b2 << 16) & 0xff0000) | ((b1 << 8) & 0xff00) | (b0 & 0xff));
 	}
 
 	public DMessageCounter getMessageCounter()

@@ -68,9 +68,8 @@ public class LiteralBooleanNode extends Node
 
     public LiteralBooleanNode clone() throws CloneNotSupportedException
     {
-        LiteralBooleanNode result = (LiteralBooleanNode) super.clone();
 
-        return result;
+		return (LiteralBooleanNode) super.clone();
     }
 
     @Override

@@ -637,8 +637,7 @@ public class PlayerSessionManager implements SessionManager2
 				// keep looping
 				i++;
 			} else if (ch == '"' || (isMacOrUnix && ch == '\'')) {
-				char quote = ch;
-				int nextQuote = arguments.indexOf(quote, i+1);
+				int nextQuote = arguments.indexOf(ch, i+1);
 				if (nextQuote == -1) {
 					retval.add(arguments.substring(i+1));
 					return retval;

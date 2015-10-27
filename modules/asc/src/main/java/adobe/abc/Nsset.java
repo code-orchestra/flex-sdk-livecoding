@@ -34,8 +34,7 @@ class Nsset implements Comparable<Nsset>, Iterable<Namespace>
 	
 	public int hashCode()
 	{
-		int h = deepHashCode(nsset);
-		return h;
+		return deepHashCode(nsset);
 	}
 	
 	public boolean equals(Object other)

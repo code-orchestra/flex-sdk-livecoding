@@ -888,11 +888,10 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
             if (ovSlots != null)
             {
 				for (Slot ovSlot : ovSlots) {
-					final Slot slot = ovSlot;
 
 					// the following block should be relatively in sync with ContextStatics.cleanSlot()
-					if (slot != null) {
-						slot.setImplNode(null);
+					if (ovSlot != null) {
+						ovSlot.setImplNode(null);
 					}
 				}
             }

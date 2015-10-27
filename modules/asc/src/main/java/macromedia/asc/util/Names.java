@@ -219,8 +219,7 @@ public final class Names implements Serializable, Cloneable // CodeOrchestra: ma
 		
 		int id = find(name, type);
 
-		boolean hasIt = id != -1 && slot[id] != -1;
-		return hasIt;
+        return id != -1 && slot[id] != -1;
 	}
 
 	public int get(String name, ObjectValue namespace, int type)
@@ -231,8 +230,7 @@ public final class Names implements Serializable, Cloneable // CodeOrchestra: ma
 		}
 		
 		int id = find(name, namespace, type, false);
-		int slot = (id != -1) ? this.slot[id] : -1;
-		return slot;
+        return (id != -1) ? this.slot[id] : -1;
 	}
 
 	public Set<Map.Entry<String, Qualifiers>> entrySet(int type)
@@ -328,8 +326,7 @@ public final class Names implements Serializable, Cloneable // CodeOrchestra: ma
 		}
 		
 		int id = find(name, namespace, type, false);
-		boolean hasIt = id != -1 && slot[id] != -1;
-		return hasIt;
+        return id != -1 && slot[id] != -1;
 	}
 
     private void newHashTable(int size)

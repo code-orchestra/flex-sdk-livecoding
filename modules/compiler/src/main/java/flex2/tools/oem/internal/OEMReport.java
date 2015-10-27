@@ -665,9 +665,8 @@ public class OEMReport implements Report
 	{
 		if (messages != null && messages.size() > 0)
 		{
-			List<Message> filtered = messages.stream().filter(m -> m != null && !Message.INFO.equals(m.getLevel())).collect(Collectors.toList());
 
-			messages = filtered;
+			messages = messages.stream().filter(m -> m != null && !Message.INFO.equals(m.getLevel())).collect(Collectors.toList());
 		}
 			
 		if (messages != null && messages.size() > 0)

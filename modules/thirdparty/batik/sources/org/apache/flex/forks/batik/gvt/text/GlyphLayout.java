@@ -1660,9 +1660,8 @@ public class GlyphLayout implements TextSpanLayout {
                      - gv.getGlyphPosition(0).getX();
         double advY = gv.getGlyphPosition(numGlyphs-1).getY()
                      - gv.getGlyphPosition(0).getY();
-        Point2D newAdvance = new Point2D.Double(advX + lastCharAdvance.getX(),
+        return new Point2D.Double(advX + lastCharAdvance.getX(),
                                                 advY + lastCharAdvance.getY());
-        return newAdvance;
     }
 
     /**

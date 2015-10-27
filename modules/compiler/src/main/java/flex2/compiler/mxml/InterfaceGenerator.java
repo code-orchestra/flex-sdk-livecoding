@@ -82,9 +82,8 @@ public class InterfaceGenerator extends AbstractGenerator
 
     private Set<String> createInterfaceNames()
     {
-        Set<String> result = docInfo.getInterfaceNames().stream().map(DocumentInfo.NameInfo::getName).collect(Collectors.toCollection(TreeSet::new));
 
-        return result;
+        return docInfo.getInterfaceNames().stream().map(DocumentInfo.NameInfo::getName).collect(Collectors.toCollection(TreeSet::new));
     }
 
     private StatementListNode generateBindingManagementVars(StatementListNode statementList)
@@ -161,15 +160,13 @@ public class InterfaceGenerator extends AbstractGenerator
                     AbstractSyntaxTreeUtil.generateMetaData(nodeFactory, BINDABLE);
             result = nodeFactory.statementList(result, bindableMetaData);
 
-            DocumentInfo.VarDecl varDecl = varDecl1;
-
-            int position = AbstractSyntaxTreeUtil.lineNumberToPosition(nodeFactory, varDecl.line);
+            int position = AbstractSyntaxTreeUtil.lineNumberToPosition(nodeFactory, varDecl1.line);
 
             TypeExpressionNode typeExpression =
-                    AbstractSyntaxTreeUtil.generateTypeExpression(nodeFactory, varDecl.className,
+                    AbstractSyntaxTreeUtil.generateTypeExpression(nodeFactory, varDecl1.className,
                             true, position);
             Node variableDefinition =
-                    AbstractSyntaxTreeUtil.generatePublicVariable(context, typeExpression, varDecl.name);
+                    AbstractSyntaxTreeUtil.generatePublicVariable(context, typeExpression, varDecl1.name);
             result = nodeFactory.statementList(result, variableDefinition);
         }
 

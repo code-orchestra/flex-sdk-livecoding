@@ -61,9 +61,8 @@ public class LiteralNullNode extends Node
 
     public LiteralNullNode clone() throws CloneNotSupportedException
     {
-        LiteralNullNode result = (LiteralNullNode) super.clone();
 
-        return result;
+		return (LiteralNullNode) super.clone();
     }
 
     @Override

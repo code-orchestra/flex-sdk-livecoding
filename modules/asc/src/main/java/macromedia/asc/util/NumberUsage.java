@@ -152,9 +152,8 @@ public class NumberUsage implements Cloneable {
 
     public NumberUsage clone() throws CloneNotSupportedException
     {
-        NumberUsage result = (NumberUsage) super.clone();
 
-        return result;
+		return (NumberUsage) super.clone();
     }
 
     @Override

@@ -311,7 +311,6 @@ public class Optimizer
             return null;
         }
 
-        byte[] abc = encoder.toABC();
-        return abc;
+        return encoder.toABC();
     }
 }

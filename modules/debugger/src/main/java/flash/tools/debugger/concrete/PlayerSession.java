@@ -161,8 +161,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 		// let the manager hear incoming messages
 		DManager manager = new DManager();
 
-		PlayerSession session = new PlayerSession(s, proto, manager, debuggerCallbacks);
-		return session;
+		return new PlayerSession(s, proto, manager, debuggerCallbacks);
 	}
 
 	/**
@@ -1761,8 +1760,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 		dm.putWord(tag);
 
 		int timeout = getPreference(SessionManager.PREF_GETVAR_RESPONSE_TIMEOUT);
-		boolean result = simpleRequestResponseMessage(dm, DMessage.InWatch2, timeout);
-		return result;
+		return simpleRequestResponseMessage(dm, DMessage.InWatch2, timeout);
 	}
 
 	/**
@@ -1780,8 +1778,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 		try { dm.putString(memberName); } catch(UnsupportedEncodingException uee) { dm.putByte((byte)'\0'); }
 
 		int timeout = getPreference(SessionManager.PREF_GETVAR_RESPONSE_TIMEOUT);
-		boolean result = simpleRequestResponseMessage(dm, DMessage.InWatch2, timeout);
-		return result;
+		return simpleRequestResponseMessage(dm, DMessage.InWatch2, timeout);
 	}
 
 	/**

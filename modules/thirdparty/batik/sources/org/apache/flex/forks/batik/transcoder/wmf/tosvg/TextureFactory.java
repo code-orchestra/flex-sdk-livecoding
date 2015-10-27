@@ -73,8 +73,7 @@ public class TextureFactory {
     public Paint getTexture(int textureId) {
         Integer _itexture = textureId;
         if (textures.containsKey( _itexture)) {
-            Paint paint = (Paint)(textures.get(_itexture));
-            return paint;
+            return (Paint)(textures.get(_itexture));
         } else {
             Paint paint = createTexture(textureId, null, null);
             if (paint != null) textures.put(_itexture, paint);
@@ -88,8 +87,7 @@ public class TextureFactory {
     public Paint getTexture(int textureId, Color foreground) {
         ColoredTexture _ctexture = new ColoredTexture(textureId, foreground, null);
         if (textures.containsKey(_ctexture)) {
-            Paint paint = (Paint)(textures.get(_ctexture));
-            return paint;
+            return (Paint)(textures.get(_ctexture));
         } else {
             Paint paint = createTexture(textureId, foreground, null);
             if (paint != null) textures.put(_ctexture, paint);
@@ -104,8 +102,7 @@ public class TextureFactory {
     public Paint getTexture(int textureId, Color foreground, Color background) {
         ColoredTexture _ctexture = new ColoredTexture(textureId, foreground, background);
         if (textures.containsKey(_ctexture)) {
-            Paint paint = (Paint)(textures.get(_ctexture));
-            return paint;
+            return (Paint)(textures.get(_ctexture));
         } else {
             Paint paint = createTexture(textureId, foreground, background);
             if (paint != null) textures.put(_ctexture, paint);

@@ -298,11 +298,9 @@ public class DOMGroupManager implements SVGSyntax, ErrorConstants {
           deltaTransformStack[i].toString());
         */
 
-        SVGGraphicContext deltaGC = new SVGGraphicContext(groupDelta,
+        return new SVGGraphicContext(groupDelta,
                                                           graphicElementDelta,
                                                           deltaTransformStack);
-
-        return deltaGC;
     }
 
     /**

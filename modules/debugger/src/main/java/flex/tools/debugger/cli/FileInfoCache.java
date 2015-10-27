@@ -252,11 +252,10 @@ public class FileInfoCache implements Comparator<SourceFile>
 		for (SourceFile file : files) {
 			boolean addIt = false;
 
-			SourceFile fi = file;
 			// no filter currently in place so we add the file as long
 			// as no duplicates exist.  We use the original Swd full
 			// name for matching.
-			String fName = fi.getRawName();
+			String fName = file.getRawName();
 			if (m_swfFilter == null) {
 				// If it exists, then we don't add it!
 				if (names.get(fName) == null)
@@ -265,13 +264,13 @@ public class FileInfoCache implements Comparator<SourceFile>
 				// we have a filter in place so, see
 				// if the source file is in our currently
 				// selected swf.
-				addIt = m_swfFilter.containsSource(fi);
+				addIt = m_swfFilter.containsSource(file);
 			}
 
 			// did we mark this one to add?
 			if (addIt) {
 				names.put(fName, fName);
-				list.add(fi);
+				list.add(file);
 			}
 		}
 		return list;

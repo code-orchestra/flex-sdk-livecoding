@@ -60,9 +60,8 @@ public class IntNumberConstant extends NumberConstant {
 
     public IntNumberConstant clone() throws CloneNotSupportedException
     {
-        IntNumberConstant result = (IntNumberConstant) super.clone();
 
-        return result;
+		return (IntNumberConstant) super.clone();
     }
 
     @Override

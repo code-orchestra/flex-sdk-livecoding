@@ -18,21 +18,18 @@
  */
 package org.apache.flex.forks.batik.bridge;
 
-import java.awt.Color;
-import java.awt.Paint;
-import java.awt.geom.AffineTransform;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.flex.forks.batik.dom.AbstractNode;
 import org.apache.flex.forks.batik.dom.util.XLinkSupport;
 import org.apache.flex.forks.batik.ext.awt.MultipleGradientPaint;
 import org.apache.flex.forks.batik.gvt.GraphicsNode;
 import org.apache.flex.forks.batik.util.ParsedURL;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Bridge class for vending gradients.
@@ -110,7 +107,7 @@ public abstract class AbstractSVGGradientElementBridge
             transform = new AffineTransform();
         }
 
-        Paint paint = buildGradient(paintElement,
+        return buildGradient(paintElement,
                                     paintedElement,
                                     paintedNode,
                                     spreadMethod,
@@ -119,7 +116,6 @@ public abstract class AbstractSVGGradientElementBridge
                                     colors,
                                     offsets,
                                     ctx);
-        return paint;
     }
 
     /**
@@ -197,11 +193,8 @@ public abstract class AbstractSVGGradientElementBridge
             // check if there is circular dependencies
             String baseURI = paintElement.getBaseURI();
             ParsedURL purl = new ParsedURL(baseURI, uri);
-
             if (contains(refs, purl)) {
-                throw new BridgeException(ctx, paintElement,
-                                          ERR_XLINK_HREF_CIRCULAR_DEPENDENCIES,
-                                          new Object[] {uri});
+                throw new BridgeException(ctx, paintElement, ERR_XLINK_HREF_CIRCULAR_DEPENDENCIES, new Object[] {uri});
             }
             refs.add(purl);
             paintElement = ctx.getReferencedElement(paintElement, uri);
@@ -216,9 +209,7 @@ public abstract class AbstractSVGGradientElementBridge
      * @param opacity the opacity
      * @param ctx the bridge context
      */
-    protected static List extractLocalStop(Element gradientElement,
-                                           float opacity,
-                                           BridgeContext ctx) {
+    protected static List extractLocalStop(Element gradientElement, float opacity, BridgeContext ctx) {
         LinkedList stops = null;
         Stop previous = null;
         for (Node n = gradientElement.getFirstChild();
@@ -234,8 +225,7 @@ public abstract class AbstractSVGGradientElementBridge
             if (bridge == null || !(bridge instanceof SVGStopElementBridge)) {
                 continue;
             }
-            Stop stop = ((SVGStopElementBridge)bridge).createStop
-                (ctx, gradientElement, e, opacity);
+            Stop stop = ((SVGStopElementBridge)bridge).createStop(ctx, gradientElement, e, opacity);
             if (stops == null) {
                 stops = new LinkedList();
             }
@@ -289,8 +279,7 @@ public abstract class AbstractSVGGradientElementBridge
     /**
      * Bridge class for the gradient &lt;stop> element.
      */
-    public static class SVGStopElementBridge extends AnimatableGenericSVGBridge
-            implements Bridge {
+    public static class SVGStopElementBridge extends AnimatableGenericSVGBridge implements Bridge {
 
         /**
          * Returns 'stop'.
@@ -307,28 +296,18 @@ public abstract class AbstractSVGGradientElementBridge
          * @param stopElement the stop element
          * @param opacity an additional opacity of the stop color
          */
-        public Stop createStop(BridgeContext ctx,
-                               Element gradientElement,
-                               Element stopElement,
-                               float opacity) {
-
+        public Stop createStop(BridgeContext ctx, Element gradientElement, Element stopElement, float opacity) {
             String s = stopElement.getAttributeNS(null, SVG_OFFSET_ATTRIBUTE);
             if (s.length() == 0) {
-                throw new BridgeException
-                    (ctx, stopElement, ERR_ATTRIBUTE_MISSING,
-                     new Object[] {SVG_OFFSET_ATTRIBUTE});
+                throw new BridgeException(ctx, stopElement, ERR_ATTRIBUTE_MISSING, new Object[] {SVG_OFFSET_ATTRIBUTE});
             }
             float offset;
             try {
                 offset = SVGUtilities.convertRatio(s);
             } catch (NumberFormatException nfEx ) {
-                throw new BridgeException
-                    (ctx, stopElement, nfEx, ERR_ATTRIBUTE_VALUE_MALFORMED,
-                     new Object[] {SVG_OFFSET_ATTRIBUTE, s, nfEx });
+                throw new BridgeException(ctx, stopElement, nfEx, ERR_ATTRIBUTE_VALUE_MALFORMED, new Object[] {SVG_OFFSET_ATTRIBUTE, s, nfEx });
             }
-            Color color
-                = CSSUtilities.convertStopColor(stopElement, opacity, ctx);
-
+            Color color = CSSUtilities.convertStopColor(stopElement, opacity, ctx);
             return new Stop(color, offset);
         }
     }

@@ -249,8 +249,7 @@ public class ImageHelper
         else if (MIME_PNG.equals(mimeType) || MIME_GIF.equals(mimeType))
         {
             int[] pixels = (int[])pixelGrabber.getPixels();
-            DefineBitsLossless imageTag = createDefineBitsLossless(pixels, width, height);
-            return imageTag;
+            return createDefineBitsLossless(pixels, width, height);
         }
         else
         {
@@ -338,23 +337,21 @@ public class ImageHelper
             sws.fillstyles.add(fs);
         }
 
-        int dxa = slt;
         int dxb = srt - slt;
         int dxc = (int)(bitmap.width * SwfConstants.TWIPS_PER_PIXEL) - srt;
 
-        int dya = stt;
         int dyb = sbt - stt;
         int dyc = (int)(bitmap.height * SwfConstants.TWIPS_PER_PIXEL) - sbt;
 
         // border
-        shapeRecords.add(new StyleChangeRecord(0, dya, 0, 0, 1));
-        shapeRecords.add(new StraightEdgeRecord(0, -dya));
-        shapeRecords.add(new StraightEdgeRecord(dxa, 0));
+        shapeRecords.add(new StyleChangeRecord(0, stt, 0, 0, 1));
+        shapeRecords.add(new StraightEdgeRecord(0, -stt));
+        shapeRecords.add(new StraightEdgeRecord(slt, 0));
         shapeRecords.add(new StyleChangeRecord(0, 0, 2));
         shapeRecords.add(new StraightEdgeRecord(dxb, 0));
         shapeRecords.add(new StyleChangeRecord(0, 0, 3));
         shapeRecords.add(new StraightEdgeRecord(dxc, 0));
-        shapeRecords.add(new StraightEdgeRecord(0, dya));
+        shapeRecords.add(new StraightEdgeRecord(0, stt));
         shapeRecords.add(new StyleChangeRecord(0, 0, 6));
         shapeRecords.add(new StraightEdgeRecord(0, dyb));
         shapeRecords.add(new StyleChangeRecord(0, 0 ,9));
@@ -363,38 +360,38 @@ public class ImageHelper
         shapeRecords.add(new StyleChangeRecord(0, 0, 8));
         shapeRecords.add(new StraightEdgeRecord(-dxb, 0));
         shapeRecords.add(new StyleChangeRecord(0, 0, 7));
-        shapeRecords.add(new StraightEdgeRecord(-dxa, 0));
+        shapeRecords.add(new StraightEdgeRecord(-slt, 0));
         shapeRecords.add(new StraightEdgeRecord(0, -dyc));
         shapeRecords.add(new StyleChangeRecord(0, 0, 4));
         shapeRecords.add(new StraightEdgeRecord(0, -dyb));
 
         // down 1
-        shapeRecords.add(new StyleChangeRecord(dxa, 0, 0, 2, 1));
-        shapeRecords.add(new StraightEdgeRecord(0, dya));
+        shapeRecords.add(new StyleChangeRecord(slt, 0, 0, 2, 1));
+        shapeRecords.add(new StraightEdgeRecord(0, stt));
         shapeRecords.add(new StyleChangeRecord(0, 5, 4));
         shapeRecords.add(new StraightEdgeRecord(0, dyb));
         shapeRecords.add(new StyleChangeRecord(0, 8, 7));
         shapeRecords.add(new StraightEdgeRecord(0, dyc));
 
         // down 2
-        shapeRecords.add(new StyleChangeRecord(dxa + dxb, 0, 0, 3, 2));
-        shapeRecords.add(new StraightEdgeRecord(0, dya));
+        shapeRecords.add(new StyleChangeRecord(slt + dxb, 0, 0, 3, 2));
+        shapeRecords.add(new StraightEdgeRecord(0, stt));
         shapeRecords.add(new StyleChangeRecord(0, 6, 5));
         shapeRecords.add(new StraightEdgeRecord(0, dyb));
         shapeRecords.add(new StyleChangeRecord(0, 9, 8));
         shapeRecords.add(new StraightEdgeRecord(0, dyc));
 
         // right 1
-        shapeRecords.add(new StyleChangeRecord(0, dya, 0, 1, 4));
-        shapeRecords.add(new StraightEdgeRecord(dxa, 0));
+        shapeRecords.add(new StyleChangeRecord(0, stt, 0, 1, 4));
+        shapeRecords.add(new StraightEdgeRecord(slt, 0));
         shapeRecords.add(new StyleChangeRecord(0, 2, 5));
         shapeRecords.add(new StraightEdgeRecord(dxb, 0));
         shapeRecords.add(new StyleChangeRecord(0, 3, 6));
         shapeRecords.add(new StraightEdgeRecord(dxc, 0));
 
         // right 2
-        shapeRecords.add(new StyleChangeRecord(0, dya + dyb, 0, 4, 7));
-        shapeRecords.add(new StraightEdgeRecord(dxa, 0));
+        shapeRecords.add(new StyleChangeRecord(0, stt + dyb, 0, 4, 7));
+        shapeRecords.add(new StraightEdgeRecord(slt, 0));
         shapeRecords.add(new StyleChangeRecord(0, 5, 8));
         shapeRecords.add(new StraightEdgeRecord(dxb, 0));
         shapeRecords.add(new StyleChangeRecord(0, 6, 9));

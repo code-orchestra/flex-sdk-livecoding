@@ -266,8 +266,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 		{
 			node.base = evalAndFold(cx, node.base);
 		}
-		Value val = node.selector.evaluate(cx, this);
-		return val;
+		return node.selector.evaluate(cx, this);
 	}
 
 	public Value evaluate(Context cx, CallExpressionNode node) {
@@ -276,8 +275,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 	}
 
 	public Value evaluate(Context cx, GetExpressionNode node) {
-        Value val = node.expr.evaluate(cx,this);
-		return val;
+		return node.expr.evaluate(cx, this);
 	}
 
     public Value evaluate(Context cx, ApplyTypeExprNode node)

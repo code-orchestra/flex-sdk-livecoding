@@ -909,8 +909,7 @@ public class GlobalOptimizer
 		{
 			int i = p.readU30();
 			int kind = p.readU8();
-			Object v = defaultValue(kind, i);
-			return v;
+			return defaultValue(kind, i);
 		}
 		
 		Object defaultValue(int kind, int i)
@@ -7276,9 +7275,8 @@ public class GlobalOptimizer
 			return t1;
 
 		//  Return the common base type or ANY.
-		Type common_base = mdb(t1.ref, t2.ref).t;
-		
-		return common_base;
+
+		return mdb(t1.ref, t2.ref).t;
 	}
 	
 	
@@ -7867,8 +7865,7 @@ public class GlobalOptimizer
 	{
 		if (phis.isEmpty() || live.isEmpty())
 			return live;
-		Set<Expr> copy = live.stream().map(e -> phis.contains(e) ? e.args[findPhiArg(e, p)] : e).collect(Collectors.toCollection(TreeSet::new));
-		return copy;
+		return live.stream().map(e -> phis.contains(e) ? e.args[findPhiArg(e, p)] : e).collect(Collectors.toCollection(TreeSet::new));
 	}
 	
 	/**
@@ -7884,8 +7881,7 @@ public class GlobalOptimizer
 	{
 		if (phis.isEmpty() || stk.isEmpty())
 			return stk;
-		Deque<Expr> copy = stk.stream().map(e -> phis.contains(e) ? e.args[findPhiArg(e, p)] : e).collect(Collectors.toCollection(ArrayDeque::new));
-		return copy;
+		return stk.stream().map(e -> phis.contains(e) ? e.args[findPhiArg(e, p)] : e).collect(Collectors.toCollection(ArrayDeque::new));
 	}
 	
 	int stacks_equal(Deque<Expr>stk1, Deque<Expr>stk2)

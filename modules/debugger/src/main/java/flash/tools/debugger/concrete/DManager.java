@@ -2253,13 +2253,11 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 	 * Map DMessage / Player attributes to VariableAttributes
 	 */
 	int toAttributes(int pAttr) {
-		int attr = pAttr; /* 1-1 mapping */
-		return attr;
+		return pAttr;
 	}
 
 	DVariable extractVariable(DMessage msg) {
-		DVariable v = extractVariable(msg, msg.getString());
-		return v;
+		return extractVariable(msg, msg.getString());
 	}
 
 	/**
@@ -2314,9 +2312,8 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 		}
 
 		case DMessage.kStringType: {
-			String s = msg.getString();
 
-			value = s;
+			value = msg.getString();
 			isPrimitive = true;
 			break;
 		}
@@ -2465,8 +2462,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 		if (valueObject != null) {
 			valueObject.setIsolateId(isolateId);
 		}
-		DVariable var = new DVariable(name, valueObject, isolateId);
-		return var;
+		return new DVariable(name, valueObject, isolateId);
 	}
 
 	/**

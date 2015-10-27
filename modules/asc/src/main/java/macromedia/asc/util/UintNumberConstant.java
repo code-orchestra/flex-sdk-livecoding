@@ -63,9 +63,8 @@ public class UintNumberConstant extends NumberConstant {
 
     public UintNumberConstant clone() throws CloneNotSupportedException
     {
-        UintNumberConstant result = (UintNumberConstant) super.clone();
 
-        return result;
+		return (UintNumberConstant) super.clone();
     }
 
     @Override

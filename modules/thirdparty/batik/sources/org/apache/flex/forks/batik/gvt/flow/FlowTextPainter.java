@@ -432,8 +432,7 @@ public class FlowTextPainter extends StrokingTextPainter {
                 aciWordStart = aciIdx;
                 aci.setIndex(aciIdx);
                 gvtFont = (GVTFont)aci.getAttribute(GVT_FONT);
-                Float f = (Float)aci.getAttribute(LINE_HEIGHT);
-                lineHeight = f;
+                lineHeight = (Float)aci.getAttribute(LINE_HEIGHT);
                 runLimit = aci.getRunLimit(szAtts);
             }
         }

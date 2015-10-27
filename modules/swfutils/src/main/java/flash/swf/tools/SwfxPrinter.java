@@ -974,9 +974,8 @@ public final class SwfxPrinter extends TagHandler
 
 			for (ShapeRecord shapeRecord : shapes.shapeRecords) {
 				indent();
-				ShapeRecord shape = shapeRecord;
-				if (shape instanceof StyleChangeRecord) {
-					StyleChangeRecord styleChange = (StyleChangeRecord) shape;
+				if (shapeRecord instanceof StyleChangeRecord) {
+					StyleChangeRecord styleChange = (StyleChangeRecord) shapeRecord;
 					out.print("<styleChange ");
 					if (styleChange.stateMoveTo) {
 						out.print("dx='" + styleChange.moveDeltaX + "' dy='" + styleChange.moveDeltaY + "' ");
@@ -1002,7 +1001,7 @@ public final class SwfxPrinter extends TagHandler
 						out.println("/>");
 					}
 				} else {
-					EdgeRecord edge = (EdgeRecord) shape;
+					EdgeRecord edge = (EdgeRecord) shapeRecord;
 					if (edge instanceof StraightEdgeRecord) {
 						StraightEdgeRecord straightEdge = (StraightEdgeRecord) edge;
 						out.println("<line dx='" + straightEdge.deltaX + "' dy='" + straightEdge.deltaY + "' />");
@@ -2094,9 +2093,8 @@ public final class SwfxPrinter extends TagHandler
 
 			for (URL url1 : urls) {
 				try {
-					URL url = url1;
 					if (saveOption) {
-						try (InputStream in = new BufferedInputStream(url.openStream())) {
+						try (InputStream in = new BufferedInputStream(url1.openStream())) {
 							try (OutputStream fileOut = new BufferedOutputStream(new FileOutputStream(outfile))) {
 								int c;
 								while ((c = in.read()) != -1) {
@@ -2106,14 +2104,14 @@ public final class SwfxPrinter extends TagHandler
 						}
 					}
 
-					if (isSwf(url)) {
-						dumpSwf(out, url, outfile);
-					} else if (isZip(url) && !url.toString().endsWith(".abj")) {
-						dumpZip(out, url, outfile);
+					if (isSwf(url1)) {
+						dumpSwf(out, url1, outfile);
+					} else if (isZip(url1) && !url1.toString().endsWith(".abj")) {
+						dumpZip(out, url1, outfile);
 					} else {
-						out.println("<!-- Parsing actions from " + url + " -->");
+						out.println("<!-- Parsing actions from " + url1 + " -->");
 						// we have no way of knowing the swf version, so assume latest
-						URLConnection connection = url.openConnection();
+						URLConnection connection = url1.openConnection();
 						ActionDecoder actionDecoder = new ActionDecoder(new SwfDecoder(connection.getInputStream(), 7));
 						actionDecoder.setKeepOffsets(true);
 						ActionList actions = actionDecoder.decode(connection.getContentLength());

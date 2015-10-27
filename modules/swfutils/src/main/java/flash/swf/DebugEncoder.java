@@ -534,9 +534,8 @@ public class DebugEncoder implements DebugHandler
 	 */
 	private boolean isFrameworkClass(String name)
 	{
-		boolean isIt = ( name.startsWith("mx.") && name.contains(":") && name.endsWith(".as") )
-			|| (name.contains("/mx/"));
 
-		return isIt;
+        return ( name.startsWith("mx.") && name.contains(":") && name.endsWith(".as") )
+            || (name.contains("/mx/"));
 	}
 }

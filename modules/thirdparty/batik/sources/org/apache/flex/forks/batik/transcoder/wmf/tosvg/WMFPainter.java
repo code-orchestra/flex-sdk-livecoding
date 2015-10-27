@@ -952,8 +952,7 @@ public class WMFPainter extends AbstractWMFPainter {
         Dimension d = getImageDimension(bit);
         BufferedImage img = getImage(bit);
         Rectangle2D rec = new Rectangle2D.Float(0, 0, (float)d.width, (float)d.height);
-        TexturePaint paint = new TexturePaint(img, rec);
-        return paint;
+        return new TexturePaint(img, rec);
     }
 
     /** Draw an AttributedCharacterIterator taking into account the following characteristics. :

@@ -289,9 +289,8 @@ public class ClassFileUtilities {
                 for (Object aClasspath : classpath) {
                     InputStream depis = null;
                     String path = null;
-                    Object cpEntry = aClasspath;
-                    if (cpEntry instanceof JarFile) {
-                        JarFile jarFile = (JarFile) cpEntry;
+                    if (aClasspath instanceof JarFile) {
+                        JarFile jarFile = (JarFile) aClasspath;
                         String classFileName = s + ".class";
                         ZipEntry ze = jarFile.getEntry(classFileName);
                         if (ze != null) {
@@ -299,7 +298,7 @@ public class ClassFileUtilities {
                             depis = jarFile.getInputStream(ze);
                         }
                     } else {
-                        path = ((String) cpEntry) + '/' + s + ".class";
+                        path = ((String) aClasspath) + '/' + s + ".class";
                         File f = new File(path);
                         if (f.isFile()) {
                             depis = new FileInputStream(f);

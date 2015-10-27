@@ -90,8 +90,7 @@ public class FileResolver implements FXGResourceResolver
         if (!file.isAbsolute())
             file = new File(rootPath, path);
 
-        FileInputStream fis = new FileInputStream(file);
-        return fis;
+        return new FileInputStream(file);
     }
 
     /**

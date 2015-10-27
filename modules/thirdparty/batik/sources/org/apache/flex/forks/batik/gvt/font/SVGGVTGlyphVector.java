@@ -546,8 +546,7 @@ public final class SVGGVTGlyphVector implements GVTGlyphVector {
     public Shape getOutline(float x, float y) {
         Shape outline = getOutline();
         AffineTransform tr = AffineTransform.getTranslateInstance(x,y);
-        Shape translatedOutline = tr.createTransformedShape(outline);
-        return translatedOutline;
+        return tr.createTransformedShape(outline);
     }
 
     /**

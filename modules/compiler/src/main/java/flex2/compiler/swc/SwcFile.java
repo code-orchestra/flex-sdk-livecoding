@@ -141,8 +141,7 @@ public class SwcFile implements VirtualFile
 
         if ((swcLocation != null) && swcLocation.equals(swc.getLocation()))
         {
-            String filePath = getFilePath(relative);
-            relative = filePath;
+            relative = getFilePath(relative);
         }
 
         return swc.getFile(relative); // a relative reference to a swc file is always internally resolved

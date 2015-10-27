@@ -66,11 +66,9 @@ public class InstanceBuilder extends Builder
 
 		// front-end
 
-		int var_id = super.Variable(cx,ob);
-
 		// back-end
 
-		return var_id;
+		return super.Variable(cx,ob);
 
 	}
 

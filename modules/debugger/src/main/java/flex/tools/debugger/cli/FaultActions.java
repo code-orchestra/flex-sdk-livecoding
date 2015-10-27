@@ -89,8 +89,7 @@ public class FaultActions
 		int mask  = getAction(action);
 		int bits = get(fault);
 
-		boolean set = ((bits & mask) == mask);
-		return set;
+		return ((bits & mask) == mask);
 	}
 
 	/**

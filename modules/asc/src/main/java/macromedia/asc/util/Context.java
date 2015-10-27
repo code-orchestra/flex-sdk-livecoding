@@ -591,10 +591,9 @@ public final class Context implements ErrorConstants
         }
 
         // Check type defined types until there are no more.
-        final BitSet bits = def;
 
         // Iterate only over set bits
-        for(int i=nextSetBit(bits,0); i>=0; i=nextSetBit(bits,i+1))
+        for(int i = nextSetBit(def,0); i>=0; i=nextSetBit(def,i+1))
         {
             int diff = 0;
             if ((diff = i - def_types.size()) >= 0)
@@ -1490,9 +1489,8 @@ public final class Context implements ErrorConstants
     public int popVersion()
     {
         if( checkVersion() ) {
-            int ret = statics.versions.pop_back();
             //System.out.println("pop version " + ret);
-            return ret;
+            return statics.versions.pop_back();
         }
         return 0;
     }
@@ -1660,8 +1658,7 @@ public final class Context implements ErrorConstants
         {
             namespace_part.append(':');
         }
-        String debug_name = namespace_part.append(name).append(kind_part).toString();
-        return debug_name;
+        return namespace_part.append(name).append(kind_part).toString();
     }
 
     public QName computeQualifiedName(String region_part, String name, ObjectValue qualifier, int kind )

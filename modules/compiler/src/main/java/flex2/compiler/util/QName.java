@@ -95,9 +95,7 @@ public final class QName extends Name
 	{
 		assert namespaceURI != null : "Null namespace";
 
-		boolean result = this.namespaceURI.equals(namespaceURI) && this.localPart.equals(localPart);
-
-		return result;
+		return this.namespaceURI.equals(namespaceURI) && this.localPart.equals(localPart);
 	}
 
 	public boolean equals(Object obj)

@@ -194,7 +194,6 @@ public class CompositeRable8Bit
             return null;
 
         // System.out.println("Done General: " + rule);
-        CachableRed cr = new CompositeRed(srcs, rule);
-        return cr;
+        return new CompositeRed(srcs, rule);
     }
 }

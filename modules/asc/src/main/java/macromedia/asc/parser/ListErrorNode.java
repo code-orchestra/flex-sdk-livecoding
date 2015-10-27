@@ -41,9 +41,8 @@ public class ListErrorNode extends ListNode // ErrorNode
 
     public ListErrorNode clone() throws CloneNotSupportedException
     {
-        ListErrorNode result = (ListErrorNode) super.clone();
 
-        return result;
+        return (ListErrorNode) super.clone();
     }
 
     @Override

@@ -112,9 +112,8 @@ public class LiteralStringNode extends Node
 
     public LiteralStringNode clone() throws CloneNotSupportedException
     {
-        LiteralStringNode result = (LiteralStringNode) super.clone();
 
-        return result;
+		return (LiteralStringNode) super.clone();
     }
 
     @Override

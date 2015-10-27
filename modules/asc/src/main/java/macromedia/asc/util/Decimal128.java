@@ -59,9 +59,8 @@ public class Decimal128 {
 
     public Decimal128 clone() throws CloneNotSupportedException
     {
-        Decimal128 result = new Decimal128(value, flags);
 
-        return result;
+		return new Decimal128(value, flags);
     }
 	
 	/* public constructors */

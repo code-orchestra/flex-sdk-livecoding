@@ -339,14 +339,11 @@ public final class DataBindingExtension implements Extension
         FunctionDefinitionNode setupFunctionDefinition = generateSetupFunctionDefinition(nodeFactory, cx, setupFunctionCommon);
         statementList = nodeFactory.statementList(statementList, setupFunctionDefinition);
 
-        ClassDefinitionNode classDefinition =
-            nodeFactory.classDefinition(cx,
-                                        AbstractSyntaxTreeUtil.generatePublicAttribute(nodeFactory),
-                                        AbstractSyntaxTreeUtil.generatePublicQualifiedIdentifier(nodeFactory, name),
-                                        inheritance,
-                                        statementList);
-
-        return classDefinition;
+        return nodeFactory.classDefinition(cx,
+                                    AbstractSyntaxTreeUtil.generatePublicAttribute(nodeFactory),
+                                    AbstractSyntaxTreeUtil.generatePublicQualifiedIdentifier(nodeFactory, name),
+                                    inheritance,
+                                    statementList);
     }
 
     private ExpressionStatementNode generateEvaluationWatcherPart(NodeFactory nodeFactory,
@@ -821,9 +818,8 @@ public final class DataBindingExtension implements Extension
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(base, selector);
         ListNode list = nodeFactory.list(null, memberExpression);
         ExpressionStatementNode expressionStatement = nodeFactory.expressionStatement(list);
-        StatementListNode result = nodeFactory.statementList(statementList, expressionStatement);
 
-        return result;
+        return nodeFactory.statementList(statementList, expressionStatement);
     }
 
     private StatementListNode generateWatcher(NodeFactory nodeFactory, Context cx,
@@ -886,9 +882,8 @@ public final class DataBindingExtension implements Extension
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(base, selector);
         ListNode list = nodeFactory.list(null, memberExpression);
         ExpressionStatementNode expressionStatement = nodeFactory.expressionStatement(list);
-        StatementListNode result = nodeFactory.statementList(statementList, expressionStatement);
 
-        return result;
+        return nodeFactory.statementList(statementList, expressionStatement);
     }
 
     private StatementListNode generateWatcherChildren(NodeFactory nodeFactory, Context cx,
@@ -984,9 +979,8 @@ public final class DataBindingExtension implements Extension
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(base, selector);
         ListNode list = nodeFactory.list(null, memberExpression);
         ExpressionStatementNode expressionStatement = nodeFactory.expressionStatement(list);
-        StatementListNode result = nodeFactory.statementList(statementList, expressionStatement);
 
-        return result;
+        return nodeFactory.statementList(statementList, expressionStatement);
     }
 
     private StatementListNode generateWatcher(NodeFactory nodeFactory, Context cx,
@@ -1022,9 +1016,8 @@ public final class DataBindingExtension implements Extension
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(base, selector);
         ListNode list = nodeFactory.list(null, memberExpression);
         ExpressionStatementNode expressionStatement = nodeFactory.expressionStatement(list);
-        StatementListNode result = nodeFactory.statementList(statementList, expressionStatement);
 
-        return result;
+        return nodeFactory.statementList(statementList, expressionStatement);
     }
 
     private StatementListNode generateWatcher(NodeFactory nodeFactory, StatementListNode statementList,
@@ -1051,9 +1044,8 @@ public final class DataBindingExtension implements Extension
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(base, selector);
         ListNode list = nodeFactory.list(null, memberExpression);
         ExpressionStatementNode expressionStatement = nodeFactory.expressionStatement(list);
-        StatementListNode result = nodeFactory.statementList(statementList, expressionStatement);
 
-        return result;
+        return nodeFactory.statementList(statementList, expressionStatement);
     }
 
     private StatementListNode generateWatcherBottom(NodeFactory nodeFactory, Context cx,

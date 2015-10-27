@@ -46,9 +46,8 @@ public class IdentifierErrorNode extends IdentifierNode // ErrorNode
 
     public IdentifierErrorNode clone() throws CloneNotSupportedException
     {
-        IdentifierErrorNode result = (IdentifierErrorNode) super.clone();
 
-        return result;
+		return (IdentifierErrorNode) super.clone();
     }
 
     @Override

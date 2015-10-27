@@ -1238,7 +1238,6 @@ public class DebugCLI implements Runnable, SourceLocator {
         boolean validFrame = true;
 
         // some formatting properties
-        int i = frameNumber;
 
         Location loc = ctx.getLocation();
         SourceFile file = loc.getFile();
@@ -1256,7 +1255,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             boolean displayArgs = (func != null) || (var != null);
 
             sb.append('#');
-            FieldFormat.formatLong(sb, i, 3);
+            FieldFormat.formatLong(sb, frameNumber, 3);
             sb.append(' ');
 
             if (showThis && dis != null) {

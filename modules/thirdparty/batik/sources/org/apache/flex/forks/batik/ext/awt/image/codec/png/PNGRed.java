@@ -483,12 +483,11 @@ public class PNGRed extends AbstractRed {
             int type      =    distream.readInt();
             distream.reset();
 
-            String typeString = ""
+            return ""
                               + (char)((type >> 24) & 0xff)
                               + (char)((type >> 16) & 0xff)
                               + (char)((type >>  8) & 0xff)
                               + (char)( type        & 0xff);
-            return typeString;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

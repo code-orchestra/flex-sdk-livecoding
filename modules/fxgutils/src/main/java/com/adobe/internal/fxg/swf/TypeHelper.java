@@ -375,8 +375,7 @@ public class TypeHelper
     {
         int rgb = color & 0x00FFFFFF;
         int a = (int)StrictMath.rint(alpha * 255);
-        int argb = rgb | (a << 24);
-        return argb;
+        return rgb | (a << 24);
     }
 
     /**

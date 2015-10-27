@@ -31,9 +31,8 @@ public class RegisterRecord extends Action
 	public RegisterRecord(int offset, int numRegisters)
 	{
 		super(ActionList.sactionRegisterRecord);
-		int size = numRegisters;
-		registerNumbers = new int[size];
-		variableNames = new String[size];
+		registerNumbers = new int[numRegisters];
+		variableNames = new String[numRegisters];
 		this.offset = offset;
 		next = 0;
 	}

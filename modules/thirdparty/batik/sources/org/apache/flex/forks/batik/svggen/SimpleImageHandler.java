@@ -72,11 +72,9 @@ public class SimpleImageHandler implements GenericImageHandler, SVGSyntax, Error
      */
     public Element createElement(SVGGeneratorContext generatorContext) {
         // Create a DOM Element in SVG namespace to refer to an image
-        Element imageElement =
-            generatorContext.getDOMFactory().createElementNS
-            (SVG_NAMESPACE_URI, SVG_IMAGE_TAG);
 
-        return imageElement;
+        return generatorContext.getDOMFactory().createElementNS
+        (SVG_NAMESPACE_URI, SVG_IMAGE_TAG);
     }
 
     /**

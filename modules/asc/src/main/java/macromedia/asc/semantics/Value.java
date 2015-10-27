@@ -87,9 +87,8 @@ public abstract class Value implements Serializable, Cloneable // CodeOrchestra:
 
     public Value clone() throws CloneNotSupportedException
     {
-        Value result = (Value) super.clone();
 
-        return result;
+		return (Value) super.clone();
     }
 
     @Override

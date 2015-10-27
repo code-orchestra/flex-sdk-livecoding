@@ -89,9 +89,7 @@ public class SlotReflect
     public String getTypeName() {
         TypeInfo ti = slot.getType();
 
-        String typeName = getTypeName(ti);
-
-        return typeName;
+        return getTypeName(ti);
     }
 
     public String getElementTypeName() {

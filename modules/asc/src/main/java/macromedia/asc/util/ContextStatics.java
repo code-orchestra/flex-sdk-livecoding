@@ -142,7 +142,6 @@ public class ContextStatics
      */
     public static ObjectList<String> getRequiredUseNamespaces(int targetPlayerMajorVersion)
     {
-        final ObjectList<String> use_namespaces = new ObjectList<>();
         
         /*
         // no longer needed, but this is how you would do it
@@ -152,7 +151,7 @@ public class ContextStatics
         }
         */
         
-        return use_namespaces;
+        return new ObjectList<>();
     }
     
     /**

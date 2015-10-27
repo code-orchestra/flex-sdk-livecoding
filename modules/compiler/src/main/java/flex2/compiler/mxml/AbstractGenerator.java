@@ -25,11 +25,11 @@ import flex2.compiler.mxml.lang.StandardDefs;
 import flex2.compiler.mxml.rep.Script;
 import flex2.compiler.util.CompilerMessage;
 import flex2.compiler.util.ThreadLocalToolkit;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import macromedia.asc.parser.*;
 import macromedia.asc.util.Context;
+
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * This base class all the common data and logic of the two direct AST
@@ -53,17 +53,14 @@ public abstract class AbstractGenerator
         this.standardDefs = defs;
     }
     
-    protected StatementListNode generateMetaData(StatementListNode programStatementList,
-                                                 List<Script> scripts)
+    protected StatementListNode generateMetaData(StatementListNode programStatementList, List<Script> scripts)
     {
         StatementListNode result = programStatementList;
 
         for (Script script : scripts) {
             String text = script.getText();
             int xmlLineNumber = script.getXmlLineNumber();
-            List<Node> list = AbstractSyntaxTreeUtil.parse(context, configNamespaces, text,
-                    xmlLineNumber, generateDocComments);
-
+            List<Node> list = AbstractSyntaxTreeUtil.parse(context, configNamespaces, text, xmlLineNumber, generateDocComments);
             for (Node node : list) {
                 if (node instanceof MetaDataNode) {
                     result = nodeFactory.statementList(result, node);
@@ -81,28 +78,23 @@ public abstract class AbstractGenerator
 
     protected AttributeListNode generateMxInternalAttribute()
     {
-        MemberExpressionNode mxInternalGetterSelector =
-            AbstractSyntaxTreeUtil.generateResolvedGetterSelector(nodeFactory, standardDefs.getCorePackage(), MX_INTERNAL);
+        MemberExpressionNode mxInternalGetterSelector = AbstractSyntaxTreeUtil.generateResolvedGetterSelector(nodeFactory, standardDefs.getCorePackage(), MX_INTERNAL);
         ListNode list = nodeFactory.list(null, mxInternalGetterSelector);
         return nodeFactory.attributeList(list, null);
     }
 
     protected StatementListNode generateScripts(StatementListNode statementList, List<Script> scripts)
     {
-        StatementListNode result = statementList;
-
         for (Script script : scripts) {
             String text = script.getText();
             int xmlLineNumber = script.getXmlLineNumber();
-            List<Node> list = AbstractSyntaxTreeUtil.parse(context, configNamespaces, text,
-                    xmlLineNumber, generateDocComments);
+            List<Node> list = AbstractSyntaxTreeUtil.parse(context, configNamespaces, text, xmlLineNumber, generateDocComments);
             // Don't use NodeFactory.statementList() here, because it
             // handles IncludeDirectives by inlining them and if we
             // use it here, they will get inlined a second time.
-            result.items.addAll(list);
+            statementList.items.addAll(list);
         }
-
-        return result;
+        return statementList;
     }
 
     Context getContext()

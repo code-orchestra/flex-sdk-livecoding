@@ -116,13 +116,13 @@ public class SourcePath extends SourcePathBase
 		boolean thisPath = false;
 
 		for (File directory : directories) {
-			File d = directory, f = null;
-			if (pathRoot.equals(FileUtil.getCanonicalPath(d))) {
+			File f = null;
+			if (pathRoot.equals(FileUtil.getCanonicalPath(directory))) {
 				thisPath = true;
 			}
 
 			try {
-				f = findFile(d, relativePath, mimeTypes);
+				f = findFile(directory, relativePath, mimeTypes);
 			} catch (CompilerException ex) {
 				removeSource(s);
 				return false;
@@ -143,10 +143,10 @@ public class SourcePath extends SourcePathBase
 		Source s = null;
 
 		for (File directory : directories) {
-			File f, d = directory;
+			File f;
 
-			if ((f = findFile(d, p, mimeTypes)) != null) {
-				sources.put(className, s = newSource(f, d, namespaceURI, localPart));
+			if ((f = findFile(directory, p, mimeTypes)) != null) {
+				sources.put(className, s = newSource(f, directory, namespaceURI, localPart));
 				return s;
 			}
 		}
@@ -182,10 +182,10 @@ public class SourcePath extends SourcePathBase
 		String p = className.replace(':', '.').replace('.', File.separatorChar);
 
 		for (File directory : directories) {
-			File f, d = directory;
+			File f;
 
 			try {
-				if ((f = findFile(d, p, mimeTypes)) != null) {
+				if ((f = findFile(directory, p, mimeTypes)) != null) {
 					hits.add(className);
 					return true;
 				}

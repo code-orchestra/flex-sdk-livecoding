@@ -105,9 +105,7 @@ public class SVGGlyphElementBridge extends AbstractSVGBridge
             } finally {
                 // transform the shape into the correct coord system
                 Shape shape = app.getShape();
-                Shape transformedShape
-                    = scaleTransform.createTransformedShape(shape);
-                dShape = transformedShape;
+                dShape = scaleTransform.createTransformedShape(shape);
             }
         }
 

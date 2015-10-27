@@ -711,7 +711,7 @@ public class Configuration extends Hashtable
             while(theKeys.hasMoreElements())
             {
                 String key = (String) theKeys.nextElement();
-                Object value = get((Object) key);
+                Object value = get(key);
                 if(value != null)
                 {
                     if(value instanceof String)
@@ -781,7 +781,7 @@ public class Configuration extends Hashtable
 
             for(int i = 0; i < keysAsListed.size(); i++)
             {
-                if ( ( (String) keysAsListed.get(i)).equals( key ) )
+                if ( keysAsListed.get(i).equals( key ) )
                 {
                     keysAsListed.remove(i);
                     break;
@@ -1100,7 +1100,7 @@ public class Configuration extends Hashtable
         else if (value instanceof String)
         {
             Vector v = new Vector(1);
-            v.addElement((String) value);
+            v.addElement(value);
             put(key, v);
             return v;
         }
@@ -1135,7 +1135,7 @@ public class Configuration extends Hashtable
      */
     public boolean getBoolean(String key)
     {
-        Boolean b = getBoolean(key, (Boolean) null);
+        Boolean b = getBoolean(key, null);
         if (b != null)
         {
             return b;

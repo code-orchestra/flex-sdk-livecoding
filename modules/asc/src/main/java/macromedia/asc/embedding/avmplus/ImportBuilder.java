@@ -55,11 +55,9 @@ public class ImportBuilder extends Builder
 
         // front-end
 
-        int var_id = super.Variable(cx,ob);
-
         // back-end
 
-        return var_id;
+        return super.Variable(cx,ob);
     }
 
     public int Method( Context cx, ObjectValue ob, String name, Namespaces namespaces, boolean is_final )

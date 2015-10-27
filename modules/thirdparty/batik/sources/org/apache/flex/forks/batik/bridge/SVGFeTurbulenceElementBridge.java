@@ -87,12 +87,11 @@ public class SVGFeTurbulenceElementBridge
         }
 
         // default region is the filter chain region
-        Rectangle2D defaultRegion = filterRegion;
         Rectangle2D primitiveRegion
             = SVGUtilities.convertFilterPrimitiveRegion(filterElement,
                                                         filteredElement,
                                                         filteredNode,
-                                                        defaultRegion,
+                filterRegion,
                                                         filterRegion,
                                                         ctx);
 

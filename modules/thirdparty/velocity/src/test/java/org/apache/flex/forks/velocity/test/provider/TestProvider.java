@@ -53,8 +53,7 @@ public class TestProvider
 
     public List getEmptyList()
     {
-        List list = new ArrayList();
-        return list;
+        return new ArrayList();
     }
 
     public List getList()

@@ -330,12 +330,9 @@ public class TileRable8Bit
         double w = Math.min(tileWidth, tiledWidth);
         double h = Math.min(tileHeight, tiledHeight);
 
-        Rectangle2D realTileRect
-            = new Rectangle2D.Double(tileRect.getX(),
-                                     tileRect.getY(),
-                                     w, h);
-
-        return realTileRect;
+        return new Rectangle2D.Double(tileRect.getX(),
+                                 tileRect.getY(),
+                                 w, h);
     }
 
     /**

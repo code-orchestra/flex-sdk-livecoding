@@ -124,8 +124,7 @@ public class LosslessImageTranscoder extends ImageTranscoder
                     throw new QualityRequiresCompression();
                 }
 
-                DefineBitsLossless defineBits = DefineBitsLosslessBuilder.build(image.getPixels(), image.getWidth(), image.getHeight());
-                info.defineBits = defineBits;
+                info.defineBits = DefineBitsLosslessBuilder.build(image.getPixels(), image.getWidth(), image.getHeight());
             }
 
             info.width = image.getWidth();

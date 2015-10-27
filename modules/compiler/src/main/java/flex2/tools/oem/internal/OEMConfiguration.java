@@ -279,11 +279,10 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 				for (String[] aValueList : valueList) {
 					StringBuilder sb = new StringBuilder(RUNTIME_SHARED_LIBRARY_PATH);
 					sb.append("=");
-					String[] cdArgs = aValueList;
-					sb.append(cdArgs[0]);
-					for (int j = 1; j < cdArgs.length; j++) {
+					sb.append(aValueList[0]);
+					for (int j = 1; j < aValueList.length; j++) {
 						sb.append(",");
-						sb.append(cdArgs[j]);
+						sb.append(aValueList[j]);
 					}
 					buffer.add(sb.toString());
 				}

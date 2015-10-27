@@ -157,13 +157,11 @@ public class MaskRable8Bit
         // org.apache.flex.forks.batik.test.gvt.ImageDisplay.showImage("Src: ", cr);
         // org.apache.flex.forks.batik.test.gvt.ImageDisplay.showImage("Mask: ", maskCr);
 
-        CachableRed ret = new MultiplyAlphaRed(cr, maskCr);
-
         // org.apache.flex.forks.batik.test.gvt.ImageDisplay.showImage("Masked: ", ret);
 
 
         // ret = new PadRed(ret, cr.getBounds(), PadMode.ZERO_PAD, rh);
 
-        return ret;
+        return new MultiplyAlphaRed(cr, maskCr);
     }
 }

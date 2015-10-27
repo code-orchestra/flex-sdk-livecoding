@@ -364,16 +364,15 @@ public final class ReferenceValue extends Value implements ErrorConstants
     public boolean findQualified(Context cx, final int flags)
     {
         for (ObjectValue namespace : namespaces) {
-            ObjectValue qualifier = namespace;
             // this is a qualified reference with a base object
             for (ObjectValue obj = this.base; obj != null; obj = obj.proto()) {
-                if (obj.hasName(cx, getKind(), name, qualifier)) {
+                if (obj.hasName(cx, getKind(), name, namespace)) {
                     if (type_params != null) {
-                        int index = obj.getSlotIndex(cx, getKind(), name, qualifier);
+                        int index = obj.getSlotIndex(cx, getKind(), name, namespace);
                         Slot slot = obj.getSlot(cx, index);
-                        bindToTypeParamSlot(cx, obj, qualifier, slot);
+                        bindToTypeParamSlot(cx, obj, namespace, slot);
                     } else
-                        bindToSlot(cx, obj, qualifier);
+                        bindToSlot(cx, obj, namespace);
 
                     return true;
                 }
@@ -736,8 +735,7 @@ public final class ReferenceValue extends Value implements ErrorConstants
 
     public int getScopeIndex()
     {
-        short i = (short)((flags&SCOPE_INDEX_Mask)>>SCOPE_INDEX_Shift);
-        return i; 
+        return (short)((flags&SCOPE_INDEX_Mask)>>SCOPE_INDEX_Shift);
     }
 
     public void setKind(int kind)
@@ -748,8 +746,7 @@ public final class ReferenceValue extends Value implements ErrorConstants
 
     public int getKind()
     {
-        byte b = (byte)((flags&KIND_Mask)>>KIND_Shift);
-        return b; 
+        return (byte)((flags&KIND_Mask)>>KIND_Shift);
     }
 
     private void setGetSlotIndex(int get_slot_index)

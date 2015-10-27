@@ -53,9 +53,8 @@ public class UseNumericNode extends UsePragmaNode {
 
     public UseNumericNode clone() throws CloneNotSupportedException
     {
-        UseNumericNode result = (UseNumericNode) super.clone();
 
-        return result;
+		return (UseNumericNode) super.clone();
     }
 
     @Override

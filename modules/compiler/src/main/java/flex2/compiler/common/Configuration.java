@@ -2004,8 +2004,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
  	    throws CloneNotSupportedException
  	{
  	    Configuration cloneConfig = (Configuration) super.clone();
- 	    CompilerConfiguration cloneCompilerConfiguration = (CompilerConfiguration) this.compilerConfiguration.clone();
- 	    cloneConfig.compilerConfiguration = cloneCompilerConfiguration;
+        cloneConfig.compilerConfiguration = (CompilerConfiguration) this.compilerConfiguration.clone();
  	    return cloneConfig;
  	}
 }

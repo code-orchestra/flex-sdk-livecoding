@@ -141,7 +141,7 @@ public class FieldMethodizer
         {
             Field f = (Field) fieldHash.get( fieldName );
             if (f != null)
-                return f.get( (Class) classHash.get(fieldName) );
+                return f.get(classHash.get(fieldName));
         }
         catch( Exception e )
         {

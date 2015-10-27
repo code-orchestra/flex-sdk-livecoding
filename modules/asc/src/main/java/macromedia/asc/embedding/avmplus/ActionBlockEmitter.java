@@ -175,11 +175,10 @@ public class ActionBlockEmitter extends Emitter
             // If not, then add it.
 
             bodies.push_back(bytes);
-            int index = bodies.size();
 
 //        if( show_bytecode ) printf( " -> %d",index);
 //        if( show_bytecode ) defns_out << " -> " << index;
-            return index;
+            return bodies.size();
         }
 
         public int addUtf8Constant(ByteList bytes)
@@ -432,8 +431,7 @@ public class ActionBlockEmitter extends Emitter
             // If not, then add it.
 
             table.add(bytes);
-            int index = table.size();
-            return index;
+            return table.size();
         }
     }
 
@@ -532,8 +530,7 @@ public class ActionBlockEmitter extends Emitter
 			return ns.name;
 		}
 		assert doingAPIVersioning;
-		String uri = ns.name + (char)(0xE000+v);
-		return uri;
+        return ns.name + (char)(0xE000+v);
 	}
 
 	private String formatNSKind(ObjectValue ns) {
@@ -624,8 +621,7 @@ public class ActionBlockEmitter extends Emitter
                 cx.internalError("internal error: non object value for namespace");
             }
         }
-        int ns_set_index = ab.addNsSetConstant(bytecodeFactory.ConstantNamespaceSet(namespace_set));
-        return ns_set_index;
+        return ab.addNsSetConstant(bytecodeFactory.ConstantNamespaceSet(namespace_set));
     }
 
     int makeVersionedNamespaceSet(ObjectValue ns, TreeSet<Integer> versions)
@@ -648,17 +644,14 @@ public class ActionBlockEmitter extends Emitter
                 cx.internalError("internal error: non object value for namespace");
             }
         }
-        int ns_set_index = ab.addNsSetConstant(bytecodeFactory.ConstantNamespaceSet(namespace_set));
-        return ns_set_index;
+        return ab.addNsSetConstant(bytecodeFactory.ConstantNamespaceSet(namespace_set));
     }
 
     int makeMultiname(String name, ObjectList<ObjectValue> namespaces)
     {
         int name_index  = ab.addUtf8Constant(bytecodeFactory.ConstantUtf8Info(name));
         int namespaces_set = makeNamespaceSet(namespaces);
-        int mname_index = ab.addMultiNameConstant(bytecodeFactory.ConstantMultiname(name_index,namespaces_set,false));
-
-        return mname_index;
+        return ab.addMultiNameConstant(bytecodeFactory.ConstantMultiname(name_index,namespaces_set,false));
     }
 
     protected void StartClass(final String filename)
@@ -987,8 +980,7 @@ public class ActionBlockEmitter extends Emitter
 
         if( activation != null )
         {
-            ObjectValue obj = activation;
-            FinishTraits(obj, traits);
+            FinishTraits(activation, traits);
        }
 
         int flags = 0;
@@ -8600,7 +8592,6 @@ protected void Setsuper(ByteList code,int index)
         for( int i = 0; i < package_infos.size(); ++i )
         {
             String name = package_infos.get(i);
-            int package_info = i;
             if (name.length() > 1)
             {
                 // ignore packages "" and "$"
@@ -8611,9 +8602,9 @@ protected void Setsuper(ByteList code,int index)
                 constName = constName.replace('|','_');
                 constName = constName.replace('$','_');
 
-                header_out.println("const int abcpackage_" + constName + " = " + package_info + ";");
-                if (package_info >= native_package_count)
-                    native_package_count = package_info+1;
+                header_out.println("const int abcpackage_" + constName + " = " + i + ";");
+                if (i >= native_package_count)
+                    native_package_count = i +1;
             }
         }
     }

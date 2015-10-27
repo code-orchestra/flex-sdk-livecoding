@@ -1964,8 +1964,7 @@ public class CompilerConfiguration implements As3Configuration,
 
     public VirtualFile[] getResourceBundlePathForLocale(String locale)
     {
-    	VirtualFile[] path = resourceBundlePaths.get(locale);
-    	return path;
+		return resourceBundlePaths.get(locale);
     }
 
 	public void cfgSourcePath( ConfigurationValue cv, String[] pathlist ) throws ConfigurationException

@@ -123,14 +123,13 @@ public class SVGFeImageElementBridge
         proxyElement.appendChild(contentElement);
 
         // feImage's default region is that of the filter chain.
-        Rectangle2D defaultRegion = filterRegion;
         Element filterDefElement = (Element)(filterElement.getParentNode());
 
         Rectangle2D primitiveRegion =
             SVGUtilities.getBaseFilterPrimitiveRegion(filterElement,
                                                       filteredElement,
                                                       filteredNode,
-                                                      defaultRegion,
+                    filterRegion,
                                                       ctx);
 
         // System.err.println(">>>>>>>> primitiveRegion : " + primitiveRegion);
@@ -171,7 +170,7 @@ public class SVGFeImageElementBridge
             = SVGUtilities.convertFilterPrimitiveRegion(filterElement,
                                                         filteredElement,
                                                         filteredNode,
-                                                        defaultRegion,
+                filterRegion,
                                                         filterRegion,
                                                         ctx);
         filter = new PadRable8Bit(filter, primitiveRegionUserSpace,

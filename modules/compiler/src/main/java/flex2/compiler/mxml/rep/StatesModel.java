@@ -950,7 +950,7 @@ public final class StatesModel
 
         Set<String> states = info.getStateNames();
         for (String state1 : states) {
-            State state = (State) stateByName(state1);
+            State state = stateByName(state1);
             if (state != null) {
                 // State event initializers
                 for (Iterator<Initializer> eventList = state.getEvents(); eventList.hasNext(); ) {
@@ -985,7 +985,7 @@ public final class StatesModel
         // Override Initializers
         Set<String> states = info.getStateNames();
         for (String state1 : states) {
-            State state = (State) stateByName(state1);
+            State state = stateByName(state1);
             if (state != null) {
                 // State event initializers
                 iterList.add(state.getEvents());
@@ -1399,7 +1399,7 @@ public final class StatesModel
             
             // itemsFactory
             IdentifierNode itemsIdentifier = nodeFactory.identifier(ITEMSFACTORY, false);
-            String factorySymbol = ((String)factory + _FACTORY).intern();
+            String factorySymbol = (factory + _FACTORY).intern();
             IdentifierNode factoryIdentifier = nodeFactory.identifier(factorySymbol, false);
             GetExpressionNode factoryExpression = nodeFactory.getExpression(factoryIdentifier);
             MemberExpressionNode factory = nodeFactory.memberExpression(null, factoryExpression);
@@ -1656,7 +1656,7 @@ public final class StatesModel
                 {
                     // valueFactory
                     IdentifierNode itemsIdentifier = nodeFactory.identifier(VALUEFACTORY, false);
-                    String factorySymbol = ((String)factory + _FACTORY).intern();
+                    String factorySymbol = (factory + _FACTORY).intern();
                     IdentifierNode factoryIdentifier = nodeFactory.identifier(factorySymbol, false);
                     GetExpressionNode factoryExpression = nodeFactory.getExpression(factoryIdentifier);
                     MemberExpressionNode factory = nodeFactory.memberExpression(null, factoryExpression);

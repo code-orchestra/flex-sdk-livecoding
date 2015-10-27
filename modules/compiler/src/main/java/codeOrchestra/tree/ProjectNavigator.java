@@ -66,7 +66,7 @@ public class ProjectNavigator {
             }
         }
 
-        result.addAll(getAdditionalLivecodingClasses(packageName).stream().map(Pair<String, String>::getO2).collect(Collectors.toList()));
+        result.addAll(getAdditionalLivecodingClasses(packageName).stream().map(Pair::getO2).collect(Collectors.toList()));
 
         return result;
     }

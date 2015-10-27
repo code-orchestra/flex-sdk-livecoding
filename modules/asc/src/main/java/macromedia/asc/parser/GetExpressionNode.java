@@ -73,7 +73,7 @@ public class GetExpressionNode extends SelectorNode
 
 	public boolean hasAttribute(String name)
 	{
-		return ((IdentifierNode) expr).hasAttribute(name);
+		return expr.hasAttribute(name);
 	}
 
     public boolean isQualified()

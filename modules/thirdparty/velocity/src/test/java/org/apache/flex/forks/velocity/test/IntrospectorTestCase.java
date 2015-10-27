@@ -124,7 +124,7 @@ public class IntrospectorTestCase extends BaseTestCase
                 failures.add(type + "Method could not be found!");
 
             // Test integer primitive.
-            Object[] integerParams = {(int) 1};
+            Object[] integerParams = {1};
             type = "integer";
             method = RuntimeSingleton.getIntrospector().getMethod(
                 MethodProvider.class, type + "Method", integerParams);

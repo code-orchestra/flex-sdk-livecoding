@@ -76,7 +76,7 @@ public class FontSnapshot
 			String fPath;
 			try
 			{
-				fPath = (String)getFontPath.invoke(null, new Object[] { Boolean.TRUE });
+				fPath = (String)getFontPath.invoke(null, Boolean.TRUE);
 			}
 			catch(Exception e)
 			{
@@ -200,7 +200,7 @@ public class FontSnapshot
 			try
 			{
 				Class cls = Class.forName("sun.font.FontManager", true, Thread.currentThread().getContextClassLoader());
-				getFontPath = cls.getMethod("getFontPath", new Class[] { Boolean.class });
+				getFontPath = cls.getMethod("getFontPath", Boolean.class);
 			}
 			catch(Exception e2)
 			{

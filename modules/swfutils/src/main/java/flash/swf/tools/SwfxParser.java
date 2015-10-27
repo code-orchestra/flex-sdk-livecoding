@@ -139,8 +139,8 @@ public class SwfxParser extends DefaultHandler
     {
         try
         {
-            Method method = getClass().getMethod(qName, new Class[]{Attributes.class});
-            method.invoke(this, new Object[]{attributes});
+            Method method = getClass().getMethod(qName, Attributes.class);
+            method.invoke(this, attributes);
         }
         catch (NoSuchMethodException e)
         {
@@ -1140,8 +1140,8 @@ public class SwfxParser extends DefaultHandler
     {
         try
         {
-            Method method = getClass().getMethod(qName, new Class[]{});
-            method.invoke(this, new Object[]{});
+            Method method = getClass().getMethod(qName);
+            method.invoke(this);
         }
         catch (NoSuchMethodException e)
         {

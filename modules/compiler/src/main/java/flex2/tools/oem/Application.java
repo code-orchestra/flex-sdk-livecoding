@@ -660,7 +660,7 @@ public class Application implements Builder
                 I18nUtils.regenerateResourceModule((ApplicationCompilerConfiguration)localOEMConfiguration.configuration);
             }
 
-            VirtualFile targetFile = (VirtualFile) files.get(files.size() - 1);
+            VirtualFile targetFile = files.get(files.size() - 1);
 
             WebTierAPI.checkSupportedTargetMimeType(targetFile);
 

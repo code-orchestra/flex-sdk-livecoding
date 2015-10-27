@@ -163,7 +163,7 @@ public class DependencyGraph<EdgeWeight> extends Graph<String, EdgeWeight>
 
         if (predecessors != null)
         {
-			dependencies.addAll(predecessors.stream().map(Vertex<String, EdgeWeight>::getWeight).collect(Collectors.toList()));
+			dependencies.addAll(predecessors.stream().map(Vertex::getWeight).collect(Collectors.toList()));
         }
 	    
 	    return dependencies;

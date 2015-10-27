@@ -67,7 +67,7 @@ public class ServicesDependenciesWrapper
             catch (Throwable e3)
             {
             	if (e3 instanceof InvocationTargetException)
-            		System.err.println(((InvocationTargetException)e3).getCause());
+            		System.err.println(e3.getCause());
             	else
             		System.err.println(e3);
             }
@@ -84,7 +84,7 @@ public class ServicesDependenciesWrapper
     	{
     		try
     		{
-    			Method method = servicesDependenciesClass.getMethod("getLazyAssociations", new Class[] {String.class});
+    			Method method = servicesDependenciesClass.getMethod("getLazyAssociations", String.class);
     			Object arglist[] = new Object[1];
                 arglist[0] = destination;
                 return (Set)method.invoke(servicesDependenciesInstance, arglist);   			
@@ -104,7 +104,7 @@ public class ServicesDependenciesWrapper
     	{
     		try
     		{
-    			Method method = servicesDependenciesClass.getMethod("getLazyAssociations", new Class[] {String.class});
+    			Method method = servicesDependenciesClass.getMethod("getLazyAssociations", String.class);
     			Object arglist[] = new Object[2];
                 arglist[0] = destination;
                 arglist[1] = associationProp;
@@ -123,7 +123,7 @@ public class ServicesDependenciesWrapper
     	{
     		try
     		{
-    			Method method = servicesDependenciesClass.getMethod("getServerConfigXmlInit", new Class[] {} );
+    			Method method = servicesDependenciesClass.getMethod("getServerConfigXmlInit");
     			Object arglist[] = new Object[0];
                 return (String)method.invoke(servicesDependenciesInstance, arglist);   			
     		}
@@ -142,7 +142,7 @@ public class ServicesDependenciesWrapper
     	{
     		try
     		{
-    			Method method = servicesDependenciesClass.getMethod("getImports", new Class[] {} );
+    			Method method = servicesDependenciesClass.getMethod("getImports");
     			Object arglist[] = new Object[0];
                 return (String)method.invoke(servicesDependenciesInstance, arglist);   			
     		}
@@ -161,7 +161,7 @@ public class ServicesDependenciesWrapper
     	{
     		try
     		{
-    			Method method = servicesDependenciesClass.getMethod("getReferences", new Class[] {} );
+    			Method method = servicesDependenciesClass.getMethod("getReferences");
     			Object arglist[] = new Object[0];
                 return (String)method.invoke(servicesDependenciesInstance, arglist);   			
     		}
@@ -180,7 +180,7 @@ public class ServicesDependenciesWrapper
     	{
     		try
     		{
-    			Method method = servicesDependenciesClass.getMethod("getChannelClasses", new Class[] {} );
+    			Method method = servicesDependenciesClass.getMethod("getChannelClasses");
     			Object arglist[] = new Object[0];
                 return (List)method.invoke(servicesDependenciesInstance, arglist);   			
     		}
@@ -199,7 +199,7 @@ public class ServicesDependenciesWrapper
     	{
     		try
     		{
-    			Method method = servicesDependenciesClass.getMethod("addChannelClass", new Class[] {} );
+    			Method method = servicesDependenciesClass.getMethod("addChannelClass");
     			Object arglist[] = new Object[0];
                 method.invoke(servicesDependenciesInstance, arglist);   			
     		}
@@ -216,7 +216,7 @@ public class ServicesDependenciesWrapper
     	{
     		try
     		{
-    			Method method = servicesDependenciesClass.getMethod("addConfigPath", new Class[] { String.class, Long.TYPE } );
+    			Method method = servicesDependenciesClass.getMethod("addConfigPath", String.class, Long.TYPE);
     			Object arglist[] = new Object[2];
     			arglist[0] = path;
     			arglist[1] = modified;
@@ -235,7 +235,7 @@ public class ServicesDependenciesWrapper
     	{
     		try
     		{
-    			Method method = servicesDependenciesClass.getMethod("getConfigPaths", new Class[] {} );
+    			Method method = servicesDependenciesClass.getMethod("getConfigPaths");
     			Object arglist[] = new Object[0];
                 return (Map)method.invoke(servicesDependenciesInstance, arglist);   			
     		}

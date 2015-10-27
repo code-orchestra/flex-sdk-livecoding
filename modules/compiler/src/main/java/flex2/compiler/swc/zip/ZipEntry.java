@@ -449,7 +449,7 @@ public class ZipEntry extends java.util.zip.ZipEntry implements Cloneable {
                 try {
                     setCompressedSizeMethod =
                         java.util.zip.ZipEntry.class.getMethod("setCompressedSize",
-                                                               new Class[] {Long.TYPE});
+                                Long.TYPE);
                 } catch (NoSuchMethodException nse) {
                 }
             }

@@ -722,12 +722,12 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
                     case AUX_UnaryOverloads:
                         // value is Overload
                         //auxDataItems_cloned[i] = ((Overload)auxDataItems[i]).clone();
-                        auxDataItems_cloned[i] = ((Overload)auxDataItems[i]);
+                        auxDataItems_cloned[i] = auxDataItems[i];
                         break;
                     case AUX_BinaryOverloads:
                         // value is Map<TypeValue, Overload> (actually always HashMap)
                         //auxDataItems_cloned[i] = cloneOverloads((HashMap<TypeValue, Overload>)auxDataItems[i]);
-                        auxDataItems_cloned[i] = (HashMap<TypeValue, Overload>)auxDataItems[i];
+                        auxDataItems_cloned[i] = auxDataItems[i];
                         break;
                     case AUX_DebugName:
                     case AUX_MethodName:

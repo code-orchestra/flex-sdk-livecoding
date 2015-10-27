@@ -326,7 +326,7 @@ public class DValue implements Value
 				{
 					for (DVariable next : m_members.values()) {
 						if (next instanceof DVariable) {
-							((DVariable) next).setSession(s);
+							next.setSession(s);
 						}
 					}
 				}

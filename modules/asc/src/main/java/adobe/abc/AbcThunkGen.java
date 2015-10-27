@@ -94,16 +94,10 @@ public class AbcThunkGen
 
 	static byte[] load(String filename) throws IOException
 	{
-		InputStream in = new FileInputStream(filename);
-		try
-		{
+		try (InputStream in = new FileInputStream(filename)) {
 			byte[] before = new byte[in.available()];
 			in.read(before);
 			return before;
-		}
-		finally
-		{
-			in.close();
 		}
 	}
 	
@@ -136,17 +130,9 @@ public class AbcThunkGen
 	static void emitNatives(InputAbc abc, byte[] abcdata, String name, 
 		Map<Namespace,Name> namespaceNames) throws IOException
 	{
-		PrintWriter out_h = new PrintWriter(new FileWriter(name+".h2"));
-		IndentingPrintWriter out_c = new IndentingPrintWriter(new FileWriter(name+".cpp2"));
-		try
-		{
-			AbcThunkGen ngen = new AbcThunkGen(abc, abcdata, name, namespaceNames, out_h, out_c); 
+		try (PrintWriter out_h = new PrintWriter(new FileWriter(name + ".h2")); IndentingPrintWriter out_c = new IndentingPrintWriter(new FileWriter(name + ".cpp2"))) {
+			AbcThunkGen ngen = new AbcThunkGen(abc, abcdata, name, namespaceNames, out_h, out_c);
 			ngen.emit();
-		}
-		finally
-		{
-			out_c.close();
-			out_h.close();
 		}
 	}
 	

@@ -356,16 +356,10 @@ public class GlobalOptimizer
 
 	static byte[] load(String filename) throws IOException
 	{
-		InputStream in = new FileInputStream(filename);
-		try
-		{
+		try (InputStream in = new FileInputStream(filename)) {
 			byte[] before = new byte[in.available()];
 			in.read(before);
 			return before;
-		}
-		finally
-		{
-			in.close();
 		}
 	}
 	
@@ -2489,28 +2483,14 @@ public class GlobalOptimizer
 		
 		String scriptname = filename.substring(0,filename.lastIndexOf('.'));
 		byte[] data = emitAbc(abc);
-		OutputStream out = new FileOutputStream(scriptname+".abc2");
-		try
-		{
+		try (OutputStream out = new FileOutputStream(scriptname + ".abc2")) {
 			out.write(data);
-		}
-		finally
-		{
-			out.close();
 		}
 		
 		if (abc.haveNatives && !no_c_gen)
 		{
-			PrintWriter out_h = new PrintWriter(new FileWriter(scriptname+".h2"));
-			IndentingPrintWriter out_c = new IndentingPrintWriter(new FileWriter(scriptname+".cpp2"));
-			try
-			{
+			try (PrintWriter out_h = new PrintWriter(new FileWriter(scriptname + ".h2")); IndentingPrintWriter out_c = new IndentingPrintWriter(new FileWriter(scriptname + ".cpp2"))) {
 				emitSource(abc, scriptname, data, initScripts, out_h, out_c);
-			}
-			finally
-			{
-				out_c.close();
-				out_h.close();
 			}
 		}
 		return data;
@@ -8852,55 +8832,44 @@ public class GlobalOptimizer
 		// save a dot file for the method
 		try
 		{
-			PrintWriter out = new PrintWriter(new FileWriter(m.getName()+suffix+".dot"));
-			try
-			{
+			try (PrintWriter out = new PrintWriter(new FileWriter(m.getName() + suffix + ".dot"))) {
 				Deque<Block> code = dfs(m.entry.to);
-				
+
 				out.println("digraph {");
 				out.println("compound=true;");
-				out.println("label=\""+m.getName()+suffix+"\";");
+				out.println("label=\"" + m.getName() + suffix + "\";");
 				out.println("labelloc=top;");
 				out.println("fontsize=10;");
-				
-				if (SHOW_DFG)
-				{
+
+				if (SHOW_DFG) {
 					out.println("ranksep=.1; nodesep=.1;");
 					out.println("node [shape=plaintext,width=.05,height=.05,fontsize=12];");
-				}
-				else
-				{
+				} else {
 					out.println("ranksep=.25; nodesep=.25;");
 					out.println("node [shape=box,width=.1,height=.1,fontsize=12];");
 				}
-					
+
 				out.println("edge [arrowsize=.5,fontsize=8,labelfontsize=8];");
-				
-				for (Block b: code)
+
+				for (Block b : code)
 					if (SHOW_DFG)
-						dot_dfg(b,out);
+						dot_dfg(b, out);
 					else
-						dot(b,out);
-				
-				if ( SHOW_DOMINATORS )
-				{
-					Map<Block,Block> doms = idoms(code,allpreds(code));
+						dot(b, out);
+
+				if (SHOW_DOMINATORS) {
+					Map<Block, Block> doms = idoms(code, allpreds(code));
 					out.println("node [shape=box];");
 					out.println("subgraph cluster1 { label=\"Dominators\"; color=white; ");
-					for (Block b: dfs(m.entry.to))
-					{
-						out.println("D"+b+" [label="+b+"];");
+					for (Block b : dfs(m.entry.to)) {
+						out.println("D" + b + " [label=" + b + "];");
 						if (doms.containsKey(b))
-							out.println("D"+doms.get(b)+" -> D"+b);
+							out.println("D" + doms.get(b) + " -> D" + b);
 					}
 					out.println("}");
 				}
-				
+
 				out.println("}");
-			}
-			finally
-			{
-				out.close();
 			}
 		}
 		catch (IOException e) 

@@ -115,30 +115,23 @@ public final class FileUtils
 
     public static String readFile(File file, String default_encoding) throws IOException
 	{
-	    FileInputStream fileInputStream = new FileInputStream(file);
 
-		try
-		{
-            StringBuilder returnVal = new StringBuilder((int) file.length() );
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
+            StringBuilder returnVal = new StringBuilder((int) file.length());
             BufferedInputStream in = new BufferedInputStream(fileInputStream);
             in.mark(3);
-            
-			Reader reader = new InputStreamReader(in, consumeBOM(in, default_encoding));
-			
+
+            Reader reader = new InputStreamReader(in, consumeBOM(in, default_encoding));
+
             char[] line = new char[2000];
             int count = 0;
-            
-            while ((count = reader.read(line, 0, line.length)) >= 0)
-            {
+
+            while ((count = reader.read(line, 0, line.length)) >= 0) {
                 returnVal.append(line, 0, count);
             }
-            
+
             return returnVal.toString();
-		}
-		finally
-		{
-			fileInputStream.close();
-		}
+        }
 	}
 
 	public static String readFile(String filename, String default_encoding) throws IOException
@@ -396,30 +389,20 @@ public final class FileUtils
 
             // everything seems to have failed.  copy the bits.
 
-            BufferedInputStream in = new BufferedInputStream(new FileInputStream( from ));
-            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream( to ));
             byte[] buf = new byte[8 * 1024];
 
             long remain = from.length();
 
-            try
-            {
-                while ( remain > 0 )
-                {
-                    int r = in.read( buf );
-                    if (r < 0)
-                    {
+            try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(from)); BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(to))) {
+                while (remain > 0) {
+                    int r = in.read(buf);
+                    if (r < 0) {
                         return false;
                     }
                     remain -= r;
-                    out.write( buf, 0, r );
+                    out.write(buf, 0, r);
                     out.flush();
                 }
-            }
-            finally
-            {
-                in.close();
-                out.close();
             }
             long tolength = to.length();
             if (tolength == length)
@@ -477,23 +460,16 @@ public final class FileUtils
 
     public static byte[] toByteArray(InputStream in, int length) throws IOException
     {
-        BufferedInputStream inputStream = new BufferedInputStream(in);
         byte[] buffer = new byte[length];
 
-        try
-        {
+        try (BufferedInputStream inputStream = new BufferedInputStream(in)) {
             int bytesRead = 0;
             int index = 0;
 
-            while ((bytesRead >= 0) && (index < buffer.length))
-            {
+            while ((bytesRead >= 0) && (index < buffer.length)) {
                 bytesRead = inputStream.read(buffer, index, buffer.length - index);
                 index += bytesRead;
             }
-        }
-        finally
-        {
-            inputStream.close();
         }
         return buffer;
     }

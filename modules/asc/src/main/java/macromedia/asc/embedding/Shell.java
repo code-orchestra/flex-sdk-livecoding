@@ -526,15 +526,9 @@ public class Shell
 			throw new FileNotFoundException(fileName);
 		}
 
-		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF8"));
-		try
-		{
+		try (Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF8"))) {
 			out.write(output);
 			out.flush();
-		}
-		finally
-		{
-			out.close();
 		}
 	}
 

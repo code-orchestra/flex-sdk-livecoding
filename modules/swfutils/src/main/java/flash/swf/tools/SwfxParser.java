@@ -1211,74 +1211,49 @@ public class SwfxParser extends DefaultHandler
         this.docPath = path;
         //this.outputHandler = handler;
 
-        InputStream in = new BufferedInputStream(new FileInputStream(path));
         SAXParser parser;
-        try
-        {
+        try (InputStream in = new BufferedInputStream(new FileInputStream(path))) {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setValidating(true);
             factory.setNamespaceAware(true);
-            try
-            {
+            try {
                 parser = factory.newSAXParser();
                 parser.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
                 parser.setProperty(JAXP_SCHEMA_SOURCE,
                         new InputSource(getClass().getResource("swfx.xsd").toExternalForm()));
-            }
-            catch (Exception e)
-            {
-                if (e instanceof SAXNotRecognizedException)
-                {
+            } catch (Exception e) {
+                if (e instanceof SAXNotRecognizedException) {
                     // schema validation not supported... ignore
                     factory.setValidating(false);
                     factory.setNamespaceAware(true);
                     parser = factory.newSAXParser();
-                }
-                else if (e instanceof IOException)
-                {
-                    throw (IOException)e;
-                }
-                else if (e instanceof SAXException)
-                {
-                    throw (SAXException)e;
-                }
-                else
-                {
+                } else if (e instanceof IOException) {
+                    throw (IOException) e;
+                } else if (e instanceof SAXException) {
+                    throw (SAXException) e;
+                } else {
                     e.printStackTrace();
                     parser = null;
                 }
             }
             parser.parse(in, this);
             return true;
-        }
-        catch (SAXException e)
-        {
+        } catch (SAXException e) {
             // errors will have been reported already
             //e.printStackTrace();
             return false;
-        }
-        catch (Exception e)
-        {
-            if (e instanceof ParserConfigurationException)
-            {
+        } catch (Exception e) {
+            if (e instanceof ParserConfigurationException) {
                 if (Trace.error)
                     e.printStackTrace();
 
                 return false;
-            }
-            else if (e instanceof IOException)
-            {
-                throw (IOException)e;
-            }
-            else
-            {
+            } else if (e instanceof IOException) {
+                throw (IOException) e;
+            } else {
                 e.printStackTrace();
                 return true;
             }
-        }
-        finally
-        {
-            in.close();
         }
     }
 
@@ -1299,14 +1274,8 @@ public class SwfxParser extends DefaultHandler
             if (success)
             {
                 String swfFileName = args[i].substring(0, args[i].lastIndexOf('.')) + ".swf";
-                OutputStream out = new BufferedOutputStream(new FileOutputStream(swfFileName));
-                try
-                {
+                try (OutputStream out = new BufferedOutputStream(new FileOutputStream(swfFileName))) {
                     encoder.writeTo(out);
-                }
-                finally
-                {
-                    out.close();
                 }
             }
             else

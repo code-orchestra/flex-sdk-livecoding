@@ -310,15 +310,7 @@ public class ResourceManagerImpl implements ResourceManager
                  globalCache.remove( resourceName );
      
                  return getResource( resourceName, resourceType, encoding );
-            }
-            catch( ParseErrorException pee )
-            {
-                rsvc.error(
-                    "ResourceManager.getResource() exception: " + pee);
-                
-                throw pee;
-            }
-            catch( Exception eee )
+            } catch( Exception eee )
             {
                 rsvc.error(
                     "ResourceManager.getResource() exception: " + eee);

@@ -64,11 +64,7 @@ public final class MovieMetaData extends TagHandler
 			InputStream in = url.openStream();
 			TagDecoder p = new TagDecoder(in, url);
 			parse(p);
-		}
-		catch (MalformedURLException ex)
-		{
-		}
-		catch (IOException ex)
+		} catch (IOException ex)
 		{
 		}
 	}

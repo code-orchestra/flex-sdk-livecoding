@@ -162,11 +162,7 @@ public class DVariable implements Variable, Comparable
 		if (m_session != null && m_session.getPreference(SessionManager.PREF_INVOKE_GETTERS) != 0) {
 			try {
 				invokeGetter(m_session);
-			} catch (NotSuspendedException e) {
-				// fall through -- return raw value without invoking getter
-			} catch (NoResponseException e) {
-				// fall through -- return raw value without invoking getter
-			} catch (NotConnectedException e) {
+			} catch (NotSuspendedException | NotConnectedException | NoResponseException e) {
 				// fall through -- return raw value without invoking getter
 			}
 		}

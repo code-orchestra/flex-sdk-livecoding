@@ -89,10 +89,7 @@ public class ExpressionContext implements Context
 			Integer o = (Integer)m_cache.get(DebugCLI.LIST_MODULE);
 			s = m_cache.getPackageName(o);
 		}
-		catch(NullPointerException npe)
-		{
-		}
-		catch(ClassCastException cce)
+		catch(NullPointerException | ClassCastException npe)
 		{
 		}
 		return s;
@@ -236,16 +233,12 @@ public class ExpressionContext implements Context
 				val = resolveToValue(o);
 			mems = val.getMembers(getSession());
 		}
-		catch(NullPointerException npe)
+		catch(NullPointerException | PlayerDebugException npe)
 		{
 			throw new NoSuchVariableException(o);
 		}
-		catch(PlayerDebugException pde)
-		{
-			throw new NoSuchVariableException(o); // not quite right...
-		}
 
-  		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 
   		if (var != null)
             m_cache.appendVariable(sb, var, m_isolateId);
@@ -557,13 +550,9 @@ public class ExpressionContext implements Context
 				}
 			}
 		}
-		catch(NoSuchVariableException nsv)
+		catch(NoSuchVariableException | NullPointerException nsv)
 		{
 			// don't worry about this one, it means variable with id couldn't be found
-		}
-		catch(NullPointerException npe)
-		{
-			// probably no session
 		}
 
 		// what we really want is the parent not the child variable

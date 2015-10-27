@@ -129,15 +129,10 @@ public class ASDoc extends Tool implements FlexTool
             displayStartMessage();
             Mxmlc.processConfigurationException(ex, "asdoc");
         }
-        catch (CompilerException ex)
+        catch (CompilerException | SwcException ex)
         {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (SwcException ex)
-        {
-            assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (Throwable t) // IOException, Throwable
+        } catch (Throwable t) // IOException, Throwable
         {
             if (Trace.error)
             {

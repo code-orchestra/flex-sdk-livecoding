@@ -764,15 +764,11 @@ public final class ConfigurationBuffer
 			{
 				assert false : ( "impossible: should have already confirmed this!" );
 			}
-			catch (InvocationTargetException e)
+			catch (InvocationTargetException | IllegalAccessException e)
 			{
 				assert false : ( "coding error: bad child config getter" );
 			}
-			catch (IllegalAccessException e)
-			{
-				assert false : ( "coding error: bad child config getter" );
-			}
-			return null;
+            return null;
 		}
 	}
 

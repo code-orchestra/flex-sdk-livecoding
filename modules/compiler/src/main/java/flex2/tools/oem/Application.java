@@ -213,10 +213,7 @@ public class Application implements Builder
                 System.setProperty("application.home", applicationHome);
             }
         }
-        catch (URISyntaxException ex)
-        {
-        }
-        catch (IllegalArgumentException ex)
+        catch (URISyntaxException | IllegalArgumentException ex)
         {
         }
     }

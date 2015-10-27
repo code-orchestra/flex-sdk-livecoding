@@ -2453,22 +2453,11 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
     				}
     			}
     		}
-    		catch(InProgressException ipe)
+    		catch(InProgressException | NotSuspendedException | NoResponseException ipe)
     		{
     			// swd is still loading so give us a bit of
     			// time and then come back and try again
-    		}
-    		catch(NoResponseException nre)
-    		{
-    			// timed out on one of our requests so don't bother
-    			// continuing right now,  try again later
-    		}
-    		catch(NotSuspendedException nse)
-    		{
-    			// probably want to wait until we are halted before
-    			// doing this heavy action
-    		}
-    		catch(Exception e)
+    		} catch(Exception e)
     		{
     			// maybe not good
     			if (Trace.error)

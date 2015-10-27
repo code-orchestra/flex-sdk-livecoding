@@ -100,9 +100,7 @@ public class RegularNode {
                 }
                 list.remove(myNode);
             }
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
 
@@ -131,9 +129,7 @@ public class RegularNode {
             } else {
                 throw new RuntimeException();
             }
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
 
@@ -160,9 +156,7 @@ public class RegularNode {
             } else {
                 throw new RuntimeException();
             }
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
 
@@ -185,9 +179,7 @@ public class RegularNode {
             } else {
                 throw new RuntimeException();
             }
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }

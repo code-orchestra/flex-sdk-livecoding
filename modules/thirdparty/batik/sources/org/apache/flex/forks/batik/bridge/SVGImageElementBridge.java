@@ -286,7 +286,7 @@ public class SVGImageElementBridge extends AbstractGraphicsNodeBridge {
             Document doc = loader.loadDocument(purl.toString(), reference);
             imgDocument = (SVGDocument)doc;
             return createSVGImageNode(ctx, e, imgDocument);
-        } catch (BridgeException ex) {
+        } catch (BridgeException | InterruptedBridgeException ex) {
             throw ex;
         } catch (SecurityException secEx ) {
             throw new BridgeException(ctx, e, secEx, ERR_URI_UNSECURE,
@@ -295,8 +295,6 @@ public class SVGImageElementBridge extends AbstractGraphicsNodeBridge {
             if (HaltingThread.hasBeenHalted())
                 throw new InterruptedBridgeException();
 
-        } catch (InterruptedBridgeException ibe) {
-            throw ibe;
         } catch (Exception ex) {
             /* Nothing to do */
             // ex.printStackTrace();

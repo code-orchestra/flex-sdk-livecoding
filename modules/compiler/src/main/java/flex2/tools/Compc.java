@@ -111,19 +111,10 @@ public class Compc extends Tool implements FlexTool
             displayStartMessage();
             Mxmlc.processConfigurationException(ex, "compc");
         }
-        catch (CompilerException ex)
+        catch (CompilerException | SwcException | LinkerException ex)
         {
             assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (LinkerException ex)
-        {
-            assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (SwcException ex)
-        {
-            assert ThreadLocalToolkit.errorCount() > 0;
-        }
-        catch (Throwable t) // IOException, Throwable
+        } catch (Throwable t) // IOException, Throwable
         {
             ThreadLocalToolkit.logError(t.getMessage());
             if (Trace.error)

@@ -336,13 +336,10 @@ public class DModule implements SourceFile
             {
                 ps.requestFunctionNames(m_id, -1, m_isolateId);
             }
-            catch (VersionException e)
+            catch (VersionException | NoResponseException e)
             {
 			}
-            catch (NoResponseException e)
-            {
-			}
-        }
+		}
         m_gotAllFncNames = true;
     }
 

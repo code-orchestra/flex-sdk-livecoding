@@ -138,7 +138,7 @@ public class MxmlScanner extends DefaultHandler implements TokenManager,
             parser.setProperty("http://xml.org/sax/properties/lexical-handler", cdataHandler);
             parser.parse(in, this);
         }
-        catch (ParserConfigurationException ex)
+        catch (ParserConfigurationException | IOException ex)
         {
         }
         catch (SAXException ex)
@@ -148,11 +148,7 @@ public class MxmlScanner extends DefaultHandler implements TokenManager,
             {
                 throw (ScannerError)t;
             }
-        }
-        catch (IOException ex)
-        {
-        }
-        finally
+        } finally
         {
             Thread.currentThread().setContextClassLoader(cl);            
         }
@@ -639,10 +635,7 @@ public class MxmlScanner extends DefaultHandler implements TokenManager,
                     line = Integer.parseInt(lineNumMethod.invoke(attributes, new Object[] {i}).toString());
                 }
             }
-            catch (IllegalAccessException ex)
-            {
-            }
-            catch (InvocationTargetException ex)
+            catch (IllegalAccessException | InvocationTargetException ex)
             {
             }
 

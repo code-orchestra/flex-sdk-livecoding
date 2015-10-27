@@ -57,11 +57,7 @@ public class URLPathResolver implements SinglePathResolver
 		}
 		catch (SecurityException securityException)
 		{
-	    }
-	    catch (MalformedURLException malformedURLException)
-		{
-		}
-        catch (IOException ioException)
+	    } catch (IOException ioException)
         {
         }
 

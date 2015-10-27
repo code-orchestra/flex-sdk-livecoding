@@ -130,9 +130,7 @@ public abstract class XMLAbstractTranscoder extends AbstractTranscoder {
                                                 documentElement,
                                                 uri);
                 } 
-            } catch (DOMException ex) {
-                handler.fatalError(new TranscoderException(ex));
-            } catch (IOException ex) {
+            } catch (DOMException | IOException ex) {
                 handler.fatalError(new TranscoderException(ex));
             }
         }

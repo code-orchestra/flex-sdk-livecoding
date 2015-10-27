@@ -126,11 +126,7 @@ class DebuggerEvaluator implements Evaluator
 
 			return new DebuggerValue(result);
 		}
-		catch (NoSuchVariableException e)
-		{
-			throw new ExpressionEvaluatorException(e);
-		}
-		catch (PlayerFaultException e)
+		catch (NoSuchVariableException | PlayerFaultException e)
 		{
 			throw new ExpressionEvaluatorException(e);
 		}
@@ -163,11 +159,7 @@ class DebuggerEvaluator implements Evaluator
 		{
 			return new DebuggerValue(eeContext(cx).lookup("this")); //$NON-NLS-1$
 		}
-		catch (NoSuchVariableException e)
-		{
-			throw new ExpressionEvaluatorException(e);
-		}
-		catch (PlayerFaultException e)
+		catch (NoSuchVariableException | PlayerFaultException e)
 		{
 			throw new ExpressionEvaluatorException(e);
 		}
@@ -561,11 +553,7 @@ class DebuggerEvaluator implements Evaluator
 				lookupResult = context.lookup(ECMA.toString(eeContext(cx).getSession(), eeContext(cx).toValue(
 						rhs.debuggerValue)));
 			}
-			catch (NoSuchVariableException e)
-			{
-				throw new ExpressionEvaluatorException(e);
-			}
-			catch (PlayerFaultException e)
+			catch (NoSuchVariableException | PlayerFaultException e)
 			{
 				throw new ExpressionEvaluatorException(e);
 			}
@@ -621,11 +609,7 @@ class DebuggerEvaluator implements Evaluator
 		{
 			eeContext.assign(variableToAssignTo, eeContext.toValue(newValue.debuggerValue));
 		}
-		catch (NoSuchVariableException e)
-		{
-			throw new ExpressionEvaluatorException(e);
-		}
-		catch (PlayerFaultException e)
+		catch (NoSuchVariableException | PlayerFaultException e)
 		{
 			throw new ExpressionEvaluatorException(e);
 		}
@@ -854,9 +838,7 @@ class DebuggerEvaluator implements Evaluator
 		{
 			try {
 				return new DebuggerValue(session.evalInstanceof(eeContext.toValue(lhs.debuggerValue), eeContext.toValue(rhs.debuggerValue)));
-			} catch (PlayerDebugException e) {
-				throw new ExpressionEvaluatorException(e);
-			} catch (PlayerFaultException e) {
+			} catch (PlayerDebugException | PlayerFaultException e) {
 				throw new ExpressionEvaluatorException(e);
 			}
 		}
@@ -864,9 +846,7 @@ class DebuggerEvaluator implements Evaluator
 		{
 			try {
 				return new DebuggerValue(session.evalIn(eeContext.toValue(lhs.debuggerValue), eeContext.toValue(rhs.debuggerValue)));
-			} catch (PlayerDebugException e) {
-				throw new ExpressionEvaluatorException(e);
-			} catch (PlayerFaultException e) {
+			} catch (PlayerDebugException | PlayerFaultException e) {
 				throw new ExpressionEvaluatorException(e);
 			}
 		}
@@ -874,9 +854,7 @@ class DebuggerEvaluator implements Evaluator
 		{
 			try {
 				return new DebuggerValue(session.evalIs(eeContext.toValue(lhs.debuggerValue), eeContext.toValue(rhs.debuggerValue)));
-			} catch (PlayerDebugException e) {
-				throw new ExpressionEvaluatorException(e);
-			} catch (PlayerFaultException e) {
+			} catch (PlayerDebugException | PlayerFaultException e) {
 				throw new ExpressionEvaluatorException(e);
 			}
 		}
@@ -884,9 +862,7 @@ class DebuggerEvaluator implements Evaluator
 		{
 			try {
 				return new DebuggerValue(session.evalAs(eeContext.toValue(lhs.debuggerValue), eeContext.toValue(rhs.debuggerValue)));
-			} catch (PlayerDebugException e) {
-				throw new ExpressionEvaluatorException(e);
-			} catch (PlayerFaultException e) {
+			} catch (PlayerDebugException | PlayerFaultException e) {
 				throw new ExpressionEvaluatorException(e);
 			}
 		}

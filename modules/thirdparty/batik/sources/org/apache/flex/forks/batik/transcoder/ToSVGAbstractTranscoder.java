@@ -209,8 +209,6 @@ public abstract class ToSVGAbstractTranscoder extends AbstractTranscoder
                     os = urlCnx.getOutputStream();
                     svgGenerator.stream(svgRoot, new OutputStreamWriter(os), false, escaped);
                     return;
-                } catch (MalformedURLException e){
-                    handler.fatalError(new TranscoderException(e));
                 } catch (IOException e){
                     handler.fatalError(new TranscoderException(e));
                 }

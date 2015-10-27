@@ -791,7 +791,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 err(getLocalizationManager().getLocalizedTextString("noResponseException")); //$NON-NLS-1$
             } catch (NotSuspendedException nse) {
                 err(getLocalizationManager().getLocalizedTextString("notSuspendedException")); //$NON-NLS-1$
-            } catch (AmbiguousException ae) {
+            } catch (AmbiguousException | NotConnectedException ae) {
                 // we already put up a warning for the user
             } catch (IllegalStateException ise) {
                 err(getLocalizationManager().getLocalizedTextString("illegalStateException")); //$NON-NLS-1$
@@ -807,8 +807,6 @@ public class DebugCLI implements Runnable, SourceLocator {
                 err(getLocalizationManager().getLocalizedTextString("socketException", socketArgs)); //$NON-NLS-1$
             } catch (VersionException ve) {
                 err(getLocalizationManager().getLocalizedTextString("versionException")); //$NON-NLS-1$
-            } catch (NotConnectedException nce) {
-                // handled by isConnectionLost()
             } catch (Exception e) {
                 err(getLocalizationManager().getLocalizedTextString("unexpectedError")); //$NON-NLS-1$
                 err(getLocalizationManager().getLocalizedTextString("stackTraceFollows")); //$NON-NLS-1$
@@ -1697,12 +1695,8 @@ public class DebugCLI implements Runnable, SourceLocator {
             out(sb.toString());
         } catch (NullPointerException npe) {
             err(getLocalizationManager().getLocalizedTextString("noFunctionsFound")); //$NON-NLS-1$
-        } catch (ParseException pe) {
+        } catch (ParseException | AmbiguousException | NoMatchException pe) {
             err(pe.getMessage());
-        } catch (NoMatchException nme) {
-            err(nme.getMessage());
-        } catch (AmbiguousException ae) {
-            err(ae.getMessage());
         }
     }
 
@@ -2915,10 +2909,8 @@ public class DebugCLI implements Runnable, SourceLocator {
                     switching = false;
                 }
             }
-        } catch (ParseException pe) {
+        } catch (ParseException | AmbiguousException pe) {
             err(pe.getMessage());
-        } catch (AmbiguousException ae) {
-            err(ae.getMessage());
         } catch (NoMatchException nme) {
             // We couldn't find a function name or filename which matched what
             // the user entered.  Do *not* fail; instead, just save this breakpoint
@@ -3023,10 +3015,8 @@ public class DebugCLI implements Runnable, SourceLocator {
                 }
             }
 
-        } catch (ParseException pe) {
+        } catch (ParseException | AmbiguousException pe) {
             err(pe.getMessage());
-        } catch (AmbiguousException ae) {
-            err(ae.getMessage());
         } catch (NoMatchException e) {
             if (removeUnresolvedBreakpoint(arg) == null)
                 err(e.getMessage());
@@ -3285,10 +3275,8 @@ public class DebugCLI implements Runnable, SourceLocator {
                         resolved = true;
                     }
                 }
-            } catch (NotConnectedException e) {
+            } catch (NotConnectedException | NoMatchException e) {
                 // Ignore
-            } catch (NoMatchException e) {
-                // Okay, it's still not resolved; do nothing
             } catch (ParseException e) {
                 // this shouldn't happen
                 if (Trace.error)
@@ -3665,12 +3653,9 @@ public class DebugCLI implements Runnable, SourceLocator {
                 args.put("value", nfe.getMessage()); //$NON-NLS-1$
                 err(getLocalizationManager().getLocalizedTextString("couldNotConvertToNumber", args)); //$NON-NLS-1$
             }
-        } catch (PlayerFaultException pfe) {
+        } catch (PlayerFaultException | PlayerDebugException pfe) {
             if (displayExceptions)
                 err(pfe.getMessage());
-        } catch (PlayerDebugException e) {
-            if (displayExceptions)
-                err(e.getMessage());
         }
 
         return result;
@@ -4540,15 +4525,10 @@ public class DebugCLI implements Runnable, SourceLocator {
             args.put("filename", name); //$NON-NLS-1$
             args.put("total", Integer.toString(numLines)); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("lineNumberOutOfRange", args)); //$NON-NLS-1$
-        } catch (AmbiguousException ae) {
+        } catch (AmbiguousException | ParseException | NoMatchException ae) {
             err(ae.getMessage());
-        } catch (NoMatchException nme) {
-            // TODO [mmorearty]: try to find a matching source file
-            err(nme.getMessage());
         } catch (NullPointerException npe) {
             err(getLocalizationManager().getLocalizedTextString("noFilesFound")); //$NON-NLS-1$
-        } catch (ParseException pe) {
-            err(pe.getMessage());
         }
     }
 
@@ -4704,9 +4684,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             // push our current source onto the stack and open the new one
             pushStream(m_in);
             m_in = new LineNumberReader(f);
-        } catch (NullPointerException npe) {
-            err(getLocalizationManager().getLocalizedTextString("sourceCommandRequiresPath")); //$NON-NLS-1$
-        } catch (NoSuchElementException nse) {
+        } catch (NullPointerException | NoSuchElementException npe) {
             err(getLocalizationManager().getLocalizedTextString("sourceCommandRequiresPath")); //$NON-NLS-1$
         } catch (FileNotFoundException fnf) {
             Map<String, Object> args = new HashMap<>();
@@ -5399,12 +5377,8 @@ public class DebugCLI implements Runnable, SourceLocator {
             out(sb.toString());
         } catch (NullPointerException npe) {
             err(getLocalizationManager().getLocalizedTextString("noFilesFound")); //$NON-NLS-1$
-        } catch (ParseException pe) {
+        } catch (ParseException | NoMatchException | AmbiguousException pe) {
             err(pe.getMessage());
-        } catch (AmbiguousException ae) {
-            err(ae.getMessage());
-        } catch (NoMatchException nme) {
-            err(nme.getMessage());
         }
     }
 
@@ -5703,8 +5677,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         if (catchpointCount() == 0) {
             try {
                 getSession().getWorkerSession(m_activeIsolate).breakOnCaughtExceptions(false);
-            } catch (NotSupportedException e) {
-            } catch (NoResponseException e) {
+            } catch (NotSupportedException | NoResponseException e) {
             }
         }
     }
@@ -5946,10 +5919,8 @@ public class DebugCLI implements Runnable, SourceLocator {
                     args.put("value", nfe.getMessage()); //$NON-NLS-1$
                     sb.append(getLocalizationManager().getLocalizedTextString("couldNotConvertToNumber", args)); //$NON-NLS-1$
                     sb.append(m_newline);
-                } catch (PlayerFaultException pfe) {
+                } catch (PlayerFaultException | PlayerDebugException pfe) {
                     sb.append(pfe.getMessage()).append(m_newline);
-                } catch (PlayerDebugException e) {
-                    sb.append(e.getMessage()).append(m_newline);
                 } catch (NullPointerException npe) {
                     sb.append(getLocalizationManager().getLocalizedTextString("couldNotEvaluate")); //$NON-NLS-1$
                 }
@@ -5971,8 +5942,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 EvaluationResult result = evalExpression(exp, false, isolateId);
                 if (result != null)
                     should = ECMA.toBoolean(result.context.toValue(result.value));
-            } catch (NullPointerException npe) {
-            } catch (NumberFormatException nfe) {
+            } catch (NullPointerException | NumberFormatException npe) {
             }
         }
         return should;
@@ -6069,11 +6039,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                                 stop = true;
                                 break;
                             }
-                        } catch (PlayerDebugException e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
-                            stop = true;
-                        } catch (PlayerFaultException e1) {
+                        } catch (PlayerDebugException | PlayerFaultException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                             stop = true;
@@ -6527,8 +6493,6 @@ public class DebugCLI implements Runnable, SourceLocator {
                     break;
                 lines.add(line);
             }
-        } catch (FileNotFoundException fnf) {
-            err(fnf.getLocalizedMessage());
         } catch (IOException e) {
             err(e.getLocalizedMessage());
         } finally {

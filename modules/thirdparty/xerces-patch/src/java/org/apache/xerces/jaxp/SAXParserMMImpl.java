@@ -387,14 +387,7 @@ public class SAXParserMMImpl extends javax.xml.parsers.SAXParser
                 try {
                     setProperty(SECURITY_MANAGER, value ? new SecurityManager() : null);
                 }
-                catch (SAXNotRecognizedException exc) {
-                    // If the property is not supported 
-                    // re-throw the exception if the value is true.
-                    if (value) {
-                        throw exc;
-                    }
-                }
-                catch (SAXNotSupportedException exc) {
+                catch (SAXNotRecognizedException | SAXNotSupportedException exc) {
                     // If the property is not supported 
                     // re-throw the exception if the value is true.
                     if (value) {

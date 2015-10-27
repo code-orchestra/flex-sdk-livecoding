@@ -291,7 +291,7 @@ public class ConstantPool
         int originalPos = in.pos();
         in.seek(pos);
         int kind = in.readU8();
-        String value = "";
+        String value;
         switch(kind)
         {
             case CONSTANT_PrivateNamespace:

@@ -585,7 +585,7 @@ class TIFFFaxDecoder {
 
     public void decodeNextScanline(byte[] buffer,
                                    int lineOffset, int bitOffset) {
-        int bits = 0, code = 0, isT = 0;
+        int bits, code, isT;
         int current, entry, twoBits;
         boolean isWhite = true;
 
@@ -646,7 +646,6 @@ class TIFFFaxDecoder {
                 entry = initBlack[current];
 
                 // Get the 3 fields from the entry
-                isT = entry & 0x0001;
                 bits = (entry >>> 1) & 0x000f;
                 code = (entry >>> 5) & 0x07ff;
 
@@ -739,7 +738,7 @@ class TIFFFaxDecoder {
         int[] b = new int[2];
         int entry, code, bits;
         boolean isWhite;
-        int currIndex = 0;
+        int currIndex;
         int[] temp;
 
         // fillBits - dealt with this in readEOL
@@ -1122,7 +1121,7 @@ class TIFFFaxDecoder {
 
     // Returns run length
     private int decodeWhiteCodeWord() {
-        int current, entry, bits, isT, twoBits, code = -1;
+        int current, entry, bits, isT, twoBits, code;
         int runLength = 0;
         boolean isWhite = true;
 
@@ -1164,7 +1163,7 @@ class TIFFFaxDecoder {
 
     // Returns run length
     private int decodeBlackCodeWord() {
-        int current, entry, bits, isT, code = -1;
+        int current, entry, bits, isT, code;
         int runLength = 0;
         boolean isWhite = false;
 
@@ -1173,7 +1172,6 @@ class TIFFFaxDecoder {
             entry = initBlack[current];
 
             // Get the 3 fields from the entry
-            isT = entry & 0x0001;
             bits = (entry >>> 1) & 0x000f;
             code = (entry >>> 5) & 0x07ff;
 
@@ -1354,7 +1352,7 @@ class TIFFFaxDecoder {
         int i1 = (b & table1[bitsLeft]) << (bitsToGet - bitsLeft);
         int i2 = (next & table2[bitsFromNextByte]) >>> (8 - bitsFromNextByte);
 
-        int i3 = 0;
+        int i3;
         if (bitsFromNext2NextByte != 0) {
             i2 <<= bitsFromNext2NextByte;
             i3 = (next2next & table2[bitsFromNext2NextByte]) >>>

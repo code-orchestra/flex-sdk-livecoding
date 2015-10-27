@@ -85,7 +85,7 @@ public class Template extends Resource
         throws ResourceNotFoundException, ParseErrorException, Exception
     {
         data = null;
-        InputStream is = null;
+        InputStream is;
         errorCondition = null;
 
         /*

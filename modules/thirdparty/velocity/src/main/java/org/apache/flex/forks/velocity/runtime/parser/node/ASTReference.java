@@ -460,7 +460,7 @@ public class ASTReference extends SimpleNode
               *  count the escapes : even # -> not escaped, odd -> escaped
               */
 
-            int i = 0;
+            int i;
             int len = t.image.length();
 
             i = t.image.indexOf('$');

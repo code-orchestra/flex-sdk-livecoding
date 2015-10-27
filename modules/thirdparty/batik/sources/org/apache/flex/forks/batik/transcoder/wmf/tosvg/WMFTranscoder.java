@@ -133,14 +133,13 @@ public class WMFTranscoder extends ToSVGAbstractTranscoder {
             wmfwidth = currentStore.getWidthPixels();
             wmfheight = currentStore.getHeightPixels();
         }
-        float width = wmfwidth;
+        float width;
         float height = wmfheight;
 
         // change the output width and height if required
         if (hints.containsKey(KEY_WIDTH)) {
             width = (Float) hints.get(KEY_WIDTH);
             conv = width / wmfwidth;
-            height = height * width / wmfwidth;
         }
 
         // determine the offset values

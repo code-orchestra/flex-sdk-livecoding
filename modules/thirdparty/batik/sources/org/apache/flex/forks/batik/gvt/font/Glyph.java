@@ -341,7 +341,7 @@ public class Glyph {
             if (glyphChildrenNode != null) {
                 glyphChildrenOutline = glyphChildrenNode.getOutline();
             }
-            GeneralPath glyphOutline = null;
+            GeneralPath glyphOutline;
             if (dShape != null && glyphChildrenOutline != null) {
                 glyphOutline = new GeneralPath(dShape);
                 glyphOutline.append(glyphChildrenOutline, false);

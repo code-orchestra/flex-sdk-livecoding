@@ -221,7 +221,7 @@ public class CursorManager implements SVGConstants, ErrorConstants {
     }
 
     public Cursor convertBuiltInCursor(Element e, String cursorStr) {
-        Cursor cursor = null;
+        Cursor cursor;
 
         // The CSS engine guarantees an non null, non empty string
         // as the computed value for cursor. Therefore, the following
@@ -409,7 +409,7 @@ public class CursorManager implements SVGConstants, ErrorConstants {
         RenderedImage ri = f.createScaledRendering(cursorSize.width,
                                                    cursorSize.height,
                                                    null);
-        Image img = null;
+        Image img;
 
         if (ri instanceof Image) {
             img = (Image)ri;
@@ -454,7 +454,7 @@ public class CursorManager implements SVGConstants, ErrorConstants {
         SVGDocument svgDoc = (SVGDocument)cursorElement.getOwnerDocument();
         URIResolver resolver = ctx.createURIResolver(svgDoc, loader);
         try {
-            Element rootElement = null;
+            Element rootElement;
             Node n = resolver.getNode(uriStr, cursorElement);
             if (n.getNodeType() == Node.DOCUMENT_NODE) {
                 SVGDocument doc = (SVGDocument)n;

@@ -336,7 +336,7 @@ public class TypeTable
          */
         public Property getProperty(String[] namespaces, String name)
         {
-            AbcClass cls = classInfo, superClass = null;
+            AbcClass cls = classInfo, superClass;
 
             // walk the superclass chain for the specified property...
             while (cls != null)

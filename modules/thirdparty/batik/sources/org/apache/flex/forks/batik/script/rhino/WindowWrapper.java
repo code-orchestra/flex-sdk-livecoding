@@ -198,7 +198,7 @@ public class WindowWrapper extends ImporterTopLevel {
         RhinoInterpreter interp =
             (RhinoInterpreter)window.getInterpreter();
         final String uri = (String)Context.jsToJava(args[0], String.class);
-        Window.URLResponseHandler urlHandler = null;
+        Window.URLResponseHandler urlHandler;
         if (args[1] instanceof Function) {
             urlHandler = new GetURLFunctionWrapper
                 (interp, (Function)args[1], ww);
@@ -243,7 +243,7 @@ public class WindowWrapper extends ImporterTopLevel {
             (RhinoInterpreter)window.getInterpreter();
         final String uri     = (String)Context.jsToJava(args[0], String.class);
         final String content = (String)Context.jsToJava(args[1], String.class);
-        Window.URLResponseHandler urlHandler = null;
+        Window.URLResponseHandler urlHandler;
         if (args[2] instanceof Function) {
             urlHandler = new GetURLFunctionWrapper
                 (interp, (Function)args[2], ww);

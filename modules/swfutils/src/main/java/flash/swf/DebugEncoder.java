@@ -383,7 +383,7 @@ public class DebugEncoder implements DebugHandler
 
     private static String generateShortName(String name)
     {
-        String s = name;
+        String s;
 
         /* do we have a file name? */
         int dotAt = name.lastIndexOf('.');

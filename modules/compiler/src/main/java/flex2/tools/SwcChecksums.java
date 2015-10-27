@@ -438,7 +438,7 @@ public class SwcChecksums
         {           
             String filename = entry.getKey();
             Long dataFileLastModified = entry.getValue();
-            Long localFileLastModified = null;
+            Long localFileLastModified;
 
             LocalFile localFile = new LocalFile(new File(filename));
             localFileLastModified = localFile.getLastModified();

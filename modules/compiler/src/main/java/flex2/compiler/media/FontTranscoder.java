@@ -320,7 +320,7 @@ public class FontTranscoder extends AbstractTranscoder
     private boolean useAdvancedAntiAliasing(Map<String, Object> args)
         throws TranscoderException
     {
-        boolean useAdvanced = true;
+        boolean useAdvanced;
         boolean flashTypeAsName = true;
         String advancedStr = (String)args.get(ADVANTIALIASING);
         if (advancedStr == null)

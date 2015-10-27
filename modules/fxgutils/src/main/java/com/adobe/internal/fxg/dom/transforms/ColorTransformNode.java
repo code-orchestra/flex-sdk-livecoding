@@ -158,7 +158,7 @@ public class ColorTransformNode extends AbstractTransformNode implements Cloneab
      */
     public Object clone()
     {
-        ColorTransformNode copy = null;
+        ColorTransformNode copy;
         try
         {
             copy = (ColorTransformNode)super.clone();

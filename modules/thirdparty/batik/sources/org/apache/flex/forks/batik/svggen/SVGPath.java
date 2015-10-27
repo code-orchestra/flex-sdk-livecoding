@@ -86,7 +86,7 @@ public class SVGPath extends SVGGraphicObjectConverter {
         StringBuffer d = new StringBuffer( 40 );
         PathIterator pi = path.getPathIterator(null);
         float[] seg = new float[6];
-        int segType = 0;
+        int segType;
         while (!pi.isDone()) {
             segType = pi.currentSegment(seg);
             switch(segType) {

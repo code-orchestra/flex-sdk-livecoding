@@ -611,7 +611,7 @@ public class FXGCompiler extends AbstractSubCompiler
         @Override
         public void parse2(CompilationUnit unit, SymbolTable symbolTable)
         {
-            Source generatedSource = null;
+            Source generatedSource;
             Source originalSource = unit.getSource();
 
             // Determine whether we need to introduce text class dependencies
@@ -773,7 +773,6 @@ public class FXGCompiler extends AbstractSubCompiler
             buf.append("}\n");
             buf.append("}\n");
             String generatedCode = buf.toString();
-            buf = null;
 
             // Create a text file for our generated source 
             TextFile generatedFile = new TextFile(generatedCode, generatedName,

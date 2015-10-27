@@ -304,7 +304,7 @@ public abstract class AbstractSVGNormPathSegList extends AbstractSVGPathSegList 
 
                         PathIterator pi = s.getPathIterator(new AffineTransform());
                         float[] d = {0,0,0,0,0,0};
-                        int i = -1;
+                        int i;
 
                         while (!pi.isDone()) {
                                 i = pi.currentSegment(d);

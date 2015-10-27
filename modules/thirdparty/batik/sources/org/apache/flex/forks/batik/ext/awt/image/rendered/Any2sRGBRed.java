@@ -164,7 +164,7 @@ public class Any2sRGBRed extends AbstractRed {
             // We don't really know much about this source, let's
             // guess based on the number of bands...
 
-            float [][] matrix = null;
+            float [][] matrix;
             switch (srcSM.getNumBands()) {
             case 1:
                 matrix = new float[3][1];
@@ -207,7 +207,7 @@ public class Any2sRGBRed extends AbstractRed {
             // many things use this when the data _really_
             // has sRGB gamma applied.
             try {
-                float [][] matrix = null;
+                float [][] matrix;
                 switch (srcSM.getNumBands()) {
                 case 1:
                     matrix = new float[3][1];
@@ -324,7 +324,7 @@ public class Any2sRGBRed extends AbstractRed {
         SampleModel sm = src.getSampleModel();
         ColorModel  cm = src.getColorModel();
 
-        boolean alpha = false;
+        boolean alpha;
 
         if (cm != null)
             alpha = cm.hasAlpha();

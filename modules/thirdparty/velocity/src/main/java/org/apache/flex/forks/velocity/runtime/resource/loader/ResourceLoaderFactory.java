@@ -34,7 +34,7 @@ public class ResourceLoaderFactory
     public static ResourceLoader getLoader(RuntimeServices rs, String loaderClassName)
      throws Exception
     {
-        ResourceLoader loader = null;
+        ResourceLoader loader;
         
         try
         {

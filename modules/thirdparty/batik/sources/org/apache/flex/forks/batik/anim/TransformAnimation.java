@@ -171,7 +171,7 @@ public class TransformAnimation extends SimpleAnimation {
         AnimatableTransformListValue
             value1, value2, value3 = null, nextValue1, nextValue2,
             nextValue3 = null, accumulation;
-        float interpolation1 = 0f, interpolation2 = 0f, interpolation3 = 0f;
+        float interpolation1, interpolation2, interpolation3 = 0f;
         if (unitTime != 1) {
             switch (type) {
                 case SVGTransform.SVG_TRANSFORM_ROTATE:

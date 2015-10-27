@@ -1368,7 +1368,7 @@ class PNGImage extends SimpleRenderedImage {
                                         int bitDepth) {
 
         DataBuffer dataBuffer;
-        WritableRaster ras = null;
+        WritableRaster ras;
         Point origin = new Point(0, 0);
         if ((bitDepth < 8) && (bands == 1)) {
             dataBuffer = new DataBufferByte(height*scanlineStride);

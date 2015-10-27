@@ -335,7 +335,7 @@ public class GlobalOptimizer
 		}
 		
 		// Optimize the combined ABC file and emit.
-		byte[] after = null;
+		byte[] after;
 
 		go.optimize(first);
 		after = go.emit(first, filename, initScripts, no_c_gen);
@@ -6862,7 +6862,7 @@ public class GlobalOptimizer
 	
 	Expr coerceExpr(Method m, Type t, Expr a)
 	{
-		Expr result = null;
+		Expr result;
 		
 		assert(t != null);
 		
@@ -7247,7 +7247,7 @@ public class GlobalOptimizer
 	
 	Typeref typeMeet(Typeref t1, Typeref t2)
 	{
-		Typeref result = null;
+		Typeref result;
 		
 		Type merged_type = typeMeet(t1.t, t2.t);
 
@@ -8548,7 +8548,7 @@ public class GlobalOptimizer
 
 
 		
-		int i = 0;
+		int i;
 		for ( i = 0; i < m.local_count; i++ )
 		{
 			traceEntry("Local");

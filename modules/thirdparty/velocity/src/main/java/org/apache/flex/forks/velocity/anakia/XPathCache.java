@@ -46,7 +46,7 @@ class XPathCache
      */
     static XPath getXPath(String xpathString)
     {
-        XPath xpath = null;
+        XPath xpath;
         synchronized(XPATH_CACHE)
         {
             xpath = (XPath)XPATH_CACHE.get(xpathString);

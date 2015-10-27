@@ -88,7 +88,7 @@ public class FragmentIdentifierParser extends NumberParser {
         fragmentIdentifierHandler.startFragmentIdentifier();
 
         ident: {
-            String id = null;
+            String id;
 
             switch (current) {
             case 'x':

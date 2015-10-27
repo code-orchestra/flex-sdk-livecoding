@@ -115,8 +115,8 @@ public class SVGTransform extends AbstractSVGConverter{
                 return element;
             }
         };
-        boolean canConcatenate = false;
-        int i = 0, j = 0, next = 0;
+        boolean canConcatenate;
+        int i = 0, j, next;
         TransformStackElement element = null;
 
         // We keep a separate 'presentation' stack, which contains
@@ -138,7 +138,6 @@ public class SVGTransform extends AbstractSVGConverter{
             }
 
             // try to concatenate as much as possible
-            canConcatenate = true;
             for(j = next; j < nTransforms; j++) {
                 canConcatenate = element.concatenate(transformStack[j]);
                 if(!canConcatenate)

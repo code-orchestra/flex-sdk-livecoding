@@ -160,7 +160,6 @@ public class WebMacro
         if (basedir.length() == 0)
         {
             template = file;
-            templateDir = "";
             newTemplate = convertName(file);
         }            
         else

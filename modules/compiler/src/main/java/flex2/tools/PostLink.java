@@ -97,7 +97,7 @@ public class PostLink implements flex2.linker.PostLink
             {
                 // merge metadata from the flex movie with any existing
                 // metadata from the configuration.
-                Set<String> mergedMetaData = null;
+                Set<String> mergedMetaData;
                 if (as3metadata != null && as3metadata.length > 0)
                 {
                     mergedMetaData = new HashSet<>();
@@ -142,7 +142,7 @@ public class PostLink implements flex2.linker.PostLink
 		Decoder decoder;
 
 		boolean skipFrame = false;
-		int majorVersion = 0, minorVersion = 0, abcSize = doABCs.size(), flag = 1;
+		int majorVersion = 0, minorVersion = 0, abcSize = doABCs.size(), flag;
 
 		if (abcSize == 0)
 		{

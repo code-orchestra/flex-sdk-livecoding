@@ -132,9 +132,9 @@ public class XMLDocument extends PlainDocument {
             throws BadLocationException {
 
         int offset = -1;
-        int startOffset = -1;
-        int len = 0;
-        int charIndex = 0;
+        int startOffset;
+        int len;
+        int charIndex;
         
         Element rootElement = getDefaultRootElement();
         

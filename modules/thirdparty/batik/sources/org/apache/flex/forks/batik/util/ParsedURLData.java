@@ -503,7 +503,7 @@ loop2:          while (i < len) {
 
         hasBeenOpened = true;
 
-        URL url = null;
+        URL url;
         try {
             url = buildURL();
         } catch (MalformedURLException mue) {

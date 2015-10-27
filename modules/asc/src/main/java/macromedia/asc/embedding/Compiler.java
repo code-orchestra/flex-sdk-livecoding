@@ -254,7 +254,6 @@ public class Compiler implements ErrorConstants
             Node prev = null;
             for (DocCommentNode d : comments) {
                 d.emit(cx, out);
-                prev = d.def;
             }
 			out.append(newline).append("</asdoc>").append(newline);
 

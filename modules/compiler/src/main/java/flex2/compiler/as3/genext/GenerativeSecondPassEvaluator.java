@@ -168,7 +168,7 @@ public abstract class GenerativeSecondPassEvaluator extends EvaluatorAdapter
 			while ( iterator.hasNext() )
 			{
 				Object node = iterator.next();
-				IdentifierNode identifier = null;
+				IdentifierNode identifier;
 				if (node instanceof MemberExpressionNode)
 				{
 					// if this identifier is an override we need to remove it

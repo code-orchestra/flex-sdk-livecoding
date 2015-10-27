@@ -48,7 +48,7 @@ class NullOp implements BufferedImageOp {
      */
     public BufferedImage createCompatibleDestImage (BufferedImage src,
                                                     ColorModel destCM){
-        BufferedImage dest = null;
+        BufferedImage dest;
         if(destCM==null)
             destCM = src.getColorModel();
 

@@ -133,7 +133,7 @@ public class Parse extends InputBase
          *  now use the Runtime resource loader to get the template
          */
        
-        Template t = null;
+        Template t;
 
         try 
         {

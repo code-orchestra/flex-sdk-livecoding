@@ -260,7 +260,7 @@ public class RuntimeInstance implements RuntimeConstants, RuntimeServices
 
         if (rm != null && rm.length() > 0)
         {
-            Object o = null;
+            Object o;
 
             try
             {
@@ -516,7 +516,7 @@ public class RuntimeInstance implements RuntimeConstants, RuntimeServices
              *  this a huge error and throw
              */
             
-            Object o = null;
+            Object o;
             
             try
             {

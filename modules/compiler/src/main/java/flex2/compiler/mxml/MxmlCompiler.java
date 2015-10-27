@@ -137,7 +137,7 @@ public class MxmlCompiler extends AbstractSubCompiler
             benchmarkHelper.startPhase(CompilerBenchmarkHelper.PREPROCESS, source.getNameForReporting());
         }
         
-        Source result = null;
+        Source result;
         
 		if (source.getCompilationUnit() == null)
 			result = intfc.preprocess(source);

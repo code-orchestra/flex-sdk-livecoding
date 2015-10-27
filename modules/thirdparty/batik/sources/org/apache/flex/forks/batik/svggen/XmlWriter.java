@@ -520,7 +520,7 @@ class XmlWriter implements SVGConstants {
     public static void writeXml(Node node, Writer writer, boolean escaped)
         throws SVGGraphics2DIOException {
         try {
-            IndentWriter out = null;
+            IndentWriter out;
             if (writer instanceof IndentWriter)
                 out = (IndentWriter)writer;
             else

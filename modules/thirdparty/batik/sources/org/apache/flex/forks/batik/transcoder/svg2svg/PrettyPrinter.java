@@ -1043,10 +1043,10 @@ public class PrettyPrinter {
         char[] space2 = getCurrentValue();
         t = scanner.next();
 
-        String externalId = null;
-        char[] space3 = null;
-        char[] string1 = null;
-        char string1Delim = 0;
+        String externalId;
+        char[] space3;
+        char[] string1;
+        char string1Delim;
         char[] space4 = null;
         char[] string2 = null;
         char string2Delim = 0;

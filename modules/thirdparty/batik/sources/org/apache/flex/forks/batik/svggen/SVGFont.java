@@ -438,7 +438,7 @@ public class SVGFont extends AbstractSVGConverter {
 
         float style = styleValue;
 
-        int i = 0;
+        int i;
         for (i=0; i< fontStyles.length; i++) {
             if (style <= fontStyles[i])
                 break;
@@ -464,7 +464,7 @@ public class SVGFont extends AbstractSVGConverter {
 
         float weight = weightValue;
 
-        int i = 0;
+        int i;
         for (i=0; i<fontWeights.length; i++) {
             if (weight<=fontWeights[i])
                 break;

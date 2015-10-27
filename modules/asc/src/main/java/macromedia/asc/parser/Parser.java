@@ -714,7 +714,7 @@ public final class Parser
             System.err.println("begin parseIdentifierString");
         }
 
-        String result = null;
+        String result;
         final int lt = lookahead();
         
         switch ( lt ) 
@@ -789,7 +789,7 @@ public final class Parser
             System.err.println("begin parsePropertyIdentifierString");
         }
 
-        String result = null;
+        String result;
         final int lt = lookahead();
         
         switch(lt)
@@ -911,7 +911,7 @@ public final class Parser
             System.err.println("begin parseSimpleQualifiedIdentifier");
         }
 
-        IdentifierNode result = null;
+        IdentifierNode result;
         IdentifierNode first;
         boolean is_attr = false;
         
@@ -2720,7 +2720,7 @@ XMLElementContent
 
         while (true)
         {
-            Node t = null;
+            Node t;
 
             /*
              * RestOrAssigmentExpression ->
@@ -2770,7 +2770,7 @@ XMLElementContent
             System.err.println("begin parseUnaryExpression");
         }
 
-        Node result = null;
+        Node result;
         int pos;
         final int op = lookahead();
         
@@ -4190,7 +4190,7 @@ XMLElementContent
             System.err.println("begin parseDirective");
         }
 
-        Node result = null;
+        Node result;
 
         try
         {
@@ -4556,7 +4556,7 @@ XMLElementContent
             System.err.println("begin parseDirectives");
         }
 
-        StatementListNode result = null;
+        StatementListNode result;
         int lt;
 
         while ((lt=lookahead())!=RIGHTBRACE_TOKEN && lt!=EOS_TOKEN)
@@ -4781,7 +4781,7 @@ XMLElementContent
         InputStream in = null;
 	    String text = null;
 
-        String fixed_filespec = null, parentPath = null;
+        String fixed_filespec, parentPath;
         if (incl == null)
         {
             filespec = filespec.replace('/', File.separatorChar);
@@ -4860,7 +4860,7 @@ XMLElementContent
     			// cx.setEmitter(ctx.getEmitter());
     			// cx.statics.nodeFactory = ctx.statics.nodeFactory;
     			// cx.statics.global = ctx.statics.global;
-    			Parser p = null;
+    			Parser p;
     			if (in != null)
     			{
     				p = new Parser(cx, in, fixed_filespec, encoding, create_doc_info, save_comment_nodes,block_kind_stack, true);
@@ -5007,7 +5007,7 @@ XMLElementContent
         while (true)
         {
             int lt = lookahead();
-            Node t = null;
+            Node t;
             int pos = scanner.input.positionOfMark();
             
             switch ( lt )
@@ -5579,7 +5579,7 @@ XMLElementContent
         
         shift(); //match(SUPER_TOKEN);
         
-        Node result = null;
+        Node result;
         Node first = nodeFactory.superExpression(null, scanner.input.positionOfMark());
         Node n = parseArguments(first);
         
@@ -5647,7 +5647,7 @@ XMLElementContent
             System.err.println("begin parseInitializer");
         }
 
-        Node result = null;
+        Node result;
 
         // Todo: this should be parsePattern();
         Node first = parseIdentifier();

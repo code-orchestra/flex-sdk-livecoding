@@ -526,7 +526,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
             // shape node matrix to the masking node matrix.
             if (!(node instanceof GroupNode || node instanceof GraphicNode))
             {
-                FXGMatrix nodeMatrix = null;
+                FXGMatrix nodeMatrix;
                 MatrixNode matrixNodeShape = ((GraphicContentNode)node).matrix;
                 if (matrixNodeShape == null)
                     // Convert shape node's discreet transform attributes to 

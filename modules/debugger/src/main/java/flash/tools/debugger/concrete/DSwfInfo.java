@@ -174,7 +174,7 @@ public class DSwfInfo implements SwfInfo
 	 * not been fully processed by the player yet. 
 	 */
 	public boolean hasAllSource() {
-		boolean yes = false;
+		boolean yes;
 		int expect = getSourceExpectedCount();
 		int have = getSourceCount();
 
@@ -291,7 +291,7 @@ public class DSwfInfo implements SwfInfo
 		DebugModule dm = r.module;
 
 		// locate the source file
-		int id = -1;
+		int id;
 		DModule module;
 
 		if (dm == null || where.at == -1)

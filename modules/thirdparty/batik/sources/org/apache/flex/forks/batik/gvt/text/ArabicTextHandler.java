@@ -172,7 +172,7 @@ public class ArabicTextHandler {
         aci = as.getIterator();  // Make sure ACI tracks ARABIC_FORM
         int end   = aci.getBeginIndex();
 
-        Integer currentForm = ARABIC_NONE;
+        Integer currentForm;
         // for each run of arabic chars, assign the appropriate form
         while (aci.setIndex(end) != AttributedCharacterIterator.DONE) {
             int start = aci.getRunStart(ARABIC_FORM);

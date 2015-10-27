@@ -275,7 +275,7 @@ public class LocalizableSupport implements Localizable {
 
     protected ResourceBundle getResourceBundle(int i) {
         setUsedLocale();
-        ResourceBundle rb=null;
+        ResourceBundle rb;
         if (cls == null) {
             // Old behavour
             if (resourceBundles.size() == 0) {

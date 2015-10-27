@@ -188,7 +188,6 @@ public class GraphicsUtil {
         try {
             Rectangle clipR;
             if (clip == null) {
-                clip  = crR;
                 clipR = crR;
             } else {
                 clipR   = clip.getBounds();

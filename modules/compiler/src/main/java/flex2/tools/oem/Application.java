@@ -1430,7 +1430,7 @@ public class Application implements Builder
         }
 
         boolean hasChanged = oemConfiguration != null && oemConfiguration.hasChanged();
-        flex2.compiler.common.Configuration config = null;
+        flex2.compiler.common.Configuration config;
 
         if (hasChanged)
         {

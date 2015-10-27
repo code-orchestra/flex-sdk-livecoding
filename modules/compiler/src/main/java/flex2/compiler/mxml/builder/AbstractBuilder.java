@@ -849,7 +849,6 @@ public abstract class AbstractBuilder extends AnalyzerAdapter
             Type lvalueType = style.getType();
             if (standardDefs.isIDeferredInstance(lvalueType))
             {
-                lvalueType = typeTable.objectType;
             }
 
             Object rvalue = processRValueNodes(style, nodes, model);

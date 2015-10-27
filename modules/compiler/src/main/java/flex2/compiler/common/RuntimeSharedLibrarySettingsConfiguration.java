@@ -277,7 +277,7 @@ public class RuntimeSharedLibrarySettingsConfiguration
             
             public String getArgName(int argnum)
             {
-                String argName = null;
+                String argName;
                 
                 argnum = argnum % 2;
                 if (argnum == 0)

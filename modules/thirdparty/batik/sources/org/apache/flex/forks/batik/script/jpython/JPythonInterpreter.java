@@ -52,7 +52,7 @@ public class JPythonInterpreter implements org.apache.flex.forks.batik.script.In
         // oups jpython doesn't accept reader in its eval method :-(
         StringBuilder sbuffer = new StringBuilder();
         char[] buffer = new char[1024];
-        int val = 0;
+        int val;
         while ((val = scriptreader.read(buffer)) != -1) {
             sbuffer.append(buffer,0, val);
         }

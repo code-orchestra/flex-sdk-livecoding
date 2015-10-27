@@ -81,7 +81,7 @@ public class TextBuilder
         char[] chars;
         int yCount = 0;
         double t_width = 0.0f;
-        double t_height = 0.0f;
+        double t_height;
         while (true)
         {
             line = reader.readLine();

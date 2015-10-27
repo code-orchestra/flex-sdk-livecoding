@@ -251,8 +251,6 @@ public class ShapeHelper implements SwfConstants
         
         rx = bottomRightRadiusX;
         ry = bottomRightRadiusY;
-        tx = rx / 0.923879532511;
-        ty = ry / 0.923879532511;
         dx = startx + width - rx;
         dy = starty + height - ry;
         shapeRecords.addAll(straightEdge(currentx, currenty, (dx + rx), dy ));
@@ -441,7 +439,7 @@ public class ShapeHelper implements SwfConstants
         int abs_dx = Math.abs(dx);
         int abs_dy = Math.abs(dy);
 
-        int numSegments = 1;
+        int numSegments;
         if ((abs_dx > MAX_EDGE_SIZE) && (abs_dx > abs_dy))
         {
             numSegments = abs_dx/MAX_EDGE_SIZE + 1;
@@ -651,8 +649,8 @@ public class ShapeHelper implements SwfConstants
         double lastMoveY = 0.0;
         double prevX = 0.0;
         double prevY = 0.0;
-        double x = 0.0;
-        double y = 0.0;
+        double x;
+        double y;
         double controlX = 0.0;
         double controlY = 0.0;
         double control2X = 0.0;
@@ -929,7 +927,7 @@ public class ShapeHelper implements SwfConstants
         Rect newRect = pathBBox;
         int count = records.size();
 	    int start = 0;
-	    int end = 0;
+	    int end;
 	    int lastMoveX = 0;
 	    int lastMoveY = 0;
 	    int lastOpenSegment = 0;

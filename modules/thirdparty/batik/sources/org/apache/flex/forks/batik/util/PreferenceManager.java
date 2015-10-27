@@ -508,7 +508,7 @@ public class PreferenceManager
         if (sp == null) {
             return defaultValue;
         }
-        URL url = null;
+        URL url;
         try {
             url = new URL(sp);
         } catch (MalformedURLException ex) {

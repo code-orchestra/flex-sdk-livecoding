@@ -200,7 +200,7 @@ public class ImplementationGenerator extends AbstractGenerator
 
         if(processComments) 
         {
-            MetaDataNode classDocComment = null;
+            MetaDataNode classDocComment;
             if(mxmlDocument.getComment() != null ) 
             {
                 classDocComment = AbstractSyntaxTreeUtil.generateDocComment(nodeFactory, mxmlDocument.getComment().intern());
@@ -3160,7 +3160,7 @@ public class ImplementationGenerator extends AbstractGenerator
 
         // initialize the variable
         MemberExpressionNode base = AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, STYLE_MANAGER, false);
-        ArgumentListNode args = null;
+        ArgumentListNode args;
          
         if (mxmlDocument.getIsIFlexModule())
         {

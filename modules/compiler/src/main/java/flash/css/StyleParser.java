@@ -74,7 +74,7 @@ public class StyleParser
         try
         {
             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            String charsetName = null;
+            String charsetName;
             
             try
             {

@@ -122,7 +122,7 @@ public class SVGMultiImageElementBridge extends SVGImageElementBridge {
         Rectangle2D b = getImageBounds(ctx, e);
 
         // 'transform'
-        AffineTransform at = null;
+        AffineTransform at;
         String s = e.getAttribute(SVG_TRANSFORM_ATTRIBUTE);
         if (s.length() != 0) {
             at = SVGUtilities.convertTransform(e, SVG_TRANSFORM_ATTRIBUTE, s,

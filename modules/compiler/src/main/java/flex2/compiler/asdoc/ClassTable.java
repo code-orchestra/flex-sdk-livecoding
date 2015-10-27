@@ -1073,7 +1073,7 @@ public class ClassTable implements DocCommentTable {
                     else if (vb.initializer instanceof MemberExpressionNode)
                     {
                         MemberExpressionNode mb = (MemberExpressionNode)(vb.initializer);
-                        Slot vs = null;
+                        Slot vs;
 						if (mb.ref != null && mb.selector.isGetExpression())
 						{
 							vs = (mb.ref != null ? mb.ref.getSlot(cx, Tokens.GET_TOKEN) : null);

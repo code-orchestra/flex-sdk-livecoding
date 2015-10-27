@@ -117,7 +117,7 @@ public class Any2LsRGBRed extends AbstractRed {
             // We don't really know much about this source, let's
             // guess based on the number of bands...
 
-            float [][] matrix = null;
+            float [][] matrix;
             switch (srcSM.getNumBands()) {
             case 1:
                 matrix = new float[1][3];
@@ -271,7 +271,7 @@ public class Any2LsRGBRed extends AbstractRed {
         SampleModel sm = src.getSampleModel();
         ColorModel  cm = src.getColorModel();
 
-        boolean alpha = false;
+        boolean alpha;
 
         if (cm != null)
             alpha = cm.hasAlpha();

@@ -148,7 +148,7 @@ public class SVGAnimateElementBridge extends SVGAnimationElementBridge {
             return null;
         }
         ArrayList values = new ArrayList(7);
-        int i = 0, start = 0, end;
+        int i = 0, start, end;
         char c;
 outer:  while (i < len) {
             while (valuesString.charAt(i) == ' ') {
@@ -194,7 +194,7 @@ outer:  while (i < len) {
             return null;
         }
         ArrayList keyTimes = new ArrayList(7);
-        int i = 0, start = 0, end;
+        int i = 0, start, end;
         char c;
 outer:  while (i < len) {
             while (keyTimesString.charAt(i) == ' ') {
@@ -244,7 +244,7 @@ outer:  while (i < len) {
             return null;
         }
         List keySplines = new ArrayList(7);
-        int count = 0, i = 0, start = 0, end;
+        int count = 0, i = 0, start, end;
         char c;
 outer:  while (i < len) {
             while (keySplinesString.charAt(i) == ' ') {

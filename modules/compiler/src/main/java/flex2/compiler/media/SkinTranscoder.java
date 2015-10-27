@@ -59,7 +59,7 @@ public class SkinTranscoder extends AbstractTranscoder
                                           boolean generateSource)
         throws TranscoderException
     {
-        TranscodingResults result = null;
+        TranscodingResults result;
 
         if (generateSource)
         {
@@ -114,7 +114,7 @@ public class SkinTranscoder extends AbstractTranscoder
                                         boolean needsSetActualSize, boolean flexMovieClipOrSprite)
         throws TranscoderException
     {
-        String result = null;
+        String result;
 
         StandardDefs standardDefs = ThreadLocalToolkit.getStandardDefs();
 

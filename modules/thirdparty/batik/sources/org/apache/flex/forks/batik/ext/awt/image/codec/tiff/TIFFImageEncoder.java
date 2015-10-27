@@ -202,7 +202,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
             // Don't support (unsigned) short palette-color images.
             throw new Error("TIFFImageEncoder6");
         }
-        IndexColorModel icm = null;
+        IndexColorModel icm;
         int sizeOfColormap = 0;
         char[] colormap = null;
 
@@ -323,7 +323,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
             }
         }
 
-        int photometricInterpretation = -1;
+        int photometricInterpretation;
         switch (imageType) {
 
         case TIFF_BILEVEL_WHITE_IS_ZERO:
@@ -820,7 +820,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
                 }
             }
 
-            int bufSize = 0;
+            int bufSize;
             switch(compression) {
             case COMP_PACKBITS:
                 bufSize = (int)(bytesPerTile +
@@ -940,7 +940,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
 
                 int index;
 
-                int pixel = 0;
+                int pixel;
                 int k = 0;
                 switch(sampleSize[0]) {
 
@@ -1127,7 +1127,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
                         }
 
                         if(jpegRGBToYCbCr) {
-                            WritableRaster wRas = null;
+                            WritableRaster wRas;
                             if(src instanceof WritableRaster) {
                                 wRas = (WritableRaster)src;
                             } else {

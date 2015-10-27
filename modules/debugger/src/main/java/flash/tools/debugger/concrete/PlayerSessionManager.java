@@ -117,7 +117,7 @@ public class PlayerSessionManager implements SessionManager2
 	 */
 	public int getPreference(String pref)
 	{
-		int val = 0;
+		int val;
 		Integer i = (Integer)m_prefs.get(pref);
 		if (i == null)
 			throw new NullPointerException();
@@ -239,7 +239,7 @@ public class PlayerSessionManager implements SessionManager2
 			launchCommand = getAIRLaunchArgs(uri, airLaunchInfo);
 		}
 
-		ProcessListener pl = null; 
+		ProcessListener pl;
 		PlayerSession session = null;
 
 		// create the process and attach a thread to watch it during our accept phase
@@ -285,7 +285,7 @@ public class PlayerSessionManager implements SessionManager2
 			launchCommand = getAIRLaunchArgs(uri, airLaunchInfo);
 		}
 
-		ProcessListener pl = null; 
+		ProcessListener pl;
 
 		// create the process and attach a thread to watch it during our accept phase
 		Process proc = m_debuggerCallbacks.launchDebugTarget(launchCommand);
@@ -332,7 +332,7 @@ public class PlayerSessionManager implements SessionManager2
 		{
 			// ok, its not an http: type request therefore we should be able to see
 			// it on the file system, right?  If not then it's probably not valid
-			File f = null;
+			File f;
 			if (uri.startsWith("file:")) //$NON-NLS-1$
 			{
 				try
@@ -563,7 +563,7 @@ public class PlayerSessionManager implements SessionManager2
 		// If it's a "file:" URL, then pass the actual filename; otherwise, use the URL
 		// ok, its not an http: type request therefore we should be able to see
 		// it on the file system, right?  If not then it's probably not valid
-		File f = null;
+		File f;
 		if (uri.startsWith("file:")) //$NON-NLS-1$
 		{
 			try
@@ -829,7 +829,7 @@ public class PlayerSessionManager implements SessionManager2
 		int totalTimeout = timeout;
 		int iterateOn = 100;
 
-		PlayerSession session = null;
+		PlayerSession session;
 		try
 		{
 			m_serverSocket.setSoTimeout(iterateOn);

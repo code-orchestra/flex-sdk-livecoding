@@ -351,7 +351,7 @@ public final class FileUtil
              * to have an InputBufferReader (like InputBufferStream) and openReader()
              */
 			file = new BufferedReader(new InputStreamReader(FileUtil.openStream(f)));
-			String s = null;
+			String s;
 			while ((s = file.readLine()) != null)
 			{
 				buffer.append(s);
@@ -419,7 +419,7 @@ public final class FileUtil
 		BufferedInputStream in = null;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		boolean lastIsCR = false;
-		int pos = 0, ch = 0, count = 0;
+		int pos = 0, ch, count = 0;
 		try
 		{
 			in = new BufferedInputStream(FileUtil.openStream(f));

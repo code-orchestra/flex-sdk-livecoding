@@ -109,7 +109,7 @@ class PrimitiveBuilder extends AbstractBuilder
 
         Primitive primitive = initPrimitiveValue(type, node);
 
-        CDATANode cdata = null;
+        CDATANode cdata;
         if (node instanceof CDATANode)
             cdata = (CDATANode)node;
         else
@@ -173,7 +173,7 @@ class PrimitiveBuilder extends AbstractBuilder
                     id = primitive.getId();
                 }
 
-                String tempComment = null;
+                String tempComment;
                 
                 if(node.comment == null) 
                 {

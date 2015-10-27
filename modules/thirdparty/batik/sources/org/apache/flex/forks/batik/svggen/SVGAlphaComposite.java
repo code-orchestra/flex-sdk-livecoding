@@ -125,7 +125,7 @@ public class SVGAlphaComposite extends AbstractSVGConverter {
 
             // For all rules different than SRC_OVER, a filter is
             // needed to represent the composition rule.
-            String filterValue = null;
+            String filterValue;
             Element filterDef = null;
             if(composite.getRule() != AlphaComposite.SRC_OVER){
                 // Note that the extra alpha is ignored by using the
@@ -165,20 +165,20 @@ public class SVGAlphaComposite extends AbstractSVGConverter {
      */
     private Element compositeToSVG(AlphaComposite composite) {
         // operator is equivalent to rule
-        String operator = null;
+        String operator;
 
         // input1 is equivalent to Src
-        String input1 = null;
+        String input1;
 
         // input2 is equivalent to Dst
-        String input2 = null;
+        String input2;
 
         // k2 is used only for arithmetic
         // to obtain the equivalent of SRC
         String k2 = "0";
 
         // ID used to identify the composite
-        String id = null;
+        String id;
 
         switch(composite.getRule()){
         case AlphaComposite.CLEAR:

@@ -242,7 +242,7 @@ public class SVGAnimateTransformElementBridge extends SVGAnimateElementBridge {
             return null;
         }
         ArrayList values = new ArrayList(7);
-        int i = 0, start = 0, end;
+        int i = 0, start, end;
         char c;
 outer:  while (i < len) {
             while (valuesString.charAt(i) == ' ') {

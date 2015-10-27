@@ -85,7 +85,7 @@ public class IntrospectorBase
                 "Introspector.getMethod(): Class method key was null: " + name );
         }                
 
-        ClassMap classMap = null;
+        ClassMap classMap;
         
         synchronized(classMethodMaps)
         {

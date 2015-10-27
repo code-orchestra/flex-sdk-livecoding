@@ -588,7 +588,6 @@ public class StylesContainer extends StyleModule
             if (styleSource.getCompilationUnit() == null) 
             {
                 // if no compilationUnit, then we need to generate source so we can recompile.
-                styleSource = null;
             }
             else 
             {

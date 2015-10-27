@@ -639,7 +639,7 @@ public class SVGFlowRootElementBridge extends SVG12TextElementBridge {
         String  s        = XMLSupport.getXMLSpace(element);
         boolean preserve = s.equals(SVG_PRESERVE_VALUE);
         boolean prevEndsWithSpace;
-        Element nodeElement = element;
+        Element nodeElement;
         int elementStartChar = asb.length();
 
         if (top) {
@@ -660,7 +660,7 @@ public class SVGFlowRootElementBridge extends SVG12TextElementBridge {
             subBidiLevel = (Integer) o;
         }
 
-        int lineBreak = -1;
+        int lineBreak;
         if (lnLocs.size() != 0) {
             lineBreak = (Integer) lnLocs.get(lnLocs.size() - 1);
         }

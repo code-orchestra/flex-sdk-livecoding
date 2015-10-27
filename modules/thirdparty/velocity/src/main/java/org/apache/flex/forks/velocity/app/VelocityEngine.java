@@ -243,7 +243,7 @@ public class VelocityEngine implements RuntimeConstants
          *  first, parse - convert ParseException if thrown
          */
 
-        BufferedReader br  = null;
+        BufferedReader br;
         String encoding = null;
 
         try
@@ -282,7 +282,7 @@ public class VelocityEngine implements RuntimeConstants
         throws ParseErrorException, MethodInvocationException, 
         	ResourceNotFoundException,IOException
     {
-        SimpleNode nodeTree = null;
+        SimpleNode nodeTree;
         
         try
         {

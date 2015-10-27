@@ -61,7 +61,6 @@ public class ParsedURLDataProtocolHandler
                 ret.ref = urlStr.substring(idx + 1);
             }
             urlStr = urlStr.substring(0, idx);
-            len = urlStr.length();
         }
 
         idx = urlStr.indexOf(':');

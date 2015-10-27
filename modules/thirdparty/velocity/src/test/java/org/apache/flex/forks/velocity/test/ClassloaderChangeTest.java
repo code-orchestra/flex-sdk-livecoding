@@ -90,7 +90,7 @@ public class ClassloaderChangeTest extends TestCase implements LogSystem
         try
         {
             VelocityContext vc = new VelocityContext();
-            Object foo = null;
+            Object foo;
 
             /*
              *  first, we need a classloader to make our foo object

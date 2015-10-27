@@ -440,8 +440,8 @@ public class JREFontManager extends CachedFontManager
 
         public GlyphEntry createGlyphEntry(char c, char referenceChar)
         {
-            Shape swfShape = null;
-            int advance = 0;
+            Shape swfShape;
+            int advance;
 
             GlyphVector gv = font.createGlyphVector(frc, new char[]{referenceChar});
             java.awt.Shape glyphOutline = gv.getGlyphOutline(0);

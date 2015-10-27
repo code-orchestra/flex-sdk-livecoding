@@ -116,7 +116,7 @@ public class SourcePath extends SourcePathBase
 		boolean thisPath = false;
 
 		for (File directory : directories) {
-			File f = null;
+			File f;
 			if (pathRoot.equals(FileUtil.getCanonicalPath(directory))) {
 				thisPath = true;
 			}
@@ -140,7 +140,7 @@ public class SourcePath extends SourcePathBase
 	protected Source findFile(String className, String namespaceURI, String localPart) throws CompilerException
 	{
 		String p = className.replace(':', '.').replace('.', File.separatorChar);
-		Source s = null;
+		Source s;
 
 		for (File directory : directories) {
 			File f;

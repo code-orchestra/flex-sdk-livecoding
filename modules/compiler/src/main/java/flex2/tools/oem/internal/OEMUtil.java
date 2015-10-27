@@ -127,7 +127,7 @@ public class OEMUtil
 	public static String load(InputStream in, String cacheName) throws IOException
 	{
 		// grab the data and put it in a temp file...
-		File temp = null;
+		File temp;
 		if (cacheName == null)
 		{
 			temp = FileUtil.createTempFile(in);
@@ -433,7 +433,7 @@ public class OEMUtil
 
 	public static ConfigurationBuffer getCommandLineConfigurationBuffer(Logger logger, PathResolver resolver, String[] args)
 	{
-		ConfigurationBuffer cfgbuf = null;
+		ConfigurationBuffer cfgbuf;
 		
         try
         {
@@ -454,7 +454,7 @@ public class OEMUtil
 	
 	public static ConfigurationBuffer getCompcConfigurationBuffer(Logger logger, PathResolver resolver, String[] args)
 	{
-		ConfigurationBuffer cfgbuf = null;
+		ConfigurationBuffer cfgbuf;
 		
         try
         {
@@ -521,7 +521,7 @@ public class OEMUtil
 
             String parent = output.getParent();
 
-            String generated = null;
+            String generated;
             if (parent == null)
             {
                 generated = new File( "generated" ).getAbsolutePath();

@@ -183,7 +183,7 @@ public class InputBuffer
             bb = ByteBuffer.wrap(b);
         }
         
-        Charset cs = null;
+        Charset cs;
         
         try
         {

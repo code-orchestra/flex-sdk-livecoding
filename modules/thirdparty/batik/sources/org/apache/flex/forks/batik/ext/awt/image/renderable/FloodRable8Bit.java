@@ -131,7 +131,6 @@ public class FloodRable8Bit extends AbstractRable
         Rectangle2D userAOI;
         Shape aoi = rc.getAreaOfInterest();
         if (aoi == null) {
-            aoi     = imageRect;
             userAOI = imageRect;
         } else {
             userAOI = aoi.getBounds2D();

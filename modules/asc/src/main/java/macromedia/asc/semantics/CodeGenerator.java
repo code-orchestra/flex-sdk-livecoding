@@ -3358,7 +3358,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         int var_offset = bui.var_offset;
 
         Slot slot = null;
-        TypeInfo type = null;
+        TypeInfo type;
         QName qname = null;
 
         cx.pushScope(node.activation);
@@ -3403,7 +3403,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
             }
         }
 
-        int temp_activation_reg = -1;
+        int temp_activation_reg;
 
         // Generate code to push the exception scope's activation object
         NewCatch(frame.catchIndex);

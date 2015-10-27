@@ -1605,7 +1605,7 @@ public abstract class ValueInitializer implements Initializer, Cloneable
                                              "var f = " + value.toString(), getLineRef(),
                                              generateDocComments);
             
-            VariableDefinitionNode variableDefinition = null;
+            VariableDefinitionNode variableDefinition;
             
             if(list.get(0) instanceof DocCommentNode)
             {

@@ -632,7 +632,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
          * be the compile-time stand-in for the instance.
          */
 
-        ObjectValue base = null;
+        ObjectValue base;
 
 
 
@@ -663,7 +663,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
             }
         }
 
-        Value val = null;
+        Value val;
         // check again, in case the base got added above
         if( node.base != null )
         {
@@ -886,7 +886,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
 
             if (cx.statics.withDepth == -1)
             {
-                Slot slot = null;
+                Slot slot;
                 node.ref.setBase(node.base);  // inherited attribute
                 slot = node.ref.getSlot(cx, GET_TOKEN);
                 node.ref.setKind(SET_TOKEN);
@@ -3263,7 +3263,7 @@ else
 
         Builder bui = obj.builder;
 
-        int slot_id = -1;
+        int slot_id;
 
         if( bui instanceof InstanceBuilder && node.ref.name.equals(fun_name_stack.back()))
         {
@@ -5297,8 +5297,8 @@ else
             return null;
         }
 
-        ObjectValue obj = null;
-        ReferenceValue ref = null;
+        ObjectValue obj;
+        ReferenceValue ref;
 
         // Use these for keeping track of if we have already seen a given attribute.
         // This is used for error checking (attributes should not appear more than once)
@@ -6365,7 +6365,7 @@ else
     // While brute force slow, this method is only used when reporting an error for a conflicting definition
     String getFullNameForInheritedSlot(Context cx, ObjectValue declaredBy, String name)
     {
-        String fullname = name;
+        String fullname;
 
         fullname = declaredBy.type.getTypeValue().name.toString();
         fullname += ".";

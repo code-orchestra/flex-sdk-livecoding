@@ -357,7 +357,7 @@ public class AtEmbed implements LineNumberMapped
 
         String mimeType = (String) attrs.get(Transcoder.MIMETYPE);
 
-        VirtualFile f = null;
+        VirtualFile f;
         if (path != null)
         {
             buf.append(path);

@@ -212,7 +212,7 @@ public class MenuFactory extends ResourceManager {
         }
         String     type = getSpecializedString(name + TYPE_SUFFIX,
                                                specialization);
-        JComponent item = null;
+        JComponent item;
 
         if (type.equals(TYPE_RADIO)) {
             if (buttonGroup == null) {

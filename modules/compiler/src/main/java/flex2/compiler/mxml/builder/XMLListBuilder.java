@@ -139,7 +139,7 @@ public class XMLListBuilder extends AbstractBuilder
 
             for (QName attrName : attributeBindings.keySet()) {
                 String attrExpr;
-                int nsId = 0;
+                int nsId;
 
                 // If the attribute node has a namespace use that.  Otherwise 
                 // use the namespace of the element node.

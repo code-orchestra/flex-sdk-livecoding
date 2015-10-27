@@ -709,7 +709,7 @@ public class ActionBlockEmitter extends Emitter
 
         int qname_index = addClassName(name);
         int base_index = basename == null ? 0 : addClassName(basename);
-        int iinit_info = 0;
+        int iinit_info;
 
         //if( !is_interface )
         {
@@ -1589,7 +1589,7 @@ public class ActionBlockEmitter extends Emitter
             startIndex = 0;     //  than 53 bits worth of mantissa data (where roundoff error occurs).
             int        newDigit = 0;
             int        end;
-            boolean    roundUp = false;
+            boolean    roundUp;
             switch(base)
             {
             case 10:
@@ -2496,10 +2496,10 @@ public class ActionBlockEmitter extends Emitter
 
         IntList namespaces = new IntList(quals.size());  // will be (*it)->namespaces
 
-        int prev_var_index = -1;
-        int var_index = -1;
+        int prev_var_index;
+        int var_index;
         int flags = 0;
-        Slot prev_slot = null;
+        Slot prev_slot;
 
         Iterator<Map.Entry<ObjectValue, Integer>> i = quals.entrySet().iterator();        
         Map.Entry<ObjectValue, Integer> qual_it = i.hasNext() ? i.next() : null;
@@ -2511,8 +2511,6 @@ public class ActionBlockEmitter extends Emitter
             int slot_index;
             Slot slot;
             namespaces.clear();  // new multiname
-
-            var_index = -1;
 
             ObjectValue ns = qual_it.getKey();
             slot_index = obj.getSlotIndex(cx,GET_TOKEN,name,ns);
@@ -2666,7 +2664,7 @@ public class ActionBlockEmitter extends Emitter
         {
             Value val = values[z];
             String key = null;
-            String value = null;
+            String value;
             if( val instanceof MetaDataEvaluator.KeylessValue )
             {
                 key = null;
@@ -2772,7 +2770,7 @@ public class ActionBlockEmitter extends Emitter
                 cx.internalError(pos, "internal error: non object value for namespace");
             }
 
-            int method_info = -1;
+            int method_info;
             int method_id = slot.getMethodID();
             if( method_id >= 0 )
             {       // method
@@ -2985,7 +2983,7 @@ public class ActionBlockEmitter extends Emitter
         
         last_ip = getIP();
 
-        int index=-1;
+        int index;
         if( is_qualified )
         {
             index = ab.addMultiNameConstant(bytecodeFactory.ConstantRuntimeQualifiedLate(is_attr));
@@ -3159,7 +3157,7 @@ public class ActionBlockEmitter extends Emitter
         
         last_ip = getIP();
 
-        int index = -1;
+        int index;
         if( is_qualified )
         {
             index = ab.addMultiNameConstant(bytecodeFactory.ConstantRuntimeQualifiedLate(is_attr));
@@ -3314,7 +3312,7 @@ public class ActionBlockEmitter extends Emitter
         
         last_ip = getIP();
 
-        int index = -1;
+        int index;
         if( is_qualified )
         {
             index = ab.addMultiNameConstant(bytecodeFactory.ConstantRuntimeQualifiedLate(is_attr));

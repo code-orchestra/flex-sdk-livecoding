@@ -427,7 +427,7 @@ public class Configuration extends Hashtable
                         /*
                          * Recursively load properties files.
                          */
-                        File file = null;
+                        File file;
                         
                         if (value.startsWith(fileSeparator))
                         {
@@ -851,7 +851,7 @@ public class Configuration extends Hashtable
                     validSubset = true;
                 }
                 
-                String newKey = null;
+                String newKey;
                 
                 /*
                  * Check to make sure that c.subset(prefix) doesn't

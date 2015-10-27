@@ -226,7 +226,7 @@ public class XLRLocalizer implements ILocalizer
 
                     String prefix = id;
                     int dot = id.lastIndexOf( '.' );
-                    int underscore = -1;
+                    int underscore;
                     if (dot != -1)
                     {
                         underscore = id.indexOf( '_', dot );
@@ -399,7 +399,7 @@ public class XLRLocalizer implements ILocalizer
             }
             // match based on the value being non-zero length, non-zero, or not "false" if pattern isn't set
 
-            boolean matched = false;
+            boolean matched;
             if (pattern == null) {
                 matched = (value != null) && (value.length() > 0) && !(value.equalsIgnoreCase("false") || value.equals("0"));
 // null string
@@ -449,7 +449,7 @@ public class XLRLocalizer implements ILocalizer
                 locale = fileLocale;
             String text = attributes.getValue( "text" );
 
-            XLRNode node = null;
+            XLRNode node;
             if ("messages".equals( qName ))
             {
                 fileLocale = attributes.getValue( "locale" );

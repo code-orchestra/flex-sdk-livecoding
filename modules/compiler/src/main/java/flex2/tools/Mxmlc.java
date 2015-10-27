@@ -160,7 +160,7 @@ public final class Mxmlc extends Tool implements FlexTool
             ResourceBundlePath bundlePath = new ResourceBundlePath(configuration.getCompilerConfiguration(), targetFile);
 
             ArrayList<Source> sources = new ArrayList<>();
-            List<CompilationUnit> units = new ArrayList<>();
+            List<CompilationUnit> units;
 
             if (benchmark != null)
             {

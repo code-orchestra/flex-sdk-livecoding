@@ -470,7 +470,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 	                    TypeValue[] type = new TypeValue[1];
 	                    double ld = cx.getEmitter().getValueOfNumberLiteral( lhs_ov.getValue(), type, node.numberUsage).doubleValue();
 	                    double rd = cx.getEmitter().getValueOfNumberLiteral( rhs_ov.getValue(), type, node.numberUsage).doubleValue();
-	                    double d = 0.0/0;
+	                    double d;
 	                    d = ld + rd;
 	                    val = new ObjectValue(Double.toString(d), cx.numberType());
 					}
@@ -545,7 +545,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 				case GREATERTHANOREQUALS_TOKEN:
 				{
 					String less_result = lessthan(cx, lhs_ov, rhs_ov);
-					Boolean b = null;
+					Boolean b;
 					if( node.op == LESSTHAN_TOKEN )
 					{
 						if( less_result == UNDEFINED || less_result == FALSE )
@@ -569,7 +569,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 				case GREATERTHAN_TOKEN:
 				{
 					String less_result = lessthan(cx, rhs_ov, lhs_ov);
-					Boolean b = null;
+					Boolean b;
 					if( node.op == LESSTHANOREQUALS_TOKEN )
 					{
 						if( less_result == UNDEFINED || less_result == TRUE )
@@ -767,7 +767,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 	    for (int i = 0, size = node.items.size(); i < size; i++)
         {
 	        Node n = node.items.get(i);
-            Node temp = null;
+            Node temp;
             if (n != null)
             {
                 temp = evalAndFold(cx, n);
@@ -1193,7 +1193,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 	}
 
 	public Value evaluate(Context cx, AttributeListNode node) {
-		ObjectValue obj = null;
+		ObjectValue obj;
 		for( int i = 0, size = node.items.size(); i < size; ++i )
 		{
 			Node n = node.items.at(i);
@@ -1397,7 +1397,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
         ObjectValue obj = cx.scope();
         Builder     bui = obj.builder;
 
-        int slot_id = -1;
+        int slot_id;
 
         Namespaces hasNamespaces = obj.hasNames(cx,GET_TOKEN,node.name.name,namespaces);
         if( hasNamespaces == null )

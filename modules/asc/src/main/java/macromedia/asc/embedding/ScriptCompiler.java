@@ -318,7 +318,7 @@ public class ScriptCompiler
 			if (arg1.startsWith("@")) {
 				String filename = arg1.substring(1);
 				BufferedReader bf = new BufferedReader(new FileReader(filename));
-				String s = null;
+				String s;
 				String expanded_args = "";
 				while ((s = bf.readLine()) != null) {
 					if (!s.startsWith("#"))
@@ -771,7 +771,7 @@ public class ScriptCompiler
         {
             outputFile = mainFile.getName().substring(0, mainFile.getName().length() - ".as".length());
         }
-        File out_dir = null;
+        File out_dir;
         if( outputDir == null )
         {
             out_dir = mainFile.getParentFile();
@@ -815,7 +815,6 @@ public class ScriptCompiler
 				for (int j = 0, size = (ref.getImmutableNamespaces() != null) ? ref.getImmutableNamespaces().size() : 0; j < size; j++) {
 					QName qname = new QName(ref.getImmutableNamespaces().get(j), ref.name);
 					if (qname.ns instanceof UnresolvedNamespace && ((UnresolvedNamespace) qname.ns).resolved) {
-						found = true;
 						break;
 					}
 					int where = findDefinition(qname);
@@ -824,7 +823,6 @@ public class ScriptCompiler
 						if (!expr.contains(p)) {
 							expr.add(p);
 						}
-						found = true;
 						break;
 					}
 				}

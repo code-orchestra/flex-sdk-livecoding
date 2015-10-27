@@ -172,7 +172,7 @@ public class VMContext implements InternalContextAdapter
          * first, see if it's a VMPA
          */
         
-        Object o = null;
+        Object o;
         
         VMProxyArg vmpa = (VMProxyArg) vmproxyhash.get( key );
         

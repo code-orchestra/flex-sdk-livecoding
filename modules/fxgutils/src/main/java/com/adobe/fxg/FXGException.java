@@ -74,7 +74,6 @@ public class FXGException extends RuntimeException
     {
         super(message, cause);
         this.arguments = arguments;
-        message = null;
         lineNumber = -1;
         columnNumber = -1;
     }
@@ -89,7 +88,6 @@ public class FXGException extends RuntimeException
     {
         super(message);
         this.arguments = arguments;
-        message = null;
         lineNumber = -1;
         columnNumber = -1;
     }
@@ -138,7 +136,6 @@ public class FXGException extends RuntimeException
     {
         super(message, cause);
         this.arguments = arguments;
-        message = null;
         this.lineNumber = lineNumber;
         this.columnNumber = columnNumber;
     }
@@ -155,7 +152,6 @@ public class FXGException extends RuntimeException
     {
         super(message);
         this.arguments = arguments;
-        message = null;
         this.lineNumber = lineNumber;
         this.columnNumber = columnNumber;
     }

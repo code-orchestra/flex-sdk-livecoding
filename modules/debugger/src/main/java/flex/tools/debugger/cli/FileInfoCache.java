@@ -44,7 +44,7 @@ public class FileInfoCache implements Comparator<SourceFile>
 	HashMap<Integer, IntMap> m_isolateState = new HashMap<>();
 
 	private IntMap getIsolateState(int isolateId) {
-		IntMap isolateState = null;
+		IntMap isolateState;
 		if (!m_isolateState.containsKey(isolateId)) {
 			isolateState = new IntMap();
 			m_isolateState.put(isolateId, isolateState);
@@ -335,7 +335,7 @@ public class FileInfoCache implements Comparator<SourceFile>
 
 	public SwfInfo[] getSwfsIsolate(int isolateId)
 	{
-		SwfInfo[] swfs = null;
+		SwfInfo[] swfs;
 		try
 		{
 			swfs = m_session.getWorkerSession(isolateId).getSwfs();
@@ -367,7 +367,7 @@ public class FileInfoCache implements Comparator<SourceFile>
 	// locate the name of the swf
 	public static String nameOfSwf(SwfInfo e)
 	{
-		int at = -1;
+		int at;
 		String name = e.getUrl();
 		if ( (at = e.getUrl().lastIndexOf('/')) > -1)
 			name = e.getUrl().substring(at+1);
@@ -391,7 +391,7 @@ public class FileInfoCache implements Comparator<SourceFile>
 		String name = nameOfSwf(e);
 
 		// now strip off any leading path
-		int at = -1;
+		int at;
 		if ( (at = name.lastIndexOf('/')) > -1)
 			name = name.substring(at+1);
 		else if ( (at = name.lastIndexOf('\\')) > -1)

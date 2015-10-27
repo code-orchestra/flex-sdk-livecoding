@@ -124,7 +124,7 @@ public final class FileUtils
             Reader reader = new InputStreamReader(in, consumeBOM(in, default_encoding));
 
             char[] line = new char[2000];
-            int count = 0;
+            int count;
 
             while ((count = reader.read(line, 0, line.length)) >= 0) {
                 returnVal.append(line, 0, count);
@@ -427,7 +427,7 @@ public final class FileUtils
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream(8192);
         byte[] buffer = new byte[8192];
-        int num = 0;
+        int num;
         InputStream inputStream = new BufferedInputStream(in);
         try
         {

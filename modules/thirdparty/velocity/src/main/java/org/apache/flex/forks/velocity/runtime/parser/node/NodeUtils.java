@@ -73,7 +73,7 @@ public class NodeUtils
 
                 if ( c == '\\')
                 {
-                    boolean ok = true;
+                    boolean ok;
                     boolean term = false;
 
                     int j = i;

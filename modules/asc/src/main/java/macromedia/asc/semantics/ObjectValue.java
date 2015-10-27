@@ -326,7 +326,7 @@ public class ObjectValue extends Value implements Comparable
     		return false;
     	}
 
-    	boolean ret = false;
+    	boolean ret;
     	ret = names != null && names.containsKey(name, qualifier, Names.getTypeFromKind(kind));
         
         // When in init only mode, only set slots defined in this object should be visible.
@@ -350,7 +350,7 @@ public class ObjectValue extends Value implements Comparable
     	{
     		return false;
     	}
-    	boolean ret = false;
+    	boolean ret;
     	ret = names != null && (names.exist(name, Names.getTypeFromKind(kind)));
 
         // When in init only mode, only set slots defined in this object should be visible.
@@ -420,7 +420,7 @@ public class ObjectValue extends Value implements Comparable
         // Any slots defined in the base class should not be visible.  
     	if( !init_only_view && base_objs != null && search_base_objs)
     	{
-    		Namespaces temp = null;
+    		Namespaces temp;
     		if( !searched_protected && protected_ns != null && !matched_protected)
     		{
 		        for (int i = 0, size = namespaces.size(); i < size; ++i)

@@ -53,7 +53,7 @@ public class Test implements ReferenceInsertionEventHandler,
 
     public Test(String templateFile, String encoding)
     {
-        Writer writer = null;
+        Writer writer;
         TestProvider provider = new TestProvider();
         ArrayList al = provider.getCustomers();
         Hashtable h = new Hashtable();

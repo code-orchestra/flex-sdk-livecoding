@@ -222,7 +222,7 @@ public class DebugCLI implements Runnable, SourceLocator {
     private DebugCLIIsolateState getIsolateState(int isolateId) {
         if (isolateId == Isolate.DEFAULT_ID)
             return m_mainState;
-        DebugCLIIsolateState isolateState = null;
+        DebugCLIIsolateState isolateState;
         if (!m_isolateState.containsKey(isolateId)) {
             isolateState = new DebugCLIIsolateState(this);
             m_isolateState.put(isolateId, isolateState);
@@ -518,7 +518,7 @@ public class DebugCLI implements Runnable, SourceLocator {
      * line and we are console then repeat last line.
      */
     protected String readLine() throws IOException {
-        String line = null;
+        String line;
         if (haveStreams())
             line = m_in.readLine();
         else
@@ -1669,7 +1669,7 @@ public class DebugCLI implements Runnable, SourceLocator {
     void doInfoFuncs() {
         StringBuilder sb = new StringBuilder();
 
-        String arg = null;
+        String arg;
 
         // we take an optional single arg which specifies a module
         try {
@@ -2007,9 +2007,9 @@ public class DebugCLI implements Runnable, SourceLocator {
     }
 
     void dumpBreakLine(boolean postStep, StringBuilder sb) throws NotConnectedException {
-        int bp = -1;
+        int bp;
         String name = getLocalizationManager().getLocalizedTextString("unknownFilename"); //$NON-NLS-1$
-        int line = -1;
+        int line;
 
         // clear our current frame display
         propertyPut(DISPLAY_FRAME_NUMBER, 0);
@@ -2378,7 +2378,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         boolean stop = false;
         boolean noConnection = !haveConnection();
         boolean hasAnythingSuspended = false;
-        int targetIsolate = Isolate.DEFAULT_ID;
+        int targetIsolate;
         if (!noConnection) {
             hasAnythingSuspended = hasAnythingSuspended();
         }
@@ -2399,7 +2399,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                  *  is requested via the prompt. We thus check for any pending prompts to be displayed
                  *  for freshly loaded swfs. If any, we switch to that worker and prompt the user to set
                  *  any break points.  */
-                int pendingPromptIsolate = -1;
+                int pendingPromptIsolate;
                 if (m_lastPromptIsolate != -1 && (getPromptState(m_lastPromptIsolate) != InitialPromptState.DONE)) {
                     pendingPromptIsolate = m_lastPromptIsolate;
                 } else {
@@ -2778,7 +2778,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 // optionally specify  'display' or 'breakpoint'
                 String arg = nextToken();
                 int cmd = disableCommandFor(arg);
-                int id = -1;
+                int id;
                 if (cmd == CMD_DISPLAY)
                     doUnDisplay();
                 else {
@@ -3024,7 +3024,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             int savedIsolateId = m_activeIsolate;
             boolean wasAlreadySuspended = false;
 
-            Location location = null;
+            Location location;
             for (Iterator<Location> iterator = a.getLocations().iterator(); iterator.hasNext(); ) {
                 location = iterator.next();
                 if (location.getIsolateId() == isolateId) {
@@ -3104,7 +3104,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         final boolean bpDoesNotExistAtAll = at == -1 && bp == -1;
         final boolean bpExistsButNotForThisIsolate = at == -1 && bp > -1;
 
-        BreakAction b = null;
+        BreakAction b;
 
         if (bpDoesNotExistAtAll) {
             LocationCollection col = enableBreak(f, line, isolateId);
@@ -3492,7 +3492,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 		/* wait a bit if we are not halted */
 //		waitTilHalted();
         try {
-            ValueExp exp = null;
+            ValueExp exp;
 
             if (!hasMoreTokens())
                 err(getLocalizationManager().getLocalizedTextString("setCommand")); //$NON-NLS-1$
@@ -3525,7 +3525,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 		/* wait a bit if we are not halted */
 //		waitTilHalted();
         try {
-            Object result = null;
+            Object result;
             boolean isLookupMembers = false;
 
             if (!hasMoreTokens()) {
@@ -3650,7 +3650,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             String var = nextToken();  // our variable reference
             String member = "_target"; //$NON-NLS-1$
             boolean printPath = false;
-            Object result = null;
+            Object result;
             String name = null;
 
             // did the user specify a member name
@@ -4285,7 +4285,6 @@ public class DebugCLI implements Runnable, SourceLocator {
         /* Now deal with the case where arg contains a '@' and / or ':',
            and is therefore specifying both a file and a line plus eventually the workerId. */
         else {
-            workerId = m_activeIsolate;
             if (firstChar == '@') {
                 workerId = parseWorkerId(arg.substring(1, colonAt));
                 arg = arg.substring(colonAt + 1);
@@ -4344,7 +4343,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 		/* wait a bit if we are not halted */
         waitTilHalted(m_activeIsolate);
         try {
-            Object result = null;
+            Object result;
 
 			/* pull the rest of the line */
             String s = restOfLine();
@@ -4753,7 +4752,7 @@ public class DebugCLI implements Runnable, SourceLocator {
      */
     void doCommands() throws IOException {
         try {
-            int id = -1;
+            int id;
             if (hasMoreTokens())
                 id = nextIntToken();
             else
@@ -4768,9 +4767,9 @@ public class DebugCLI implements Runnable, SourceLocator {
             a.setSilent(false);
 
             // now just pull the commands as they come while not end
-            String line = null;
+            String line;
             boolean first = true;
-            boolean isEnd = false;
+            boolean isEnd;
 
             Map<String, Object> args = new HashMap<>();
             args.put("breakpointNumber", Integer.toString(id)); //$NON-NLS-1$
@@ -4911,7 +4910,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     // modified, lets locate the one that changed
                     // and reset it
                     int at = missingWatchpointIndexOf(newList);
-                    WatchAction a = null;
+                    WatchAction a;
                     try {
                         a = watchpointAt(at);
                     } catch (ArrayIndexOutOfBoundsException aio) {
@@ -5124,7 +5123,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 // optionally specify  'display' or 'breakpoint'
                 String arg = nextToken();
                 int cmd = disableCommandFor(arg);
-                int id = -1;
+                int id;
                 if (cmd == CMD_DISPLAY) {
                     doDisableDisplay();
                 } else if (cmd == CMD_BREAK && !hasMoreTokens()) {
@@ -5221,7 +5220,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 // optionally specify  'display' or 'breakpoint'
                 String arg = nextToken();
                 int cmd = enableCommandFor(arg);
-                int id = -1;
+                int id;
                 boolean autoDelete = false;
                 boolean autoDisable = false;
                 if (cmd == CMD_DISPLAY) {
@@ -5240,7 +5239,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     } else
                         id = Integer.parseInt(arg);
 
-                    boolean worked = true;
+                    boolean worked;
                     do {
                         int at = breakpointIndexOf(id);
                         worked = enableBreakpointAt(at, autoDisable, autoDelete);
@@ -5369,7 +5368,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 
     /* Terminates fdb */
     boolean doQuit() throws IOException {
-        boolean quit = false;
+        boolean quit;
 
         // no session, no questions
         if (m_session == null)
@@ -5559,7 +5558,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 		/* wait a bit if we are not halted */
         waitTilHalted(m_activeIsolate);
 
-        String typeToCatch = null;
+        String typeToCatch;
 
 		/* currentXXX may NOT be invalid! */
         if (!hasMoreTokens()) {
@@ -5573,7 +5572,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             return;
         }
 
-        Value type = null;
+        Value type;
         if (typeToCatch.equals("*")) //$NON-NLS-1$
         {
             typeToCatch = null;

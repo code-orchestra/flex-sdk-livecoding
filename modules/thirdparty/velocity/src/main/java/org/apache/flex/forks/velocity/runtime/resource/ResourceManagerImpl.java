@@ -563,7 +563,7 @@ public class ResourceManagerImpl implements ResourceManager
      */
     public String getLoaderNameForResource(String resourceName )
     {
-        ResourceLoader resourceLoader = null;
+        ResourceLoader resourceLoader;
        
         /*
          *  loop through our loaders...

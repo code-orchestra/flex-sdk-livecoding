@@ -64,7 +64,7 @@ public class CommandLineConfigurator
         final int DONE = 4;
 
 
-        int i = 0, iStart = 0, iEnd = 0;
+        int i = 0, iStart = 0, iEnd;
         String var = null;
         int varArgCount = -2;
         List<String> argList = new LinkedList<>();
@@ -103,7 +103,7 @@ public class CommandLineConfigurator
                     }
                     else if (dash && args[i].startsWith("+"))
                     {
-                        String token = null;
+                        String token;
                         int c = (args[i].length() > 1 && args[i].charAt( 1 ) == '+')? 2 : 1;    // gnu-style?
 
                         int equals = args[i].indexOf( '=' );
@@ -180,7 +180,7 @@ public class CommandLineConfigurator
                             }
                             else
                             {
-                                String seps = null;
+                                String seps;
                                 if (buffer.getInfo(var).isPath())
                                 {
                                     seps = "[," + File.pathSeparatorChar + "]";

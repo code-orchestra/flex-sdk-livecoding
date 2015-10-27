@@ -35,7 +35,7 @@ public abstract class AbstractSubCompiler implements SubCompiler
      */
     public PerformanceData[] getBenchmarks()
     {
-    	PerformanceData[] ret = null;
+    	PerformanceData[] ret;
     	if (benchmarkHelper==null)
     	{
     		ret = new PerformanceData[0];

@@ -1455,7 +1455,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
 
 			public String getArgName(int argnum)
 			{
-				String argName = null;
+				String argName;
 				
 				if (argnum == 0) 
 				{
@@ -1730,7 +1730,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
 		
 		for (int i = 0; i < results.length; i++)
 		{
-			int versionNum = 0;
+			int versionNum;
 			
 			try
 			{

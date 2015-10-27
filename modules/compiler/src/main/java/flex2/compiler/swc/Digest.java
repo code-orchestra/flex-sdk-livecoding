@@ -104,7 +104,7 @@ public class Digest
 	 */
 	public String computeDigest(byte[] byteArray)
 	{
-		MessageDigest digest = null;
+		MessageDigest digest;
 		try
 		{
 			digest = MessageDigest.getInstance(type);

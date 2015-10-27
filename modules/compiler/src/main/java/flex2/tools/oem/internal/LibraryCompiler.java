@@ -129,7 +129,7 @@ public class LibraryCompiler
 		{
 		}
         
-		long size = 0;
+		long size;
 		if ((size = lib.build(new BufferedOutputStream(new FileOutputStream(new File(c2.getOutput()))), true)) == 0)
 		{
             ThreadLocalToolkit.logError("Build unsuccessful.");

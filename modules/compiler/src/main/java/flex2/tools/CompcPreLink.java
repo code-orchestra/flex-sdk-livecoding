@@ -339,7 +339,7 @@ public class CompcPreLink implements flex2.compiler.PreLink
                         List<DefineTag> fonts, String uniqueRootClassName)
     {
         String rootClassName = "_" + uniqueRootClassName + "_";
-        String sourceText = null;
+        String sourceText;
         
         if (fonts.size() == 0)
         {

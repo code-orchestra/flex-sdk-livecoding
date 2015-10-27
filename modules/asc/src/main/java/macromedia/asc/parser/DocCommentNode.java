@@ -155,8 +155,7 @@ public class DocCommentNode extends MetaDataNode
 			FunctionDefinitionNode fd = (FunctionDefinitionNode)this.def;
 				
 			debug_name = fd.fexpr.debug_name;
-			metaData = fd.metaData;
-			tagname = "method";
+            tagname = "method";
 
 			buf.append("\n<method name='");
 			buf.append(fd.name.identifier.name);
@@ -198,9 +197,8 @@ public class DocCommentNode extends MetaDataNode
 			VariableBindingNode    vb = (VariableBindingNode)(vd.list.items.get(0));
 
 			debug_name = vb.debug_name;
-			metaData = vd.metaData;
 
-			tagname = "field";
+            tagname = "field";
 			buf.append("\n<");
 			buf.append(tagname);
 			buf.append(" name='");
@@ -280,9 +278,8 @@ public class DocCommentNode extends MetaDataNode
 			PackageDefinitionNode pd = (PackageDefinitionNode)(this.def);
 			tagname = "packageRec";
 			debug_name = "";
-			metaData = null;
 
-			buf.append("\n<");
+            buf.append("\n<");
 			buf.append(tagname);
 			buf.append(" name='");
 		  	buf.append((pd.name.id != null ? pd.name.id.pkg_part : ""));
@@ -318,9 +315,8 @@ public class DocCommentNode extends MetaDataNode
 
 
 			debug_name = cd.debug_name;
-			metaData = cd.metaData;
 
-			InterfaceDefinitionNode id = null;
+            InterfaceDefinitionNode id = null;
 			if( this.def instanceof InterfaceDefinitionNode )
 			{
 				tagname = "interfaceRec";

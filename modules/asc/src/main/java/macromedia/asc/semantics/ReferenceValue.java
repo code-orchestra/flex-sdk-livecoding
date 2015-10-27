@@ -385,7 +385,7 @@ public final class ReferenceValue extends Value implements ErrorConstants
 
     public boolean findUnqualified(Context cx, final int flags)
     {
-        Namespaces hasNamespaces = null;
+        Namespaces hasNamespaces;
 
         // walk over each ObjectValue and look for our name
         for (ObjectValue obj = this.base; obj != null; obj = obj.proto())

@@ -703,7 +703,7 @@ public class TextHelper
             escaped = tabStop.endsWith("\\");
         }
         
-        String tabStopsVal = null;
+        String tabStopsVal;
         for (String finalTabStop : finalTabStops) {
             tabStopsVal = finalTabStop;
             if (!matchPattern(tabStopsVal, tabstopsExceptDNumericPattern)) {

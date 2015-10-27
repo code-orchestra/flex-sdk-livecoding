@@ -146,7 +146,7 @@ public class ColorMatrixRed extends AbstractRed{
             .getScanlineStride();
         final int adjust = scanStride - w;
         int p = offset;
-        int i=0, j=0;
+        int i, j;
 
         final float a00=matrix[0][0]/255f, a01=matrix[0][1]/255f, a02=matrix[0][2]/255f, a03=matrix[0][3]/255f, a04=matrix[0][4]/255f;
         final float a10=matrix[1][0]/255f, a11=matrix[1][1]/255f, a12=matrix[1][2]/255f, a13=matrix[1][3]/255f, a14=matrix[1][4]/255f;

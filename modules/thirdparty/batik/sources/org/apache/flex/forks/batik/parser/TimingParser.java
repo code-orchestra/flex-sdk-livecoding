@@ -108,7 +108,7 @@ public abstract class TimingParser extends AbstractParser {
      */
     protected String parseName() throws ParseException, IOException {
         StringBuilder sb = new StringBuilder();
-        boolean midEscaped = false;
+        boolean midEscaped;
         do {
             sb.append((char) current);
             current = reader.read();

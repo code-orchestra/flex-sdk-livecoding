@@ -283,7 +283,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 
 	public int getPreference(String pref)
 	{
-		int val = 0;
+		int val;
 		Integer i = (Integer)m_prefs.get(pref);
 		if (i == null)
 			throw new NullPointerException();
@@ -331,7 +331,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	 */
 	public boolean bind() throws VersionException
 	{
-		boolean bound = false;
+		boolean bound;
 
 		if (m_isConnected)
 			return false;
@@ -662,7 +662,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	 */
 	private Set<String> waitForMacAppQuit(String browser) {
 		Set<String> runningApps;
-		boolean appClosed = true;
+		boolean appClosed;
 		final long startMillis = System.currentTimeMillis();		
 		final long waitMillis = 100;
 		do {
@@ -781,7 +781,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	 */
 	public byte[] getActions(int which, int at, int len) throws NoResponseException
 	{
-		byte[] actions = null;
+		byte[] actions;
 
 		// send a actions message
 		DMessage dm = DMessageCache.alloc(12);
@@ -903,7 +903,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 		int lineNum = local.getLine();
 		int bp = DLocation.encodeId(fileId, lineNum);
 		int isolateId = local.getIsolateId();
-		Location l = null;
+		Location l;
 		l = m_manager.getBreakpoint(bp, isolateId);
 
 		if (l != null)
@@ -1040,7 +1040,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 
 		// request as many levels as we can get
 		int i = 0;
-		Value v = null;
+		Value v;
 		do
 		{
 			v = getValueWorker(Value.LEVEL_ID-i, isolateId);
@@ -1187,7 +1187,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	
 	public Value getValueWorker(long valueId, int isolateId) throws NotSuspendedException, NoResponseException, NotConnectedException
 	{
-		DValue val = null;
+		DValue val;
 
 		if (!isWorkerSuspended(isolateId))
 			throw new NotSuspendedException();
@@ -1658,7 +1658,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 		String type = DVariable.typeNameFor(t);
 		DMessage dm = buildOutSetMessage(id, name, type, value);
 		dm.setTargetIsolate(isolateId);
-		FaultEvent faultEvent = null;
+		FaultEvent faultEvent;
 //		System.out.println("setmsg id="+id+",name="+name+",t="+type+",value="+value);
 
 		// make sure any exception during the setter gets held onto
@@ -2470,7 +2470,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	{
 		/* send the message */
 		int to = getPreference(SessionManager.PREF_SWFSWD_LOAD_TIMEOUT);
-		byte[] swf = null;
+		byte[] swf;
 
 		// the query
 		DMessage dm = DMessageCache.alloc(2);
@@ -2489,7 +2489,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	{
 		/* send the message */
 		int to = getPreference(SessionManager.PREF_SWFSWD_LOAD_TIMEOUT);
-		byte[] swd = null;
+		byte[] swd;
 
 		// the query
 		DMessage dm = DMessageCache.alloc(2);
@@ -2839,7 +2839,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	public Location setBreakpointWorker(int fileId, int lineNum, int isolateId)
 			throws NoResponseException, NotConnectedException {
 		/* send the message to the player and await a response */
-		Location l = null;
+		Location l;
 		int bp = DLocation.encodeId(fileId, lineNum);
 		int wideLineSize = 0;
 		if (supportsWideLineNumbers())
@@ -2873,7 +2873,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 
 	@Override
 	public SwfInfo[] getSwfsWorker(int isolateId) throws NoResponseException {
-		int swfCount = 0;
+		int swfCount;
 		swfCount = m_manager.getSwfInfoCount(isolateId);
 		if (swfCount == 0)
 		{

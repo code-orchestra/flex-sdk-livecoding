@@ -216,7 +216,7 @@ public class DModule implements SourceFile
 	private static String generateShortName(NameParser nameParser)
 	{
 		String name = nameParser.getOriginalName();
-		String s = name;
+		String s;
 
 		if (nameParser.isPathPackageAndFilename()) {
 			s = nameParser.getFilename();
@@ -456,8 +456,8 @@ public class DModule implements SourceFile
         // pull the name apart
         final char SEP = ';';
         String pkgPart = ""; //$NON-NLS-1$
-        String pathPart = ""; //$NON-NLS-1$
-        String namePart = ""; //$NON-NLS-1$
+        String pathPart; //$NON-NLS-1$
+        String namePart; //$NON-NLS-1$
         int at = name.indexOf(SEP);
         if (at > -1)
         {
@@ -631,7 +631,7 @@ public class DModule implements SourceFile
      */
 	private Charset getEncodingFromBOM(BufferedInputStream bis)
 	{
-		Charset bomEncoding = null;
+		Charset bomEncoding;
 		bis.mark(3);
 		String bomEncodingString;
 		try
@@ -661,7 +661,7 @@ public class DModule implements SourceFile
      */
     private Charset getEncodingFromXMLDirective(String entireSource)
     {
-    	String encoding = null;
+    	String encoding;
     	Matcher xmlDeclarationMatcher = sXMLDeclarationPattern.matcher(entireSource);
     	if (xmlDeclarationMatcher.find())
     	{
@@ -689,11 +689,11 @@ public class DModule implements SourceFile
     String pullInSource(InputStream in, Charset encoding)
     {
         String script = ""; //$NON-NLS-1$
-        BufferedReader f = null;
+        BufferedReader f;
         try
         {
         	StringBuilder sb = new StringBuilder();
-        	Reader reader = null;
+        	Reader reader;
         	if (encoding == null)
         		reader = new InputStreamReader(in);
         	else

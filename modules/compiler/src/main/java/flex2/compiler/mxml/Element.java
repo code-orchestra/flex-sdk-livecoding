@@ -266,7 +266,7 @@ public abstract class Element extends Token
 
 	public void toStartElement(StringWriter w)
 	{
-		String p = null;
+		String p;
 		w.write('<');
 		if ((p = getPrefix(uri)) != null && p.length() > 0)
 		{
@@ -327,7 +327,7 @@ public abstract class Element extends Token
 
 	public void toEndElement(StringWriter w)
 	{
-		String p = null;
+		String p;
 		w.write("</");
 		if ((p = getPrefix(uri)) != null && p.length() > 0)
 		{

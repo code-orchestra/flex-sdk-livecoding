@@ -2226,7 +2226,7 @@ public abstract class AbstractDocument
                                         contextNode.getNodeName() });
             }
             context.reset();
-            XObject result = null;
+            XObject result;
             try {
                 result = xpath.execute(context, contextNode, prefixResolver);
             } catch (javax.xml.transform.TransformerException te) {

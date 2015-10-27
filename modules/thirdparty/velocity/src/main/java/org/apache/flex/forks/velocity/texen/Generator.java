@@ -372,7 +372,7 @@ public class Generator
         }
         else
         {
-            Writer writer = null;
+            Writer writer;
             
             if (writers.get(outputFile) == null)
             {

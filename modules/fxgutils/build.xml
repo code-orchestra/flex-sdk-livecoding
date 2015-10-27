@@ -26,7 +26,7 @@
     <property name="lib.dir" value="${FLEX_HOME}/lib"/>
     <property name="module.dir" value="${basedir}"/>
     <property name="module.src" value="src/main/java"/>
-	<property name="javac.src" value="1.7"/>
+	<property name="javac.src" value="1.8"/>
 	<property name="module.classes" value="${basedir}/build/classes"/>
 	<property name="build.number" value=""/>
              

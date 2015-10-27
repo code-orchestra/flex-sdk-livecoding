@@ -112,7 +112,7 @@ public class XMLListBuilder extends AbstractBuilder
         }
         else
         {
-            processChildren(node, writer, null, new Stack<String>(), new Stack<PrefixMapping>());
+            processChildren(node, writer, null, new Stack<>(), new Stack<>());
         }
 
         xmlList.setLiteralXML(writer.toString());

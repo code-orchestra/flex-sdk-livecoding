@@ -409,7 +409,7 @@ public class PreLink implements flex2.compiler.PreLink
 
                         try
                         {
-                            LinkState state = new LinkState(linkables, new HashSet(), configuration.getIncludes(), new HashSet<String>());
+                            LinkState state = new LinkState(linkables, new HashSet(), configuration.getIncludes(), new HashSet<>());
 
                             // C: generate style classes for components which we want to link in.
                             List<Source> styleSources = new ArrayList<>();

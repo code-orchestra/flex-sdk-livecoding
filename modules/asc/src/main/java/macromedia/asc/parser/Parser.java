@@ -6417,7 +6417,7 @@ XMLElementContent
         
         if( !parsing_include )
         {
-            config_namespaces.push_back(new HashSet<String>());
+            config_namespaces.push_back(new HashSet<>());
             config_namespaces.last().add(CONFIG);
             configs = parseConfigValues();
         }

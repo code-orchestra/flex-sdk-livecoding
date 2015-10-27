@@ -144,7 +144,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 		m_socket = s;
 		m_protocol = proto;
 		m_manager = manager;
-		m_prefs = Collections.synchronizedMap(new HashMap<String, Object>());
+		m_prefs = Collections.synchronizedMap(new HashMap<>());
 		m_incoming = false;
 		m_debugMsgOn = false;
 		m_debugMsgSize = 16;
@@ -153,7 +153,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 		m_watchTransactionTag = 1;  // number that is sent for each watch transaction that occurs
 		m_playerCanCallFunctions = null;
 		m_debuggerCallbacks = debuggerCallbacks;
-		m_isolateSessions = Collections.synchronizedMap(new HashMap<Integer, IsolateSession>());
+		m_isolateSessions = Collections.synchronizedMap(new HashMap<>());
 	}
 	
 	private static PlayerSession createFromSocketHelper(Socket s, IDebuggerCallbacks debuggerCallbacks, DProtocol proto) throws IOException

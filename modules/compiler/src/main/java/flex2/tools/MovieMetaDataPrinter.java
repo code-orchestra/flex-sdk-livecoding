@@ -297,7 +297,7 @@ public class MovieMetaDataPrinter
 		public void beginCInit(int methodID)
 		{
 			registerMethodInfo(methodID);
-			mdStack.push(new ArrayList<String>(1));
+			mdStack.push(new ArrayList<>(1));
 		}
 
 		public void beginClass(QName name, int slotID)
@@ -307,7 +307,7 @@ public class MovieMetaDataPrinter
 
 		public void beginConst(QName name, int slotID, QName type, Object value)
 		{
-			mdStack.push(new ArrayList<String>(1));
+			mdStack.push(new ArrayList<>(1));
 		}
 
 		public void beginFunction(int methodID, QName name, int slotID)
@@ -355,7 +355,7 @@ public class MovieMetaDataPrinter
 
 		public void beginVar(QName name, int slotID, QName type, Object value)
 		{
-			mdStack.push(new ArrayList<String>(1));
+			mdStack.push(new ArrayList<>(1));
 		}
 
 		public void classInfo(QName name)

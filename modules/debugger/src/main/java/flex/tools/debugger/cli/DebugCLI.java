@@ -3681,7 +3681,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 
             if (result instanceof Value) {
                 ArrayList<Object> e = new ArrayList<>();
-                dumpTree(new HashMap<Object, String>(), e, name, (Value) result, member);
+                dumpTree(new HashMap<>(), e, name, (Value) result, member);
 
                 // now sort according to our criteria
                 treeResults(sb, e, member, printPath);

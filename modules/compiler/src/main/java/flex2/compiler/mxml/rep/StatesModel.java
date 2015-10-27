@@ -368,9 +368,9 @@ public final class StatesModel
      */
     private void queueReparent(Model model, Node node, Collection<String> includedStates, Collection<String> excludedStates, int childIndex)
     {
-        reparentNodes = (reparentNodes != null) ? reparentNodes : new HashMap<String, List<ReparentInfo>>();
+        reparentNodes = (reparentNodes != null) ? reparentNodes : new HashMap<>();
         List<ReparentInfo> nodes = reparentNodes.get(model.getId());
-        nodes = (nodes != null) ? nodes : new ArrayList<ReparentInfo>();
+        nodes = (nodes != null) ? nodes : new ArrayList<>();
         Collection<String> states = consolidateStateNames(includedStates, excludedStates);
         model.setStates(states);
         nodes.add(new ReparentInfo(model, node, states, childIndex));
@@ -823,7 +823,7 @@ public final class StatesModel
         }
 
         // Enforce set semantics for our state list and construct representative overrides for each state.
-        Set<Object> states = new HashSet<Object>(statesList);
+        Set<Object> states = new HashSet<>(statesList);
         for (Object state1 : states) {
             State state = stateByName((String) state1);
             if (state != null) {

@@ -223,7 +223,7 @@ public class SimpleMovie extends Movie
                 // C: should also setup dependencies based on CompilationUnit.inheritance...
                 //    it still works because the list is already sorted and this is a SimpleMovie!
                 dependencies.put(path, u);
-                dependencies.addVertex(new Vertex<String, CompilationUnit>(path));
+                dependencies.addVertex(new Vertex<>(path));
             } else {
                 main = u;
             }
@@ -234,7 +234,7 @@ public class SimpleMovie extends Movie
     	    // C: should also setup dependencies based on CompilationUnit.inheritance...
     	    //    it still works because the list is already sorted and this is a SimpleMovie!
             dependencies.put(main.getSource().getName(), main);
-    	    dependencies.addVertex(new Vertex<String,CompilationUnit>(main.getSource().getName()));
+    	    dependencies.addVertex(new Vertex<>(main.getSource().getName()));
         }
 
         return dependencies;

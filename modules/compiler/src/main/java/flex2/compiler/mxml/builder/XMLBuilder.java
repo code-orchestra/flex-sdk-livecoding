@@ -143,11 +143,11 @@ class XMLBuilder extends AbstractBuilder
         {
             if (e4x)
             {
-                processChildren(e4x, node, writer, null, new Stack<String>(), new Stack<PrefixMapping>());
+                processChildren(e4x, node, writer, null, new Stack<>(), new Stack<>());
             }
             else
             {
-                processChildren(e4x, node, new XMLStringSerializer(writer), null, new Stack<String>(), null);
+                processChildren(e4x, node, new XMLStringSerializer(writer), null, new Stack<>(), null);
             }
         }
 

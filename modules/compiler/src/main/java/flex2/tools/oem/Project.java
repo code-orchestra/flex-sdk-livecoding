@@ -113,7 +113,7 @@ public class Project
         
         if (!dependencies.containsVertex(name))
         {
-            dependencies.addVertex(new Vertex<String,Builder>(name));
+            dependencies.addVertex(new Vertex<>(name));
         }
     }
     

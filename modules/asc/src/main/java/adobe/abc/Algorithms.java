@@ -207,7 +207,7 @@ public abstract class Algorithms
 	
 	public static Deque<Block> dfs(Block entry)
 	{
-		return dfs_visit(entry, new BitSet(), new LinkedDeque<Block>());
+		return dfs_visit(entry, new BitSet(), new LinkedDeque<>());
 	}
 	
 	public static class SetMap<K,V> extends TreeMap<K, Set<V>>

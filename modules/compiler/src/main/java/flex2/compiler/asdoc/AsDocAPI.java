@@ -324,7 +324,7 @@ public class AsDocAPI
 		// what ASDocExtension creates
 		CompilerAPI.compile(fileSpec, sourceList, classes.values(), sourcePath, resources, bundlePath, swcContext,
                             mappings, configuration, compilers, new CompcPreLink(null, null, true), 
-                            licenseMap, new ArrayList<Source>());
+                            licenseMap, new ArrayList<>());
 
 		asdoc.finish(configuration.restoreBuiltinClasses());
 		asdoc.saveFile(new File(configuration.getOutput(), "toplevel.xml"));

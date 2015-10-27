@@ -300,7 +300,7 @@ public class DocumentInfo
 			ThreadLocalToolkit.log(new AmbiguousStateIdentifier(stateName), path, line);
 		}
 		
-		stateNames = (stateNames != null) ? stateNames : new LinkedHashSet<String>();
+		stateNames = (stateNames != null) ? stateNames : new LinkedHashSet<>();
 		stateNames.add(stateName);
 	}
 	
@@ -314,9 +314,9 @@ public class DocumentInfo
 			ThreadLocalToolkit.log(new AmbiguousStateIdentifier(groupName), path, line);
 		}
 		
-		stateGroups = (stateGroups != null) ? stateGroups : new HashMap<String, Collection<String>>();
+		stateGroups = (stateGroups != null) ? stateGroups : new HashMap<>();
 		Collection<String> states = stateGroups.get(groupName);
-        states = (states != null) ? states : new ArrayList<String>();
+        states = (states != null) ? states : new ArrayList<>();
         states.add(stateName);
         stateGroups.put(groupName, states);
 	}

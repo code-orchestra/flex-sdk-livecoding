@@ -21,26 +21,24 @@ package macromedia.asc.embedding;
 
 import macromedia.abc.AbcParser;
 import macromedia.abc.Optimizer;
-
 import macromedia.asc.embedding.avmplus.ActionBlockEmitter;
 import macromedia.asc.embedding.avmplus.Features;
 import macromedia.asc.embedding.avmplus.GlobalBuilder;
 import macromedia.asc.parser.*;
 import macromedia.asc.semantics.*;
 import macromedia.asc.util.*;
-import macromedia.asc.util.graph.DependencyGraph;
 import macromedia.asc.util.graph.Algorithms;
-import macromedia.asc.util.graph.Visitor;
+import macromedia.asc.util.graph.DependencyGraph;
 import macromedia.asc.util.graph.Vertex;
-
-import static macromedia.asc.embedding.avmplus.Features.*;
+import macromedia.asc.util.graph.Visitor;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static macromedia.asc.embedding.avmplus.Features.*;
 
 /**
  * asc batch compiler
@@ -150,104 +148,86 @@ public class ScriptCompiler
             System.out.println("\'");
         }
 
-
         for (int i = 0, length = args.length; i < length; i++)
 		{
-			if (args[i].equals("-builtin"))
-			{
-				builtinFlag = true;
-			}
-			else if (args[i].equals("-apiversioning"))
-			{
-				apiVersioningFlag = true;
-			}
-			else if (args[i].equals("-abcfuture"))
-			{
-				FUTURE_ABC = true;
-			}
-			else if (args[i].equals("-optimize"))
-			{
-				optimize = true;
-			}
-			else if (args[i].equals("-strict"))
-			{
-				use_static_semantics = true;
-			}
-			else if (args[i].equals("-d"))
-			{
-				debugFlag = true;
-			}
-			else if (args[i].equals("-m"))
-			{
-				decimalFlag = true;
-			}
-            else if (args[i].equals("-out"))
-            {
-                outputFile = args[++i];
-            }
-            else if (args[i].equals("-outdir"))
-            {
-                outputDir = args[++i];
-            }
-            else if (args[i].equals("-import"))
-			{
-				filespecs.add(args[++i]);
-				imported.add(Boolean.TRUE);
-			}
-            else if(args[i].equals("-config"))
-            {
-                ++i;
-                String temp = args[i];
-                ConfigVar cv = Main.parseConfigVar(temp);
-                if( cv != null)
-                    config_vars.push_back(cv);
-                else
-                	System.err.println("ERROR: couldn't parse config var "+temp);
-            }
-            else if(args[i].equals("-AS3"))
-            {
-                useas3 = true;
-            }
-            else if (args[i].equals("-use")) // -use <namespace>
-            {
-                if (use_namespaces == null)
-                    use_namespaces = new ObjectList<String>();
-                use_namespaces.add(args[++i]);
-            }
-            else if ( args[i].equals("-avmtarget"))
-            {
-                ++i;
-                try
-                {
-                    String vm_target = args[i].trim();
-                    int v = Integer.parseInt(vm_target);
-                    switch(v) {
-                    case 1:
-                        target = TARGET_AVM1;
-                        break;
-                    case 2:
-                        target = TARGET_AVM2;
-                        break;
-                    default:
-                        break;
-                    }
-                }
-                catch(Exception e)
-                {
-                }
-            }
-            else if (args[i].equals("-versioncheck") )
-            {
-                check_version = true;
-            }
-            else if (args[i].equals("-swf") )
-            {
-                swfOptions = args[++i];
-            }
-            else
-			{
-				filespecs.add(args[i]);
-				imported.add(Boolean.FALSE);
+			switch (args[i]) {
+				case "-builtin":
+					builtinFlag = true;
+					break;
+				case "-apiversioning":
+					apiVersioningFlag = true;
+					break;
+				case "-abcfuture":
+					FUTURE_ABC = true;
+					break;
+				case "-optimize":
+					optimize = true;
+					break;
+				case "-strict":
+					use_static_semantics = true;
+					break;
+				case "-d":
+					debugFlag = true;
+					break;
+				case "-m":
+					decimalFlag = true;
+					break;
+				case "-out":
+					outputFile = args[++i];
+					break;
+				case "-outdir":
+					outputDir = args[++i];
+					break;
+				case "-import":
+					filespecs.add(args[++i]);
+					imported.add(Boolean.TRUE);
+					break;
+				case "-config":
+					++i;
+					String temp = args[i];
+					ConfigVar cv = Main.parseConfigVar(temp);
+					if (cv != null)
+						config_vars.push_back(cv);
+					else
+						System.err.println("ERROR: couldn't parse config var " + temp);
+					break;
+				case "-AS3":
+					useas3 = true;
+					break;
+				case "-use":
+// -use <namespace>
+					if (use_namespaces == null)
+						use_namespaces = new ObjectList<String>();
+					use_namespaces.add(args[++i]);
+					break;
+				case "-avmtarget":
+					++i;
+					try {
+						String vm_target = args[i].trim();
+						int v = Integer.parseInt(vm_target);
+						switch (v) {
+							case 1:
+								target = TARGET_AVM1;
+								break;
+							case 2:
+								target = TARGET_AVM2;
+								break;
+							default:
+								break;
+						}
+					} catch (Exception e) {
+					}
+					break;
+				case "-versioncheck":
+					check_version = true;
+					break;
+				case "-swf":
+					swfOptions = args[++i];
+					break;
+				default:
+					filespecs.add(args[i]);
+					imported.add(Boolean.FALSE);
+					break;
 			}
 		}
 

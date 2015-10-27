@@ -2186,66 +2186,69 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 		// use the ordered child list
 		for (DVariable v : frameVars) {
 			String name = v.getName();
-
 			// let's clear a couple of attributes that may get in our way
 			v.clearAttribute(VariableAttribute.IS_LOCAL);
 			v.clearAttribute(VariableAttribute.IS_ARGUMENT);
-			if (name.equals("this")) //$NON-NLS-1$
-			{
-				if (context != null)
-					context.setThis(v);
-
-				// from our current frame, put a pseudo this entry into the
-				// cache and hang it off base, mark it as an implied arg
-				v.setAttribute(VariableAttribute.IS_ARGUMENT);
-				addVariableMember(root, v, isolateId);
-
-				// also add this variable under THIS_ID
-				if (depth == 0)
-					putValue(Value.THIS_ID, (DValue) v.getValue(), isolateId);
-			} else if (name.equals("super")) //$NON-NLS-1$
-			{
-				// we are at the end of the arg list and let's make super part
-				// of global
-				inArgs = false;
-			} else if (name.equals(ARGUMENTS_MARKER)) {
-				inArgs = true;
-
-				// see if we can extract an arg count from this variable
-				try {
-					nArgs = ((Number) (v.getValue().getValueAsObject()))
-							.intValue();
-				} catch (NumberFormatException nfe) {
-				}
-			} else if (name.equals(SCOPE_CHAIN_MARKER)) {
-				inArgs = false;
-				inScopeChain = true;
-			} else {
-				// add it to our root, marking it as an arg if we know,
-				// otherwise local
-				if (inArgs) {
+			switch (name) {
+				case "this":
+//$NON-NLS-1$
+					if (context != null)
+						context.setThis(v);
+					// from our current frame, put a pseudo this entry into the
+					// cache and hang it off base, mark it as an implied arg
 					v.setAttribute(VariableAttribute.IS_ARGUMENT);
-
-					if (context != null)
-						context.addArgument(v);
-
-					// decrement arg count if we have it
-					if (nArgs > -1) {
-						if (--nArgs <= 0)
-							inArgs = false;
-					}
-				} else if (inScopeChain) {
-					if (context != null)
-						context.addScopeChainEntry(v);
-				} else {
-					v.setAttribute(VariableAttribute.IS_LOCAL);
-					if (context != null)
-						context.addLocal(v);
-				}
-
-				// add locals and arguments to root
-				if (!inScopeChain)
 					addVariableMember(root, v, isolateId);
+					// also add this variable under THIS_ID
+					if (depth == 0)
+						putValue(Value.THIS_ID, (DValue) v.getValue(), isolateId);
+					break;
+				case "super":
+//$NON-NLS-1$
+					// we are at the end of the arg list and let's make super part
+					// of global
+					inArgs = false;
+					break;
+				case ARGUMENTS_MARKER:
+					inArgs = true;
+
+					// see if we can extract an arg count from this variable
+					try {
+						nArgs = ((Number) (v.getValue().getValueAsObject()))
+								.intValue();
+					} catch (NumberFormatException nfe) {
+					}
+					break;
+				case SCOPE_CHAIN_MARKER:
+					inArgs = false;
+					inScopeChain = true;
+					break;
+				default:
+					// add it to our root, marking it as an arg if we know,
+					// otherwise local
+					if (inArgs) {
+						v.setAttribute(VariableAttribute.IS_ARGUMENT);
+
+						if (context != null)
+							context.addArgument(v);
+
+						// decrement arg count if we have it
+						if (nArgs > -1) {
+							if (--nArgs <= 0)
+								inArgs = false;
+						}
+					} else if (inScopeChain) {
+						if (context != null)
+							context.addScopeChainEntry(v);
+					} else {
+						v.setAttribute(VariableAttribute.IS_LOCAL);
+						if (context != null)
+							context.addLocal(v);
+					}
+
+					// add locals and arguments to root
+					if (!inScopeChain)
+						addVariableMember(root, v, isolateId);
+					break;
 			}
 		}
 	}

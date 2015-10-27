@@ -18,38 +18,18 @@
  */
 package org.apache.flex.forks.batik.ext.awt.image.codec.png;
 
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.Transparency;
-import java.awt.color.ColorSpace;
-import java.awt.image.ColorModel;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferUShort;
-import java.awt.image.IndexColorModel;
-import java.awt.image.Raster;
-import java.awt.image.RenderedImage;
-import java.awt.image.SampleModel;
-import java.awt.image.WritableRaster;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.SequenceInputStream;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.zip.Inflater;
-import java.util.zip.InflaterInputStream;
-
 import org.apache.flex.forks.batik.ext.awt.image.codec.util.ImageDecoderImpl;
 import org.apache.flex.forks.batik.ext.awt.image.codec.util.PropertyUtil;
 import org.apache.flex.forks.batik.ext.awt.image.codec.util.SimpleRenderedImage;
+
+import java.awt.*;
+import java.awt.color.ColorSpace;
+import java.awt.image.*;
+import java.io.*;
+import java.util.*;
+import java.util.List;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 /**
  * @version $Id: PNGImageDecoder.java 522271 2007-03-25 14:42:45Z dvholten $
@@ -398,73 +378,89 @@ class PNGImage extends SimpleRenderedImage {
             throw new RuntimeException(msg);
         }
 
+        label:
         do {
             try {
                 PNGChunk chunk;
-
                 String chunkType = getChunkType(distream);
-                if (chunkType.equals("IHDR")) {
-                    chunk = readChunk(distream);
-                    parse_IHDR_chunk(chunk);
-                } else if (chunkType.equals("PLTE")) {
-                    chunk = readChunk(distream);
-                    parse_PLTE_chunk(chunk);
-                } else if (chunkType.equals("IDAT")) {
-                    chunk = readChunk(distream);
-                    streamVec.add(new ByteArrayInputStream(chunk.getData()));
-                } else if (chunkType.equals("IEND")) {
-                    chunk = readChunk(distream);
-                    parse_IEND_chunk(chunk);
-                    break; // fall through to the bottom
-                } else if (chunkType.equals("bKGD")) {
-                    chunk = readChunk(distream);
-                    parse_bKGD_chunk(chunk);
-                } else if (chunkType.equals("cHRM")) {
-                    chunk = readChunk(distream);
-                    parse_cHRM_chunk(chunk);
-                } else if (chunkType.equals("gAMA")) {
-                    chunk = readChunk(distream);
-                    parse_gAMA_chunk(chunk);
-                } else if (chunkType.equals("hIST")) {
-                    chunk = readChunk(distream);
-                    parse_hIST_chunk(chunk);
-                } else if (chunkType.equals("iCCP")) {
-                    chunk = readChunk(distream);
-                    parse_iCCP_chunk(chunk);
-                } else if (chunkType.equals("pHYs")) {
-                    chunk = readChunk(distream);
-                    parse_pHYs_chunk(chunk);
-                } else if (chunkType.equals("sBIT")) {
-                    chunk = readChunk(distream);
-                    parse_sBIT_chunk(chunk);
-                } else if (chunkType.equals("sRGB")) {
-                    chunk = readChunk(distream);
-                    parse_sRGB_chunk(chunk);
-                } else if (chunkType.equals("tEXt")) {
-                    chunk = readChunk(distream);
-                    parse_tEXt_chunk(chunk);
-                } else if (chunkType.equals("tIME")) {
-                    chunk = readChunk(distream);
-                    parse_tIME_chunk(chunk);
-                } else if (chunkType.equals("tRNS")) {
-                    chunk = readChunk(distream);
-                    parse_tRNS_chunk(chunk);
-                } else if (chunkType.equals("zTXt")) {
-                    chunk = readChunk(distream);
-                    parse_zTXt_chunk(chunk);
-                } else {
-                    chunk = readChunk(distream);
-                    // Output the chunk data in raw form
-
-                    String type = chunk.getTypeString();
-                    byte[] data = chunk.getData();
-                    if (encodeParam != null) {
-                        encodeParam.addPrivateChunk(type, data);
-                    }
-                    if (emitProperties) {
-                        String key = "chunk_" + chunkIndex++ + ':' + type;
-                        properties.put(key.toLowerCase(), data);
-                    }
+                switch (chunkType) {
+                    case "IHDR":
+                        chunk = readChunk(distream);
+                        parse_IHDR_chunk(chunk);
+                        break;
+                    case "PLTE":
+                        chunk = readChunk(distream);
+                        parse_PLTE_chunk(chunk);
+                        break;
+                    case "IDAT":
+                        chunk = readChunk(distream);
+                        streamVec.add(new ByteArrayInputStream(chunk.getData()));
+                        break;
+                    case "IEND":
+                        chunk = readChunk(distream);
+                        parse_IEND_chunk(chunk);
+                        break label;
+                    case "bKGD":
+                        chunk = readChunk(distream);
+                        parse_bKGD_chunk(chunk);
+                        break;
+                    case "cHRM":
+                        chunk = readChunk(distream);
+                        parse_cHRM_chunk(chunk);
+                        break;
+                    case "gAMA":
+                        chunk = readChunk(distream);
+                        parse_gAMA_chunk(chunk);
+                        break;
+                    case "hIST":
+                        chunk = readChunk(distream);
+                        parse_hIST_chunk(chunk);
+                        break;
+                    case "iCCP":
+                        chunk = readChunk(distream);
+                        parse_iCCP_chunk(chunk);
+                        break;
+                    case "pHYs":
+                        chunk = readChunk(distream);
+                        parse_pHYs_chunk(chunk);
+                        break;
+                    case "sBIT":
+                        chunk = readChunk(distream);
+                        parse_sBIT_chunk(chunk);
+                        break;
+                    case "sRGB":
+                        chunk = readChunk(distream);
+                        parse_sRGB_chunk(chunk);
+                        break;
+                    case "tEXt":
+                        chunk = readChunk(distream);
+                        parse_tEXt_chunk(chunk);
+                        break;
+                    case "tIME":
+                        chunk = readChunk(distream);
+                        parse_tIME_chunk(chunk);
+                        break;
+                    case "tRNS":
+                        chunk = readChunk(distream);
+                        parse_tRNS_chunk(chunk);
+                        break;
+                    case "zTXt":
+                        chunk = readChunk(distream);
+                        parse_zTXt_chunk(chunk);
+                        break;
+                    default:
+                        chunk = readChunk(distream);
+                        // Output the chunk data in raw form
+                        String type = chunk.getTypeString();
+                        byte[] data = chunk.getData();
+                        if (encodeParam != null) {
+                            encodeParam.addPrivateChunk(type, data);
+                        }
+                        if (emitProperties) {
+                            String key = "chunk_" + chunkIndex++ + ':' + type;
+                            properties.put(key.toLowerCase(), data);
+                        }
+                        break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();

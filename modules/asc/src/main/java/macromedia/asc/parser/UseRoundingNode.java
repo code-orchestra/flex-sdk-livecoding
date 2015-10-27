@@ -37,26 +37,28 @@ public class UseRoundingNode extends UsePragmaNode {
 		this.mode = NumberUsage.round_HALF_EVEN; // until proven otherwise
 		if (argument instanceof IdentifierNode) {
 			String arg = ((IdentifierNode)argument).toIdentifierString();
-			if (arg.equals("HALF_EVEN")) {
-				mode = NumberUsage.round_HALF_EVEN;
-			}
-			else if (arg.equals("DOWN")) {
-				mode = NumberUsage.round_DOWN;
-			}
-			else if (arg.equals("FLOOR")) {
-				mode = NumberUsage.round_FLOOR;
-			}
-			else if (arg.equals("UP")) {
-				mode = NumberUsage.round_UP;
-			}
-			else if (arg.equals("CEILING")) {
-				mode = NumberUsage.round_CEILING;
-			}
-			else if (arg.equals("HALF_UP")) {
-				mode = NumberUsage.round_HALF_UP;
-			}
-			else if (arg.equals("HALF_DOWN")) {
-				mode = NumberUsage.round_HALF_DOWN;
+			switch (arg) {
+				case "HALF_EVEN":
+					mode = NumberUsage.round_HALF_EVEN;
+					break;
+				case "DOWN":
+					mode = NumberUsage.round_DOWN;
+					break;
+				case "FLOOR":
+					mode = NumberUsage.round_FLOOR;
+					break;
+				case "UP":
+					mode = NumberUsage.round_UP;
+					break;
+				case "CEILING":
+					mode = NumberUsage.round_CEILING;
+					break;
+				case "HALF_UP":
+					mode = NumberUsage.round_HALF_UP;
+					break;
+				case "HALF_DOWN":
+					mode = NumberUsage.round_HALF_DOWN;
+					break;
 			}
 			// should report error if something else
 		}

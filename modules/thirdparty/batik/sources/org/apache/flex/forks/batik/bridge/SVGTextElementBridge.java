@@ -922,82 +922,89 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
 
                     String ln = n.getLocalName();
 
-                    if (ln.equals(SVG_TSPAN_TAG) ||
-                            ln.equals(SVG_ALT_GLYPH_TAG)) {
-                        int before = asb.count;
-                        fillAttributedStringBuffer(ctx,
-                                nodeElement,
-                                false,
-                                textPath,
-                                subBidiLevel,
-                                initialAttributes,
-                                asb);
-                        if (asb.count != before) {
-                            initialAttributes = null;
-                        }
-                    } else if (ln.equals(SVG_TEXT_PATH_TAG)) {
-                        SVGTextPathElementBridge textPathBridge
-                                = (SVGTextPathElementBridge) ctx.getBridge(nodeElement);
-                        TextPath newTextPath
-                                = textPathBridge.createTextPath(ctx, nodeElement);
-                        if (newTextPath != null) {
+                    switch (ln) {
+                        case SVG_TSPAN_TAG:
+                        case SVG_ALT_GLYPH_TAG: {
                             int before = asb.count;
                             fillAttributedStringBuffer(ctx,
                                     nodeElement,
                                     false,
-                                    newTextPath,
+                                    textPath,
                                     subBidiLevel,
                                     initialAttributes,
                                     asb);
                             if (asb.count != before) {
                                 initialAttributes = null;
                             }
+                            break;
                         }
-                    } else if (ln.equals(SVG_TREF_TAG)) {
-                        String uriStr = XLinkSupport.getXLinkHref((Element) n);
-                        Element ref = ctx.getReferencedElement((Element) n, uriStr);
-                        s = TextUtilities.getElementContent(ref);
-                        s = normalizeString(s, preserve, prevEndsWithSpace);
-                        if (s.length() != 0) {
-                            int trefStart = asb.length();
-                            Map m = initialAttributes == null
-                                    ? new HashMap()
-                                    : new HashMap(initialAttributes);
-                            getAttributeMap
-                                    (ctx, nodeElement, textPath, bidiLevel, m);
-                            asb.append(s, m);
-                            int trefEnd = asb.length() - 1;
-                            TextPaintInfo tpi;
-                            tpi = (TextPaintInfo) elemTPI.get(nodeElement);
-                            tpi.startChar = trefStart;
-                            tpi.endChar = trefEnd;
-                            initialAttributes = null;
-                        }
-                    } else if (ln.equals(SVG_A_TAG)) {
-                        NodeEventTarget target = (NodeEventTarget) nodeElement;
-                        UserAgent ua = ctx.getUserAgent();
-                        SVGAElementBridge.CursorHolder ch;
-                        ch = new SVGAElementBridge.CursorHolder
-                                (CursorManager.DEFAULT_CURSOR);
-                        EventListener l;
-                        l = new SVGAElementBridge.AnchorListener(ua, ch);
-                        target.addEventListenerNS
-                                (XMLConstants.XML_EVENTS_NAMESPACE_URI,
-                                        SVG_EVENT_CLICK, l, false, null);
-                        ctx.storeEventListenerNS
-                                (target, XMLConstants.XML_EVENTS_NAMESPACE_URI,
-                                        SVG_EVENT_CLICK, l, false);
+                        case SVG_TEXT_PATH_TAG:
+                            SVGTextPathElementBridge textPathBridge
+                                    = (SVGTextPathElementBridge) ctx.getBridge(nodeElement);
+                            TextPath newTextPath
+                                    = textPathBridge.createTextPath(ctx, nodeElement);
+                            if (newTextPath != null) {
+                                int before = asb.count;
+                                fillAttributedStringBuffer(ctx,
+                                        nodeElement,
+                                        false,
+                                        newTextPath,
+                                        subBidiLevel,
+                                        initialAttributes,
+                                        asb);
+                                if (asb.count != before) {
+                                    initialAttributes = null;
+                                }
+                            }
+                            break;
+                        case SVG_TREF_TAG:
+                            String uriStr = XLinkSupport.getXLinkHref((Element) n);
+                            Element ref = ctx.getReferencedElement((Element) n, uriStr);
+                            s = TextUtilities.getElementContent(ref);
+                            s = normalizeString(s, preserve, prevEndsWithSpace);
+                            if (s.length() != 0) {
+                                int trefStart = asb.length();
+                                Map m = initialAttributes == null
+                                        ? new HashMap()
+                                        : new HashMap(initialAttributes);
+                                getAttributeMap
+                                        (ctx, nodeElement, textPath, bidiLevel, m);
+                                asb.append(s, m);
+                                int trefEnd = asb.length() - 1;
+                                TextPaintInfo tpi;
+                                tpi = (TextPaintInfo) elemTPI.get(nodeElement);
+                                tpi.startChar = trefStart;
+                                tpi.endChar = trefEnd;
+                                initialAttributes = null;
+                            }
+                            break;
+                        case SVG_A_TAG: {
+                            NodeEventTarget target = (NodeEventTarget) nodeElement;
+                            UserAgent ua = ctx.getUserAgent();
+                            SVGAElementBridge.CursorHolder ch;
+                            ch = new SVGAElementBridge.CursorHolder
+                                    (CursorManager.DEFAULT_CURSOR);
+                            EventListener l;
+                            l = new SVGAElementBridge.AnchorListener(ua, ch);
+                            target.addEventListenerNS
+                                    (XMLConstants.XML_EVENTS_NAMESPACE_URI,
+                                            SVG_EVENT_CLICK, l, false, null);
+                            ctx.storeEventListenerNS
+                                    (target, XMLConstants.XML_EVENTS_NAMESPACE_URI,
+                                            SVG_EVENT_CLICK, l, false);
 
-                        int before = asb.count;
-                        fillAttributedStringBuffer(ctx,
-                                nodeElement,
-                                false,
-                                textPath,
-                                subBidiLevel,
-                                initialAttributes,
-                                asb);
-                        if (asb.count != before) {
-                            initialAttributes = null;
+                            int before = asb.count;
+                            fillAttributedStringBuffer(ctx,
+                                    nodeElement,
+                                    false,
+                                    textPath,
+                                    subBidiLevel,
+                                    initialAttributes,
+                                    asb);
+                            if (asb.count != before) {
+                                initialAttributes = null;
+                            }
+                            break;
                         }
                     }
                     break;

@@ -2301,26 +2301,28 @@ public final class NodeFactory implements ErrorConstants
         UsePragmaNode node = null;
         if (id instanceof IdentifierNode && cx.statics.es4_numerics) {
             String idval = ((IdentifierNode)id).toIdentifierString();
-            if (idval.equals("precision")) {
-                node = new UsePrecisionNode(id, argument);
-            }
-            else if (idval.equals("rounding")) {
-                node = new UseRoundingNode (id, argument);
-            }
-            else if (idval.equals("decimal")) {
-				node = new UseNumericNode(id, argument, NumberUsage.use_decimal);
-			}
-			else if (idval.equals("double")) {
-				node = new UseNumericNode(id, argument, NumberUsage.use_double);
-			}
-			else if (idval.equals("int")) {
-				node = new UseNumericNode(id, argument, NumberUsage.use_int);
-			}
-			else if (idval.equals("uint")) {
-				node = new UseNumericNode(id, argument, NumberUsage.use_uint);
-			}
-			else if (idval.equals("Number")) {
-				node = new UseNumericNode(id, argument, NumberUsage.use_Number);
+			switch (idval) {
+				case "precision":
+					node = new UsePrecisionNode(id, argument);
+					break;
+				case "rounding":
+					node = new UseRoundingNode(id, argument);
+					break;
+				case "decimal":
+					node = new UseNumericNode(id, argument, NumberUsage.use_decimal);
+					break;
+				case "double":
+					node = new UseNumericNode(id, argument, NumberUsage.use_double);
+					break;
+				case "int":
+					node = new UseNumericNode(id, argument, NumberUsage.use_int);
+					break;
+				case "uint":
+					node = new UseNumericNode(id, argument, NumberUsage.use_uint);
+					break;
+				case "Number":
+					node = new UseNumericNode(id, argument, NumberUsage.use_Number);
+					break;
 			}
         }
         if (node == null) {

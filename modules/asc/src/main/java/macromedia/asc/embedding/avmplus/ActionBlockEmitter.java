@@ -1436,17 +1436,16 @@ public class ActionBlockEmitter extends Emitter
         // if force, return a decimal128 for sure, otherwise return int or uint if value will fit
         // check for NaN and Infinity
 		Decimal128 dval;
-        if (str.equals("NaN")) {
-            ppType[0] = cx.decimalType();
-            return new DecimalNumberConstant(Decimal128.NaN);
-        }
-        else if (str.equals("Infinity")){
-            ppType[0] = cx.decimalType();
-            return new DecimalNumberConstant(Decimal128.INFINITY);
-        }
-        else if (str.equals("-Infinity")){
-            ppType[0] = cx.decimalType();
-            return new DecimalNumberConstant(Decimal128.NEGINFINITY);
+        switch (str) {
+            case "NaN":
+                ppType[0] = cx.decimalType();
+                return new DecimalNumberConstant(Decimal128.NaN);
+            case "Infinity":
+                ppType[0] = cx.decimalType();
+                return new DecimalNumberConstant(Decimal128.INFINITY);
+            case "-Infinity":
+                ppType[0] = cx.decimalType();
+                return new DecimalNumberConstant(Decimal128.NEGINFINITY);
         }
              
         boolean isInt = false;
@@ -1545,17 +1544,16 @@ public class ActionBlockEmitter extends Emitter
 	private NumberConstant getDoubleValueOrInt(String str, boolean force, TypeValue[] ppType) {
         Double d;
         double sum = 0;
-        if (str.equals("NaN")) {
-            ppType[0] = cx.doubleType();
-            return new DoubleNumberConstant(Double.NaN);
-        }
-        else if (str.equals("Infinity")){
-            ppType[0] = cx.doubleType();
-            return new DoubleNumberConstant(Double.POSITIVE_INFINITY);
-        }
-        else if (str.equals("-Infinity")){
-            ppType[0] = cx.doubleType();
-            return new DoubleNumberConstant(Double.NEGATIVE_INFINITY);
+        switch (str) {
+            case "NaN":
+                ppType[0] = cx.doubleType();
+                return new DoubleNumberConstant(Double.NaN);
+            case "Infinity":
+                ppType[0] = cx.doubleType();
+                return new DoubleNumberConstant(Double.POSITIVE_INFINITY);
+            case "-Infinity":
+                ppType[0] = cx.doubleType();
+                return new DoubleNumberConstant(Double.NEGATIVE_INFINITY);
         }
 
         boolean isInt = false;
@@ -2418,48 +2416,43 @@ public class ActionBlockEmitter extends Emitter
 
 	private int getVersionFromOldMetadata(String s) {
 		int v = -1;
-		if (s.equals("9")) {
-			v = 660;  // never happens
-		}
-		else
-		if (s.equals("air1")) {
-			v = 661;
-		}
-		else
-		if (s.equals("10")) {
-			v = 662;
-		}
-		else
-		if (s.equals("air1.5")) {
-			v = 663;
-		}
- 		else
-		if (s.equals("air1.5.1")) {
-			v = 664;
-		}
- 		else
-		if (s.equals("10.0.32")) {
-			v = 665;
-		}
- 		else
-		if (s.equals("air1.5.2")) {
-			v = 666;
-		}
-		else
-		if (s.equals("10.1")) {
-			v = 667;
-		}
-		else
-		if (s.equals("airAthena") || s.equals("air2.0")) {
-			v = 668;
-		}
-		else
-		if (s.equals("100")) {  // TESTAUTOMATION
-			v = 668;
-		}
-		else {
-            cx.internalError("internal error: unrecognized value '" + s + "' in 'Version' metadata");
-		}
+        switch (s) {
+            case "9":
+                v = 660;  // never happens
+
+                break;
+            case "air1":
+                v = 661;
+                break;
+            case "10":
+                v = 662;
+                break;
+            case "air1.5":
+                v = 663;
+                break;
+            case "air1.5.1":
+                v = 664;
+                break;
+            case "10.0.32":
+                v = 665;
+                break;
+            case "air1.5.2":
+                v = 666;
+                break;
+            case "10.1":
+                v = 667;
+                break;
+            case "airAthena":
+            case "air2.0":
+                v = 668;
+                break;
+            case "100":   // TESTAUTOMATION
+                v = 668;
+                break;
+            default:
+                cx.internalError("internal error: unrecognized value '" + s + "' in 'Version' metadata");
+                break;
+        }
 		return v;
 	}
 

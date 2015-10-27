@@ -697,75 +697,83 @@ public class SVGFlowRootElementBridge extends SVG12TextElementBridge {
 
                 String ln = n.getLocalName();
 
-                if (ln.equals(SVG12Constants.SVG_FLOW_LINE_TAG)) {
-                    int before = asb.length();
-                    fillAttributedStringBuffer(ctx, nodeElement, false,
-                                               subBidiLevel, initialAttributes,
-                                               asb, lnLocs);
-                    // System.out.println("Line: " + asb.length() +
-                    //                    " - '" +  asb + "'");
-                    lineBreak = asb.length();
-                    lnLocs.add(lineBreak);
-                    if (before != lineBreak) {
-                        initialAttributes = null;
+                switch (ln) {
+                    case SVG12Constants.SVG_FLOW_LINE_TAG: {
+                        int before = asb.length();
+                        fillAttributedStringBuffer(ctx, nodeElement, false,
+                                subBidiLevel, initialAttributes,
+                                asb, lnLocs);
+                        // System.out.println("Line: " + asb.length() +
+                        //                    " - '" +  asb + "'");
+                        lineBreak = asb.length();
+                        lnLocs.add(lineBreak);
+                        if (before != lineBreak) {
+                            initialAttributes = null;
+                        }
+                        break;
                     }
-                } else if (ln.equals(SVG12Constants.SVG_FLOW_SPAN_TAG) ||
-                           ln.equals(SVG12Constants.SVG_ALT_GLYPH_TAG)) {
-                    int before = asb.length();
-                    fillAttributedStringBuffer(ctx, nodeElement, false,
-                                               subBidiLevel, initialAttributes,
-                                               asb, lnLocs);
-                    if (asb.length() != before) {
-                        initialAttributes = null;
+                    case SVG12Constants.SVG_FLOW_SPAN_TAG:
+                    case SVG12Constants.SVG_ALT_GLYPH_TAG: {
+                        int before = asb.length();
+                        fillAttributedStringBuffer(ctx, nodeElement, false,
+                                subBidiLevel, initialAttributes,
+                                asb, lnLocs);
+                        if (asb.length() != before) {
+                            initialAttributes = null;
+                        }
+                        break;
                     }
-                } else if (ln.equals(SVG_A_TAG)) {
-                    if (ctx.isInteractive()) {
-                        NodeEventTarget target = (NodeEventTarget)nodeElement;
-                        UserAgent ua = ctx.getUserAgent();
-                        SVGAElementBridge.CursorHolder ch;
-                        ch = new SVGAElementBridge.CursorHolder
-                            (CursorManager.DEFAULT_CURSOR);
-                        target.addEventListenerNS
-                            (XMLConstants.XML_EVENTS_NAMESPACE_URI,
-                             SVG_EVENT_CLICK,
-                             new SVGAElementBridge.AnchorListener(ua, ch),
-                             false, null);
+                    case SVG_A_TAG: {
+                        if (ctx.isInteractive()) {
+                            NodeEventTarget target = (NodeEventTarget) nodeElement;
+                            UserAgent ua = ctx.getUserAgent();
+                            SVGAElementBridge.CursorHolder ch;
+                            ch = new SVGAElementBridge.CursorHolder
+                                    (CursorManager.DEFAULT_CURSOR);
+                            target.addEventListenerNS
+                                    (XMLConstants.XML_EVENTS_NAMESPACE_URI,
+                                            SVG_EVENT_CLICK,
+                                            new SVGAElementBridge.AnchorListener(ua, ch),
+                                            false, null);
 
-                        target.addEventListenerNS
-                            (XMLConstants.XML_EVENTS_NAMESPACE_URI,
-                             SVG_EVENT_MOUSEOVER,
-                             new SVGAElementBridge.CursorMouseOverListener(ua,ch),
-                             false, null);
+                            target.addEventListenerNS
+                                    (XMLConstants.XML_EVENTS_NAMESPACE_URI,
+                                            SVG_EVENT_MOUSEOVER,
+                                            new SVGAElementBridge.CursorMouseOverListener(ua, ch),
+                                            false, null);
 
-                        target.addEventListenerNS
-                            (XMLConstants.XML_EVENTS_NAMESPACE_URI,
-                             SVG_EVENT_MOUSEOUT,
-                             new SVGAElementBridge.CursorMouseOutListener(ua,ch),
-                             false, null);
+                            target.addEventListenerNS
+                                    (XMLConstants.XML_EVENTS_NAMESPACE_URI,
+                                            SVG_EVENT_MOUSEOUT,
+                                            new SVGAElementBridge.CursorMouseOutListener(ua, ch),
+                                            false, null);
+                        }
+                        int before = asb.length();
+                        fillAttributedStringBuffer(ctx, nodeElement, false,
+                                subBidiLevel, initialAttributes,
+                                asb, lnLocs);
+                        if (asb.length() != before) {
+                            initialAttributes = null;
+                        }
+                        break;
                     }
-                    int before = asb.length();
-                    fillAttributedStringBuffer(ctx, nodeElement, false,
-                                               subBidiLevel, initialAttributes,
-                                               asb, lnLocs);
-                    if (asb.length() != before) {
-                        initialAttributes = null;
-                    }
-                } else if (ln.equals(SVG_TREF_TAG)) {
-                    String uriStr = XLinkSupport.getXLinkHref((Element)n);
-                    Element ref = ctx.getReferencedElement((Element)n, uriStr);
-                    s = TextUtilities.getElementContent(ref);
-                    s = normalizeString(s, preserve, prevEndsWithSpace);
-                    if (s.length() != 0) {
-                        int trefStart = asb.length();
-                        Map m = new HashMap();
-                        getAttributeMap(ctx, nodeElement, null, bidiLevel, m);
-                        asb.append(s, m);
-                        int trefEnd = asb.length() - 1;
-                        TextPaintInfo tpi;
-                        tpi = (TextPaintInfo)elemTPI.get(nodeElement);
-                        tpi.startChar = trefStart;
-                        tpi.endChar   = trefEnd;
-                    }
+                    case SVG_TREF_TAG:
+                        String uriStr = XLinkSupport.getXLinkHref((Element) n);
+                        Element ref = ctx.getReferencedElement((Element) n, uriStr);
+                        s = TextUtilities.getElementContent(ref);
+                        s = normalizeString(s, preserve, prevEndsWithSpace);
+                        if (s.length() != 0) {
+                            int trefStart = asb.length();
+                            Map m = new HashMap();
+                            getAttributeMap(ctx, nodeElement, null, bidiLevel, m);
+                            asb.append(s, m);
+                            int trefEnd = asb.length() - 1;
+                            TextPaintInfo tpi;
+                            tpi = (TextPaintInfo) elemTPI.get(nodeElement);
+                            tpi.startChar = trefStart;
+                            tpi.endChar = trefEnd;
+                        }
+                        break;
                 }
                 break;
 

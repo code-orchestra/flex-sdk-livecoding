@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import flash.swf.Frame;
 import flex2.compiler.AssetInfo;
@@ -204,10 +205,7 @@ public class OEMReport implements Report
 		// the timestamps map.
         if (archiveFiles != null)
         {
-            for (String fileName: archiveFiles.keySet())
-            {
-                assetNames.add(fileName);
-            }
+			assetNames.addAll(archiveFiles.keySet().stream().collect(Collectors.toList()));
         }
 
 		linker_SourceNames = toArray(sourceNames);
@@ -667,14 +665,8 @@ public class OEMReport implements Report
 	{
 		if (messages != null && messages.size() > 0)
 		{
-			List<Message> filtered = new ArrayList<>();
+			List<Message> filtered = messages.stream().filter(m -> m != null && !Message.INFO.equals(m.getLevel())).collect(Collectors.toList());
 
-			for (Message m : messages) {
-				if (m != null && !Message.INFO.equals(m.getLevel())) {
-					filtered.add(m);
-				}
-			}
-			
 			messages = filtered;
 		}
 			

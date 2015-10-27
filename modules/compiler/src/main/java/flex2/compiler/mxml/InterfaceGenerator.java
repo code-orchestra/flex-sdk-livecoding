@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * This class handles the direct AST generation for the first pass
@@ -81,11 +82,7 @@ public class InterfaceGenerator extends AbstractGenerator
 
     private Set<String> createInterfaceNames()
     {
-        Set<String> result = new TreeSet<>();
-
-        for (DocumentInfo.NameInfo interfaceName : docInfo.getInterfaceNames()) {
-            result.add(interfaceName.getName());
-        }
+        Set<String> result = docInfo.getInterfaceNames().stream().map(DocumentInfo.NameInfo::getName).collect(Collectors.toCollection(TreeSet::new));
 
         return result;
     }

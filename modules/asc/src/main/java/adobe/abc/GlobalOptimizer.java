@@ -40,6 +40,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 import macromedia.asc.embedding.ConfigVar;
 import macromedia.asc.util.ObjectList;
@@ -4357,9 +4358,7 @@ public class GlobalOptimizer
 
 	void sccp_cfgopt(Map<Expr, Object> values, Map<Expr,Typeref> types, Set<Edge> reached)
 	{
-		Set<Block> blocks = new TreeSet<>();
-		for (Edge e: reached)
-			blocks.add(e.to);
+		Set<Block> blocks = reached.stream().map(e -> e.to).collect(Collectors.toCollection(TreeSet::new));
 
 		for (Block b: blocks)
 		{
@@ -7884,9 +7883,7 @@ public class GlobalOptimizer
 	{
 		if (phis.isEmpty() || live.isEmpty())
 			return live;
-		Set<Expr> copy = new TreeSet<>();
-		for (Expr e: live)
-			copy.add(phis.contains(e) ? e.args[findPhiArg(e, p)] : e);
+		Set<Expr> copy = live.stream().map(e -> phis.contains(e) ? e.args[findPhiArg(e, p)] : e).collect(Collectors.toCollection(TreeSet::new));
 		return copy;
 	}
 	
@@ -7903,9 +7900,7 @@ public class GlobalOptimizer
 	{
 		if (phis.isEmpty() || stk.isEmpty())
 			return stk;
-		Deque<Expr> copy = new ArrayDeque<>();
-		for (Expr e: stk)
-			copy.add(phis.contains(e) ? e.args[findPhiArg(e, p)] : e);
+		Deque<Expr> copy = stk.stream().map(e -> phis.contains(e) ? e.args[findPhiArg(e, p)] : e).collect(Collectors.toCollection(ArrayDeque::new));
 		return copy;
 	}
 	

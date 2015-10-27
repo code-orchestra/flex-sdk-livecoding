@@ -34,6 +34,7 @@ import macromedia.asc.parser.VariableDefinitionNode;
 import macromedia.asc.util.Context;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A base class for data common to Bindable and Managed metadata
@@ -250,10 +251,7 @@ public abstract class GenerativeClassInfo
 
             if (addAllImports)
             {
-                for (String importName : classInfo.getImports())
-                {
-                    imports.add(importName + ".*");
-                }
+				imports.addAll(classInfo.getImports().stream().map(importName -> importName + ".*").collect(Collectors.toList()));
             }
         }
 

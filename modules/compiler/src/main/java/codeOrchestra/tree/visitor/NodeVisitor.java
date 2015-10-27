@@ -12,6 +12,7 @@ import macromedia.asc.util.NumberConstant;
 import macromedia.asc.util.NumberUsage;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Anton.I.Neverov
@@ -110,11 +111,8 @@ public abstract class NodeVisitor<N extends Node> {
             nodeProcessor.process(node);
             NodeVisitor visitor = NodeVisitorFactory.getVisitor(node.getClass());
             Set<Node> nodeSet = visitor.getChildren(node).keySet();
-            for (Node child : nodeSet) {
-                if (child != null && !(child instanceof PackageDefinitionNode)) { // PackageDefinitionNode contains itself in its statements
-                    nodesToProcess.add(child);
-                }
-            }
+            // PackageDefinitionNode contains itself in its statements
+            nodesToProcess.addAll(nodeSet.stream().filter(child -> child != null && !(child instanceof PackageDefinitionNode)).collect(Collectors.toList()));
         }
 
         if (testMode) {

@@ -47,6 +47,7 @@ import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.io.File;
+import java.util.stream.Collectors;
 
 import flash.util.FileUtils;
 
@@ -1363,13 +1364,9 @@ public class Configuration implements LinkerConfiguration, Cloneable
 			return new VirtualFile[0];	
 		}
 		
-		List<VirtualFile> libraries = new ArrayList<>();
+		List<VirtualFile> libraries = rslPathInfoList.stream().map(RslPathInfo::getSwcVirtualFile).collect(Collectors.toList());
 
-        for (RslPathInfo info : rslPathInfoList) {
-            libraries.add(info.getSwcVirtualFile());
-        }
-
-		return libraries.toArray(new VirtualFile[libraries.size()]);
+        return libraries.toArray(new VirtualFile[libraries.size()]);
 	}
 
 	public void cfgRuntimeSharedLibraryPath(ConfigurationValue cfgval,

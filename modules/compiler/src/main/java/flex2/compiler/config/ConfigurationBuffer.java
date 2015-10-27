@@ -29,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The basic idea here is to let you keep all your configuration knowledge in your configuration object,
@@ -319,9 +320,7 @@ public final class ConfigurationBuffer
         for (Map.Entry<String, List> e : child.varMap.entrySet()) {
             varMap.put(prefix + "." + e.getKey(), e.getValue());
         }
-        for (String var : child.committed) {
-            committed.add(prefix + "." + var);
-        }
+        committed.addAll(child.committed.stream().map(var -> prefix + "." + var).collect(Collectors.toList()));
     }
 
     private final Map<String, List> varMap;                                 // list of vars that have been set

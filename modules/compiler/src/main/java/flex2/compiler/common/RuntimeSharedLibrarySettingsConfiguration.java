@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import flex2.compiler.config.ConfigurationException;
 import flex2.compiler.config.ConfigurationInfo;
@@ -85,12 +86,8 @@ public class RuntimeSharedLibrarySettingsConfiguration
             return Collections.emptySet();
         }
         
-        Set<String> rslPaths = new HashSet<>();
-        for (VirtualFile file : forceRsls)
-        {
-            rslPaths.add(file.getName());
-        }
-        
+        Set<String> rslPaths = forceRsls.stream().map(VirtualFile::getName).collect(Collectors.toSet());
+
         return rslPaths;
     }
 

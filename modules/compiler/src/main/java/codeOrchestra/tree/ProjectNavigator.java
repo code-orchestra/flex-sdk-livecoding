@@ -6,6 +6,7 @@ import codeOrchestra.util.Pair;
 import macromedia.asc.parser.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Anton.I.Neverov
@@ -65,9 +66,7 @@ public class ProjectNavigator {
             }
         }
 
-        for (Pair<String, String> additionalLivecodingClassPair : getAdditionalLivecodingClasses(packageName)) {
-            result.add(additionalLivecodingClassPair.getO2());
-        }
+        result.addAll(getAdditionalLivecodingClasses(packageName).stream().map(Pair<String, String>::getO2).collect(Collectors.toList()));
 
         return result;
     }
@@ -141,9 +140,7 @@ public class ProjectNavigator {
 
                 Set<String> deps = modelDependencies.get(name);
 
-                for (ImportDirectiveNode importDirectiveNode : TreeNavigator.getImports(pkgdef)) {
-                    deps.add(importDirectiveNode.name.id.pkg_part);
-                }
+                deps.addAll(TreeNavigator.getImports(pkgdef).stream().map(importDirectiveNode -> importDirectiveNode.name.id.pkg_part).collect(Collectors.toList()));
             }
         }
 

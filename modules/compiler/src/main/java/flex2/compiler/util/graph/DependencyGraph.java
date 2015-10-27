@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 //TODO Try to remove this class and use ASC's equivalent
 
@@ -162,10 +163,7 @@ public class DependencyGraph<EdgeWeight> extends Graph<String, EdgeWeight>
 
         if (predecessors != null)
         {
-            for (Vertex<String,EdgeWeight> pred : predecessors)
-            {
-                dependencies.add(pred.getWeight());
-            }
+			dependencies.addAll(predecessors.stream().map(Vertex<String, EdgeWeight>::getWeight).collect(Collectors.toList()));
         }
 	    
 	    return dependencies;

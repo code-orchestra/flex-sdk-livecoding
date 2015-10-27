@@ -43,6 +43,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import flash.util.Trace;
 
@@ -245,14 +246,8 @@ public class ASDocExtension implements Extension
 
         // the inheritance needs to be processed in a predictable order.. 
         Set<QName> inheritance = new TreeSet<>(new ComparatorImpl());
-        
-        for (Name name : unit.inheritance)
-        {
-            if (name instanceof QName)
-            {
-                inheritance.add((QName) name);
-            }
-        }
+
+        inheritance.addAll(unit.inheritance.stream().filter(name -> name instanceof QName).map(name -> (QName) name).collect(Collectors.toList()));
 
         boolean flag = false;
         if (!exclude && !unit.getSource().isInternal())

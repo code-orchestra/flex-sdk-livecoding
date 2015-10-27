@@ -5,6 +5,7 @@ import macromedia.asc.semantics.*;
 import macromedia.asc.util.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -88,7 +89,7 @@ public class CloneUtil {
     public static ObjectList<String> cloneListString(ObjectList<String> src) throws CloneNotSupportedException
     {
         ObjectList<String> dst = new ObjectList<>(src.size());
-        for (String item: src) dst.add(item);
+        dst.addAll(src.stream().collect(Collectors.toList()));
         return dst;
     }
 

@@ -29,6 +29,8 @@ import flex2.compiler.util.ThreadLocalToolkit;
 import flex2.tools.Fcsh;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * SwcGroup returns information about a set of SWCs returned from
@@ -160,11 +162,7 @@ public class SwcGroup
 
 	public List<Long> getSwcTimes()
 	{
-		List<Long> lastModified = new ArrayList<>();
-
-		for (Swc swc : swcs.values()) {
-			lastModified.add(swc.getLastModified());
-		}
+		List<Long> lastModified = swcs.values().stream().map((Function<Swc, long>) Swc::getLastModified).collect(Collectors.toList());
 
 		return lastModified;
 	}

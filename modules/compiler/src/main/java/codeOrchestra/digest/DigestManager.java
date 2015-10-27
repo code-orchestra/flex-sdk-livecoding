@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Alexander Eliseyev
@@ -129,11 +130,7 @@ public class DigestManager {
 
                     private void setRoot(IClassDigest currentRoot) {
                         directDescendants.clear();
-                        for (IClassDigest classDigest : digestsMap.values()) {
-                            if (classDigest instanceof SourceClassDigest && currentRoot.getFqName().equals(classDigest.getSuperClassFQName())) {
-                                directDescendants.add(classDigest);
-                            }
-                        }
+                        directDescendants.addAll(digestsMap.values().stream().filter(classDigest -> classDigest instanceof SourceClassDigest && currentRoot.getFqName().equals(classDigest.getSuperClassFQName())).collect(Collectors.toList()));
 
                         directDescendantsIterator = directDescendants.iterator();
                     }
@@ -339,9 +336,7 @@ public class DigestManager {
         List<EmbedDigest> result = new ArrayList<>();
 
         for (List<EmbedDigest> digests : embedDigests.values()) {
-            for (EmbedDigest digest : digests) {
-                result.add(digest);
-            }
+            result.addAll(digests.stream().collect(Collectors.toList()));
         }
 
         return result;

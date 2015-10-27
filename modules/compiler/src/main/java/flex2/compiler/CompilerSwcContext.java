@@ -45,6 +45,7 @@ import flex2.compiler.util.ThreadLocalToolkit;
 import flex2.tools.Mxmlc;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Loads and merges all the SWC specified by the
@@ -372,9 +373,7 @@ public class CompilerSwcContext
         
         // C: use symbol dependencies to obtain additional class dependencies,
         //    i.e. classX --> symbolX --> symbolY --> classY, but there is no dependency between classX and classY.
-        for (String s1 : script.getSymbolClasses()) {
-            u.expressions.add(new MultiName(s1));
-        }
+        u.expressions.addAll(script.getSymbolClasses().stream().map(MultiName::new).collect(Collectors.toList()));
 
         for (Iterator i = script.getDefinitionIterator(); i.hasNext();)
         {

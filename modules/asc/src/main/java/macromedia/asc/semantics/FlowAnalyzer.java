@@ -24,6 +24,7 @@ import macromedia.asc.util.*;
 import macromedia.asc.util.graph.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static macromedia.asc.parser.Tokens.*;
 import static macromedia.asc.semantics.Slot.*;
@@ -741,12 +742,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
             node.ref = ((value instanceof ReferenceValue) ? (ReferenceValue)value : null);
             if( node.typeArgs != null && node.typeArgs.values != null )
             {
-                ObjectList<ReferenceValue> typerefs = new ObjectList<>();
-                for ( Value v : node.typeArgs.values )
-                {
-                    if( v instanceof ReferenceValue )
-                        typerefs.add((ReferenceValue)v);
-                }
+                ObjectList<ReferenceValue> typerefs = node.typeArgs.values.stream().filter(v -> v instanceof ReferenceValue).map(v -> (ReferenceValue) v).collect(Collectors.toCollection(ObjectList::new));
                 if( typerefs.size() != node.typeArgs.values.size() )
                     node.ref = null;  //Something didn't resolve to a reference
                 if( node.ref != null )
@@ -6415,11 +6411,7 @@ else
 
     private boolean namespacesContains(Context cx, Namespaces outer, Namespaces inner)
     {
-        HashSet<ObjectValue> set = new HashSet<>();
-        for (ObjectValue ns : outer)
-        {
-            set.add(ns);
-        }
+        HashSet<ObjectValue> set = outer.stream().collect(Collectors.toCollection(HashSet::new));
         for (ObjectValue ns : inner)
         {
             if (!set.contains(ns))

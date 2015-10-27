@@ -40,6 +40,7 @@ import macromedia.asc.util.*;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -1143,10 +1144,7 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 
 	private void transferImportPackages(Set<ReferenceValue> unresolved, Set<String> target)
 	{
-		for (ReferenceValue ref : unresolved)
-		{
-			target.add(ref.name);
-		}
+		target.addAll(unresolved.stream().map(ref -> ref.name).collect(Collectors.toList()));
 
 		unresolved.clear();
 	}

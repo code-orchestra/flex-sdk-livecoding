@@ -24,6 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import macromedia.asc.embedding.ConfigVar;
 import macromedia.asc.util.ObjectList;
@@ -2343,9 +2344,7 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 				List<VirtualFile> virtualFiles = entry.getValue();
 				List<File> files = new ArrayList<>(virtualFiles.size());
 
-				for (VirtualFile virtualFile : virtualFiles) {
-					files.add(toFile(virtualFile));
-				}
+				files.addAll(virtualFiles.stream().map(this::toFile).collect(Collectors.toList()));
 				setComponentManifests(uri, files);
 			}
 		}

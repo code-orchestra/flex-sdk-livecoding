@@ -44,6 +44,7 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 /**
  * An early attempt to gradually move unencapsulated ASC node
@@ -384,9 +385,7 @@ public class NodeMagic
      */
     public static TreeSet<String> getSortedAttributes(AttributeListNode node)
     {
-        final TreeSet<String> attrs = new TreeSet<>();
-
-        for (String s : getAttributes(node)) attrs.add(s);
+        final TreeSet<String> attrs = getAttributes(node).stream().collect(Collectors.toCollection(TreeSet::new));
 
         return attrs;
     }

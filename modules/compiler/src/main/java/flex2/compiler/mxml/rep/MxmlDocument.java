@@ -51,6 +51,7 @@ import org.apache.commons.collections.iterators.FilterIterator;
 import org.apache.commons.collections.iterators.IteratorChain;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This class represents an Mxml document's class information and
@@ -951,9 +952,7 @@ public final class MxmlDocument
     public String getInterfaceList()
     {
         List<String> names = new ArrayList<>(info.getInterfaceNames().size());
-        for (DocumentInfo.NameInfo nameInfo : info.getInterfaceNames()) {
-            names.add((nameInfo).getName());
-        }
+        names.addAll(info.getInterfaceNames().stream().map(nameInfo -> (nameInfo).getName()).collect(Collectors.toList()));
         return TextGen.toCommaList(names.iterator());
     }
 

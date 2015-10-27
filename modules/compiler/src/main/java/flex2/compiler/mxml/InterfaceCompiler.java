@@ -59,6 +59,7 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.stream.Collectors;
 
 /**
  * The tasks of the InterfaceCompiler are:
@@ -505,10 +506,7 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
                 //  add new type requests to our memory list
                 allTypeRequests.addAll(newTypeRequests);
 
-                for (MultiName newTypeRequest : newTypeRequests)
-                {
-                    unit.expressions.add(newTypeRequest);
-                }
+                unit.expressions.addAll(newTypeRequests.stream().collect(Collectors.toList()));
             }
         }
     }
@@ -517,9 +515,7 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
     {
         target.add(NameFormatter.toMultiName(docInfo.getQualifiedSuperClassName()));
 
-        for (NameInfo nameInfo : docInfo.getInterfaceNames()) {
-            target.add(NameFormatter.toMultiName(nameInfo.getName()));
-        }
+        target.addAll(docInfo.getInterfaceNames().stream().map(nameInfo -> NameFormatter.toMultiName(nameInfo.getName())).collect(Collectors.toList()));
     }
 
     /**
@@ -829,10 +825,7 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
                 }
 
                 //  create SourceCode wrappers for metadata entries
-                Set<SourceCode> metadataSet = new LinkedHashSet<>();
-                for (Script script : info.getMetadata()) {
-                    metadataSet.add(new SourceCode(script.getText(), script.getXmlLineNumber(), out, map));
-                }
+                Set<SourceCode> metadataSet = info.getMetadata().stream().map(script -> new SourceCode(script.getText(), script.getXmlLineNumber(), out, map)).collect(Collectors.toCollection(LinkedHashSet::new));
 
                 //  create SourceCode wrappers for variable declarations
                 Map<String, SourceCode> varDeclMap = new LinkedHashMap<>();
@@ -850,14 +843,9 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
                         superClassLineNumber = importName.getLine();
                     }
                 }
-                for (String importName : bogusImports) {
-                    importNameSet.add(new SourceCode(importName, 1, out, map));
-                }
+                importNameSet.addAll(bogusImports.stream().map(importName -> new SourceCode(importName, 1, out, map)).collect(Collectors.toList()));
 
-                Set<SourceCode> interfaceNameSet = new LinkedHashSet<>();
-                for (NameInfo interfaceName : info.getInterfaceNames()) {
-                    interfaceNameSet.add(new SourceCode(interfaceName.getName(), interfaceName.getLine(), out, map));
-                }
+                Set<SourceCode> interfaceNameSet = info.getInterfaceNames().stream().map(interfaceName -> new SourceCode(interfaceName.getName(), interfaceName.getLine(), out, map)).collect(Collectors.toCollection(LinkedHashSet::new));
 
                 // register values
                 velocityContext.put("imports", importNameSet);

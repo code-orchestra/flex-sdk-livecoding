@@ -322,8 +322,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 			
 		}
 
-		Value returnVal = ( (s != null && s.getType() != null) ? s.getType().getTypeValue() : cx.noType());
-		return returnVal;
+		return ( (s != null && s.getType() != null) ? s.getType().getTypeValue() : cx.noType());
 	}
 
 
@@ -1395,9 +1394,8 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 
 	public Value evaluate( Context cx, EmptyStatementNode node )
 	{
-		Value result = null;
 
-		return result;
+		return null;
 	}
 
 

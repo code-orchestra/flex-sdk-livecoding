@@ -112,14 +112,12 @@ public final class AbcParser
             
             // {pmd} following builds <ProgramNode <StatementList <BinaryProgramNode ...>>>
             // {pmd} I wondered why? --probably to match some undefined visitor pattern behavior...
-            
-            ProgramNode prog = ctx.getNodeFactory().program(ctx, ctx.getNodeFactory().statementList(null, program));
 
             // Uncomment next line to get some debugging info to print to stdout.
             // {pmd} ??? for this to be useful it really should iterate the clsdefs list...(and print the objectvalue hierarchy too.)
             // dumpProgram(program);
 
-            return prog;
+            return ctx.getNodeFactory().program(ctx, ctx.getNodeFactory().statementList(null, program));
         }
         catch(Exception t)
         {
@@ -454,9 +452,8 @@ public final class AbcParser
 
             FunctionNameNode fn = nf.functionName(functionKind, id);
             AttributeListNode attr = attributeList(isFinal, isOverride, false, ns, obj.builder);
-            FunctionDefinitionNode fdn = nf.binaryFunctionDefinition(ctx, attr, fn, fcn, -1);
 
-            ret.def = fdn;
+            ret.def = nf.binaryFunctionDefinition(ctx, attr, fn, fcn, -1);
         }
         return ret;
     }
@@ -578,8 +575,7 @@ public final class AbcParser
                 break;
 
             case ActionBlockConstants.CONSTANT_Namespace:
-                ObjectValue ns = getNamespace(valueID);
-                ov = ns;
+                ov = getNamespace(valueID);
                 break;
 
             default:
@@ -696,8 +692,7 @@ public final class AbcParser
             for( int i = 0; i < mn.params.length; ++i) {
                 params.add(getFullName(getBinaryMNFromCPool(mn.params[i])));
             }
-            ParameterizedName pn = new ParameterizedName(params, base_qn.ns, base_qn.name);
-            return pn;
+            return new ParameterizedName(params, base_qn.ns, base_qn.name);
         }
         else
         {

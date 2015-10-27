@@ -179,14 +179,12 @@ public class AbstractSyntaxTreeUtil
                                                   interfaces);
         }
 
-        ClassDefinitionNode classDefinition = nodeFactory.classDefinition(context,
+        return nodeFactory.classDefinition(context,
                                                                           generatePublicAttribute(nodeFactory),
                                                                           generatePublicQualifiedIdentifier(nodeFactory,
                                                                                                             className),
                                                                           inheritance,
                                                                           statementList);
-
-        return classDefinition;
     }
 
     public static FunctionDefinitionNode generateConstructor(Context context, String className,
@@ -724,8 +722,7 @@ public class AbstractSyntaxTreeUtil
     public static AttributeListNode generatePrivateAttribute(NodeFactory nodeFactory)
     {
         ListNode list = nodeFactory.list(null, generateGetterSelector(nodeFactory, PRIVATE, false));
-        AttributeListNode attributeList = nodeFactory.attributeList(list, null);
-        return attributeList;
+        return nodeFactory.attributeList(list, null);
     }
 
     public static QualifiedIdentifierNode generatePrivateQualifiedIdentifier(NodeFactory nodeFactory, String name)
@@ -784,15 +781,13 @@ public class AbstractSyntaxTreeUtil
     public static AttributeListNode generatePublicAttribute(NodeFactory nodeFactory)
     {
         ListNode list = nodeFactory.list(null, generateGetterSelector(nodeFactory, PUBLIC, false));
-        AttributeListNode attributeList = nodeFactory.attributeList(list, null);
-        return attributeList;
+        return nodeFactory.attributeList(list, null);
     }
     
     public static AttributeListNode generateProtectedAttribute(NodeFactory nodeFactory)
     {
         ListNode list = nodeFactory.list(null, generateGetterSelector(nodeFactory, PROTECTED, false));
-        AttributeListNode attributeList = nodeFactory.attributeList(list, null);
-        return attributeList;
+        return nodeFactory.attributeList(list, null);
     }
 
     public static QualifiedIdentifierNode generatePublicQualifiedIdentifier(NodeFactory nodeFactory,
@@ -1019,8 +1014,7 @@ public class AbstractSyntaxTreeUtil
         IdentifierNode identifier = nodeFactory.identifier(name, false);
         GetExpressionNode getExpression = nodeFactory.getExpression(identifier);
         MemberExpressionNode memberExpression = nodeFactory.memberExpression(null, getExpression);
-        UseDirectiveNode useDirective = nodeFactory.useDirective(null, memberExpression);
-        return useDirective;
+        return nodeFactory.useDirective(null, memberExpression);
     }
 
     /**

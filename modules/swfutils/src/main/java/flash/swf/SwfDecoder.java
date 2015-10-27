@@ -158,8 +158,7 @@ public final class SwfDecoder extends BufferedInputStream
 
 	public long readUI32() throws IOException
 	{
-        long i = readSI32() & 0xFFFFFFFFL;
-        return i;
+        return readSI32() & 0xFFFFFFFFL;
 	}
 
     public int readSI32() throws IOException

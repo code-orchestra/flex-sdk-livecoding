@@ -396,14 +396,13 @@ public class BackgroundRable8Bit
         background = new PadRable8Bit(background, r2d, PadMode.ZERO_PAD);
 
 
-        RenderedImage ri = background.createRendering
-            (new RenderContext(renderContext.getTransform(), r2d,
-                               renderContext.getRenderingHints()));
         // System.out.println("RI: [" + ri.getMinX() + ", "
         //                    + ri.getMinY() + ", " +
         //                    + ri.getWidth() + ", " +
         //                    + ri.getHeight() + "]");
         // org.ImageDisplay.showImage("BG: ", ri);
-        return ri;
+        return background.createRendering
+            (new RenderContext(renderContext.getTransform(), r2d,
+                               renderContext.getRenderingHints()));
     }
 }

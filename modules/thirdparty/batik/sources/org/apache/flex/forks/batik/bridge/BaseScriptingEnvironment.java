@@ -469,8 +469,7 @@ public class BaseScriptingEnvironment {
                 } else {
                     checkCompatibleScriptURL(type, docPURL);
                     DocumentLoader dl = bridgeContext.getDocumentLoader();
-                    Element e = script;
-                    SVGDocument d = (SVGDocument)e.getOwnerDocument();
+                    SVGDocument d = (SVGDocument) script.getOwnerDocument();
                     int line = dl.getLineNumber(script);
                     desc = Messages.formatMessage
                         (INLINE_SCRIPT_DESCRIPTION,
@@ -652,10 +651,7 @@ public class BaseScriptingEnvironment {
     }
 
     protected void dispatchSVGDocEvent(String eventType) {
-        SVGSVGElement root =
-            (SVGSVGElement)document.getDocumentElement();
         // Event is dispatched on outermost SVG element.
-        EventTarget t = root;
 
         DocumentEvent de = (DocumentEvent)document;
         AbstractEvent ev = (AbstractEvent) de.createEvent("SVGEvents");
@@ -663,7 +659,7 @@ public class BaseScriptingEnvironment {
                        eventType,
                        false,
                        false);
-        t.dispatchEvent(ev);
+        ((EventTarget) (SVGSVGElement)document.getDocumentElement()).dispatchEvent(ev);
     }
 
     /**

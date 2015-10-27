@@ -65,9 +65,8 @@ public class NamespaceValue extends ObjectValue
 
     public NamespaceValue clone() throws CloneNotSupportedException
     {
-        NamespaceValue result = (NamespaceValue) super.clone();
 
-        return result;
+        return (NamespaceValue) super.clone();
     }
 
     @Override

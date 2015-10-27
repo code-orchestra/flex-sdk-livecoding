@@ -464,9 +464,7 @@ class EmbedEvaluator extends EvaluatorAdapter
 
         getExpression.pos(0);
 
-        MemberExpressionNode result = new MemberExpressionNode(null, getExpression, 0);
-
-        return result;
+        return new MemberExpressionNode(null, getExpression, 0);
     }
 
     private LiteralStringNode generateStringInitializer(String name)

@@ -506,8 +506,7 @@ public class SwcChecksums
      */
     protected int[] copy()
     {
-        int[] copy = this.checksums.clone();
-        return copy;
+        return this.checksums.clone();
     }
     
     /**

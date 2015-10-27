@@ -53,9 +53,8 @@ public class BinaryInterfaceDefinitionNode extends BinaryClassDefNode
 
     public BinaryInterfaceDefinitionNode clone() throws CloneNotSupportedException
     {
-        BinaryInterfaceDefinitionNode result = (BinaryInterfaceDefinitionNode) super.clone();
 
-        return result;
+		return (BinaryInterfaceDefinitionNode) super.clone();
     }
 }
 

@@ -60,8 +60,7 @@ public final class FlashUUID
     
     public int hashCode()
     {
-        int length = bytes.length;
-        int code = length;
+        int code = bytes.length;
         for (byte aByte : bytes) {
             code = (code << 1) ^ aByte;
         }

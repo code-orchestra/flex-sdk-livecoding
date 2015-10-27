@@ -215,8 +215,7 @@ public class RegularNode {
     }
 
     public List<RegularNode> getChildren(String role) {
-        ArrayList<RegularNode> nodes = myChildren.stream().filter(myChild -> myChild.myRole.equals(role)).collect(Collectors.toCollection(ArrayList::new));
-        return nodes;
+        return myChildren.stream().filter(myChild -> myChild.myRole.equals(role)).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public List<RegularNode> getDescendants() {

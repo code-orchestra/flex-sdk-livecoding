@@ -755,7 +755,6 @@ public class TIFFImage extends AbstractRed {
                     byte[] g = new byte[bandLength];
                     byte[] b = new byte[bandLength];
 
-                    int gIndex = bandLength;
                     int bIndex = bandLength * 2;
 
                     if (dataType == DataBuffer.TYPE_SHORT) {
@@ -764,7 +763,7 @@ public class TIFFImage extends AbstractRed {
                             r[i] = param.decodeSigned16BitsTo8Bits
                                 ((short)colormap[i]);
                             g[i] = param.decodeSigned16BitsTo8Bits
-                                ((short)colormap[gIndex+i]);
+                                ((short)colormap[bandLength +i]);
                             b[i] = param.decodeSigned16BitsTo8Bits
                                 ((short)colormap[bIndex+i]);
                         }
@@ -775,7 +774,7 @@ public class TIFFImage extends AbstractRed {
                             r[i] = param.decode16BitsTo8Bits
                                 (colormap[i] & 0xffff);
                             g[i] = param.decode16BitsTo8Bits
-                                (colormap[gIndex+i] & 0xffff);
+                                (colormap[bandLength +i] & 0xffff);
                             b[i] = param.decode16BitsTo8Bits
                                 (colormap[bIndex+i] & 0xffff);
                         }
@@ -1604,14 +1603,13 @@ public class TIFFImage extends AbstractRed {
                 int[] pixels = new int[samplesPerDataUnit];
 
                 int bOffset = 0;
-                int offsetCb = pixelsPerDataUnit;
-                int offsetCr = offsetCb + 1;
+                int offsetCr = pixelsPerDataUnit + 1;
 
                 int y = newRect.y;
                 for(int j = 0; j < numV; j++) {
                     int x = newRect.x;
                     for(int i = 0; i < numH; i++) {
-                        int Cb = tempData[bOffset + offsetCb];
+                        int Cb = tempData[bOffset + pixelsPerDataUnit];
                         int Cr = tempData[bOffset + offsetCr];
                         int k = 0;
                         while(k < samplesPerDataUnit) {

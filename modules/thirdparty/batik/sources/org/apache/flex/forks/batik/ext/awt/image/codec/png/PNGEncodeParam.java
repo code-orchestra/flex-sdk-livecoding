@@ -377,8 +377,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
             if (!transparencySet) {
                 throw new IllegalStateException(PropertyUtil.getString("PNGEncodeParam7"));
             }
-            int gray = transparency[0];
-            return gray;
+            return transparency[0];
         }
 
         private int bitShift;

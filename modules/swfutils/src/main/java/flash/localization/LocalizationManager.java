@@ -138,9 +138,8 @@ public class LocalizationManager
 
 	public String getLocalizedTextString( Object object )
 	{
-		String s = getLocalizedTextString(locale, object );
 
-        return s;
+        return getLocalizedTextString(locale, object );
     }
 
     // todo - this is a pretty specialized helper function, hoist up to client code?

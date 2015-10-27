@@ -674,12 +674,11 @@ abstract class MultipleGradientPaintContext implements PaintContext {
         nSteps--;                       // upto, but not including the last slot
         output[ nSteps ] = rgb2;        // the last color is also fixed
         for (int i = 1; i < nSteps; i++) {
-            float fI = i;
             output[i] =
-                (( a1 + ((((int) ( fI * tempA )) +1) >> 1 ) & 0xff ) << 24) |
-                (( r1 + ((((int) ( fI * tempR )) +1) >> 1 ) & 0xff ) << 16) |
-                (( g1 + ((((int) ( fI * tempG )) +1) >> 1 ) & 0xff ) <<  8) |
-                (( b1 + ((((int) ( fI * tempB )) +1) >> 1 ) & 0xff )      );
+                (( a1 + ((((int) ( (float) i * tempA )) +1) >> 1 ) & 0xff ) << 24) |
+                (( r1 + ((((int) ( (float) i * tempR )) +1) >> 1 ) & 0xff ) << 16) |
+                (( g1 + ((((int) ( (float) i * tempG )) +1) >> 1 ) & 0xff ) <<  8) |
+                (( b1 + ((((int) ( (float) i * tempB )) +1) >> 1 ) & 0xff )      );
         }
 
     }
@@ -1328,9 +1327,8 @@ abstract class MultipleGradientPaintContext implements PaintContext {
         } else {
             output = (float) Math.pow((input + 0.055) / 1.055, 2.4);
         }
-        int o = Math.round(output * 255.0f);
 
-        return o;
+        return Math.round(output * 255.0f);
     }
 
      /** Helper function to convert a color component in linear RGB space to
@@ -1349,9 +1347,7 @@ abstract class MultipleGradientPaintContext implements PaintContext {
             output = (1.055f * ((float) Math.pow(input, (1.0 / 2.4)))) - 0.055f;
         }
 
-        int o = Math.round(output * 255.0f);
-
-        return o;
+        return Math.round(output * 255.0f);
     }
 
 

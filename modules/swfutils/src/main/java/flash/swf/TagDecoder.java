@@ -513,8 +513,7 @@ public final class TagDecoder
 
     private ScriptLimits decodeScriptLimits() throws IOException
     {
-        ScriptLimits scriptLimits = new ScriptLimits(r.readUI16(), r.readUI16());
-        return scriptLimits;
+        return new ScriptLimits(r.readUI16(), r.readUI16());
     }
 
     private Tag decodeDebugID(int type, int length) throws IOException

@@ -59,9 +59,8 @@ public class UsePrecisionNode extends UsePragmaNode {
 
     public UsePrecisionNode clone() throws CloneNotSupportedException
     {
-        UsePrecisionNode result = (UsePrecisionNode) super.clone();
 
-        return result;
+		return (UsePrecisionNode) super.clone();
     }
 
     @Override

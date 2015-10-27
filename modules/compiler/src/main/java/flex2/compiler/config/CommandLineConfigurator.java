@@ -576,9 +576,8 @@ public class CommandLineConfigurator
     public static String getDescription( ConfigurationBuffer buffer, String var, LocalizationManager l10n, String l10nPrefix )
     {
         String key = (l10nPrefix == null)? var : (l10nPrefix + "." + var);
-        String description = l10n.getLocalizedTextString( key, null );
 
-        return description;
+        return l10n.getLocalizedTextString( key, null );
     }
 
     public static String getSyntaxDescription( String program, String defaultVar, boolean advanced, LocalizationManager l10n, String l10nPrefix )

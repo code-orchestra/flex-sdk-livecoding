@@ -376,8 +376,7 @@ public class Transformations {
                 if (visibleOwnerInsideClass != null) {
                     IMember instanceMember = visibleOwnerInsideClass.getInstanceMember(accessorName);
                     if (instanceMember.getVisibility() == Visibility.PROTECTED && !instanceMember.isAddedDuringProcessing()) {
-                        String newAccessorName = accessorName + "_protected" + DigestManager.getInstance().getInheritanceLevel(originalClassFqName);
-                        memberExpression.selector.getIdentifier().name = newAccessorName;
+                        memberExpression.selector.getIdentifier().name = accessorName + "_protected" + DigestManager.getInstance().getInheritanceLevel(originalClassFqName);
                     }
                 }
             }
@@ -386,8 +385,7 @@ public class Transformations {
             String accessorName = memberExpression.selector.getIdentifier().name;
             IClassDigest visibleOwnerInsideClass = DigestManager.getInstance().findVisibleOwnerOfInstanceMember(originalClassFqName, accessorName);
             if (visibleOwnerInsideClass != null) {
-                String newAccessorName = accessorName + "_overriden_super" + DigestManager.getInstance().getInheritanceLevel(originalClassFqName);
-                memberExpression.selector.getIdentifier().name = newAccessorName;
+                memberExpression.selector.getIdentifier().name = accessorName + "_overriden_super" + DigestManager.getInstance().getInheritanceLevel(originalClassFqName);
                 memberExpression.base = TreeUtil.createIdentifier("thisScope");
             }
         }

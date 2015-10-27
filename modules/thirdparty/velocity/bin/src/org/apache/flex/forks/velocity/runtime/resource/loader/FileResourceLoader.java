@@ -66,7 +66,7 @@ public class FileResourceLoader extends ResourceLoader
         int sz = paths.size();
 
         for (Object path : paths) {
-            rsvc.info("FileResourceLoader : adding path '" + (String) path + "'");
+            rsvc.info("FileResourceLoader : adding path '" + path + "'");
         }
 
         rsvc.info("FileResourceLoader : initialization complete.");

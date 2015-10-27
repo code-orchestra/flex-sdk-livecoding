@@ -59,11 +59,10 @@ public class RegisterNode extends Node
 
     public RegisterNode clone() throws CloneNotSupportedException
     {
-        RegisterNode result = (RegisterNode) super.clone();
 
-        //if (type != null) result.type = type.clone();
+		//if (type != null) result.type = type.clone();
 
-        return result;
+        return (RegisterNode) super.clone();
     }
 
     @Override

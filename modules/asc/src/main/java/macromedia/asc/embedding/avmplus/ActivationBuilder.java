@@ -62,8 +62,7 @@ public class ActivationBuilder extends Builder
 		// otherwise, reuse the one passed in
 
 		TypeValue functionType = cx.useStaticSemantics() ? cx.functionType() : type;
-		int slot_id = super.ExplicitVar(cx,ob,name,namespaces,functionType,expected_id,-1,var_id);
 
-		return slot_id;
+		return super.ExplicitVar(cx,ob,name,namespaces,functionType,expected_id,-1,var_id);
 	}
 }

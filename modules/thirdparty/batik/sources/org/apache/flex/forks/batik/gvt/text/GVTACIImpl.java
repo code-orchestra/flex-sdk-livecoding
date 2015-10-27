@@ -259,9 +259,7 @@ public class GVTACIImpl
      * Create a copy of this iterator
      */
     public Object clone() {
-        GVTAttributedCharacterIterator cloneACI =
-                new GVTACIImpl(this);
-        return cloneACI;
+        return new GVTACIImpl(this);
     }
 
     /**

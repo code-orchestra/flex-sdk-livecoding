@@ -42,9 +42,8 @@ public class CommentNode extends Node
 
     public CommentNode clone() throws CloneNotSupportedException
     {
-        CommentNode result = (CommentNode) super.clone();
 
-        return result;
+		return (CommentNode) super.clone();
     }
 
     @Override

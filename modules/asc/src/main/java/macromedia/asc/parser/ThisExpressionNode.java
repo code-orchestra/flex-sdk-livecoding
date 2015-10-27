@@ -47,8 +47,7 @@ public class ThisExpressionNode extends Node
 
     public ThisExpressionNode clone() throws CloneNotSupportedException
     {
-        ThisExpressionNode result = (ThisExpressionNode) super.clone();
 
-        return result;
+		return (ThisExpressionNode) super.clone();
     }
 }

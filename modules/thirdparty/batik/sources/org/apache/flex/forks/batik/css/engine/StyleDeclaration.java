@@ -84,12 +84,11 @@ public class StyleDeclaration {
     public void remove(int idx) {
         count--;
         int from  = idx+1;
-        int to    = idx;
         int nCopy = count - idx;
 
-        System.arraycopy( values,     from, values,     to, nCopy );
-        System.arraycopy( indexes,    from, indexes,    to, nCopy );
-        System.arraycopy( priorities, from, priorities, to, nCopy );
+        System.arraycopy( values,     from, values, idx, nCopy );
+        System.arraycopy( indexes,    from, indexes, idx, nCopy );
+        System.arraycopy( priorities, from, priorities, idx, nCopy );
 
         values[ count ] = null;
         indexes[ count ] = 0;

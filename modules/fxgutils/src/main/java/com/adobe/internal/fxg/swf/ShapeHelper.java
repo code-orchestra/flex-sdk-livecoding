@@ -1395,9 +1395,8 @@ public class ShapeHelper implements SwfConstants
             if (x > xmax) xmax = x;
             if (y > ymax) ymax = y;
         }
-        
-        Rect r = new Rect(xmin, xmax, ymin, ymax);        
-        return r;
+
+        return new Rect(xmin, xmax, ymin, ymax);
     }
     
     private static boolean curveControlPointInsideCurrentRect(int x0, int y0, CurvedEdgeRecord curve, Rect currRect)
@@ -1439,8 +1438,7 @@ public class ShapeHelper implements SwfConstants
         }
         else
         {
-            double t = (p0 - p1)/(double) denom;
-            return t;
+            return (p0 - p1)/(double) denom;
         }
         
     }

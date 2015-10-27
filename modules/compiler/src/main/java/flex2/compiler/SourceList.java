@@ -150,8 +150,7 @@ public final class SourceList
 	private String calculateLocalPart(String name)
 	{
 		String leafName = name.substring(name.lastIndexOf(File.separatorChar) + 1);
-		String localPart = leafName.substring(0, leafName.lastIndexOf('.'));
-		return localPart;
+		return leafName.substring(0, leafName.lastIndexOf('.'));
 	}
 
 	private Map<String, Source> sources;

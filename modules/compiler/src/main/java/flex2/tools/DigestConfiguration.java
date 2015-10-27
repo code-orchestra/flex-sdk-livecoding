@@ -44,8 +44,7 @@ public class DigestConfiguration
      
 	public static Map<String, String> getAliases()
     {
-        Map<String, String> map = new HashMap<>();
-		return map;
+		return new HashMap<>();
     }
 
 	public void validate( ConfigurationBuffer cfgbuf ) throws ConfigurationException

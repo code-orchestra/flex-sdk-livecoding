@@ -36,8 +36,7 @@ public final class XMLUtils {
         } catch (TransformerException e) {
             throw new RuntimeException(e);
         }
-        String output = writer.getBuffer().toString().replaceAll("\n|\r", "");
-        return output;
+        return writer.getBuffer().toString().replaceAll("\n|\r", "");
     }
 
     public static File saveToFile(String filename, Document document) throws TransformerException {
@@ -76,8 +75,7 @@ public final class XMLUtils {
     public static Document createDocument() {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = builder.newDocument();
-            return doc;
+            return builder.newDocument();
         } catch (ParserConfigurationException e) {
         }
         return null;

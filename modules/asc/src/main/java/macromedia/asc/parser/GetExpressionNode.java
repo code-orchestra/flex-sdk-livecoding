@@ -110,8 +110,7 @@ public class GetExpressionNode extends SelectorNode
 
     public GetExpressionNode clone() throws CloneNotSupportedException
     {
-        GetExpressionNode result = (GetExpressionNode) super.clone();
 
-        return result;
+		return (GetExpressionNode) super.clone();
     }
 }

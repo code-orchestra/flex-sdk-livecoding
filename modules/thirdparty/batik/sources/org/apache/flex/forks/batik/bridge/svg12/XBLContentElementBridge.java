@@ -86,8 +86,7 @@ public class XBLContentElementBridge extends AbstractGraphicsNodeBridge {
      * @return a graphics node that represents the specified element
      */
     public GraphicsNode createGraphicsNode(BridgeContext ctx, Element e) {
-        CompositeGraphicsNode gn = buildCompositeGraphicsNode(ctx, e, null);
-        return gn;
+        return buildCompositeGraphicsNode(ctx, e, null);
     }
 
     /**

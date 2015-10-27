@@ -586,8 +586,7 @@ public class ObjectValue extends Value implements Comparable
 	
         // for each namespace, add a qualifier with the given slot index
         for (ObjectValue namespace : namespaces) {
-            ObjectValue it = namespace;
-            names.put(name, it, Names.getTypeFromKind(kind), slot_index);
+            names.put(name, namespace, Names.getTypeFromKind(kind), slot_index);
         }
 
         return true;

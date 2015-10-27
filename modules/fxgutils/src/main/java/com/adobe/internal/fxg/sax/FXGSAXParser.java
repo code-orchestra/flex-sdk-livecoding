@@ -85,8 +85,7 @@ public class FXGSAXParser implements FXGParser
             SAXParser parser = saxFactory.newSAXParser();
             parser.parse(stream, scanner);
 
-            FXGNode node = scanner.getRootNode();
-            return node;
+            return scanner.getRootNode();
         }
         catch (ParserConfigurationException | SAXException ex)
         {

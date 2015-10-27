@@ -85,10 +85,8 @@ public class RuntimeSharedLibrarySettingsConfiguration
         {
             return Collections.emptySet();
         }
-        
-        Set<String> rslPaths = forceRsls.stream().map(VirtualFile::getName).collect(Collectors.toSet());
 
-        return rslPaths;
+        return forceRsls.stream().map(VirtualFile::getName).collect(Collectors.toSet());
     }
 
     

@@ -158,13 +158,11 @@ public class ASTStringLiteral extends SimpleNode
                  * and return the result as a String
                  */
 
-                String ret = writer.toString();
-
                 /*
                  *  remove the space from the end (dreaded <MORE> kludge)
                  */
 
-                return ret;
+                return writer.toString();
             }
             catch(Exception e)
             {

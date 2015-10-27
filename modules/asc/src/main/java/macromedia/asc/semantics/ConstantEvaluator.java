@@ -834,9 +834,8 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
                 {
                     // need to check var_index to see if this is a setter.  In the case of slots inherited during abc import,
                     //  this will only be accurate for the original slot
-                    Slot origSlot = slot;
 
-                    if( origSlot.getVarIndex() < 0 && size(slot.getTypes()) == 1 )
+                    if( slot.getVarIndex() < 0 && size(slot.getTypes()) == 1 )
                     {
                         node.args.addType(slot.getTypes().get(0)); // setter, expected type is param type
                     }
@@ -3186,11 +3185,10 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
 
     public Value PreprocessDefinitionTypeInfo(Context cx, RestParameterNode node)
     {
-        ParameterNode pnode = node;
-        Value result = PreprocessDefinitionTypeInfo(cx,pnode);
+        Value result = PreprocessDefinitionTypeInfo(cx, node);
         Slot  s = node.ref.getSlot(cx);
         // Only error if there was an explicit typeref other than Array
-        if (pnode.typeref != null && s.getType() != null && s.getType().getTypeValue() != cx.arrayType())
+        if (node.typeref != null && s.getType() != null && s.getType().getTypeValue() != cx.arrayType())
             cx.error(node.pos(), kError_InvalidRestDecl);
 
         return result;
@@ -3984,10 +3982,8 @@ public final class ConstantEvaluator extends Emitter implements Evaluator, Error
 
     public Value evaluate(Context cx, RestParameterNode node)
     {
-        ParameterNode pnode = node;
-        Value result = evaluate(cx,pnode);
         // Error checking done in PreprocessDefinitionTypeInfo(RestParameterNode)
-        return result;
+        return evaluate(cx, node);
 
     }
 

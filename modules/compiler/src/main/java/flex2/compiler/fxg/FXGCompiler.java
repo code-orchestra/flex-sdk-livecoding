@@ -503,8 +503,7 @@ public class FXGCompiler extends AbstractSubCompiler
         {
             // Create an As3Compiler as our delegate sub-compiler for
             // generated ActionScript.
-            As3Compiler asc = new As3Compiler(config);
-            delegateSubCompiler = asc;
+            delegateSubCompiler = new As3Compiler(config);
         }
 
         public String getName()
@@ -788,10 +787,9 @@ public class FXGCompiler extends AbstractSubCompiler
             }
 
             // Create a new Source for the generated file but based on our
-            // original Source to preserve information like last modified. 
-            Source generatedSource = new Source(generatedFile, originalSource);
+            // original Source to preserve information like last modified.
 
-            return generatedSource;
+            return new Source(generatedFile, originalSource);
         }
        
     }
@@ -805,8 +803,7 @@ public class FXGCompiler extends AbstractSubCompiler
         private ImplementationCompiler(CompilerConfiguration config)
         {
             // Create an As3Compiler as our delegate sub-compiler.
-            As3Compiler asc = new As3Compiler(config);
-            delegateSubCompiler = asc;
+            delegateSubCompiler = new As3Compiler(config);
         }
 
         public String getName()
@@ -1048,8 +1045,7 @@ public class FXGCompiler extends AbstractSubCompiler
             FlexResourceResolver resolver = new FlexResourceResolver(pathResolver);
             transcoder.setResourceResolver(resolver);
 
-            FXGSymbolClass asset = transcoder.transcode(rootNode, packageName, className);
-            return asset;
+            return transcoder.transcode(rootNode, packageName, className);
         }
     }
 

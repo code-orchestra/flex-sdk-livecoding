@@ -95,10 +95,8 @@ public class ThreadSafeSessionManager extends ThreadSafeDebuggerObject implement
 		 * We just return the process to be consistent with PlayerSessionManager. 
 		 */
 		assert fSessionManager instanceof SessionManager2;
-		
-		Process process = ((SessionManager2) fSessionManager).launchForRun(uri, airLaunchInfo, waitReporter, launchNotification);
-			
-		return process;	
+
+		return ((SessionManager2) fSessionManager).launchForRun(uri, airLaunchInfo, waitReporter, launchNotification);
 		
   }
 

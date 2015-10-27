@@ -84,7 +84,7 @@ public class ASTDirective extends SimpleNode
         }          
         else 
         {
-            directive = (Directive) rsvc.getVelocimacro( directiveName,  context.getCurrentTemplateName() );
+            directive = rsvc.getVelocimacro( directiveName,  context.getCurrentTemplateName() );
         }   
 
         if(directive != null) {

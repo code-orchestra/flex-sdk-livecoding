@@ -195,10 +195,9 @@ public class FileConfigurator
         }
         public void startElement( String uri, String localName, String qName, Attributes attributes ) throws SAXException
         {
-            String element = qName;
             if (contextStack.size() == 0)
             {
-                if (!element.equals( rootElement ))
+                if (!qName.equals( rootElement ))
                 {
                     throw new SAXConfigurationException(
                             new ConfigurationException.IncorrectElement( rootElement, qName, this.source, locator.getLineNumber() ),
@@ -224,12 +223,12 @@ public class FileConfigurator
                         locator );
             }
 
-            String fullname = name( element, ctx.base );
+            String fullname = name(qName, ctx.base );
 
             if (ctx.item != null)
             {
                 throw new SAXConfigurationException(
-                        new ConfigurationException.UnexpectedElement( element, contextPath, locator.getLineNumber() ),
+                        new ConfigurationException.UnexpectedElement(qName, contextPath, locator.getLineNumber() ),
                         locator );
             }
             else if (ctx.var != null)
@@ -241,10 +240,10 @@ public class FileConfigurator
                     // oops, we weren't expecting more than one value!
 
                     throw new SAXConfigurationException(
-                            new ConfigurationException.UnexpectedElement( element, source, locator.getLineNumber() ),
+                            new ConfigurationException.UnexpectedElement(qName, source, locator.getLineNumber() ),
                             locator );
                 }
-                ctx.item = element;
+                ctx.item = qName;
             }
             else if (cfgbuf.isValidVar( fullname ))
             {
@@ -281,9 +280,9 @@ public class FileConfigurator
                         Class childClass = cfgbuf.getChildConfigClass( fullname );
                         ConfigurationBuffer childBuf = new ConfigurationBuffer( childClass );
                         // keep track of the file-path name
-                        cfgbuf.setVar( element + "-file-path", getFilePath( src, contextPath ), contextPath, locator.getLineNumber() );
-                        FileConfigurator.load( childBuf, src, contextPath, locator.getLineNumber(), element );
-                        cfgbuf.mergeChild( element, childBuf );
+                        cfgbuf.setVar( qName + "-file-path", getFilePath( src, contextPath ), contextPath, locator.getLineNumber() );
+                        FileConfigurator.load( childBuf, src, contextPath, locator.getLineNumber(), qName);
+                        cfgbuf.mergeChild(qName, childBuf );
                     }
                     catch (final ConfigurationException e)
                     {
@@ -303,7 +302,7 @@ public class FileConfigurator
             		// push a new context and ignore everything until we get the end 
             		// of this element.
                     ParseContext newctx = new ParseContext();
-                    newctx.item = element;
+                    newctx.item = qName;
                     newctx.ignore = true;
                     contextStack.push( newctx );
             		return;
@@ -317,14 +316,13 @@ public class FileConfigurator
 
         public void endElement( String uri, String localName, String qName ) throws SAXException
         {
-            String element = qName;
 
             ParseContext ctx = contextStack.peek();
 
             if (ctx.ignore)
             {
             	// if found the matching end element, then pop the context and stop ignoring input
-            	if (ctx.item.equals(element))
+            	if (ctx.item.equals(qName))
             	{
             		contextStack.pop();
             		text = new StringBuilder();	// ignore any text read
@@ -339,7 +337,7 @@ public class FileConfigurator
             // 2. var is set -> set the var to the argList, pop
             // 3. var is null -> we're finishing a child config, pop
 
-            if (element.equals( rootElement ))
+            if (qName.equals( rootElement ))
             {
                 // Finished with the file!
             }
@@ -348,7 +346,7 @@ public class FileConfigurator
                 // Finished with the current item.
 
                 ParseValue v = new ParseValue();
-                v.name = element;
+                v.name = qName;
                 v.value = text.toString();
                 v.line = locator.getLineNumber();
                 ctx.argList.add( v );

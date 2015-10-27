@@ -384,10 +384,9 @@ public class Velocity implements RuntimeConstants
 
         try
         {
-            boolean retval = evaluate(  context,  writer,
-                                         logTag, construct.toString() );
 
-            return retval;
+            return evaluate(  context,  writer,
+                                         logTag, construct.toString() );
         }
         catch( Exception  e )
         {

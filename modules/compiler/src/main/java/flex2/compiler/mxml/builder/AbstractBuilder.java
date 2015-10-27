@@ -161,8 +161,7 @@ public abstract class AbstractBuilder extends AnalyzerAdapter
          */
         public Object clear()
         {
-            AtClear atClear = new AtClear(unit.getSource(), line);
-            return atClear;
+            return new AtClear(unit.getSource(), line);
         }
         
         /**

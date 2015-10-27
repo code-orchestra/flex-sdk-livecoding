@@ -651,9 +651,9 @@ public abstract class ValueInitializer implements Initializer, Cloneable
      */
     private void collectDeclarations(Iterator<Initializer> initializers, Set<String> ids)
     {
-    	for (Iterator<Initializer> iter = initializers; iter.hasNext(); )
+    	for (; initializers.hasNext(); )
         {
-    		Initializer initializer = iter.next();
+    		Initializer initializer = initializers.next();
     		if (initializer instanceof ValueInitializer)
     		{
     			ValueInitializer valueInitializer = (ValueInitializer)initializer;

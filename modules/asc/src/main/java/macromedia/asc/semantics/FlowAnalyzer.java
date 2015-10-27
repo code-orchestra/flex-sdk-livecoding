@@ -3814,9 +3814,8 @@ else
                         	// Constructors don't actually override the base class constructor
                         	// Can have different signatures, so don't mark it as having an overriden slot
                         	// so we won't do signature matching later.
-	                        Slot overriddenSlot = slot;
-	                        Slot overrideSlot = obj.getSlot(cx,obj.getImplicitIndex(cx,slot_id,EMPTY_TOKEN));
-	                        overrideSlot.setOverriddenSlot(overriddenSlot);
+                            Slot overrideSlot = obj.getSlot(cx,obj.getImplicitIndex(cx,slot_id,EMPTY_TOKEN));
+	                        overrideSlot.setOverriddenSlot(slot);
                         }
                     }
                     else
@@ -4043,8 +4042,7 @@ else
     public Value evaluate(Context cx, FunctionNameNode node)
     {
         Value val = node.identifier.evaluate(cx, this);
-        ReferenceValue ref = ((val instanceof ReferenceValue) ? (ReferenceValue)val : null);
-        return ref;
+        return ((val instanceof ReferenceValue) ? (ReferenceValue)val : null);
     }
 
     public Value evaluate(Context cx, FunctionSignatureNode node)
@@ -5101,12 +5099,11 @@ else
     }
     static void inheritClassSlotsStatic(TypeValue cframe, ObjectValue iframe, TypeValue baseType, Context ctx)
     {
-        TypeValue superType = baseType;
-        cframe.baseclass = superType;
+        cframe.baseclass = baseType;
 
         ObjectValue baseobj = baseType.prototype;
 
-        InstanceBuilder basebui = ((superType.prototype.builder instanceof InstanceBuilder) ? (InstanceBuilder)superType.prototype.builder : null);
+        InstanceBuilder basebui = ((baseType.prototype.builder instanceof InstanceBuilder) ? (InstanceBuilder) baseType.prototype.builder : null);
         InstanceBuilder bui = (InstanceBuilder)(iframe.builder);
         
         bui.canEarlyBind = basebui.canEarlyBind;

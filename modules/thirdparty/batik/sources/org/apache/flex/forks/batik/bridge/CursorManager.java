@@ -560,11 +560,8 @@ public class CursorManager implements SVGConstants, ErrorConstants {
         Rectangle cursorViewport
             = new Rectangle(0, 0, cursorSize.width, cursorSize.height);
 
-        PadRable8Bit cursorImage
-            = new PadRable8Bit(f, cursorViewport,
-                               PadMode.ZERO_PAD);
-
-        return cursorImage;
+        return new PadRable8Bit(f, cursorViewport,
+                           PadMode.ZERO_PAD);
 
     }
 
@@ -617,14 +614,12 @@ public class CursorManager implements SVGConstants, ErrorConstants {
             }
 
             CursorDescriptor desc = (CursorDescriptor)obj;
-            boolean isEqual =
-                this.purl.equals(desc.purl)
-                 &&
-                 this.x == desc.x
-                 &&
-                 this.y == desc.y;
 
-            return isEqual;
+            return this.purl.equals(desc.purl)
+             &&
+             this.x == desc.x
+             &&
+             this.y == desc.y;
         }
 
         public String toString() {

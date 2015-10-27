@@ -64,9 +64,8 @@ public class LiteralRegExpNode extends Node
 
     public LiteralRegExpNode clone() throws CloneNotSupportedException
     {
-        LiteralRegExpNode result = (LiteralRegExpNode) super.clone();
 
-        return result;
+		return (LiteralRegExpNode) super.clone();
     }
 
     @Override

@@ -53,9 +53,8 @@ public class ErrorNode extends Node
 
     public ErrorNode clone() throws CloneNotSupportedException
     {
-        ErrorNode result = (ErrorNode) super.clone();
 
-        return result;
+		return (ErrorNode) super.clone();
     }
 
     @Override

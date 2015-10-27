@@ -359,8 +359,7 @@ public final class SymbolTable
 	void registerQNames(QNameList qNames, Source source)
 	{
 		for (QName qName : qNames) {
-			QName qN = qName;
-			qNameTable.put(qN, source);
+			qNameTable.put(qName, source);
 		}
 	}
 

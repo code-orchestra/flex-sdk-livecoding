@@ -385,9 +385,8 @@ public class NodeMagic
      */
     public static TreeSet<String> getSortedAttributes(AttributeListNode node)
     {
-        final TreeSet<String> attrs = getAttributes(node).stream().collect(Collectors.toCollection(TreeSet::new));
 
-        return attrs;
+        return getAttributes(node).stream().collect(Collectors.toCollection(TreeSet::new));
     }
     
     public static String setToString(Set<String> set, String delimiter)

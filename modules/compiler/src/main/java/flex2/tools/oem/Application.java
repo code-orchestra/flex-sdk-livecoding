@@ -978,8 +978,7 @@ public class Application implements Builder
 
             if (applicationCache != null)
             {
-                ContextStatics contextStatics = applicationCache.getContextStatics();
-                data.perCompileData = contextStatics;
+                data.perCompileData = applicationCache.getContextStatics();
 
                 if (applicationCache.isConsistent(tempOEMConfiguration.configuration))
                 {

@@ -83,9 +83,7 @@ public class BindableElementBridge
             return null;
         }
 
-        CompositeGraphicsNode gn = buildCompositeGraphicsNode(ctx, e, null);
-
-        return gn;
+        return buildCompositeGraphicsNode(ctx, e, null);
     }
 
     /**

@@ -54,8 +54,7 @@ public class InterfaceDefinitionNode extends ClassDefinitionNode
 
     public InterfaceDefinitionNode clone() throws CloneNotSupportedException
     {
-        InterfaceDefinitionNode result = (InterfaceDefinitionNode) super.clone();
 
-        return result;
+		return (InterfaceDefinitionNode) super.clone();
     }
 }

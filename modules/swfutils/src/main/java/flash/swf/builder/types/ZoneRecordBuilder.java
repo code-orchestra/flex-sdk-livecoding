@@ -74,8 +74,7 @@ public class ZoneRecordBuilder
         try
         {
             Class c = Class.forName(DEFAULT_BUILDER);
-            ZoneRecordBuilder builder = (ZoneRecordBuilder)c.newInstance();
-            return builder;
+            return (ZoneRecordBuilder)c.newInstance();
         }
         catch (Throwable t)
         {

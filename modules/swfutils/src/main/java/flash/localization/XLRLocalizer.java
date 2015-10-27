@@ -75,8 +75,7 @@ public class XLRLocalizer implements ILocalizer
             XLRMessageNode messageNode = (XLRMessageNode) nodedict.get( id );
             if (messageNode != null)
             {
-                XLRTargetNode targetNode = messageNode.getTarget( locale.toString() );
-                return targetNode;
+                return messageNode.getTarget( locale.toString() );
             }
         }
 

@@ -2029,8 +2029,7 @@ public abstract class AbstractDocument
          * Gets the boolean value of the given parameter.
          */
         public boolean getBooleanParameter(String name) {
-            Boolean b = (Boolean) getParameter(name);
-            return b;
+            return (Boolean) getParameter(name);
         }
 
         /**

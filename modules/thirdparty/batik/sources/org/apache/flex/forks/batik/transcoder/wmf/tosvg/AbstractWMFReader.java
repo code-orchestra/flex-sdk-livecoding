@@ -19,15 +19,14 @@
 
 package org.apache.flex.forks.batik.transcoder.wmf.tosvg;
 
-import java.awt.Rectangle;
-import java.awt.Toolkit;
+import org.apache.flex.forks.batik.transcoder.wmf.WMFConstants;
+
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
-
-import org.apache.flex.forks.batik.transcoder.wmf.WMFConstants;
+import java.util.List;
 
 /**
  * This class provides a general framework to read WMF Metafiles.
@@ -208,8 +207,7 @@ public abstract class AbstractWMFReader {
      * @see #getBottomUnits()
      */
     public Rectangle getRectangleUnits() {
-        Rectangle rec = new Rectangle(left, top, width, height);
-        return rec;
+        return new Rectangle(left, top, width, height);
     }
 
     /** get the Rectangle defining the viewport of the WMF Metafile, in pixels.
@@ -220,9 +218,7 @@ public abstract class AbstractWMFReader {
         float _top = PIXEL_PER_INCH * (float)top / (float)inch;
         float _bottom = PIXEL_PER_INCH * (float)bottom / (float)inch;
 
-        Rectangle2D.Float rec = new Rectangle2D.Float(_left, _top, _right - _left, _bottom - _top);
-
-        return rec;
+        return new Rectangle2D.Float(_left, _top, _right - _left, _bottom - _top);
     }
 
     /** get the Rectangle defining the viewport of the WMF Metafile, in inchs.
@@ -233,9 +229,7 @@ public abstract class AbstractWMFReader {
         float _top = (float)top / (float)inch;
         float _bottom = (float)bottom / (float)inch;
 
-        Rectangle2D.Float rec = new Rectangle2D.Float(_left, _top, _right - _left, _bottom - _top);
-
-        return rec;
+        return new Rectangle2D.Float(_left, _top, _right - _left, _bottom - _top);
     }
 
     /** get the width of the WMF Metafile, in pixels.
@@ -361,8 +355,7 @@ public abstract class AbstractWMFReader {
         int dwIsAldus = readInt( is );
         if ( dwIsAldus == WMFConstants.META_ALDUS_APM ) {
             // Read the aldus placeable header.
-            int   key = dwIsAldus;
-            isAldus = true;            
+            isAldus = true;
             readShort( is ); // metafile handle, always zero
             left = readShort( is );
             top = readShort( is );

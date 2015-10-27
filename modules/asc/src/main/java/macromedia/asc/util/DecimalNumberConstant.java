@@ -50,8 +50,7 @@ public class DecimalNumberConstant extends NumberConstant {
 	@Override
 	public long uintValue() {
 		long lval = val.longValue();
-		int ival = (int)lval; // truncates to 32 bits
-		return ival;
+		return (int)lval;
 	}
 	
 	@Override

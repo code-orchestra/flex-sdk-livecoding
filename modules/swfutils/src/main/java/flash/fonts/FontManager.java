@@ -71,8 +71,7 @@ public abstract class FontManager
                 {
                     try
                     {
-                        int major = Integer.parseInt(parts[0]);
-                        majorCompatibilityVersion = major;
+                        majorCompatibilityVersion = Integer.parseInt(parts[0]);
                     }
                     catch (Throwable t)
                     {
@@ -252,9 +251,8 @@ public abstract class FontManager
         {
             for (Object managerClass : managerClasses) {
                 try {
-                    Object className = managerClass;
-                    if (className != null) {
-                        Class clazz = Class.forName(className.toString());
+                    if (managerClass != null) {
+                        Class clazz = Class.forName(managerClass.toString());
                         Object obj = clazz.newInstance();
                         if (obj instanceof FontManager) {
                             FontManager fm = (FontManager) obj;

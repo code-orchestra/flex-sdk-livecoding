@@ -106,11 +106,9 @@ public class ClassBuilder extends Builder
 
         // front-end
 
-        int var_id = super.Variable(cx,ob);
+		// back-end
 
-        // back-end
-
-        return var_id;
+        return super.Variable(cx,ob);
     }
 
 

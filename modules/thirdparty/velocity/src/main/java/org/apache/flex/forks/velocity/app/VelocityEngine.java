@@ -393,10 +393,9 @@ public class VelocityEngine implements RuntimeConstants
 
         try
         {
-            boolean retval = evaluate(  context,  writer,  
+
+            return evaluate(  context,  writer,
                                          logTag, construct.toString() );
-  
-            return retval;
         }
         catch( Exception  e )
         {

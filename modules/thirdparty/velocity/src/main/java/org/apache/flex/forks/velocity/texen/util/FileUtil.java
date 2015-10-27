@@ -56,8 +56,7 @@ public class FileUtil
      */
     public static File file(String s)
     {
-        File f = new File(s);
-        return f;
+        return new File(s);
     }
     
     /**
@@ -69,7 +68,6 @@ public class FileUtil
      */
     public static File file(String base, String s)
     {
-        File f = new File(base, s);
-        return f;
+        return new File(base, s);
     }
 }

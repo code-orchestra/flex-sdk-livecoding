@@ -234,8 +234,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
             DefineSprite sprite = spriteStack.pop();    
             GraphicContext gc = new GraphicContext();
             gc.filters = filters;
-            PlaceObject poFilter = placeObject(sprite, gc);
-            return poFilter;            
+            return placeObject(sprite, gc);
         }
         return po3;
     }
@@ -266,21 +265,18 @@ public class FXG2SWFTranscoder implements FXGTranscoder
             {
                 Rect grid = TypeHelper.rect(scalingGrid.scaleGridLeft, scalingGrid.scaleGridTop, scalingGrid.scaleGridRight, scalingGrid.scaleGridBottom);
                 imageShape = ImageHelper.create9SlicedShape(imageTag, grid, Double.NaN, Double.NaN);
-                PlaceObject po3 = placeObject(imageShape, context);
-                return po3;
+                return placeObject(imageShape, context);
             }
             else
             {
             	if (ImageHelper.bitmapImageNeedsClipping(imageTag, node))
             	{
-            		PlaceObject p03 = bitmapWithClip(imageTag, node);
-            		return p03;
+                    return bitmapWithClip(imageTag, node);
             	}
             	else
             	{
             		imageShape = ImageHelper.createShapeForImage(imageTag, node);
-            		PlaceObject po3 = placeObject(imageShape, context);
-            		return po3;
+                    return placeObject(imageShape, context);
             	}
             }            
         }
@@ -292,8 +288,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
                  double height = (Double.isNaN(node.height)) ? imageTag.height : node.height;
         		 List<ShapeRecord>  shapeRecords = ShapeHelper.rectangle(0.0, 0.0, width, height);        
         	     DefineShape shape = createDefineShape(null, shapeRecords, new SolidColorFillNode(), null, context.getTransform());
-        		 PlaceObject po3 = placeObject(shape, context);
-        		 return po3;
+                return placeObject(shape, context);
         	}
         	else
         	{
@@ -301,8 +296,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
                 double height = ((imageTag.height < node.height) || (Double.isNaN(node.height))) ? imageTag.height : node.height;
        		 	List<ShapeRecord>  shapeRecords = ShapeHelper.rectangle(0.0, 0.0, width, height);        
        	        DefineShape shape = createDefineShape(null, shapeRecords, new SolidColorFillNode(), null, context.getTransform());
-       		 	PlaceObject po3 = placeObject(shape, context);
-       		 	return po3;
+                return placeObject(shape, context);
         	}
         }
 
@@ -391,8 +385,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
                 DefineSprite sprite = spriteStack.pop();    
                 GraphicContext gc = new GraphicContext();
                 gc.filters = filters;
-                PlaceObject poFilter = placeObject(sprite, gc);
-                return poFilter;            
+                return placeObject(sprite, gc);
             }
         }
 
@@ -505,8 +498,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
             DefineSprite sprite = spriteStack.pop();    
             GraphicContext gc = new GraphicContext();
             gc.filters = filters;
-            PlaceObject poFilter = placeObject(sprite, gc);
-            return poFilter;            
+            return placeObject(sprite, gc);
         }
         spriteStack.pop();
         return po3;
@@ -516,8 +508,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
     {
         List<ShapeRecord> shapeRecords = ShapeHelper.line(node.xFrom, node.yFrom, node.xTo, node.yTo);
         GraphicContext context = node.createGraphicContext();
-        PlaceObject po3 = placeDefineShape(node, shapeRecords, node.fill, node.stroke, context);
-        return po3;
+        return placeDefineShape(node, shapeRecords, node.fill, node.stroke, context);
     }
 
     protected PlaceObject mask(MaskableNode node, DefineSprite parentSprite)
@@ -610,8 +601,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
         GraphicContext context = node.createGraphicContext();
         Winding winding[] = new Winding[1];
         winding[0] = node.winding;
-        PlaceObject po3 = placeDefineShape(node, shapeRecords, node.fill, node.stroke, context, winding);
-        return po3;
+        return placeDefineShape(node, shapeRecords, node.fill, node.stroke, context, winding);
     }
 
     protected void setPixelBenderBlendMode(PlaceObject po, BlendMode blendMode)
@@ -704,9 +694,8 @@ public class FXG2SWFTranscoder implements FXGTranscoder
         {
              shapeRecords = ShapeHelper.rectangle(0.0, 0.0, node.width, node.height);
         }
-        
-        PlaceObject po3 = placeDefineShape(node, shapeRecords, node.fill, node.stroke, context);
-        return po3;
+
+        return placeDefineShape(node, shapeRecords, node.fill, node.stroke, context);
     }
 
     protected PlaceObject text(TextGraphicNode node)
@@ -745,8 +734,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
             graphics.definition(node.definition, definitionSprite);
         }
 
-        PlaceObject po3 = placeObject(definitionSprite, node.createGraphicContext());
-        return po3;
+        return placeObject(definitionSprite, node.createGraphicContext());
     }
 
     protected void definition(DefinitionNode node, DefineSprite definitionSprite)
@@ -782,8 +770,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
         try
         {
             InputStream stream = resourceResolver.openStream(source);
-            DefineBits imageTag = ImageHelper.createDefineBits(stream, ImageHelper.guessMimeType(source));
-            return imageTag;
+            return ImageHelper.createDefineBits(stream, ImageHelper.guessMimeType(source));
         }
         catch (IOException ioe)
         {
@@ -994,8 +981,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
                 DefineSprite sprite = spriteStack.pop();    
                 GraphicContext gc = new GraphicContext();
                 gc.filters = filters;
-                PlaceObject poFilter = placeObject(sprite, gc);
-                return poFilter;            
+                return placeObject(sprite, gc);
             }
             
             return po3;
@@ -1004,8 +990,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
         else
         {
         	DefineShape shape = createDefineShape(node, shapeRecords, fill, stroke, context.getTransform(), windings);
-        	PlaceObject po3 = placeObject(shape, context);
-        	return po3;
+            return placeObject(shape, context);
         } 
        
     }
@@ -1127,7 +1112,6 @@ public class FXG2SWFTranscoder implements FXGTranscoder
 
         int flags = 0;
         int startCapStyle = createCaps(stroke.caps);
-        int endCapStyle = startCapStyle;
         int jointStyle = createJoints(stroke.joints);
         int noHorizonalScale = 1;
         int noVerticalScale = 1;
@@ -1144,7 +1128,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
             flags |= 1;
 
         // Second set of 8 bit flags
-        flags |= endCapStyle << 8;
+        flags |= startCapStyle << 8;
 
         if (jointStyle == 2)
         {

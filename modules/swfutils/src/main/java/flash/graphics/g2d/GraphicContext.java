@@ -170,9 +170,7 @@ public final class GraphicContext implements Cloneable
 				== RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
 			useFractionalMetrics = false;
 
-		FontRenderContext frc = new FontRenderContext(null, isAntialiased, useFractionalMetrics);
-
-		return frc;
+		return new FontRenderContext(null, isAntialiased, useFractionalMetrics);
 	}
 
 	public GraphicsConfiguration getDeviceConfiguration()

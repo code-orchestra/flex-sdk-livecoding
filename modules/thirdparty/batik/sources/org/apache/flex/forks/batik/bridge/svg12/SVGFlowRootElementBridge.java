@@ -928,8 +928,7 @@ public class SVGFlowRootElementBridge extends SVG12TextElementBridge {
 
         Map   fontAttrs      = new HashMap(20);
         List  fontList       = getFontList(ctx, element, fontAttrs);
-        Float fs             = (Float)fontAttrs.get(TextAttribute.SIZE);
-        float fontSize       = fs;
+        float fontSize       = (Float)fontAttrs.get(TextAttribute.SIZE);
         float lineHeight     = getLineHeight(ctx, element, fontSize);
 
         String ln = element.getLocalName();

@@ -84,9 +84,8 @@ public class UseRoundingNode extends UsePragmaNode {
 
     public UseRoundingNode clone() throws CloneNotSupportedException
     {
-        UseRoundingNode result = (UseRoundingNode) super.clone();
 
-        return result;
+		return (UseRoundingNode) super.clone();
     }
 
     @Override

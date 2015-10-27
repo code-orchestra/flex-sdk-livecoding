@@ -54,11 +54,9 @@ public class CachedImageHandlerBase64Encoder extends DefaultCachedImageHandler {
     public Element createElement(SVGGeneratorContext generatorContext) {
         // Create a DOM Element in SVG namespace to refer to an image
         // For this cached version we return <use>
-        Element imageElement =
-            generatorContext.getDOMFactory().createElementNS(
-                                                             SVG_NAMESPACE_URI, SVG_USE_TAG);
-        
-        return imageElement;
+
+        return generatorContext.getDOMFactory().createElementNS(
+                                                         SVG_NAMESPACE_URI, SVG_USE_TAG);
     }
 
 

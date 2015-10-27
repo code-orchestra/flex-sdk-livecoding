@@ -54,8 +54,7 @@ public class DoubleNumberConstant extends NumberConstant {
 		// Java truncates any positive double > Integer.MAX_VALUE to MAX_VALUE.  If we
 		// launder the value through long, we get the result we want.
 		long lval = (long)val;
-		int ival = (int)lval;
-		return ival;
+		return (int)lval;
 	}
 	
 	@Override
@@ -67,9 +66,8 @@ public class DoubleNumberConstant extends NumberConstant {
 
     public DoubleNumberConstant clone() throws CloneNotSupportedException
     {
-        DoubleNumberConstant result = (DoubleNumberConstant) super.clone();
-    
-        return result;
+
+		return (DoubleNumberConstant) super.clone();
     }
 
     @Override

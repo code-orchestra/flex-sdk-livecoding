@@ -77,8 +77,7 @@ public class TimingSpecifierListProducer
             new TimingSpecifierListProducer(owner, isBegin);
         p.setTimingSpecifierListHandler(pp);
         p.parse(spec);
-        TimingSpecifier[] specs = pp.getTimingSpecifiers();
-        return specs;
+        return pp.getTimingSpecifiers();
     }
 
     // TimingSpecifierHandler ////////////////////////////////////////////////

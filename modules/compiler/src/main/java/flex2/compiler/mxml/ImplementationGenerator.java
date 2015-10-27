@@ -333,9 +333,8 @@ public class ImplementationGenerator extends AbstractGenerator
                                                             uiComponentDescriptorArgumentList);
         uiComponentDescriptorCallExpression.is_new = true;
         uiComponentDescriptorCallExpression.setRValue(false);
-        MemberExpressionNode memberExpression = nodeFactory.memberExpression(null, uiComponentDescriptorCallExpression);
 
-        return memberExpression;
+        return nodeFactory.memberExpression(null, uiComponentDescriptorCallExpression);
 	}
 
     /**
@@ -547,9 +546,8 @@ public class ImplementationGenerator extends AbstractGenerator
 
     private Set<String> createInterfaceNames()
     {
-        Set<String> result = mxmlDocument.getInterfaceNames().stream().map(DocumentInfo.NameInfo::getName).collect(Collectors.toCollection(TreeSet::new));
 
-        return result;
+        return mxmlDocument.getInterfaceNames().stream().map(DocumentInfo.NameInfo::getName).collect(Collectors.toCollection(TreeSet::new));
     }
 
     protected StatementListNode generateAtResources(StatementListNode programStatementList)
@@ -762,9 +760,8 @@ public class ImplementationGenerator extends AbstractGenerator
      * </PRE>
      */
     private StatementListNode generateBindingExprsFunction(StatementListNode statementList) 	 
-    { 	 
-        StatementListNode result = statementList; 	 
-        FunctionSignatureNode functionSignature = nodeFactory.functionSignature(null, null); 	 
+    {
+        FunctionSignatureNode functionSignature = nodeFactory.functionSignature(null, null);
         functionSignature.void_anno = true; 	 
         VariableDefinitionNode variableDefinition = 	 
             AbstractSyntaxTreeUtil.generateVariable(nodeFactory, DESTINATION, false); 	 
@@ -809,7 +806,7 @@ public class ImplementationGenerator extends AbstractGenerator
 	  	 
         FunctionDefinitionNode functionDefinition = nodeFactory.functionDefinition(context, attributeList, 	 
                                                                                    functionName, functionCommon); 	 
-        return nodeFactory.statementList(result, functionDefinition); 	 
+        return nodeFactory.statementList(statementList, functionDefinition);
     }
 
     private StatementListNode generateBindingsSetup(StatementListNode statementList)
@@ -845,7 +842,6 @@ public class ImplementationGenerator extends AbstractGenerator
 
     private StatementListNode generateBindingsSetupFunction(StatementListNode statementList)
     {
-        StatementListNode result = statementList;
         MemberExpressionNode arrayMemberExpression =
             AbstractSyntaxTreeUtil.generateGetterSelector(nodeFactory, ARRAY, false);
         TypeExpressionNode returnType = nodeFactory.typeExpression(arrayMemberExpression, true, false, -1);
@@ -913,7 +909,7 @@ public class ImplementationGenerator extends AbstractGenerator
 
         FunctionDefinitionNode functionDefinition = nodeFactory.functionDefinition(context, attributeList,
                                                                                    functionName, functionCommon);
-        return nodeFactory.statementList(result, functionDefinition);
+        return nodeFactory.statementList(statementList, functionDefinition);
     }
 
     private Node generateBindingVariable()
@@ -2748,8 +2744,7 @@ public class ImplementationGenerator extends AbstractGenerator
             (CallExpressionNode) nodeFactory.callExpression(getStyleDeclarationIdentifier,
                                                             callExpressionArgumentList);
         selector.setRValue(false);
-        MemberExpressionNode argumentMemberExpression = nodeFactory.memberExpression(base, selector);
-        return argumentMemberExpression;
+        return nodeFactory.memberExpression(base, selector);
     }
     
     private StatementListNode generateStylesInitFunction(StatementListNode statementList)

@@ -2080,9 +2080,8 @@ XMLElementContent
     	
     	if (token==IN_TOKEN && mode == noIn_mode)
     		return 0;
-    	
-    	int prec = binary_precedence[-token];
-    	return prec;
+
+		return binary_precedence[-token];
     }
     
     /* 
@@ -3010,9 +3009,7 @@ XMLElementContent
             System.err.println("begin parseListExpressionPrime");
         }
 
-        ListNode result = list;
-
-        // , AssignmentExpression ListExpressionPrime
+		// , AssignmentExpression ListExpressionPrime
 
         while (lookahead()==COMMA_TOKEN)
         {
@@ -3023,10 +3020,10 @@ XMLElementContent
 
         if (debug)
         {
-            System.err.println("finish parseListExpressionPrime with " + ((result != null) ? result.toString() : ""));
+            System.err.println("finish parseListExpressionPrime with " + ((list != null) ? list.toString() : ""));
         }
 
-        return result;
+        return list;
     }
 
     /*
@@ -3280,8 +3277,7 @@ XMLElementContent
         	break;
         	
         case LEFTBRACE_TOKEN:
-            StatementListNode sln = parseBlock();
-            result = sln;
+			result = parseBlock();
         	break;
         	
         case LEFTBRACKET_TOKEN:

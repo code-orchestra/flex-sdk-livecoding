@@ -2329,9 +2329,7 @@ public final class CompilerAPI
             ThreadLocalToolkit.getBenchmark().benchmark2("validateCompilationUnits");
         }
 
-        int count = updateCount + affectedCount;
-
-        return count;
+        return updateCount + affectedCount;
     }
 
     private static void addDependents(Source source, Set<Name> dependencies,

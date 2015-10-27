@@ -226,13 +226,12 @@ public class DisplacementMapRed extends AbstractRed {
         int tile    = (int)Math.floor(x0/(double)tw);
         int endTile = (int)Math.floor(x1/(double)tw);
         int loc     = x0-(tile*tw);
-        int endLoc  = tw;
 
         // Amount not used from right edge tile
         int slop = ((endTile+1)*tw-1) - x1;
 
         ret = new TileOffsets(width, base, 1,
-                              loc, endLoc, slop, tile, endTile);
+                              loc, tw, slop, tile, endTile);
 
         xOffsets[xTile-getMinTileX()] = ret;
         return ret;
@@ -259,13 +258,12 @@ public class DisplacementMapRed extends AbstractRed {
         int tile    = (int)Math.floor(y0/(double)th);
         int endTile = (int)Math.floor(y1/(double)th);
         int loc     = y0-(tile*th);
-        int endLoc  = th;
 
         // Amount not used from bottom edge tile
         int slop = ((endTile+1)*th-1) - y1;
 
         ret = new TileOffsets(height, 0, stride,
-                              loc, endLoc, slop, tile, endTile);
+                              loc, th, slop, tile, endTile);
 
         yOffsets[yTile-getMinTileY()] = ret;
         return ret;

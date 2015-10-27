@@ -46,8 +46,7 @@ public class ScriptText
 		int start = m_lineMap[2*index];
 		int end = m_lineMap[(2*index)+1];
 
-		String s = m_text.substring(start, end);
-		return s;
+		return m_text.substring(start, end);
 	}
 
 	/* line count in module */

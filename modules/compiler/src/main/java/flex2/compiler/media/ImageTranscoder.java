@@ -123,57 +123,55 @@ public abstract class ImageTranscoder extends AbstractTranscoder
             FillStyle fs = new FillStyle( FillStyle.FILL_BITS|FillStyle.FILL_BITS_NOSMOOTH, tsm, refBitmap);
             shape.shapeWithStyle.fillstyles.add( fs );
         }
-        int dxa = slt;
         int dxb = srt-slt;
         int dxc = width-srt;
 
-        int dya = stt;
         int dyb = sbt-stt;
         int dyc = height-sbt;
 
         StyleChangeRecord startStyle = new StyleChangeRecord();
-        startStyle.setMove( 0, dya );
+        startStyle.setMove( 0, stt);
         shape.shapeWithStyle.shapeRecords.add( startStyle );
 
         // border
-        addEdgesWithFill( shape, new int[][]{{0, -dya}, {dxa, 0}}, 0, 1 );
+        addEdgesWithFill( shape, new int[][]{{0, -stt}, {slt, 0}}, 0, 1 );
         addEdgesWithFill( shape, new int[][]{{dxb, 0}}, 0, 2 );
-        addEdgesWithFill( shape, new int[][]{{dxc, 0}, {0, dya}}, 0, 3 );
+        addEdgesWithFill( shape, new int[][]{{dxc, 0}, {0, stt}}, 0, 3 );
         addEdgesWithFill( shape, new int[][]{{0, dyb}}, 0, 6 );
         addEdgesWithFill( shape, new int[][]{{0, dyc}, {-dxc, 0}}, 0, 9 );
         addEdgesWithFill( shape, new int[][]{{-dxb, 0}}, 0, 8 );
-        addEdgesWithFill( shape, new int[][]{{-dxa, 0}, {0, -dyc}}, 0, 7 );
+        addEdgesWithFill( shape, new int[][]{{-slt, 0}, {0, -dyc}}, 0, 7 );
         addEdgesWithFill( shape, new int[][]{{0, -dyb}}, 0, 4 );
 
         // down 1
         StyleChangeRecord down1Style = new StyleChangeRecord();
-        down1Style.setMove( dxa, 0 );
+        down1Style.setMove(slt, 0 );
         shape.shapeWithStyle.shapeRecords.add( down1Style );
-        addEdgesWithFill( shape, new int[][]{{0, dya}}, 2, 1 );
+        addEdgesWithFill( shape, new int[][]{{0, stt}}, 2, 1 );
         addEdgesWithFill( shape, new int[][]{{0, dyb}}, 5, 4 );
         addEdgesWithFill( shape, new int[][]{{0, dyc}}, 8, 7 );
 
         // down 2
         StyleChangeRecord down2Style = new StyleChangeRecord();
-        down2Style.setMove( dxa+dxb, 0 );
+        down2Style.setMove( slt +dxb, 0 );
         shape.shapeWithStyle.shapeRecords.add( down2Style );
-        addEdgesWithFill( shape, new int[][]{{0, dya}}, 3, 2 );
+        addEdgesWithFill( shape, new int[][]{{0, stt}}, 3, 2 );
         addEdgesWithFill( shape, new int[][]{{0, dyb}}, 6, 5 );
         addEdgesWithFill( shape, new int[][]{{0, dyc}}, 9, 8 );
 
         // right 1
         StyleChangeRecord right1Style = new StyleChangeRecord();
-        right1Style.setMove( 0, dya );
+        right1Style.setMove( 0, stt);
         shape.shapeWithStyle.shapeRecords.add( right1Style );
-        addEdgesWithFill( shape, new int[][]{{dxa, 0}}, 1, 4 );
+        addEdgesWithFill( shape, new int[][]{{slt, 0}}, 1, 4 );
         addEdgesWithFill( shape, new int[][]{{dxb, 0}}, 2, 5 );
         addEdgesWithFill( shape, new int[][]{{dxc, 0}}, 3, 6 );
 
         // right 2
         StyleChangeRecord right2Style = new StyleChangeRecord();
-        right2Style.setMove( 0, dya+dyb);
+        right2Style.setMove( 0, stt +dyb);
         shape.shapeWithStyle.shapeRecords.add( right2Style );
-        addEdgesWithFill( shape, new int[][]{{dxa, 0}}, 4, 7 );
+        addEdgesWithFill( shape, new int[][]{{slt, 0}}, 4, 7 );
         addEdgesWithFill( shape, new int[][]{{dxb, 0}}, 5, 8 );
         addEdgesWithFill( shape, new int[][]{{dxc, 0}}, 6, 9 );
         return shape;

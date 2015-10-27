@@ -197,7 +197,7 @@ public class ResourceBundlePath extends SourcePathBase
 						break;
 					}
 				}
-				catch (CompilerException ex)
+				catch (CompilerException ignored)
 				{
 				}
 			}

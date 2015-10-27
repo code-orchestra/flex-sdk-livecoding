@@ -180,7 +180,7 @@ public class OEMUtil
 			}
 			finally
 			{
-				if (cacheFile != null) { try { cacheFile.close(); } catch (IOException ex) {} }
+				if (cacheFile != null) { try { cacheFile.close(); } catch (IOException ignored) {} }
 			}
 			
 			// write the data to the specified output stream
@@ -192,7 +192,7 @@ public class OEMUtil
 			}
 			finally
 			{		
-				if (in != null) { try { in.close(); } catch (IOException ex) {} }
+				if (in != null) { try { in.close(); } catch (IOException ignored) {} }
 			}
 			
 			return new File(cacheName).length();
@@ -277,7 +277,7 @@ public class OEMUtil
 					ThreadLocalToolkit.logError(ex.getMessage());
 				}
 			}
-			catch (ClassNotFoundException ex2)
+			catch (ClassNotFoundException ignored)
 			{
 				
 			}
@@ -359,7 +359,7 @@ public class OEMUtil
 					ThreadLocalToolkit.logError(ex.getMessage());
 				}
 			}
-			catch (ClassNotFoundException ex2)
+			catch (ClassNotFoundException ignored)
 			{
 				
 			}
@@ -423,7 +423,7 @@ public class OEMUtil
 					ThreadLocalToolkit.logError(ex.getMessage());
 				}
 			}
-			catch (ClassNotFoundException ex2)
+			catch (ClassNotFoundException ignored)
 			{
 				
 			}

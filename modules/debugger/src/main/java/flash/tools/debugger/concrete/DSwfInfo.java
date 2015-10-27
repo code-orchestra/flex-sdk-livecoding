@@ -151,7 +151,7 @@ public class DSwfInfo implements SwfInfo
 		{
 			// make the request 
 //			System.out.println("Swdloaded " + m_isolateId);
-			try { ((PlayerSession)s).requestSwfInfo(m_index, m_isolateId); } catch(NoResponseException nre) {}
+			try { ((PlayerSession)s).requestSwfInfo(m_index, m_isolateId); } catch(NoResponseException ignored) {}
 
 			// I should now be complete
 			if (!m_swdLoading)

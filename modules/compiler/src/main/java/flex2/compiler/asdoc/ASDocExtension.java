@@ -137,7 +137,7 @@ public class ASDocExtension implements Extension
                 {
                     outputStream.close();
                 }
-                catch (IOException ex)
+                catch (IOException ignored)
                 {
                 }
             }

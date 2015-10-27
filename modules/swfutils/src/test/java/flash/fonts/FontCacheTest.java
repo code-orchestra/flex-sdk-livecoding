@@ -61,7 +61,7 @@ public class FontCacheTest extends TestCase
         {
             //FontBuilder fontBuilder = new FontBuilder(Tag.stagDefineFont2, fontManager, "Nothing", "", 0, true);
         }
-        catch (Throwable t)
+        catch (Throwable ignored)
         {
         }
     }

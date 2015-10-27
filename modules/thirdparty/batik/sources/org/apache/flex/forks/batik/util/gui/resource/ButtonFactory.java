@@ -172,7 +172,7 @@ public class ButtonFactory extends ResourceManager {
         // is the button selected?
         try {
             result.setSelected(getBoolean(name+SELECTED_SUFFIX));
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ignored) {
         }
 
         return result;
@@ -198,7 +198,7 @@ public class ButtonFactory extends ResourceManager {
         // is the button selected?
         try {
             result.setSelected(getBoolean(name+SELECTED_SUFFIX));
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ignored) {
         }
 
         return result;
@@ -232,7 +232,7 @@ public class ButtonFactory extends ResourceManager {
             if (a instanceof JComponentModifier) {
                 ((JComponentModifier)a).addJComponent(b);
             }
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ignored) {
         }
 
         // Icon
@@ -242,7 +242,7 @@ public class ButtonFactory extends ResourceManager {
             if (url != null) {
                 b.setIcon(new ImageIcon(url));
             }
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ignored) {
         }
 
         // Mnemonic
@@ -255,7 +255,7 @@ public class ButtonFactory extends ResourceManager {
                                                   bundle.getClass().getName(),
                                                   name+MNEMONIC_SUFFIX);
             }
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ignored) {
         }
 
         // ToolTip
@@ -264,7 +264,7 @@ public class ButtonFactory extends ResourceManager {
             if (s != null) {
                 b.setToolTipText(s);
             }
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ignored) {
         }
     }
 }

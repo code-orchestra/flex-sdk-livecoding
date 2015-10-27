@@ -143,11 +143,11 @@ public class AsDocAPI
 		{
 			if (writer != null)
 			{
-				try { writer.close(); } catch(IOException ioe) {}
+				try { writer.close(); } catch(IOException ignored) {}
 			}
 			if (reader != null)
 			{
-				try { reader.close(); } catch(IOException ioe) {}
+				try { reader.close(); } catch(IOException ignored) {}
 			}
 		}
 	}
@@ -196,11 +196,11 @@ public class AsDocAPI
 		{
 			if (writer != null)
 			{
-				try { writer.close(); } catch(IOException ioe) {}
+				try { writer.close(); } catch(IOException ignored) {}
 			}
 			if (reader != null)
 			{
-				try { reader.close(); } catch(IOException ioe) {}
+				try { reader.close(); } catch(IOException ignored) {}
 			}
 		}
 	}
@@ -708,11 +708,11 @@ public class AsDocAPI
 			{
 				if (writer != null)
 				{
-					try { writer.close(); } catch(IOException ioe) {}
+					try { writer.close(); } catch(IOException ignored) {}
 				}
 				if (reader != null)
 				{
-					try { reader.close(); } catch(IOException ioe) {}
+					try { reader.close(); } catch(IOException ignored) {}
 				}
 
 				FileUtils.renameFile(indexTmp2, indexHtml);

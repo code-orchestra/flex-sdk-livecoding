@@ -151,24 +151,23 @@ public class PreLink implements flex2.compiler.PreLink
         assert(typeAnalyzer != null);
 
         for (CompilationUnit unit : units) {
-            CompilationUnit u = unit;
 
-            if (u == null) {
+            if (unit == null) {
                 continue;
             }
 
-            if (u.isRoot()) {
+            if (unit.isRoot()) {
                 StylesContainer stylesContainer =
                         (StylesContainer) symbolTable.getContext().getAttribute(StylesContainer.class.getName());
-                StylesContainer rootStylesContainer = u.getStylesContainer();
+                StylesContainer rootStylesContainer = unit.getStylesContainer();
 
                 // If the backgroundColor wasn't specified inline, go looking for it in CSS.
-                if ((u.swfMetaData == null) || (u.swfMetaData.getValue("backgroundColor") == null)) {
-                    QName qName = u.topLevelDefinitions.last();
+                if ((unit.swfMetaData == null) || (unit.swfMetaData.getValue("backgroundColor") == null)) {
+                    QName qName = unit.topLevelDefinitions.last();
 
                     if (qName != null) {
                         String def = qName.toString();
-                        lookupBackgroundColor(stylesContainer, rootStylesContainer, u.styleName,
+                        lookupBackgroundColor(stylesContainer, rootStylesContainer, unit.styleName,
                                 NameFormatter.toDot(def), symbolTable, configuration);
                     }
                 }
@@ -176,13 +175,13 @@ public class PreLink implements flex2.compiler.PreLink
                 if (rootStylesContainer != null) {
                     // Swap in root's Logger, so warnings get associated correctly.
                     Logger originalLogger = ThreadLocalToolkit.getLogger();
-                    ThreadLocalToolkit.setLogger(u.getSource().getLogger());
-                    rootStylesContainer.validate(symbolTable, nameMappings, u.getStandardDefs(),
+                    ThreadLocalToolkit.setLogger(unit.getSource().getLogger());
+                    rootStylesContainer.validate(symbolTable, nameMappings, unit.getStandardDefs(),
                             compilerConfiguration.getThemeNames(), null);
                     ThreadLocalToolkit.setLogger(originalLogger);
                 }
 
-                Source source = u.getSource();
+                Source source = unit.getSource();
 
                 // Now that we're done validating the StyleContainer,
                 // we can disconnect the root's logger.
@@ -200,12 +199,12 @@ public class PreLink implements flex2.compiler.PreLink
                 source.setPathResolver(null);
 
                 // C: we don't need the styles container anymore
-                u.setStylesContainer(null);
-            } else if (generatedLoaderClass && !u.getSource().isInternal() && !u.getSource().isSwcScriptOwner()) {
+                unit.setStylesContainer(null);
+            } else if (generatedLoaderClass && !unit.getSource().isInternal() && !unit.getSource().isSwcScriptOwner()) {
                 // Check if the source is a module or an application. If it is and we know it 
                 // is not the root then generate a warning.
                 if (typeAnalyzer != null) {
-                    for (QName qName : u.topLevelDefinitions) {
+                    for (QName qName : unit.topLevelDefinitions) {
                         ClassInfo info = typeAnalyzer.getClassInfo(qName.toString());
                         checkForModuleOrApplication(standardDefs, typeAnalyzer, info, qName, configuration);
                     }
@@ -213,12 +212,12 @@ public class PreLink implements flex2.compiler.PreLink
             }
 
             // Only check the dependencies of hand written compilation units.
-            if (!u.getSource().isSwcScriptOwner() && compilerConfiguration.enableSwcVersionFiltering()) {
+            if (!unit.getSource().isSwcScriptOwner() && compilerConfiguration.enableSwcVersionFiltering()) {
                 Set<Name> dependencies = new HashSet<>();
-                dependencies.addAll(u.inheritance);
-                dependencies.addAll(u.namespaces);
-                dependencies.addAll(u.expressions);
-                dependencies.addAll(u.types);
+                dependencies.addAll(unit.inheritance);
+                dependencies.addAll(unit.namespaces);
+                dependencies.addAll(unit.expressions);
+                dependencies.addAll(unit.types);
 
                 // Make sure each dependency's minimum
 // supported version is less than or equal to
@@ -239,7 +238,7 @@ public class PreLink implements flex2.compiler.PreLink
                                             swc.getLocation(),
                                             swc.getVersions().getMinimumVersionString(),
                                             compilerConfiguration.getCompatibilityVersionString());
-                            ThreadLocalToolkit.log(message, u.getSource());
+                            ThreadLocalToolkit.log(message, unit.getSource());
                         }
                     }
                 });
@@ -295,13 +294,12 @@ public class PreLink implements flex2.compiler.PreLink
         }
 
         for (CompilationUnit unit : units) {
-            CompilationUnit compilationUnit = unit;
-            if (compilationUnit == null) {
+            if (unit == null) {
                 continue;
             }
 
-            assert compilationUnit != null : "Must have missed a forcedToStop() check after the most recent batch()";
-            Source source = compilationUnit.getSource();
+            assert unit != null : "Must have missed a forcedToStop() check after the most recent batch()";
+            Source source = unit.getSource();
 
             if (source.isSwcScriptOwner()) {
                 SwcScript swcScript = (SwcScript) source.getOwner();

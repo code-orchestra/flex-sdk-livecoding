@@ -186,14 +186,14 @@ public class Application implements Builder
                 return name.startsWith("Flex2_");
             });
         }
-        catch (Throwable e)
+        catch (Throwable ignored)
         {
         }
 
         // get rid of compiler temp files.
         for (int i = 0, len = list == null ? 0 : list.length; i < len; i++)
         {
-            try { list[i].delete(); } catch (Throwable t) {}
+            try { list[i].delete(); } catch (Throwable ignored) {}
         }
 
         // use the protection domain to find the location of flex-compiler-oem.jar.
@@ -209,7 +209,7 @@ public class Application implements Builder
                 System.setProperty("application.home", applicationHome);
             }
         }
-        catch (URISyntaxException | IllegalArgumentException ex)
+        catch (URISyntaxException | IllegalArgumentException ignored)
         {
         }
     }
@@ -481,9 +481,9 @@ public class Application implements Builder
             }
             finally
             {
-                if (tempIn != null) { try { tempIn.close(); } catch (Exception ex) {} }
-                if (tempOut != null) { try { tempOut.close(); } catch (Exception ex) {} }
-                if (out != null) { try { out.close(); } catch (Exception ex) {} }
+                if (tempIn != null) { try { tempIn.close(); } catch (Exception ignored) {} }
+                if (tempOut != null) { try { tempOut.close(); } catch (Exception ignored) {} }
+                if (out != null) { try { out.close(); } catch (Exception ignored) {} }
 
                 if ((benchmark != null) && benchmark.hasStarted(Benchmark.POSTCOMPILE))
                 {
@@ -791,7 +791,7 @@ public class Application implements Builder
         }
         finally
         {
-            if (cacheFile != null) try { cacheFile.close(); } catch (IOException ex) {}
+            if (cacheFile != null) try { cacheFile.close(); } catch (IOException ignored) {}
         }
 
         return true;

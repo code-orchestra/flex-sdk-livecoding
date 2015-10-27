@@ -378,7 +378,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             try {
                 FileReader sr = new FileReader(new File(userDir, ".fdbinit")); //$NON-NLS-1$
                 cli.pushStream(new LineNumberReader(sr));
-            } catch (FileNotFoundException fnf) {
+            } catch (FileNotFoundException ignored) {
             }
         }
 
@@ -394,7 +394,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             try {
                 FileReader sr = new FileReader(new File(userHome, ".fdbinit")); //$NON-NLS-1$
                 cli.pushStream(new LineNumberReader(sr));
-            } catch (FileNotFoundException fnf) {
+            } catch (FileNotFoundException ignored) {
             }
         }
 
@@ -537,7 +537,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         m_keyboardReadRequest = true;
         try {
             wait();
-        } catch (InterruptedException ie) {
+        } catch (InterruptedException ignored) {
         }
 
         // pull from the front of the queue
@@ -576,7 +576,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 } else
                     try {
                         Thread.sleep(50);
-                    } catch (InterruptedException ie) {
+                    } catch (InterruptedException ignored) {
                     }
             } catch (IOException io) {
 //				io.printStackTrace();
@@ -2026,7 +2026,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         int reason = SuspendReason.Unknown;
         try {
             reason = m_session.getWorkerSession(targetIsolate).suspendReason();
-        } catch (PlayerDebugException pde) {
+        } catch (PlayerDebugException ignored) {
         }
 
         // then see if it because of a swfloaded event
@@ -2445,7 +2445,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             // sleep for a bit, then process our events.
             try {
                 Thread.sleep(update);
-            } catch (InterruptedException ie) {
+            } catch (InterruptedException ignored) {
             }
             processEvents();
 
@@ -2478,7 +2478,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     try {
                         Thread.sleep(100);
                         processEvents();
-                    } catch (InterruptedException ie) {
+                    } catch (InterruptedException ignored) {
                     }
 
                 dumpHaltState(false);
@@ -2630,7 +2630,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             if (!m_session.isSuspended()) {
                 try {
                     Thread.sleep(1);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
         }
@@ -3388,7 +3388,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     hit = true;
                     try {
                         m_session.clearBreakpoint(l);
-                    } catch (NoResponseException nre) {
+                    } catch (NoResponseException ignored) {
                     }
                 }
                 else
@@ -4550,7 +4550,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 // pause for a while during startup, don't let exceptions ripple outwards
                 try {
                     waitTilHalted(Isolate.DEFAULT_ID);
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
 
                 setInitialSourceFile();
@@ -4562,7 +4562,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 try {
                     if (m_session.getPreference(SessionManager.PLAYER_SUPPORTS_GET) == 0)
                         err(m_newline + getLocalizationManager().getLocalizedTextString("warningNotAllCommandsSupported")); //$NON-NLS-1$
-                } catch (Exception npe) {
+                } catch (Exception ignored) {
                 }
             }
         } catch (FileNotFoundException fnf) {
@@ -4990,7 +4990,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 
         try {
             worked = m_session.clearWatch(b.getWatch()) != null;
-        } catch (NoResponseException nre) {
+        } catch (NoResponseException ignored) {
         }
 
         if (!worked) {
@@ -5652,7 +5652,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         if (catchpointCount() == 0) {
             try {
                 getSession().getWorkerSession(m_activeIsolate).breakOnCaughtExceptions(false);
-            } catch (NotSupportedException | NoResponseException e) {
+            } catch (NotSupportedException | NoResponseException ignored) {
             }
         }
     }
@@ -5706,7 +5706,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 int reason = SuspendReason.Unknown;
                 try {
                     reason = m_session.getWorkerSession(breakIsolate).suspendReason();
-                } catch (PlayerDebugException pde) {
+                } catch (PlayerDebugException ignored) {
                 }
                 if (reason == SuspendReason.ScriptLoaded) {
                     setPromptState(InitialPromptState.NEVER_SHOWN, breakIsolate);
@@ -5917,7 +5917,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 EvaluationResult result = evalExpression(exp, false, isolateId);
                 if (result != null)
                     should = ECMA.toBoolean(result.context.toValue(result.value));
-            } catch (NullPointerException | NumberFormatException npe) {
+            } catch (NullPointerException | NumberFormatException ignored) {
             }
         }
         return should;
@@ -6085,7 +6085,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 
             try {
                 Thread.sleep(period);
-            } catch (InterruptedException ie) {
+            } catch (InterruptedException ignored) {
             }
             timeout -= period;
         }

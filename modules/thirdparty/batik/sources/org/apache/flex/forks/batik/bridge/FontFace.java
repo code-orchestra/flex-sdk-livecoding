@@ -210,7 +210,7 @@ public abstract class FontFace extends GVTFontFace
             Font font = Font.createFont(Font.TRUETYPE_FONT,
                                         purl.openStream());
             return new AWTFontFamily(this, font);
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
         return null;
     }

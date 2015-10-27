@@ -410,7 +410,7 @@ public class DOMUtilities extends XMLUtilities {
                         .appendChild(doc.importNode(d.getDocumentElement(),
                                 true));
                 return result;
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
 
             }
         }
@@ -437,7 +437,7 @@ public class DOMUtilities extends XMLUtilities {
                     return result;
                 }
             }
-        } catch (Exception exc) {
+        } catch (Exception ignored) {
 
         }
         return null;

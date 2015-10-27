@@ -400,28 +400,28 @@ public abstract class AbstractAWTEventDispatcher
             if (t.getLockingKeyState(KeyEvent.VK_KANA_LOCK)) {
                 lockState++;
             }
-        } catch (UnsupportedOperationException ex) {
+        } catch (UnsupportedOperationException ignored) {
         }
         lockState <<= 1;
         try {
             if (t.getLockingKeyState(KeyEvent.VK_SCROLL_LOCK)) {
                 lockState++;
             }
-        } catch (UnsupportedOperationException ex) {
+        } catch (UnsupportedOperationException ignored) {
         }
         lockState <<= 1;
         try {
             if (t.getLockingKeyState(KeyEvent.VK_NUM_LOCK)) {
                 lockState++;
             }
-        } catch (UnsupportedOperationException ex) {
+        } catch (UnsupportedOperationException ignored) {
         }
         lockState <<= 1;
         try {
             if (t.getLockingKeyState(KeyEvent.VK_CAPS_LOCK)) {
                 lockState++;
             }
-        } catch (UnsupportedOperationException ex) {
+        } catch (UnsupportedOperationException ignored) {
         }
         return lockState;
     }

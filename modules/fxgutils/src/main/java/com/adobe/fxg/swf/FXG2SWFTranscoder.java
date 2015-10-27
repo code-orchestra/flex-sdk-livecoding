@@ -466,8 +466,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
                     if (filters != null)
                     {
                         for (GraphicContentNode aChildren : children) {
-                            GraphicContentNode gcNodeI = aChildren;
-                            gcNodeI.filters = null;
+                            aChildren.filters = null;
                         }                        
                     }
                     

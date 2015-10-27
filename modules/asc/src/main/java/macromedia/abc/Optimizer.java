@@ -51,7 +51,7 @@ public class Optimizer
                 BytecodeBuffer buf = new BytecodeBuffer(file_names.at(i));
                 byte_codes[i] = buf;
             }
-            catch( IOException ioe )
+            catch( IOException ignored)
             {
 
             }

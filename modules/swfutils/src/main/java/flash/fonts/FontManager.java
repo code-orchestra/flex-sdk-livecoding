@@ -73,7 +73,7 @@ public abstract class FontManager
                     {
                         majorCompatibilityVersion = Integer.parseInt(parts[0]);
                     }
-                    catch (Throwable t)
+                    catch (Throwable ignored)
                     {
                     }
                 }

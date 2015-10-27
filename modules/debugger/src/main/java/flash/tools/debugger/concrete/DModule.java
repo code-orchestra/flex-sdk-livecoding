@@ -332,7 +332,7 @@ public class DModule implements SourceFile
             {
                 ps.requestFunctionNames(m_id, -1, m_isolateId);
             }
-            catch (VersionException | NoResponseException e)
+            catch (VersionException | NoResponseException ignored)
             {
 			}
 		}
@@ -529,7 +529,7 @@ public class DModule implements SourceFile
         		}
         		finally
         		{
-        			try { in.close(); } catch (IOException e) {}
+        			try { in.close(); } catch (IOException ignored) {}
         		}
         	}
         	
@@ -551,7 +551,7 @@ public class DModule implements SourceFile
 					}
 					finally
 					{
-						try { in.close(); } catch (IOException e) {}
+						try { in.close(); } catch (IOException ignored) {}
 					}
 	            }
         	}
@@ -673,7 +673,7 @@ public class DModule implements SourceFile
     		{
     			return Charset.forName(encoding);
     		}
-    		catch (IllegalArgumentException e)
+    		catch (IllegalArgumentException ignored)
     		{}
     	}
     	return null;

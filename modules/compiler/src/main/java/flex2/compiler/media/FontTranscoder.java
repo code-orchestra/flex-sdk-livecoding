@@ -227,7 +227,7 @@ public class FontTranscoder extends AbstractTranscoder
                     if (in != null)
                         in.close();
                 }
-                catch (Throwable t)
+                catch (Throwable ignored)
                 {
                 }
             }
@@ -420,7 +420,7 @@ public class FontTranscoder extends AbstractTranscoder
                     if (w >= 700)
                         bold = true;
                 }
-                catch (Throwable t)
+                catch (Throwable ignored)
                 {
                 }
             }

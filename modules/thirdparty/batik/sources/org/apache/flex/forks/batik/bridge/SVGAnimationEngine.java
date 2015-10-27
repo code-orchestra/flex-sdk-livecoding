@@ -903,7 +903,7 @@ public class SVGAnimationEngine extends AnimationEngine {
                     // so we don't steal too much time from the Swing thread
                     try {
                         Thread.sleep(1);
-                    } catch (InterruptedException ie) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
             }
@@ -957,7 +957,7 @@ public class SVGAnimationEngine extends AnimationEngine {
                 while (ticker.t < 10) {
                     try {
                         Thread.sleep(1000);
-                    } catch (InterruptedException ie) {
+                    } catch (InterruptedException ignored) {
                     }
                     try {
                         runnableQueue.invokeAndWait(ticker);

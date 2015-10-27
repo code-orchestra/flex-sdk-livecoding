@@ -779,7 +779,7 @@ public class Fcsh extends Tool {
             if (swfOut != null) {
                 try {
                     swfOut.close();
-                } catch (IOException ioe) {
+                } catch (IOException ignored) {
                 }
             }
         }
@@ -996,7 +996,7 @@ public class Fcsh extends Tool {
 
             if (swfOut != null) try {
                 swfOut.close();
-            } catch (IOException ioe) {
+            } catch (IOException ignored) {
             }
         }
     }

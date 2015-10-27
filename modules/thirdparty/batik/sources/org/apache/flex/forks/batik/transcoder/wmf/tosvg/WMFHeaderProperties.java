@@ -88,7 +88,7 @@ public class WMFHeaderProperties extends AbstractWMFReader {
     public void closeResource() {
         try {
             if (stream != null) stream.close();
-            } catch (IOException e) {
+            } catch (IOException ignored) {
         }
     }
 

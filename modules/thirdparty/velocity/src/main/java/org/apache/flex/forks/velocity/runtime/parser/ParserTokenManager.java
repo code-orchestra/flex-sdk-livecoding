@@ -3544,7 +3544,7 @@ public final Token getNextToken()
            curChar = input_stream.readChar();
            continue;
         }
-        catch (java.io.IOException e1) { }
+        catch (java.io.IOException ignored) { }
      }
      int error_line = input_stream.getEndLine();
      int error_column = input_stream.getEndColumn();

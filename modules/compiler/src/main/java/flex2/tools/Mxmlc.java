@@ -254,7 +254,7 @@ public final class Mxmlc extends Tool implements FlexTool
                             {
                                 incrementalFile.close();
                             }
-                            catch (IOException ex)
+                            catch (IOException ignored)
                             {
                             }
                             // If the load failed, or recompilation is needed, reset
@@ -386,7 +386,7 @@ public final class Mxmlc extends Tool implements FlexTool
                             {
                                 incrementalFile.close();
                             }
-                            catch (IOException ex)
+                            catch (IOException ignored)
                             {
                             }
                         }
@@ -499,7 +499,7 @@ public final class Mxmlc extends Tool implements FlexTool
             CompilerAPI.encode(app, baos);
             createProjector(config, projector, baos, out);
         }
-        catch (IOException ex)
+        catch (IOException ignored)
         {
         }
     }
@@ -512,10 +512,7 @@ public final class Mxmlc extends Tool implements FlexTool
             CompilerAPI.encode(config, movie, baos);
             createProjector(config, projector, baos, out);
         }
-        catch (IOException ex)
-        {
-        }
-        finally
+        catch (IOException ignored)
         {
         }
     }
@@ -548,7 +545,7 @@ public final class Mxmlc extends Tool implements FlexTool
         }
         finally
         {
-            if (in != null) { try { in.close(); } catch (IOException ex) {} }
+            if (in != null) { try { in.close(); } catch (IOException ignored) {} }
         }
 
         return size;

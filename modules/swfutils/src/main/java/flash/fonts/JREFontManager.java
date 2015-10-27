@@ -179,7 +179,7 @@ public class JREFontManager extends CachedFontManager
             {
                 is.close();
             }
-            catch (Throwable t)
+            catch (Throwable ignored)
             {
             }
         }

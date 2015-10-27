@@ -50,7 +50,7 @@ public final class MovieMetaData extends TagHandler
 			TagDecoder p = new TagDecoder(swf, swd);
 			parse(p);
 		}
-		catch (IOException ex)
+		catch (IOException ignored)
 		{
 		}
 	}
@@ -64,7 +64,7 @@ public final class MovieMetaData extends TagHandler
 			InputStream in = url.openStream();
 			TagDecoder p = new TagDecoder(in, url);
 			parse(p);
-		} catch (IOException ex)
+		} catch (IOException ignored)
 		{
 		}
 	}
@@ -559,7 +559,7 @@ public final class MovieMetaData extends TagHandler
 		{
 			walkActions(c, header.version, pool, className, skipOffsets);
 		}
-		catch(Throwable t)
+		catch(Throwable ignored)
 		{
 		}
 	}

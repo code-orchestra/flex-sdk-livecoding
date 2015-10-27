@@ -112,7 +112,7 @@ public abstract class IntMapLRUCache
                 map.put(key, entry);
             }
         }
-        catch (UnsupportedOperationException ex)
+        catch (UnsupportedOperationException ignored)
         {
         }
 

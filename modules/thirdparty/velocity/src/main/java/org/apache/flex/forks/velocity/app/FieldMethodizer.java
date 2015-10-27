@@ -143,7 +143,7 @@ public class FieldMethodizer
             if (f != null)
                 return f.get(classHash.get(fieldName));
         }
-        catch( Exception e )
+        catch( Exception ignored)
         {
         }
         return null;

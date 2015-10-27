@@ -60,7 +60,7 @@ public class OutputWrapper extends XMLOutputter
         {
             outputElementContent(element, buff);
         }
-        catch (IOException e)
+        catch (IOException ignored)
         {
         }
         return buff.toString();

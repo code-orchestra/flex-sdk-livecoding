@@ -469,7 +469,7 @@ public class GraphicsUtil {
             String s = System.getProperty
                 ("org.apache.flex.forks.batik.warn_destination", "true");
             warn = Boolean.valueOf(s);
-        } catch (SecurityException | NumberFormatException se) {
+        } catch (SecurityException | NumberFormatException ignored) {
         } finally {
             WARN_DESTINATION = warn;
         }

@@ -2965,7 +2965,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 					finally	{
 						if (warningOut != null)	{
 							try	{ warningOut.close(); }
-							catch (IOException ex) {}
+							catch (IOException ignored) {}
 						}
 					}
 				}

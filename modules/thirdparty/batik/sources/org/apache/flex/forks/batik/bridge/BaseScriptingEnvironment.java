@@ -603,7 +603,7 @@ public class BaseScriptingEnvironment {
                 interp.bindObject(EVENT_NAME, event);
                 interp.bindObject(ALTERNATE_EVENT_NAME, event);
                 interp.evaluate(new StringReader(s), desc);
-            } catch (IOException io) {
+            } catch (IOException ignored) {
             } catch (InterpreterException e) {
                 handleInterpreterException(e);
             }

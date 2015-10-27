@@ -88,7 +88,7 @@ public class Trace
     static {
         try {
             stackLines = Integer.parseInt(System.getProperty("trace.stackLines"));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ignored) {
         }
     }
     // print a timestamp with each line

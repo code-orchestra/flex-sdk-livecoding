@@ -73,14 +73,14 @@ public class XMLTextEditor extends JEditorPane {
     public void undo() {
         try {
             undoManager.undo();
-        } catch (CannotUndoException ex) { }
+        } catch (CannotUndoException ignored) { }
     }
     
     /** Redo */
     public void redo() {
         try {
             undoManager.redo();
-        } catch (CannotRedoException ex) { }
+        } catch (CannotRedoException ignored) { }
     }
     
     

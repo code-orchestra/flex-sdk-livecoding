@@ -78,7 +78,7 @@ public class LocationBar extends JPanel {
             if (url != null) {
                 label.setIcon(new ImageIcon(url));
             }
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException ignored) {
         }
         add("Center", comboBox = new JComboBox());
         comboBox.setEditable(true);

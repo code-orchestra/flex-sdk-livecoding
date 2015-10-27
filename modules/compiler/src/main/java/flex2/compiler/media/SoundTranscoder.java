@@ -137,7 +137,7 @@ public class SoundTranscoder extends AbstractTranscoder
 				{
 					in.close();
 				}
-				catch (IOException ex)
+				catch (IOException ignored)
 				{
 				}
 			}

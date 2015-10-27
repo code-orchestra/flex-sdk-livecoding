@@ -416,7 +416,7 @@ public class AnakiaTask extends MatchingTask
                     writer.flush();
                     writer.close();
                 }
-                catch (Exception e)
+                catch (Exception ignored)
                 {
                 }
             }

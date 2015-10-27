@@ -4832,7 +4832,7 @@ XMLElementContent
         if (ctx.statics.includePaths.contains(fixed_filespec))
         {
             error(ParseError.syntax, kError_Parser_FileIncludesItself, fixed_filespec);
-            try { in.close(); } catch (IOException ex) {}
+            try { in.close(); } catch (IOException ignored) {}
             return null;
         }
         else
@@ -4881,7 +4881,7 @@ XMLElementContent
     			ctx.statics.includePaths.removeLast();
     			if (in != null)
     			{
-    				try { in.close(); } catch (IOException ex) {}
+    				try { in.close(); } catch (IOException ignored) {}
     			}
     		}
     		result = nodeFactory.includeDirective(cx, first, second);

@@ -463,7 +463,7 @@ public class TopLevelGenerator implements DocCommentGenerator
                 Matcher matcher = pattern.matcher(defaultValue);
                 defaultValue = matcher.replaceAll("");
             }
-            catch (Exception ex) {}
+            catch (Exception ignored) {}
             
             xml.append(defaultValue);
             xml.append("' ");

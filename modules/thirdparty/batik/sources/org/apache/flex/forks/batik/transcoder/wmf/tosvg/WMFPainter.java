@@ -573,7 +573,7 @@ public class WMFPainter extends AbstractWMFPainter {
                             getCharacterIterator(g2d, sr, wmfFont, currentHorizAlign),
                             x, y, layout, wmfFont, currentHorizAlign);
                         if (clipped) g2d.setClip(clip);
-                    } catch ( Exception e ) {
+                    } catch ( Exception ignored) {
                     }
                     break;
 
@@ -600,7 +600,7 @@ public class WMFPainter extends AbstractWMFPainter {
                         drawString(-1, g2d,
                             getCharacterIterator(g2d, sr, wmfFont),
                             x, y, layout, wmfFont, currentHorizAlign);
-                    } catch ( Exception e ) {
+                    } catch ( Exception ignored) {
                     }
                     break;
 
@@ -722,7 +722,7 @@ public class WMFPainter extends AbstractWMFPainter {
                             g2d.draw( gp );
                             firstEffectivePaint = false;
                         }
-                    catch ( Exception e ) {
+                    catch ( Exception ignored) {
                     }
                     break;
 

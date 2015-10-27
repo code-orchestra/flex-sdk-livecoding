@@ -284,7 +284,7 @@ public class I18nUtils
 	        bufferedWriter.write(code);
 	        bufferedWriter.close();
 		}
-		catch (Exception e)
+		catch (Exception ignored)
 		{
 		}
 		      

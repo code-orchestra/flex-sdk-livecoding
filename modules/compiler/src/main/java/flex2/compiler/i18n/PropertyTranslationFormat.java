@@ -85,7 +85,7 @@ public class PropertyTranslationFormat implements TranslationFormat
                 {
                     r.close();
                 }
-                catch (IOException ex)
+                catch (IOException ignored)
                 {
                 }
             }

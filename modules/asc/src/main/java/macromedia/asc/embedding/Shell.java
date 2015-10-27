@@ -393,11 +393,11 @@ public class Shell
 			}
 			if (stdout != null)
 			{
-				try { stdout.close(); } catch (Exception e1) {}
+				try { stdout.close(); } catch (Exception ignored) {}
 			}
 			if (stderr != null)
 			{
-				try { stderr.close(); } catch (Exception e2) {}
+				try { stderr.close(); } catch (Exception ignored) {}
 			}
 			System.err.println(ex.getMessage());
 			ex.printStackTrace();
@@ -507,7 +507,7 @@ public class Shell
 				{
 					file.close();
 				}
-				catch (IOException ex)
+				catch (IOException ignored)
 				{
 				}
 			}

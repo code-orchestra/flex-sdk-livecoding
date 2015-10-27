@@ -341,7 +341,7 @@ public class UserStyleDialog extends JDialog implements ActionMap {
                     File f = fileChooser.getSelectedFile();
                     try {
                         fileTextField.setText(f.getCanonicalPath());
-                    } catch (IOException ex) {
+                    } catch (IOException ignored) {
                     }
                 }
             }

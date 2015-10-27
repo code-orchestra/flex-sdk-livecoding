@@ -286,7 +286,7 @@ public class URIChooser extends JDialog implements ActionMap {
                 File f = fileChooser.getSelectedFile();
                 try {
                     textField.setText(currentPath = f.getCanonicalPath());
-                } catch (IOException ex) {
+                } catch (IOException ignored) {
                 }
             }
         }

@@ -324,7 +324,7 @@ public class SpriteGraphics2D extends AbstractGraphics2D
 				{
 					inputStream.close();
 				}
-				catch (IOException e)
+				catch (IOException ignored)
 				{
 				}
 			}

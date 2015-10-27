@@ -233,7 +233,7 @@ public class AtEmbed implements LineNumberMapped
         {
             result = createResolved(perCompileData, source, value, path, line, "_embed_mxml_", false);
         }
-        catch (Exception exception)
+        catch (Exception ignored)
         {
         }
 
@@ -253,7 +253,7 @@ public class AtEmbed implements LineNumberMapped
         {
             result = createResolved(perCompileData, source, value, path, line, prefix, true);
         }
-        catch (Exception exception)
+        catch (Exception ignored)
         {
         }
 

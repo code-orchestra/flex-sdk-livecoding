@@ -147,7 +147,7 @@ public class VersionInfo
                     {
                         in.close();
                     }
-                    catch (IOException ex)
+                    catch (IOException ignored)
                     {
                     }
                 }

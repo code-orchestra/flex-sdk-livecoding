@@ -710,7 +710,7 @@ public class MemoryMonitor extends JFrame implements ActionMap {
                             wait();
                         }
                     }
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException ignored) {}
             }
         }
 

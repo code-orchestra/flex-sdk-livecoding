@@ -186,7 +186,7 @@ public class CompilerConfiguration implements As3Configuration,
             properties.load(in);
             in.close();
         } 
-        catch (Exception e) 
+        catch (Exception ignored)
         {
         }
         

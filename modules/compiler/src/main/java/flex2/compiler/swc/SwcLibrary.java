@@ -175,7 +175,7 @@ public class SwcLibrary
             TagDecoder tagDecoder = new TagDecoder(inputStream);
             tagDecoder.parse( movieDecoder );
         }
-        catch (IOException e)
+        catch (IOException ignored)
         {
         }
         finally
@@ -217,7 +217,7 @@ public class SwcLibrary
                 if (frame.label != null) {
                     try {
                         c1 = Integer.parseInt(frame.label.label);
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
                     }
                 }
                 int c2 = SimpleMovie.getCodeHash(frame);

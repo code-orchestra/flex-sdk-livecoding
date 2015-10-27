@@ -134,7 +134,7 @@ public class CursorManager implements SVGConstants, ErrorConstants {
                     (CursorManager.class.getResource("resources/move.gif"));
                 moveCursor = toolkit.createCustomCursor
                     (img, new Point(11, 11), "move");
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
             }
         }
         cursorMap.put(SVG_MOVE_VALUE, moveCursor);

@@ -992,16 +992,12 @@ public abstract class CSSEngine {
         void setMainProperty(String name, Value v, boolean important);
     }
 
-    public void setMainProperties
-        (CSSStylableElement elt, final MainPropertyReceiver dst,
-         String pname, String value, boolean important){
+    public void setMainProperties(CSSStylableElement elt, final MainPropertyReceiver dst, String pname, String value, boolean important){
         try {
             element = elt;
             LexicalUnit lu = parser.parsePropertyValue(value);
-            ShorthandManager.PropertyHandler ph =
-                new ShorthandManager.PropertyHandler() {
-                    public void property(String pname, LexicalUnit lu,
-                                         boolean important) {
+            ShorthandManager.PropertyHandler ph = new ShorthandManager.PropertyHandler() {
+                    public void property(String pname, LexicalUnit lu, boolean important) {
                         int idx = getPropertyIndex(pname);
                         if (idx != -1) {
                             ValueManager vm = valueManagers[idx];
@@ -1021,11 +1017,8 @@ public abstract class CSSEngine {
         } catch (Exception e) {
             String m = e.getMessage();
             if (m == null) m = "";                  // todo - better handling of NPE
-            String u = ((documentURI == null)?"<unknown>":
-                        documentURI.toString());
-            String s = Messages.formatMessage
-                ("property.syntax.error.at",
-                 new Object[] { u, pname, value, m});
+            String u = ((documentURI == null) ? "<unknown>" : documentURI.toString());
+            String s = Messages.formatMessage("property.syntax.error.at", new Object[] { u, pname, value, m});
             DOMException de = new DOMException(DOMException.SYNTAX_ERR, s);
             if (userAgent == null) throw de;
             userAgent.displayError(de);
@@ -1041,8 +1034,7 @@ public abstract class CSSEngine {
      * @param prop The property name.
      * @param value The property value.
      */
-    public Value parsePropertyValue(CSSStylableElement elt,
-                                    String prop, String value) {
+    public Value parsePropertyValue(CSSStylableElement elt, String prop, String value) {
         int idx = getPropertyIndex(prop);
         if (idx == -1) return null;
         ValueManager vm = valueManagers[idx];

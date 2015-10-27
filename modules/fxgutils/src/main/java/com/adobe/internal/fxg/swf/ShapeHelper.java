@@ -327,21 +327,19 @@ public class ShapeHelper implements SwfConstants
 
         if (shapeRecords != null && shapeRecords.size() > 0)
         {
-            for (ShapeRecord record : shapeRecords) {
-                if (record instanceof StyleChangeRecord) {
-                    StyleChangeRecord scr = (StyleChangeRecord) record;
+            shapeRecords.stream().filter(record -> record instanceof StyleChangeRecord).forEach(record -> {
+                StyleChangeRecord scr = (StyleChangeRecord) record;
 
-                    if (fillStyle0Index > 0)
-                        scr.setFillStyle0(fillStyle0Index);
+                if (fillStyle0Index > 0)
+                    scr.setFillStyle0(fillStyle0Index);
 
-                    if (fillStyle1Index > 0)
-                        scr.setFillStyle1(fillStyle1Index);
+                if (fillStyle1Index > 0)
+                    scr.setFillStyle1(fillStyle1Index);
 
-                    if ((!scr.stateLineStyle) && (lineStyleIndex > 0))
-                        scr.setLinestyle(lineStyleIndex);
+                if ((!scr.stateLineStyle) && (lineStyleIndex > 0))
+                    scr.setLinestyle(lineStyleIndex);
 
-                }
-            }
+            });
         }
     }
 

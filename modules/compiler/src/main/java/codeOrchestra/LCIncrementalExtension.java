@@ -81,18 +81,16 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
 
             ObjectList<Node> liveInitBody = liveCodingInitializerMethod.fexpr.body.items;
             IClassDigest classDigest = DigestManager.getInstance().getClassDigest(fqName);
-            for (IMember member : classDigest.getAllMembers()) {
-                if (member.getKind() == MemberKind.FIELD && member.isAddedDuringProcessing()) {
-                    VariableBindingNode addedField = TreeNavigator.getFieldDefinition(member.getName(), modifiedClass);
-                    if (addedField.initializer != null) {
-                        Node initializerClone = SerializationUtils.clone(addedField.initializer);
-                        liveInitBody.add(
-                                TreeUtil.createExpressionStatement(
-                                        TreeUtil.createAssignmentExpression(
-                                                member.isStatic() ? TreeUtil.createIdentifier(className) : new ThisExpressionNode(), new IdentifierNode(member.getName(), -1), new ArgumentListNode(initializerClone, -1))));
-                    }
+            classDigest.getAllMembers().stream().filter(member -> member.getKind() == MemberKind.FIELD && member.isAddedDuringProcessing()).forEach(member -> {
+                VariableBindingNode addedField = TreeNavigator.getFieldDefinition(member.getName(), modifiedClass);
+                if (addedField.initializer != null) {
+                    Node initializerClone = SerializationUtils.clone(addedField.initializer);
+                    liveInitBody.add(
+                            TreeUtil.createExpressionStatement(
+                                    TreeUtil.createAssignmentExpression(
+                                            member.isStatic() ? TreeUtil.createIdentifier(className) : new ThisExpressionNode(), new IdentifierNode(member.getName(), -1), new ArgumentListNode(initializerClone, -1))));
                 }
-            }
+            });
             liveInitBody.add(new ReturnStatementNode(null));
 
             changedMethods.add(liveCodingInitializerMethod);

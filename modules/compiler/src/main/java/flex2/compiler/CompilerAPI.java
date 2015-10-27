@@ -1466,14 +1466,8 @@ public final class CompilerAPI
         // C: This is here for SWC compilation.
         if (classes != null)
         {
-            for (Source source : classes)
-            {
-                // source might have already been added if it's in the SourceList.
-                if (!sources.contains(source))
-                {
-                    sources.add(source);
-                }
-            }
+            // source might have already been added if it's in the SourceList.
+            classes.stream().filter(source -> !sources.contains(source)).forEach(sources::add);
 
             useFileSpec = useFileSpec || classes.size() > 0;
         }
@@ -2258,17 +2252,12 @@ public final class CompilerAPI
 
 		// if a compilation unit becomes obsolete, its satellite compilation units in ResourceContainer
 		// must go away too.
-		for (Source s : resources.sources().values())
-		{
-			if (s != null)
-			{
-				String name = s.getNameForReporting();
-				if (affected.containsKey(name) || updated.containsKey(name))
-				{
-					s.removeCompilationUnit();
-				}
-			}
-		}
+        resources.sources().values().stream().filter(s -> s != null).forEach(s -> {
+            String name = s.getNameForReporting();
+            if (affected.containsKey(name) || updated.containsKey(name)) {
+                s.removeCompilationUnit();
+            }
+        });
 
         affected.clear();
 
@@ -2310,17 +2299,12 @@ public final class CompilerAPI
 
 		// if a compilation unit becomes obsolete, its satellite compilation units in ResourceContainer
 		// must go away too.
-		for (Source s : resources.sources().values())
-		{
-			if (s != null)
-			{
-				String name = s.getNameForReporting();
-				if (affected.containsKey(name))
-				{
-					s.removeCompilationUnit();
-				}
-			}
-		}
+        resources.sources().values().stream().filter(s -> s != null).forEach(s -> {
+            String name = s.getNameForReporting();
+            if (affected.containsKey(name)) {
+                s.removeCompilationUnit();
+            }
+        });
 
         // refresh the state of ResourceContainer
         resources.refresh();
@@ -2409,25 +2393,19 @@ public final class CompilerAPI
 
         if (compilationUnit != null)
         {
-            for (QName qName : compilationUnit.topLevelDefinitions)
-            {
-                if (dependents.containsKey(qName))
-                {
-                    for (Entry<String, Source> dependentEntry : dependents.get(qName).entrySet())
-                    {
-                        if (!updated.containsKey(dependentEntry.getKey()) &&
-                            !affected.containsKey(dependentEntry.getKey()))
-                        {
-                            affected.put(dependentEntry.getKey(), dependentEntry.getValue());
-                            reasons.put(dependentEntry.getKey(),
-                                        l10n.getLocalizedTextString(new DependentFileModified(affectedSource.getName())));
+            compilationUnit.topLevelDefinitions.stream().filter(qName -> dependents.containsKey(qName)).forEach(qName -> {
+                for (Entry<String, Source> dependentEntry : dependents.get(qName).entrySet()) {
+                    if (!updated.containsKey(dependentEntry.getKey()) &&
+                            !affected.containsKey(dependentEntry.getKey())) {
+                        affected.put(dependentEntry.getKey(), dependentEntry.getValue());
+                        reasons.put(dependentEntry.getKey(),
+                                l10n.getLocalizedTextString(new DependentFileModified(affectedSource.getName())));
 
-                            sources.remove(dependentEntry.getValue());
-                            dependentFileModified(dependentEntry.getValue(), dependents, updated, affected, reasons, sources);
-                        }
+                        sources.remove(dependentEntry.getValue());
+                        dependentFileModified(dependentEntry.getValue(), dependents, updated, affected, reasons, sources);
                     }
                 }
-            }
+            });
         }
     }
 
@@ -2646,11 +2624,9 @@ public final class CompilerAPI
 
     private static void addVerticesToGraphs(List<Source> sources, DependencyGraph<CompilationUnit> igraph, DependencyGraph<Source> dgraph)
     {
-        for (Source s : sources) {
-            if (s != null) {
-                addVertexToGraphs(s, s.getCompilationUnit(), igraph, dgraph);
-            }
-        }
+        sources.stream().filter(s -> s != null).forEach(s -> {
+            addVertexToGraphs(s, s.getCompilationUnit(), igraph, dgraph);
+        });
     }
 
     private static void addVertexToGraphs(Source s, CompilationUnit u, DependencyGraph<CompilationUnit> igraph, DependencyGraph<Source> dgraph)
@@ -3775,39 +3751,37 @@ public final class CompilerAPI
     {
         // C: A temporary fix for the issue when the true QName of the top level definition in a source file
         //    from the classpath is not known until the source file is parsed...
-        for (CompilationUnit u : units) {
-            if (u != null && u.isDone() && (u.getWorkflow() & adjustQNames) == 0) {
-                for (Name name : u.inheritance) {
-                    if (name instanceof QName) {
-                        QName qName = (QName) name;
-                        adjustQName(qName, igraph, symbolTable);
-                    }
+        units.stream().filter(u -> u != null && u.isDone() && (u.getWorkflow() & adjustQNames) == 0).forEach(u -> {
+            for (Name name : u.inheritance) {
+                if (name instanceof QName) {
+                    QName qName = (QName) name;
+                    adjustQName(qName, igraph, symbolTable);
                 }
-
-                for (Name name : u.namespaces) {
-                    if (name instanceof QName) {
-                        QName qName = (QName) name;
-                        adjustQName(qName, igraph, symbolTable);
-                    }
-                }
-
-                for (Name name : u.types) {
-                    if (name instanceof QName) {
-                        QName qName = (QName) name;
-                        adjustQName(qName, igraph, symbolTable);
-                    }
-                }
-
-                for (Name name : u.expressions) {
-                    if (name instanceof QName) {
-                        QName qName = (QName) name;
-                        adjustQName(qName, igraph, symbolTable);
-                    }
-                }
-
-                u.setWorkflow(adjustQNames);
             }
-        }
+
+            for (Name name : u.namespaces) {
+                if (name instanceof QName) {
+                    QName qName = (QName) name;
+                    adjustQName(qName, igraph, symbolTable);
+                }
+            }
+
+            for (Name name : u.types) {
+                if (name instanceof QName) {
+                    QName qName = (QName) name;
+                    adjustQName(qName, igraph, symbolTable);
+                }
+            }
+
+            for (Name name : u.expressions) {
+                if (name instanceof QName) {
+                    QName qName = (QName) name;
+                    adjustQName(qName, igraph, symbolTable);
+                }
+            }
+
+            u.setWorkflow(adjustQNames);
+        });
     }
 
     private static void adjustQName(QName qName, DependencyGraph<CompilationUnit> igraph, SymbolTable symbolTable)

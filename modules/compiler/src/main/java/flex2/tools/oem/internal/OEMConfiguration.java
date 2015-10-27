@@ -216,10 +216,7 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 					} else if (v instanceof List) {
 						buffer.add(key);
 						buffer.add(k);
-						for (Object next : ((List) v)) {
-							if (next != null)
-								buffer.add(next.toString());
-						}
+						((List) v).stream().filter(next -> next != null).forEach(next -> buffer.add(next.toString()));
 					} else if (v != null) {
 						assert false;
 					}
@@ -373,10 +370,7 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 					Object v = m.get(k);
 
 					if (v instanceof List) {
-						for (Object next : ((List) v)) {
-							if (next != null)
-								buffer.add(key + "+=" + k + "," + next.toString());
-						}
+						((List) v).stream().filter(next -> next != null).forEach(next -> buffer.add(key + "+=" + k + "," + next.toString()));
 					} else if (v != null) {
 						assert false;
 					}
@@ -388,10 +382,7 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 					Object v = m.get(k);
 
 					if (v instanceof List) {
-						for (Object next : ((List) v)) {
-							if (next != null)
-								buffer.add(key + "+=" + k + "," + next.toString());
-						}
+						((List) v).stream().filter(next -> next != null).forEach(next -> buffer.add(key + "+=" + k + "," + next.toString()));
 					} else if (v != null) {
 						assert false;
 					}

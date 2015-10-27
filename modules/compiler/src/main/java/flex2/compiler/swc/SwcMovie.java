@@ -117,11 +117,9 @@ public class SwcMovie extends SimpleMovie
 
             if (unresolved.size() != 0)
             {
-                for (String u : unresolved) {
-                    if (!externs.contains(u)) {
-                        ThreadLocalToolkit.log(new LinkerException.UndefinedSymbolException(u));
-                    }
-                }
+                unresolved.stream().filter(u -> !externs.contains(u)).forEach(u -> {
+                    ThreadLocalToolkit.log(new LinkerException.UndefinedSymbolException(u));
+                });
             }
             topLevelClass = formatSymbolClassName( rootClassName );
             

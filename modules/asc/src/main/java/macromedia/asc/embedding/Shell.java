@@ -139,9 +139,7 @@ public class Shell
 			if (id.length() == 0)
 			{
 				HashSet<String> keys = new HashSet<>(targets.keySet());
-				for (String key : keys) {
-					clear(key);
-				}
+				keys.forEach(Shell::clear);
 			}
 			else if (targets.containsKey(id))
 			{
@@ -158,9 +156,7 @@ public class Shell
 			if (id.length() == 0)
 			{
 				HashSet<String> keys = new HashSet<>(targets.keySet());
-				for (String key : keys) {
-					info(key);
-				}
+				keys.forEach(Shell::info);
 			}
 			else if (targets.containsKey(id))
 			{

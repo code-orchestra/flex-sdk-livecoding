@@ -66,10 +66,7 @@ public class ObjectValue extends Value implements Comparable
     public static void NamespacesFromQualifiers(Qualifiers quals,Namespaces namespaces)
     {
         namespaces.clear();
-        for (ObjectValue it : quals.keySet())
-        {
-            namespaces.push_back(it);
-        }
+        quals.keySet().forEach(namespaces::push_back);
     }
 
     public static ObjectValue undefinedValue;
@@ -869,9 +866,7 @@ public class ObjectValue extends Value implements Comparable
         if (slots != null) {
             Slots clone = new Slots();
             for (Slot item: slots) clone.put(item.clone());
-            for (Slot item: clone) {
-                if (item.declaredBy == this) item.declaredBy = result;
-            }
+            clone.stream().filter(item -> item.declaredBy == this).forEach(item -> item.declaredBy = result);
 
         }
 

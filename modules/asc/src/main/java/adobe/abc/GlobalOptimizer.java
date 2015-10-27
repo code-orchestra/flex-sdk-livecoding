@@ -525,8 +525,7 @@ public class GlobalOptimizer
 				readBody(p);
 			
 			// lazy resolve slot type names
-			for (Type t: toResolve)
-				resolveType(t);
+			toResolve.forEach(this::resolveType);
 			
 			toResolve = null;
 		}
@@ -1988,9 +1987,7 @@ public class GlobalOptimizer
 	{
 		readyMethod(t.init);
 
-		for (Binding b1: t.defs.values())
-			if (b1.method != null)
-				readyMethod(b1.method);
+		t.defs.values().stream().filter(b1 -> b1.method != null).forEach(b1 -> readyMethod(b1.method));
 	}
 	
 	void readyMethod(Method m)
@@ -2881,8 +2878,7 @@ public class GlobalOptimizer
 
 		int pos = w.size();
 		w.writeU30(abc.intPool.size());
-		for (int x: abc.intPool.values)
-			w.writeU30(x);
+		abc.intPool.values.forEach(w::writeU30);
 		
 		verboseStatus("ints count "+abc.intPool.size()+ " size " + (w.size()-pos));
 		pos = w.size();
@@ -6801,20 +6797,15 @@ public class GlobalOptimizer
 		if ( block_state != null )
 		{
 			Set<Integer> coerced_locals = new HashSet<>(bc.coercions.keySet());
-			
-			for ( Integer r: coerced_locals )
-			{
-				if ( ! block_state.read_after_def.get(r))
-				{
-					Expr generator = block_state.generating_exprs.get(r);
-					
-					if ( generator != null )
-					{
-						coerce_in_place.put(generator, coerceExpr(m, bc.coercions.get(r).t, generator));
-						bc.coercions.remove(r);
-					}
+
+			coerced_locals.stream().filter(r -> !block_state.read_after_def.get(r)).forEach(r -> {
+				Expr generator = block_state.generating_exprs.get(r);
+
+				if (generator != null) {
+					coerce_in_place.put(generator, coerceExpr(m, bc.coercions.get(r).t, generator));
+					bc.coercions.remove(r);
 				}
-			}
+			});
 			
 			if ( !coerce_in_place.isEmpty() )
 			{
@@ -6973,9 +6964,7 @@ public class GlobalOptimizer
 			return;
 
 		BitSet used = new BitSet();
-		for (int i: conflicts.get(e.id))
-			if (locals.get(i) != -1)
-				used.set(locals.get(i));
+		conflicts.get(e.id).stream().filter(i -> locals.get(i) != -1).forEach(i -> used.set(locals.get(i)));
 		
 		int loc = -1;
 		//  If the expression's locked to a specific local (e.g., it's an arg), it must use that local.
@@ -7027,9 +7016,7 @@ public class GlobalOptimizer
 			return;
 
 		BitSet used = new BitSet();
-		for (int i: conflicts.get(e.id))
-			if (locals.get(i) != -1)
-				used.set(locals.get(i));
+		conflicts.get(e.id).stream().filter(i -> locals.get(i) != -1).forEach(i -> used.set(locals.get(i)));
 		
 		
 		//  Ensure that nothing leaked out of alloc1.
@@ -7648,14 +7635,12 @@ public class GlobalOptimizer
 		verbose.addFirst(e);
 		phis.add(e);
 		if (live.contains(e))
-			for (Expr l: live)
-				if (l != e)
-				{
-					traceEntry("conflict");
-					addTraceAttr(e);
-					addTraceAttr("conflictsWith", l);
-					cg.add(l,e);
-				}
+			live.stream().filter(l -> l != e).forEach(l -> {
+				traceEntry("conflict");
+				addTraceAttr(e);
+				addTraceAttr("conflictsWith", l);
+				cg.add(l, e);
+			});
 
 	}
 
@@ -8070,16 +8055,12 @@ public class GlobalOptimizer
 		EdgeMap<Expr> uses = findUses(code);
 		Map<Expr,Expr> map = new HashMap<>();
 		Set<Expr> work = new TreeSet<>();
-		
-		for (Block b: code)
-		{
-			if ( ! b.must_isolate_block)
-			{
-				for (Expr e: b)
-					if (e.op == OP_phi || e.op == OP_dup)
-						work.add(e);
-			}
-		}
+
+		code.stream().filter(b -> !b.must_isolate_block).forEach(b -> {
+			for (Expr e : b)
+				if (e.op == OP_phi || e.op == OP_dup)
+					work.add(e);
+		});
 		
 		while (!work.isEmpty())
 		{
@@ -8122,13 +8103,7 @@ public class GlobalOptimizer
 		//  Marshall live-out exprs by block.
 		for ( Block b: code)
 		{
-			for ( Expr e: b.exprs)
-			{
-				if ( e.is_live_out )
-				{
-					b.addLiveOut(e);
-				}
-			}
+			b.exprs.stream().filter(e -> e.is_live_out).forEach(b::addLiveOut);
 				
 		}
 		
@@ -8143,15 +8118,11 @@ public class GlobalOptimizer
 	void schedule_loop(Block b, EdgeMap<Block> loops, Deque<Block> scheduled)
 	{
 		Set<Block> loop = loops.get(b);
-		for (Block lb: dfs(b))
-		{
-			if (!scheduled.contains(lb) && loop.contains(lb))
-			{
-				scheduled.add(lb);
-				if (loops.containsKey(lb))
-					schedule_loop(lb, loops, scheduled);
-			}
-		}
+		dfs(b).stream().filter(lb -> !scheduled.contains(lb) && loop.contains(lb)).forEach(lb -> {
+			scheduled.add(lb);
+			if (loops.containsKey(lb))
+				schedule_loop(lb, loops, scheduled);
+		});
 	}
 	
 	/**
@@ -8212,9 +8183,7 @@ public class GlobalOptimizer
 		}
 		
 		if ( verbose_mode )
-			for (Block b: code)
-				if ( b.is_backwards_branch_target )
-					verboseStatus(".. backwards branch target:" + b);
+			code.stream().filter(b -> b.is_backwards_branch_target).forEach(b -> verboseStatus(".. backwards branch target:" + b));
 		
 		return scheduled;
 	}
@@ -8273,25 +8242,17 @@ public class GlobalOptimizer
 					// find the set of blocks that are in the loop body.
 					Set<Block> loop = loops.get(h);
 					Set<Block> work = new TreeSet<>();
-					for (Edge p: pred.get(h))
-					{
-						if (isLoop(p,idom) && !loop.contains(p.from) && p.from != h)
-						{
-							loop.add(p.from);
-							work.add(p.from);
-						}
-					}
+					pred.get(h).stream().filter(p -> isLoop(p, idom) && !loop.contains(p.from) && p.from != h).forEach(p -> {
+						loop.add(p.from);
+						work.add(p.from);
+					});
 					while (!work.isEmpty())
 					{
 						Block x = getBlock(work);
-						for (Edge p: pred.get(x))
-						{
-							if (p.from != h && !loop.contains(p.from))
-							{
-								loop.add(p.from);
-								work.add(p.from);
-							}
-						}
+						pred.get(x).stream().filter(p -> p.from != h && !loop.contains(p.from)).forEach(p -> {
+							loop.add(p.from);
+							work.add(p.from);
+						});
 					}
 				}
 		return loops;

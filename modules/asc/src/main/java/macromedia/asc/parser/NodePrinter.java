@@ -630,13 +630,9 @@ public class NodePrinter implements Evaluator
         out.print("statementlist");
         push_in();
 
-        for (Node n : node.items)
-        {
-            if (n != null)
-            {
-                n.evaluate(cx, this);
-            }
-        }
+        node.items.stream().filter(n -> n != null).forEach(n -> {
+            n.evaluate(cx, this);
+        });
 
         pop_out();
 

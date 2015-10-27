@@ -39,12 +39,10 @@ public class ManagedExtensionError implements Extension {
 
 	public void parse1(CompilationUnit unit, TypeTable typeTable) {
 		Context cx = unit.getContext().getAscContext();
-		for (MetaDataNode metaDataNode : unit.metadata) {
-			if (StandardDefs.MD_MANAGED.equals(metaDataNode.getId())) {
-				LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
-				cx.localizedError2(metaDataNode.pos(), new ManagedOnMXMLComponentError());
-			}
-		}
+		unit.metadata.stream().filter(metaDataNode -> StandardDefs.MD_MANAGED.equals(metaDataNode.getId())).forEach(metaDataNode -> {
+			LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
+			cx.localizedError2(metaDataNode.pos(), new ManagedOnMXMLComponentError());
+		});
 	}
 	
     public void parse2(CompilationUnit unit, TypeTable typeTable)

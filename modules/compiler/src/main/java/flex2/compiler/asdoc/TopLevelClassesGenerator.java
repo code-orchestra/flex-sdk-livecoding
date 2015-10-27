@@ -1514,9 +1514,7 @@ public class TopLevelClassesGenerator
             if (includeExamplesFound)
             {
                 Element detailNode = asDocUtil.getDetailNode(target);
-                for (Element includeExample : includeExamples) {
-                    detailNode.appendChild(includeExample);
-                }
+                includeExamples.forEach(detailNode::appendChild);
             }
 
             if (customsFound)

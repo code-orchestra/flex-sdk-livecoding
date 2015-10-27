@@ -570,10 +570,7 @@ public class ByteCodeFactory
 										ObjectList<ByteList> constants)
 	{
 
-		for (ByteList list : constants)
-		{
-			bytes.addAll(list);
-		}
+		constants.forEach(bytes::addAll);
 
 		return bytes;
 	}
@@ -704,10 +701,7 @@ public class ByteCodeFactory
 	public static ByteList Traits(ByteList bytes,
 								  ObjectList<ByteList> traits)
 	{
-		for (ByteList list : traits)
-		{
-			bytes.addAll(list);
-		}
+		traits.forEach(bytes::addAll);
 		return bytes;
 	}
 
@@ -750,10 +744,7 @@ public class ByteCodeFactory
 								ObjectList<ByteList> vars)
 	{
 
-		for (ByteList list : vars)
-		{
-			bytes.addAll(list);
-		}
+		vars.forEach(bytes::addAll);
 		return bytes;
 	}
 
@@ -765,10 +756,7 @@ public class ByteCodeFactory
 								   ObjectList<ByteList> methods)
 	{
 
-		for (ByteList list : methods)
-		{
-			bytes.addAll(list);
-		}
+		methods.forEach(bytes::addAll);
 		return bytes;
 	}
 
@@ -776,10 +764,7 @@ public class ByteCodeFactory
                                    ObjectList<ByteList> metadata)
     {
 
-        for (ByteList list : metadata)
-        {
-            bytes.addAll(list);
-        }
+		metadata.forEach(bytes::addAll);
         return bytes;
     }
 
@@ -787,10 +772,7 @@ public class ByteCodeFactory
 								   ObjectList<ByteList> bodies)
 	{
 
-		for (ByteList list : bodies)
-		{
-			bytes.addAll(list);
-		}
+		bodies.forEach(bytes::addAll);
 		return bytes;
 	}
 
@@ -902,20 +884,14 @@ public class ByteCodeFactory
 	public static ByteList Classes(ByteList bytes,
 								   ObjectList<ByteList> classes)
 	{
-		for (ByteList list : classes)
-		{
-			bytes.addAll(list);
-		}
+		classes.forEach(bytes::addAll);
 		return bytes;
 	}
 
 	public static ByteList Instances(ByteList bytes,
 								   ObjectList<ByteList> instances)
 	{
-		for (ByteList list : instances)
-		{
-			bytes.addAll(list);
-		}
+		instances.forEach(bytes::addAll);
 		return bytes;
 	}
 
@@ -927,10 +903,7 @@ public class ByteCodeFactory
 									ObjectList<ByteList> scripts)
 	{
 
-		for (ByteList list : scripts)
-		{
-			bytes.addAll(list);
-		}
+		scripts.forEach(bytes::addAll);
 		return bytes;
 	}
 
@@ -942,10 +915,7 @@ public class ByteCodeFactory
 									  ObjectList<ByteList> attributes)
 	{
 
-		for (ByteList list : attributes)
-		{
-			bytes.addAll(list);
-		}
+		attributes.forEach(bytes::addAll);
 		return bytes;
 	}
 

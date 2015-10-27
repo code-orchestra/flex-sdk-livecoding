@@ -575,9 +575,7 @@ abstract class SourcePathBase
 	
 	public void displayWarnings()
 	{
-		for (ClasspathOverlap warning : warnings) {
-			ThreadLocalToolkit.log(warning);
-		}
+		warnings.forEach(ThreadLocalToolkit::log);
 	}
 
 	// error messages

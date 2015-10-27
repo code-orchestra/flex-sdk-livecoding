@@ -195,18 +195,13 @@ public class StyleDef
             Map<String, StyleProperty> properties = block.getProperties();
 
             List<StyleDeclarationBlock> existingBlocks = existingDeclaration.getDeclarationBlocks();
-            for (StyleDeclarationBlock existingBlock : existingBlocks)
-            {
-                if (existingBlock != block)
-                {
-                    Map<String, StyleProperty> existingProperties = existingBlock.getProperties();
-                    for (String property : properties.keySet())
-                    {
-                        if (existingProperties.get(property) != null)
-                            existingProperties.put(property, properties.get(property));
-                    }
+            existingBlocks.stream().filter(existingBlock -> existingBlock != block).forEach(existingBlock -> {
+                Map<String, StyleProperty> existingProperties = existingBlock.getProperties();
+                for (String property : properties.keySet()) {
+                    if (existingProperties.get(property) != null)
+                        existingProperties.put(property, properties.get(property));
                 }
-            }
+            });
         }
     }
 

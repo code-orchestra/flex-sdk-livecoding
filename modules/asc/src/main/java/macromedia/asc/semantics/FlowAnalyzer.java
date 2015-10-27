@@ -2867,15 +2867,11 @@ else
         // if the sort returns fewer classes, that means some nodes form cycle(s)...
         if (clsdefs.size() > tsort.size())
         {
-            for (ClassDefinitionNode clsdef : clsdefs)
-            {
-                // output errors against the nodes in dependency cycles...
-                if (!tsort.contains(clsdef))
-                {
-                    cx.error(clsdef.pos(), kError_CircularReference, clsdef.cframe.builder.classname.name);
-                    found_circular_or_duplicate_class_definition = true;
-                }
-            }
+            // output errors against the nodes in dependency cycles...
+            clsdefs.stream().filter(clsdef -> !tsort.contains(clsdef)).forEach(clsdef -> {
+                cx.error(clsdef.pos(), kError_CircularReference, clsdef.cframe.builder.classname.name);
+                found_circular_or_duplicate_class_definition = true;
+            });
             return clsdefs;
         }
         else

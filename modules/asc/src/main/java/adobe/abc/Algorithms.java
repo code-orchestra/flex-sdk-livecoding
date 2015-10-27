@@ -92,9 +92,7 @@ public abstract class Algorithms
 		while (changed);
 		
 		Map<Block,Block> map = new TreeMap<>();
-		for (Block b: all)
-			if (b != entry)
-				map.put(b, doms[b.postorder]);
+		all.stream().filter(b -> b != entry).forEach(b -> map.put(b, doms[b.postorder]));
 		
 		return map;
 	}
@@ -444,13 +442,9 @@ public abstract class Algorithms
 						found_sorted_element = true;
 
 						//  Remove this dependency from the remaining elements.
-						for ( T y: unsorted )
-						{
-							if ( dep.containsKey(y) )
-							{
-								dep.get(y).remove(x);
-							}
-						}
+						unsorted.stream().filter(y -> dep.containsKey(y)).forEach(y -> {
+							dep.get(y).remove(x);
+						});
 						
 						dep.remove(x);
 						break;

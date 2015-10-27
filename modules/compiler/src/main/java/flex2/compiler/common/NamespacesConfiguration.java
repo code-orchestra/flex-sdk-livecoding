@@ -65,13 +65,11 @@ public class NamespacesConfiguration
         {
             List<VirtualFile> fileList = new ArrayList<>();
 
-            for (List<VirtualFile> files : manifestMappings.values()) {
-                if (files != null) {
-                    for (VirtualFile file : files) {
-                        fileList.add(file);
-                    }
+            manifestMappings.values().stream().filter(files -> files != null).forEach(files -> {
+                for (VirtualFile file : files) {
+                    fileList.add(file);
                 }
-            }
+            });
 
             VirtualFile[] fileArray = new VirtualFile[fileList.size()];
             return fileList.toArray(fileArray);

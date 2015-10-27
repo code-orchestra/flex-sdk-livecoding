@@ -685,13 +685,9 @@ public class Library implements Builder, Cloneable
         {
             Set<ILibraryExtension> extensions = ExtensionManager.getLibraryExtensions( oemConfiguration.getExtensions() );
 
-            for ( ILibraryExtension extension : extensions )
-            {
-                if (ThreadLocalToolkit.errorCount() == 0)
-                {
-                    extension.run( this.clone(), oemConfiguration.clone() );
-                }
-            }
+            extensions.stream().filter(extension -> ThreadLocalToolkit.errorCount() == 0).forEach(extension -> {
+                extension.run(this.clone(), oemConfiguration.clone());
+            });
         }
     }
 

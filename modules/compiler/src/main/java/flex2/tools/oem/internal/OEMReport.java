@@ -176,10 +176,7 @@ public class OEMReport implements Report
         // to the SourceList.
         if (sourceListPaths != null)
         {
-            for (File path : sourceListPaths)
-            {
-                storeTimestamps(path);
-            }
+			sourceListPaths.forEach(this::storeTimestamps);
         }
 
 		compiler_SourceNames = toArray(sourceNames);
@@ -740,13 +737,9 @@ public class OEMReport implements Report
 		{
 			if (sets[i] != null)
 			{
-				for (Object obj : sets[i])
-				{
-					if ((obj instanceof String) && (locations == null || locations.containsKey(obj)))
-					{
-						set.add((String)obj);
-					}
-				}
+				(sets[i]).stream().filter(obj -> (obj instanceof String) && (locations == null || locations.containsKey(obj))).forEach(obj -> {
+					set.add((String) obj);
+				});
 			}
 		}
 

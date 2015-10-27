@@ -180,9 +180,7 @@ public final class ConfigurationBuffer
             else
                 remove.add(var);
         }
-        for (String aRemove : remove) {
-            varMap.remove(aRemove);
-        }
+        remove.forEach(varMap::remove);
     }
 
     public List<String> processValues( String var, List<String> args, String source, int line ) throws ConfigurationException

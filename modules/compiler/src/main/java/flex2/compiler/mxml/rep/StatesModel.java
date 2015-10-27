@@ -969,16 +969,14 @@ public final class StatesModel
 
 
                 // Override value initializers
-                for (Override override : state.overrides) {
-                    if (override instanceof SetPropertyOverride) {
-                        ValueInitializer initializer = ((SetPropertyOverride) override).value;
-                        Object rvalue = initializer.getValue();
-                        if (rvalue instanceof Model && !initializedModels.contains(rvalue)) {
-                            iterList.add(initializer.getDefinitionsIterator());
-                            initializedModels.add(rvalue);
-                        }
+                state.overrides.stream().filter(override -> override instanceof SetPropertyOverride).forEach(override -> {
+                    ValueInitializer initializer = ((SetPropertyOverride) override).value;
+                    Object rvalue = initializer.getValue();
+                    if (rvalue instanceof Model && !initializedModels.contains(rvalue)) {
+                        iterList.add(initializer.getDefinitionsIterator());
+                        initializedModels.add(rvalue);
                     }
-                }
+                });
             }
         }
         
@@ -1003,16 +1001,14 @@ public final class StatesModel
 
                 // Override value initializers
                 ArrayList<Initializer> values = new ArrayList<>();
-                for (Override override : state.overrides) {
-                    if (override instanceof SetPropertyOverride) {
-                        ValueInitializer initializer = ((SetPropertyOverride) override).value;
-                        Object rvalue = initializer.getValue();
-                        if (rvalue instanceof Model && !initializedModels.contains(rvalue)) {
-                            values.add(initializer);
-                            initializedModels.add(rvalue);
-                        }
+                state.overrides.stream().filter(override -> override instanceof SetPropertyOverride).forEach(override -> {
+                    ValueInitializer initializer = ((SetPropertyOverride) override).value;
+                    Object rvalue = initializer.getValue();
+                    if (rvalue instanceof Model && !initializedModels.contains(rvalue)) {
+                        values.add(initializer);
+                        initializedModels.add(rvalue);
                     }
-                }
+                });
                 iterList.add(values.iterator());
             }
         }

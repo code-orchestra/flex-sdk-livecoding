@@ -176,9 +176,7 @@ public class SwcGroup
 
 	public void close()
 	{
-		for (Swc swc : swcs.values()) {
-			swc.close();
-		}
+		swcs.values().forEach(Swc::close);
 	}
 
 	private void updateNameMappings()

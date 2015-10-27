@@ -899,14 +899,10 @@ public final class MxmlDocument
     public Map<Integer, String> getAllBindingNamespaces()
     {
         Map<Integer, String> allNs = new HashMap<>();
-        
-        for (BindingExpression be : bindingExpressions)
-        {
-            if (be.getNamespaces() != null)
-            {
-                allNs.putAll(be.getNamespaces());
-            }
-        }
+
+        bindingExpressions.stream().filter(be -> be.getNamespaces() != null).forEach(be -> {
+            allNs.putAll(be.getNamespaces());
+        });
         
         return allNs;
     }

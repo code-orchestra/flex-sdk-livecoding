@@ -509,9 +509,7 @@ public class DValue implements Value
 		
 		ArrayList<DVariable> finalList = new ArrayList<>();
 
-		for (List<DVariable> varList : m_inheritedPrivates.values()) {
-			finalList.addAll(varList);
-		}
+		m_inheritedPrivates.values().forEach(finalList::addAll);
 		
 		DVariable[] ar = finalList.toArray(new DVariable[finalList.size()]);
 		// sort the member list by name

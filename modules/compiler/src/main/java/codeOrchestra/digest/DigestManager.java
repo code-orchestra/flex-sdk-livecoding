@@ -57,11 +57,7 @@ public class DigestManager {
 
         IClassDigest classDigest = digestsMap.get(classFqName);
         while (classDigest != null) {
-            for (IMember member : classDigest.getInstanceMembers()) {
-                if (member.getVisibility() == Visibility.PROTECTED && !result.contains(member)) {
-                    result.add(member);
-                }
-            }
+            classDigest.getInstanceMembers().stream().filter(member -> member.getVisibility() == Visibility.PROTECTED && !result.contains(member)).forEach(result::add);
 
             if (classDigest.getSuperClassFQName() != null) {
                 classDigest = digestsMap.get(classDigest.getSuperClassFQName());

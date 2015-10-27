@@ -89,13 +89,10 @@ public class PreLink implements flex2.compiler.PreLink
 
         Set<IPreLinkExtension> extensions = 
             ExtensionManager.getPreLinkExtensions( configuration.getCompilerConfiguration().getExtensionsConfiguration().getExtensionMappings() );
-        for ( IPreLinkExtension extension : extensions )
-        {
-            if(ThreadLocalToolkit.errorCount() == 0) {
-                extension.run( sources, units, fileSpec, sourceList, sourcePath, bundlePath, resources, symbolTable,
-                                  swcContext, configuration );
-            }
-        }
+        extensions.stream().filter(extension -> ThreadLocalToolkit.errorCount() == 0).forEach(extension -> {
+            extension.run(sources, units, fileSpec, sourceList, sourcePath, bundlePath, resources, symbolTable,
+                    swcContext, configuration);
+        });
         boolean reRunPrelink = processMainUnit(sources, units, resources, symbolTable, nameMappings, configuration);
 
         // Check if additional sources were generated after processing the
@@ -227,28 +224,29 @@ public class PreLink implements flex2.compiler.PreLink
                 dependencies.addAll(u.expressions);
                 dependencies.addAll(u.types);
 
-                for (Name name : dependencies) {
-                    if (name instanceof QName) {
-                        Source dependent = symbolTable.findSourceByQName((QName) name);
+                // Make sure each dependency's minimum
+// supported version is less than or equal to
+// the compatibility version.
+                dependencies.stream().filter(name -> name instanceof QName).forEach(name -> {
+                    Source dependent = symbolTable.findSourceByQName((QName) name);
 
-                        if (dependent.isSwcScriptOwner()) {
-                            SwcScript swcScript = (SwcScript) dependent.getOwner();
-                            Swc swc = swcScript.getLibrary().getSwc();
+                    if (dependent.isSwcScriptOwner()) {
+                        SwcScript swcScript = (SwcScript) dependent.getOwner();
+                        Swc swc = swcScript.getLibrary().getSwc();
 
-                            // Make sure each dependency's minimum
-                            // supported version is less than or equal to
-                            // the compatibility version.
-                            if (compatibilityVersion < swc.getVersions().getMinimumVersion()) {
-                                DependencyNotCompatible message =
-                                        new DependencyNotCompatible(swcScript.getName().replace('/', '.'),
-                                                swc.getLocation(),
-                                                swc.getVersions().getMinimumVersionString(),
-                                                compilerConfiguration.getCompatibilityVersionString());
-                                ThreadLocalToolkit.log(message, u.getSource());
-                            }
+                        // Make sure each dependency's minimum
+                        // supported version is less than or equal to
+                        // the compatibility version.
+                        if (compatibilityVersion < swc.getVersions().getMinimumVersion()) {
+                            DependencyNotCompatible message =
+                                    new DependencyNotCompatible(swcScript.getName().replace('/', '.'),
+                                            swc.getLocation(),
+                                            swc.getVersions().getMinimumVersionString(),
+                                            compilerConfiguration.getCompatibilityVersionString());
+                            ThreadLocalToolkit.log(message, u.getSource());
                         }
                     }
-                }
+                });
             }
         }
     }

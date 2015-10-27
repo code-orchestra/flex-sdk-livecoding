@@ -147,7 +147,7 @@ public class XMLListBuilder extends AbstractBuilder
                 if (nsUri.length() > 0) {
                     nsId = PrefixMapping.getNamespaceId(nsUri, namespaces);
                 } else {
-                    PrefixMapping pm = (PrefixMapping) namespaces.peek();
+                    PrefixMapping pm = namespaces.peek();
                     nsUri = pm.getUri();
                     nsId = pm.getNs();
                 }

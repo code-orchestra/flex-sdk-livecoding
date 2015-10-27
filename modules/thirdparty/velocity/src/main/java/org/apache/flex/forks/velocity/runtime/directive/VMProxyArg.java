@@ -279,7 +279,7 @@ public class VMProxyArg implements Serializable
                      *  now, our tree really is the first DirectiveArg(), and only one
                      */
 
-                    nodeTree = (SimpleNode) nodeTree.jjtGetChild(0).jjtGetChild(0);
+                    nodeTree = nodeTree.jjtGetChild(0).jjtGetChild(0);
 
                     /*
                      * sanity check

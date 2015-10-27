@@ -246,7 +246,7 @@ public class SwcCache
                 }
 
                 SwcArchive archive = file.isDirectory()?
-                        (SwcArchive) new SwcDirectoryArchive( location ) :
+                        new SwcDirectoryArchive( location ) :
                         lazyRead ? new SwcLazyReadArchive( location ) : new SwcDynamicArchive( location );
 
                 swc = new Swc( archive, true );

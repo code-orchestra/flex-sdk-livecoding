@@ -1246,7 +1246,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
         }
 
         PropertyWatcher dataProviderWatcher =
-            (PropertyWatcher) repeaterWatcher.getChild("dataProvider");
+                repeaterWatcher.getChild("dataProvider");
 
         if (dataProviderWatcher == null)
         {

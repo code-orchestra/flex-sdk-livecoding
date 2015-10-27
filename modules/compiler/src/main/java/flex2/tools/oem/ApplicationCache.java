@@ -122,7 +122,7 @@ public class ApplicationCache extends CacheBase
                 result = false;
             }
 
-            if (result && !ApplicationCache.<String>equals(compilerConfiguration.getKeepAs3Metadata(),
+            if (result && !ApplicationCache.equals(compilerConfiguration.getKeepAs3Metadata(),
                                                            cacheCompilerConfiguration.getKeepAs3Metadata()))
             {
                 result = false;
@@ -138,7 +138,7 @@ public class ApplicationCache extends CacheBase
                 result = false;
             }
 
-            if (result && !ApplicationCache.<String>equals(compilerConfiguration.getLocales(),
+            if (result && !ApplicationCache.equals(compilerConfiguration.getLocales(),
                                                            cacheCompilerConfiguration.getLocales()))
             {
                 result = false;
@@ -149,7 +149,7 @@ public class ApplicationCache extends CacheBase
                 result = false;
             }
 
-            if (result && !ApplicationCache.<VirtualFile>equals(compilerConfiguration.getSourcePath(),
+            if (result && !ApplicationCache.equals(compilerConfiguration.getSourcePath(),
                                                                 cacheCompilerConfiguration.getSourcePath()))
             {
                 result = false;
@@ -163,16 +163,15 @@ public class ApplicationCache extends CacheBase
     {
         boolean result = true;
 
-        if (((a1 == null) && (a2 != null)) ||
-            ((a1 != null) && (a2 == null)))
+        if (((a1 == null) && (a2 != null)) || ((a1 != null) && (a2 == null)))
         {
             result = false;
         }
         else if ((a1 != null) && (a2 != null))
         {
             // Convert the arrays to sets to filter out duplicates.
-            Set<T> a1Set = new HashSet<>(Arrays.<T>asList(a1));
-            Set<T> a2Set = new HashSet<>(Arrays.<T>asList(a2));
+            Set<T> a1Set = new HashSet<>(Arrays.asList(a1));
+            Set<T> a2Set = new HashSet<>(Arrays.asList(a2));
 
             if (!a1Set.equals(a2Set))
             {
@@ -379,8 +378,7 @@ public class ApplicationCache extends CacheBase
         if (trigger == null)
         {
             trigger = new SoftReference<>(new Object() {
-                protected void finalize()
-                        throws Throwable {
+                protected void finalize() throws Throwable {
                     prune();
                 }
             });

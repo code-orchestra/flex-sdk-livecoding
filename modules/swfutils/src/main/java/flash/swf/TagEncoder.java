@@ -982,7 +982,7 @@ public class TagEncoder extends TagHandler
 
         for (int i = 0; i < count; i++)
         {
-            encodeLineStyle((LineStyle)linestyles.get(i), w, shape);
+            encodeLineStyle(linestyles.get(i), w, shape);
         }
     }
 

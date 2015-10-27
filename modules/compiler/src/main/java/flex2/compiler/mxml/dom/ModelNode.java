@@ -74,6 +74,6 @@ public class ModelNode extends Node
 
 	public List<Token> getChildren()
 	{
-		return sourceFile != null ? Collections.<Token>unmodifiableList(Arrays.<Token>asList(sourceFile)) : super.getChildren();
+		return sourceFile != null ? Collections.unmodifiableList(Arrays.<Token>asList(sourceFile)) : super.getChildren();
 	}
 }

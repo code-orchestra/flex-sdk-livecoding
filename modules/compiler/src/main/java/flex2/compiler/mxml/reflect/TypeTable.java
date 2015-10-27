@@ -957,7 +957,7 @@ public class TypeTable
     
                 if (mdList != null)
                 {
-                    MetaData metaData = (MetaData) mdList.get(0);
+                    MetaData metaData = mdList.get(0);
     
                     if (metaData.count() > 0)
                     {
@@ -1002,7 +1002,7 @@ public class TypeTable
                 List<MetaData> mdList = getMetaDataList(StandardDefs.MD_INSTANCETYPE);
                 if (mdList != null)
                 {
-                    MetaData metaData = (MetaData) mdList.get(0);
+                    MetaData metaData = mdList.get(0);
                     if (metaData.count() > 0)
                     {
                         instanceTypeName = NameFormatter.toColon(metaData.getValue(0));
@@ -1136,7 +1136,7 @@ public class TypeTable
             List<MetaData> metaDataList = getMetaDataList(StandardDefs.MD_PERCENTPROXY);
             if (metaDataList != null && !metaDataList.isEmpty())
             {
-                MetaData metaData = (MetaData) metaDataList.get(0);
+                MetaData metaData = metaDataList.get(0);
                 if (metaData.count() > 0)
                 {
                     return metaData.getValue(0);

@@ -240,7 +240,7 @@ public abstract class Element extends Token
 
 	public List<Token> getChildren()
 	{
-		return children == null ? Collections.<Token>emptyList() : Collections.<Token>unmodifiableList(children);
+		return children == null ? Collections.<Token>emptyList() : Collections.unmodifiableList(children);
 	}
 
 	public final Iterator getChildIterator()

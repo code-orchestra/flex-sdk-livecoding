@@ -616,7 +616,7 @@ public class MxmlScanner extends DefaultHandler implements TokenManager,
         {
             try
             {
-                lineNumMethod = attributes.getClass().getMethod("getLineNumber", new Class[] {Integer.TYPE});
+                lineNumMethod = attributes.getClass().getMethod("getLineNumber", Integer.TYPE);
             }
             catch (NoSuchMethodException ex)
             {

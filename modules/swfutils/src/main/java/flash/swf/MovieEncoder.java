@@ -162,7 +162,7 @@ public class MovieEncoder
 
 			// abc tags
 			for (DoABC doABC : frame.doABCs) {
-				Tag tag = (Tag) doABC;
+				Tag tag = doABC;
 				tag.visit(handler);
 			}
 

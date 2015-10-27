@@ -261,7 +261,7 @@ public class StyleDeclaration
 
     public Descriptor getDescriptorValue(String name)
     {
-        return (Descriptor)descriptors.get(name);
+        return descriptors.get(name);
     }
 
     public void setDescriptor(String propertyName, LexicalUnit value, String priority)
@@ -271,7 +271,7 @@ public class StyleDeclaration
 
     public Descriptor removeDescriptor(String name)
     {
-        return (Descriptor)descriptors.remove(name);
+        return descriptors.remove(name);
     }
 
     public Iterator<Entry<String, Descriptor>> iterator()

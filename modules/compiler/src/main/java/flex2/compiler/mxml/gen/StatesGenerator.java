@@ -143,7 +143,7 @@ public class StatesGenerator {
         for (String s : shared.keySet()) {
             SharedObject symbol = shared.get(s);
 
-            String varName = ((String) symbol.name + _FACTORY).intern();
+            String varName = (symbol.name + _FACTORY).intern();
             String typeName = NameFormatter.retrieveClassName(DEFERREDINSTANCEFROMFUNCTION);
             String factory = symbol.name + (symbol.model.isDeclared() ? _I : _C);
             String resetFunc = symbol.name + _R;
@@ -248,7 +248,7 @@ public class StatesGenerator {
         List<String> objects = model.earlyInitObjects;
 
         for (String symbol : objects) {
-            String identifier = ((String) symbol + "_factory").intern();
+            String identifier = (symbol + "_factory").intern();
             IdentifierNode idNode = nodeFactory.identifier(identifier, false);
             GetExpressionNode getIndexExpression = nodeFactory.getExpression(idNode);
             MemberExpressionNode base = nodeFactory.memberExpression(null, getIndexExpression);
@@ -283,7 +283,7 @@ public class StatesGenerator {
             indent += StatesGenerator.INDENT;
             for (Iterator<String> iter = states.iterator(); iter.hasNext();  )
             {
-                State state = (State) model.stateByName((String)iter.next());
+                State state = model.stateByName(iter.next());
                 if (state != null)
                 {
                     state.getDefinitionBody(list, indent, bindingsQueue);
@@ -309,7 +309,7 @@ public class StatesGenerator {
             ArgumentListNode statesArgumentList = null;
 
             for (String state1 : states) {
-                State state = (State) model.stateByName(state1);
+                State state = model.stateByName(state1);
                 if (state != null) {
                     MemberExpressionNode stateExpression = state.generateDefinitionBody(nodeFactory, configNamespaces,
                             generateDocComments, bindingsQueue);
@@ -338,7 +338,7 @@ public class StatesGenerator {
         Set<String> states = model.info.getStateNames();
         int count = 0;
         for (String state1 : states) {
-            State state = (State) model.stateByName(state1);
+            State state = model.stateByName(state1);
             if (state != null) {
                 // Declaration initializer
                 if (state.isDeclared()) {
@@ -368,7 +368,7 @@ public class StatesGenerator {
         Set<String> states = model.info.getStateNames();
         int count = 0;
         for (String state1 : states) {
-            State state = (State) model.stateByName(state1);
+            State state = model.stateByName(state1);
             if (state != null) {
                 String identifier = state.getId().intern();
                 IdentifierNode stateIdentifier = nodeFactory.identifier(identifier, false);

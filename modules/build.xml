@@ -21,13 +21,13 @@
 <project name="modules" default="main" basedir=".">
 
 	<property name="FLEX_HOME" location=".."/>
-	<property name="build.compiler" value="javac1.7" />
+	<property name="build.compiler" value="javac1.8" />
 
 	<!-- properties -->
 	<property file="${FLEX_HOME}/build.properties"/>
 
 	<property name="FLEX_LIB" value="${FLEX_HOME}/lib"/>
-	<property name="javac.src" value="1.7"/>
+	<property name="javac.src" value="1.8"/>
 	
 	<!-- Property for the platform.  -->
     <condition property="isMac" value="true">

@@ -254,16 +254,10 @@ public final class FileUtil
 	 */
 	public static void writeBinaryFile(File file, InputStream in) throws IOException
 	{
-		OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
 		in = new BufferedInputStream(in);
-        try
-        {
-            streamOutput(in, out);
-        }
-        finally
-        {
-            out.close();
-        }
+		try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
+			streamOutput(in, out);
+		}
     }
 
     public static void streamOutput(InputStream in, OutputStream out)
@@ -293,15 +287,9 @@ public final class FileUtil
 			throw new FileNotFoundException(fileName);
 		}
 
-		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF8"));
-		try
-		{
+		try (Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF8"))) {
 			out.write(output);
 			out.flush();
-		}
-		finally
-		{
-			out.close();
 		}
 	}
 
@@ -313,15 +301,9 @@ public final class FileUtil
 			throw new FileNotFoundException(fileName);
 		}
 
-		OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-		try
-		{
+		try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
 			out.write(output);
 			out.flush();
-		}
-		finally
-		{
-			out.close();
 		}
 	}
 

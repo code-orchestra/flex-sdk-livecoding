@@ -262,8 +262,7 @@ public class DebugDecoder
     {
 		for (String arg : args) {
 			// does not need to be buffered because DebugDecoder turns it into a SwfDecoder, which is buffered
-			InputStream in = new FileInputStream(arg);
-			try {
+			try (InputStream in = new FileInputStream(arg)) {
 				new DebugDecoder(in).readSwd(new DebugHandler() {
 					public void header(int version) {
 						System.out.println("FWD" + version);
@@ -294,8 +293,6 @@ public class DebugDecoder
 					}
 				});
 				System.out.println();
-			} finally {
-				in.close();
 			}
 		}
     }

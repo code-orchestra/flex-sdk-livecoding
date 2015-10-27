@@ -2096,8 +2096,7 @@ public final class SwfxPrinter extends TagHandler
 				try {
 					URL url = url1;
 					if (saveOption) {
-						InputStream in = new BufferedInputStream(url.openStream());
-						try {
+						try (InputStream in = new BufferedInputStream(url.openStream())) {
 							OutputStream fileOut = new BufferedOutputStream(new FileOutputStream(outfile));
 							try {
 								int c;
@@ -2107,8 +2106,6 @@ public final class SwfxPrinter extends TagHandler
 							} finally {
 								fileOut.close();
 							}
-						} finally {
-							in.close();
 						}
 					}
 
@@ -2145,22 +2142,15 @@ public final class SwfxPrinter extends TagHandler
 		
 		private static void dumpZip(PrintWriter out, URL url, String outfile) throws IOException
 		{
-			InputStream in = new BufferedInputStream(url.openStream());
-			try
-			{
+			try (InputStream in = new BufferedInputStream(url.openStream())) {
 				ZipInputStream zipIn = new ZipInputStream(in);
 				ZipEntry zipEntry = zipIn.getNextEntry();
-				while ((zipEntry != null))
-				{
+				while ((zipEntry != null)) {
 					URL fileUrl = new URL("jar:" + url.toString() + "!/" + zipEntry.getName());
 					if (isSwf(fileUrl))
 						dumpSwf(out, fileUrl, outfile);
 					zipEntry = zipIn.getNextEntry();
 				}
-			}
-			finally
-			{
-				in.close();
 			}
 		}
 		
@@ -2203,14 +2193,8 @@ public final class SwfxPrinter extends TagHandler
 		
 		private static boolean isSwf(URL url) throws IOException
 		{
-			InputStream in = new BufferedInputStream(url.openStream());
-			try
-			{
+			try (InputStream in = new BufferedInputStream(url.openStream())) {
 				return isSwf(in);
-			}
-			finally
-			{
-				in.close();
 			}
 		}
 		
@@ -2242,14 +2226,8 @@ public final class SwfxPrinter extends TagHandler
 		
 		private static boolean isZip(URL url) throws IOException
 		{
-			InputStream in = new BufferedInputStream(url.openStream());
-			try
-			{
+			try (InputStream in = new BufferedInputStream(url.openStream())) {
 				return isZip(in);
-			}
-			finally
-			{
-				in.close();
 			}
 		}
 		

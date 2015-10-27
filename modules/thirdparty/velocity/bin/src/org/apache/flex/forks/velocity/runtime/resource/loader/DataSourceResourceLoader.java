@@ -163,27 +163,18 @@ public class DataSourceResourceLoader extends ResourceLoader
 
              try
              {
-                 ResultSet rs = readData(conn, templateColumn, name);
 
-                 try
-                 {
-                     if (rs.next())
-                     {
+                 try (ResultSet rs = readData(conn, templateColumn, name)) {
+                     if (rs.next()) {
                          return new
-                             BufferedInputStream(rs.getAsciiStream(templateColumn));
-                     }
-                     else
-                     {
+                                 BufferedInputStream(rs.getAsciiStream(templateColumn));
+                     } else {
                          String msg = "DataSourceResourceLoader Error: cannot find resource "
-                             + name;
-                         Runtime.error(msg );
+                                 + name;
+                         Runtime.error(msg);
 
-                         throw new ResourceNotFoundException (msg);
+                         throw new ResourceNotFoundException(msg);
                      }
-                 }
-                 finally
-                 {
-                     rs.close();
                  }
              }
              finally
@@ -225,23 +216,14 @@ public class DataSourceResourceLoader extends ResourceLoader
 
              try
              {
-                 ResultSet rs = readData(conn, timestampColumn, name);
-                 try
-                 {
-                     if (rs.next())
-                     {
-	                     return rs.getTimestamp(timestampColumn).getTime();
-                     }
-                     else
-                     {
+                 try (ResultSet rs = readData(conn, timestampColumn, name)) {
+                     if (rs.next()) {
+                         return rs.getTimestamp(timestampColumn).getTime();
+                     } else {
                          Runtime.error("DataSourceResourceLoader Error: while "
-                                       + i_operation
-                                       + " could not find resource " + name);
+                                 + i_operation
+                                 + " could not find resource " + name);
                      }
-                 }
-                 finally
-                 {
-                     rs.close();
                  }
              }
              finally

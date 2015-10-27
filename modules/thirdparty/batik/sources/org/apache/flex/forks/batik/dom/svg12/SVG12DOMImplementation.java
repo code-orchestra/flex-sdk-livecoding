@@ -166,45 +166,19 @@ public class SVG12DOMImplementation
     protected static HashTable svg12Factories = new HashTable(svg11Factories);
 
     static {
-        svg12Factories.put(SVG12Constants.SVG_FLOW_DIV_TAG,
-                           new FlowDivElementFactory());
-
-        svg12Factories.put(SVG12Constants.SVG_FLOW_LINE_TAG,
-                           new FlowLineElementFactory());
-
-        svg12Factories.put(SVG12Constants.SVG_FLOW_PARA_TAG,
-                           new FlowParaElementFactory());
-
-        svg12Factories.put(SVG12Constants.SVG_FLOW_REGION_BREAK_TAG,
-                           new FlowRegionBreakElementFactory());
-
-        svg12Factories.put(SVG12Constants.SVG_FLOW_REGION_TAG,
-                           new FlowRegionElementFactory());
-
-        svg12Factories.put(SVG12Constants.SVG_FLOW_REGION_EXCLUDE_TAG,
-                           new FlowRegionExcludeElementFactory());
-
-        svg12Factories.put(SVG12Constants.SVG_FLOW_ROOT_TAG,
-                           new FlowRootElementFactory());
-
-        svg12Factories.put(SVG12Constants.SVG_FLOW_SPAN_TAG,
-                           new FlowSpanElementFactory());
-
-        svg12Factories.put(SVG12Constants.SVG_HANDLER_TAG,
-                           new HandlerElementFactory());
-
-        svg12Factories.put(SVG12Constants.SVG_MULTI_IMAGE_TAG,
-                           new MultiImageElementFactory());
-
-        svg12Factories.put(SVG12Constants.SVG_SOLID_COLOR_TAG,
-                           new SolidColorElementFactory());
-
-        svg12Factories.put(SVG12Constants.SVG_SUB_IMAGE_TAG,
-                           new SubImageElementFactory());
-
-        svg12Factories.put(SVG12Constants.SVG_SUB_IMAGE_REF_TAG,
-                           new SubImageRefElementFactory());
-
+        svg12Factories.put(SVG12Constants.SVG_FLOW_DIV_TAG, new FlowDivElementFactory());
+        svg12Factories.put(SVG12Constants.SVG_FLOW_LINE_TAG, new FlowLineElementFactory());
+        svg12Factories.put(SVG12Constants.SVG_FLOW_PARA_TAG, new FlowParaElementFactory());
+        svg12Factories.put(SVG12Constants.SVG_FLOW_REGION_BREAK_TAG, new FlowRegionBreakElementFactory());
+        svg12Factories.put(SVG12Constants.SVG_FLOW_REGION_TAG, new FlowRegionElementFactory());
+        svg12Factories.put(SVG12Constants.SVG_FLOW_REGION_EXCLUDE_TAG, new FlowRegionExcludeElementFactory());
+        svg12Factories.put(SVG12Constants.SVG_FLOW_ROOT_TAG, new FlowRootElementFactory());
+        svg12Factories.put(SVG12Constants.SVG_FLOW_SPAN_TAG, new FlowSpanElementFactory());
+        svg12Factories.put(SVG12Constants.SVG_HANDLER_TAG, new HandlerElementFactory());
+        svg12Factories.put(SVG12Constants.SVG_MULTI_IMAGE_TAG, new MultiImageElementFactory());
+        svg12Factories.put(SVG12Constants.SVG_SOLID_COLOR_TAG, new SolidColorElementFactory());
+        svg12Factories.put(SVG12Constants.SVG_SUB_IMAGE_TAG, new SubImageElementFactory());
+        svg12Factories.put(SVG12Constants.SVG_SUB_IMAGE_REF_TAG, new SubImageRefElementFactory());
     }
 
     /**

@@ -19,9 +19,9 @@
 
 package adobe.abc;
 
-import static adobe.abc.OptimizerConstants.OP_phi;
-
 import java.util.*;
+
+import static adobe.abc.OptimizerConstants.OP_phi;
 
 public abstract class Algorithms
 {
@@ -442,7 +442,7 @@ public abstract class Algorithms
 						found_sorted_element = true;
 
 						//  Remove this dependency from the remaining elements.
-						unsorted.stream().filter(y -> dep.containsKey(y)).forEach(y -> {
+						unsorted.stream().filter(dep::containsKey).forEach(y -> {
 							dep.get(y).remove(x);
 						});
 						

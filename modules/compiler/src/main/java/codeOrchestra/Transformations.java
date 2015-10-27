@@ -176,7 +176,7 @@ public class Transformations {
      * @return listener add statement
      */
     public static Node addAssetListeners(CompilationUnit unit, ClassDefinitionNode classDefinitionNode, List<VariableDefinitionNode> allEmbedFields, boolean isStatic) {
-        List<VariableDefinitionNode> embedFields = new ArrayList<VariableDefinitionNode>();
+        List<VariableDefinitionNode> embedFields = new ArrayList<>();
         for (VariableDefinitionNode variableDefinitionNode : allEmbedFields) {
             if (isStatic == TreeNavigator.isStaticField(variableDefinitionNode)) {
                 embedFields.add(variableDefinitionNode);

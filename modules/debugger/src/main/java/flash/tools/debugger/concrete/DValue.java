@@ -358,7 +358,7 @@ public class DValue implements Value
 	public void addMember(DVariable v)
 	{
 		if (m_members == null)
-			m_members = new HashMap<String, DVariable>();
+			m_members = new HashMap<>();
 
 		// if we are a proto member house away our original parent id
 		String name = v.getName();
@@ -372,7 +372,7 @@ public class DValue implements Value
 	public void addInheritedPrivateMember(DVariable v)
 	{
 		if (m_inheritedPrivates == null)
-			m_inheritedPrivates = new HashMap<String, List<DVariable>>();
+			m_inheritedPrivates = new HashMap<>();
 
 		// if we are a proto member house away our original parent id
 		String name = v.getName();
@@ -381,7 +381,7 @@ public class DValue implements Value
 		v.m_nonProtoParentId = m_nonProtoId;
 		List<DVariable> resultList = m_inheritedPrivates.get(name);
 		if (resultList == null) {
-			resultList = new ArrayList<DVariable>();
+			resultList = new ArrayList<>();
 			resultList.add(v);
 			m_inheritedPrivates.put(name, resultList);
 		}
@@ -507,7 +507,7 @@ public class DValue implements Value
 		if (m_inheritedPrivates == null)
 			return new DVariable[0];
 		
-		ArrayList<DVariable> finalList = new ArrayList<DVariable>();
+		ArrayList<DVariable> finalList = new ArrayList<>();
 
 		for (List<DVariable> varList : m_inheritedPrivates.values()) {
 			finalList.addAll(varList);

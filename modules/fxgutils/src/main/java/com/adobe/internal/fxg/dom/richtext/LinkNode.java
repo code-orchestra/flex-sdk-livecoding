@@ -99,7 +99,7 @@ public class LinkNode extends AbstractRichTextLeafNode
                     linkActiveFormat.setParent(this);
 
                     if (properties == null)
-                        properties = new HashMap<String, TextNode>(3);
+                        properties = new HashMap<>(3);
                     properties.put(propertyName, linkActiveFormat);
                 }
                 else
@@ -116,7 +116,7 @@ public class LinkNode extends AbstractRichTextLeafNode
                     linkHoverFormat.setParent(this);
 
                     if (properties == null)
-                        properties = new HashMap<String, TextNode>(3);
+                        properties = new HashMap<>(3);
                     properties.put(propertyName, linkHoverFormat);
                 }
                 else
@@ -133,7 +133,7 @@ public class LinkNode extends AbstractRichTextLeafNode
                     linkNormalFormat.setParent(this);
 
                     if (properties == null)
-                        properties = new HashMap<String, TextNode>(3);
+                        properties = new HashMap<>(3);
                     properties.put(propertyName, linkNormalFormat);
                 }
                 else
@@ -202,7 +202,7 @@ public class LinkNode extends AbstractRichTextLeafNode
         	}
             if (content == null)
             {
-                content = new ArrayList<TextNode>();
+                content = new ArrayList<>();
             }
             content.add((TextNode)child);
         }

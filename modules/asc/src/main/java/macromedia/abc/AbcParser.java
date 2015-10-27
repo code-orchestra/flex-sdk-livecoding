@@ -55,14 +55,14 @@ public final class AbcParser
         this.abcData.readAbc(new BytecodeBuffer(bytes));
     }
 
-    private final Map<String, Integer> fun_names = new HashMap<String, Integer>();
+    private final Map<String, Integer> fun_names = new HashMap<>();
 
-    private final ObjectList<ObjectList<ClassDefinitionNode>> clsdefs_sets = new ObjectList<ObjectList<ClassDefinitionNode>>();
-    private final ObjectList<String> region_name_stack = new ObjectList<String>();
+    private final ObjectList<ObjectList<ClassDefinitionNode>> clsdefs_sets = new ObjectList<>();
+    private final ObjectList<String> region_name_stack = new ObjectList<>();
 
     // TODO: better dependency analysis - this is used to populate FA's ce_unresolved_sets which
     // TODO: mxml uses to find dependencies - could be done earlier for abcs
-    private ObjectList<Set<ReferenceValue>> ce_unresolved_sets = new ObjectList<Set<ReferenceValue>>();
+    private ObjectList<Set<ReferenceValue>> ce_unresolved_sets = new ObjectList<>();
 
     public ProgramNode parseAbc()
     {
@@ -364,7 +364,7 @@ public final class AbcParser
 
         ParameterListNode paramList = null;
 
-        ObjectList<TypeInfo> param_types = new ObjectList<TypeInfo>(paramCount);
+        ObjectList<TypeInfo> param_types = new ObjectList<>(paramCount);
         ByteList decl_styles = new ByteList(1);
 
         for( int i = 0, cur_optional = 0; i < paramCount; ++i )
@@ -594,7 +594,7 @@ public final class AbcParser
         int[] optional_values = method_info.getOptionalParamTypes();
         int[] optional_kinds = method_info.getOptionalParamKinds();
         
-        ObjectList<Node> optionals = new ObjectList<Node>(optional_values.length);
+        ObjectList<Node> optionals = new ObjectList<>(optional_values.length);
         for( int i = 0; i < optional_values.length; ++i)
         {
             int value_index = optional_values[i];
@@ -691,7 +691,7 @@ public final class AbcParser
         {
             AbcData.BinaryMN base = getBinaryMNFromCPool(mn.baseMN);
             QName base_qn = getFullName(base);
-            ObjectList<QName> params = new ObjectList<QName>(mn.params.length);
+            ObjectList<QName> params = new ObjectList<>(mn.params.length);
             
             for( int i = 0; i < mn.params.length; ++i) {
                 params.add(getFullName(getBinaryMNFromCPool(mn.params[i])));
@@ -895,7 +895,7 @@ public final class AbcParser
         	{
         		StatementListNode instance_stmts = nf.statementList(null, (StatementListNode)null);
         		parseTraits(iinfo.getITraits(), instance_stmts, build_ast, null, build_ast); // Traits for the instance
-        		cdn.instanceinits = new ObjectList<Node>(instance_stmts.items.size());
+        		cdn.instanceinits = new ObjectList<>(instance_stmts.items.size());
         		if( instance_stmts.items.size() > 0)
         		{
         			cdn.instanceinits.addAll(instance_stmts.items);

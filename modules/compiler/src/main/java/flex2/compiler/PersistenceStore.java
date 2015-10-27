@@ -245,7 +245,7 @@ final class PersistenceStore
 	          Map<String, Long> archiveFileChecksums,
 	          String description) throws IOException
 	{
-	    Map<Object, Integer> pool = new HashMap<Object, Integer>();
+	    Map<Object, Integer> pool = new HashMap<>();
 
 		BufferedOutputStream out = new BufferedOutputStream(new RandomAccessFileOutputStream(file));
 
@@ -939,7 +939,7 @@ final class PersistenceStore
 			return -5;
 		}
 		
-		Map<String, Object> owners = new HashMap<String, Object>();
+		Map<String, Object> owners = new HashMap<>();
 		if (!readSourceNames(pool, sources, units, owners))
 		{
 			return -6;
@@ -1373,7 +1373,7 @@ final class PersistenceStore
 
 		length = readU32();
 		String[] locales = new String[length];
-		Map<String, String[]> rbDirectories = new HashMap<String, String[]>();
+		Map<String, String[]> rbDirectories = new HashMap<>();
 		
 		for (int i = 0; i < length; i++)
 		{
@@ -1515,8 +1515,8 @@ final class PersistenceStore
 		RandomAccessFileInputStream in = new RandomAccessFileInputStream(file);
 
 		Map m = sourcePath.sources();
-        Map<String, String> mappings = new HashMap<String, String>();
-        Map<String, Object> rbMappings = new HashMap<String, Object>();
+        Map<String, String> mappings = new HashMap<>();
+        Map<String, Object> rbMappings = new HashMap<>();
 
 		for (Object o1 : m.keySet()) {
 			String className = (String) o1;
@@ -1612,8 +1612,8 @@ final class PersistenceStore
         }
 
 		int size = readU32(in);
-        Set<VirtualFile> includes = new HashSet<VirtualFile>(size);
-		Map<VirtualFile, Long> includeTimes = new HashMap<VirtualFile, Long>(size);
+        Set<VirtualFile> includes = new HashSet<>(size);
+		Map<VirtualFile, Long> includeTimes = new HashMap<>(size);
 
 		for (int i = 0; i < size; i++)
 		{
@@ -1840,7 +1840,7 @@ final class PersistenceStore
 
 			if (hasAuxGenerateInfo)
 			{
-				u.auxGenerateInfo = new HashMap<String, Object>();
+				u.auxGenerateInfo = new HashMap<>();
 
 				String baseLoaderClass = (String) pool[readU32(in)];
 				u.auxGenerateInfo.put("baseLoaderClass", baseLoaderClass.length() > 0 ? baseLoaderClass : null);
@@ -1856,15 +1856,15 @@ final class PersistenceStore
 
 				u.auxGenerateInfo.put("usePreloader", readU8(in) == 1);
 
-				Map<String, Object> rootAttributeMap = new HashMap<String, Object>();
+				Map<String, Object> rootAttributeMap = new HashMap<>();
 				u.auxGenerateInfo.put("rootAttributes", rootAttributeMap);
 				readMap(in, pool, rootAttributeMap);
 
-				Map<String, Object> rootAttributeEmbedVars = new HashMap<String, Object>();
+				Map<String, Object> rootAttributeEmbedVars = new HashMap<>();
 				u.auxGenerateInfo.put("rootAttributeEmbedVars", rootAttributeEmbedVars);
 				readMap(in, pool, rootAttributeEmbedVars);
 
-				Map<String, Object> rootAttributeEmbedNames = new HashMap<String, Object>();
+				Map<String, Object> rootAttributeEmbedNames = new HashMap<>();
 				u.auxGenerateInfo.put("rootAttributeEmbedNames", rootAttributeEmbedNames);
 				readMap(in, pool, rootAttributeEmbedNames);
 			}
@@ -1904,7 +1904,7 @@ final class PersistenceStore
 		int size = readU32(in);
 		if (size > 0)
 		{
-			final Map<String, AssetInfo> assets = new HashMap<String, AssetInfo>();
+			final Map<String, AssetInfo> assets = new HashMap<>();
 
 			PathResolver resolver = ThreadLocalToolkit.getPathResolver();
 
@@ -2295,7 +2295,7 @@ final class PersistenceStore
 
         public Map<String, String> getValueMap()
         {
-            Map<String, String> result = new HashMap<String, String>();
+            Map<String, String> result = new HashMap<>();
 
 			for (int i = 0, length = count(); i < length; i++)
 			{

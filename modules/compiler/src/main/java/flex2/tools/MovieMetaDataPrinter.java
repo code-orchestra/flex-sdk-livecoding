@@ -77,9 +77,9 @@ public class MovieMetaDataPrinter
 	 */
 	public MovieMetaDataPrinter()
 	{
-		classes = new LinkedHashMap<String, Class>();
-		functions = new LinkedHashSet<Function>();
-		locations = new LinkedHashMap<String, String>();
+		classes = new LinkedHashMap<>();
+		functions = new LinkedHashSet<>();
+		locations = new LinkedHashMap<>();
 	}
 
 	private Map<String, Class> classes;
@@ -198,13 +198,13 @@ public class MovieMetaDataPrinter
 
 	class Class
 	{
-		List<String> metadata = new ArrayList<String>();
-		Map<String, Function> functions = new LinkedHashMap<String, Function>();
+		List<String> metadata = new ArrayList<>();
+		Map<String, Function> functions = new LinkedHashMap<>();
 	}
 
 	class Function
 	{
-		List<String> metadata = new ArrayList<String>();
+		List<String> metadata = new ArrayList<>();
 		String name;
 
 		public String toString()
@@ -221,8 +221,8 @@ public class MovieMetaDataPrinter
 		ABCVisitor(Decoder decoder)
 		{
 			super(decoder);
-			methods = new HashMap<Integer, String>();
-			mdStack = new Stack<List<String>>();
+			methods = new HashMap<>();
+			mdStack = new Stack<>();
 		}
 
 		private String currentClass, currentFunction, currentDefinition;

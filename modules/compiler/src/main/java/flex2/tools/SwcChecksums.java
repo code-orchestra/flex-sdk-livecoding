@@ -54,17 +54,17 @@ public class SwcChecksums
    /**
      * Map definition to signature checksum.
      */
-    private Map<QName, Long> swcDefSignatureChecksums = new HashMap<QName, Long>(); // Map<QName, Long>
+    private Map<QName, Long> swcDefSignatureChecksums = new HashMap<>(); // Map<QName, Long>
     
     /**
      * Map swc file to checksum (modification timestamp).
      */
-    private Map<String, Long> swcFileChecksums = new HashMap<String, Long>(); // Map<String, Long>
+    private Map<String, Long> swcFileChecksums = new HashMap<>(); // Map<String, Long>
     
     /**
      * Map archive files to checksum (modification timestamp).
      */
-    private Map<String, Long> archiveFileChecksums = new HashMap<String, Long>(); // Map<String, Long>
+    private Map<String, Long> archiveFileChecksums = new HashMap<>(); // Map<String, Long>
 
     private CompilerSwcContext swcContext;
     private ConfigurationBuffer cfgbuf;
@@ -109,7 +109,7 @@ public class SwcChecksums
         
         if (units != null)
         {
-            swcDefSignatureChecksums = new HashMap<QName, Long>();
+            swcDefSignatureChecksums = new HashMap<>();
             for (CompilationUnit unit : units)
             {
                 Source source = unit == null ? null : unit.getSource();

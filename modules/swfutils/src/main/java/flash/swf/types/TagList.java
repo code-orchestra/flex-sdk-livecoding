@@ -36,7 +36,7 @@ public class TagList extends TagHandler
 {
 	public TagList()
 	{
-		this.tags = new ArrayList<Tag>();
+		this.tags = new ArrayList<>();
 	}
 
 	public List<Tag> tags;

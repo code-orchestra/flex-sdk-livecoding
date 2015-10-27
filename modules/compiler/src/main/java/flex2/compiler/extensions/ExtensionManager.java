@@ -101,7 +101,7 @@ public class ExtensionManager
 
         Set<String> files = availableExtensions.keySet();
 
-        Set<E> extensions = new LinkedHashSet<E>();
+        Set<E> extensions = new LinkedHashSet<>();
 
         for ( String extensionPath : files )
         {
@@ -156,7 +156,7 @@ public class ExtensionManager
 
         String[] extNames = extensionsStr.split( ":" );
 
-        Set<E> extensions = new LinkedHashSet<E>();
+        Set<E> extensions = new LinkedHashSet<>();
 
         for (String extName : extNames) {
             Class<?> extClass;

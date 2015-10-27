@@ -37,7 +37,7 @@ public class ScriptNode extends Node
 
 	static
 	{
-		attributes = new HashSet<QName>();
+		attributes = new HashSet<>();
 		attributes.add(new QName("", "source"));
 		attributes.add(new QName("", "scope"));
 	}

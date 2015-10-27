@@ -60,8 +60,8 @@ public class BindableFirstPassEvaluator extends GenerativeFirstPassEvaluator
 	{
 		super(typeTable, defs);
 		this.metaData = metaData;
-		classMap = new LinkedHashMap<String, BindableInfo>();
-		evaluatedClasses = new HashSet<DefinitionNode>();
+		classMap = new LinkedHashMap<>();
+		evaluatedClasses = new HashSet<>();
 	}
 
 	/**
@@ -425,7 +425,7 @@ public class BindableFirstPassEvaluator extends GenerativeFirstPassEvaluator
 	 */
 	private void registerBindableClass(ClassDefinitionNode def)
 	{
-        (bindableClasses != null ? bindableClasses : (bindableClasses = new HashSet<DefinitionNode>())).add(def);
+        (bindableClasses != null ? bindableClasses : (bindableClasses = new HashSet<>())).add(def);
 	}
 
 	/**
@@ -535,7 +535,7 @@ public class BindableFirstPassEvaluator extends GenerativeFirstPassEvaluator
      */
     private void registerManagedClass(DefinitionNode def)
     {
-        (managedClasses != null ? managedClasses : (managedClasses = new HashSet<DefinitionNode>())).add(def);
+        (managedClasses != null ? managedClasses : (managedClasses = new HashSet<>())).add(def);
     }
 
     /**
@@ -551,7 +551,7 @@ public class BindableFirstPassEvaluator extends GenerativeFirstPassEvaluator
 	 */
 	private void registerVisitedGetterSetter(String name, int bindType)
 	{
-        (visitedProps != null ? visitedProps : (visitedProps = new HashMap<String, Integer>())).put(name, bindType);
+        (visitedProps != null ? visitedProps : (visitedProps = new HashMap<>())).put(name, bindType);
 	}
 
 	/**

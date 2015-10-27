@@ -56,7 +56,7 @@ public class ApplicationCache extends CacheBase
 
     public ApplicationCache()
     {
-        sources = new HashMap<String, Source>();
+        sources = new HashMap<>();
     }
 
     /**
@@ -171,8 +171,8 @@ public class ApplicationCache extends CacheBase
         else if ((a1 != null) && (a2 != null))
         {
             // Convert the arrays to sets to filter out duplicates.
-            Set<T> a1Set = new HashSet<T>(Arrays.<T>asList(a1));
-            Set<T> a2Set = new HashSet<T>(Arrays.<T>asList(a2));
+            Set<T> a1Set = new HashSet<>(Arrays.<T>asList(a1));
+            Set<T> a2Set = new HashSet<>(Arrays.<T>asList(a2));
 
             if (!a1Set.equals(a2Set))
             {
@@ -232,8 +232,8 @@ public class ApplicationCache extends CacheBase
     {
         this.sources.putAll(sources);
 
-        Map<QName, Source> qNames = new HashMap<QName, Source>(sources.size());
-        Map<Name, Map<String, Source>> dependentMap = new HashMap<Name, Map<String, Source>>(sources.size());
+        Map<QName, Source> qNames = new HashMap<>(sources.size());
+        Map<Name, Map<String, Source>> dependentMap = new HashMap<>(sources.size());
 
         for (Source source : this.sources.values())
         {
@@ -262,7 +262,7 @@ public class ApplicationCache extends CacheBase
 
                         if (inheritanceDependents == null)
                         {
-                            inheritanceDependents = new HashMap<String, Source>();
+                            inheritanceDependents = new HashMap<>();
                             dependentMap.put(name, inheritanceDependents);
                         }
 
@@ -278,7 +278,7 @@ public class ApplicationCache extends CacheBase
 
                         if (namespacesDependents == null)
                         {
-                            namespacesDependents = new HashMap<String, Source>();
+                            namespacesDependents = new HashMap<>();
                             dependentMap.put(name, namespacesDependents);
                         }
 
@@ -294,7 +294,7 @@ public class ApplicationCache extends CacheBase
 
                         if (expressionsDependents == null)
                         {
-                            expressionsDependents = new HashMap<String, Source>();
+                            expressionsDependents = new HashMap<>();
                             dependentMap.put(name, expressionsDependents);
                         }
 
@@ -310,7 +310,7 @@ public class ApplicationCache extends CacheBase
 
                         if (typesDependents == null)
                         {
-                            typesDependents = new HashMap<String, Source>();
+                            typesDependents = new HashMap<>();
                             dependentMap.put(name, typesDependents);
                         }
 
@@ -324,7 +324,7 @@ public class ApplicationCache extends CacheBase
 
         for (Source source : this.sources.values())
         {
-            Set<QName> dependents = new HashSet<QName>();
+            Set<QName> dependents = new HashSet<>();
             addDependents(source, dependents, qNames, dependentMap);
             int totalDependentCount = dependents.size();
             source.setTotalDependentCount(totalDependentCount);

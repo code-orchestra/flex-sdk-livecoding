@@ -65,7 +65,7 @@ import macromedia.asc.util.ContextStatics;
  */
 public class StyleModule
 {
-    protected Map<String, AtEmbed> atEmbeds = new LinkedHashMap<String, AtEmbed>();
+    protected Map<String, AtEmbed> atEmbeds = new LinkedHashMap<>();
     protected List<FontFaceRule> fontFaceRules;
     protected boolean advanced = true;
     protected boolean qualifiedTypeSelectors = true;
@@ -81,8 +81,8 @@ public class StyleModule
     {
         this.source = source;
         this.perCompileData = perCompileData;
-        fontFaceRules = new ArrayList<FontFaceRule>();
-        styleDefs = new LinkedHashMap<String, StyleDef>();
+        fontFaceRules = new ArrayList<>();
+        styleDefs = new LinkedHashMap<>();
     }
 
     //--------------------------------------------------------------------------
@@ -97,7 +97,7 @@ public class StyleModule
     
     public Set<AtEmbed> getAtEmbeds()
     {
-        Set<AtEmbed> result = new HashSet<AtEmbed>(atEmbeds.values());
+        Set<AtEmbed> result = new HashSet<>(atEmbeds.values());
 
         for (StyleDef styleDef : styleDefs.values())
         {
@@ -167,7 +167,7 @@ public class StyleModule
     
     public Set<Import> getImports()
     {
-        Set<Import> result = new HashSet<Import>();
+        Set<Import> result = new HashSet<>();
 
         for (StyleDef styleDef : styleDefs.values()) {
             result.addAll(styleDef.getImports());

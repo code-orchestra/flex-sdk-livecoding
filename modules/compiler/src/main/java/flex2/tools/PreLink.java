@@ -114,10 +114,10 @@ public class PreLink implements flex2.compiler.PreLink
                         NameMappings nameMappings,
                         Configuration configuration)
     {
-        LinkedList<Source> extraSources = new LinkedList<Source>();
-        LinkedList<String> mixins = new LinkedList<String>();
-        LinkedList<DefineTag> fonts = new LinkedList<DefineTag>();
-        Set<String> contributingSwcs = new HashSet<String>();
+        LinkedList<Source> extraSources = new LinkedList<>();
+        LinkedList<String> mixins = new LinkedList<>();
+        LinkedList<DefineTag> fonts = new LinkedList<>();
+        Set<String> contributingSwcs = new HashSet<>();
         
         // Build a set, such as { "core", "controls" }, of the names
         // of all resource bundles used in all compilation units.
@@ -221,7 +221,7 @@ public class PreLink implements flex2.compiler.PreLink
 
             // Only check the dependencies of hand written compilation units.
             if (!u.getSource().isSwcScriptOwner() && compilerConfiguration.enableSwcVersionFiltering()) {
-                Set<Name> dependencies = new HashSet<Name>();
+                Set<Name> dependencies = new HashSet<>();
                 dependencies.addAll(u.inheritance);
                 dependencies.addAll(u.namespaces);
                 dependencies.addAll(u.expressions);
@@ -292,7 +292,7 @@ public class PreLink implements flex2.compiler.PreLink
 
     private void locateStyleDefaults(List<CompilationUnit> units, CompilerConfiguration compilerConfiguration)
     {
-        Set<VirtualFile> defaultsCssFiles = new HashSet<VirtualFile>();
+        Set<VirtualFile> defaultsCssFiles = new HashSet<>();
         String versionDefaultsCssFileName = null;
 
         if (compilerConfiguration.getCompatibilityVersionString() != null)
@@ -380,7 +380,7 @@ public class PreLink implements flex2.compiler.PreLink
                         // because new dependencies could have brought
                         // in new SWC files with a defaults.css file.
                         List<VirtualFile> cssFiles = compilerConfig.getDefaultsCssFiles();
-                        Set<String> cssFilesSet = new HashSet<String>();
+                        Set<String> cssFilesSet = new HashSet<>();
                         
                         for (VirtualFile cssFile : cssFiles )
                         {
@@ -394,14 +394,14 @@ public class PreLink implements flex2.compiler.PreLink
                         
                         if (!cssFilesSet.isEmpty())
                         {
-                            Set<String> secondCssFilesSet = new HashSet<String>();
+                            Set<String> secondCssFilesSet = new HashSet<>();
                             
                             for (VirtualFile cssFile : cssFiles )
                             {
                                 secondCssFilesSet.add(cssFile.getName());
                             }
                             
-                            addedCssFilesSet = new HashSet<String>();
+                            addedCssFilesSet = new HashSet<>();
                             for (String cssName : secondCssFilesSet )
                             {
                                 if (!cssFilesSet.contains(cssName))
@@ -414,7 +414,7 @@ public class PreLink implements flex2.compiler.PreLink
                         stylesContainer.loadDefaultStyles();
                         stylesContainer.validate(symbolTable, nameMappings, u.getStandardDefs(), compilerConfig.getThemeNames(), addedCssFilesSet);
 
-                        List<CULinkable> linkables = new LinkedList<CULinkable>();
+                        List<CULinkable> linkables = new LinkedList<>();
 
                         for (CompilationUnit unit : units) {
                             if (unit == null) {
@@ -428,7 +428,7 @@ public class PreLink implements flex2.compiler.PreLink
                             LinkState state = new LinkState(linkables, new HashSet(), configuration.getIncludes(), new HashSet<String>());
 
                             // C: generate style classes for components which we want to link in.
-                            List<Source> styleSources = new ArrayList<Source>();
+                            List<Source> styleSources = new ArrayList<>();
                             generatedSources = stylesContainer.processDependencies(styleSources, state.getDefNames(), resources, 
                                                                     u.getSource().getRelativePath().replace('/', '.'),
                                                                     u.getSource().getShortName());
@@ -829,8 +829,8 @@ public class PreLink implements flex2.compiler.PreLink
         }
     }
 
-    private SortedSet<String> resourceBundleNames = new TreeSet<String>();
-    private SortedSet<String> externalResourceBundleNames = new TreeSet<String>();
+    private SortedSet<String> resourceBundleNames = new TreeSet<>();
+    private SortedSet<String> externalResourceBundleNames = new TreeSet<>();
 
     private void processResourceBundleNames(List units, flex2.compiler.common.Configuration configuration)
     {
@@ -967,8 +967,8 @@ public class PreLink implements flex2.compiler.PreLink
         
         };
 
-        Map<String, String> effectTriggers = new TreeMap<String, String>();
-        Set<String> inheritingStyles = new HashSet<String>();
+        Map<String, String> effectTriggers = new TreeMap<>();
+        Set<String> inheritingStyles = new HashSet<>();
         CompilationUnit mainUnit = null;
         Set externs = swcContext.getExterns();
         boolean removeUnusedRSLs = configuration.getRemoveUnusedRsls();
@@ -1006,7 +1006,7 @@ public class PreLink implements flex2.compiler.PreLink
                 Set<String> unitAccessibilityList = u.getAccessibilityClasses();
                 if (unitAccessibilityList != null) {
                     if (accessibilityList == null) {
-                        accessibilityList = new HashSet<String>();
+                        accessibilityList = new HashSet<>();
                     }
                     accessibilityList.addAll(unitAccessibilityList);
                 }
@@ -1090,7 +1090,7 @@ public class PreLink implements flex2.compiler.PreLink
             return false;
         }
 
-        LinkedList<FrameInfo> frames = new LinkedList<FrameInfo>();
+        LinkedList<FrameInfo> frames = new LinkedList<>();
         frames.addAll( configuration.getFrameList() );
 
         CompilationUnit mainUnit = null;
@@ -1373,8 +1373,8 @@ public class PreLink implements flex2.compiler.PreLink
                                 getRuntimeSharedLibrarySettingsConfiguration().
                                 getForceRslsPaths();
 
-        List<String> unusedRsls = new LinkedList<String>(); // running list of unused rsls
-        Set<String>downstreamRsls = new HashSet<String>();  // loaded rsls downstream from first unused rsl
+        List<String> unusedRsls = new LinkedList<>(); // running list of unused rsls
+        Set<String>downstreamRsls = new HashSet<>();  // loaded rsls downstream from first unused rsl
         boolean addDownstreamRsl = false;
         
         // Get unused RSLs and verify that there are no downstream RSLs that have
@@ -1412,7 +1412,7 @@ public class PreLink implements flex2.compiler.PreLink
         if (!requiredInheritanceRsls.isEmpty())
             unusedRsls.removeAll(requiredInheritanceRsls);
         
-        return new HashSet<String>(unusedRsls);
+        return new HashSet<>(unusedRsls);
     }
 
     /**
@@ -1558,7 +1558,7 @@ public class PreLink implements flex2.compiler.PreLink
             boolean bolditalic;
         }
 
-        Map<String, FontInfo> fontMap = new TreeMap<String, FontInfo>();
+        Map<String, FontInfo> fontMap = new TreeMap<>();
         for (DefineTag font1 : fonts) {
             DefineFont font = (DefineFont) font1;
             FontInfo fi = fontMap.get(font.getFontName());
@@ -2133,7 +2133,7 @@ public class PreLink implements flex2.compiler.PreLink
                        CompilerSwcContext swcContext)
     {
         // Build a map of the name/value pairs for the info
-        TreeMap<String, Object> t = new TreeMap<String, Object>();
+        TreeMap<String, Object> t = new TreeMap<>();
 
         t.put("currentDomain", "ApplicationDomain.currentDomain");
 

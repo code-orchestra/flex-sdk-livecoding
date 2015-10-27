@@ -30,13 +30,13 @@ import java.util.*;
  */
 public class CodeFragmentsInputBuffer extends InputBuffer
 {
-    private List<CodeFragment> codeFragments = new ArrayList<CodeFragment>();
+    private List<CodeFragment> codeFragments = new ArrayList<>();
     // Initialized to 1, because the default position for generated
     // ASC nodes is 0 and without this, they were getting mapped to
     // line 1 by getLnNum().  If the default position is changed to
     // -1, then length can be initialized to 0.
     private int length = 1;
-    private Map<Integer, Integer> positionToLineNumberMap = new HashMap<Integer, Integer>();
+    private Map<Integer, Integer> positionToLineNumberMap = new HashMap<>();
 
     public CodeFragmentsInputBuffer(String path)
     {

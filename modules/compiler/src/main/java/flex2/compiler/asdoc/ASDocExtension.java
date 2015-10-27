@@ -244,7 +244,7 @@ public class ASDocExtension implements Extension
         }
 
         // the inheritance needs to be processed in a predictable order.. 
-        Set<QName> inheritance = new TreeSet<QName>(new ComparatorImpl());
+        Set<QName> inheritance = new TreeSet<>(new ComparatorImpl());
         
         for (Name name : unit.inheritance)
         {

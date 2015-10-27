@@ -932,7 +932,7 @@ public class DocumentBuilder extends ComponentBuilder implements MXMLNamespaces
 	    // unit's context and incorporated into the generated IFlexBootstrap
 	    // derivative.
 
-        Map<String, Object> swfvarmap = new TreeMap<String, Object>();
+        Map<String, Object> swfvarmap = new TreeMap<>();
 
 		Attribute frameRate = getSpecialAttribute(node, specialAttrFrameRate);
 		if (frameRate != null)
@@ -1240,7 +1240,7 @@ public class DocumentBuilder extends ComponentBuilder implements MXMLNamespaces
 		if (baseLoaderClass == null)
 			return;
 
-		unit.auxGenerateInfo = new HashMap<String, Object>();
+		unit.auxGenerateInfo = new HashMap<>();
 
 		String generateInitClass = "_" + document.getClassName() + "_FlexInit";
         generateInitClass = generateInitClass.replaceAll( "[^A-Za-z0-9]", "_" );
@@ -1256,9 +1256,9 @@ public class DocumentBuilder extends ComponentBuilder implements MXMLNamespaces
 
 		document.addMetadata( new Script( "[Frame(factoryClass=\"" + generateLoaderClass + "\")]\n" ) );
 
-		Map<String, Object> rootAttributeMap = new HashMap<String, Object>();
-		Map<String, Object> rootAttributeEmbedVarsMap = new HashMap<String, Object>();
-		Map<String, Object> rootAttributeEmbedNamesMap = new HashMap<String, Object>();
+		Map<String, Object> rootAttributeMap = new HashMap<>();
+		Map<String, Object> rootAttributeEmbedVarsMap = new HashMap<>();
+		Map<String, Object> rootAttributeEmbedNamesMap = new HashMap<>();
 		//	Type type = typeTable.getType(node.getNamespace(), node.getLocalPart());
 
 		for (Iterator it = node.getAttributeNames(); it != null && it.hasNext();)

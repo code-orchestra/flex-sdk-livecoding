@@ -870,7 +870,7 @@ public final class SwfxPrinter extends TagHandler
 				if (lineStyle.hasFillStyle()) {
 					out.println(">");
 					indent();
-					ArrayList<FillStyle> fillStyles = new ArrayList<FillStyle>(1);
+					ArrayList<FillStyle> fillStyles = new ArrayList<>(1);
 					fillStyles.add(lineStyle.fillStyle);
 					printFillStyles(fillStyles, alpha);
 					indent();

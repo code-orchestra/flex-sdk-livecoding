@@ -283,7 +283,7 @@ public class BuilderLibrary extends Library
 		return result;
 	}
 	
-	private static final Set<String> excludes = new HashSet<String>();
+	private static final Set<String> excludes = new HashSet<>();
 
 	static
 	{

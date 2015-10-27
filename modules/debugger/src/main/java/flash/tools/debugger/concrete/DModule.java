@@ -91,10 +91,10 @@ public class DModule implements SourceFile
 		m_id = id;
 		m_shortName = generateShortName(nameParser);
 		m_path = generatePath(nameParser);
-		m_line2Offset = new ArrayList<Integer>();
-		m_line2Func = new ArrayList<Object>();
-		m_func2FirstLine = new HashMap<String, Integer>();
-		m_func2LastLine = new HashMap<String, Integer>();
+		m_line2Offset = new ArrayList<>();
+		m_line2Func = new ArrayList<>();
+		m_func2FirstLine = new HashMap<>();
+		m_func2LastLine = new HashMap<>();
 		m_packageName = nameParser.getPackage();
         m_gotAllFncNames = false;
         m_isolateId = isolateId;
@@ -272,7 +272,7 @@ public class DModule implements SourceFile
 
 	public void lineMapping(StringBuilder sb)
 	{
-		Map<String, String> args = new HashMap<String, String>();
+		Map<String, String> args = new HashMap<>();
 		args.put("fileName", getName() ); //$NON-NLS-1$
 		args.put("fileNumber", Integer.toString(getId()) ); //$NON-NLS-1$
         sb.append(PlayerSessionManager.getLocalizationManager().getLocalizedTextString("functionsInFile", args)); //$NON-NLS-1$

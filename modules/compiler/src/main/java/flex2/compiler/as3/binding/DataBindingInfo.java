@@ -46,7 +46,7 @@ public class DataBindingInfo
     public DataBindingInfo(Set<String> imports)
     {
         this.imports = imports;
-        rootWatchers = new HashMap<String, Watcher>();
+        rootWatchers = new HashMap<>();
     }
 
     public List<BindingExpression> getBindingExpressions()

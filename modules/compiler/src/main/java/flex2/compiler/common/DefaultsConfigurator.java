@@ -53,7 +53,7 @@ public class DefaultsConfigurator
 {
     static private void set( ConfigurationBuffer cfgbuf, String var, String val ) throws ConfigurationException
     {
-        LinkedList<String> args = new LinkedList<String>();
+        LinkedList<String> args = new LinkedList<>();
         args.add( val );
         cfgbuf.setVar( var, args, "defaults", -1 );
     }
@@ -104,7 +104,7 @@ public class DefaultsConfigurator
 	
 	static public void loadMinimumDefaults( ConfigurationBuffer cfgbuf ) throws ConfigurationException
 	{
-		List<String> args = new ArrayList<String>();
+		List<String> args = new ArrayList<>();
 		
 	    args.add( "${flexlib}/${configname}-config.xml" );
 	    // we should probably have a dedicated subclass of DefaultsConfigurator for
@@ -164,7 +164,7 @@ public class DefaultsConfigurator
 	    set( cfgbuf, "default-frame-rate", "24" );
 	    set( cfgbuf, "default-background-color", "0xFFFFFF" );
 
-	    LinkedList<String> args = new LinkedList<String>();
+	    LinkedList<String> args = new LinkedList<>();
 	    args.add( "500" );
 	    args.add( "375" );
 	    cfgbuf.setVar( "default-size", args, "defaults", -1 );
@@ -189,7 +189,7 @@ public class DefaultsConfigurator
 	    set( cfgbuf, "compiler.fonts.max-cached-fonts", "20" );
 	    set( cfgbuf, "compiler.fonts.max-glyphs-per-face", "1000" );
 
-	    List<String> fontManagers = new ArrayList<String>();
+	    List<String> fontManagers = new ArrayList<>();
 	    fontManagers.add( "flash.fonts.JREFontManager" );
 	    fontManagers.add( "flash.fonts.BatikFontManager" );
 	    cfgbuf.setVar( "compiler.fonts.managers", fontManagers, "defaults", -1 );

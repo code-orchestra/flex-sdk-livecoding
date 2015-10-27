@@ -37,7 +37,7 @@ public class LibraryNode extends Node
 
     static
     {
-        attributes = new HashSet<QName>();
+        attributes = new HashSet<>();
     }
 
     public LibraryNode(String uri, String localName, int size)

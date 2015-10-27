@@ -166,7 +166,7 @@ public class Benchmark
 
         if (durations == null)
         {
-            durations = new HashMap<String, Long>();
+            durations = new HashMap<>();
         }
 
         durations.put(id, duration);
@@ -178,7 +178,7 @@ public class Benchmark
     {
         if (startTimes == null)
         {
-            startTimes = new HashMap<String, Long>();
+            startTimes = new HashMap<>();
         }
 
         startTimes.put(id, System.currentTimeMillis());

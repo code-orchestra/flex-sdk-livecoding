@@ -64,7 +64,7 @@ public final class GraphicContext implements Cloneable
 		bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		bufferedImageGraphics = bufferedImage.createGraphics(); //Keep in sync with current transforms
 
-		hints.put(RenderingHintsKeyExt.KEY_BUFFERED_IMAGE, new WeakReference<BufferedImage>(bufferedImage));
+		hints.put(RenderingHintsKeyExt.KEY_BUFFERED_IMAGE, new WeakReference<>(bufferedImage));
 
 		init();
 	}
@@ -511,7 +511,7 @@ public final class GraphicContext implements Cloneable
 
 	private AffineTransform transform = new AffineTransform();
 
-	private Vector<TransformStackElement> transformStack = new Vector<TransformStackElement>();
+	private Vector<TransformStackElement> transformStack = new Vector<>();
 
 	private boolean transformStackValid = true;
 

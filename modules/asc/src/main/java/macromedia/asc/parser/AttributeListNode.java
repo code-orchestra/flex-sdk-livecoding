@@ -26,7 +26,7 @@ import macromedia.asc.semantics.*;
  */
 public class AttributeListNode extends Node
 {
-	public ObjectList<Node> items = new ObjectList<Node>(1);
+	public ObjectList<Node> items = new ObjectList<>(1);
 	public boolean hasIntrinsic;
 	public boolean hasStatic;
 	public boolean hasFinal;
@@ -44,7 +44,7 @@ public class AttributeListNode extends Node
     public boolean compileDefinition;
  
     public Namespaces namespaces = new Namespaces(3);
-    public ObjectList<String> namespace_ids = new ObjectList<String>(3);
+    public ObjectList<String> namespace_ids = new ObjectList<>(3);
 
     private ObjectValue userNamespace;
     

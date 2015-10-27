@@ -60,7 +60,7 @@ public class ClassInfo extends Info
     {
         if (variables == null)
         {
-            variables = new ArrayList<QName>();
+            variables = new ArrayList<>();
         }
 
         variables.add(variableName);
@@ -78,7 +78,7 @@ public class ClassInfo extends Info
     {
         if (skinParts == null)
         {
-            skinParts = new HashMap<String, Boolean>();
+            skinParts = new HashMap<>();
         }
         
         skinParts.put(fieldName, required);
@@ -155,7 +155,7 @@ public class ClassInfo extends Info
                 baseParts = baseClassInfo.getSkinParts(inherited);
             }
             
-            Map<String, Boolean> inheritedMap = new HashMap<String, Boolean>();
+            Map<String, Boolean> inheritedMap = new HashMap<>();
             
             //add local skin parts
             if (skinParts != null)

@@ -57,7 +57,7 @@ public class SwcLazyReadArchive extends SwcDynamicArchive
     public void load()
     {
         assert files == null;
-        files = new HashMap<String, VirtualFile>();
+        files = new HashMap<>();
 
         try
         {

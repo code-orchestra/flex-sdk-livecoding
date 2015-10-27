@@ -185,7 +185,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
      */
     public FXG2SWFTranscoder()
     {
-        spriteStack = new Stack<DefineSprite>();
+        spriteStack = new Stack<>();
     }
     
 
@@ -734,7 +734,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
         String definitionName = node.getNodeName();
 
         if (definitions == null)
-            definitions = new HashMap<String, DefineSprite>();
+            definitions = new HashMap<>();
 
         DefineSprite definitionSprite = definitions.get(definitionName);
         if (definitionSprite == null)
@@ -958,7 +958,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
             if (stroke != null)
             {
                 //make a copy of ShapeRecord for strokes
-                ArrayList<ShapeRecord> shapeRecords2 = new ArrayList<ShapeRecord>(shapeRecords);
+                ArrayList<ShapeRecord> shapeRecords2 = new ArrayList<>(shapeRecords);
                 Collections.copy(shapeRecords2, shapeRecords);
 
                 //generate the define sprite for the stroke object with no clipping
@@ -1215,7 +1215,7 @@ public class FXG2SWFTranscoder implements FXGTranscoder
 
     protected List<Filter> createFilters(List<FilterNode> list)
     {
-        List<Filter> filters = new ArrayList<Filter>(list.size());
+        List<Filter> filters = new ArrayList<>(list.size());
         for (FilterNode f : list) {
             if (f instanceof BevelFilterNode) {
                 BevelFilterNode node = (BevelFilterNode) f;

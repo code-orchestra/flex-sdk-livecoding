@@ -49,7 +49,7 @@ public class Tool
 
             if ( enumeration.hasMoreElements() )
             {
-                result = new HashMap<String, String>();
+                result = new HashMap<>();
 
                 while ( enumeration.hasMoreElements() )
                 {

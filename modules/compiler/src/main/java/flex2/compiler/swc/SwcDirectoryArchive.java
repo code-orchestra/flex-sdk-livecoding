@@ -66,7 +66,7 @@ public class SwcDirectoryArchive implements SwcArchive
             throw new SwcException.NotASwcDirectory( dir );
         }
 
-        fileList = new HashSet<String>();
+        fileList = new HashSet<>();
         readFiles( fileList, "", new File( dir ) );
     }
 
@@ -108,7 +108,7 @@ public class SwcDirectoryArchive implements SwcArchive
             load();
         }
 
-        Map<String, VirtualFile> map = new HashMap<String, VirtualFile>();
+        Map<String, VirtualFile> map = new HashMap<>();
 
         for (String filename : fileList)
         {
@@ -177,7 +177,7 @@ public class SwcDirectoryArchive implements SwcArchive
 
             if (fileList == null)
             {
-                fileList = new HashSet<String>();
+                fileList = new HashSet<>();
             }
 
             fileList.add( file.getName() );
@@ -211,7 +211,7 @@ public class SwcDirectoryArchive implements SwcArchive
 
             if (fileList == null)
             {
-                fileList = new HashSet<String>();
+                fileList = new HashSet<>();
             }
 
             fileList.add( path );

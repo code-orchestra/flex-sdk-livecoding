@@ -45,7 +45,7 @@ public class MovieDecoder extends TagHandler
 		m.version = h.version;
 		m.framerate = h.rate;
 		m.size = h.size;
-		m.frames = new ArrayList<Frame>(h.framecount);
+		m.frames = new ArrayList<>(h.framecount);
 		frame = new Frame();
 	}
 

@@ -78,31 +78,31 @@ public class ActionBlockEmitter extends Emitter
         public ObjectList<ByteList> scripts;
         public int main_index;
 
-        private Map<ByteList, Integer> bodies_map= new HashMap<ByteList, Integer>();
+        private Map<ByteList, Integer> bodies_map= new HashMap<>();
 
-        private Map<ByteList, Integer> constant_utf8_map= new HashMap<ByteList, Integer>();
-        public ObjectList<ByteList> constant_utf8_pool = new ObjectList<ByteList>();
+        private Map<ByteList, Integer> constant_utf8_map= new HashMap<>();
+        public ObjectList<ByteList> constant_utf8_pool = new ObjectList<>();
 
-        private Map<ByteList, Integer> constant_mn_map= new HashMap<ByteList, Integer>();
-        public ObjectList<ByteList> constant_mn_pool = new ObjectList<ByteList>();
+        private Map<ByteList, Integer> constant_mn_map= new HashMap<>();
+        public ObjectList<ByteList> constant_mn_pool = new ObjectList<>();
 
-        private Map<ByteList, Integer> constant_nss_map= new HashMap<ByteList, Integer>();
-        public ObjectList<ByteList> constant_nss_pool = new ObjectList<ByteList>();
+        private Map<ByteList, Integer> constant_nss_map= new HashMap<>();
+        public ObjectList<ByteList> constant_nss_pool = new ObjectList<>();
 
-        private Map<ByteList, Integer> constant_ns_map= new HashMap<ByteList, Integer>();
-        public ObjectList<ByteList> constant_ns_pool = new ObjectList<ByteList>();
+        private Map<ByteList, Integer> constant_ns_map= new HashMap<>();
+        public ObjectList<ByteList> constant_ns_pool = new ObjectList<>();
 
-        private Map<ByteList, Integer> constant_double_map= new HashMap<ByteList, Integer>();
-        public ObjectList<ByteList> constant_double_pool = new ObjectList<ByteList>();
+        private Map<ByteList, Integer> constant_double_map= new HashMap<>();
+        public ObjectList<ByteList> constant_double_pool = new ObjectList<>();
 
-        private Map<ByteList, Integer> constant_uint_map= new HashMap<ByteList, Integer>();
-        public ObjectList<ByteList> constant_uint_pool = new ObjectList<ByteList>();
+        private Map<ByteList, Integer> constant_uint_map= new HashMap<>();
+        public ObjectList<ByteList> constant_uint_pool = new ObjectList<>();
 
-        private Map<ByteList, Integer> constant_int_map= new HashMap<ByteList, Integer>();
-        public ObjectList<ByteList> constant_int_pool = new ObjectList<ByteList>();
+        private Map<ByteList, Integer> constant_int_map= new HashMap<>();
+        public ObjectList<ByteList> constant_int_pool = new ObjectList<>();
         
-        private Map<ByteList, Integer> constant_decimal_map= new HashMap<ByteList, Integer>();
-        public ObjectList<ByteList> constant_decimal_pool = new ObjectList<ByteList>();
+        private Map<ByteList, Integer> constant_decimal_map= new HashMap<>();
+        public ObjectList<ByteList> constant_decimal_pool = new ObjectList<>();
         
         /*
         class ByteListComparator implements Comparator
@@ -133,22 +133,22 @@ public class ActionBlockEmitter extends Emitter
             minor_version = cx.statics.es4_numerics? MINORwithDECIMAL : MINOR;
             major_version = MAJOR;
             vars_count = 0;
-            vars = new ObjectList<ByteList>();
+            vars = new ObjectList<>();
             methods_count = 0;
-            methods = new ObjectList<ByteList>();
+            methods = new ObjectList<>();
             metadata_count = 0;
-            metadata = new ObjectList<ByteList>();
+            metadata = new ObjectList<>();
             bodies_count = 0;
-            bodies = new ObjectList<ByteList>();
+            bodies = new ObjectList<>();
             dispids_count = 0;
-            dispids = new ObjectList<ByteList>();
+            dispids = new ObjectList<>();
             classes_count = 0;
-            instances = new ObjectList<ByteList>();
-            classes = new ObjectList<ByteList>();
+            instances = new ObjectList<>();
+            classes = new ObjectList<>();
             interfaces_count = 0;
-            interfaces = new ObjectList<ByteList>();
+            interfaces = new ObjectList<>();
             scripts_count = 0;
-            scripts = new ObjectList<ByteList>();
+            scripts = new ObjectList<>();
 
             exception_table = allocBytes();
             exception_count = 0;
@@ -464,19 +464,19 @@ public class ActionBlockEmitter extends Emitter
         public int loop_index = -1;
     }
 
-    protected ObjectList<ExceptionBlock> exceptionBlocks = new ObjectList<ExceptionBlock>();
+    protected ObjectList<ExceptionBlock> exceptionBlocks = new ObjectList<>();
 
     protected IntList if_addrs = new IntList();
     protected IntList try_addrs = new IntList();
     protected IntList else_addrs = new IntList();
     protected IntList loopbegin_addrs = new IntList();
-    protected ObjectList<IntList> break_addrs = new ObjectList<IntList>();
+    protected ObjectList<IntList> break_addrs = new ObjectList<>();
     protected IntList break_scope_depth = new IntList();
     protected IntList break_temp_count = new IntList();
-    protected ObjectList<IntList> continue_addrs = new ObjectList<IntList>();
+    protected ObjectList<IntList> continue_addrs = new ObjectList<>();
     protected IntList continue_scope_depth = new IntList();
     protected IntList switchbegin_addrs = new IntList();
-    protected ObjectList<IntList> case_addrs = new ObjectList<IntList>();
+    protected ObjectList<IntList> case_addrs = new ObjectList<>();
     protected IntList default_addrs = new IntList();
     protected IntList seen_default_case = new IntList();
     private boolean sets_dxns;
@@ -508,7 +508,7 @@ public class ActionBlockEmitter extends Emitter
         return qname_index;
     }
 
-    private Map<ObjectValue, Integer> nsConstants = new HashMap<ObjectValue, Integer>();
+    private Map<ObjectValue, Integer> nsConstants = new HashMap<>();
 
 	/*
 
@@ -611,7 +611,7 @@ public class ActionBlockEmitter extends Emitter
 
     int makeNamespaceSet( ObjectList<ObjectValue> namespaces )
     {
-        Set<Integer> namespace_set = new TreeSet<Integer>();
+        Set<Integer> namespace_set = new TreeSet<>();
         for( ObjectValue ns : namespaces )
         {
             if( ns != null )
@@ -630,7 +630,7 @@ public class ActionBlockEmitter extends Emitter
 
     int makeVersionedNamespaceSet(ObjectValue ns, TreeSet<Integer> versions)
     {
-        Set<Integer> namespace_set = new TreeSet<Integer>();
+        Set<Integer> namespace_set = new TreeSet<>();
 		if (versions.size() == 0)
         {
             cx.internalError("internal error: empty versions set");
@@ -673,8 +673,8 @@ public class ActionBlockEmitter extends Emitter
 
     protected void FinishClass(Context cx, final QName name, final QName basename, boolean is_dynamic, boolean is_final, boolean is_interface, boolean is_nullable)
     {
-        ObjectList<ByteList> static_traits = new ObjectList<ByteList>();
-        ObjectList<ByteList> instance_traits = new ObjectList<ByteList>();
+        ObjectList<ByteList> static_traits = new ObjectList<>();
+        ObjectList<ByteList> instance_traits = new ObjectList<>();
         IntList interfaces = new IntList();
         int scope_depth  = cx.getScopes().size();
         
@@ -981,7 +981,7 @@ public class ActionBlockEmitter extends Emitter
 
         int method_info = GetMethodInfo(name);
 
-        ObjectList<ByteList> traits = new ObjectList<ByteList>();
+        ObjectList<ByteList> traits = new ObjectList<>();
 
         // Traits
 
@@ -1165,8 +1165,8 @@ public class ActionBlockEmitter extends Emitter
     name.
     */
 
-    protected ObjectList<String> method_infos = new ObjectList<String>();
-    protected Map<String, Integer> method_infos_map = new HashMap<String,Integer>();
+    protected ObjectList<String> method_infos = new ObjectList<>();
+    protected Map<String, Integer> method_infos_map = new HashMap<>();
 
     public int GetMethodInfo(final String name)
     {
@@ -1185,8 +1185,8 @@ public class ActionBlockEmitter extends Emitter
         return id;
     }
 
-    protected ObjectList<String> metadata_infos = new ObjectList<String>();
-    protected Map<String, Integer> metadata_infos_map = new HashMap<String,Integer>();
+    protected ObjectList<String> metadata_infos = new ObjectList<>();
+    protected Map<String, Integer> metadata_infos_map = new HashMap<>();
 
     public int GetMetadataInfo(final String name)
     {
@@ -1220,7 +1220,7 @@ public class ActionBlockEmitter extends Emitter
         return id;
     }
 
-    protected ObjectList<QName> class_infos = new ObjectList<QName>();
+    protected ObjectList<QName> class_infos = new ObjectList<>();
 
     public int GetClassInfo(final QName name)
     {
@@ -1242,7 +1242,7 @@ public class ActionBlockEmitter extends Emitter
         return i;
     }
 
-    protected ObjectList<String> package_infos = new ObjectList<String>();
+    protected ObjectList<String> package_infos = new ObjectList<>();
 
     public int GetPackageInfo(final String name)
     {
@@ -1278,7 +1278,7 @@ public class ActionBlockEmitter extends Emitter
     use in the slot structure
     */
 
-    protected ObjectList<String> global_method_names = new ObjectList<String>();
+    protected ObjectList<String> global_method_names = new ObjectList<>();
 
     public int GetMethodId(String name, Namespaces unused)
     {
@@ -2464,7 +2464,7 @@ public class ActionBlockEmitter extends Emitter
 		// get api metadata from slot
 		// compute version metadata values
 
-		TreeSet<Integer> versions = new TreeSet<Integer>();
+		TreeSet<Integer> versions = new TreeSet<>();
 		ArrayList<MetaData> list = slot.getMetadata();
 		if (list != null)
 		for (MetaData md : list) {
@@ -2825,7 +2825,7 @@ public class ActionBlockEmitter extends Emitter
     protected void FinishProgram(Context cx, final String name, int init_info)
     {
         ObjectValue obj = cx.scope();
-        ObjectList<ByteList> traits = new ObjectList<ByteList>();
+        ObjectList<ByteList> traits = new ObjectList<>();
 
         FinishTraits(obj, traits);
 
@@ -3066,7 +3066,7 @@ public class ActionBlockEmitter extends Emitter
     // they will be eliminated in the namespace set in the abc file as well.
     private void printNamespaceSet(ObjectList<ObjectValue> namespaces)
     {
-        Set<String> namespace_set = new TreeSet<String>();
+        Set<String> namespace_set = new TreeSet<>();
         for( ObjectValue ns : namespaces )
         {
             String ns_name = ns == cx.publicNamespace() ? "public" : ns.name;
@@ -8573,7 +8573,7 @@ protected void Setsuper(ByteList code,int index)
     public void dumpCpoolVars()
     {
     	int i=1;
-    	Set<String> done = new HashSet<String>();
+    	Set<String> done = new HashSet<>();
     	for (ByteList bl: ab.constant_utf8_pool)
     	{
     		String s = cleanupString(bl);

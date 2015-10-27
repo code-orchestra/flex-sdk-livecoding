@@ -43,12 +43,12 @@ public class ResourceBundlePath extends SourcePathBase
 		// C: allowSourcePathOverlap is true here because SourcePath will take care of that.
 		super(I18nUtils.getTranslationFormat(config).getSupportedMimeTypes(), true);
 		
-		rbDirectories = new HashMap<String, List<File>>();
+		rbDirectories = new HashMap<>();
 		locales = config.getLocales();
 		for (int i = 0, size = locales == null ? 0 : locales.length; i < size; i++)
 		{
 			VirtualFile[] classPath = config.getResourceBundlePathForLocale(locales[i]);
-			List<File> directories = new LinkedList<File>();
+			List<File> directories = new LinkedList<>();
 			
 			addApplicationParentToSourcePath(appPath, classPath, directories);
 			addPathElements(classPath, directories, allowSourcePathOverlap, warnings);

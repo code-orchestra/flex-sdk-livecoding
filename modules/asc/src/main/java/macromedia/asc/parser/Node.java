@@ -67,11 +67,11 @@ public class Node implements Serializable, Cloneable // CodeOrchestra: made seri
         if (profiling_on)
         {
             
-            nodecounts = new HashMap<Class,Integer>();
+            nodecounts = new HashMap<>();
             
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 public void run() {
-                    TreeMap<Integer,Class> t = new TreeMap<Integer,Class>();
+                    TreeMap<Integer,Class> t = new TreeMap<>();
                     for (Class c : nodecounts.keySet())
                         t.put(nodecounts.get(c),c);
 

@@ -53,7 +53,7 @@ public class ExportAssets extends Tag
     }
 
     /** list of DefineTags exported by this ExportTag */
-    public List<Tag> exports = new ArrayList<Tag>();
+    public List<Tag> exports = new ArrayList<>();
 
     public boolean equals(Object object)
     {

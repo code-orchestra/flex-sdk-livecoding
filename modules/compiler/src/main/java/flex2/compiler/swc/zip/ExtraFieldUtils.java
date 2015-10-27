@@ -37,7 +37,7 @@ public class ExtraFieldUtils {
     private static Hashtable<ZipShort, Class<AsiExtraField>> implementations;
 
     static {
-        implementations = new Hashtable<ZipShort, Class<AsiExtraField>>();
+        implementations = new Hashtable<>();
         register(AsiExtraField.class);
     }
 
@@ -88,7 +88,7 @@ public class ExtraFieldUtils {
      * @since 1.1
      */
     public static ZipExtraField[] parse(byte[] data) {
-        Vector<ZipExtraField> v = new Vector<ZipExtraField>();
+        Vector<ZipExtraField> v = new Vector<>();
         int start = 0;
         while (start <= data.length - 4) {
             ZipShort headerId = new ZipShort(data, start);

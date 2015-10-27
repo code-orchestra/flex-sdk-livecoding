@@ -34,7 +34,7 @@ public class XMLNode extends Node
 
 	static
 	{
-		attributes = new HashSet<QName>();
+		attributes = new HashSet<>();
 		attributes.add(new QName("", StandardDefs.PROP_ID));
 		attributes.add(new QName("", StandardDefs.PROP_SOURCE));
         attributes.add(new QName("", StandardDefs.PROP_FORMAT)); //for WebService Operation

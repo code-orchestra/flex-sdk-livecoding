@@ -52,7 +52,7 @@ public class FXGSymbolClass
     public void addAdditionalSymbolClass(FXGSymbolClass symbolClass)
     {
         if (additionalSymbolClasses == null)
-            additionalSymbolClasses = new ArrayList<FXGSymbolClass>();
+            additionalSymbolClasses = new ArrayList<>();
 
         additionalSymbolClasses.add(symbolClass);
     }

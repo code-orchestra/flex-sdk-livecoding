@@ -48,13 +48,13 @@ public class SwcGroup
 	private NameMappings nameMappings = new NameMappings();
 
 	// list of files in file section of catalogs
-	private Map<String, VirtualFile> files = new HashMap<String, VirtualFile>();
+	private Map<String, VirtualFile> files = new HashMap<>();
 
 	private Set<QName> qnames;
 
 	private Map<String, SwcScript> def2script;
 
-    private Map<SwcScript, String> obsoleted = new HashMap<SwcScript, String>();
+    private Map<SwcScript, String> obsoleted = new HashMap<>();
 
 	// use SwcCache.getSwcGroup() to get a SwcGroup
 	SwcGroup(Map<String, Swc> swcs)
@@ -160,7 +160,7 @@ public class SwcGroup
 
 	public List<Long> getSwcTimes()
 	{
-		List<Long> lastModified = new ArrayList<Long>();
+		List<Long> lastModified = new ArrayList<>();
 
 		for (Swc swc : swcs.values()) {
 			lastModified.add(swc.getLastModified());
@@ -244,7 +244,7 @@ public class SwcGroup
 		// Given a set of SWCs, we need to build a map from each top-level
 		// definition back to scripts.
 
-		ArrayList<SwcScript> scriptList = new ArrayList<SwcScript>();
+		ArrayList<SwcScript> scriptList = new ArrayList<>();
 
 		for (Swc swc : swcs.values()) {
 			for (Iterator libit = swc.getLibraryIterator(); libit.hasNext(); ) {
@@ -319,11 +319,11 @@ public class SwcGroup
 			}
 		});
 
-		def2script = new HashMap<String, SwcScript>();
-		qnames = new HashSet<QName>();
+		def2script = new HashMap<>();
+		qnames = new HashSet<>();
 		for (SwcScript s : scriptArray) {
 			String name = s.getName();
-			HashMap<String, SwcScript> staging = new HashMap<String, SwcScript>();
+			HashMap<String, SwcScript> staging = new HashMap<>();
 			for (Iterator defit = s.getDefinitionIterator(); defit.hasNext(); ) {
 				String def = (String) defit.next();
 				staging.put(def, s);

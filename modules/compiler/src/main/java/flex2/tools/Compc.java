@@ -177,7 +177,7 @@ public class Compc extends Tool implements FlexTool
 
         List<VirtualFile>[] array = CompilerAPI.getVirtualFileList(configuration.getIncludeSources(),
                                                                    configuration.getStylesheets().values(),
-                                                                   new HashSet<String>(Arrays.asList(sourceMimeTypes)),
+                new HashSet<>(Arrays.asList(sourceMimeTypes)),
                                                                    sourcePath.getPaths());
 
         // note: if Configuration is ever shared with other parts of the system, then this part will need
@@ -194,7 +194,7 @@ public class Compc extends Tool implements FlexTool
         ResourceContainer resources = new ResourceContainer();
         ResourceBundlePath bundlePath = new ResourceBundlePath(configuration.getCompilerConfiguration(), null);
 
-        Map<String, Source> classes = new HashMap<String, Source>();
+        Map<String, Source> classes = new HashMap<>();
         NameMappings mappings = CompilerAPI.getNameMappings(configuration);
         List<SwcComponent> nsComponents = SwcAPI.setupNamespaceComponents(configuration, mappings, sourcePath,
                                                                           sourceList, classes);
@@ -325,7 +325,7 @@ public class Compc extends Tool implements FlexTool
                             resources = new ResourceContainer();
                             bundlePath = new ResourceBundlePath(configuration.getCompilerConfiguration(), null);
 
-                            classes = new HashMap<String, Source>();
+                            classes = new HashMap<>();
                             nsComponents = SwcAPI.setupNamespaceComponents(configuration, mappings, sourcePath, sourceList, classes);
                             SwcAPI.setupClasses(configuration, sourcePath, sourceList, classes);
                         }
@@ -351,8 +351,8 @@ public class Compc extends Tool implements FlexTool
             Transcoder[] transcoders = WebTierAPI.getTranscoders( configuration );
             SubCompiler[] compilers = WebTierAPI.getCompilers(compilerConfig, mappings, transcoders);
 
-            ArrayList<Source> sources = new ArrayList<Source>();
-            Map<String, VirtualFile> rbFiles = new HashMap<String, VirtualFile>();
+            ArrayList<Source> sources = new ArrayList<>();
+            Map<String, VirtualFile> rbFiles = new HashMap<>();
 
             if (benchmark != null)
             {
@@ -387,7 +387,7 @@ public class Compc extends Tool implements FlexTool
 
                 // These are files which don't necessarily have dependencies on them
                 // so the compiler won't figure out if they've been modified.
-                Map<String, VirtualFile> archiveFiles = new TreeMap<String, VirtualFile>();
+                Map<String, VirtualFile> archiveFiles = new TreeMap<>();
                 if (configuration.getCSSArchiveFiles() != null) archiveFiles.putAll(configuration.getCSSArchiveFiles());
                 if (configuration.getL10NArchiveFiles() != null) archiveFiles.putAll(configuration.getL10NArchiveFiles());
                 if (configuration.getFiles() != null) archiveFiles.putAll(configuration.getFiles());

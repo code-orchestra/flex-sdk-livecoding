@@ -159,8 +159,8 @@ public final class Mxmlc extends Tool implements FlexTool
             ResourceContainer resources = new ResourceContainer();
             ResourceBundlePath bundlePath = new ResourceBundlePath(configuration.getCompilerConfiguration(), targetFile);
 
-            ArrayList<Source> sources = new ArrayList<Source>();
-            List<CompilationUnit> units = new ArrayList<CompilationUnit>();
+            ArrayList<Source> sources = new ArrayList<>();
+            List<CompilationUnit> units = new ArrayList<>();
 
             if (benchmark != null)
             {
@@ -752,7 +752,7 @@ public final class Mxmlc extends Tool implements FlexTool
     {
         if (cfgbuf.getVar( "help" ) != null)
         {
-            Set<String> keywords = new HashSet<String>();
+            Set<String> keywords = new HashSet<>();
             List vals = cfgbuf.getVar( "help" );
             for (Object val1 : vals) {
                 ConfigurationValue val = (ConfigurationValue) val1;
@@ -805,7 +805,7 @@ public final class Mxmlc extends Tool implements FlexTool
 
         if (ex.source == null || ex.source.equals("command line"))
         {
-            Map<String, String> p = new HashMap<String, String>();
+            Map<String, String> p = new HashMap<>();
             p.put( "program", program );
             String help = ThreadLocalToolkit.getLocalizationManager().getLocalizedTextString( "flex2.compiler.CommandLineHelp", p );
             if (help != null)

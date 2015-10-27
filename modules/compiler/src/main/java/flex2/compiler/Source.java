@@ -100,7 +100,7 @@ public final class Source implements Comparable<Source>
 			fileTime = file.getLastModified();
 		}
 
-		fileIncludeTimes = new HashMap<VirtualFile, Long>(4);
+		fileIncludeTimes = new HashMap<>(4);
 	}
 
 	private VirtualFile file;
@@ -553,7 +553,7 @@ public final class Source implements Comparable<Source>
      */
     public Set<VirtualFile> getFileIncludesSet()
     {
-        return new HashSet<VirtualFile>(fileIncludeTimes.keySet());
+        return new HashSet<>(fileIncludeTimes.keySet());
     }
 
     /**
@@ -561,7 +561,7 @@ public final class Source implements Comparable<Source>
      */
     public Map<VirtualFile, Long> getFileIncludeTimes()
     {
-        return new HashMap<VirtualFile, Long>(fileIncludeTimes);
+        return new HashMap<>(fileIncludeTimes);
     }
 
 	public boolean isIncludedFile(String name)
@@ -588,7 +588,7 @@ public final class Source implements Comparable<Source>
 			{
 				if (updated == null)
 				{
-					updated = new ArrayList<VirtualFile>(fileIncludeTimes.size());
+					updated = new ArrayList<>(fileIncludeTimes.size());
 				}
 				updated.add(f);
 			}
@@ -621,8 +621,8 @@ public final class Source implements Comparable<Source>
 	{
 		if (fragments == null)
 		{
-			fragments = new HashMap<String, Object>();
-			fragmentLineMaps = new HashMap<String, LineNumberMap>();
+			fragments = new HashMap<>();
+			fragmentLineMaps = new HashMap<>();
 		}
 
 		fragments.put(n, f);

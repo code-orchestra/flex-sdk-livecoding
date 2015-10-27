@@ -54,7 +54,7 @@ public final class Context implements ErrorConstants
     public ContextStatics statics;
     public CompilerHandler handler;
 
-    public ObjectList<ConfigVar> config_vars = new ObjectList<ConfigVar>();
+    public ObjectList<ConfigVar> config_vars = new ObjectList<>();
     
     //Constants for internal & private namespace names
     public static final byte NS_PUBLIC = 0x00;
@@ -77,7 +77,7 @@ public final class Context implements ErrorConstants
     private int contextId;
 
     private TreeMap<UnresolvedNamespace, ObjectList<ObjectValue>> unresolved_namespaces;
-	public ObjectList<Node>    comments = new ObjectList<Node>();
+	public ObjectList<Node>    comments = new ObjectList<>();
 	public boolean scriptAssistParsing = false;	// allows use of the Asc parser by flex-debugger
 	public boolean spaceOperators = false;
 	
@@ -96,15 +96,15 @@ public final class Context implements ErrorConstants
             }
             if (statics.builtins == null)
             {
-                statics.builtins = new HashMap<String, TypeValue>();
-                statics.userDefined = new HashMap<String, TypeValue>();
-                statics.namespaces   = new HashMap<String,ObjectValue>();
-                statics.internal_namespaces = new HashMap<String,ObjectValue>();
-                statics.protected_namespaces = new HashMap<String,ObjectValue>();
-                statics.static_protected_namespaces = new HashMap<String,ObjectValue>();
-                statics.private_namespaces = new HashMap<String,ObjectValue>();
+                statics.builtins = new HashMap<>();
+                statics.userDefined = new HashMap<>();
+                statics.namespaces   = new HashMap<>();
+                statics.internal_namespaces = new HashMap<>();
+                statics.protected_namespaces = new HashMap<>();
+                statics.static_protected_namespaces = new HashMap<>();
+                statics.private_namespaces = new HashMap<>();
 
-                statics.validImports = new HashSet<String>();
+                statics.validImports = new HashSet<>();
             }
         }
     }
@@ -161,7 +161,7 @@ public final class Context implements ErrorConstants
             }
             else
             {
-                List<UnresolvedNamespace> nsList = new ArrayList<UnresolvedNamespace>(cx.unresolved_namespaces.keySet());
+                List<UnresolvedNamespace> nsList = new ArrayList<>(cx.unresolved_namespaces.keySet());
                 for (UnresolvedNamespace ns : nsList) {
                     ObjectList<ObjectValue> scopes = cx.unresolved_namespaces.get(ns);
                     if (this.unresolved_namespaces.get(ns) == null)
@@ -1032,7 +1032,7 @@ public final class Context implements ErrorConstants
         return this.err;
     }
 
-    public ObjectList<TypeInfo> def_types = new ObjectList<TypeInfo>();
+    public ObjectList<TypeInfo> def_types = new ObjectList<>();
 
     public Block newBlock()
     {
@@ -1464,7 +1464,7 @@ public final class Context implements ErrorConstants
     {
         if (statics.validImports == null)
         {
-            statics.validImports = new HashSet<String>();
+            statics.validImports = new HashSet<>();
         }
         statics.validImports.add(name);
     }
@@ -1553,7 +1553,7 @@ public final class Context implements ErrorConstants
     {
         if (unresolved_namespaces == null)
         {
-            unresolved_namespaces = new TreeMap<UnresolvedNamespace, ObjectList<ObjectValue>>(new ObjectValue.ObjectValueCompare());
+            unresolved_namespaces = new TreeMap<>(new ObjectValue.ObjectValueCompare());
         }
 
         for (UnresolvedNamespace ns : unresolved_namespaces.keySet()) {
@@ -1574,7 +1574,7 @@ public final class Context implements ErrorConstants
 
         UnresolvedNamespace ns = new UnresolvedNamespace(cx, node, ref);
         ns.name = ("__unresolved__ns__" + statics.unresolved_ns_count++).intern();
-        ObjectList<ObjectValue> scopes = new ObjectList<ObjectValue>(statics.scopes);
+        ObjectList<ObjectValue> scopes = new ObjectList<>(statics.scopes);
         unresolved_namespaces.put(ns, scopes);
         return ns;
     }
@@ -1583,7 +1583,7 @@ public final class Context implements ErrorConstants
     {
         if (unresolved_namespaces != null)
         {
-            List<UnresolvedNamespace> nsList = new ArrayList<UnresolvedNamespace>(unresolved_namespaces.keySet());
+            List<UnresolvedNamespace> nsList = new ArrayList<>(unresolved_namespaces.keySet());
 
             for (UnresolvedNamespace ns : nsList) {
                 ObjectList<ObjectValue> temp = statics.scopes;
@@ -1698,7 +1698,7 @@ public final class Context implements ErrorConstants
         StringBuilder code_buffer;
         if( config_vars != null && config_vars.size() > 0)
         {
-        	HashSet<String> namespaces = new HashSet<String>();
+        	HashSet<String> namespaces = new HashSet<>();
         	// guesstimate.  Should avoid resizing too many times.
             code_buffer = new StringBuilder(config_vars.size()*10);
             for( int i = 0, size = config_vars.size(); i < size; ++i )

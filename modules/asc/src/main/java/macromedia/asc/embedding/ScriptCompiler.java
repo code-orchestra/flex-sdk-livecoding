@@ -121,14 +121,14 @@ public class ScriptCompiler
 		System.err.println("Files: " + file.size() + " Time: " + (System.currentTimeMillis() - startTime) + "ms");
 	}
 
-    static ObjectList<ConfigVar> config_vars = new ObjectList<ConfigVar>();
+    static ObjectList<ConfigVar> config_vars = new ObjectList<>();
     static ObjectList<String> use_namespaces;
     static String swfOptions = null;
 
     private static void init(String[] args) throws Throwable
 	{
-		ObjectList<String> filespecs = new ObjectList<String>();
-		ObjectList<Boolean> imported = new ObjectList<Boolean>();
+		ObjectList<String> filespecs = new ObjectList<>();
+		ObjectList<Boolean> imported = new ObjectList<>();
 
 		boolean use_static_semantics = false;
 		boolean decimalFlag = false;
@@ -197,7 +197,7 @@ public class ScriptCompiler
 				case "-use":
 // -use <namespace>
 					if (use_namespaces == null)
-						use_namespaces = new ObjectList<String>();
+						use_namespaces = new ObjectList<>();
 					use_namespaces.add(args[++i]);
 					break;
 				case "-avmtarget":
@@ -252,9 +252,9 @@ public class ScriptCompiler
             s.use_namespaces.addAll(use_namespaces);
         }
 
-		file = new ArrayList<File>(filespecs.size());
-        cx = new ArrayList<Context>(filespecs.size());
-        emitter = new ArrayList<ActionBlockEmitter>(filespecs.size());
+		file = new ArrayList<>(filespecs.size());
+        cx = new ArrayList<>(filespecs.size());
+        emitter = new ArrayList<>(filespecs.size());
 
 		for (int i = 0, length = filespecs.size(); i < length; i++)
 		{
@@ -303,16 +303,16 @@ public class ScriptCompiler
             }
         }
 
-		node = new ArrayList<ProgramNode>(file.size());
-		fa = new ArrayList<FlowAnalyzer>(file.size());
-		inheritance = new HashSet<Pair>();
-		type = new HashSet<Pair>();
-        expr = new HashSet<Pair>();
+		node = new ArrayList<>(file.size());
+		fa = new ArrayList<>(file.size());
+		inheritance = new HashSet<>();
+		type = new HashSet<>();
+        expr = new HashSet<>();
     }
 
     public static String[] expandArguments(String[] args) throws IOException {
         boolean has_expanded_args = false;
-        ObjectList<String> exp_args = new ObjectList<String>(args.length);
+        ObjectList<String> exp_args = new ObjectList<>(args.length);
 		for (String arg1 : args) {
 			// Expand @<filename> arguments
 			if (arg1.startsWith("@")) {
@@ -446,7 +446,7 @@ public class ScriptCompiler
 			}
 		}
 
-		final DependencyGraph<Integer> g = new DependencyGraph<Integer>();
+		final DependencyGraph<Integer> g = new DependencyGraph<>();
 
 		for (int i = 0, length = node.size(); i < length; i++)
 		{
@@ -455,7 +455,7 @@ public class ScriptCompiler
 
 			if (!g.containsVertex(path))
 			{
-				g.addVertex(new Vertex<String>(path));
+				g.addVertex(new Vertex<>(path));
 			}
 
 			for (Pair p : inheritance) {
@@ -465,7 +465,7 @@ public class ScriptCompiler
 			}
 		}
 
-		final List<Integer> tsort = new ArrayList<Integer>(node.size());
+		final List<Integer> tsort = new ArrayList<>(node.size());
 
 		Algorithms.topologicalSort(g, new Visitor<String>()
 		{
@@ -497,11 +497,11 @@ public class ScriptCompiler
 		}
 		else
 		{
-			List<File> tempFile = new ArrayList<File>(file.size());
-			List<Context> tempCX = new ArrayList<Context>(cx.size());
-			List<ActionBlockEmitter> tempEmitter = new ArrayList<ActionBlockEmitter>(emitter.size());
-			List<ProgramNode> tempNode = new ArrayList<ProgramNode>(node.size());
-			List<FlowAnalyzer> tempFA = new ArrayList<FlowAnalyzer>(fa.size());
+			List<File> tempFile = new ArrayList<>(file.size());
+			List<Context> tempCX = new ArrayList<>(cx.size());
+			List<ActionBlockEmitter> tempEmitter = new ArrayList<>(emitter.size());
+			List<ProgramNode> tempNode = new ArrayList<>(node.size());
+			List<FlowAnalyzer> tempFA = new ArrayList<>(fa.size());
 
 			for (Integer aTsort : tsort) {
 				int loc = aTsort;
@@ -695,7 +695,7 @@ public class ScriptCompiler
 
 	private static void ce()
 	{
-        ArrayList<ConstantEvaluator> ces = new ArrayList<ConstantEvaluator>();
+        ArrayList<ConstantEvaluator> ces = new ArrayList<>();
         for (int i = 0, length = file.size(); i < length; i++)
 		{
 			if (cx.get(i).errorCount() == 0)

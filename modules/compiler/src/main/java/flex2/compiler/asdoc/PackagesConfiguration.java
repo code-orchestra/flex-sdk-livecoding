@@ -36,8 +36,8 @@ public class PackagesConfiguration
 	// 'packages.package' option
 	//
 	
-	private List<PackageInfo> packages = new ArrayList<PackageInfo>();
-	private Set<String> packageNames = new HashSet<String>();
+	private List<PackageInfo> packages = new ArrayList<>();
+	private Set<String> packageNames = new HashSet<>();
 
 	/**
 	 * returns a list of all the packageInfo objects. 

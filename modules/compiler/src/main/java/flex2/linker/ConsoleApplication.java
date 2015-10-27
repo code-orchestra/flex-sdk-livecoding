@@ -43,9 +43,9 @@ public class ConsoleApplication
 {
 	public ConsoleApplication(LinkerConfiguration linkerConfiguration)
 	{		
-		abcList = new ArrayList<byte[]>();
+		abcList = new ArrayList<>();
 		enableDebugger = linkerConfiguration.debug();
-		exportedUnits = new LinkedList<CompilationUnit>();
+		exportedUnits = new LinkedList<>();
 	}
 	
 	private List<byte[]> abcList;
@@ -72,8 +72,8 @@ public class ConsoleApplication
 
     private DependencyGraph<CompilationUnit> extractCompilationUnitInfo(List<CompilationUnit> units)
     {
-        final DependencyGraph<CompilationUnit> dependencies = new DependencyGraph<CompilationUnit>();
-		final Map<QName, String> qnames = new HashMap<QName, String>(); // QName, VirtualFile.getName()
+        final DependencyGraph<CompilationUnit> dependencies = new DependencyGraph<>();
+		final Map<QName, String> qnames = new HashMap<>(); // QName, VirtualFile.getName()
 
 		for (CompilationUnit u : units) {
 			Source s = u.getSource();

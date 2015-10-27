@@ -37,7 +37,7 @@ public class ZipEntry extends java.util.zip.ZipEntry implements Cloneable {
     private int internalAttributes = 0;
     private int platform = PLATFORM_FAT;
     private long externalAttributes = 0;
-    private Vector<ZipExtraField> extraFields = new Vector<ZipExtraField>();
+    private Vector<ZipExtraField> extraFields = new Vector<>();
     private String name = null;
 
     /**

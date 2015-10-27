@@ -262,7 +262,7 @@ public final class CompilationUnit
 
 		if (metadata == null)
 		{
-			metadata = new HashSet<MetaDataNode>();
+			metadata = new HashSet<>();
 		}
 		else
 		{
@@ -275,7 +275,7 @@ public final class CompilationUnit
 
 		if (extraClasses == null)
 		{
-			extraClasses = new HashSet<String>();
+			extraClasses = new HashSet<>();
 		}
 		else
 		{
@@ -288,7 +288,7 @@ public final class CompilationUnit
 
 		if (remoteClassAliases == null)
 		{
-			remoteClassAliases = new HashMap<String, String>(1);
+			remoteClassAliases = new HashMap<>(1);
 		}
 		else
 		{
@@ -297,7 +297,7 @@ public final class CompilationUnit
 
         if (licensedClassReqs == null)
         {
-            licensedClassReqs = new HashMap<String, String>(1);
+            licensedClassReqs = new HashMap<>(1);
         }
         else
         {
@@ -306,19 +306,19 @@ public final class CompilationUnit
 
         if (effectTriggers == null)
 		{
-			effectTriggers = new HashMap<String, String>(1);
+			effectTriggers = new HashMap<>(1);
 		}
 		else
 		{
 			effectTriggers.clear();
 		}
 
-		mixins = new HashSet<String>(2);
+		mixins = new HashSet<>(2);
 
 		if (resourceBundles == null)
 		{
-			resourceBundles = new HashSet<String>(1);
-			resourceBundleHistory = new HashSet<String>(1);
+			resourceBundles = new HashSet<>(1);
+			resourceBundleHistory = new HashSet<>(1);
 		}
 		else
 		{
@@ -337,11 +337,11 @@ public final class CompilationUnit
 
 		if (inheritance == null)
 		{
-			inheritance = new HashSet<Name>(2);
-			types = new HashSet<Name>(8);
-			expressions = new HashSet<Name>(8);
-			namespaces = new HashSet<Name>(2);
-			importPackageStatements = new HashSet<String>(16);
+			inheritance = new HashSet<>(2);
+			types = new HashSet<>(8);
+			expressions = new HashSet<>(8);
+			namespaces = new HashSet<>(2);
+			importPackageStatements = new HashSet<>(16);
 			importDefinitionStatements = new QNameSet(16);
 
 			inheritanceHistory = new MultiNameMap(2);
@@ -388,7 +388,7 @@ public final class CompilationUnit
 		typeInfo = null;
 		if (classTable == null)
 		{
-			classTable = new HashMap<String, AbcClass>((source.isSourcePathOwner() || source.isSourceListOwner()) ? 4 : 8);
+			classTable = new HashMap<>((source.isSourcePathOwner() || source.isSourceListOwner()) ? 4 : 8);
 		}
 		else
 		{
@@ -406,7 +406,7 @@ public final class CompilationUnit
 	{
 		if (generatedSources == null)
 		{
-			generatedSources = new HashMap<QName, Source>();
+			generatedSources = new HashMap<>();
 		}
 		generatedSources.put(defName, source);
 	}
@@ -418,7 +418,7 @@ public final class CompilationUnit
 		{
 			if (this.generatedSources == null)
 			{
-				this.generatedSources = new HashMap<QName, Source>();
+				this.generatedSources = new HashMap<>();
 			}
 			this.generatedSources.putAll(generatedSources);
 		}
@@ -536,7 +536,7 @@ public final class CompilationUnit
 		{
 			if (accessibilityClasses == null)
 			{
-				accessibilityClasses = new HashSet<String>();
+				accessibilityClasses = new HashSet<>();
 			}
 			accessibilityClasses.addAll(u.accessibilityClasses);
 		}
@@ -546,7 +546,7 @@ public final class CompilationUnit
 	{
 		if (accessibilityClasses == null)
 		{
-			accessibilityClasses = new HashSet<String>();
+			accessibilityClasses = new HashSet<>();
 		}
 
 		String accessibilityClass = metadata.getValue("implementation");

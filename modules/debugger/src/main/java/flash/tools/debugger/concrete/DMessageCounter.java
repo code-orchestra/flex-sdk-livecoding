@@ -42,7 +42,7 @@ public class DMessageCounter implements DProtocolNotifierIF
 		m_inCounts = new long[DMessage.InSIZE+1];
 		m_outCounts = new long[DMessage.OutSIZE+1];
 		m_lastIsolate = 1;
-		m_isolateCounterMap = new HashMap<Long, DMessageCounter>();
+		m_isolateCounterMap = new HashMap<>();
 		m_isolateLock = new Object();
 		clearArray(m_inCounts);
 		clearArray(m_outCounts);

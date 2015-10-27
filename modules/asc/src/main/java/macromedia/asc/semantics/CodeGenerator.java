@@ -33,7 +33,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
     private boolean traverse_argslist_right_to_left;
     private boolean traverse_binop_right_to_left;
     private boolean c_call_sequence;
-    private ObjectList<ObjectList<Node>> case_exprs = new ObjectList<ObjectList<Node>>();
+    private ObjectList<ObjectList<Node>> case_exprs = new ObjectList<>();
 
     class StackFrame
     {
@@ -49,7 +49,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
         int     needsArguments      = 0;
     }
     private StackFrame frame = null;
-    private ObjectList<StackFrame> frames = new ObjectList<StackFrame>();
+    private ObjectList<StackFrame> frames = new ObjectList<>();
 
     class ExceptionState
     {
@@ -63,7 +63,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
 
     private ClassDefinitionNode currentClass;
 
-    private ObjectList<Namespaces> used_namespaces_sets = new ObjectList<Namespaces>();
+    private ObjectList<Namespaces> used_namespaces_sets = new ObjectList<>();
 
     private int temp_cv_reg = -1;
     private boolean in_with = false;
@@ -2749,7 +2749,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
             StoreRegister(reg_offset+temp_reg, TYPE_none);
             int case_index = 0;
             int default_index = 0;
-            ObjectList<Boolean> patch_else = new ObjectList<Boolean>();
+            ObjectList<Boolean> patch_else = new ObjectList<>();
 
             if (case_exprs.last().size() != 0)
             {
@@ -4320,7 +4320,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
                     {
                         if (baseClassNode.deferred_subclasses == null)
                         {
-                            baseClassNode.deferred_subclasses = new ObjectList<ClassDefinitionNode>();
+                            baseClassNode.deferred_subclasses = new ObjectList<>();
                         }
                         cx.error(node.baseclass.pos(), kError_ForwardReferenceToBaseClass,baseClassNode.name.name);
                         baseClassNode.deferred_subclasses.add(node);
@@ -4570,7 +4570,7 @@ public final class CodeGenerator extends Emitter implements Evaluator, ErrorCons
             StartMethod(frame.functionName,frame.maxParams,frame.maxLocals);
             Return(TYPE_void);
             TypeInfo type = null;
-            ObjectList<TypeInfo> types = new ObjectList<TypeInfo>();
+            ObjectList<TypeInfo> types = new ObjectList<>();
             FinishMethod(cx,frame.functionName,type,types,null,0,cx.getScopes().size(),"",false,false, null);
         }
 

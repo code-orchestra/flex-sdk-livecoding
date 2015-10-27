@@ -690,7 +690,7 @@ public class TextHelper
         // A space may be part of the alignment token is it escaped with a 
         // backslash. We need to combine those backslash escaped space to
         // the string element in front of it.
-        ArrayList<String> finalTabStops = new ArrayList<String>(tabStops.length);
+        ArrayList<String> finalTabStops = new ArrayList<>(tabStops.length);
         int iFinal = -1;
         boolean escaped = false;
         for (String tabStop : tabStops) {

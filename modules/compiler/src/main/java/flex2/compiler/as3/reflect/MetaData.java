@@ -110,7 +110,7 @@ public final class MetaData implements flex2.compiler.abc.MetaData
 
 	public Map<String, String> getValueMap()
 	{
-		Map<String, String> result = new HashMap<String, String>();
+		Map<String, String> result = new HashMap<>();
 
 		for (int i = 0, length = count(); i < length; i++)
 		{

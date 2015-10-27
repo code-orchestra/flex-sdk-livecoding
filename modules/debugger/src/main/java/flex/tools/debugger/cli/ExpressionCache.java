@@ -78,7 +78,7 @@ public class ExpressionCache
 	public ExpressionCache(DebugCLI cli)
 	{
 		m_builder = new ASTBuilder(true); // allow fdb's "*x" and "x." indirection operators
-		m_expressions = new Vector<Object>();
+		m_expressions = new Vector<>();
 		m_props = new IntProperties();
 		m_cli = cli;
 	}

@@ -44,7 +44,7 @@ public class LibraryCompilerConfiguration extends CompcConfiguration
 
 	public static Map<String, String> getAliases()
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 	    map.putAll(Configuration.getAliases());
 	    map.remove("o");
 		return map;

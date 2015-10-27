@@ -58,9 +58,9 @@ public class InheritanceEvaluator extends EvaluatorAdapter
 {
     private Set<String> imports;
     private Map<String, String> qualifiedImports;
-    private List<String> inheritanceNames = new ArrayList<String>();
-    private Set<Name> inheritanceMultiNames = new HashSet<Name>();
-    private List<MultiName> definitionMultiNames = new ArrayList<MultiName>();
+    private List<String> inheritanceNames = new ArrayList<>();
+    private Set<Name> inheritanceMultiNames = new HashSet<>();
+    private List<MultiName> definitionMultiNames = new ArrayList<>();
 
     public InheritanceEvaluator()
     {
@@ -73,7 +73,7 @@ public class InheritanceEvaluator extends EvaluatorAdapter
 
         if (imports == null)
         {
-            imports = new TreeSet<String>();
+            imports = new TreeSet<>();
         }
 
         imports.add(importName);
@@ -85,7 +85,7 @@ public class InheritanceEvaluator extends EvaluatorAdapter
 
         if (qualifiedImports == null)
         {
-            qualifiedImports = new TreeMap<String, String>();
+            qualifiedImports = new TreeMap<>();
         }
 
         qualifiedImports.put(localPart, namespace);

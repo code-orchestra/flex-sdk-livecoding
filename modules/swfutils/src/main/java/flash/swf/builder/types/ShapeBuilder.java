@@ -68,7 +68,7 @@ public final class ShapeBuilder
     public ShapeBuilder(Point origin)
     {
         shape = new Shape();
-        shape.shapeRecords = new ArrayList<ShapeRecord>(); //shape record buffer
+        shape.shapeRecords = new ArrayList<>(); //shape record buffer
 
         if (origin == null)
             origin = new Point();

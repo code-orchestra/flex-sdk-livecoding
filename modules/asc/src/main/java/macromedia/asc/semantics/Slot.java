@@ -262,7 +262,7 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
 		Map<TypeValue, Overload> binary_overloads = getBinaryOverloads();
 		if (binary_overloads == null)
 		{
-			binary_overloads = new HashMap<TypeValue, Overload>();
+			binary_overloads = new HashMap<>();
 			setBinaryOverloads(binary_overloads);
 		}
 		binary_overloads.put(t1, o);
@@ -346,7 +346,7 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
 			o.put(t2, 0);
 			if (binary_overloads == null)
 			{
-				binary_overloads = new HashMap<TypeValue, Overload>();
+				binary_overloads = new HashMap<>();
 				setBinaryOverloads(binary_overloads);
 			}
 			binary_overloads.put(t1, o);
@@ -632,7 +632,7 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
 	public void addType(TypeInfo type)
 	{
 		if (types == null)
-			types = new ObjectList<TypeInfo>(2);
+			types = new ObjectList<>(2);
 		types.push_back(type);
 	}
 
@@ -669,7 +669,7 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
     private ArrayList<MetaData> cloneMetaData (ArrayList<MetaData> src) throws CloneNotSupportedException
     {
         int n = src.size();
-        ArrayList<MetaData> dst = new ArrayList<MetaData>(n);
+        ArrayList<MetaData> dst = new ArrayList<>(n);
 		for (MetaData aSrc : src) {
 			dst.add(aSrc.clone());
 		}
@@ -678,7 +678,7 @@ public abstract class Slot implements Serializable, Cloneable // CodeOrchestra: 
 
     private HashMap<TypeValue, Overload> cloneOverloads (HashMap<TypeValue, Overload> src) throws CloneNotSupportedException
     {
-        HashMap<TypeValue, Overload> dst = new HashMap<TypeValue, Overload>();
+        HashMap<TypeValue, Overload> dst = new HashMap<>();
         for (Map.Entry<TypeValue, Overload> entry : src.entrySet()) {
              //dst.put(entry.getKey().clone(), entry.getValue().clone());
             dst.put(entry.getKey(), entry.getValue().clone());

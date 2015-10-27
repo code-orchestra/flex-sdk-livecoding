@@ -70,7 +70,7 @@ public class MediaRule extends Rule
     public List<Rule> getRules()
     {
         if (rules == null)
-            rules = new ArrayList<Rule>();
+            rules = new ArrayList<>();
 
         return rules;
     }

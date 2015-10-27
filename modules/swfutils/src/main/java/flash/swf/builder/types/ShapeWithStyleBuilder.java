@@ -62,8 +62,8 @@ public final class ShapeWithStyleBuilder
 	private void init(Shape shape, Point origin, FillStyle fs, LineStyle ls, boolean fill)
 	{
 		builder = new ShapeBuilder(origin);
-		linestyles = new ArrayList<LineStyle>(2);
-		fillstyles = new ArrayList<FillStyle>(2);
+		linestyles = new ArrayList<>(2);
+		fillstyles = new ArrayList<>(2);
 
 		if (fill && fs != null)
 		{

@@ -42,16 +42,16 @@ import java.util.Map;
  */
 public final class ThreadLocalToolkit
 {
-    private static ThreadLocal<Logger> logger = new ThreadLocal<Logger>();
-    private static ThreadLocal<PathResolver> resolver = new ThreadLocal<PathResolver>();
-    private static ThreadLocal<Map<String, VirtualFile>> resolved = new ThreadLocal<Map<String, VirtualFile>>();
-    private static ThreadLocal<Benchmark> stopWatch = new ThreadLocal<Benchmark>();
-    private static ThreadLocal<LocalizationManager> localization = new ThreadLocal<LocalizationManager>();
-    private static ThreadLocal<MimeMappings> mimeMappings = new ThreadLocal<MimeMappings>();
-    private static ThreadLocal<ProgressMeter> progressMeter = new ThreadLocal<ProgressMeter>();
-    private static ThreadLocal<CompilerControl> compilerControl = new ThreadLocal<CompilerControl>();
-    private static ThreadLocal<StandardDefs> standardDefs = new ThreadLocal<StandardDefs>();
-    private static ThreadLocal<Integer> compatibilityVersion = new ThreadLocal<Integer>();
+    private static ThreadLocal<Logger> logger = new ThreadLocal<>();
+    private static ThreadLocal<PathResolver> resolver = new ThreadLocal<>();
+    private static ThreadLocal<Map<String, VirtualFile>> resolved = new ThreadLocal<>();
+    private static ThreadLocal<Benchmark> stopWatch = new ThreadLocal<>();
+    private static ThreadLocal<LocalizationManager> localization = new ThreadLocal<>();
+    private static ThreadLocal<MimeMappings> mimeMappings = new ThreadLocal<>();
+    private static ThreadLocal<ProgressMeter> progressMeter = new ThreadLocal<>();
+    private static ThreadLocal<CompilerControl> compilerControl = new ThreadLocal<>();
+    private static ThreadLocal<StandardDefs> standardDefs = new ThreadLocal<>();
+    private static ThreadLocal<Integer> compatibilityVersion = new ThreadLocal<>();
 
     //----------------------
     // LocalizationManager
@@ -91,7 +91,7 @@ public final class ThreadLocalToolkit
         Map<String, VirtualFile> resolvedMap = resolved.get();
         if (resolvedMap == null)
         {
-            resolvedMap = new HashMap<String, VirtualFile>();
+            resolvedMap = new HashMap<>();
             resolved.set(resolvedMap);
         }
 

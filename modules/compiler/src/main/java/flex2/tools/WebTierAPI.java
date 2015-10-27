@@ -97,7 +97,7 @@ public final class WebTierAPI extends Tool
 
 			checkSupportedTargetMimeType(targetFile);
 
-			List<VirtualFile> virtualFileList = new ArrayList<VirtualFile>();
+			List<VirtualFile> virtualFileList = new ArrayList<>();
 			virtualFileList.add(targetFile);
 
 			CompilerConfiguration compilerConfig = configuration.getCompilerConfiguration();

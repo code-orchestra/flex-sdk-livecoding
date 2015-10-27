@@ -52,7 +52,7 @@ public class CompcConfiguration extends ToolsConfiguration
 	public static Map<String, String> getAliases()
     {
         // FIXME: would make more sense to have these as part of ConfigurationInfo
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put( "o", "output" );
         map.put( "ic", "include-classes" );
         map.put( "in", "include-namespaces" );
@@ -135,7 +135,7 @@ public class CompcConfiguration extends ToolsConfiguration
 	// 'include-classes' option
 	//
 	
-    private List<String> classes = new LinkedList<String>();
+    private List<String> classes = new LinkedList<>();
 
     public List<String> getClasses()
     {
@@ -162,7 +162,7 @@ public class CompcConfiguration extends ToolsConfiguration
 	// 'include-file' option
 	//
 	
-    private Map<String, VirtualFile> files = new HashMap<String, VirtualFile>();
+    private Map<String, VirtualFile> files = new HashMap<>();
 
     // This method is for ConfigurationBuffer so include files can be included 
     // in the checksum. This is considered a getter method (using reflection) 
@@ -222,7 +222,7 @@ public class CompcConfiguration extends ToolsConfiguration
 	// 'include-stylesheet' option
 	//
 	
-    private Map<String, VirtualFile> stylesheets = new HashMap<String, VirtualFile>();
+    private Map<String, VirtualFile> stylesheets = new HashMap<>();
 
     public Map<String, VirtualFile> getStylesheets()
     {
@@ -300,7 +300,7 @@ public class CompcConfiguration extends ToolsConfiguration
     // 'include-namespaces' option
     //
     
-    private List<String> namespaces = new LinkedList<String>();
+    private List<String> namespaces = new LinkedList<>();
 
     public List<String> getNamespaces()
     {
@@ -327,7 +327,7 @@ public class CompcConfiguration extends ToolsConfiguration
     // 'include-resource-bundles' option
     //
     
-	private List<String> resourceBundles = new LinkedList<String>();
+	private List<String> resourceBundles = new LinkedList<>();
 
     public List<String> getIncludeResourceBundles()
 	{
@@ -354,7 +354,7 @@ public class CompcConfiguration extends ToolsConfiguration
 	// 'include-sources' option
 	//
 	
-    private List<String> sources = new LinkedList<String>();
+    private List<String> sources = new LinkedList<>();
     
     public void setIncludeSources(List<String> sources) 
     {    	

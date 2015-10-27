@@ -52,15 +52,15 @@ public class FXG_v2_0_Mobile_Handler extends FXG_v2_0_Handler
         if (initialized)
             return;
 
-        Map<String, Class<? extends FXGNode>> elementNodes = new HashMap<String, Class<? extends FXGNode>>(DEFAULT_FXG_2_0_NODES.size() + 4);
+        Map<String, Class<? extends FXGNode>> elementNodes = new HashMap<>(DEFAULT_FXG_2_0_NODES.size() + 4);
         elementNodes.putAll(DEFAULT_FXG_2_0_NODES);
-        elementNodesByURI = new HashMap<String, Map<String, Class<? extends FXGNode>>>(1);
+        elementNodesByURI = new HashMap<>(1);
         elementNodesByURI.put(FXG_NAMESPACE, elementNodes);
 
         // Skip <Private> by default for FXG 2.0
-        HashSet<String> skippedElements = new HashSet<String>(1);
+        HashSet<String> skippedElements = new HashSet<>(1);
         skippedElements.add(FXG_PRIVATE_ELEMENT);
-        skippedElementsByURI = new HashMap<String, Set<String>>(1);
+        skippedElementsByURI = new HashMap<>(1);
         skippedElementsByURI.put(FXG_NAMESPACE, skippedElements);
                
         

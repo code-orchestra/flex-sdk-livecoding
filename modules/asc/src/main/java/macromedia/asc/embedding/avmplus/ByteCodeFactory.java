@@ -54,15 +54,15 @@ public class ByteCodeFactory
 
 	public ByteCodeFactory()
 	{
-		utfConstants = new HashMap<String, ByteList>();
-		nsConstants = new HashMap<Integer, ByteList>();
-        nsPackageConstants = new HashMap<Integer, ByteList>();
-        nsPrivateConstants = new HashMap<Integer, ByteList>();
-		nsInternalConstants = new HashMap<Integer, ByteList>();
-        nsProtectedConstants = new HashMap<Integer, ByteList>();
-        nsStaticProtectedConstants = new HashMap<Integer, ByteList>();
-        intConstants = new HashMap<Integer, ByteList>();
-        uintConstants = new HashMap<Integer, ByteList>();
+		utfConstants = new HashMap<>();
+		nsConstants = new HashMap<>();
+        nsPackageConstants = new HashMap<>();
+        nsPrivateConstants = new HashMap<>();
+		nsInternalConstants = new HashMap<>();
+        nsProtectedConstants = new HashMap<>();
+        nsStaticProtectedConstants = new HashMap<>();
+        intConstants = new HashMap<>();
+        uintConstants = new HashMap<>();
 
 		FALSE = new ByteList(1);
 		Byte(FALSE, CONSTANT_False);

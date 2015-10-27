@@ -57,7 +57,7 @@ public class CommandLineConfiguration extends ToolsConfiguration
 	{
         if (compilingResourceModule())
 		{
-			List<String> fileList = new ArrayList<String>();
+			List<String> fileList = new ArrayList<>();
 			fileList.add(resourceModulePath);
 			return fileList;
 		}
@@ -125,7 +125,7 @@ public class CommandLineConfiguration extends ToolsConfiguration
 	//
 	
 	// list of filespecs, default var for command line
-	private List<String> fileSpecs = new ArrayList<String>();
+	private List<String> fileSpecs = new ArrayList<>();
 
 	public List<String> getFileSpecs()
 	{
@@ -182,7 +182,7 @@ public class CommandLineConfiguration extends ToolsConfiguration
     // 'include-resource-bundles' option
     //
     
-	private List<String> resourceBundles = new LinkedList<String>();
+	private List<String> resourceBundles = new LinkedList<>();
 
     public List<String> getIncludeResourceBundles()
 	{

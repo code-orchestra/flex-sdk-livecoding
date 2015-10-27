@@ -59,8 +59,8 @@ public final class SourceList
 		throws CompilerException
 	{
 		this.mimeTypes = mimeTypes;
-		sources = new LinkedHashMap<String, Source>(files.length);
-		directories = new ArrayList<File>(classPath == null ? 0 : classPath.length);
+		sources = new LinkedHashMap<>(files.length);
+		directories = new ArrayList<>(classPath == null ? 0 : classPath.length);
 
 		SourcePath.addApplicationParentToSourcePath(appPath, classPath, directories);
 		SourcePath.addPathElements(classPath, directories, true, null);
@@ -160,7 +160,7 @@ public final class SourceList
 
 	public List<Source> retrieveSources()
 	{
-		List<Source> sources = new ArrayList<Source>(this.sources.size());
+		List<Source> sources = new ArrayList<>(this.sources.size());
 
 		for (String name : this.sources.keySet()) {
 			Source s = this.sources.get(name);

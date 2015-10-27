@@ -476,7 +476,7 @@ public class OEMUtil
 	public static String[] trim(String[] args, ConfigurationBuffer cfgbuf, Set excludes)
 	{
 		List<Object[]> positions = cfgbuf.getPositions();
-        List<Object> newArgs = new ArrayList<Object>();
+        List<Object> newArgs = new ArrayList<>();
 		for (Object[] a : positions) {
 			String var = (String) a[0];
 			int iStart = (Integer) a[1], iEnd = (Integer) a[2];
@@ -554,7 +554,7 @@ public class OEMUtil
 		
 		if (units != null)
 		{
-			data.swcDefSignatureChecksums = new HashMap<QName, Long>();
+			data.swcDefSignatureChecksums = new HashMap<>();
 			for (Object unit1 : units) {
 				CompilationUnit unit = (CompilationUnit) unit1;
 				Source source = unit == null ? null : unit.getSource();
@@ -578,7 +578,7 @@ public class OEMUtil
 			return;
 		}
 		
-		data.swcFileChecksums = new HashMap<String, Long>();
+		data.swcFileChecksums = new HashMap<>();
 		for (Map.Entry<String, VirtualFile> stringVirtualFileEntry : swcContext.getFiles().entrySet()) {
 			Map.Entry entry = (Map.Entry) stringVirtualFileEntry;
 			String filename = (String) entry.getKey();

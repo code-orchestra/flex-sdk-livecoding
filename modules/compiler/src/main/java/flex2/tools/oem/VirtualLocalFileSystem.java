@@ -43,7 +43,7 @@ public class VirtualLocalFileSystem
      */
     public VirtualLocalFileSystem()
     {
-        files = new HashMap<String, VirtualLocalFile>();
+        files = new HashMap<>();
     }
     
     private final Map<String, VirtualLocalFile> files;

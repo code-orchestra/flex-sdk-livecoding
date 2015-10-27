@@ -85,7 +85,7 @@ public class SwcAPI
                                                               boolean includeLookupOnly, boolean includeAllForAsdoc)
             throws ConfigurationException, CompilerException
     {
-        List<SwcComponent> nsComponents = new LinkedList<SwcComponent>();
+        List<SwcComponent> nsComponents = new LinkedList<>();
 
         try
         {
@@ -207,7 +207,7 @@ public class SwcAPI
                                  List nsComponents, SwcCache cache, Map<String, VirtualFile> rbFiles)
             throws Exception
     {
-    	Map<String, VirtualFile> m = new TreeMap<String, VirtualFile>();
+    	Map<String, VirtualFile> m = new TreeMap<>();
     	if (configuration.getCSSArchiveFiles() != null) m.putAll(configuration.getCSSArchiveFiles());
     	if (configuration.getL10NArchiveFiles() != null) m.putAll(configuration.getL10NArchiveFiles());
     	if (configuration.getFiles() != null) m.putAll(configuration.getFiles());
@@ -258,7 +258,7 @@ public class SwcAPI
             }
 
             // Step 1: get map of all components known to swcs referenced from exported units
-            Map<String, SwcComponent> allClassComp = new HashMap<String, SwcComponent>();
+            Map<String, SwcComponent> allClassComp = new HashMap<>();
             //Map refClassComp = new HashMap();
 
             for (CompilationUnit unit : m.getExportedUnits()) {

@@ -1242,7 +1242,7 @@ public class AbstractSyntaxTreeUtil
 
         if ((statementList != null) && (statementList.items != null))
         {
-            result = new ArrayList<Node>(1);
+            result = new ArrayList<>(1);
 
             for (Node node : statementList.items)
             {

@@ -188,7 +188,7 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 	public As3Compiler(As3Configuration as3Configuration)
 	{
 		mimeTypes = new String[]{MimeMappings.AS};
-		compilerExtensions = new ArrayList<Extension>();
+		compilerExtensions = new ArrayList<>();
 		this.as3Configuration = as3Configuration;
 
 		processCoachSettings();
@@ -368,8 +368,8 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 		}
 
 		int size = (node.statements != null) ? node.statements.items.size() : 0;
-		List<Node> definitions = new ArrayList<Node>((source.isSourcePathOwner() || source.isSourceListOwner() ||
-				                          source.isResourceBundlePathOwner()) ? 1 : size);
+		List<Node> definitions = new ArrayList<>((source.isSourcePathOwner() || source.isSourceListOwner() ||
+				source.isResourceBundlePathOwner()) ? 1 : size);
 		boolean inPackage = false;
 
 		for (int i = 0; i < size; i++)
@@ -1084,7 +1084,7 @@ public class As3Compiler extends AbstractSubCompiler implements flex2.compiler.S
 //	}
 
 	// C: as long as the compiler instance is not shared among multiple concurrent requests, this is okay.
-	private final List<String> nsList = new ArrayList<String>();
+	private final List<String> nsList = new ArrayList<>();
 
 	private void transferDependencies(Set<ReferenceValue> unresolved, Set<Name> target, MultiNameMap history)
 	{

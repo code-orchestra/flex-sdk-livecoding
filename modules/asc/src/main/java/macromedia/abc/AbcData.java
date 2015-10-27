@@ -149,7 +149,7 @@ public class AbcData implements java.io.Externalizable
 		
 		AbcDataCache(File f)
 		{
-			cache = new HashMap<String,AbcData>();
+			cache = new HashMap<>();
 			file  = f;
 			dirty = false;
 			
@@ -446,7 +446,7 @@ public class AbcData implements java.io.Externalizable
 			int last = uri.codePointAt(uri.length()-1);
 			if(last >= 0xE000 && last <= 0xF000)
 			{
-				Set<Integer> result = new TreeSet<Integer>();
+				Set<Integer> result = new TreeSet<>();
 				result.add(last-0xE000);
 				return result;
 			}

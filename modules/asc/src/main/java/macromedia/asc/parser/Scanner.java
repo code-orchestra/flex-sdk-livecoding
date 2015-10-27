@@ -57,7 +57,7 @@ public final class Scanner implements ErrorConstants
     private static final HashMap<String,Integer> reservedWord;
     
     static {
-    	reservedWord = new HashMap<String,Integer>(64);
+    	reservedWord = new HashMap<>(64);
     	reservedWord.put("as",AS_TOKEN); // ??? predicated on HAS_ASOPERATOR
     	reservedWord.put("break",BREAK_TOKEN);
     	reservedWord.put("case",CASE_TOKEN);

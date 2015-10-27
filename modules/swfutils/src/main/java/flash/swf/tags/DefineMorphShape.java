@@ -51,7 +51,7 @@ public class DefineMorphShape extends DefineTag
 	public Iterator<Tag> getReferences()
     {
         // This is yucky.
-        List<Tag> refs = new LinkedList<Tag>();
+        List<Tag> refs = new LinkedList<>();
 
         if (startEdges != null)
             startEdges.getReferenceList(refs);

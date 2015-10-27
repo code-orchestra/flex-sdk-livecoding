@@ -24,11 +24,11 @@ public class ClassCONode extends CONode {
     public boolean isInterface;
     public String packageName;
     public String className;
-    public final List<MethodCONode> methods = new ArrayList<MethodCONode>();
-    public final List<FieldCONode> fields = new ArrayList<FieldCONode>();
-    public final List<Node> staticInitializer = new ArrayList<Node>();
-    public final List<String> interfaces = new ArrayList<String>();
-    private final List<ImportElement> imports = new ArrayList<ImportElement>();
+    public final List<MethodCONode> methods = new ArrayList<>();
+    public final List<FieldCONode> fields = new ArrayList<>();
+    public final List<Node> staticInitializer = new ArrayList<>();
+    public final List<String> interfaces = new ArrayList<>();
+    private final List<ImportElement> imports = new ArrayList<>();
     private boolean dynamic;
     private Context cx;
 

@@ -90,8 +90,8 @@ public final class ConfigurationBuffer
     public ConfigurationBuffer( Class configClass, Map<String, String> aliases, ConfigurationFilter filter )
     {
         this.configClass = configClass;
-        this.varMap = new HashMap<String, List>();
-        this.committed = new HashSet<String>();
+        this.varMap = new HashMap<>();
+        this.committed = new HashSet<>();
 
         loadCache( configClass, null, filter );
         assert ( varCache.size() > 0 ) : "coding error: nothing was configurable in the provided object!";
@@ -104,17 +104,17 @@ public final class ConfigurationBuffer
     public ConfigurationBuffer( ConfigurationBuffer copyFrom, boolean copyCommitted )
     {
         this.configClass = copyFrom.configClass;
-        this.varMap = new HashMap<String, List>( copyFrom.varMap );
-        this.committed = copyCommitted? new HashSet<String>( copyFrom.committed ) : new HashSet<String>();
+        this.varMap = new HashMap<>(copyFrom.varMap);
+        this.committed = copyCommitted? new HashSet<>(copyFrom.committed) : new HashSet<String>();
         this.varCache = copyFrom.varCache;     // doesn't change after creation
         this.childCache = copyFrom.childCache; // doesn't change after creation;
         this.varList = copyFrom.varList;       // doesn't change after creation
-        this.tokens = new HashMap<String, String>( copyFrom.tokens );
+        this.tokens = new HashMap<>(copyFrom.tokens);
     }
 
     public void setVar( String var, String val, String source, int line ) throws ConfigurationException
     {
-        List<String> list = new LinkedList<String>();
+        List<String> list = new LinkedList<>();
         list.add( val );
         setVar( var, list, source, line, null, false );
     }
@@ -161,13 +161,13 @@ public final class ConfigurationBuffer
 
     public void clearSourceVars( String source )
     {
-        List<String> remove = new LinkedList<String>();
+        List<String> remove = new LinkedList<>();
         for (Map.Entry<String, List> stringListEntry : varMap.entrySet()) {
             Map.Entry e = (Map.Entry) stringListEntry;
             String var = (String) e.getKey();
             List vals = (List) e.getValue();
 
-            List<ConfigurationValue> newvals = new LinkedList<ConfigurationValue>();
+            List<ConfigurationValue> newvals = new LinkedList<>();
             for (Object val1 : vals) {
                 ConfigurationValue val = (ConfigurationValue) val1;
 
@@ -187,7 +187,7 @@ public final class ConfigurationBuffer
 
     public List<String> processValues( String var, List<String> args, String source, int line ) throws ConfigurationException
     {
-        List<String> newArgs = new LinkedList<String>();
+        List<String> newArgs = new LinkedList<>();
         for (String arg : args) {
             int depth = 100;
             while (depth-- > 0) {
@@ -285,7 +285,7 @@ public final class ConfigurationBuffer
         }
         else
         {
-            vals = new LinkedList<ConfigurationValue>();
+            vals = new LinkedList<>();
             varMap.put( var, vals );
         }
         vals.add( val );
@@ -330,13 +330,13 @@ public final class ConfigurationBuffer
     private final Set<String> committed;                                    // set of vars committed to backing config
     private final Class configClass;                                        // configuration class
     private Map<String, ConfigurationInfo> varCache                         // info cache
-        = new HashMap<String, ConfigurationInfo>();
-    private List<String> requiredList = new LinkedList<String>();           // required vars
-    private List<String> varList = new LinkedList<String>();                // list of vars in order they should be set
-    private Map<String, Class> childCache = new HashMap<String, Class>();   // child configuration objects
-    private Map<String, String> aliases = new HashMap<String, String>();    // variable name aliases
-    private Map<String, String> tokens = new HashMap<String, String>();     // tokens for replacement
-    private List<Object[]> positions = new ArrayList<Object[]>();
+        = new HashMap<>();
+    private List<String> requiredList = new LinkedList<>();           // required vars
+    private List<String> varList = new LinkedList<>();                // list of vars in order they should be set
+    private Map<String, Class> childCache = new HashMap<>();   // child configuration objects
+    private Map<String, String> aliases = new HashMap<>();    // variable name aliases
+    private Map<String, String> tokens = new HashMap<>();     // tokens for replacement
+    private List<Object[]> positions = new ArrayList<>();
 
     private static final String SET_PREFIX = "cfg";
     private static final String GET_PREFIX = "get";
@@ -611,7 +611,7 @@ public final class ConfigurationBuffer
     public void commit( Object config ) throws ConfigurationException
     {
         assert ( config.getClass() == configClass ) : ( "coding error: configuration " + config.getClass() + " != template " + configClass );
-        Set<String> done = new HashSet<String>();
+        Set<String> done = new HashSet<>();
 
         for (String var : varList) {
             if (varMap.containsKey(var)) {
@@ -1050,7 +1050,7 @@ public final class ConfigurationBuffer
         if (srcList == null)
             return null;
 
-        List<ConfigurationValue> dstList = new LinkedList<ConfigurationValue>();
+        List<ConfigurationValue> dstList = new LinkedList<>();
         for (Object aSrcList : srcList) {
             ConfigurationValue srcVal = (ConfigurationValue) aSrcList;
             List<String> args = processValues(avar, srcVal.getArgs(), srcVal.getSource(), srcVal.getLine());
@@ -1261,7 +1261,7 @@ public final class ConfigurationBuffer
 
     static public List<String> formatText( String input, int columns )
     {
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
 
         if ((input == null) || (input.length() == 0))
             return lines;

@@ -34,7 +34,7 @@ public class DeclarationsNode extends Node
 
     static
     {
-        attributes = new HashSet<QName>();
+        attributes = new HashSet<>();
     }
     
     DeclarationsNode(String uri, String localName, int size)

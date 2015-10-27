@@ -13,11 +13,11 @@ import java.util.*;
  */
 public class ProjectNavigator {
 
-    private final Map<String, ProgramNode> loadedSyntaxTrees = new HashMap<String, ProgramNode>();
+    private final Map<String, ProgramNode> loadedSyntaxTrees = new HashMap<>();
     public Map<String, Set<String>> modelDependencies;
 
     // package -> list of pairs (original class name, live short class name)
-    private Map<String, List<Pair<String, String>>> auxLivecodingClasses = new HashMap<String, List<Pair<String, String>>>();
+    private Map<String, List<Pair<String, String>>> auxLivecodingClasses = new HashMap<>();
 
     public void add(String fqName, ProgramNode node) {
         loadedSyntaxTrees.put(fqName, node);
@@ -26,11 +26,11 @@ public class ProjectNavigator {
     public void addAdditionalLivecodingClass(String packageName, String originalClassName, String liveShortClassName) {
         List<Pair<String, String>> shortClassNames = auxLivecodingClasses.get(packageName);
         if (shortClassNames == null) {
-            shortClassNames = new ArrayList<Pair<String, String>>();
+            shortClassNames = new ArrayList<>();
             auxLivecodingClasses.put(packageName, shortClassNames);
         }
 
-        Pair<String, String> pair = new Pair<String, String>(originalClassName, liveShortClassName);
+        Pair<String, String> pair = new Pair<>(originalClassName, liveShortClassName);
         if (!shortClassNames.contains(pair)) {
             shortClassNames.add(pair);
         }
@@ -46,7 +46,7 @@ public class ProjectNavigator {
 
     public Set<String> getLiveCodingClassNames(String packageName) {
         // TODO: At this step livecoding classes are not created yet, so we collect names of methods assuming that every one of them will be extracted to some class
-        HashSet<String> result = new HashSet<String>();
+        HashSet<String> result = new HashSet<>();
 
         for (ProgramNode syntaxTree : loadedSyntaxTrees.values()) {
             ClassDefinitionNode classDefinition = TreeNavigator.getPackageClassDefinition(syntaxTree);
@@ -74,7 +74,7 @@ public class ProjectNavigator {
 
     public Set<String> getLiveCodingClassNames(String packageName, String className) {
         // TODO: At this step livecoding classes are not created yet, so we collect names of methods assuming that every one of them will be extracted to some class
-        HashSet<String> result = new HashSet<String>();
+        HashSet<String> result = new HashSet<>();
         for (ProgramNode syntaxTree : loadedSyntaxTrees.values()) {
             ClassDefinitionNode classDefinition = TreeNavigator.getPackageClassDefinition(syntaxTree);
             if (!classDefinition.pkgdef.name.id.pkg_part.equals(packageName)) {
@@ -106,7 +106,7 @@ public class ProjectNavigator {
     }
 
     public Set<String> getClassNames(String packageName) {
-        HashSet<String> result = new HashSet<String>();
+        HashSet<String> result = new HashSet<>();
         for (ProgramNode syntaxTree : loadedSyntaxTrees.values()) {
             ClassDefinitionNode classDefinition = TreeNavigator.getPackageClassDefinition(syntaxTree);
             if (!classDefinition.pkgdef.name.id.pkg_part.equals(packageName)) {
@@ -119,7 +119,7 @@ public class ProjectNavigator {
 
     public Set<String> getModelDependencies(String packageName) {
         if (modelDependencies == null) {
-            modelDependencies = new HashMap<String, Set<String>>();
+            modelDependencies = new HashMap<>();
 
             // Fill user packages
             for (ProgramNode programNode : loadedSyntaxTrees.values()) {

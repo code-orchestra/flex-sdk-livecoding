@@ -33,7 +33,7 @@ public abstract class Algorithms
 	 */
 	public static Set<Integer> foreach(BitSet x)
 	{
-		Set<Integer> result = new TreeSet<Integer>();
+		Set<Integer> result = new TreeSet<>();
 		for ( int i = 0; i < x.length(); i++ )
 			if ( x.get(i) )
 				result.add(i);
@@ -91,7 +91,7 @@ public abstract class Algorithms
 		}
 		while (changed);
 		
-		Map<Block,Block> map = new TreeMap<Block,Block>();
+		Map<Block,Block> map = new TreeMap<>();
 		for (Block b: all)
 			if (b != entry)
 				map.put(b, doms[b.postorder]);
@@ -129,7 +129,7 @@ public abstract class Algorithms
 	
 	public static SetMap<Block,Edge> preds(Deque<Block> code)
 	{
-		SetMap<Block,Edge> pred = new SetMap<Block,Edge>();
+		SetMap<Block,Edge> pred = new SetMap<>();
 		for (Block b: code)
 			for (Edge s: b.succ())
 				pred.get(s.to).add(s);
@@ -147,7 +147,7 @@ public abstract class Algorithms
 				{
 					// make sure each PHI has the same set of incoming
 					// edges as the block does.
-					Set<Edge>phi_in = new TreeSet<Edge>();
+					Set<Edge>phi_in = new TreeSet<>();
 					Collections.addAll(phi_in, e.pred);
 					Set<Edge>blk_in = pred.get(b);
 					assert(phi_in.equals(blk_in));
@@ -156,7 +156,7 @@ public abstract class Algorithms
 
 	static SetMap<Block,Edge> allpreds(Deque<Block> code)
 	{
-		SetMap<Block,Edge> pred = new SetMap<Block,Edge>();
+		SetMap<Block,Edge> pred = new SetMap<>();
 		for (Block b: code)
 		{
 			for (Edge s: b.succ())
@@ -175,7 +175,7 @@ public abstract class Algorithms
 	 */
 	public static EdgeMap<Expr> findUses(Deque<Block> code)
 	{
-		EdgeMap<Expr> uses = new EdgeMap<Expr>();
+		EdgeMap<Expr> uses = new EdgeMap<>();
 		for (Block b : code)
 			for (Expr e : b)
 			{
@@ -218,7 +218,7 @@ public abstract class Algorithms
 		{
 			Set<V> s = super.get(e);
 			if (s == null)
-				put((K)e,s = new TreeSet<V>());
+				put((K)e,s = new TreeSet<>());
 			return s;
 		}
 		static final long serialVersionUID=0;
@@ -303,7 +303,7 @@ public abstract class Algorithms
 	 */
 	public static class Pool<T extends Comparable>
 	{
-		Map<T,Integer> refs = new HashMap<T,Integer>();
+		Map<T,Integer> refs = new HashMap<>();
 		ArrayList<T> values;
 		int countFrom;
 		
@@ -325,10 +325,10 @@ public abstract class Algorithms
 			Ranker<T>[] arr = new Ranker[refs.size()];
 			int i=0;
 			for (T e: refs.keySet())
-				arr[i++] = new Ranker<T>(e,refs.get(e));
+				arr[i++] = new Ranker<>(e, refs.get(e));
 			assert(i==refs.size());
 			Arrays.sort(arr);
-			values = new ArrayList<T>();
+			values = new ArrayList<>();
 			i=countFrom;
 			for (Ranker<T> r: arr)
 			{
@@ -409,11 +409,11 @@ public abstract class Algorithms
 		public List<T> toplogicalSort(List<T> unsorted, DependencyChecker<T> checker)
 		{	
 			//  Create a dependency graph.
-			Map<T,Set<T>> dep = new HashMap<T,Set<T>>(unsorted.size());
+			Map<T,Set<T>> dep = new HashMap<>(unsorted.size());
 			
 			for ( T x: unsorted)
 			{
-				Set<T> parents = new HashSet<T>(); 
+				Set<T> parents = new HashSet<>();
 				dep.put(x, parents);
 				
 				for ( T y: unsorted )
@@ -429,7 +429,7 @@ public abstract class Algorithms
 			}
 			
 			//  Sort the dependency graph.
-			List<T> sorted = new ArrayList<T>(unsorted.size());
+			List<T> sorted = new ArrayList<>(unsorted.size());
 			
 			while ( dep.size() > 0 )
 			{

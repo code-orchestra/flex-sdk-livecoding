@@ -106,7 +106,7 @@ public class BatchCompiler
 		//s.use_namespaces.addAll(null) // no automatic use_namespaces
 		//s.es4_numerics = ...
 
-		file = new ArrayList<File>(args.length);
+		file = new ArrayList<>(args.length);
 		for (String arg : args) {
 			File f = new File(arg);
 			if (f.exists() && f.isFile()) {
@@ -114,22 +114,22 @@ public class BatchCompiler
 			}
 		}
 
-		cx = new ArrayList<Context>(file.size());
+		cx = new ArrayList<>(file.size());
 		for (int i = 0, length = file.size(); i < length; i++)
 		{
 			cx.add(new Context(s));
 		}
 
-		emitter = new ArrayList<ActionBlockEmitter>(file.size());
+		emitter = new ArrayList<>(file.size());
 		for (int i = 0, length = file.size(); i < length; i++)
 		{
 			emitter.add(new ActionBlockEmitter(cx.get(i), file.get(i).getPath(), new StringPrintWriter(), new StringPrintWriter(), false, false, false, false));
 		}
 
-		node = new ArrayList<ProgramNode>(file.size());
-		fa = new ArrayList<FlowAnalyzer>(file.size());
-		inheritance = new HashSet<Pair>();
-		type = new HashSet<Pair>();
+		node = new ArrayList<>(file.size());
+		fa = new ArrayList<>(file.size());
+		inheritance = new HashSet<>();
+		type = new HashSet<>();
 	}
 
 	private static void parse(int start, int end) throws Throwable
@@ -206,7 +206,7 @@ public class BatchCompiler
 			}
 		}
 
-		final DependencyGraph<Integer> g = new DependencyGraph<Integer>();
+		final DependencyGraph<Integer> g = new DependencyGraph<>();
 
 		for (int i = 0, length = node.size(); i < length; i++)
 		{
@@ -215,7 +215,7 @@ public class BatchCompiler
 
 			if (!g.containsVertex(path))
 			{
-				g.addVertex(new Vertex<String>(path));
+				g.addVertex(new Vertex<>(path));
 			}
 
 			for (Pair p : inheritance) {
@@ -225,7 +225,7 @@ public class BatchCompiler
 			}
 		}
 
-		final List<Integer> tsort = new ArrayList<Integer>(node.size());
+		final List<Integer> tsort = new ArrayList<>(node.size());
 
 		Algorithms.topologicalSort(g, new Visitor<String>()
 		{
@@ -257,11 +257,11 @@ public class BatchCompiler
 		}
 		else
 		{
-			List<File> tempFile = new ArrayList<File>(file.size());
-			List<Context> tempCX = new ArrayList<Context>(cx.size());
-			List<ActionBlockEmitter> tempEmitter = new ArrayList<ActionBlockEmitter>(emitter.size());
-			List<ProgramNode> tempNode = new ArrayList<ProgramNode>(node.size());
-			List<FlowAnalyzer> tempFA = new ArrayList<FlowAnalyzer>(fa.size());
+			List<File> tempFile = new ArrayList<>(file.size());
+			List<Context> tempCX = new ArrayList<>(cx.size());
+			List<ActionBlockEmitter> tempEmitter = new ArrayList<>(emitter.size());
+			List<ProgramNode> tempNode = new ArrayList<>(node.size());
+			List<FlowAnalyzer> tempFA = new ArrayList<>(fa.size());
 
 			for (Integer aTsort : tsort) {
 				int loc = aTsort;

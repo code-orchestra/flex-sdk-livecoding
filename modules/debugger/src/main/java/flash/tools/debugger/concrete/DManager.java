@@ -101,7 +101,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 	private byte[] m_swf; // latest swf obtained from get swf
 	private byte[] m_swd; // latest swd obtained from get swd
 
-	private Map<String, String> m_options = new HashMap<String, String>(); // Player
+	private Map<String, String> m_options = new HashMap<>(); // Player
 																			// options
 																			// that
 																			// have
@@ -188,16 +188,16 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 		public Map<Long, DValue> m_previousValues;
 
 		public DManagerIsolateState() {
-			m_source = new HashMap<Integer, DModule>();
-			m_values = new HashMap<Long, DValue>();
-			m_previousValues = new HashMap<Long, DValue>();
-			m_frames = new ArrayList<DStackContext>();
-			m_previousFrames = new ArrayList<DStackContext>();
+			m_source = new HashMap<>();
+			m_values = new HashMap<>();
+			m_previousValues = new HashMap<>();
+			m_frames = new ArrayList<>();
+			m_previousFrames = new ArrayList<>();
 			m_suspendInfo = null;
 			m_lastInCallFunction = null;
-			m_breakpoints = new ArrayList<DLocation>();
-			m_swfInfo = new ArrayList<DSwfInfo>();
-			m_watchpoints = new ArrayList<DWatch>();
+			m_breakpoints = new ArrayList<>();
+			m_swfInfo = new ArrayList<>();
+			m_watchpoints = new ArrayList<>();
 			m_suspendInfo = null;
 			m_lastInGetVariable = null;
 			m_attachChildren = true;
@@ -220,16 +220,16 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 	}
 
 	public DManager() {
-		m_parms = new HashMap<String, String>();
+		m_parms = new HashMap<>();
 		
-		m_isolates = new HashMap<Integer, DIsolate>();
+		m_isolates = new HashMap<>();
 		m_isolates.put(Isolate.DEFAULT_ID, DEFAULT_ISOLATE);
-		m_event = new LinkedList<DebugEvent>();
+		m_event = new LinkedList<>();
 		m_sourceLocator = null;
 		m_squelchEnabled = false;
 		m_lastConstantPool = null;
 		m_playerVersion = -1; // -1 => unknown
-		m_isolateState = new HashMap<Integer, DManagerIsolateState>();
+		m_isolateState = new HashMap<>();
 		m_mainState = new DManagerIsolateState();
 		m_isolateState.put(Isolate.DEFAULT_ID, m_mainState);
 		m_inIsolateLock = new Object();
@@ -316,7 +316,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 	void freeValueCache(int isolateId) {
 		DManagerIsolateState state = getIsolateState(isolateId);
 		state.m_previousValues = state.m_values;
-		state.m_values = new HashMap<Long, DValue>();
+		state.m_values = new HashMap<>();
 
 		int size = getFrameCount(isolateId);
 		for (int i = 0; i < size; i++)
@@ -920,7 +920,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 	void clearFrames(int isolateId) {
 		if (getIsolateState(isolateId).m_frames.size() > 0)
 			getIsolateState(isolateId).m_previousFrames = getIsolateState(isolateId).m_frames;
-		getIsolateState(isolateId).m_frames = new ArrayList<DStackContext>();
+		getIsolateState(isolateId).m_frames = new ArrayList<>();
 	}
 
 	public DStackContext getFrame(int at, int isolateId) {
@@ -1010,7 +1010,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 	}
 
 	public ArrayList<SwfInfo> getIsolateSwfList() {
-		ArrayList<SwfInfo> result = new ArrayList<SwfInfo>();
+		ArrayList<SwfInfo> result = new ArrayList<>();
 
 		for (DManagerIsolateState state : m_isolateState.values()) {
 			if (state.m_swfInfo != null) {
@@ -1482,8 +1482,8 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 			// For InFrame the first element is really our frame id
 			DValue frame = null;
 			DVariable child = null;
-			ArrayList<DVariable> v = new ArrayList<DVariable>();
-			ArrayList<DVariable> registers = new ArrayList<DVariable>();
+			ArrayList<DVariable> v = new ArrayList<>();
+			ArrayList<DVariable> registers = new ArrayList<>();
 			int targetIsolate = msg.getTargetIsolate();
 			int depth = (int) msg.getDWord(); // depth of frame
 
@@ -1562,7 +1562,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 			int level = 0;
 			int targetIsolate = msg.getTargetIsolate();
 			int highestLevelWithMembers = -1;
-			List<String> classes = new ArrayList<String>();
+			List<String> classes = new ArrayList<>();
 
 			while (msg.getRemaining() > 0) {
 				long parentId = msg.getPtr();
@@ -1788,7 +1788,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 					String path = msg.getString();
 					String url = msg.getString();
 					String host = msg.getString();
-					Map<Long, Integer> local2global = new HashMap<Long, Integer>();
+					Map<Long, Integer> local2global = new HashMap<>();
 					int minId = Integer.MAX_VALUE;
 					int maxId = Integer.MIN_VALUE;
 					// now we read in the swd debugging map (which provides
@@ -1904,7 +1904,7 @@ public class DManager implements DProtocolNotifierIF, SourceLocator {
 			String definingClass = null;
 			int level = 0;
 			int highestLevelWithMembers = -1;
-			List<String> classes = new ArrayList<String>();
+			List<String> classes = new ArrayList<>();
 
 			if (type == DMessage.InBinaryOp)
 				msg.getDWord(); // id

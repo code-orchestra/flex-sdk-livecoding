@@ -104,19 +104,19 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
     public DataBindingFirstPassEvaluator(CompilationUnit unit, TypeTable typeTable, boolean showBindingWarnings)
     {
         this.typeTable = typeTable;
-        argumentListStack = new Stack<ArgumentListNode>();
-        skipInitSet = new HashSet<ArgumentListNode>();
-        resetSet = new HashSet<ArgumentListNode>();
-        srcTypeStack = new Stack<String>();
-        callExpressionStack = new Stack<CallExpressionNode>();
+        argumentListStack = new Stack<>();
+        skipInitSet = new HashSet<>();
+        resetSet = new HashSet<>();
+        srcTypeStack = new Stack<>();
+        callExpressionStack = new Stack<>();
         standardDefs = unit.getStandardDefs();
 
         @SuppressWarnings("unchecked")
         List<BindingExpression> tmpBindingExpressions = (List<BindingExpression>) unit.getContext().getAttribute(flex2.compiler.CompilerContext.BINDING_EXPRESSIONS);
         bindingExpressions = tmpBindingExpressions;
 
-        evaluatedClasses = new HashSet<ClassDefinitionNode>();
-        dataBindingInfoList = new ArrayList<DataBindingInfo>();
+        evaluatedClasses = new HashSet<>();
+        dataBindingInfoList = new ArrayList<>();
         this.showBindingWarnings = showBindingWarnings;
 
         setLocalizationManager(ThreadLocalToolkit.getLocalizationManager());
@@ -243,7 +243,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
                 if (!skipInitSet.remove(node))
                 {
-                    watcherList = new LinkedList<Watcher>();
+                    watcherList = new LinkedList<>();
                 }
 
                 argument.evaluate(context, this);
@@ -270,7 +270,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
         if (insideBindingsSetupFunction && (node.op != Tokens.AS_TOKEN))
         {
-            watcherList = new LinkedList<Watcher>();
+            watcherList = new LinkedList<>();
         }
 
         if (node.rhs != null)
@@ -280,7 +280,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
         if (insideBindingsSetupFunction && (node.op != Tokens.AS_TOKEN))
         {
-            watcherList = new LinkedList<Watcher>();
+            watcherList = new LinkedList<>();
         }
 
         return null;
@@ -386,7 +386,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
         if (insideBindingsSetupFunction)
         {
-            watcherList = new LinkedList<Watcher>();
+            watcherList = new LinkedList<>();
         }
 
         if (node.thenexpr != null)
@@ -396,7 +396,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
         if (insideBindingsSetupFunction)
         {
-            watcherList = new LinkedList<Watcher>();
+            watcherList = new LinkedList<>();
         }
 
         if (node.elseexpr != null)
@@ -406,7 +406,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
 
         if (insideBindingsSetupFunction)
         {
-            watcherList = new LinkedList<Watcher>();
+            watcherList = new LinkedList<>();
         }
 
         return null;
@@ -449,7 +449,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
                                 CallExpressionNode callExpression = (CallExpressionNode) memberExpression2.selector;
                                 Node arg1 = callExpression.args.items.get(1);
                                 currentBindingExpression = bindingExpressions.get(bindingId++);
-                                watcherList = new LinkedList<Watcher>();
+                                watcherList = new LinkedList<>();
 
                                 if (arg1 instanceof FunctionCommonNode)
                                 {
@@ -615,7 +615,7 @@ public class DataBindingFirstPassEvaluator extends EvaluatorAdapter
             }
             if (insideXMLExpression)
             {
-                watcherList = new LinkedList<Watcher>();
+                watcherList = new LinkedList<>();
                 showBindingWarnings = false;     // inside an e4x selector is the freakin' wild west..
             }
         }

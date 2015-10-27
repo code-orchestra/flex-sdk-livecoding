@@ -37,7 +37,7 @@ public class ParameterizedName extends QName
     public ParameterizedName(ObjectValue ns, String name, ObjectList<TypeValue> type_params)
     {
         super(ns, name);
-        this.type_params = new ObjectList<QName>(type_params.size());
+        this.type_params = new ObjectList<>(type_params.size());
         for( TypeValue t : type_params )
             this.type_params.add(t.name);
     }

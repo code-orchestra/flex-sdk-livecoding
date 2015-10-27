@@ -48,14 +48,14 @@ public class DocumentNode extends Node
 	 * be associated with any layer children. These eventually will become
 	 * top level declarations.
 	 */
-	public List<DesignLayerNode> layerDeclarationNodes = 
-		new ArrayList<DesignLayerNode>();
+	public List<DesignLayerNode> layerDeclarationNodes =
+            new ArrayList<>();
 
 	public static final Set<QName> attributes;
 
 	static
 	{
-		attributes = new HashSet<QName>();
+		attributes = new HashSet<>();
 	}
 
 	public DocumentNode(String uri, String localName)

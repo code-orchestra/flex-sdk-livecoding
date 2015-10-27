@@ -24,7 +24,7 @@ import java.util.Set;
 
 public class IntProperties
 {
-	HashMap<String, Integer> m_map = new HashMap<String, Integer>();
+	HashMap<String, Integer> m_map = new HashMap<>();
 
 	/* getters */
 	public Integer					getInteger(String s)	{ return m_map.get(s); }

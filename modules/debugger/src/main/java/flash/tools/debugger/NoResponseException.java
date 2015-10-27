@@ -46,7 +46,7 @@ public class NoResponseException extends PlayerDebugException
 
 	public String getMessage()
 	{
-		Map<String, String> args = new HashMap<String, String>();
+		Map<String, String> args = new HashMap<>();
 		String formatString;
 		if (m_waitedFor != -1 && m_waitedFor != 0)
 		{

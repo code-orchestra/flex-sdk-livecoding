@@ -184,7 +184,7 @@ public class ImplementationGenerator extends AbstractGenerator
                                                           mxmlDocument.getSourcePath());
         }
 
-        configNamespaces = new HashSet<String>();
+        configNamespaces = new HashSet<>();
         StatementListNode configVars = AbstractSyntaxTreeUtil.parseConfigVars(context, configNamespaces);
         programNode = AbstractSyntaxTreeUtil.generateProgram(context, configVars,
                                                              mxmlDocument.getPackageName(),
@@ -545,7 +545,7 @@ public class ImplementationGenerator extends AbstractGenerator
 
     private Set<String> createInterfaceNames()
     {
-        Set<String> result = new TreeSet<String>();
+        Set<String> result = new TreeSet<>();
 
         for (DocumentInfo.NameInfo nameInfo : mxmlDocument.getInterfaceNames()) {
             result.add(nameInfo.getName());

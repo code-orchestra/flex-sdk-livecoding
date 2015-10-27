@@ -32,7 +32,7 @@ public class ConfigurationValue
     {
         this.buffer = buffer;
         this.var = var;
-        this.args = new LinkedList<String>( args );
+        this.args = new LinkedList<>(args);
         this.source = source;
         this.line = line;
         this.context = context;

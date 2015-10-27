@@ -48,7 +48,7 @@ public class TextBuilder
     public TextBuilder(int code)
     {
         tag = new DefineText(code);
-        fontBuilders = new ArrayList<FontBuilder>();
+        fontBuilders = new ArrayList<>();
     }
 
     public DefineTag build()

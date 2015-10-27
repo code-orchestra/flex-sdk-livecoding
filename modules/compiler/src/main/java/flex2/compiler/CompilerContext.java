@@ -41,7 +41,7 @@ public final class CompilerContext
 
 	public CompilerContext()
 	{
-		attributes = new HashMap<String, Object>();
+		attributes = new HashMap<>();
 	}
 
 	private Map<String, Object> attributes;

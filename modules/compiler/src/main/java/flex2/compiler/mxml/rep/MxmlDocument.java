@@ -106,14 +106,14 @@ public final class MxmlDocument
 		this.standardDefs = unit.getStandardDefs();
 
         root = null;
-        declarations = new TreeMap<String, PropertyDeclaration>();
-        layerDeclarations = new ArrayList<PropertyDeclaration>();
-        bindingExpressions = new ArrayList<BindingExpression>();
-        atEmbeds = new TreeMap<String, AtEmbed>();
-        atResources = new TreeMap<String, AtResource>();
-        typeRefs = new TreeSet<String>();
+        declarations = new TreeMap<>();
+        layerDeclarations = new ArrayList<>();
+        bindingExpressions = new ArrayList<>();
+        atEmbeds = new TreeMap<>();
+        atResources = new TreeMap<>();
+        typeRefs = new TreeSet<>();
         
-        designLayers = new HashMap<DesignLayerNode, DesignLayer>();
+        designLayers = new HashMap<>();
 
         stylesContainer = new StylesContainer(mxmlConfiguration, unit, typeTable.getPerCompileData());
         unit.setStylesContainer(stylesContainer);
@@ -132,7 +132,7 @@ public final class MxmlDocument
 
         lineNumberMap = null;
 
-        anonIdCounts = new HashMap<String, Integer>();
+        anonIdCounts = new HashMap<>();
 
         bindingImportsAdded = false;
 
@@ -832,7 +832,7 @@ public final class MxmlDocument
         // to finish them.
         completeTwoWayBindings();
         
-        Map<String, BindingExpression> destinationMap = new HashMap<String, BindingExpression>();
+        Map<String, BindingExpression> destinationMap = new HashMap<>();
 
         for (BindingExpression bindingExpression : bindingExpressions)
         {
@@ -898,7 +898,7 @@ public final class MxmlDocument
      */
     public Map<Integer, String> getAllBindingNamespaces()
     {
-        Map<Integer, String> allNs = new HashMap<Integer, String>();
+        Map<Integer, String> allNs = new HashMap<>();
         
         for (BindingExpression be : bindingExpressions)
         {
@@ -954,7 +954,7 @@ public final class MxmlDocument
      */
     public String getInterfaceList()
     {
-        List<String> names = new ArrayList<String>(info.getInterfaceNames().size());
+        List<String> names = new ArrayList<>(info.getInterfaceNames().size());
         for (DocumentInfo.NameInfo nameInfo : info.getInterfaceNames()) {
             names.add((nameInfo).getName());
         }

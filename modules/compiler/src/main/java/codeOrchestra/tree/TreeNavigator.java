@@ -80,7 +80,7 @@ public class TreeNavigator {
             return Collections.EMPTY_LIST;
         }
 
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
 
         for (Node item : attributeListNode.items) {
             Node node = null;
@@ -134,7 +134,7 @@ public class TreeNavigator {
     }
 
     public static List<ClassDefinitionNode> getInternalClassDefinitions(ProgramNode programNode) {
-        List<ClassDefinitionNode> result = new ArrayList<ClassDefinitionNode>();
+        List<ClassDefinitionNode> result = new ArrayList<>();
 
         StatementListNode statements = programNode.statements;
         for (Node item : statements.items) {
@@ -194,7 +194,7 @@ public class TreeNavigator {
 
 
     public static List<Pair<VariableDefinitionNode, VariableBindingNode>> getFieldDefinitionsVars(ClassDefinitionNode classDefinitionNode) {
-        List<Pair<VariableDefinitionNode, VariableBindingNode>> variableBindingNodes = new ArrayList<Pair<VariableDefinitionNode, VariableBindingNode>>();
+        List<Pair<VariableDefinitionNode, VariableBindingNode>> variableBindingNodes = new ArrayList<>();
 
         if (classDefinitionNode.statements == null) {
             return variableBindingNodes;
@@ -205,7 +205,7 @@ public class TreeNavigator {
                 if (variableDefinitionNode.list != null && variableDefinitionNode.list.items != null) {
                     for (Node node : variableDefinitionNode.list.items) {
                         if (node instanceof VariableBindingNode) {
-                            variableBindingNodes.add(new Pair<VariableDefinitionNode, VariableBindingNode>(variableDefinitionNode, (VariableBindingNode) node));
+                            variableBindingNodes.add(new Pair<>(variableDefinitionNode, (VariableBindingNode) node));
                         }
                     }
                 }
@@ -216,7 +216,7 @@ public class TreeNavigator {
     }
 
     public static List<VariableDefinitionNode> getFieldDefinitions(ClassDefinitionNode classDefinitionNode) {
-        List<VariableDefinitionNode> variableDefinitionNodes = new ArrayList<VariableDefinitionNode>();
+        List<VariableDefinitionNode> variableDefinitionNodes = new ArrayList<>();
         if (classDefinitionNode.statements == null) {
             return variableDefinitionNodes;
         }
@@ -229,7 +229,7 @@ public class TreeNavigator {
     }
 
     public static List<VariableDefinitionNode> getFieldDefinitionsWithAnnotation(ClassDefinitionNode classDefinitionNode, String annotation) {
-        List<VariableDefinitionNode> variableDefinitionNodes = new ArrayList<VariableDefinitionNode>();
+        List<VariableDefinitionNode> variableDefinitionNodes = new ArrayList<>();
         if (classDefinitionNode.statements == null) {
             return variableDefinitionNodes;
         }
@@ -242,7 +242,7 @@ public class TreeNavigator {
     }
 
     public static List<FunctionDefinitionNode> getMethodDefinitionsWithAnnotation(ClassDefinitionNode classDefinitionNode, String annotation) {
-        List<FunctionDefinitionNode> functionDefinitionNodes = new ArrayList<FunctionDefinitionNode>();
+        List<FunctionDefinitionNode> functionDefinitionNodes = new ArrayList<>();
         if (classDefinitionNode.statements == null) {
             return functionDefinitionNodes;
         }
@@ -255,7 +255,7 @@ public class TreeNavigator {
     }
 
     static List<FunctionDefinitionNode> getAllMethodDefinitions(ClassDefinitionNode classDefinitionNode) {
-        List<FunctionDefinitionNode> functionDefinitionNodes = new ArrayList<FunctionDefinitionNode>();
+        List<FunctionDefinitionNode> functionDefinitionNodes = new ArrayList<>();
         if (classDefinitionNode.statements == null) {
             return functionDefinitionNodes;
         }
@@ -272,7 +272,7 @@ public class TreeNavigator {
     }
 
     public static List<ImportDirectiveNode> getImports(PackageDefinitionNode packageDefinitionNode) {
-        List<ImportDirectiveNode> importDirectiveNodes = new ArrayList<ImportDirectiveNode>();
+        List<ImportDirectiveNode> importDirectiveNodes = new ArrayList<>();
         for (Node item : packageDefinitionNode.statements.items) {
             if (item instanceof ImportDirectiveNode) {
                 importDirectiveNodes.add((ImportDirectiveNode) item);
@@ -282,7 +282,7 @@ public class TreeNavigator {
     }
 
     public static List<ImportDirectiveNode> getImports(ProgramNode programNode) {
-        List<ImportDirectiveNode> importDirectiveNodes = new ArrayList<ImportDirectiveNode>();
+        List<ImportDirectiveNode> importDirectiveNodes = new ArrayList<>();
         for (Node item : programNode.statements.items) {
             if (item instanceof ImportDirectiveNode) {
                 importDirectiveNodes.add((ImportDirectiveNode) item);

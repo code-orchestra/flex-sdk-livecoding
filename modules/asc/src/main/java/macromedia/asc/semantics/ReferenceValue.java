@@ -469,7 +469,7 @@ public final class ReferenceValue extends Value implements ErrorConstants
         {
             TypeValue factory = (TypeValue)s.getValue();
 
-            ObjectList<TypeValue> types = new ObjectList<TypeValue>(type_params.size());
+            ObjectList<TypeValue> types = new ObjectList<>(type_params.size());
             for( int i = 0, limit = type_params.size(); i < limit; ++i)
             {
                 ReferenceValue r = type_params.at(i);
@@ -810,7 +810,7 @@ public final class ReferenceValue extends Value implements ErrorConstants
     {
         if( type_params == null )
         {
-            type_params = new ObjectList<ReferenceValue>(1);
+            type_params = new ObjectList<>(1);
         }
         type_params.add(type);
     }

@@ -100,7 +100,7 @@ public class SwcDependencies extends Tool
             if (moreFiles != null)
             {
                 // remove the css files and keep the swcs
-                List<VirtualFile> themeSwcs = new ArrayList<VirtualFile>(moreFiles.length);
+                List<VirtualFile> themeSwcs = new ArrayList<>(moreFiles.length);
                 for (VirtualFile moreFile : moreFiles) {
                     if (moreFile.getName().endsWith(".swc"))
                         themeSwcs.add(moreFile);
@@ -347,7 +347,7 @@ public class SwcDependencies extends Tool
         // 'types' option
         //
         
-        private List<String> desiredTypes = new LinkedList<String>();
+        private List<String> desiredTypes = new LinkedList<>();
         
         public List<String> getDesiredScriptDependencyTypes()
         {
@@ -377,7 +377,7 @@ public class SwcDependencies extends Tool
         //  Filter which SWCs to show.
         //
         
-        private List<String> showSwcs = new LinkedList<String>();
+        private List<String> showSwcs = new LinkedList<>();
         
         public List<String> getShowSwcs()
         {

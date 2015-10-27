@@ -912,7 +912,7 @@ public class FXGCompiler extends AbstractSubCompiler
             List<FXGSymbolClass> additionalAssets = asset.getAdditionalSymbolClasses();
             if (additionalAssets != null && additionalAssets.size() > 0)
             {
-                Map<QName, Source> additionalSources = new HashMap<QName, Source>(additionalAssets.size());
+                Map<QName, Source> additionalSources = new HashMap<>(additionalAssets.size());
                 for (FXGSymbolClass additionalAsset : additionalAssets)
                 {
                     if (additionalAsset.getSymbol() != null)

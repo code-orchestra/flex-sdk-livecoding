@@ -72,8 +72,8 @@ public class TypeAnalyzer extends EvaluatorAdapter
     public TypeAnalyzer(SymbolTable symbolTable)
     {
         this.symbolTable = symbolTable;
-        classInfoMap = new HashMap<String, ClassInfo>();
-        interfaceInfoMap = new HashMap<String, InterfaceInfo>();
+        classInfoMap = new HashMap<>();
+        interfaceInfoMap = new HashMap<>();
     }
 
     private void analyzeInterfaces(Context context, List multiNames, Info info)
@@ -813,7 +813,7 @@ public class TypeAnalyzer extends EvaluatorAdapter
                                 currentInfo.addInterfaceName(interfaceName);
                             }
                         } else {
-                            Set<String> namespacesSet = new HashSet<String>();
+                            Set<String> namespacesSet = new HashSet<>();
 
                             for (int i = 0; i < size; i++) {
                                 NamespaceValue namespaceValue = (NamespaceValue) identifier.ref.namespaces.get(i);

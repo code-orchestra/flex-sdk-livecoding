@@ -16,7 +16,7 @@ public class RegularNode {
 
     private String myRole;
     private RegularNode myParent;
-    private final List<RegularNode> myChildren = new ArrayList<RegularNode>();
+    private final List<RegularNode> myChildren = new ArrayList<>();
 
     public final Node myNode;
 
@@ -222,7 +222,7 @@ public class RegularNode {
     }
 
     public List<RegularNode> getChildren(String role) {
-        ArrayList<RegularNode> nodes = new ArrayList<RegularNode>();
+        ArrayList<RegularNode> nodes = new ArrayList<>();
         for (RegularNode myChild : myChildren) {
             if (myChild.myRole.equals(role)) {
                 nodes.add(myChild);
@@ -248,10 +248,10 @@ public class RegularNode {
     }
 
     public List<RegularNode> getDescendants(Set<Class> filter, Set<Class> stopFilter) {
-        Queue<RegularNode> nodes = new LinkedList<RegularNode>();
+        Queue<RegularNode> nodes = new LinkedList<>();
         nodes.add(this);
 
-        ArrayList<RegularNode> result = new ArrayList<RegularNode>();
+        ArrayList<RegularNode> result = new ArrayList<>();
         RegularNode node;
 
         while ((node = nodes.poll()) != null) {

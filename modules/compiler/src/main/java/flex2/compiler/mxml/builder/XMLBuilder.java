@@ -456,7 +456,7 @@ class XMLBuilder extends AbstractBuilder
                                         
                 if (attributeBindings == null)
                 {
-                    attributeBindings = new QNameMap<BindingExpression>();
+                    attributeBindings = new QNameMap<>();
                 }
                 
                 // C: only localPart as the key?
@@ -472,7 +472,7 @@ class XMLBuilder extends AbstractBuilder
     //    NamespaceUtil.getElementsByLocalName()...
     private void assignIndices(Node parent)
     {
-        Map<String, Integer> counts = new HashMap<String, Integer>();
+        Map<String, Integer> counts = new HashMap<>();
 
         Integer zero = IntegerPool.getNumber(0);
 

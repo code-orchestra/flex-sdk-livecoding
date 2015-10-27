@@ -48,7 +48,7 @@ public class ExtensionsConfiguration
     {
         if ( extensionMappings == null )
         {
-            extensionMappings = new LinkedHashMap<String, List<String>>();
+            extensionMappings = new LinkedHashMap<>();
         }
         return extensionMappings;
     }
@@ -108,7 +108,7 @@ public class ExtensionsConfiguration
             throw new ConfigurationException.NotAFile( extension, cfgval.getVar(), cfgval.getSource(), cfgval.getLine() );
         }
 
-        List<String> parameters = new ArrayList<String>();
+        List<String> parameters = new ArrayList<>();
         while ( iterator.hasNext() )
         {
             parameters.add( iterator.next() );

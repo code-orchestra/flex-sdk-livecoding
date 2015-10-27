@@ -52,7 +52,7 @@ public final class MimeMappings
 	
     public MimeMappings()
     {
-    	mimeMappings = new HashMap<String, Object>();
+    	mimeMappings = new HashMap<>();
 
     	set(MXML, ".mxml");
     	set(AS, ".as");

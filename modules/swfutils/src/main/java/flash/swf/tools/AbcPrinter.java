@@ -775,7 +775,7 @@ public class AbcPrinter
         		continue;
         	if (typeName.kind == 0x1D)
         		out.println(kAbcCorrupt + "typename is also a typename");
-        	HashMap<MultiName, String> seenMap = new HashMap<MultiName, String>();
+        	HashMap<MultiName, String> seenMap = new HashMap<>();
     		MultiName type = mn.types[0];
         	while (type != null)
         	{
@@ -1575,7 +1575,7 @@ public class AbcPrinter
 				
         public LabelMgr()
         {
-            labels = new HashMap<String, Integer>();
+            labels = new HashMap<>();
         }
 				
         public String getLabelAt(int offset)

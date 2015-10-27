@@ -44,7 +44,7 @@ public class MovieClip extends Model
 	public MovieClip(MxmlDocument document, Type type, Model parent, int line)
 	{
 		super(document, type, parent, line);
-		children = new ArrayList<VisualChildInitializer>();
+		children = new ArrayList<>();
 	}
 
 	public void addChild(MovieClip child)

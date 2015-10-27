@@ -67,7 +67,7 @@ public final class NodeFactory implements ErrorConstants
 	public NodeFactory(Context cx)
 	{
         this.cx = cx;
-        this.compound_names = new HashSet<String>();
+        this.compound_names = new HashSet<>();
 		has_arguments = false;
 		has_rest = false;
 		has_unnamed_package = false;
@@ -361,7 +361,7 @@ public final class NodeFactory implements ErrorConstants
 		return node;
 	}
 	
-    private ObjectList<ObjectList<ClassDefinitionNode>> clsdefs_sets = new ObjectList<ObjectList<ClassDefinitionNode>>();
+    private ObjectList<ObjectList<ClassDefinitionNode>> clsdefs_sets = new ObjectList<>();
     private boolean needs_prototype_ns;
     public void StartClassDefs()
 	{
@@ -444,7 +444,7 @@ public final class NodeFactory implements ErrorConstants
         InterfaceDefinitionNode node = new InterfaceDefinitionNode(cx, current_package, attrs, identifier, interfaces, block);
 		node.setPositionNonterminal(identifier, pos);
 
-        node.clsdefs = new ObjectList<ClassDefinitionNode>();
+        node.clsdefs = new ObjectList<>();
         if( clsdefs_sets.size() > 0 )
         {
             clsdefs_sets.last().add(node);
@@ -705,9 +705,9 @@ public final class NodeFactory implements ErrorConstants
 		return node;
 	}
 
-	private Map<String, Integer> fun_names = new TreeMap<String, Integer>();
-	public Map<String, PackageDefinitionNode> pkg_names = new TreeMap<String, PackageDefinitionNode>();
-	public ObjectList<PackageDefinitionNode> pkg_defs = new ObjectList<PackageDefinitionNode>();
+	private Map<String, Integer> fun_names = new TreeMap<>();
+	public Map<String, PackageDefinitionNode> pkg_names = new TreeMap<>();
+	public ObjectList<PackageDefinitionNode> pkg_defs = new ObjectList<>();
 
 	public FunctionDefinitionNode functionDefinition(Context cx, AttributeListNode attrs, FunctionNameNode name, FunctionCommonNode fexpr)
 	{
@@ -1410,7 +1410,7 @@ public final class NodeFactory implements ErrorConstants
 		return node;
 	}
 
-	Map<String, Integer> namespace_names = new TreeMap<String, Integer>();
+	Map<String, Integer> namespace_names = new TreeMap<>();
 
 	public NamespaceDefinitionNode namespaceDefinition(AttributeListNode attributes, IdentifierNode identifier, Node value)
 	{

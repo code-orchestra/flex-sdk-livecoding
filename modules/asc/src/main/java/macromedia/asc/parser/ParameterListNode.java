@@ -28,8 +28,8 @@ import macromedia.asc.util.ObjectList;
 
 public class ParameterListNode extends Node
 {
-	public ObjectList<ParameterNode> items = new ObjectList<ParameterNode>();
-	public ObjectList<TypeInfo> types = new ObjectList<TypeInfo>(1);     // declared parameter types
+	public ObjectList<ParameterNode> items = new ObjectList<>();
+	public ObjectList<TypeInfo> types = new ObjectList<>(1);     // declared parameter types
 	public ByteList   decl_styles = new ByteList(1); // a vector of PARAM_REQUIRED, PARAM_Optional, or PARAM_Rest
 
 	public int count;

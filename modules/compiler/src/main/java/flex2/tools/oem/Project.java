@@ -96,7 +96,7 @@ public class Project
      */
     public Project()
     {
-        dependencies = new DependencyGraph<Builder>();
+        dependencies = new DependencyGraph<>();
     }
     
     private DependencyGraph<Builder> dependencies;
@@ -158,7 +158,7 @@ public class Project
      */
     public Iterator<Builder> getBuildOrder()
     {
-        final List<Builder> buildOrder = new ArrayList<Builder>(dependencies.size());
+        final List<Builder> buildOrder = new ArrayList<>(dependencies.size());
         
         Algorithms.topologicalSort(dependencies, new Visitor<Vertex<String,Builder>>()
         {   

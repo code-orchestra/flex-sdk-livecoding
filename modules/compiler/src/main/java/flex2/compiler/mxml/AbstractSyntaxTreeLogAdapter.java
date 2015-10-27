@@ -40,7 +40,7 @@ public class AbstractSyntaxTreeLogAdapter extends AbstractLogAdapter
      * following Map and only report them to the user the first time
      * we see them.
      */
-    private Map<String, String> messages = new HashMap<String, String>();
+    private Map<String, String> messages = new HashMap<>();
 
     public AbstractSyntaxTreeLogAdapter(Logger original)
     {

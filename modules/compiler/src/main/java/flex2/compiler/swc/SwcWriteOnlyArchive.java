@@ -112,5 +112,5 @@ public class SwcWriteOnlyArchive implements SwcArchive
 
     protected final OutputStream out;
     protected final String name;
-    protected Map<String, VirtualFile> files = new HashMap<String, VirtualFile>();
+    protected Map<String, VirtualFile> files = new HashMap<>();
 }

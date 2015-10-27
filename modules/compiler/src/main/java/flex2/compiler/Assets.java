@@ -39,7 +39,7 @@ public final class Assets
 	{
 		if (assets == null)
 		{
-			assets = new HashMap<String, AssetInfo>(4);
+			assets = new HashMap<>(4);
 		}
 
 		assets.put(className, assetInfo);
@@ -51,7 +51,7 @@ public final class Assets
 	{
 		if (assets == null)
 		{
-			assets = new HashMap<String, AssetInfo>(4);
+			assets = new HashMap<>(4);
 		}
 
 		assets.put(className, new AssetInfo(tag));
@@ -66,7 +66,7 @@ public final class Assets
 
 		if (assets == null)
 		{
-			assets = new HashMap<String, AssetInfo>(4);
+			assets = new HashMap<>(4);
 		}
 
 		assets.putAll(ass.assets);
@@ -120,7 +120,7 @@ public final class Assets
 
 	public List<DefineFont> getFonts()
 	{
-		LinkedList<DefineFont> fonts = new LinkedList<DefineFont>();
+		LinkedList<DefineFont> fonts = new LinkedList<>();
 
 		if (assets != null)
 		{

@@ -53,8 +53,8 @@ public class QualifiedNameInfo
     public QualifiedNameInfo()
     {
         packageName = "";
-        classNames = new ArrayList<String>();
-        classNameSpaces = new ArrayList<String>();
+        classNames = new ArrayList<>();
+        classNameSpaces = new ArrayList<>();
         methodName = "";
         methodNameSpace = "";
         fullClassName = "";

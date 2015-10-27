@@ -307,7 +307,7 @@ public class JREFontManager extends CachedFontManager
     {
         readLocalFonts = true;
 
-        localFonts = new HashMap<String, LocalFont>();
+        localFonts = new HashMap<>();
 //		initDefaultLocalFonts();
         try
         {
@@ -365,7 +365,7 @@ public class JREFontManager extends CachedFontManager
 
         if (fnts != null)
         {
-            systemFontNames = new ArrayList<String>(fnts.length);
+            systemFontNames = new ArrayList<>(fnts.length);
             for (String fnt : fnts) {
                 systemFontNames.add(fnt.trim().toLowerCase());
             }

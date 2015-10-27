@@ -157,19 +157,19 @@ public class OEMReport implements Report
 	                  Map<String, VirtualFile> archiveFiles,
 	                  Configuration configuration)
 	{
-		TreeSet<String> sourceNames = new TreeSet<String>();
-		TreeSet<String> assetNames = new TreeSet<String>();
-		TreeSet<String> libraryNames = new TreeSet<String>();
+		TreeSet<String> sourceNames = new TreeSet<>();
+		TreeSet<String> assetNames = new TreeSet<>();
+		TreeSet<String> libraryNames = new TreeSet<>();
 		
-		data = new HashMap<String, Data>();
-		locations = new HashMap<String, String>();
+		data = new HashMap<>();
+		locations = new HashMap<>();
 		
         if (sources != null)
         {
             processSources(sources, sourceNames, assetNames, libraryNames, data, locations);
         }
 
-		timestamps = new HashMap<String, Long>();
+		timestamps = new HashMap<>();
 
         // Store timestamps for each path in the SourceList, so
         // contentUpdated() can report true if new sources are added
@@ -597,7 +597,7 @@ public class OEMReport implements Report
 				Data d = new Data();
 				d.definitions = toArray(u.topLevelDefinitions);
 				d.prerequisites = toArray(u.inheritance, null, locations);
-                Set<Name> nameSet = new HashSet<Name>();
+                Set<Name> nameSet = new HashSet<>();
                 nameSet.addAll(u.namespaces);
                 nameSet.addAll(u.types);
                 nameSet.addAll(u.expressions);
@@ -618,7 +618,7 @@ public class OEMReport implements Report
 		{
 			Frame f = movie.frames.get(i);
 			List<CompilationUnit> units = movie.getExportedUnitsByFrame(f);
-            List<String> aList = new ArrayList<String>(), dList = new ArrayList<String>();
+            List<String> aList = new ArrayList<>(), dList = new ArrayList<>();
 			for (int j = 0, size = units == null ? 0 : units.size(); j < size; j++)
 			{
 				CompilationUnit u = units.get(j);
@@ -670,7 +670,7 @@ public class OEMReport implements Report
 	{
 		if (messages != null && messages.size() > 0)
 		{
-			List<Message> filtered = new ArrayList<Message>();
+			List<Message> filtered = new ArrayList<>();
 
 			for (Message m : messages) {
 				if (m != null && !Message.INFO.equals(m.getLevel())) {
@@ -725,7 +725,7 @@ public class OEMReport implements Report
 
 	private String[] toArray(Set<Name> nameSet, Set[] sets, Map locations)
 	{
-		TreeSet<String> set = new TreeSet<String>();
+		TreeSet<String> set = new TreeSet<>();
 		
         for (Name name : nameSet)
 		{

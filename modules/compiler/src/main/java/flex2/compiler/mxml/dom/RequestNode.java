@@ -33,7 +33,7 @@ public class RequestNode extends Node
 
 	static
 	{
-		attributes = new HashSet<QName>();
+		attributes = new HashSet<>();
 		attributes.add(new QName("", "format"));
 	}
 

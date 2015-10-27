@@ -25,8 +25,8 @@ import java.util.List;
 
 public class Symtab<E>
 {
-	private List<Name> names = new ArrayList<Name>();
-	private List<E> values = new ArrayList<E>();
+	private List<Name> names = new ArrayList<>();
+	private List<E> values = new ArrayList<>();
 	
 	E get(Name name)
 	{

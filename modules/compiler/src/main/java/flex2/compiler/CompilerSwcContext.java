@@ -112,7 +112,7 @@ public class CompilerSwcContext
             files.putAll( includeGroup.getFiles() );
         }
 
-		List<SwcGroup> groupList = new LinkedList<SwcGroup>();
+		List<SwcGroup> groupList = new LinkedList<>();
         groupList.add( libGroup );
         groupList.add( rslGroup );
 		groupList.add( includeGroup );
@@ -491,23 +491,23 @@ public class CompilerSwcContext
     private boolean locked = false;
 
     private SwcGroup swcGroup;
-	private QNameMap<Source> def2source = new QNameMap<Source>();
-    private QNameMap<SwcScript> def2script = new QNameMap<SwcScript>();
-    private Map<String, Source> name2source = new HashMap<String, Source>();
-    private QNameMap<Source> rb2source = new QNameMap<Source>();
-    private QNameMap<Map<String, VirtualFile>> rb2file = new QNameMap<Map<String, VirtualFile>>();
+	private QNameMap<Source> def2source = new QNameMap<>();
+    private QNameMap<SwcScript> def2script = new QNameMap<>();
+    private Map<String, Source> name2source = new HashMap<>();
+    private QNameMap<Source> rb2source = new QNameMap<>();
+    private QNameMap<Map<String, VirtualFile>> rb2file = new QNameMap<>();
     private Set<SwcComponent> components;
-	private Set<String> packageNames = new HashSet<String>();
-    private Set<String> externs = new HashSet<String>();
-    private Set<String> includes = new LinkedHashSet<String>();
-    private Map<String, VirtualFile> resourceIncludes = new HashMap<String, VirtualFile>();
-    private Map<String, VirtualFile> files = new HashMap<String, VirtualFile>();
+	private Set<String> packageNames = new HashSet<>();
+    private Set<String> externs = new HashSet<>();
+    private Set<String> includes = new LinkedHashSet<>();
+    private Map<String, VirtualFile> resourceIncludes = new HashMap<>();
+    private Map<String, VirtualFile> files = new HashMap<>();
     private int loaded = 0;
-    private List<VirtualFile> themeStyles = new LinkedList<VirtualFile>();
-    private List<String> errlocations = new LinkedList<String>();
+    private List<VirtualFile> themeStyles = new LinkedList<>();
+    private List<String> errlocations = new LinkedList<>();
 	private StringBuilder ts = new StringBuilder(); // last modified time of all the swc and css files...
 	private boolean cacheSwcCompilationUnits; // if true, we setup storage for intermediate type info objects when doing incremental compilation...
-    private Map<Source, String> obsoletedSources = new HashMap<Source, String>();
+    private Map<Source, String> obsoletedSources = new HashMap<>();
     
     /**
      * Copy a script map from the SWC cache into the compiler's script map.
@@ -562,7 +562,7 @@ public class CompilerSwcContext
 					Map<String, VirtualFile> rbFiles = rb2file.get(rbName);
 					if (rbFiles == null)
 					{
-						rb2file.put(rbName, rbFiles = new HashMap<String, VirtualFile>());
+						rb2file.put(rbName, rbFiles = new HashMap<>());
 					}
 					rbFiles.put(locale, file);
 				}
@@ -587,7 +587,7 @@ public class CompilerSwcContext
 					Map<String, VirtualFile> rbFiles = rb2file.get(rbName);
 					if (rbFiles == null)
 					{
-						rb2file.put(rbName, rbFiles = new HashMap<String, VirtualFile>());
+						rb2file.put(rbName, rbFiles = new HashMap<>());
 					}
 					rbFiles.put(locale, file);
 				}
@@ -624,7 +624,7 @@ public class CompilerSwcContext
 	{
 		if (components == null)
 		{
-			components = new HashSet<SwcComponent>();
+			components = new HashSet<>();
 			
 			for (Iterator<QName> i = getDefinitionIterator(); i.hasNext(); )
 			{
@@ -685,7 +685,7 @@ public class CompilerSwcContext
      */
     Set<Source> cachedSources()
     {
-        Set<Source> result = new HashSet<Source>();
+        Set<Source> result = new HashSet<>();
 
         for (SwcScript swcScript : def2script.values())
         {

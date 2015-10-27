@@ -24,7 +24,7 @@ import macromedia.asc.semantics.ObjectValue;
 
 public class NamespacesTable extends HashMap<Namespaces,Namespaces>  
 {
-	private ObjectList<ObjectValue> list = new ObjectList<ObjectValue>(1);
+	private ObjectList<ObjectValue> list = new ObjectList<>(1);
 	
 	public NamespacesTable()
 	{

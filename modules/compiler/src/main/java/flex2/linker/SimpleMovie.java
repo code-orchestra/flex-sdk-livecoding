@@ -171,7 +171,7 @@ public class SimpleMovie extends Movie
         if (rootClassName == null)
             rootClassName = formatSymbolClassName( configuration.getMainDefinition() );
         
-        exportedUnits = new LinkedHashMap<CompilationUnit, Frame>();
+        exportedUnits = new LinkedHashMap<>();
         
         includeInheritanceDependenciesOnly = configuration.getIncludeInheritanceDependenciesOnly();
 	}
@@ -212,7 +212,7 @@ public class SimpleMovie extends Movie
 
     private DependencyGraph<CompilationUnit> extractCompilationUnitInfo(List<CompilationUnit> units)
     {
-        final DependencyGraph<CompilationUnit> dependencies = new DependencyGraph<CompilationUnit>();
+        final DependencyGraph<CompilationUnit> dependencies = new DependencyGraph<>();
 	    CompilationUnit main = null;
 
         for (CompilationUnit u : units) {
@@ -338,12 +338,12 @@ public class SimpleMovie extends Movie
 
     public List<CompilationUnit> getExportedUnits()
     {
-        return new ArrayList<CompilationUnit>(exportedUnits.keySet());
+        return new ArrayList<>(exportedUnits.keySet());
     }
     
     public List<CompilationUnit> getExportedUnitsByFrame(Frame f)
     {
-    	List<CompilationUnit> a = new ArrayList<CompilationUnit>();
+    	List<CompilationUnit> a = new ArrayList<>();
 
         for (CompilationUnit u : exportedUnits.keySet()) {
             Frame frame = exportedUnits.get(u);

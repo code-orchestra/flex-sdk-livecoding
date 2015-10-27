@@ -903,7 +903,7 @@ public class ObjectValue extends Value implements Comparable
     {
         if (deferredClassMap == null)
         {
-            deferredClassMap = new HashMap<TypeValue,ClassDefinitionNode>();
+            deferredClassMap = new HashMap<>();
         }
         return deferredClassMap;
     }
@@ -1016,7 +1016,7 @@ public class ObjectValue extends Value implements Comparable
     public void addBaseObj(ObjectValue base)
     {
     	if( base_objs == null)
-    		base_objs = new ObjectList<ObjectValue>(1);
+    		base_objs = new ObjectList<>(1);
     	if( !base_objs.contains(base) )
     		base_objs.add(base);
     }

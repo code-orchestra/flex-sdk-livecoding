@@ -31,8 +31,8 @@ public class ReadContext
 {
     private String currentName;
     private Attributes currentAttributes;
-    private Stack<CatalogReadElement> parents = new Stack<CatalogReadElement>();
-    private Stack<String> parentNames = new Stack<String>();
+    private Stack<CatalogReadElement> parents = new Stack<>();
+    private Stack<String> parentNames = new Stack<>();
 
     public String getCurrentName()
     {

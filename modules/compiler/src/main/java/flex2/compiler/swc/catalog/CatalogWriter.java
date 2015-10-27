@@ -166,7 +166,7 @@ public class CatalogWriter
                 writer.write("      <ext>" + s + "</ext>" + ls);
             }
 
-            HashSet<String> scriptSet = new HashSet<String>();
+            HashSet<String> scriptSet = new HashSet<>();
             for (Iterator scriptit = swcLibrary.getScriptIterator(); scriptit.hasNext(); ) {
                 SwcScript swcScript = (SwcScript) scriptit.next();
 

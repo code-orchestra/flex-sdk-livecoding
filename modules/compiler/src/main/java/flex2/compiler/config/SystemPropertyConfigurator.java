@@ -62,7 +62,7 @@ public class SystemPropertyConfigurator
 
                 String value = System.getProperty( propname );
 
-                List<String> args = new LinkedList<String>();
+                List<String> args = new LinkedList<>();
                 StringTokenizer t = new StringTokenizer( value, "," );
 
                 while (t.hasMoreTokens())

@@ -129,7 +129,7 @@ public abstract class AbstractTextNode extends AbstractFXGNode implements TextNo
     protected void rememberAttribute(String name, String value)
     {
         if (textAttributes == null)
-            textAttributes = new HashMap<String, String>(4);
+            textAttributes = new HashMap<>(4);
 
         textAttributes.put(name, value);
     }

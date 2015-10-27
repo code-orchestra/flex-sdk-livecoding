@@ -179,7 +179,7 @@ final public class ActionFactory
 		registers = new RegisterRecord[length];
         actions = new Action[length];
         actionOffsets = new int[length+1];
-        skipRecords = new ArrayList<SkipEntry>();
+        skipRecords = new ArrayList<>();
     }
 
     public void setLine(int offset, LineRecord line)

@@ -276,7 +276,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
         methodBody.removeLast(); // Removes last ReturnStatement
 
         // COLT-104 - memorize the function scope variable definitions
-        Set<String> localVariables = new HashSet<String>();
+        Set<String> localVariables = new HashSet<>();
         for (Node statement : methodBody) {
             List<RegularNode> varBindingRegularNodes = new RegularNode(statement).getDescendants(VariableBindingNode.class, FunctionCommonNode.class);
             for (RegularNode varBindingRegularNode : varBindingRegularNodes) {
@@ -296,7 +296,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
         DigestManager digestManager = DigestManager.getInstance();
         // 'This' scope modifications
-        List<Triple<Node, Node, InsertPosition>> deferredInsertions = new ArrayList<Triple<Node, Node, InsertPosition>>();
+        List<Triple<Node, Node, InsertPosition>> deferredInsertions = new ArrayList<>();
         for (Node statement : methodBody) {
             RegularNode statementRegularNode = new RegularNode(statement);
             List<RegularNode> memberExpressionNodes = statementRegularNode.getDescendants(MemberExpressionNode.class);
@@ -444,7 +444,7 @@ public abstract class AbstractTreeModificationExtension implements Extension {
 
 
         // Copy namespace declarations to the live class
-        Set<String> namespaces = new HashSet<String>();
+        Set<String> namespaces = new HashSet<>();
         ClassDefinitionNode classDefinitionNode = classCONode.addToProject();
         for (Node pkgStatement : parentClass.pkgdef.statements.items) {
             if (pkgStatement instanceof UseDirectiveNode) {

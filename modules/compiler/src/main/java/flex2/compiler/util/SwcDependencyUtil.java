@@ -75,18 +75,18 @@ public class SwcDependencyUtil
                                                          String[] dependencyTypesArray,
                                                          boolean minimizeDependencySet)
     {
-        Set<String> scriptDependencyTypes = dependencyTypesArray != null ? 
-                                            new HashSet<String>(Arrays.asList(dependencyTypesArray)) : null;
+        Set<String> scriptDependencyTypes = dependencyTypesArray != null ?
+                new HashSet<>(Arrays.asList(dependencyTypesArray)) : null;
         SwcCache cache = new SwcCache();
         SwcGroup swcGroup = cache.getSwcGroup(swcs);
         cache.setLazyRead(true);
         SwcDependencyInfoImpl depInfo = new SwcDependencyInfoImpl();        // return value
         
         // map of swcLocations to a map of script names to the scripts
-        Map<String, Map<String, SwcScript>> swcDefMap = new HashMap<String, Map<String, SwcScript>>(swcGroup.getNumberLoaded());
+        Map<String, Map<String, SwcScript>> swcDefMap = new HashMap<>(swcGroup.getNumberLoaded());
         
         // map of swcLocations to the external scripts in the swc and where they can be resolved
-        Map<String, SwcExternalScriptInfoImpl> swcExternMap = new HashMap<String, SwcExternalScriptInfoImpl>(swcGroup.getNumberLoaded());
+        Map<String, SwcExternalScriptInfoImpl> swcExternMap = new HashMap<>(swcGroup.getNumberLoaded());
         
         // for all the swcs
         for (Entry<String,Swc> swcEntry : swcGroup.getSwcs().entrySet())
@@ -94,7 +94,7 @@ public class SwcDependencyUtil
             if (swcDefMap.get(swcEntry.getValue().getLocation()) != null)
                 continue;   // already looked at this one
             
-            HashMap<String, SwcScript> defMap = new HashMap<String, SwcScript>();
+            HashMap<String, SwcScript> defMap = new HashMap<>();
             //HashMap<String, SwcExternalScriptInfo> externMap = new HashMap<String, SwcExternalScriptInfo>();
             String swcLocation = swcEntry.getValue().getLocation();
             SwcExternalScriptInfoImpl externalScripts = new SwcExternalScriptInfoImpl(swcLocation);
@@ -164,7 +164,7 @@ public class SwcDependencyUtil
         Map<String, Set<String>> dependencyMap = null;
         
         if (minimizeDependencySet)
-            dependencyMap = new HashMap<String, Set<String>>(swcGroup.getNumberLoaded());
+            dependencyMap = new HashMap<>(swcGroup.getNumberLoaded());
         
         // for each swc try to resolve its externals in other swcs. 
         // Each external can be found in more than one swcs. A dependency could this swc A OR swc B.
@@ -178,7 +178,7 @@ public class SwcDependencyUtil
                 dependencyList = dependencyMap.get(swcLocation);
                 if (dependencyList == null)
                 {
-                    dependencyList = new HashSet<String>();
+                    dependencyList = new HashSet<>();
                     dependencyMap.put(swcLocation, dependencyList);
                 }
                 
@@ -188,7 +188,7 @@ public class SwcDependencyUtil
             {
                 // for each extern, look in other swcs until we find the entry.
                 // look in all the swcs, so we know all the dependencies
-                List<SwcScript> resolvingSwcs = new ArrayList<SwcScript>(); 
+                List<SwcScript> resolvingSwcs = new ArrayList<>();
                 for (Map.Entry<String, Map<String, SwcScript>> swcDefEntry : swcDefMap.entrySet())
                 {
                     String swcLocation2 = swcDefEntry.getKey();
@@ -354,9 +354,9 @@ public class SwcDependencyUtil
             Map<String, Set<String>> dependencyMap,                                    
             SwcDependencyInfoImpl depInfo)
     {
-        Set<String>removeSet = new HashSet<String>();   // record the list of swcs to remove as dependencies.
+        Set<String>removeSet = new HashSet<>();   // record the list of swcs to remove as dependencies.
         SwcExternalScriptInfo externalInfo = depInfo.getSwcExternalScriptInfo(swcLocation);
-        Map<String, Set<String>> externalsBySwc = new HashMap<String, Set<String>>();
+        Map<String, Set<String>> externalsBySwc = new HashMap<>();
 
         for (String swcDependLocation : dependencyMap.get(swcLocation))
         {
@@ -462,8 +462,8 @@ public class SwcDependencyUtil
         
         // Loop over the source swcs to see if they have any inheritance 
         // dependencies on target swcs.
-        Set<String> inheritanceDependencies = new HashSet<String>(64 * sourceSwcs.size());
-        Set<String> inheritanceDependencyType = new HashSet<String>();
+        Set<String> inheritanceDependencies = new HashSet<>(64 * sourceSwcs.size());
+        Set<String> inheritanceDependencyType = new HashSet<>();
         inheritanceDependencyType.add(SwcDependencySet.INHERITANCE);
 
         // get the inheritance dependencies of all source swcs
@@ -481,7 +481,7 @@ public class SwcDependencyUtil
         // target swcs.
         // move thru the list backwards to we can handle the case where a
         // newly found swc can be used to test an upstream swc.
-        Set<String> foundSwcs = new HashSet<String>();
+        Set<String> foundSwcs = new HashSet<>();
         for (ListIterator<String> iter = targetSwcs.listIterator(targetSwcs.size()); iter.hasPrevious();)
         {
             String targetSwc = iter.previous();
@@ -515,7 +515,7 @@ public class SwcDependencyUtil
      */
     public static Set<String> getSwcScripts(Swc swc)
     {
-        Set<String>scripts = new HashSet<String>(64);
+        Set<String>scripts = new HashSet<>(64);
         
         // for all the libraries in a swc to find external scripts
         for (Iterator<SwcLibrary> swcLibraryIter = swc.getLibraryIterator();
@@ -566,7 +566,7 @@ public class SwcDependencyUtil
     {
         // loop thru the script in a library and build the list of definitions
         // for all the libraries in a swc to find external scripts
-        Set<String> dependencies = new HashSet<String>(64);
+        Set<String> dependencies = new HashSet<>(64);
         
         for (Iterator<SwcLibrary> swcLibraryIter = swc.getLibraryIterator();
              swcLibraryIter.hasNext();)

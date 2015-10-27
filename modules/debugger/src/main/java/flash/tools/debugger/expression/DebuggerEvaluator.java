@@ -268,7 +268,7 @@ class DebuggerEvaluator implements Evaluator
 
 	public Value evaluate(macromedia.asc.util.Context cx, LiteralArrayNode node)
 	{
-		List<Object> arrayElements = new ArrayList<Object>();
+		List<Object> arrayElements = new ArrayList<>();
 		if (node.elementlist != null && node.elementlist.items != null)
 		{
 			for (Node arrayEntry : node.elementlist.items)
@@ -370,7 +370,7 @@ class DebuggerEvaluator implements Evaluator
 		func = (DebuggerValue) node.expr.evaluate(cx, this);
 
 		int argcount = (node.args != null) ? node.args.items.size() : 0;
-		List<Object> args = new ArrayList<Object>(argcount);
+		List<Object> args = new ArrayList<>(argcount);
 		if (argcount > 0)
 		{
 			boolean temporarilyRemoveTopScope = (node.getMode() == Tokens.DOT_TOKEN);
@@ -1358,7 +1358,7 @@ class DebuggerEvaluator implements Evaluator
 
 	private String keywordNotAllowed(String keyword)
 	{
-		Map<String,String> parameters = new HashMap<String,String>();
+		Map<String,String> parameters = new HashMap<>();
 		parameters.put("keyword", keyword); //$NON-NLS-1$
 		return ASTBuilder.getLocalizationManager().getLocalizedTextString(
 				"keywordNotAllowed", parameters); //$NON-NLS-1$

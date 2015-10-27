@@ -36,8 +36,8 @@ class SwcExternalScriptInfoImpl implements SwcExternalScriptInfo
 {
     
     private String swcLocation;
-    private Map<String, Set<String>> scriptToTypes = new TreeMap<String, Set<String>>(); // map a script name to a list of type dependencies
-    private Map<String, Set<String>> scriptToSwcs  = new HashMap<String, Set<String>>(); // map a script name to a list of swcs that contain the script
+    private Map<String, Set<String>> scriptToTypes = new TreeMap<>(); // map a script name to a list of type dependencies
+    private Map<String, Set<String>> scriptToSwcs  = new HashMap<>(); // map a script name to a list of swcs that contain the script
     
     
     public SwcExternalScriptInfoImpl()
@@ -89,7 +89,7 @@ class SwcExternalScriptInfoImpl implements SwcExternalScriptInfo
         Set<String>dependencySet = scriptToTypes.get(scriptName);
         if (dependencySet == null)
         {
-            dependencySet = new HashSet<String>();
+            dependencySet = new HashSet<>();
             scriptToTypes.put(scriptName, dependencySet);
         }
         
@@ -110,7 +110,7 @@ class SwcExternalScriptInfoImpl implements SwcExternalScriptInfo
         Set<String>swcSet = scriptToSwcs.get(scriptName);
         if (swcSet == null)
         {
-            swcSet = new HashSet<String>();
+            swcSet = new HashSet<>();
             scriptToSwcs.put(scriptName, swcSet);
         }
         
@@ -119,7 +119,7 @@ class SwcExternalScriptInfoImpl implements SwcExternalScriptInfo
 
     public Set<String> getExternalScripts(String resolvedSwcLocation)
     {
-        Set<String>externalScripts = new HashSet<String>();
+        Set<String>externalScripts = new HashSet<>();
         
         for (Map.Entry<String, Set<String>> scriptMap : scriptToSwcs.entrySet())
         {

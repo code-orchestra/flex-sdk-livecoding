@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class NodeVisitorFactory {
 
-    private static Map<Class, NodeVisitor> visitors = new HashMap<Class, NodeVisitor>();
+    private static Map<Class, NodeVisitor> visitors = new HashMap<>();
 
     static {
         visitors.put(ApplyTypeExprNode.class, new ApplyTypeExprNodeVisitor());

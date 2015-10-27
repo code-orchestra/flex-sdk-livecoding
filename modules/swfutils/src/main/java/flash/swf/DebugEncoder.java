@@ -136,7 +136,7 @@ public class DebugEncoder implements DebugHandler
             this.name = name;
             this.text = text;
 
-            this.debugOffsets = new ArrayList<DebugOffset>();
+            this.debugOffsets = new ArrayList<>();
         }
 
         /**
@@ -272,10 +272,10 @@ public class DebugEncoder implements DebugHandler
 
     public DebugEncoder()
     {
-        debugScripts = new ArrayList<DebugScript>();
-        debugScriptsByName = new HashMap<String, DebugScript>();
-        debugBreakpoints = new ArrayList<DebugBreakpoint>();
-		debugRegisters = new ArrayList<DebugRegisters>();
+        debugScripts = new ArrayList<>();
+        debugScriptsByName = new HashMap<>();
+        debugBreakpoints = new ArrayList<>();
+		debugRegisters = new ArrayList<>();
    }
 
     public void header(int version)

@@ -82,11 +82,11 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 		this.cfgbuf = cfgbuf;
 		this.configuration = configuration;
 		
-		args = new LinkedHashMap<String, Object>();
-		more = new LinkedHashMap<String, Object>();
-		linker_args = new LinkedHashMap<String, Object>();
-		linker_more = new LinkedHashMap<String, Object>();
-		newLinkerOptionsAfterCompile = new HashSet<String>();
+		args = new LinkedHashMap<>();
+		more = new LinkedHashMap<>();
+		linker_args = new LinkedHashMap<>();
+		linker_more = new LinkedHashMap<>();
+		newLinkerOptionsAfterCompile = new HashSet<>();
 		
 		if (configuration != null)
 		{
@@ -94,15 +94,15 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 		}
 		
 		defaults = args;
-		args = new LinkedHashMap<String, Object>();
-		linker_args = new LinkedHashMap<String, Object>();
+		args = new LinkedHashMap<>();
+		linker_args = new LinkedHashMap<>();
 		newLinkerOptionsAfterCompile.clear();
 		
 		keepLinkReport = false;
 		keepSizeReport = false;
 		keepConfigurationReport = false;
 		
-		tokens = new TreeMap<String, String>();
+		tokens = new TreeMap<>();
 	}
 
 	public ConfigurationBuffer cfgbuf;
@@ -150,7 +150,7 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
     //TEST ME
 	private String[] getOptions(Map<String, Object> args, Map<String, Object> more, boolean processExtras)
 	{
-		ArrayList<String> buffer = new ArrayList<String>();
+		ArrayList<String> buffer = new ArrayList<>();
 		
         //TODO this can be optimized to use the entrySet
 		for (String key : tokens.keySet()) {
@@ -903,7 +903,7 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
      */
     public void setComponentManifest(String namespaceURI, File manifest)
     {
-        List<File> manifests = new ArrayList<File>(2);
+        List<File> manifests = new ArrayList<>(2);
         manifests.add(manifest);
         setComponentManifests(namespaceURI, manifests);
     }
@@ -2350,7 +2350,7 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 			for (Entry<String, List<VirtualFile>> entry : manifestMappings.entrySet()) {
 				String uri = entry.getKey();
 				List<VirtualFile> virtualFiles = entry.getValue();
-				List<File> files = new ArrayList<File>(virtualFiles.size());
+				List<File> files = new ArrayList<>(virtualFiles.size());
 
 				for (VirtualFile virtualFile : virtualFiles) {
 					files.add(toFile(virtualFile));
@@ -2458,7 +2458,7 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
 			throw new IllegalArgumentException();
 		}
 		
-		List<String> rslList = new ArrayList<String>();
+		List<String> rslList = new ArrayList<>();
 		
 		rslList.add(swc);
 		
@@ -2604,11 +2604,11 @@ public class OEMConfiguration implements Configuration, ConfigurationConstants, 
         {
             throw new RuntimeException(e);//wont happen
         }
-        cloneConfig.args = new LinkedHashMap<String, Object>(args);
-        cloneConfig.defaults = new LinkedHashMap<String, Object>(defaults);
-        cloneConfig.more = new LinkedHashMap<String, Object>(more);
-        cloneConfig.linker_args = new LinkedHashMap<String, Object>(linker_args);
-        cloneConfig.linker_more = new LinkedHashMap<String, Object>(linker_more);
+        cloneConfig.args = new LinkedHashMap<>(args);
+        cloneConfig.defaults = new LinkedHashMap<>(defaults);
+        cloneConfig.more = new LinkedHashMap<>(more);
+        cloneConfig.linker_args = new LinkedHashMap<>(linker_args);
+        cloneConfig.linker_more = new LinkedHashMap<>(linker_more);
         return cloneConfig;
     }
 

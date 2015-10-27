@@ -44,7 +44,7 @@ public class SymbolClass extends Tag
 		return class2tag.values().iterator();
     }
 
-    public Map<String, Tag> class2tag = new HashMap<String, Tag>();
+    public Map<String, Tag> class2tag = new HashMap<>();
 	public String topLevelClass;
 
     public boolean equals(Object object)

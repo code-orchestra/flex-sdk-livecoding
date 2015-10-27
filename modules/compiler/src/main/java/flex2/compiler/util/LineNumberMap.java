@@ -34,7 +34,7 @@ public class LineNumberMap {
 	public LineNumberMap(String name, String newName) {
 		this.oldName = name;
 		this.newName = newName;
-		this.map = new TreeMap<Range, Integer>();
+		this.map = new TreeMap<>();
 		this.lookup = new Range(0, 1);
 	}
 

@@ -25,7 +25,7 @@ package com.adobe.fxg.util;
  */
 public class FXGLog
 {
-    private static ThreadLocal<FXGLogger> currentLogger = new ThreadLocal<FXGLogger>();
+    private static ThreadLocal<FXGLogger> currentLogger = new ThreadLocal<>();
 
     private FXGLog()
     {

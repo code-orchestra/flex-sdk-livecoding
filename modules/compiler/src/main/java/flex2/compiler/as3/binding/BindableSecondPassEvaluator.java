@@ -1250,7 +1250,7 @@ public class BindableSecondPassEvaluator extends GenerativeSecondPassEvaluator
 	 */
 	protected Map<String, BindableInfo> getTemplateVars()
 	{
-		Map<String, BindableInfo> vars = new HashMap<String, BindableInfo>();
+		Map<String, BindableInfo> vars = new HashMap<>();
 		vars.put("bindableInfo", bindableInfo);
 
 		return vars;

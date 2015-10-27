@@ -35,7 +35,7 @@ public class InstanceBuilder extends Builder
     public InstanceBuilder basebui;
     public boolean canEarlyBind = true;
 
-    public ObjectList<ReferenceValue> interface_refs = new ObjectList<ReferenceValue>();
+    public ObjectList<ReferenceValue> interface_refs = new ObjectList<>();
 
 	public InstanceBuilder(final QName classname)
 	{

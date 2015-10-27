@@ -57,7 +57,7 @@ public class SanityCompilerHandler extends CompilerHandler
 	}
 
 	public ObjectList<PackageDefinitionNode> loadPackages(String filename) {
-		return new ObjectList<PackageDefinitionNode>();
+		return new ObjectList<>();
 	}
 	public String findPackage(String name) { return ""; }
     public void importFile(final String filename) {}

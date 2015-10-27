@@ -81,10 +81,10 @@ public final class MovieMetaData extends TagHandler
 		functionSizes = new IntMap();
 		functionLines = new IntMap();
 		preciseLines = new IntMap();
-		mxml = new HashMap<String, DebugModule>();
+		mxml = new HashMap<>();
 
 		pool = null;
-		skipOffsets = new ArrayList<Integer>();
+		skipOffsets = new ArrayList<>();
 	}
 
 	private void parse(TagDecoder p) throws IOException
@@ -597,8 +597,8 @@ public final class MovieMetaData extends TagHandler
 		// assumption: ActionContext c is always not null! try-catch-finally may be busted.
 		if (c == null) return;
 
-		Stack<Object> evalStack = new Stack<Object>();
-		HashMap<Object, Object> variables = new HashMap<Object, Object>();
+		Stack<Object> evalStack = new Stack<>();
+		HashMap<Object, Object> variables = new HashMap<>();
 
 		// loop again, this time, we register all the actions...
 		int offset;
@@ -1057,7 +1057,7 @@ public final class MovieMetaData extends TagHandler
 
 class MFUCache
 {
-	HashMap<DebugModule, Integer> cache = new HashMap<DebugModule, Integer>(5);
+	HashMap<DebugModule, Integer> cache = new HashMap<>(5);
 	DebugModule topModule;
 	int topCount;
 

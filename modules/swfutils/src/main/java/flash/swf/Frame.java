@@ -53,20 +53,20 @@ public class Frame
 
 	public Frame()
 	{
-		exports = new HashMap<String, DefineTag>();
-		exportDefs = new ArrayList<DefineTag>();
-		doActions = new ArrayList<ActionList>();
-		controlTags = new ArrayList<Tag>();
-		imports = new ArrayList<ImportAssets>();
-		fonts = new ArrayList<DefineFont>();
+		exports = new HashMap<>();
+		exportDefs = new ArrayList<>();
+		doActions = new ArrayList<>();
+		controlTags = new ArrayList<>();
+		imports = new ArrayList<>();
+		fonts = new ArrayList<>();
 
-		doABCs = new ArrayList<DoABC>();
+		doABCs = new ArrayList<>();
 		symbolClass = new SymbolClass();
 	}
 
 	public Iterator<Tag> getReferences()
 	{
-		ArrayList<Tag> list = new ArrayList<Tag>();
+		ArrayList<Tag> list = new ArrayList<>();
 
 		// exported symbols
 		for (DefineTag def : exportDefs) {

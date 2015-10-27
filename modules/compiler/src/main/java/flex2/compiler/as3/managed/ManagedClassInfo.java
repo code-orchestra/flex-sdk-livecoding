@@ -62,7 +62,7 @@ public class ManagedClassInfo extends GenerativeClassInfo
     {
         super(context, symbolTable);
         setClassName(className);
-        propertyModes = new HashMap<QName, Integer>();
+        propertyModes = new HashMap<>();
     }
 
     /**

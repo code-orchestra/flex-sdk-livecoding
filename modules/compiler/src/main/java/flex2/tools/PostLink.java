@@ -67,7 +67,7 @@ public class PostLink implements flex2.linker.PostLink
     
 	public void run(ConsoleApplication app)
 	{
-        List<byte[]> abcList = new ArrayList<byte[]>(1);
+        List<byte[]> abcList = new ArrayList<>(1);
 		abcList.add(null);
 
 		if (optimize)
@@ -100,7 +100,7 @@ public class PostLink implements flex2.linker.PostLink
                 Set<String> mergedMetaData = null;
                 if (as3metadata != null && as3metadata.length > 0)
                 {
-                    mergedMetaData = new HashSet<String>();
+                    mergedMetaData = new HashSet<>();
                     mergedMetaData.addAll(moreMetadata);
                     mergedMetaData.addAll(Arrays.asList(as3metadata));                
                 }
@@ -111,7 +111,7 @@ public class PostLink implements flex2.linker.PostLink
                 as3metadata = mergedMetaData.toArray(new String[mergedMetaData.size()]);                    
             }
         }
-		List<DoABC> doABCs = new ArrayList<DoABC>(1);
+		List<DoABC> doABCs = new ArrayList<>(1);
 		doABCs.add(null);
 
 		// abc merge... frame by frame... if merging fails on one of the frames, it will continue.

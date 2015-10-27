@@ -120,8 +120,8 @@ public class MxmlScanner extends DefaultHandler implements TokenManager,
 
     public MxmlScanner(InputStream in, boolean processDesignLayers, boolean processComments)
     {
-        saxEvents = new ArrayList<Object>(100);
-        elementStack = new Stack<Object>();
+        saxEvents = new ArrayList<>(100);
+        elementStack = new Stack<>();
         cdataHandler = new CDATAHandler(processComments);
         this.processDesignLayers = processDesignLayers;
         pos = 0;
@@ -555,7 +555,7 @@ public class MxmlScanner extends DefaultHandler implements TokenManager,
     
     public void startDocument() throws SAXException
     {
-        prefixMappings = new HashMap<String, String>();
+        prefixMappings = new HashMap<>();
         textDepth = 0;
     }
 

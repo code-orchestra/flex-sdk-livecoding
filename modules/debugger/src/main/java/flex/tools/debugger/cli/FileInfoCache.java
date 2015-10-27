@@ -41,7 +41,7 @@ public class FileInfoCache implements Comparator<SourceFile>
 	 * We can get at files by module id or path
 	 */
 	IntMap				m_byInt = new IntMap();
-	HashMap<Integer, IntMap> m_isolateState = new HashMap<Integer, IntMap> ();
+	HashMap<Integer, IntMap> m_isolateState = new HashMap<>();
 
 	private IntMap getIsolateState(int isolateId) {
 		IntMap isolateState = null;
@@ -100,7 +100,7 @@ public class FileInfoCache implements Comparator<SourceFile>
 	private void buildIsolateFiles(int isolateId) {
 		SwfInfo[] swfs = getSwfs(isolateId);
 		boolean worked = true; // check that all worked correctly
-		ArrayList<SourceFile> files = new ArrayList<SourceFile>();
+		ArrayList<SourceFile> files = new ArrayList<>();
 
 		for (SwfInfo swf : swfs) {
 			if (swf != null)
@@ -135,7 +135,7 @@ public class FileInfoCache implements Comparator<SourceFile>
 	}
 
 	SwfInfo[] getAllSwfs() {
-		ArrayList<SwfInfo> result = new ArrayList<SwfInfo>();
+		ArrayList<SwfInfo> result = new ArrayList<>();
 
 		for ( Isolate isolate : m_session.getWorkers()) {
 			SwfInfo[] swfs = new SwfInfo[0];
@@ -197,7 +197,7 @@ public class FileInfoCache implements Comparator<SourceFile>
 	void loadCache()
 	{
 		boolean worked = true; // check that all worked correctly
-		ArrayList<SourceFile> files = new ArrayList<SourceFile>();
+		ArrayList<SourceFile> files = new ArrayList<>();
 		SwfInfo[] swfs = getAllSwfs();
 		for (SwfInfo swf : swfs) {
 			if (swf != null)
@@ -245,8 +245,8 @@ public class FileInfoCache implements Comparator<SourceFile>
 	 */
 	ArrayList<SourceFile> trimFileList(ArrayList<SourceFile> files)
 	{
-		HashMap<String, String> names = new HashMap<String, String>();
-		ArrayList<SourceFile> list = new ArrayList<SourceFile>();
+		HashMap<String, String> names = new HashMap<>();
+		ArrayList<SourceFile> list = new ArrayList<>();
 
 		int size = files.size();
 		for (SourceFile file : files) {
@@ -505,7 +505,7 @@ public class FileInfoCache implements Comparator<SourceFile>
         }
 
 		SourceFile[] files = isolateId > -1 ? getFileList(isolateId) : getFileList();
-        ArrayList<SourceFile> fileList = new ArrayList<SourceFile>();
+        ArrayList<SourceFile> fileList = new ArrayList<>();
         int n = files.length;
 		int exactHitAt = -1;
 		// If the matchString already starts with "." (e.g. ".as" or ".mxml"), then dotMatchString

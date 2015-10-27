@@ -97,7 +97,7 @@ public class LibraryCompiler
 		}
 		
 		List fileList = flex2.compiler.CompilerAPI.getVirtualFileList(c2.getIncludeSources(),
-															  new HashSet<String>(Arrays.asList(flex2.tools.WebTierAPI.getSourcePathMimeTypes())));
+				new HashSet<>(Arrays.asList(flex2.tools.WebTierAPI.getSourcePathMimeTypes())));
 
 		for (Object aFileList : fileList) {
 			lib.addComponent(new File(((VirtualFile) aFileList).getName()));
@@ -145,7 +145,7 @@ public class LibraryCompiler
 		    {
 		    	Report r = lib.getReport();
 		    	String[] rbNames = r.getResourceBundleNames();
-		    	HashSet<String> set = new HashSet<String>();
+		    	HashSet<String> set = new HashSet<>();
 		    	for (int i = 0, l = rbNames == null ? 0 : rbNames.length; i < l; i++)
 		    	{
 		    		set.add(rbNames[i]);

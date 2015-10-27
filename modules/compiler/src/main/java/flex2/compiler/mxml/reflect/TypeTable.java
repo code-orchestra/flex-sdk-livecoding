@@ -78,8 +78,8 @@ public class TypeTable
         this.standardDefs = standardDefs;
         this.themeNames = themeNames;
 
-        nonRepeaters = new WeakHashMap<String, String>();
-        typeMap = new HashMap<String, Type>();
+        nonRepeaters = new WeakHashMap<>();
+        typeMap = new HashMap<>();
 
         noType          = getType(SymbolTable.NOTYPE);
         objectType      = getType(SymbolTable.OBJECT);
@@ -767,7 +767,7 @@ public class TypeTable
         {
             if (events.size() == 0) return;
 
-            eventTypes = new HashMap<String, EventHelper>(events.size());
+            eventTypes = new HashMap<>(events.size());
 
             for (MetaData md : events) {
                 String name = md.getValue("name");

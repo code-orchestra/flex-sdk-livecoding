@@ -12,7 +12,7 @@ import java.util.Set;
 public class CollectingProcessor implements INodeProcessor {
 
     private Set<Class> filter;
-    private List<Node> nodes = new ArrayList<Node>();
+    private List<Node> nodes = new ArrayList<>();
 
     public CollectingProcessor(Set<Class> filter) {
         this.filter = filter;

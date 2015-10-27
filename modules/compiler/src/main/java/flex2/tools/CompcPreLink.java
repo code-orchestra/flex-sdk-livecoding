@@ -96,12 +96,12 @@ public class CompcPreLink implements flex2.compiler.PreLink
         int highestMinimumSupportedVersion = (MxmlConfiguration.EARLIEST_MAJOR_VERSION << 24);
         boolean isMinimumSupportedVersionConfigured = 
             configuration.getCompilerConfiguration().getMxmlConfiguration().isMinimumSupportedVersionConfigured();
-        Set<String> processedSwcs = new HashSet<String>();
+        Set<String> processedSwcs = new HashSet<>();
         Set externs = configuration.getExterns();
 
         for (CompilationUnit u : units)
         {
-            Set<Name> dependencies = new HashSet<Name>();
+            Set<Name> dependencies = new HashSet<>();
             dependencies.addAll(u.inheritance);
             dependencies.addAll(u.namespaces);
             dependencies.addAll(u.expressions);
@@ -200,11 +200,11 @@ public class CompcPreLink implements flex2.compiler.PreLink
     private void postGenerateExtraSwcCode(List<Source> sources, List units, SymbolTable symbolTable, SourceList sourceList, SourcePath sourcePath,
     								  ResourceBundlePath bundlePath, ResourceContainer resources, CompilerSwcContext swcContext, Configuration configuration)
     {
-    	LinkedList<DefineTag> fonts = new LinkedList<DefineTag>();
+    	LinkedList<DefineTag> fonts = new LinkedList<>();
     	boolean isAccessible = configuration.getCompilerConfiguration().accessible();
-    	Set<String> accessibilityList = new HashSet<String>();
+    	Set<String> accessibilityList = new HashSet<>();
         Set<String> externs = configuration.getExterns();
-        ArrayList<Long> checksumList = new ArrayList<Long>(units.size());
+        ArrayList<Long> checksumList = new ArrayList<>(units.size());
 
     	for (int i = 0, size = units == null ? 0 : units.size(); i < size; i++)
     	{
@@ -262,7 +262,7 @@ public class CompcPreLink implements flex2.compiler.PreLink
 	    if (rbFiles != null && !configuration.generateRBList())
 	    {
     		String[] locales = configuration.getCompilerConfiguration().getLocales();
-	    	Set<String> s = new TreeSet<String>();
+	    	Set<String> s = new TreeSet<>();
             Set externs = configuration.getExterns();
 
             for (Source src : sources) {

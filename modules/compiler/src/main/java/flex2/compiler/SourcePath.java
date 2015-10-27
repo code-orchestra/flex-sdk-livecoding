@@ -55,7 +55,7 @@ public class SourcePath extends SourcePathBase
 	public SourcePath(String[] mimeTypes, boolean allowSourcePathOverlap)
 	{
 		super(mimeTypes, allowSourcePathOverlap);
-		directories = new LinkedList<File>();
+		directories = new LinkedList<>();
 	}
 
 	public void addPathElements(VirtualFile[] classPath)
@@ -327,12 +327,12 @@ abstract class SourcePathBase
 	{
 		this.mimeTypes = mimeTypes;
 		this.allowSourcePathOverlap = allowSourcePathOverlap;
-		sources = new HashMap<String, Source>();
+		sources = new HashMap<>();
 
-		hits = new HashSet<String>();
-		misses = new HashSet<String>(1024);
-		dirs = new HashMap<String, String>();
-		warnings = new ArrayList<ClasspathOverlap>(5);
+		hits = new HashSet<>();
+		misses = new HashSet<>(1024);
+		dirs = new HashMap<>();
+		warnings = new ArrayList<>(5);
 	}
 
 	protected final String[] mimeTypes;

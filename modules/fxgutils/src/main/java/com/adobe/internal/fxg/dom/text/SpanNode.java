@@ -49,7 +49,7 @@ public class SpanNode extends AbstractCharacterTextNode
         if (child instanceof BRNode || child instanceof CDATANode)
         {
             if (content == null)
-                content = new ArrayList<TextNode>();
+                content = new ArrayList<>();
 
             content.add((TextNode)child);
         }

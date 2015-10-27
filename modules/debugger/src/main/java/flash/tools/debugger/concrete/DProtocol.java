@@ -78,7 +78,7 @@ public class DProtocol implements Runnable
 	{
 		m_in = in;
 		m_out = out;
-		m_listeners = new EnumMap<ListenerIndex, DProtocolNotifierIF>(ListenerIndex.class);
+		m_listeners = new EnumMap<>(ListenerIndex.class);
 		m_msgRx = 0;
 		m_msgTx = 0;
 		m_stopRx = false;

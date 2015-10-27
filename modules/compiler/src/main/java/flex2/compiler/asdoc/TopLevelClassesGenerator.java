@@ -99,10 +99,10 @@ public class TopLevelClassesGenerator
         this.asDocConfig = asDocConfig;
         this.domObject = domObject;
 
-        classTable = new HashMap<String, AsClass>();
-        packageContentsTable = new HashMap<String, HashMap<String, AsClass>>();
-        packageTable = new HashMap<String, Element>();
-        bindableTable = new HashMap<String, String>();
+        classTable = new HashMap<>();
+        packageContentsTable = new HashMap<>();
+        packageTable = new HashMap<>();
+        bindableTable = new HashMap<>();
     }
 
     /** 
@@ -116,7 +116,7 @@ public class TopLevelClassesGenerator
         parser = factory.newDocumentBuilder();
         outputObject = parser.newDocument();
 
-        oldNewNamesMap = new HashMap<String, String>();
+        oldNewNamesMap = new HashMap<>();
         oldNewNamesMap.put("em", "i");
         oldNewNamesMap.put("strong", "b");
         oldNewNamesMap.put("bold", "b");
@@ -193,7 +193,7 @@ public class TopLevelClassesGenerator
 
         classTable.put(GLOBAL, tempAsClass);
 
-        HashMap<String, AsClass> packageContents = new HashMap<String, AsClass>();
+        HashMap<String, AsClass> packageContents = new HashMap<>();
         packageContents.put(GLOBAL, tempAsClass);
         packageContentsTable.put(GLOBAL, packageContents);
     }
@@ -257,7 +257,7 @@ public class TopLevelClassesGenerator
             ditaDTDLoc = ditaDTDDirList.item(0).getTextContent();
         }
         
-        TreeSet<String> packageNames = new TreeSet<String>(new SortComparator());
+        TreeSet<String> packageNames = new TreeSet<>(new SortComparator());
         TransformerFactory transfac = TransformerFactory.newInstance();
         Transformer trans = null;
         try
@@ -562,7 +562,7 @@ public class TopLevelClassesGenerator
 
         if (packageContents == null)
         {
-            packageContents = new HashMap<String, AsClass>();
+            packageContents = new HashMap<>();
             packageContentsTable.put(packageName, packageContents);
         }
 
@@ -849,7 +849,7 @@ public class TopLevelClassesGenerator
                     ArrayList<AsClass> innerClasses = outerClass.getInnerClasses();
                     if (innerClasses == null)
                     {
-                        innerClasses = new ArrayList<AsClass>();
+                        innerClasses = new ArrayList<>();
                     }
                     innerClasses.add(thisClass);
                 }
@@ -881,7 +881,7 @@ public class TopLevelClassesGenerator
             langVersion = langVersionElement.getTextContent().replaceAll("\n", "").replaceAll("\r", "");
         }
 
-        ArrayList<String[]> playerVersion = new ArrayList<String[]>();
+        ArrayList<String[]> playerVersion = new ArrayList<>();
 
         NodeList playerVersionList = record.getElementsByTagName("playerversion");
         if (playerVersionList != null && playerVersionList.getLength() != 0)
@@ -903,7 +903,7 @@ public class TopLevelClassesGenerator
             }
         }
 
-        ArrayList<String[]> productVersion = new ArrayList<String[]>();
+        ArrayList<String[]> productVersion = new ArrayList<>();
 
         NodeList productVersionList = record.getElementsByTagName("productversion");
         if (productVersionList != null && productVersionList.getLength() != 0)
@@ -925,7 +925,7 @@ public class TopLevelClassesGenerator
             }
         }
 
-        ArrayList<String[]> toolVersion = new ArrayList<String[]>();
+        ArrayList<String[]> toolVersion = new ArrayList<>();
 
         NodeList toolVersionList = record.getElementsByTagName("toolversion");
         if (toolVersionList != null && toolVersionList.getLength() != 0)
@@ -1110,7 +1110,7 @@ public class TopLevelClassesGenerator
         NodeList childNodes = record.getChildNodes();
         if (childNodes != null && childNodes.getLength() != 0)
         {
-            ArrayList<String> handledTags = new ArrayList<String>();
+            ArrayList<String> handledTags = new ArrayList<>();
             handledTags.add("path");
             handledTags.add("relativePath");
             handledTags.add("href");
@@ -1140,7 +1140,7 @@ public class TopLevelClassesGenerator
             Element customData = null;
 
             Element relatedLinks = outputObject.createElement("related-links");
-            ArrayList<Element> includeExamples = new ArrayList<Element>();
+            ArrayList<Element> includeExamples = new ArrayList<>();
             Element params = outputObject.createElement("params");
             Element apiTipTexts = outputObject.createElement("apiTipTexts");
 
@@ -1664,7 +1664,7 @@ public class TopLevelClassesGenerator
 
                 if (packageContents == null)
                 {
-                    packageContents = new HashMap<String, AsClass>();
+                    packageContents = new HashMap<>();
                     packageContentsTable.put(result.getPackageName(), packageContents);
                 }
                 packageContents.put((String)result.getClassNames().get(0), fakeClass);
@@ -2278,7 +2278,7 @@ public class TopLevelClassesGenerator
 
             if (!skipVersions)
             {
-                ArrayList<Integer> tagIndexs = new ArrayList<Integer>();
+                ArrayList<Integer> tagIndexs = new ArrayList<>();
 
                 if (langVersionIdx != -1)
                 {
@@ -2363,7 +2363,7 @@ public class TopLevelClassesGenerator
 
                     if (playerVersionStr.length() > 0)
                     {
-                        ArrayList<String[]> playerVersion = new ArrayList<String[]>();
+                        ArrayList<String[]> playerVersion = new ArrayList<>();
 
                         playerVersionStr = playerVersionStr.replaceAll("\\A\\s+", "");
                         playerVersionStr = playerVersionStr.replaceAll("\\Z\\s+", "");
@@ -2420,7 +2420,7 @@ public class TopLevelClassesGenerator
 
                     if (productVersionStr.length() > 0)
                     {
-                        ArrayList<String[]> productVersion = new ArrayList<String[]>();
+                        ArrayList<String[]> productVersion = new ArrayList<>();
 
                         productVersionStr = productVersionStr.replaceAll("\\A\\s+", "");
                         productVersionStr = productVersionStr.replaceAll("\\Z\\s+", "");
@@ -3811,7 +3811,7 @@ public class TopLevelClassesGenerator
 
                     if (asMetadata != null)
                     {
-                        HashMap<String, String> attributes = new HashMap<String, String>();
+                        HashMap<String, String> attributes = new HashMap<>();
                         attributes.put("kind", "style");
                         attributes.put("name", name);
                         
@@ -3983,7 +3983,7 @@ public class TopLevelClassesGenerator
 
                     if (asMetadata != null)
                     {
-                        HashMap<String, String> attributes = new HashMap<String, String>();
+                        HashMap<String, String> attributes = new HashMap<>();
                         attributes.put("kind", "effect");
                         attributes.put("name", name);
                         
@@ -4125,7 +4125,7 @@ public class TopLevelClassesGenerator
 
                     if (asMetadata != null)
                     {
-                        HashMap<String, String> attributes = new HashMap<String, String>();
+                        HashMap<String, String> attributes = new HashMap<>();
                         attributes.put("kind", "event");
                         attributes.put("name", name);
                         
@@ -4580,7 +4580,7 @@ public class TopLevelClassesGenerator
                         asMetadata = asDocUtil.getElementByTagName(prolog, "asMetadata");
                         if (asMetadata != null)
                         {
-                            HashMap<String, String> attributes = new HashMap<String, String>();
+                            HashMap<String, String> attributes = new HashMap<>();
                             attributes.put("kind", "SkinState");
                             attributes.put("name", name);
                             
@@ -4732,7 +4732,7 @@ public class TopLevelClassesGenerator
                         asMetadata = asDocUtil.getElementByTagName(prolog, "asMetadata");
                         if (asMetadata != null)
                         {
-                            HashMap<String, String> attributes = new HashMap<String, String>();
+                            HashMap<String, String> attributes = new HashMap<>();
                             attributes.put("kind", "SkinPart");
                             attributes.put("name", name);
                             
@@ -5028,7 +5028,7 @@ public class TopLevelClassesGenerator
                         asMetadata = asDocUtil.getElementByTagName(prolog, "asMetadata");
                         if (asMetadata != null)
                         {
-                            HashMap<String, String> attributes = new HashMap<String, String>();
+                            HashMap<String, String> attributes = new HashMap<>();
                             attributes.put("kind", "DiscouragedForProfile");
                             attributes.put("name", name);
                             

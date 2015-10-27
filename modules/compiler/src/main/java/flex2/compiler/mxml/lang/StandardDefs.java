@@ -426,7 +426,7 @@ public abstract class StandardDefs
     /**
      * implicit imports - not MXML support, but auto-imported to facilitate user script code.
      */
-    public static final Set<String> implicitImports = new HashSet<String>();
+    public static final Set<String> implicitImports = new HashSet<>();
     static
     {
         implicitImports.add(NameFormatter.toDotStar(PACKAGE_FLASH_ACCESSIBILITY));
@@ -453,7 +453,7 @@ public abstract class StandardDefs
      * handling. This is part of a workaround for SDK-22601, SDK-23160 and
      * SDK-24611.
      */
-    public static final HashSet<String> SPARK_TEXT_TAGS = new HashSet<String>(13);
+    public static final HashSet<String> SPARK_TEXT_TAGS = new HashSet<>(13);
     static
     {
         SPARK_TEXT_TAGS.add("RichEditableText");
@@ -475,7 +475,7 @@ public abstract class StandardDefs
      * A list of Spark "text" component properties that can be assigned text
      * content. This is part of a workaround to avoid SDK-23972.
      */
-    public static final HashSet<String> SPARK_TEXT_CONTENT_PROPERTIES = new HashSet<String>(3);
+    public static final HashSet<String> SPARK_TEXT_CONTENT_PROPERTIES = new HashSet<>(3);
     static
     {
         SPARK_TEXT_CONTENT_PROPERTIES.add("content");
@@ -501,7 +501,7 @@ public abstract class StandardDefs
         }
     }
 
-    public static final Map<String, String[]> splitImplicitImports = new HashMap<String, String[]>();
+    public static final Map<String, String[]> splitImplicitImports = new HashMap<>();
     static
     {
         for (String implicitImport : implicitImports)
@@ -520,7 +520,7 @@ public abstract class StandardDefs
     /**
      * implicit imports that exist only in AIR
      */
-    public static final Set<String> airOnlyImplicitImports = new HashSet<String>();
+    public static final Set<String> airOnlyImplicitImports = new HashSet<>();
     static
     {
         airOnlyImplicitImports.add(NameFormatter.toDotStar(PACKAGE_FLASH_DATA));
@@ -530,7 +530,7 @@ public abstract class StandardDefs
         airOnlyImplicitImports.add(NameFormatter.toDotStar(PACKAGE_FLASH_HTML_SCRIPT));
     }
 
-    public static final Map<String, String[]> splitAirOnlyImplicitImports = new HashMap<String, String[]>();
+    public static final Map<String, String[]> splitAirOnlyImplicitImports = new HashMap<>();
     static
     {
         for (String airOnlyImplicitImport : airOnlyImplicitImports)
@@ -555,7 +555,7 @@ public abstract class StandardDefs
     {
         if (standardMxmlImports == null)
         {
-            standardMxmlImports = new HashSet<String>();
+            standardMxmlImports = new HashSet<>();
             standardMxmlImports.add(NameFormatter.toDotStar(getStylesPackage()));
             standardMxmlImports.add(NameFormatter.toDotStar(getBindingPackage()));
 
@@ -579,7 +579,7 @@ public abstract class StandardDefs
     {
         if (splitStandardMxmlImports == null)
         {
-            splitStandardMxmlImports = new HashMap<String, String[]>();
+            splitStandardMxmlImports = new HashMap<>();
             for (String standardMxmlImport : getStandardMxmlImports())
             {
                 String[] splitStandardMxmlImport = standardMxmlImport.split("\\.");
@@ -624,7 +624,7 @@ public abstract class StandardDefs
      * manually until/unless we develop an API for getting is-reserved-word directly from the ASC scanner.
      * Note also that "get" and "set" do not appear, as they seem to be legal AS3 variable names.
      */
-    private static final Set<String> as3ReservedWords = new HashSet<String>();
+    private static final Set<String> as3ReservedWords = new HashSet<>();
     static
     {
         as3ReservedWords.add("as");
@@ -688,7 +688,7 @@ public abstract class StandardDefs
     /**
      *
      */
-    private static final Set<String> as3BuiltInTypeNames = new HashSet<String>();
+    private static final Set<String> as3BuiltInTypeNames = new HashSet<>();
     static
     {
         as3BuiltInTypeNames.add("String");
@@ -725,7 +725,7 @@ public abstract class StandardDefs
      *  Properties of a main application that are proxies for the
      *  Flash Player's Stage properties.
      */
-    private static final Set<String> stageProperties = new HashSet<String>();
+    private static final Set<String> stageProperties = new HashSet<>();
     static
     {
         stageProperties.add("colorCorrection");
@@ -740,7 +740,7 @@ public abstract class StandardDefs
      * mappings from some MXML 1.5 tags to the corresponding MXML 2.0 vanilla faceless component tag names
      * Note: here, instead of FrameworkDefs, because the target tag names could be mapped to any classes, in or out of our framework.
      */
-    private static final Map<Class, String> compatTagMappings = new HashMap<Class, String>();
+    private static final Map<Class, String> compatTagMappings = new HashMap<>();
     static
     {
         compatTagMappings.put(OperationNode.class, "WebServiceOperation");

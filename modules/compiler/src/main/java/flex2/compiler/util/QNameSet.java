@@ -72,7 +72,7 @@ public class QNameSet extends HashSet<QName>
 
     public Set<String> getStringSet()
     {
-        HashSet<String> set = new HashSet<String>();
+        HashSet<String> set = new HashSet<>();
 		for (QName qName : this) set.add(qName.toString());
 
         assert set.size() == this.size();

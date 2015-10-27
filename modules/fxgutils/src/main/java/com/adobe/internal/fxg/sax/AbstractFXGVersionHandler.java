@@ -119,7 +119,7 @@ public abstract class AbstractFXGVersionHandler implements FXGVersionHandler
         init();
         if (skippedElementsByURI == null)
         {
-            skippedElementsByURI = new HashMap<String, Set<String>>(1);
+            skippedElementsByURI = new HashMap<>(1);
             skippedElementsByURI.put(URI, skippedElements);
         }
         else
@@ -151,7 +151,7 @@ public abstract class AbstractFXGVersionHandler implements FXGVersionHandler
         init();
         if (elementNodesByURI == null)
         {
-            elementNodesByURI = new HashMap<String, Map<String, Class<? extends FXGNode>>>(1);
+            elementNodesByURI = new HashMap<>(1);
             elementNodesByURI.put(URI, elementNodes);
         }
         else

@@ -51,8 +51,8 @@ public class SizeReport
     
     public SizeReport()
     {
-        symbols = new HashMap<Integer,String>();
-        definitionTypes = new HashMap<Integer, DefinitionData>();
+        symbols = new HashMap<>();
+        definitionTypes = new HashMap<>();
         registerDefinitionType(BINARY, "binaryData", "data",
             "SWF, Pixel Bender, or other miscellaneous embed data.");
         registerDefinitionType(BITMAP, "bitmaps", "bitmap",
@@ -277,7 +277,7 @@ public class SizeReport
             this.singularMoniker = singularMoniker;
             this.pluralMoniker = pluralMoniker;
             this.description = description;
-            definitions = new ArrayList<DefinitionEntry>();
+            definitions = new ArrayList<>();
         }
         
         public List<DefinitionEntry> definitions;

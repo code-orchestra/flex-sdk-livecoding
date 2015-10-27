@@ -143,7 +143,7 @@ public class FXGSAXScanner extends DefaultHandler
     @Override
     public void startDocument() throws SAXException
     {
-        stack = new Stack<FXGNode>();
+        stack = new Stack<>();
     }
 
     /**
@@ -429,7 +429,7 @@ public class FXGSAXScanner extends DefaultHandler
         FXGVersionHandler versionHandler = FXGVersionHandlerRegistry.getVersionHandler(version);
         if (versionHandler != null)
         {
-            HashSet<String>skippedElements = new HashSet<String>(1);
+            HashSet<String>skippedElements = new HashSet<>(1);
             skippedElements.add(localName);
             versionHandler.registerSkippedElements(uri, skippedElements);            
         }
@@ -531,7 +531,7 @@ public class FXGSAXScanner extends DefaultHandler
         FXGVersionHandler vHandler = FXGVersionHandlerRegistry.getVersionHandler(version);
         if (vHandler != null)
         {
-            HashMap<String, Class<? extends FXGNode>> elementNodes = new HashMap<String, Class<? extends FXGNode>>(4);
+            HashMap<String, Class<? extends FXGNode>> elementNodes = new HashMap<>(4);
             elementNodes.put(localName, nodeClass);
             vHandler.registerElementNodes(uri, elementNodes);
         }  

@@ -110,9 +110,9 @@ public class DependencyWalker
             return vmap.values();
         }
 
-        Map<String, Linkable> vmap = new HashMap<String, Linkable>();
-        Map<String, LinkableContext> lmap = new HashMap<String, LinkableContext>();
-        Map<String, LinkableContext> defs = new HashMap<String, LinkableContext>();
+        Map<String, Linkable> vmap = new HashMap<>();
+        Map<String, LinkableContext> lmap = new HashMap<>();
+        Map<String, LinkableContext> defs = new HashMap<>();
         Set extdefs;
 	    Set includes;
         Set<String> unresolved;
@@ -131,7 +131,7 @@ public class DependencyWalker
         if (defs == null)
         {
             // If we want inheritance dependencies only, skip populating defs with all the non-external names.
-            defs = new LinkedList<String>();
+            defs = new LinkedList<>();
             if (!includeInheritanceDependenciesOnly)
             {
                 for (String def : state.getDefNames()) {
@@ -150,8 +150,8 @@ public class DependencyWalker
             }
 	    }
 
-        Stack<LinkableContext> stack = new Stack<LinkableContext>();           // holds contexts
-        LinkedList<LinkableContext> queue = new LinkedList<LinkableContext>(); // holds contexts
+        Stack<LinkableContext> stack = new Stack<>();           // holds contexts
+        LinkedList<LinkableContext> queue = new LinkedList<>(); // holds contexts
 
         for (String defname : defs) {
             LinkableContext start = resolve(defname, state, allowExternal, exportIncludes,

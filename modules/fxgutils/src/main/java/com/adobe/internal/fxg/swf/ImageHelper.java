@@ -320,7 +320,7 @@ public class ImageHelper
         int stt = r.yMin;
         int sbt = r.yMax;
 
-        List<ShapeRecord> shapeRecords = new ArrayList<ShapeRecord>(50);
+        List<ShapeRecord> shapeRecords = new ArrayList<>(50);
         ShapeWithStyle sws = new ShapeWithStyle();
         sws.fillstyles = new ArrayList<FillStyle>(9);
         sws.shapeRecords = shapeRecords;

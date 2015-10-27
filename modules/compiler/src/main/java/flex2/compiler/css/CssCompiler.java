@@ -299,7 +299,7 @@ public class CssCompiler extends AbstractDelegatingSubCompiler
         Collection<AtEmbed> atEmbeds = styleModule.getAtEmbeds();
         if (atEmbeds != null && configuration.archiveClassesAndAssets())
         {
-        	Map<String, LocalFile> archiveFiles = new HashMap<String, LocalFile>();
+        	Map<String, LocalFile> archiveFiles = new HashMap<>();
             for (AtEmbed e : atEmbeds) {
                 String src = (String) e.getAttributes().get(Transcoder.SOURCE);
                 String original = (String) e.getAttributes().get(Transcoder.ORIGINAL);

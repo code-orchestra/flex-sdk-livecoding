@@ -57,7 +57,7 @@ public class Array extends Model
 	protected Array(MxmlDocument document, Type type, Model parent, int line, Type elementType)
 	{
 		super(document, type, parent, line);
-		this.list = new ArrayList<ArrayElementInitializer>();
+		this.list = new ArrayList<>();
 		this.elementType = elementType;
 	}
 

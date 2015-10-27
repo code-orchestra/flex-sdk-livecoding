@@ -26,8 +26,8 @@ import macromedia.asc.embedding.avmplus.InstanceBuilder;
 /** Does a breadth-first search of interfaces starting with the starting object */
 public final class InterfaceWalker extends ObjectValueWalker
 {
-	private LinkedList<TypeValue> queue = new LinkedList<TypeValue>();
-	private HashSet<TypeValue> set = new HashSet<TypeValue>();
+	private LinkedList<TypeValue> queue = new LinkedList<>();
+	private HashSet<TypeValue> set = new HashSet<>();
 	private ObjectValue nextInterface = null;
 	private boolean superInterfaces = false;
 

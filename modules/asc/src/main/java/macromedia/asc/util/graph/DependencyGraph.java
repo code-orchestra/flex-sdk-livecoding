@@ -25,8 +25,8 @@ public final class DependencyGraph<T> extends Graph<String, Object>
 {
 	public DependencyGraph()
 	{
-		map = new HashMap<String, T>();
-		vertices = new HashMap<String, Vertex<String>>();
+		map = new HashMap<>();
+		vertices = new HashMap<>();
 	}
 
 	private Map<String, T> map;
@@ -83,17 +83,17 @@ public final class DependencyGraph<T> extends Graph<String, Object>
 
 		if ((head = vertices.get(name)) == null)
 		{
-			head = new Vertex<String>(name);
+			head = new Vertex<>(name);
 			addVertex(head);
 		}
 
 		if ((tail = vertices.get(dep)) == null)
 		{
-			tail = new Vertex<String>(dep);
+			tail = new Vertex<>(dep);
 			addVertex(tail);
 		}
 
-		addEdge(new Edge<Object>(tail, head, null));
+		addEdge(new Edge<>(tail, head, null));
 	}
 }
 

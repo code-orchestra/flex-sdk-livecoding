@@ -51,7 +51,7 @@ public class StyleSelector
     public void addCondition(StyleCondition condition)
     {
         if (conditions == null)
-            conditions = new ArrayList<StyleCondition>(2);
+            conditions = new ArrayList<>(2);
 
         conditions.add(condition);
     }

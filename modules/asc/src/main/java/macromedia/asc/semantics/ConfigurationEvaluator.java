@@ -44,7 +44,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
 
     private boolean top_level = false;
     
-    private HashSet<String> config_namespaces = new HashSet<String>();
+    private HashSet<String> config_namespaces = new HashSet<>();
     
 	private ObjectValue getBooleanObjectValue(Context cx, boolean b)
 	{
@@ -1390,7 +1390,7 @@ public class ConfigurationEvaluator implements Evaluator, ErrorConstants {
             return null;
         }
         Namespaces namespaces = new Namespaces();
-        ObjectList<String> namespace_ids = new ObjectList<String>();
+        ObjectList<String> namespace_ids = new ObjectList<>();
         // can use public since the ConfigurationScopes won't exist after this evaluator.
         namespaces.push_back(cx.publicNamespace());
 

@@ -70,7 +70,7 @@ public final class FileUtils
     {
         if (filemap == null)
         {
-            filemap = new HashMap<String, String>();
+            filemap = new HashMap<>();
             checkCase = System.getProperty("os.name").toLowerCase().startsWith("windows");
         }
 
@@ -285,7 +285,7 @@ public final class FileUtils
 			return null;
 		}
 
-		ArrayList<File> filteredFiles = new ArrayList<File>();
+		ArrayList<File> filteredFiles = new ArrayList<>();
         for (String fileName : fileNames) {
             if ((filter == null) || filter.accept(dir, fileName)) {
                 filteredFiles.add(new File(dir.getPath(), fileName));

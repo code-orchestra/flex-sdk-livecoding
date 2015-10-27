@@ -28,7 +28,7 @@ public class PackageIdentifiersNode extends Node
 {
 	private static final int IS_DEFINITION_FLAG = 1;
 	
-	public ObjectList<IdentifierNode> list = new ObjectList<IdentifierNode>(5);
+	public ObjectList<IdentifierNode> list = new ObjectList<>(5);
 	public String pkg_part;
 	public String def_part;
 

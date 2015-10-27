@@ -60,7 +60,7 @@ public class Method implements Comparable<Method>
 	
 	Map<Expr,Typeref> verifier_types = null;
 	
-	Map<Expr,Integer>fixedLocals = new HashMap<Expr,Integer>();
+	Map<Expr,Integer>fixedLocals = new HashMap<>();
 	
 	Method(int id, InputAbc abc)
 	{

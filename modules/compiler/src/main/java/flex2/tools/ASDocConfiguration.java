@@ -45,7 +45,7 @@ public class ASDocConfiguration extends ToolsConfiguration
 
 	public static Map<String, String> getAliases()
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put( "o", "output" );
         map.put( "dc", "doc-classes" );
         map.put( "dn", "doc-namespaces" );

@@ -57,7 +57,7 @@ public class InterfaceGenerator extends AbstractGenerator
                                                          bytecodeEmitter, defines);
         nodeFactory = context.getNodeFactory();
 
-        configNamespaces = new HashSet<String>();
+        configNamespaces = new HashSet<>();
         StatementListNode configVars = AbstractSyntaxTreeUtil.parseConfigVars(context, configNamespaces);
         programNode = AbstractSyntaxTreeUtil.generateProgram(context, configVars, docInfo.getPackageName());
         StatementListNode programStatementList = programNode.statements;
@@ -81,7 +81,7 @@ public class InterfaceGenerator extends AbstractGenerator
 
     private Set<String> createInterfaceNames()
     {
-        Set<String> result = new TreeSet<String>();
+        Set<String> result = new TreeSet<>();
 
         for (DocumentInfo.NameInfo interfaceName : docInfo.getInterfaceNames()) {
             result.add(interfaceName.getName());

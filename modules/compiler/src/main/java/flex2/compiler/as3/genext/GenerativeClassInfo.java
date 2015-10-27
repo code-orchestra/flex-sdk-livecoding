@@ -66,7 +66,7 @@ public abstract class GenerativeClassInfo
 	{
 		if (accessorMap == null)
 		{
-			accessorMap = new LinkedHashMap<QName, AccessorInfo>();
+			accessorMap = new LinkedHashMap<>();
 		}
 
 		QName qName = new QName(NodeMagic.getUserNamespace(node), NodeMagic.getVariableName(node));
@@ -88,7 +88,7 @@ public abstract class GenerativeClassInfo
 	{
 		if (accessorMap == null)
 		{
-			accessorMap = new HashMap<QName, AccessorInfo>();
+			accessorMap = new HashMap<>();
 		}
 
 		QName qName = new QName(NodeMagic.getUserNamespace(node), NodeMagic.getFunctionName(node));
@@ -198,7 +198,7 @@ public abstract class GenerativeClassInfo
 	 */
     public Set<String> getImports()
     {
-        Set<String> imports = new HashSet<String>();
+        Set<String> imports = new HashSet<>();
 
         if (accessorMap != null)
         {
@@ -308,7 +308,7 @@ public abstract class GenerativeClassInfo
             }
             else
             {
-            	this.attributes = new ArrayList<String>(attributes);
+            	this.attributes = new ArrayList<>(attributes);
             }
         }
 

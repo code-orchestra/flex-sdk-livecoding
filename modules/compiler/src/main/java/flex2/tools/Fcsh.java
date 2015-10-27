@@ -68,8 +68,8 @@ public class Fcsh extends Tool {
     public static void main(String[] args) throws IOException {
         exit = false;
         counter = 1;
-        targets = new HashMap<String, Target>();
-        processes = new HashMap<String, Process>();
+        targets = new HashMap<>();
+        processes = new HashMap<>();
 
         String s;
         BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
@@ -181,7 +181,7 @@ public class Fcsh extends Tool {
         } else if (s.startsWith("clear")) {
             String id = s.substring("clear".length()).trim();
             if (id.length() == 0) {
-                HashSet<String> keys = new HashSet<String>(targets.keySet());
+                HashSet<String> keys = new HashSet<>(targets.keySet());
                 for (String key : keys) {
                     clear(key);
                 }
@@ -193,7 +193,7 @@ public class Fcsh extends Tool {
         } else if (s.startsWith("info")) {
             String id = s.substring("info".length()).trim();
             if (id.length() == 0) {
-                HashSet<String> keys = new HashSet<String>(targets.keySet());
+                HashSet<String> keys = new HashSet<>(targets.keySet());
                 for (String key : keys) {
                     info(key);
                 }
@@ -248,7 +248,7 @@ public class Fcsh extends Tool {
                 new File(rmFile).delete();
             }
         } else if (s.equals("quit")) {
-            Set<String> names = new HashSet<String>(targets.keySet());
+            Set<String> names = new HashSet<>(targets.keySet());
             for (String name : names) {
                 process("clear " + name);
             }
@@ -313,7 +313,7 @@ public class Fcsh extends Tool {
                 args[i] = t.nextToken();
             }
 
-            Set<Integer> targetsInvolved = new HashSet<Integer>();
+            Set<Integer> targetsInvolved = new HashSet<>();
             for (int i = 0; i < (livecodingIncrementalMode ? 1 : 2); i++) {
                 livecodingBaseModeSecondPass = i == 1;
 
@@ -491,7 +491,7 @@ public class Fcsh extends Tool {
                 SymbolTable symbolTable = new SymbolTable(configuration, s.perCompileData);
                 s.configuration = configuration;
 
-                Map<String, Source> classes = new HashMap<String, Source>();
+                Map<String, Source> classes = new HashMap<>();
                 s.nsComponents = SwcAPI.setupNamespaceComponents(configuration, mappings, s.sourcePath, s.sourceList, classes);
                 SwcAPI.setupClasses(configuration, s.sourcePath, s.sourceList, classes);
                 // Only updated the SwcTarget's classes if
@@ -499,7 +499,7 @@ public class Fcsh extends Tool {
                 // successful.
                 s.classes = classes;
 
-                Map<String, VirtualFile> rbFiles = new HashMap<String, VirtualFile>();
+                Map<String, VirtualFile> rbFiles = new HashMap<>();
 
                 if (benchmark != null) {
                     benchmark.stopTime(Benchmark.PRECOMPILE, false);
@@ -1054,7 +1054,7 @@ public class Fcsh extends Tool {
 
             List<VirtualFile>[] array
                     = CompilerAPI.getVirtualFileList(configuration.getIncludeSources(), configuration.getStylesheets().values(),
-                    new HashSet<String>(Arrays.asList(sourceMimeTypes)), s.sourcePath.getPaths());
+                    new HashSet<>(Arrays.asList(sourceMimeTypes)), s.sourcePath.getPaths());
 
             NameMappings mappings = CompilerAPI.getNameMappings(configuration);
 
@@ -1117,11 +1117,11 @@ public class Fcsh extends Tool {
 
             Map licenseMap = configuration.getLicensesConfiguration().getLicenseMap();
 
-            s.classes = new HashMap<String, Source>();
+            s.classes = new HashMap<>();
             s.nsComponents = SwcAPI.setupNamespaceComponents(configuration, mappings, s.sourcePath, s.sourceList, s.classes);
             SwcAPI.setupClasses(configuration, s.sourcePath, s.sourceList, s.classes);
 
-            Map<String, VirtualFile> rbFiles = new HashMap<String, VirtualFile>();
+            Map<String, VirtualFile> rbFiles = new HashMap<>();
 
             if (benchmark != null) {
                 benchmark.stopTime(Benchmark.PRECOMPILE, false);

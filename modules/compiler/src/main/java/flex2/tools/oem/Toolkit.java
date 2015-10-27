@@ -182,7 +182,7 @@ public class Toolkit
 	{
 		if (files == null) return null;
 		
-		List<VirtualFile> vFiles = new ArrayList<VirtualFile>(files.length);
+		List<VirtualFile> vFiles = new ArrayList<>(files.length);
 		for (File file : files) {
 			if (file != null)
 				vFiles.add(new LocalFile(file));
@@ -574,7 +574,7 @@ class ApplicationInfoImpl implements ApplicationInfo
         version = movie.version;
         
         List frames = movie.frames;
-        Set<String> symbols = new TreeSet<String>();
+        Set<String> symbols = new TreeSet<>();
         
         for (int i = 0, size = frames == null ? 0 : frames.size(); i < size; i++)
         {
@@ -615,7 +615,7 @@ class LibraryInfoImpl implements LibraryInfo
 {
     LibraryInfoImpl(CompilerSwcContext swcContext, boolean includeBytecodes)
     {
-        List<QName> names = new ArrayList<QName>();
+        List<QName> names = new ArrayList<>();
         
         for (Iterator i = swcContext.getDefinitionIterator(); i.hasNext(); )
         {
@@ -629,7 +629,7 @@ class LibraryInfoImpl implements LibraryInfo
             definitionNames[i] = names.get(i).toString();
         }
         
-        scripts = new TreeMap<String, Script>();
+        scripts = new TreeMap<>();
         
         for (int i = 0; i < definitionNames.length; i++)
         {
@@ -638,7 +638,7 @@ class LibraryInfoImpl implements LibraryInfo
             scripts.put(def.toString(), s);
         }
         
-        components = new TreeMap<String, Component>();
+        components = new TreeMap<>();
         
         for (Iterator i = swcContext.getComponentIterator(); i.hasNext(); )
         {
@@ -648,7 +648,7 @@ class LibraryInfoImpl implements LibraryInfo
         
         mappings = swcContext.getNameMappings();
         
-        fileNames = new TreeSet<String>(swcContext.getFiles().keySet());
+        fileNames = new TreeSet<>(swcContext.getFiles().keySet());
     }
     
     private String[] definitionNames;

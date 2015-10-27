@@ -174,7 +174,7 @@ public class URLHelper
 
 		StringTokenizer tokens = new StringTokenizer(getQuery(), "?&"); //$NON-NLS-1$
 		// multiply by 2 to create a sufficiently large HashMap
-		map = new LinkedHashMap<String, String>(tokens.countTokens() * 2);
+		map = new LinkedHashMap<>(tokens.countTokens() * 2);
 
 		while (tokens.hasMoreElements())
 		{

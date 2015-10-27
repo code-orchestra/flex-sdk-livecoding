@@ -41,7 +41,7 @@ public class MovieEncoder
 	public MovieEncoder(TagHandler handler)
 	{
 		this.handler = handler;
-		done = new HashSet<Tag>();
+		done = new HashSet<>();
 	}
 
 	/**

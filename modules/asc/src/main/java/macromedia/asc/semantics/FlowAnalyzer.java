@@ -56,33 +56,33 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
         boolean hasDefault;
     }
 
-    private ObjectList<CaseList> case_exprs = new ObjectList<CaseList>();
-    private ObjectList<ObjectList<FunctionCommonNode>> fexprs_sets = new ObjectList<ObjectList<FunctionCommonNode>>();
-    private ObjectList<ObjectList<ClassDefinitionNode>> clsdefs_sets = new ObjectList<ObjectList<ClassDefinitionNode>>();
-    private ObjectList<ObjectList<Node>> instanceinits_sets = new ObjectList<ObjectList<Node>>();
-    private ObjectList<ObjectList<FunctionCommonNode>> staticfexprs_sets = new ObjectList<ObjectList<FunctionCommonNode>>();
+    private ObjectList<CaseList> case_exprs = new ObjectList<>();
+    private ObjectList<ObjectList<FunctionCommonNode>> fexprs_sets = new ObjectList<>();
+    private ObjectList<ObjectList<ClassDefinitionNode>> clsdefs_sets = new ObjectList<>();
+    private ObjectList<ObjectList<Node>> instanceinits_sets = new ObjectList<>();
+    private ObjectList<ObjectList<FunctionCommonNode>> staticfexprs_sets = new ObjectList<>();
 
-    private ObjectList<Namespaces> usednamespaces_sets = new ObjectList<Namespaces>();
-    private ObjectList<Namespaces> used_def_namespaces_sets = new ObjectList<Namespaces>();
-    private ObjectList<Multinames> importednames_sets = new ObjectList<Multinames>();
-    private ObjectList<ObjectValue> private_namespaces = new ObjectList<ObjectValue>();
-    private ObjectList<ObjectValue> default_namespaces = new ObjectList<ObjectValue>();
-    private ObjectList<ObjectValue> public_namespaces = new ObjectList<ObjectValue>();
-    private ObjectList<ObjectValue> protected_namespaces = new ObjectList<ObjectValue>();
-    private ObjectList<ObjectValue> static_protected_namespaces = new ObjectList<ObjectValue>();
+    private ObjectList<Namespaces> usednamespaces_sets = new ObjectList<>();
+    private ObjectList<Namespaces> used_def_namespaces_sets = new ObjectList<>();
+    private ObjectList<Multinames> importednames_sets = new ObjectList<>();
+    private ObjectList<ObjectValue> private_namespaces = new ObjectList<>();
+    private ObjectList<ObjectValue> default_namespaces = new ObjectList<>();
+    private ObjectList<ObjectValue> public_namespaces = new ObjectList<>();
+    private ObjectList<ObjectValue> protected_namespaces = new ObjectList<>();
+    private ObjectList<ObjectValue> static_protected_namespaces = new ObjectList<>();
 
     private IntList max_params_stack = new IntList();
     private IntList max_locals_stack = new IntList();
     private IntList max_temps_stack = new IntList();
-    private ObjectList<String> fun_name_stack = new ObjectList<String>();
+    private ObjectList<String> fun_name_stack = new ObjectList<>();
     private IntList with_used_stack = new IntList();
     private IntList exceptions_used_stack = new IntList();
-    private ObjectList<NumberUsage> number_usage_stack = new ObjectList<NumberUsage>();
+    private ObjectList<NumberUsage> number_usage_stack = new ObjectList<>();
 
-    private ObjectList<String> region_name_stack = new ObjectList<String>();
+    private ObjectList<String> region_name_stack = new ObjectList<>();
     private String package_name = "";
-    private ObjectList<Boolean>        import_context = new ObjectList<Boolean>();
-    private ObjectList<Boolean>        strict_context = new ObjectList<Boolean>();
+    private ObjectList<Boolean>        import_context = new ObjectList<>();
+    private ObjectList<Boolean>        strict_context = new ObjectList<>();
 
     private IntList this_contexts = new IntList();
     private IntList super_context = new IntList();
@@ -90,20 +90,20 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
     private boolean resolveInheritance;
 
     // unresolved defintion imports
-    private ObjectList<Set<ReferenceValue>> import_def_unresolved_sets = new ObjectList<Set<ReferenceValue>>();
+    private ObjectList<Set<ReferenceValue>> import_def_unresolved_sets = new ObjectList<>();
     // unresolved package imports
-    private ObjectList<Set<ReferenceValue>> package_unresolved_sets = new ObjectList<Set<ReferenceValue>>();
+    private ObjectList<Set<ReferenceValue>> package_unresolved_sets = new ObjectList<>();
     // unresolved namespaces
-    private ObjectList<Set<ReferenceValue>> ns_unresolved_sets = new ObjectList<Set<ReferenceValue>>();
+    private ObjectList<Set<ReferenceValue>> ns_unresolved_sets = new ObjectList<>();
     // unresolved "extends" and "implements"
-    private ObjectList<Set<ReferenceValue>> fa_unresolved_sets = new ObjectList<Set<ReferenceValue>>();
+    private ObjectList<Set<ReferenceValue>> fa_unresolved_sets = new ObjectList<>();
     // unresolved variable/function/parameter types
-    private ObjectList<Set<ReferenceValue>> ce_unresolved_sets = new ObjectList<Set<ReferenceValue>>();
-    private ObjectList<Set<ReferenceValue>> body_unresolved_sets = new ObjectList<Set<ReferenceValue>>();
+    private ObjectList<Set<ReferenceValue>> ce_unresolved_sets = new ObjectList<>();
+    private ObjectList<Set<ReferenceValue>> body_unresolved_sets = new ObjectList<>();
     // unresolved member expressions
-    private ObjectList<Set<ReferenceValue>> rt_unresolved_sets = new ObjectList<Set<ReferenceValue>>();
+    private ObjectList<Set<ReferenceValue>> rt_unresolved_sets = new ObjectList<>();
     // temporary container for accumulating unresolved ReferenceValues...
-    private Set<ReferenceValue> unresolved = new HashSet<ReferenceValue>();
+    private Set<ReferenceValue> unresolved = new HashSet<>();
     // this is for the ProgramNode's allocateTemp() value because FA processes ProgramNode twice.
     private int programNode_temp;
 
@@ -741,7 +741,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
             node.ref = ((value instanceof ReferenceValue) ? (ReferenceValue)value : null);
             if( node.typeArgs != null && node.typeArgs.values != null )
             {
-                ObjectList<ReferenceValue> typerefs = new ObjectList<ReferenceValue>();
+                ObjectList<ReferenceValue> typerefs = new ObjectList<>();
                 for ( Value v : node.typeArgs.values )
                 {
                     if( v instanceof ReferenceValue )
@@ -804,7 +804,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
             {
                 TypeIdentifierNode tin = (TypeIdentifierNode)node.expr;
                 int args_size = node.args != null ? node.args.size():0;
-                ObjectList<Node> new_args = new ObjectList<Node>(args_size+1);
+                ObjectList<Node> new_args = new ObjectList<>(args_size + 1);
                 new_args.push_back(tin.typeArgs.items.at(0));
                 if( node.args != null )
                 {
@@ -1135,7 +1135,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
 
         boolean inside_cinit = ( this_contexts.last() == cinit_this );
 
-        ObjectList<DefinitionNode> hoisted_defs = new ObjectList<DefinitionNode>();
+        ObjectList<DefinitionNode> hoisted_defs = new ObjectList<>();
         ObjectList<Node> instance_inits = instanceinits_sets.back();
 
         {
@@ -1249,7 +1249,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
             }
         }
 
-        ObjectList<Node> inits = new ObjectList<Node>();
+        ObjectList<Node> inits = new ObjectList<>();
 
         {
             // Insert initializers for constants and functions at the
@@ -2253,7 +2253,7 @@ public final class FlowAnalyzer extends Emitter implements Evaluator, ErrorConst
                     scope.builder instanceof WithBuilder ||
                     scope.builder instanceof ActivationBuilder)
                 {
-                    node.scope_chain = new ObjectList<ObjectValue>(scope_chain); // copy the scope chain, since the func will be hoisted
+                    node.scope_chain = new ObjectList<>(scope_chain); // copy the scope chain, since the func will be hoisted
                     break;
                 }
             }
@@ -2806,7 +2806,7 @@ else
         }
 
         // create a dependency graph, the weight is ClassDefinitionNode...
-        final DependencyGraph<ClassDefinitionNode> g = new DependencyGraph<ClassDefinitionNode>();
+        final DependencyGraph<ClassDefinitionNode> g = new DependencyGraph<>();
 
         for (ClassDefinitionNode clsdef : clsdefs)
         {
@@ -2817,7 +2817,7 @@ else
             // if the class is not already in the graph as a node, add it.
             if (!g.containsVertex(className))
             {
-                g.addVertex(new Vertex<String>(className));
+                g.addVertex(new Vertex<>(className));
             }
 
             // add dependency... add two vertices and an edge.
@@ -2848,7 +2848,7 @@ else
             }
         }
 
-        final ObjectList<ClassDefinitionNode> tsort = new ObjectList<ClassDefinitionNode>();
+        final ObjectList<ClassDefinitionNode> tsort = new ObjectList<>();
 
         // sort the classes
         Algorithms.topologicalSort(g, new Visitor<String>()
@@ -3185,7 +3185,7 @@ else
 
         Namespaces namespaces = new Namespaces();
 
-        ObjectList<String> namespace_ids = new ObjectList<String>();
+        ObjectList<String> namespace_ids = new ObjectList<>();
 
         if( node.attrs != null) // already been evaluated by VariableDefinitionNode
         {
@@ -3526,7 +3526,7 @@ else
         boolean is_prototype = node.is_prototype;
         boolean is_dynamic   = false;
         Namespaces namespaces = new Namespaces();
-        ObjectList<String> namespace_ids = new ObjectList<String>(1);
+        ObjectList<String> namespace_ids = new ObjectList<>(1);
 
 
         if( node.attrs != null) {
@@ -4359,7 +4359,7 @@ else
                 String region_name = region_name_stack.back();
                 region_name += region_name.length() > 0 ? "/" : "";
 
-                ObjectList<String> namespace_ids = new ObjectList<String>();
+                ObjectList<String> namespace_ids = new ObjectList<>();
 
                 computeNamespaces(cx,node.attrs,node.namespaces,namespace_ids);
                 if (node.pkgdef == null && cx.getScopes().size() == 1 && node.attrs != null)
@@ -4479,7 +4479,7 @@ else
 
             clsdefs_sets.push_back(new ObjectList<ClassDefinitionNode>()); // make dummy
             cx.pushStaticClassScopes(node);
-            ObjectList<String> namespace_ids = new ObjectList<String>();
+            ObjectList<String> namespace_ids = new ObjectList<>();
             if( node.namespaces.size() != 0 )
             {
                 namespace_ids.push_back(node.namespaces.back().name);
@@ -4686,7 +4686,7 @@ else
             {
                 ObjectList<ReferenceValue> interface_refs = ((InstanceBuilder)node.iframe.builder).interface_refs;
 
-                HashSet<TypeValue> seen_interfs = new HashSet<TypeValue>();
+                HashSet<TypeValue> seen_interfs = new HashSet<>();
                 for (int i = 0; i < node.interfaces.values.size(); ++i )
                 {
                     Value v = node.interfaces.values.get(i);
@@ -4749,7 +4749,7 @@ else
 
             StartClass(node.ref.name);
 
-            ObjectList<String> namespace_ids = new ObjectList<String>();
+            ObjectList<String> namespace_ids = new ObjectList<>();
             if( node.namespaces.size() != 0 )
             {
                 namespace_ids.push_back(node.namespaces.back().name);
@@ -5892,7 +5892,7 @@ else
             cx.error(node.pos(), kError_NamespaceInInterface);
         }
         Namespaces namespaces = new Namespaces();
-        ObjectList<String> namespace_ids = new ObjectList<String>();
+        ObjectList<String> namespace_ids = new ObjectList<>();
         computeNamespaces(cx,node.attrs,namespaces,namespace_ids);
 
         Value v = node.name.evaluate(cx,this);
@@ -6419,7 +6419,7 @@ else
 
     private boolean namespacesContains(Context cx, Namespaces outer, Namespaces inner)
     {
-        HashSet<ObjectValue> set = new HashSet<ObjectValue>();
+        HashSet<ObjectValue> set = new HashSet<>();
         for (ObjectValue ns : outer)
         {
             set.add(ns);

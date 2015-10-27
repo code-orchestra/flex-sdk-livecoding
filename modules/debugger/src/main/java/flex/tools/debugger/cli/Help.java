@@ -54,7 +54,7 @@ public class Help
      * </ul>
      */
     private static List<String> calculateLocalizedFilenames(String baseName, String extensionWithDot, Locale locale) {
-    	List<String> names = new ArrayList<String>();
+    	List<String> names = new ArrayList<>();
         String language = locale.getLanguage();
         String country = locale.getCountry();
         String variant = locale.getVariant();

@@ -67,8 +67,8 @@ public class CommandLineConfigurator
         int i = 0, iStart = 0, iEnd = 0;
         String var = null;
         int varArgCount = -2;
-        List<String> argList = new LinkedList<String>();
-        Set<String> vars = new HashSet<String>();
+        List<String> argList = new LinkedList<>();
+        Set<String> vars = new HashSet<>();
         boolean append = false;
         boolean dash = true;
 
@@ -307,7 +307,7 @@ public class CommandLineConfigurator
                         }
                     }
                     iEnd = i;
-                    buffer.setVar( var, new LinkedList<String>( argList ), source, -1, null, append );
+                    buffer.setVar( var, new LinkedList<>(argList), source, -1, null, append );
                     buffer.addPosition(var, iStart, iEnd);
                     append = false;
                     vars.add( var );
@@ -338,7 +338,7 @@ public class CommandLineConfigurator
     
     private static Map<String, String> getAliases( ConfigurationBuffer buffer )
     {
-        Map<String, String> aliases = new HashMap<String, String>();
+        Map<String, String> aliases = new HashMap<>();
         aliases.putAll( buffer.getAliases() );
         for (Iterator it = buffer.getVarIterator(); it.hasNext(); )
         {
@@ -370,7 +370,7 @@ public class CommandLineConfigurator
 
     public static String brief( String program, String defaultvar, LocalizationManager l10n, String l10nPrefix )
     {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put( "defaultVar", defaultvar );
         params.put( "program", program );
         return l10n.getLocalizedTextString( l10nPrefix + ".Brief", params );
@@ -382,12 +382,12 @@ public class CommandLineConfigurator
 
         Map<String, String> aliases = getAliases( cfgbuf );
 
-        Map<String, String> sesaila = new HashMap<String, String>();
+        Map<String, String> sesaila = new HashMap<>();
         for (Map.Entry<String, String> e : aliases.entrySet()) {
             sesaila.put(e.getValue(), e.getKey());
         }
 
-        TreeSet<String> printSet = new TreeSet<String>();
+        TreeSet<String> printSet = new TreeSet<>();
 
         boolean all = false;
         boolean advanced = false;
@@ -396,7 +396,7 @@ public class CommandLineConfigurator
         boolean printaliases = false;
 
         // figure out behavior..
-        Set<String> newSet = new HashSet<String>();
+        Set<String> newSet = new HashSet<>();
         for (String keyword : keywords) {
             switch (keyword) {
                 case "list":
@@ -583,7 +583,7 @@ public class CommandLineConfigurator
 
     public static String getSyntaxDescription( String program, String defaultVar, boolean advanced, LocalizationManager l10n, String l10nPrefix )
     {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("defaultVar", defaultVar);
         params.put("program", program);
 

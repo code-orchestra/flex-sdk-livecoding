@@ -44,7 +44,7 @@ public class DigestConfiguration
      
 	public static Map<String, String> getAliases()
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 		return map;
     }
 

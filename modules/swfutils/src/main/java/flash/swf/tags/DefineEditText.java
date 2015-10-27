@@ -43,7 +43,7 @@ public class DefineEditText extends DefineTag
 
     public Iterator<Tag> getReferences()
     {
-        LinkedList<Tag> refs = new LinkedList<Tag>();
+        LinkedList<Tag> refs = new LinkedList<>();
         if (font != null)
             refs.add(font);
 

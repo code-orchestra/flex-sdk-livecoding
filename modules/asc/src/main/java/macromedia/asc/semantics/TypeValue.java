@@ -296,7 +296,7 @@ public final class TypeValue extends ObjectValue
     {
         if (parameterizedTypes == null)
         {
-            parameterizedTypes = new HashMap<String, TypeValue>();
+            parameterizedTypes = new HashMap<>();
         }
 
         parameterizedTypes.put(name, typeValue);

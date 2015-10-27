@@ -138,7 +138,7 @@ public class Shell
 			String id = s.substring("clear".length()).trim();
 			if (id.length() == 0)
 			{
-				HashSet<String> keys = new HashSet<String>(targets.keySet());
+				HashSet<String> keys = new HashSet<>(targets.keySet());
 				for (String key : keys) {
 					clear(key);
 				}
@@ -157,7 +157,7 @@ public class Shell
 			String id = s.substring("info".length()).trim();
 			if (id.length() == 0)
 			{
-				HashSet<String> keys = new HashSet<String>(targets.keySet());
+				HashSet<String> keys = new HashSet<>(targets.keySet());
 				for (String key : keys) {
 					info(key);
 				}
@@ -193,7 +193,7 @@ public class Shell
 		}
 		else if (s.equals("quit"))
 		{
-			Set<String> names = new HashSet<String>(targets.keySet());
+			Set<String> names = new HashSet<>(targets.keySet());
 			for (String name : names) {
 				process("clear " + name);
 			}
@@ -458,9 +458,9 @@ public class Shell
 		    macromedia.asc.embedding.Main.optimize = false;
 		    macromedia.asc.embedding.Main.optimizer_configs = null;
 
-            macromedia.asc.embedding.Main.include_filespecs = new ObjectList<String>();
-			macromedia.asc.embedding.Main.import_filespecs = new ObjectList<String>();
-			macromedia.asc.embedding.Main.use_namespaces = new ObjectList<String>();
+            macromedia.asc.embedding.Main.include_filespecs = new ObjectList<>();
+			macromedia.asc.embedding.Main.import_filespecs = new ObjectList<>();
+			macromedia.asc.embedding.Main.use_namespaces = new ObjectList<>();
 			macromedia.asc.embedding.Main.swf_options = "";
 			macromedia.asc.embedding.Main.language = "EN";
 

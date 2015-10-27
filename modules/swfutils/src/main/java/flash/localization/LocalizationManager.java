@@ -29,7 +29,7 @@ import java.lang.reflect.Modifier;
 public class LocalizationManager
 {
     private Locale locale = Locale.getDefault();
-    private List<ILocalizer> localizers = new LinkedList<ILocalizer>();
+    private List<ILocalizer> localizers = new LinkedList<>();
 
     public LocalizationManager()
     {
@@ -148,7 +148,7 @@ public class LocalizationManager
     {
         String id = object.getClass().getName().replaceAll( "\\$", "." );
 
-        Map<String, Object> parameters = new HashMap<String, Object>();
+        Map<String, Object> parameters = new HashMap<>();
         Class c = object.getClass();
 
         while (c != Object.class)

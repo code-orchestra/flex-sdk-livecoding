@@ -63,7 +63,7 @@ public class ShapeHelper implements SwfConstants
      */
     public static List<ShapeRecord> line(double startX, double startY, double endX, double endY)
     {
-        List<ShapeRecord> shapeRecords = new ArrayList<ShapeRecord>();
+        List<ShapeRecord> shapeRecords = new ArrayList<>();
         shapeRecords.add(move(startX, startY));
         shapeRecords.addAll(straightEdge(startX, startY, endX, endY));
         return shapeRecords;
@@ -82,7 +82,7 @@ public class ShapeHelper implements SwfConstants
      */
     public static List<ShapeRecord> implicitClosepath(double startX, double startY, double endX, double endY)
     {
-        List<ShapeRecord> shapeRecords = new ArrayList<ShapeRecord>();
+        List<ShapeRecord> shapeRecords = new ArrayList<>();
         StyleChangeRecord scr = move(startX, startY);
         scr.setLinestyle(0);
         shapeRecords.add(scr);
@@ -102,7 +102,7 @@ public class ShapeHelper implements SwfConstants
      */
     public static List<ShapeRecord> rectangle(double startX, double startY, double width, double height)
     {
-        List<ShapeRecord> shapeRecords = new ArrayList<ShapeRecord>();
+        List<ShapeRecord> shapeRecords = new ArrayList<>();
         shapeRecords.add(move(startX, startY));
         shapeRecords.addAll(straightEdge(startX, startY, width, startY));
         shapeRecords.addAll(straightEdge(width, startY, width, height));
@@ -140,7 +140,7 @@ public class ShapeHelper implements SwfConstants
     		double bottomRightRadiusX, double bottomRightRadiusY)
     {
     
-        List<ShapeRecord> shapeRecords = new ArrayList<ShapeRecord>();
+        List<ShapeRecord> shapeRecords = new ArrayList<>();
         
         if (radiusX == 0.0) 
         {
@@ -431,7 +431,7 @@ public class ShapeHelper implements SwfConstants
      */
     public static List<ShapeRecord> straightEdge(double xFrom, double yFrom, double xTo, double yTo)
     {
-        List<ShapeRecord> shapeRecords = new ArrayList<ShapeRecord>();
+        List<ShapeRecord> shapeRecords = new ArrayList<>();
         
         xFrom *= TWIPS_PER_PIXEL;
         yFrom *= TWIPS_PER_PIXEL;
@@ -591,7 +591,7 @@ public class ShapeHelper implements SwfConstants
         double a3y = (c3y + c4y) / 2.0;
 
         // Create the four quadratic sub-segments
-        List<ShapeRecord> shapeRecords = new ArrayList<ShapeRecord>(4);
+        List<ShapeRecord> shapeRecords = new ArrayList<>(4);
         shapeRecords.add(curvedEdge(startX, startY, c1x, c1y, a1x, a1y));
         shapeRecords.add(curvedEdge(a1x, a1y, c2x, c2y, a2x, a2y));
         shapeRecords.add(curvedEdge(a2x, a2y, c3x, c3y, a3x, a3y));
@@ -612,7 +612,7 @@ public class ShapeHelper implements SwfConstants
     {
     	String data = node.data;
     	
-        List<ShapeRecord> shapeRecords = new ArrayList<ShapeRecord>();
+        List<ShapeRecord> shapeRecords = new ArrayList<>();
 
         if (data.length() == 0)
             return shapeRecords;

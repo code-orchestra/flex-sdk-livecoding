@@ -53,7 +53,7 @@ public class LicensesConfiguration
     {
         if (licenseMap == null)
         {
-            licenseMap = new HashMap<String, String>();
+            licenseMap = new HashMap<>();
         }
 
         licenseMap.put(product, serialNumber);

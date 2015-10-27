@@ -27,8 +27,8 @@ import static macromedia.asc.util.BitSet.*;
  */
 public class ListNode extends Node
 {
-	public ObjectList<Node> items = new ObjectList<Node>(1);
-	public ObjectList<Value> values = new ObjectList<Value>(1);
+	public ObjectList<Node> items = new ObjectList<>(1);
+	public ObjectList<Value> values = new ObjectList<>(1);
 
 	public ListNode(ListNode list, Node item, int pos)
 	{

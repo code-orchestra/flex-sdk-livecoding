@@ -257,7 +257,7 @@ public class NodeMagic
      */
     public static List<Node> getMetaData(DefinitionNode definition)
     {
-        LinkedList<Node> list = new LinkedList<Node>();
+        LinkedList<Node> list = new LinkedList<>();
         if ((definition.metaData != null) && (definition.metaData.items != null))
             list.addAll( definition.metaData.items );
 
@@ -271,7 +271,7 @@ public class NodeMagic
      */
     public static String getSortedMetaDataParamString(MetaDataNode node)
     {
-        final Set<Value> params = new TreeSet<Value>(metaDataValueComparator);
+        final Set<Value> params = new TreeSet<>(metaDataValueComparator);
         final StringBuilder parameters = new StringBuilder(32);
         
         if(node.getValues() != null)
@@ -347,7 +347,7 @@ public class NodeMagic
    // TODO This is REALLY inefficient, why not at least returned a sorted or hashed list
    public static List<String> getAttributes(AttributeListNode node)
    {
-       ArrayList<String> result = new ArrayList<String>();
+       ArrayList<String> result = new ArrayList<>();
        if (node != null)
        {
 
@@ -384,7 +384,7 @@ public class NodeMagic
      */
     public static TreeSet<String> getSortedAttributes(AttributeListNode node)
     {
-        final TreeSet<String> attrs = new TreeSet<String>();
+        final TreeSet<String> attrs = new TreeSet<>();
 
         for (String s : getAttributes(node)) attrs.add(s);
 
@@ -409,7 +409,7 @@ public class NodeMagic
 
     public static Set<String> getImports(Multinames multiNames)
     {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
 
         for (Object o : multiNames.entrySet()) {
             Entry entry = (Entry) o;

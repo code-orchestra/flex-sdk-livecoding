@@ -100,7 +100,7 @@ public class PropertyTranslationFormat implements TranslationFormat
 
 			public Set getEmeds()
 			{
-				return new HashSet<AtEmbed>(p.atEmbeds.values());
+				return new HashSet<>(p.atEmbeds.values());
 			}
 
 			public Set getTranslationSet()

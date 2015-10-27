@@ -20,7 +20,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
     private boolean mainClassPicked;
 
     private final CompilerConfiguration compilerConfig;
-    private Map<String, String> modelDependenciesUnits = new HashMap<String, String>();
+    private Map<String, String> modelDependenciesUnits = new HashMap<>();
     private boolean liveCodingStarterAdded;
 
     public LCBaseExtension(CompilerConfiguration compilerConfig) {
@@ -85,7 +85,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "LiveCodeRegistry");
             TreeUtil.addImport(unit, "codeOrchestra.actionScript.liveCoding.util", "MethodUpdateEvent");
 
-            List<Node> staticListenerAddStatements = new ArrayList<Node>();
+            List<Node> staticListenerAddStatements = new ArrayList<>();
             for (FunctionDefinitionNode methodDefinition : TreeNavigator.getMethodDefinitions(classDefinitionNode)) {
                 if (LiveCodingUtil.canBeUsedForLiveCoding(methodDefinition, liveCodingPolicy)) {
                     extractMethodToLiveCodingClass(methodDefinition, classDefinitionNode, staticListenerAddStatements);
@@ -118,7 +118,7 @@ public class LCBaseExtension extends AbstractTreeModificationExtension {
             Transformations.addAssetListeners(unit, classDefinitionNode, embedFields, false);
 
             // Extract all internal classes
-            List<String> internalClassesNames = new ArrayList<String>();
+            List<String> internalClassesNames = new ArrayList<>();
             ProgramNode syntaxTree = (ProgramNode) unit.getSyntaxTree();
             for (ClassDefinitionNode internalClass : TreeNavigator.getInternalClassDefinitions(syntaxTree)) {
                 Transformations.extractInternalClass(unit, classDefinitionNode, packageName, internalClassesNames, syntaxTree, internalClass);

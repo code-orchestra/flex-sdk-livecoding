@@ -178,7 +178,7 @@ public class DocumentInfo
 	 */
 	public void addInterfaceName(String interfaceName, int line)
 	{
-		(interfaceNames != null ? interfaceNames : (interfaceNames = new TreeSet<NameInfo>())).add(new NameInfo(interfaceName, line));
+		(interfaceNames != null ? interfaceNames : (interfaceNames = new TreeSet<>())).add(new NameInfo(interfaceName, line));
 		addImportName(interfaceName, line);
 	}
 
@@ -213,7 +213,7 @@ public class DocumentInfo
         {
             if (!importName.equals("*") && !StandardDefs.isBuiltInTypeName(importName))
             {
-                (importNames != null ? importNames : (importNames = new TreeSet<NameInfo>())).add(new NameInfo(importName, line));
+                (importNames != null ? importNames : (importNames = new TreeSet<>())).add(new NameInfo(importName, line));
             }
         }
 	}
@@ -258,7 +258,7 @@ public class DocumentInfo
 	{
         if (splitImportNames == null)
         {
-            splitImportNames = new TreeMap<String, String[]>();
+            splitImportNames = new TreeMap<>();
         }
 
         splitImportNames.put(importName, splitImportName);
@@ -271,7 +271,7 @@ public class DocumentInfo
 	{
         if (splitImportNames == null)
         {
-            splitImportNames = new TreeMap<String, String[]>();
+            splitImportNames = new TreeMap<>();
         }
 
         splitImportNames.putAll(names);
@@ -346,14 +346,14 @@ public class DocumentInfo
 	public void addVarDecl(String name, String className, int line)
 	{
 		VarDecl ref = new VarDecl(name, className, line);
-		(varDecls != null ? varDecls : (varDecls = new LinkedHashMap<String, VarDecl>())).put(name, ref);
+		(varDecls != null ? varDecls : (varDecls = new LinkedHashMap<>())).put(name, ref);
 		addImportName(className, line);
 	}
 
     public void addVectorVarDecl(String name, int line, String elementTypeName)
     {
 		VarDecl ref = new VarDecl(name, StandardDefs.CLASS_VECTOR + ".<" + elementTypeName + ">", line);
-		(varDecls != null ? varDecls : (varDecls = new LinkedHashMap<String, VarDecl>())).put(name, ref);
+		(varDecls != null ? varDecls : (varDecls = new LinkedHashMap<>())).put(name, ref);
 
         int dotLessThanIndex = elementTypeName.lastIndexOf(".<");
 
@@ -396,7 +396,7 @@ public class DocumentInfo
 	 */
 	public void addScript(Script script)
 	{
-		(scripts != null ? scripts : (scripts = new ArrayList<Script>())).add(script);
+		(scripts != null ? scripts : (scripts = new ArrayList<>())).add(script);
 	}
 
 	/**
@@ -414,7 +414,7 @@ public class DocumentInfo
 	 */
 	public void addMetadata(Script metadatum)
 	{
-		(metadata != null ? metadata : (metadata = new ArrayList<Script>())).add(metadatum);
+		(metadata != null ? metadata : (metadata = new ArrayList<>())).add(metadatum);
 	}
 
 	/**

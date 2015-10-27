@@ -63,7 +63,7 @@ public class SlotReflect
             for (macromedia.asc.semantics.MetaData aList : list) {
                 if (id.equals(aList.id)) {
                     if (result == null) {
-                        result = new ArrayList<MetaData>();
+                        result = new ArrayList<>();
                     }
                     result.add(new flex2.compiler.as3.reflect.MetaData(aList));
                 }

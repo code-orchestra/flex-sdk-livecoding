@@ -42,7 +42,7 @@ public class SwcDependencySet
 
         if (deps == null)
         {
-            deps = new HashSet<String>();
+            deps = new HashSet<>();
             depTypeMap.put( type, deps );
         }
         deps.add( dep );
@@ -72,5 +72,5 @@ public class SwcDependencySet
         return depTypeMap.keySet().iterator();
     }
 
-    private Map<String, Set<String>> depTypeMap = new HashMap<String, Set<String>>();
+    private Map<String, Set<String>> depTypeMap = new HashMap<>();
 }

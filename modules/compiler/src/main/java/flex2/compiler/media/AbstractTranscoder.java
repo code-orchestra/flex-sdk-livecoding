@@ -70,7 +70,7 @@ public abstract class AbstractTranscoder implements Transcoder
     protected Class defineTag;
     protected boolean cacheTags;
 
-    protected Map<String, TranscodingResults> transcodingCache = new HashMap<String, TranscodingResults>();
+    protected Map<String, TranscodingResults> transcodingCache = new HashMap<>();
 
     public static final String ASSET_TYPE = StandardDefs.PACKAGE_FLASH_DISPLAY + ".DisplayObject";
     
@@ -136,7 +136,7 @@ public abstract class AbstractTranscoder implements Transcoder
 
     private String getCacheKey(Map<String, Object> args)
     {
-        TreeMap<String, Object> m = new TreeMap<String, Object>( args );
+        TreeMap<String, Object> m = new TreeMap<>(args);
         String key = "" + m.hashCode();
 
         if (Trace.embed)
@@ -249,7 +249,7 @@ public abstract class AbstractTranscoder implements Transcoder
     {
         if (transcodingCache.size() != 0)
         {
-            transcodingCache = new HashMap<String, TranscodingResults>();
+            transcodingCache = new HashMap<>();
         }
     }
     

@@ -60,17 +60,17 @@ public class SwcMovie extends SimpleMovie
 
         // C: SwcMovie should keep its own copy of externs, includes, unresolved and resourceBundles
         //    so that incremental compilation can do the single-compile-multiple-link scenario.
-        externs = new HashSet<String>(linkerConfiguration.getExterns());
-	    includes = new LinkedHashSet<String>(linkerConfiguration.getIncludes());
-        unresolved = new HashSet<String>(linkerConfiguration.getUnresolved());
+        externs = new HashSet<>(linkerConfiguration.getExterns());
+	    includes = new LinkedHashSet<>(linkerConfiguration.getIncludes());
+        unresolved = new HashSet<>(linkerConfiguration.getUnresolved());
         generateLinkReport = linkerConfiguration.generateLinkReport();
         generateRBList = linkerConfiguration.generateRBList();
 
-	    resourceBundles = new TreeSet<String>(linkerConfiguration.getResourceBundles());
+	    resourceBundles = new TreeSet<>(linkerConfiguration.getResourceBundles());
     }
     public void generate( List<CompilationUnit> units ) throws LinkerException
     {
-        List<CULinkable> linkables = new LinkedList<CULinkable>();
+        List<CULinkable> linkables = new LinkedList<>();
 
         for (CompilationUnit unit : units) {
             linkables.add(new CULinkable(unit));

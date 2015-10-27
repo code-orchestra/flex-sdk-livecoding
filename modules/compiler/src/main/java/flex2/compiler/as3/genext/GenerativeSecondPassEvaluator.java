@@ -74,7 +74,7 @@ public abstract class GenerativeSecondPassEvaluator extends EvaluatorAdapter
         this.generateAbstractSyntaxTree = generateAbstractSyntaxTree;
         this.processComments = processComments;
         
-		evaluatedClasses = new HashSet<ClassDefinitionNode>();
+		evaluatedClasses = new HashSet<>();
 		setLocalizationManager(ThreadLocalToolkit.getLocalizationManager());
 
 		metaDataEvaluator = new MetaDataEvaluator();
@@ -120,7 +120,7 @@ public abstract class GenerativeSecondPassEvaluator extends EvaluatorAdapter
         
 		if (renamedVariableMap == null)
 		{
-			renamedVariableMap = new HashMap<String, String>();
+			renamedVariableMap = new HashMap<>();
 			unit.getContext().setAttribute(flex2.compiler.CompilerContext.RENAMED_VARIABLE_MAP, renamedVariableMap);
 		}
 		renamedVariableMap.put(info.getBackingPropertyName(), info.getPropertyName());

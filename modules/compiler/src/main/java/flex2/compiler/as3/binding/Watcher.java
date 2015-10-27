@@ -49,9 +49,9 @@ public abstract class Watcher
     public Watcher(int id)
     {
         this.id = id;
-        childWatchers = new HashMap<Object, Watcher>();
+        childWatchers = new HashMap<>();
         isPartOfAnonObjectGraph = false;
-        changeEvents = new HashSet<ChangeEvent>();
+        changeEvents = new HashSet<>();
         shouldWriteChildren = true;
     }
 
@@ -59,7 +59,7 @@ public abstract class Watcher
     {
         if (bindingExpressions == null)
         {
-            bindingExpressions = new TreeSet<BindingExpression>();
+            bindingExpressions = new TreeSet<>();
         }
 
         bindingExpressions.add(bindingExpression);

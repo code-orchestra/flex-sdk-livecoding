@@ -52,7 +52,7 @@ public class ExpressionContext implements Context
 		m_cache = cache;
 		m_current = null;
 		m_createIfMissing = false;
-		m_namedPath = new Vector<String>();
+		m_namedPath = new Vector<>();
 		m_nameLocked = false;
 		m_isolateId = Isolate.DEFAULT_ID;
 	}

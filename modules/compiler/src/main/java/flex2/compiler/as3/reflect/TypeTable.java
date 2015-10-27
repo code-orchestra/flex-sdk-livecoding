@@ -75,7 +75,7 @@ public class TypeTable
 
 	public final Map<String, AbcClass> createClasses(ObjectList clsdefs, QNameList toplevelDefinitions)
 	{
-		Map<String, AbcClass> classes = new HashMap<String, AbcClass>();
+		Map<String, AbcClass> classes = new HashMap<>();
 		for (Object clsdef1 : clsdefs) {
 			ClassDefinitionNode clsdef = (ClassDefinitionNode) clsdef1;
 			macromedia.asc.semantics.QName qName = clsdef.cframe.builder.classname;
@@ -102,7 +102,7 @@ public class TypeTable
 			MetaDataNode n = (MetaDataNode) def.metaData.items.get(i);
 			if (list == null)
 			{
-				list = new ArrayList<flex2.compiler.abc.MetaData>();
+				list = new ArrayList<>();
 			}
 			list.add(new MetaData(n));
 		}

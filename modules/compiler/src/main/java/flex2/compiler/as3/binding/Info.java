@@ -55,7 +55,7 @@ abstract class Info
 
         if (functions == null)
         {
-            functions = new ArrayList<QName>();
+            functions = new ArrayList<>();
         }
 
         functions.add(functionName);
@@ -67,7 +67,7 @@ abstract class Info
 
         if (getters == null)
         {
-            getters = new ArrayList<QName>();
+            getters = new ArrayList<>();
         }
 
         getters.add(getterName);
@@ -79,7 +79,7 @@ abstract class Info
 
         if (imports == null)
         {
-            imports = new TreeSet<String>();
+            imports = new TreeSet<>();
         }
 
         imports.add(importName);
@@ -91,7 +91,7 @@ abstract class Info
 
         if (interfaceMultiNames == null)
         {
-            interfaceMultiNames = new ArrayList<MultiName>();
+            interfaceMultiNames = new ArrayList<>();
         }
 
         interfaceMultiNames.add( new MultiName(namespaces, interfaceName) );
@@ -103,7 +103,7 @@ abstract class Info
 
         if (interfaceMultiNames == null)
         {
-            interfaceMultiNames = new ArrayList<MultiName>();
+            interfaceMultiNames = new ArrayList<>();
         }
 
         interfaceMultiNames.add( new MultiName(namespace, interfaceName) );
@@ -115,7 +115,7 @@ abstract class Info
 
         if (interfaceNames == null)
         {
-            interfaceNames = new ArrayList<String>();
+            interfaceNames = new ArrayList<>();
         }
 
         interfaceNames.add(interfaceName);
@@ -127,7 +127,7 @@ abstract class Info
 
         if (interfaceInfoList == null)
         {
-            interfaceInfoList = new ArrayList<InterfaceInfo>();
+            interfaceInfoList = new ArrayList<>();
         }
 
         interfaceInfoList.add(interfaceInfo);
@@ -139,7 +139,7 @@ abstract class Info
 
         if (qualifiedImports == null)
         {
-            qualifiedImports = new TreeMap<String, String>();
+            qualifiedImports = new TreeMap<>();
         }
 
         qualifiedImports.put(localPart, namespace);
@@ -149,7 +149,7 @@ abstract class Info
     {
         if (setters == null)
         {
-            setters = new ArrayList<QName>();
+            setters = new ArrayList<>();
         }
 
         setters.add(setterName);
@@ -220,7 +220,7 @@ abstract class Info
     {
         if (interfaceMultiNames == null)
         {
-            interfaceMultiNames = new ArrayList<MultiName>();
+            interfaceMultiNames = new ArrayList<>();
 
             if (interfaceNames != null)
             {

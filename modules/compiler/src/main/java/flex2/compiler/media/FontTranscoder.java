@@ -107,7 +107,7 @@ public class FontTranscoder extends AbstractTranscoder
 
             results.assetSource = resolveSource( context, args );
             results.modified = results.assetSource.getLastModified();
-            locations = new LinkedList<Serializable>();
+            locations = new LinkedList<>();
             locations.add( getURL(results.assetSource) );
         }
         else if (args.containsKey( SYSTEMFONT ))
@@ -116,7 +116,7 @@ public class FontTranscoder extends AbstractTranscoder
                 throw new BadParameters();
 
             systemFont = (String) args.get( SYSTEMFONT );
-            locations = new LinkedList<Serializable>();
+            locations = new LinkedList<>();
             locations.add(systemFont);
         }
         else if (args.containsKey( SOURCELIST ))
@@ -298,7 +298,7 @@ public class FontTranscoder extends AbstractTranscoder
     private List<Serializable> resolveSourceList(PathResolver context,
             Map<String, Object> args) throws TranscoderException
     {
-        List<Serializable> result = new LinkedList<Serializable>();
+        List<Serializable> result = new LinkedList<>();
 
         for (Object source : ((List) args.get(SOURCELIST))) {
             if (source instanceof URLSource) {

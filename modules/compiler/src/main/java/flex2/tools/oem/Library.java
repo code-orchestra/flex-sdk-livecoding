@@ -229,18 +229,16 @@ public class Library implements Builder, Cloneable
      */
     public Library()
     {
-        sources = new TreeSet<VirtualFile>(new Comparator<VirtualFile>()
-        {
-            public int compare(VirtualFile f0, VirtualFile f1)
-            {
+        sources = new TreeSet<>(new Comparator<VirtualFile>() {
+            public int compare(VirtualFile f0, VirtualFile f1) {
                 return f0.getName().compareTo(f1.getName());
             }
         });
-        classes = new TreeSet<String>();
-        namespaces = new TreeSet<URI>();
-        resourceBundles = new TreeSet<String>();
-        files = new TreeMap<String, VirtualFile>();
-        stylesheets = new TreeMap<String, VirtualFile>();
+        classes = new TreeSet<>();
+        namespaces = new TreeSet<>();
+        resourceBundles = new TreeSet<>();
+        files = new TreeMap<>();
+        stylesheets = new TreeMap<>();
 
         oemConfiguration = null;
         logger = null;
@@ -254,7 +252,7 @@ public class Library implements Builder, Cloneable
         data = null;
         cacheName = null;
         configurationReport = null;
-        messages = new ArrayList<Message>();
+        messages = new ArrayList<>();
     }
 
     private Set<VirtualFile> sources;
@@ -825,14 +823,14 @@ public class Library implements Builder, Cloneable
             libraryCache.setSwcCache(data.swcCache);
         }
 
-        data.includes = new HashSet<String>(swcContext.getIncludes());
-        data.excludes = new HashSet<String>(swcContext.getExterns());
+        data.includes = new HashSet<>(swcContext.getIncludes());
+        data.excludes = new HashSet<>(swcContext.getExterns());
         localOEMConfiguration.configuration.addExterns( swcContext.getExterns() );
         localOEMConfiguration.configuration.addIncludes( swcContext.getIncludes() );
-        data.swcArchiveFiles = new HashMap<String, VirtualFile>(swcContext.getIncludeFiles());
+        data.swcArchiveFiles = new HashMap<>(swcContext.getIncludeFiles());
         
         // The ToolsConfiguration expects class names in QName format.
-        Set<String> qNameClasses = new HashSet<String>();
+        Set<String> qNameClasses = new HashSet<>();
         for (String className : classes)
         {
             qNameClasses.add(NameFormatter.toColon(className));
@@ -909,7 +907,7 @@ public class Library implements Builder, Cloneable
             }
         }
 
-        Map<String, Source> classes = new TreeMap<String, Source>();
+        Map<String, Source> classes = new TreeMap<>();
         if ((data.nsComponents = processInputs(swcContext, copy, classes)) == null)
         {
             return FAIL;
@@ -918,7 +916,7 @@ public class Library implements Builder, Cloneable
         // Only updated the LibraryData's classes if processInputs()
         // is successful.
         data.classes = classes;
-        data.sources = new ArrayList<Source>();
+        data.sources = new ArrayList<>();
         data.units = compile(compilers, swcContext, symbolTable, mappings, licenseMap, data.classes, data.sources);
 
         // need to update the checksum here since doing a compile could add some
@@ -1090,7 +1088,7 @@ public class Library implements Builder, Cloneable
     {
         try
         {
-            SwcAPI.setupClasses(new ArrayList<String>(this.classes), data.sourcePath, data.sourceList, classes);
+            SwcAPI.setupClasses(new ArrayList<>(this.classes), data.sourcePath, data.sourceList, classes);
             return true;
         }
         catch (CompilerException ex)
@@ -1116,10 +1114,8 @@ public class Library implements Builder, Cloneable
             List<SwcComponent> list = SwcAPI.setupNamespaceComponents(toStrings(namespaces), mappings,
                                                                       data.sourcePath, data.sourceList,
                                                                       classes);
-            nsComponents = new TreeSet<SwcComponent>(new Comparator<SwcComponent>()
-            {
-                public int compare(SwcComponent c0, SwcComponent c1)
-                {
+            nsComponents = new TreeSet<>(new Comparator<SwcComponent>() {
+                public int compare(SwcComponent c0, SwcComponent c1) {
                     return c0.getClassName().compareTo(c1.getClassName());
                 }
             });
@@ -1144,7 +1140,7 @@ public class Library implements Builder, Cloneable
      */
     private List<String> toStrings(Set<URI> set)
     {
-        List<String> a = new ArrayList<String>(set.size());
+        List<String> a = new ArrayList<>(set.size());
         for (URI uri : set) {
             a.add(uri.toString());
         }
@@ -1213,7 +1209,7 @@ public class Library implements Builder, Cloneable
         try
         {
             // Create a list of LocalFile paths and remove the LocalFiles "sources".
-            List<String> localPathList = new ArrayList<String>();
+            List<String> localPathList = new ArrayList<>();
 
             for (Iterator<VirtualFile> iterator = sources.iterator(); iterator.hasNext();)
             {
@@ -1242,11 +1238,9 @@ public class Library implements Builder, Cloneable
             Collections.addAll(sources, virtualFileArray);
 
             List<VirtualFile> fileList =
-                CompilerAPI.getVirtualFileList(sources, new HashSet<String>(Arrays.asList(WebTierAPI.getSourcePathMimeTypes())));
-            fileSet = new TreeSet<VirtualFile>(new Comparator<VirtualFile>()
-            {
-                public int compare(VirtualFile f0, VirtualFile f1)
-                {
+                CompilerAPI.getVirtualFileList(sources, new HashSet<>(Arrays.asList(WebTierAPI.getSourcePathMimeTypes())));
+            fileSet = new TreeSet<>(new Comparator<VirtualFile>() {
+                public int compare(VirtualFile f0, VirtualFile f1) {
                     return f0.getName().compareTo(f1.getName());
                 }
             });
@@ -1271,11 +1265,9 @@ public class Library implements Builder, Cloneable
 
         try
         {
-            List<VirtualFile> fileList = CompilerAPI.getVirtualFileList(new ArrayList<VirtualFile>(stylesheets.values()), new HashSet<String>(Arrays.asList(new String[] { MimeMappings.CSS })));
-            fileSet = new TreeSet<VirtualFile>(new Comparator<VirtualFile>()
-            {
-                public int compare(VirtualFile f0, VirtualFile f1)
-                {
+            List<VirtualFile> fileList = CompilerAPI.getVirtualFileList(new ArrayList<>(stylesheets.values()), new HashSet<>(Arrays.asList(new String[]{MimeMappings.CSS})));
+            fileSet = new TreeSet<>(new Comparator<VirtualFile>() {
+                public int compare(VirtualFile f0, VirtualFile f1) {
                     return f0.getName().compareTo(f1.getName());
                 }
             });
@@ -1309,11 +1301,11 @@ public class Library implements Builder, Cloneable
             cacheFile = new RandomAccessFile(data.cacheName, "r");
             CompilerAPI.loadCompilationUnits(configuration, data.fileSpec, data.sourceList,
                                              data.sourcePath, data.resources, data.bundlePath,
-                                             data.sources = new ArrayList<Source>(),
-                                             data.units = new ArrayList<CompilationUnit>(),
+                                             data.sources = new ArrayList<>(),
+                                             data.units = new ArrayList<>(),
                                              checksums,
-                                             data.swcDefSignatureChecksums = new HashMap<QName, Long>(),
-                                             data.swcFileChecksums = new HashMap<String, Long>(),
+                                             data.swcDefSignatureChecksums = new HashMap<>(),
+                                             data.swcFileChecksums = new HashMap<>(),
                                              cacheFile, data.cacheName);
 
             /*
@@ -1573,14 +1565,14 @@ public class Library implements Builder, Cloneable
             benchmark.benchmark2("Starting active compile for " + getOutput(), true);
         }
 
-        data.includes = new HashSet<String>(swcContext.getIncludes());
-        data.excludes = new HashSet<String>(swcContext.getExterns());
+        data.includes = new HashSet<>(swcContext.getIncludes());
+        data.excludes = new HashSet<>(swcContext.getExterns());
         tempOEMConfiguration.configuration.addExterns( swcContext.getExterns() );
         tempOEMConfiguration.configuration.addIncludes( swcContext.getIncludes() );
-        data.swcArchiveFiles = new HashMap<String, VirtualFile>(swcContext.getIncludeFiles());
+        data.swcArchiveFiles = new HashMap<>(swcContext.getIncludeFiles());
 
         // The ToolsConfiguration expects class names in QName format.
-        Set<String> qNameClasses = new HashSet<String>();
+        Set<String> qNameClasses = new HashSet<>();
         for (String className : classes)
         {
             qNameClasses.add(NameFormatter.toColon(className));
@@ -1603,7 +1595,7 @@ public class Library implements Builder, Cloneable
                                                          data.classes, data.perCompileData,
                                                          tempOEMConfiguration.configuration);
 
-        Map<String, Source> classes = new TreeMap<String, Source>();
+        Map<String, Source> classes = new TreeMap<>();
         Set<SwcComponent> nsComponents = null;
 
         if ((nsComponents = processInputs(swcContext, copy, classes)) == null)
@@ -1627,7 +1619,7 @@ public class Library implements Builder, Cloneable
             data.swcChecksum = swcContext.checksum();
 
             // compile
-            data.sources = new ArrayList<Source>();
+            data.sources = new ArrayList<>();
             data.units = compile(compilers, swcContext, symbolTable, mappings, licenseMap, classes, data.sources);
 
             boolean forcedToStop = CompilerAPI.forcedToStop();
@@ -1714,7 +1706,7 @@ public class Library implements Builder, Cloneable
                                           Map<String, Source> classes, List<Source> sources)
     {
         List<CompilationUnit> units = null;
-        Map<String, VirtualFile> rbFiles = new HashMap<String, VirtualFile>();
+        Map<String, VirtualFile> rbFiles = new HashMap<>();
 
         try
         {
@@ -1729,7 +1721,7 @@ public class Library implements Builder, Cloneable
 
             units = CompilerAPI.compile(data.fileSpec, data.sourceList, classes.values(), data.sourcePath, data.resources,
                                         data.bundlePath, swcContext, symbolTable, nameMappings, data.configuration,
-                                        compilers, new CompcPreLink(rbFiles, new ArrayList<String>(resourceBundles), false),
+                                        compilers, new CompcPreLink(rbFiles, new ArrayList<>(resourceBundles), false),
                                         licenseMap, sources);
 
             if (benchmark != null)
@@ -1740,7 +1732,7 @@ public class Library implements Builder, Cloneable
             if ((benchmark != null) && (ThreadLocalToolkit.getLogger() != null))
             {
                 if (compilerBenchmarks == null)
-                    compilerBenchmarks = new HashMap<String, PerformanceData[]>();
+                    compilerBenchmarks = new HashMap<>();
 
                 compilerBenchmarks.clear();
 
@@ -1792,13 +1784,13 @@ public class Library implements Builder, Cloneable
             Map<String, VirtualFile> m = data.configuration.getCSSArchiveFiles();
             if (m != null)
             {
-                data.cssArchiveFiles = new HashMap<String, VirtualFile>(m);
+                data.cssArchiveFiles = new HashMap<>(m);
             }
 
             m = data.configuration.getL10NArchiveFiles();
             if (m != null)
             {
-                data.l10nArchiveFiles = new HashMap<String, VirtualFile>(m);
+                data.l10nArchiveFiles = new HashMap<>(m);
             }
 
             OEMUtil.saveSignatureChecksums(units, data, data.configuration);
@@ -1883,7 +1875,7 @@ public class Library implements Builder, Cloneable
 
             // link
             SwcArchive archive = null;
-            Map<String, VirtualFile> archiveFiles = new TreeMap<String, VirtualFile>();
+            Map<String, VirtualFile> archiveFiles = new TreeMap<>();
             if (data.swcArchiveFiles != null) archiveFiles.putAll(data.swcArchiveFiles);
             if (data.cssArchiveFiles != null) archiveFiles.putAll(data.cssArchiveFiles);
             if (data.l10nArchiveFiles != null) archiveFiles.putAll(data.l10nArchiveFiles);
@@ -1897,7 +1889,7 @@ public class Library implements Builder, Cloneable
                                                  this.stylesheets,
                                                  (LinkerConfiguration) config,
                                                  (SwcMovie) data.movie,
-                                                 new ArrayList<SwcComponent>(data.nsComponents),
+                        new ArrayList<>(data.nsComponents),
                                                  data.swcCache,
                                                  data.rbFiles);
             }
@@ -1931,7 +1923,7 @@ public class Library implements Builder, Cloneable
                              this.stylesheets,
                              (LinkerConfiguration) config,
                              (SwcMovie) data.movie,
-                             new ArrayList<SwcComponent>(data.nsComponents),
+                    new ArrayList<>(data.nsComponents),
                              data.swcCache,
                              data.rbFiles);
             

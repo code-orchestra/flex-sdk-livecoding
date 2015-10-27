@@ -89,7 +89,7 @@ public class GroupDefinitionNode extends AbstractFXGNode
                 textCount++;
 
             if (children == null)
-                children = new ArrayList<GraphicContentNode>();
+                children = new ArrayList<>();
 
             children.add((GraphicContentNode)child);
         

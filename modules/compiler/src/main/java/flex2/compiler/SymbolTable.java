@@ -174,19 +174,19 @@ public final class SymbolTable
 
         public Iterator<Variable> getVarIterator()
         {
-            return new EmptyIter<Variable>();            
+            return new EmptyIter<>();
         }
         public Iterator<Method> getMethodIterator()
         {
-            return new EmptyIter<Method>();
+            return new EmptyIter<>();
         }
         public Iterator<Method> getGetterIterator()
         {
-            return new EmptyIter<Method>();
+            return new EmptyIter<>();
         }
         public Iterator<Method> getSetterIterator()
         {
-            return new EmptyIter<Method>();
+            return new EmptyIter<>();
         }
 
         class EmptyIter<T> implements Iterator<T>
@@ -218,7 +218,7 @@ public final class SymbolTable
      */
 	public SymbolTable(Configuration configuration, ContextStatics contextStatics)
 	{
-		classTable = new HashMap<String, AbcClass>(300);
+		classTable = new HashMap<>(300);
 		styles = new Styles();
         perCompileData = contextStatics;
 
@@ -237,15 +237,15 @@ public final class SymbolTable
 
 		ContextStatics.useVerboseErrors = false;
 		
-		qNameTable = new QNameMap<Source>(300);
-		multiNames = new HashMap<MultiName, QName>(1024);
+		qNameTable = new QNameMap<>(300);
+		multiNames = new HashMap<>(1024);
 		Context cx = new Context(perCompileData);
 		emitter = new BytecodeEmitter(cx, null, false, false);
 		cx.setEmitter(emitter);
 		typeAnalyzer = new TypeAnalyzer(this);
 		
-		rbNames = new HashMap<String, QName[]>();
-		rbNameTable = new HashMap<String, Source>();
+		rbNames = new HashMap<>();
+		rbNameTable = new HashMap<>();
 	}
 
     /**

@@ -44,7 +44,7 @@ import java.util.StringTokenizer;
 public class FontSnapshot
 {
 	private static Method getFontPath;
-	private Map<String, LocalFont> fonts = new HashMap<String, LocalFont>();
+	private Map<String, LocalFont> fonts = new HashMap<>();
 
 	// for JREFontManager's initDefaultLocalFonts()
 	private static boolean printForMap = true;

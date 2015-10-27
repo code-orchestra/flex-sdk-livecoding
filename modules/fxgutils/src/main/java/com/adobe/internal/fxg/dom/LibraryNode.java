@@ -87,7 +87,7 @@ public class LibraryNode extends AbstractFXGNode
         if (child instanceof DefinitionNode)
         {
             if (definitions == null)
-                definitions = new HashMap<String, DefinitionNode>();
+                definitions = new HashMap<>();
 
             DefinitionNode node = (DefinitionNode)child;
             if (node.name == null)

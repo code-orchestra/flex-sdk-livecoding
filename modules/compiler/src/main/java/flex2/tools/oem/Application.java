@@ -309,7 +309,7 @@ public class Application implements Builder
         data = null;
         cacheName = null;
         configurationReport = null;
-        messages = new ArrayList<Message>();
+        messages = new ArrayList<>();
     }
 
     private List<VirtualFile> files;
@@ -783,10 +783,10 @@ public class Application implements Builder
         {
             cacheFile = new RandomAccessFile(data.cacheName, "r");
             CompilerAPI.loadCompilationUnits(configuration, data.fileSpec, data.sourceList, data.sourcePath,
-                                             data.resources, data.bundlePath, data.sources = new ArrayList<Source>(),
-                                             data.units = new ArrayList<CompilationUnit>(), checksums,
-                                             data.swcDefSignatureChecksums = new HashMap<QName, Long>(),
-                                             data.swcFileChecksums = new HashMap<String, Long>(),
+                                             data.resources, data.bundlePath, data.sources = new ArrayList<>(),
+                                             data.units = new ArrayList<>(), checksums,
+                                             data.swcDefSignatureChecksums = new HashMap<>(),
+                                             data.swcFileChecksums = new HashMap<>(),
                                              cacheFile, data.cacheName, data.fontManager);
         }
         catch (FileNotFoundException ex)
@@ -941,8 +941,8 @@ public class Application implements Builder
                 libraryCache.setSwcCache(data.swcCache);
             }
     
-            data.includes = new HashSet<String>(swcContext.getIncludes());
-            data.excludes = new HashSet<String>(swcContext.getExterns());
+            data.includes = new HashSet<>(swcContext.getIncludes());
+            data.excludes = new HashSet<>(swcContext.getExterns());
             tempOEMConfiguration.configuration.addExterns( swcContext.getExterns() );
             tempOEMConfiguration.configuration.addIncludes( swcContext.getIncludes() );
             tempOEMConfiguration.configuration.getCompilerConfiguration().addThemeCssFiles( swcContext.getThemeStyleSheets() );
@@ -1027,7 +1027,7 @@ public class Application implements Builder
                 // create a symbol table
                 SymbolTable symbolTable = new SymbolTable(tempOEMConfiguration.configuration, data.perCompileData);
     
-                data.sources = new ArrayList<Source>();
+                data.sources = new ArrayList<>();
                 data.units = compile(compilers, swcContext, symbolTable, mappings, licenseMap, data.sources);
     
                 boolean forcedToStop = CompilerAPI.forcedToStop();
@@ -1190,8 +1190,8 @@ public class Application implements Builder
             libraryCache.setSwcCache(data.swcCache);
         }
 
-        data.includes = new HashSet<String>(swcContext.getIncludes());
-        data.excludes = new HashSet<String>(swcContext.getExterns());
+        data.includes = new HashSet<>(swcContext.getIncludes());
+        data.excludes = new HashSet<>(swcContext.getExterns());
         localOEMConfiguration.configuration.addExterns( swcContext.getExterns() );
         localOEMConfiguration.configuration.addIncludes( swcContext.getIncludes() );
         localOEMConfiguration.configuration.getCompilerConfiguration().addThemeCssFiles( swcContext.getThemeStyleSheets() );
@@ -1289,7 +1289,7 @@ public class Application implements Builder
             libraryCache.setContextStatics(data.perCompileData);
         }
 
-        data.sources = new ArrayList<Source>();
+        data.sources = new ArrayList<>();
         data.units = compile(compilers, swcContext, symbolTable, mappings, licenseMap, data.sources);
 
         // need to update the checksum here since doing a compile could add some
@@ -1372,7 +1372,7 @@ public class Application implements Builder
             if ((benchmark != null) && (ThreadLocalToolkit.getLogger() != null))
             {
                 if (compilerBenchmarks == null)
-                    compilerBenchmarks = new HashMap<String, PerformanceData[]>();
+                    compilerBenchmarks = new HashMap<>();
 
                 compilerBenchmarks.clear();
 

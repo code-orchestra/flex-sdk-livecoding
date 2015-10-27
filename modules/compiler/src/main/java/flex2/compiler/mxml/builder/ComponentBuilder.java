@@ -467,7 +467,7 @@ public class ComponentBuilder extends AbstractBuilder
 
     protected void addDefaultPropertyNode(Node node)
     {
-        (defaultPropertyNodes != null ? defaultPropertyNodes : (defaultPropertyNodes = new ArrayList<Node>(1))).add(node);
+        (defaultPropertyNodes != null ? defaultPropertyNodes : (defaultPropertyNodes = new ArrayList<>(1))).add(node);
     }
 
         // ChildNodeHandler impl

@@ -248,19 +248,19 @@ public class Extensions
 		try { info = fileInfo.getSwfs(isolateId)[index]; } catch(ArrayIndexOutOfBoundsException oobe) {}
 		if (info != null)
 		{
-			Map<String, String> args = new HashMap<String, String>();
+			Map<String, String> args = new HashMap<>();
 			args.put("swfName", FileInfoCache.nameOfSwf(info) ); //$NON-NLS-1$
 			sb.append(getLocalizationManager().getLocalizedTextString("key35", args)); //$NON-NLS-1$
 			sb.append(' ');
 		}
 
-		Map<String, String> args = new HashMap<String, String>();
+		Map<String, String> args = new HashMap<>();
 		args.put("address", "0x" + FieldFormat.formatLongToHex(new StringBuilder(), offset, 8) + " (" + offset + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		sb.append(getLocalizationManager().getLocalizedTextString("atAddress", args)); //$NON-NLS-1$
 
 		if (includeFault)
 		{
-			args = new HashMap<String, String>();
+			args = new HashMap<>();
 			StringBuilder reasonBuffer = new StringBuilder();
 			cli.appendReason(reasonBuffer, reason);
 			args.put("fault", reasonBuffer.toString() ); //$NON-NLS-1$
@@ -406,7 +406,7 @@ public class Extensions
  
  				if (swf == null)
 				{
-					Map<String, String> args = new HashMap<String, String>();
+					Map<String, String> args = new HashMap<>();
 					args.put("arg3", file.getName()); //$NON-NLS-1$
  					cli.err(getLocalizationManager().getLocalizedTextString("key29", args)); //$NON-NLS-1$
 				}
@@ -453,7 +453,7 @@ public class Extensions
  								if (lastEnd.actions != lStart.actions && lastEnd.actions.size() != lastEnd.at)
  								{
  									String atString = Integer.toHexString(lastEnd.actions.getOffset(lastEnd.at));
-									Map<String, String> args = new HashMap<String, String>();
+									Map<String, String> args = new HashMap<>();
 									args.put("arg4", atString); //$NON-NLS-1$
  									cli.out(getLocalizationManager().getLocalizedTextString("key31", args)); //$NON-NLS-1$
  
@@ -490,7 +490,7 @@ public class Extensions
 		catch(IndexOutOfBoundsException iob)
  		{
  			String name = "#"+module1; //$NON-NLS-1$
-			Map<String, String> args = new HashMap<String, String>();
+			Map<String, String> args = new HashMap<>();
 			args.put("arg5", Integer.toString(line1)); //$NON-NLS-1$
 			args.put("arg6", name); //$NON-NLS-1$
 			args.put("arg7", Integer.toString(numLines)); //$NON-NLS-1$

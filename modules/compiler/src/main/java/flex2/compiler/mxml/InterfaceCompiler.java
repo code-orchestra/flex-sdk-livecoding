@@ -482,18 +482,18 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
             //  first call to postprocess
 
             //  seed checkNodes with root node
-            checkNodes = new HashSet<Node>();
+            checkNodes = new HashSet<>();
             checkNodes.add(info.getRootNode());
 
             //  set up type request record - apparently unit.expressions gets scrubbed of multinames that fail to resolve?
-            allTypeRequests = new HashSet<MultiName>();
+            allTypeRequests = new HashSet<>();
             unit.getContext().setAttribute(AttrTypeRequests, allTypeRequests);
         }
 
         if (!checkNodes.isEmpty())
         {
-            Set<Node> newCheckNodes = new HashSet<Node>();
-            Set<MultiName> newTypeRequests = new HashSet<MultiName>();
+            Set<Node> newCheckNodes = new HashSet<>();
+            Set<MultiName> newTypeRequests = new HashSet<>();
             DependencyAnalyzer analyzer = new DependencyAnalyzer(unit, typeTable, info, newCheckNodes, newTypeRequests, allTypeRequests);
             for (Node checkNode : checkNodes) {
                 checkNode.analyze(analyzer);
@@ -803,7 +803,7 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
 				SourceCodeBuffer out = new SourceCodeBuffer((int) source.size());
 
 				//	create SourceCode wrappers for scripts
-				Set<SourceCode> scriptSet = new LinkedHashSet<SourceCode>();
+				Set<SourceCode> scriptSet = new LinkedHashSet<>();
                 for (Script script : info.getScripts()) {
                     if (!script.isEmbedded()) {
                         scriptSet.add(new SourceCode(script.getText(), script.getXmlLineNumber(), out, map));
@@ -829,20 +829,20 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
                 }
 
                 //  create SourceCode wrappers for metadata entries
-                Set<SourceCode> metadataSet = new LinkedHashSet<SourceCode>();
+                Set<SourceCode> metadataSet = new LinkedHashSet<>();
                 for (Script script : info.getMetadata()) {
                     metadataSet.add(new SourceCode(script.getText(), script.getXmlLineNumber(), out, map));
                 }
 
                 //  create SourceCode wrappers for variable declarations
-                Map<String, SourceCode> varDeclMap = new LinkedHashMap<String, SourceCode>();
+                Map<String, SourceCode> varDeclMap = new LinkedHashMap<>();
                 for (DocumentInfo.VarDecl varDecl : info.getVarDecls().values()) {
                     varDeclMap.put(varDecl.name, new SourceCode(varDecl.className, varDecl.line, out, map));
                 }
 
                 int superClassLineNumber = 1;
 
-                Set<SourceCode> importNameSet = new LinkedHashSet<SourceCode>();
+                Set<SourceCode> importNameSet = new LinkedHashSet<>();
                 for (NameInfo importName : info.getImportNames()) {
                     importNameSet.add(new SourceCode(importName.getName(), importName.getLine(), out, map));
 
@@ -854,7 +854,7 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
                     importNameSet.add(new SourceCode(importName, 1, out, map));
                 }
 
-                Set<SourceCode> interfaceNameSet = new LinkedHashSet<SourceCode>();
+                Set<SourceCode> interfaceNameSet = new LinkedHashSet<>();
                 for (NameInfo interfaceName : info.getInterfaceNames()) {
                     interfaceNameSet.add(new SourceCode(interfaceName.getName(), interfaceName.getLine(), out, map));
                 }
@@ -1056,9 +1056,9 @@ public class InterfaceCompiler extends flex2.compiler.AbstractSubCompiler implem
         private ClassInfo baseClassInfo;
         private int repeaterNum;
         private int innerClassCount = 0;
-        private Set<String> innerClassNames = new HashSet<String>();
-        private Set<String> bogusImports = new HashSet<String>();
-    	private Set<DesignLayerNode> declaredLayers = new HashSet<DesignLayerNode>();
+        private Set<String> innerClassNames = new HashSet<>();
+        private Set<String> bogusImports = new HashSet<>();
+    	private Set<DesignLayerNode> declaredLayers = new HashSet<>();
 
         private boolean generateAst;
         private InterfaceAnalyzer(CompilationUnit unit, DocumentInfo docInfo, ClassInfo baseClassInfo, boolean generateAst)

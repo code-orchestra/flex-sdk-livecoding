@@ -400,7 +400,7 @@ public class SpriteTranscoder extends XMLAbstractTranscoder
 			return FEATURES.contains(s);
 		}
 
-		final Set<String> extensions = new HashSet<String>();
+		final Set<String> extensions = new HashSet<>();
 
 		/**
 		 * Tells whether the given extension is supported by this
@@ -541,7 +541,7 @@ public class SpriteTranscoder extends XMLAbstractTranscoder
 		 */
 		final void computeAllowedScripts()
 		{
-			scripts = new Vector<String>();
+			scripts = new Vector<>();
 			if (!SpriteTranscoder.this.hints.containsKey(KEY_ALLOWED_SCRIPT_TYPES))
 			{
 				return;
@@ -569,7 +569,7 @@ public class SpriteTranscoder extends XMLAbstractTranscoder
 	// --------------------------------------------------------------------
 
 
-	protected final static Set<String> FEATURES = new HashSet<String>();
+	protected final static Set<String> FEATURES = new HashSet<>();
 
 	static
 	{

@@ -154,7 +154,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         NEVER_SHOWN, SHOWN_ONCE, DONE
     }
 
-    Stack<LineNumberReader> m_readerStack = new Stack<LineNumberReader>();
+    Stack<LineNumberReader> m_readerStack = new Stack<>();
     public PrintStream m_err;
     public PrintStream m_out;
     Session m_session;
@@ -405,13 +405,13 @@ public class DebugCLI implements Runnable, SourceLocator {
         m_fullnameOption = false;
         m_faultTable = faultActionsBuilder.build();
         m_exprCache = new ExpressionCache(this);
-        m_breakpoints = new Vector<BreakAction>();
-        m_watchpoints = new Vector<WatchAction>();
-        m_catchpoints = new Vector<CatchAction>();
-        m_displays = new ArrayList<DisplayAction>();
-        m_keyboardInput = new Vector<String>();
+        m_breakpoints = new Vector<>();
+        m_watchpoints = new Vector<>();
+        m_catchpoints = new Vector<>();
+        m_displays = new ArrayList<>();
+        m_keyboardInput = new Vector<>();
         m_mruURI = null;
-        m_sourceDirectories = new LinkedList<String>();
+        m_sourceDirectories = new LinkedList<>();
 
         initProperties();
         m_mainState = new DebugCLIIsolateState(this);
@@ -639,7 +639,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             } catch (EOFException eof) {
                 /* quite allright */
             } catch (IOException io) {
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("exceptionMessage", io); //$NON-NLS-1$
                 err(getLocalizationManager().getLocalizedTextString("errorWhileProcessingFile", args)); //$NON-NLS-1$
             }
@@ -671,7 +671,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             // ignore
         }
 
-        Map<String, Object> aboutMap = new HashMap<String, Object>();
+        Map<String, Object> aboutMap = new HashMap<>();
         aboutMap.put("build", build); //$NON-NLS-1$
         out(getLocalizationManager().getLocalizedTextString("about", aboutMap)); //$NON-NLS-1$
         out(getLocalizationManager().getLocalizedTextString("copyright")); //$NON-NLS-1$
@@ -802,7 +802,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             } catch (NumberFormatException nfe) {
                 err(getLocalizationManager().getLocalizedTextString("numberFormatException")); //$NON-NLS-1$
             } catch (SocketException se) {
-                Map<String, Object> socketArgs = new HashMap<String, Object>();
+                Map<String, Object> socketArgs = new HashMap<>();
                 socketArgs.put("message", se.getMessage()); //$NON-NLS-1$
                 err(getLocalizationManager().getLocalizedTextString("socketException", socketArgs)); //$NON-NLS-1$
             } catch (VersionException ve) {
@@ -939,7 +939,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     if (isolate.getId() == Isolate.DEFAULT_ID) {
                         sb.append(getLocalizationManager().getLocalizedTextString("mainThread")); //$NON-NLS-1$
                     } else {
-                        HashMap<String, Object> wArgs = new HashMap<String, Object>();
+                        HashMap<String, Object> wArgs = new HashMap<>();
                         wArgs.put("worker", isolate.getId() - 1); //$NON-NLS-1$
                         sb.append(getLocalizationManager().getLocalizedTextString("inWorker", wArgs)); //$NON-NLS-1$
                     }
@@ -996,7 +996,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 sb.append(' ');
 
                 if (funcName != null) {
-                    Map<String, Object> funcArgs = new HashMap<String, Object>();
+                    Map<String, Object> funcArgs = new HashMap<>();
                     funcArgs.put("functionName", funcName); //$NON-NLS-1$
                     sb.append(getLocalizationManager().getLocalizedTextString("inFunctionAt", funcArgs)); //$NON-NLS-1$
                 }
@@ -1011,7 +1011,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 
                 try {
                     SwfInfo info = m_fileInfo.swfForFile(file, l.getIsolateId());
-                    Map<String, Object> swfArgs = new HashMap<String, Object>();
+                    Map<String, Object> swfArgs = new HashMap<>();
                     swfArgs.put("swf", FileInfoCache.shortNameOfSwf(info)); //$NON-NLS-1$
                     sb.append(getLocalizationManager().getLocalizedTextString("inSwf", swfArgs)); //$NON-NLS-1$
                     if (l.getIsolateId() == Isolate.DEFAULT_ID) {
@@ -1019,7 +1019,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                         sb.append(getLocalizationManager().getLocalizedTextString("mainThread")); //$NON-NLS-1$
                         sb.append(")"); //$NON-NLS-1$
                     } else {
-                        swfArgs = new HashMap<String, Object>();
+                        swfArgs = new HashMap<>();
                         swfArgs.put("worker", l.getIsolateId() - 1); //$NON-NLS-1$
                         sb.append(" ("); //$NON-NLS-1$
                         sb.append(getLocalizationManager().getLocalizedTextString("inWorker", swfArgs)); //$NON-NLS-1$
@@ -1200,7 +1200,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 sb.append(" "); //$NON-NLS-1$
                 sb.append(Isolate.DEFAULT_ID - 1);
             } else {
-                HashMap<String, Object> workArgs = new HashMap<String, Object>();
+                HashMap<String, Object> workArgs = new HashMap<>();
                 workArgs.put("worker", (t.getId() - 1)); //$NON-NLS-1$
                 sb.append(getLocalizationManager().getLocalizedTextString("inWorker", workArgs)); //$NON-NLS-1$
             }
@@ -1448,7 +1448,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         if (!haveConnection()) {
             out(getLocalizationManager().getLocalizedTextString("noActiveSession")); //$NON-NLS-1$
             if (m_launchURI != null) {
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("uri", m_launchURI); //$NON-NLS-1$
                 out(getLocalizationManager().getLocalizedTextString("runWillLaunchUri", args)); //$NON-NLS-1$
             }
@@ -1472,7 +1472,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 if (e == null || e.isUnloaded())
                     continue;
 
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("swfName", FileInfoCache.nameOfSwf(e)); //$NON-NLS-1$
                 args.put("size", NumberFormat.getInstance().format(e.getSwfSize())); //$NON-NLS-1$
 
@@ -1549,10 +1549,10 @@ public class DebugCLI implements Runnable, SourceLocator {
             return;
         }
 
-        Vector<String> authoredFiles = new Vector<String>();
-        Vector<String> frameworkFiles = new Vector<String>();
-        Vector<String> syntheticFiles = new Vector<String>();
-        Vector<String> actionsFiles = new Vector<String>();
+        Vector<String> authoredFiles = new Vector<>();
+        Vector<String> frameworkFiles = new Vector<>();
+        Vector<String> syntheticFiles = new Vector<>();
+        Vector<String> actionsFiles = new Vector<>();
 
         for (SourceFile m : ar) {
             int fileType = getFileType(m);
@@ -1713,7 +1713,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 
         Arrays.sort(names);
 
-        Map<String, Object> args = new HashMap<String, Object>();
+        Map<String, Object> args = new HashMap<>();
         args.put("sourceFile", m.getName() + "#" + m.getId()); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append(getLocalizationManager().getLocalizedTextString("functionsInSourceFile", args)); //$NON-NLS-1$
         sb.append(m_newline);
@@ -1792,7 +1792,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             sb.append(' ');
 
             if (funcName != null) {
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("functionName", funcName); //$NON-NLS-1$
                 sb.append(getLocalizationManager().getLocalizedTextString("inFunctionAt", args)); //$NON-NLS-1$
             }
@@ -1823,7 +1823,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 
 
             if (l != null) {
-                Map<String, Object> workerArgs = new HashMap<String, Object>();
+                Map<String, Object> workerArgs = new HashMap<>();
                 workerArgs.put("worker", workerList.toString()); //$NON-NLS-1$
                 sb.append(" (");
                 sb.append(getLocalizationManager().getLocalizedTextString("inWorker", workerArgs)); //$NON-NLS-1$
@@ -1846,7 +1846,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             if (singleSwf && isResolved) {
                 try {
                     SwfInfo info = m_fileInfo.swfForFile(file, l.getIsolateId());
-                    Map<String, Object> swfArgs = new HashMap<String, Object>();
+                    Map<String, Object> swfArgs = new HashMap<>();
                     swfArgs.put("swf", FileInfoCache.nameOfSwf(info)); //$NON-NLS-1$
                     sb.append(getLocalizationManager().getLocalizedTextString("inSwf", swfArgs)); //$NON-NLS-1$
                 } catch (NullPointerException npe) {
@@ -1861,7 +1861,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             // state our condition if we have one
             if (cond != null && cond.length() > 0) {
                 sb.append(INDENT);
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("breakpointCondition", cond); //$NON-NLS-1$
                 sb.append(getLocalizationManager().getLocalizedTextString(getLocalizationManager().getLocalizedTextString("stopOnlyIfConditionMet", args))); //$NON-NLS-1$
                 sb.append(m_newline);
@@ -1870,7 +1870,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             // now if its been hit, lets state the fact
             if (hits > 0) {
                 sb.append(INDENT);
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("count", Integer.toString(hits)); //$NON-NLS-1$
                 sb.append(getLocalizationManager().getLocalizedTextString("breakpointAlreadyHit", args)); //$NON-NLS-1$
                 sb.append(m_newline);
@@ -2111,14 +2111,14 @@ public class DebugCLI implements Runnable, SourceLocator {
                 }
                 // if its a breakpoint add that information
                 else if ((bp = enabledBreakpointIndexOf(l)) > -1) {
-                    Map<String, Object> args = new HashMap<String, Object>();
+                    Map<String, Object> args = new HashMap<>();
                     args.put("breakpointNumber", Integer.toString(breakpointAt(bp).getId())); //$NON-NLS-1$
                     reasonForHalting = getLocalizationManager().getLocalizedTextString("hitBreakpoint", args); //$NON-NLS-1$
                 } else {
                     reasonForHalting = getLocalizationManager().getLocalizedTextString("executionHalted"); //$NON-NLS-1$
                 }
 
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("reasonForHalting", reasonForHalting); //$NON-NLS-1$
                 args.put("fileAndLine", name + ':' + line); //$NON-NLS-1$
                 String formatString;
@@ -2235,7 +2235,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         sb.append(name);
         sb.append(" - "); //$NON-NLS-1$
 
-        Map<String, Object> args = new HashMap<String, Object>();
+        Map<String, Object> args = new HashMap<>();
         args.put("size", NumberFormat.getInstance().format(e.swfSize)); //$NON-NLS-1$
         sb.append(getLocalizationManager().getLocalizedTextString("sizeAfterDecompression", args)); //$NON-NLS-1$
         out(sb.toString());
@@ -2274,7 +2274,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 }
             } catch (InProgressException ipe) {
                 if (breakpointCount() > 0) {
-                    Map<String, Object> args = new HashMap<String, Object>();
+                    Map<String, Object> args = new HashMap<>();
                     args.put("breakpointNumber", Integer.toString(bp.getId())); //$NON-NLS-1$
                     out(getLocalizationManager().getLocalizedTextString("breakpointNotPropagated", args)); //$NON-NLS-1$
                 }
@@ -2288,7 +2288,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         String name = l.getFile().getName();
         int offset = adjustOffsetForUnitTests(l.getFile().getOffsetForLine(l.getLine()));
 
-        Map<String, Object> args = new HashMap<String, Object>();
+        Map<String, Object> args = new HashMap<>();
         args.put("breakpointNumber", Integer.toString(which)); //$NON-NLS-1$
         args.put("file", name); //$NON-NLS-1$
         args.put("line", Integer.toString(l.getLine())); //$NON-NLS-1$
@@ -2525,7 +2525,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                         propertyPut(NO_WAITING, 1);
                         stop = true;
                     } catch (IOException io) {
-                        Map<String, Object> args = new HashMap<String, Object>();
+                        Map<String, Object> args = new HashMap<>();
                         args.put("error", io.getMessage()); //$NON-NLS-1$
                         err(getLocalizationManager().getLocalizedTextString("continuingDueToError", args)); //$NON-NLS-1$
                     } catch (SuspendedException se) {
@@ -2734,7 +2734,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             }
         } catch (NoResponseException nre) {
             if (count > 0) {
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("count", Integer.toString(count)); //$NON-NLS-1$
                 err(getLocalizationManager().getLocalizedTextString("abortingStep", args)); //$NON-NLS-1$
             }
@@ -2833,7 +2833,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                                 }
                             }
                         } catch (IndexOutOfBoundsException iob) {
-                            Map<String, Object> args = new HashMap<String, Object>();
+                            Map<String, Object> args = new HashMap<>();
                             args.put("breakpointNumber", m_currentToken); //$NON-NLS-1$
                             err(getLocalizationManager().getLocalizedTextString("noBreakpointNumber", args)); //$NON-NLS-1$
                         }
@@ -2850,7 +2850,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 }
             }
         } catch (NumberFormatException nfe) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("token", m_currentToken); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("badBreakpointNumber", args)); //$NON-NLS-1$
         } catch (NullPointerException npe) {
@@ -2926,7 +2926,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             // able to resolve this breakpoint.
             BreakAction b = addUnresolvedBreakpoint(arg, m_activeIsolate);
 
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("breakpointNumber", Integer.toString(b.getId())); //$NON-NLS-1$
             out(getLocalizationManager().getLocalizedTextString("breakpointCreatedButNotYetResolved", args)); //$NON-NLS-1$
 
@@ -2937,12 +2937,12 @@ public class DebugCLI implements Runnable, SourceLocator {
             try {
                 filename = m_fileInfo.getFile(module, isolateId).getName() + "#" + module; //$NON-NLS-1$
             } catch (Exception e) {
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("fileNumber", Integer.toString(module)); //$NON-NLS-1$
                 filename = getLocalizationManager().getLocalizedTextString("fileNumber", args); //$NON-NLS-1$
             }
 
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("filename", filename); //$NON-NLS-1$
             args.put("line", Integer.toString(line)); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("breakpointNotSetNoCode", args)); //$NON-NLS-1$
@@ -3202,7 +3202,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 tryResolveBreakpoint(b, sb);
             } catch (Exception e) // AmbiguousException or NullPointerException
             {
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("breakpointNumber", Integer.toString(b.getId())); //$NON-NLS-1$
                 args.put("expression", b.getBreakpointExpression()); //$NON-NLS-1$
                 sb.append(getLocalizationManager().getLocalizedTextString("attemptingToResolve", args)); //$NON-NLS-1$
@@ -3261,7 +3261,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                         SourceFile file = (l != null) ? l.getFile() : null;
                         String funcName = (file == null) ? null : file.getFunctionNameForLine(m_session, l.getLine());
 
-                        Map<String, Object> args = new HashMap<String, Object>();
+                        Map<String, Object> args = new HashMap<>();
                         String formatString;
                         args.put("breakpointNumber", Integer.toString(b.getId())); //$NON-NLS-1$
                         String filename = file != null ? file.getName() : null;
@@ -3379,7 +3379,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             }
         }
 
-        final List<SourceFile> result = new LinkedList<SourceFile>();
+        final List<SourceFile> result = new LinkedList<>();
 
         for (final SourceFile each : info.getSourceList(m_session)) {
             if (m_fileInfo.filesMatch(file, each)) {
@@ -3550,7 +3550,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     evalExpression(exp, m_activeIsolate);
             }
         } catch (IllegalAccessException iae) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("operator", iae.getMessage()); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("missingOperator", args)); //$NON-NLS-1$
         } catch (NullPointerException npe) {
@@ -3612,13 +3612,13 @@ public class DebugCLI implements Runnable, SourceLocator {
             m_repeatLine = m_currentLine;
         } catch (ArrayIndexOutOfBoundsException aio) {
             // $n not in range 0..size
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("number", aio.getMessage()); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("historyHasNotReached", args)); //$NON-NLS-1$
         } catch (IllegalAccessException iae) {
             err(getLocalizationManager().getLocalizedTextString("noSideEffectsAllowed")); //$NON-NLS-1$
         } catch (NoSuchVariableException nsv) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("variable", nsv.getMessage()); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("variableUnknown", args)); //$NON-NLS-1$
         } catch (NullPointerException npe) {
@@ -3655,13 +3655,13 @@ public class DebugCLI implements Runnable, SourceLocator {
             result = m_exprCache.evaluate(expr, isolateId);
         } catch (NoSuchVariableException nsv) {
             if (displayExceptions) {
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("variable", nsv.getMessage()); //$NON-NLS-1$
                 err(getLocalizationManager().getLocalizedTextString("variableUnknown", args)); //$NON-NLS-1$
             }
         } catch (NumberFormatException nfe) {
             if (displayExceptions) {
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("value", nfe.getMessage()); //$NON-NLS-1$
                 err(getLocalizationManager().getLocalizedTextString("couldNotConvertToNumber", args)); //$NON-NLS-1$
             }
@@ -3719,7 +3719,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             // It worked an should now be a value that we can traverse looking for member properties
 
             if (result instanceof Value) {
-                ArrayList<Object> e = new ArrayList<Object>();
+                ArrayList<Object> e = new ArrayList<>();
                 dumpTree(new HashMap<Object, String>(), e, name, (Value) result, member);
 
                 // now sort according to our criteria
@@ -3729,7 +3729,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 
             out(sb.toString());
         } catch (NoSuchVariableException nsv) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("variable", nsv.getMessage()); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("variableUnknown", args)); //$NON-NLS-1$
         } catch (NullPointerException npe) {
@@ -3751,7 +3751,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         try {
             if (hasMoreTokens()) {
                 String swfName = nextToken();
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("swf", swfName); //$NON-NLS-1$
                 if (m_fileInfo.setSwfFilter(swfName)) {
                     out(getLocalizationManager().getLocalizedTextString("commandsLimitedToSpecifiedSwf", args)); //$NON-NLS-1$
@@ -3780,7 +3780,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         } catch (NullPointerException npe) {
             err(getLocalizationManager().getLocalizedTextString("noActiveSession")); //$NON-NLS-1$
         } catch (ArrayIndexOutOfBoundsException aie) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("frameNumber", Integer.toString(num)); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("frameDoesNotExist", args)); //$NON-NLS-1$
         }
@@ -3800,7 +3800,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         } catch (NullPointerException npe) {
             err(getLocalizationManager().getLocalizedTextString("noActiveSession")); //$NON-NLS-1$
         } catch (ArrayIndexOutOfBoundsException aie) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("frameNumber", Integer.toString(num)); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("frameDoesNotExist", args)); //$NON-NLS-1$
         }
@@ -3821,11 +3821,11 @@ public class DebugCLI implements Runnable, SourceLocator {
             dumpFrame(num);
             setListingToFrame(num);
         } catch (NumberFormatException nfe) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("token", m_currentToken); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("notANumber", args)); //$NON-NLS-1$
         } catch (ArrayIndexOutOfBoundsException aie) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("frameNumber", Integer.toString(num)); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("frameDoesNotExist", args)); //$NON-NLS-1$
         } catch (NullPointerException npe) {
@@ -4004,7 +4004,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         try {
             return Integer.parseInt(lineNumber);
         } catch (NumberFormatException nfe) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("token", lineNumber); //$NON-NLS-1$
             throw new ParseException(getLocalizationManager().getLocalizedTextString("expectedLineNumber", args), 0); //$NON-NLS-1$
         }
@@ -4014,7 +4014,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         try {
             return Integer.parseInt(fileNumber);
         } catch (NumberFormatException nfe) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("token", fileNumber); //$NON-NLS-1$
             throw new ParseException(getLocalizationManager().getLocalizedTextString("expectedFileNumber", args), 0); //$NON-NLS-1$
         }
@@ -4024,7 +4024,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         try {
             return Integer.parseInt(workerId);
         } catch (NumberFormatException nfe) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("token", workerId); //$NON-NLS-1$
             throw new ParseException(getLocalizationManager().getLocalizedTextString("expectedIsolateNumber", args), 0); //$NON-NLS-1$
         }
@@ -4035,7 +4035,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         int nSourceFiles = sourceFiles.length;
 
         if (nSourceFiles == 0) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("name", partialFileName); //$NON-NLS-1$
             throw new NoMatchException(getLocalizationManager().getLocalizedTextString("noSourceFileWithSpecifiedName", args)); //$NON-NLS-1$
         } else if (nSourceFiles > 1) {
@@ -4074,7 +4074,7 @@ public class DebugCLI implements Runnable, SourceLocator {
      */
     private int[] parseFunctionName(int module, String partialFunctionName, boolean onlyThisModule) throws NoMatchException, AmbiguousException {
         SourceFile m = m_fileInfo.getFile(module, m_activeIsolate);
-        ArrayList<ModuleFunctionPair> functionNames = new ArrayList<ModuleFunctionPair>(); // each member is a ModuleFunctionPair
+        ArrayList<ModuleFunctionPair> functionNames = new ArrayList<>(); // each member is a ModuleFunctionPair
 
         appendFunctionNamesMatching(functionNames, m, partialFunctionName);
 
@@ -4094,7 +4094,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             }
 
             if (functionNames.size() == 0) {
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("name", partialFunctionName); //$NON-NLS-1$
                 throw new NoMatchException(getLocalizationManager().getLocalizedTextString("noFunctionWithSpecifiedName", args)); //$NON-NLS-1$
             }
@@ -4105,7 +4105,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             Arrays.sort(functionNameArray);
 
             String s = getLocalizationManager().getLocalizedTextString("ambiguousMatchingFunctionNames") + m_newline; //$NON-NLS-1$
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             for (int i = 0; i < functionNameArray.length; i++) {
                 //String moduleName = m_fileInfo.getFile(functionNameArray[i].moduleId).getName();
                 String moduleName = m_fileInfo.getFile(functionNameArray[i].moduleId, m_activeIsolate).getName();
@@ -4173,7 +4173,7 @@ public class DebugCLI implements Runnable, SourceLocator {
 
         /* The first character can't be 0-9 or '-'. */
         if (Character.isDigit(firstChar) || firstChar == '-') {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("token", arg); //$NON-NLS-1$
             throw new ParseException(getLocalizationManager().getLocalizedTextString("expectedFile", args), 0); //$NON-NLS-1$
         }
@@ -4182,7 +4182,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             if (isolateId == m_activeIsolate)
                 return parseFileNumber(arg.substring(1));
             else {
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("token", arg); //$NON-NLS-1$
                 throw new NoMatchException(getLocalizationManager().getLocalizedTextString("noSuchFileOrFunction", args)); //$NON-NLS-1$
             }
@@ -4212,7 +4212,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         }
         /* The first character can't be '#'. */
         else if (firstChar == '#') {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("token", arg); //$NON-NLS-1$
             throw new ParseException(getLocalizationManager().getLocalizedTextString("expectedLineNumber", args), 0); //$NON-NLS-1$
         }
@@ -4265,7 +4265,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         int colonAt = arg.indexOf(':');
         int wasFunc = 0;  // set to 1 if a function was named
         char firstChar = arg.charAt(0);
-        final ArrayList<FileLocation> fileLocations = new ArrayList<FileLocation>();
+        final ArrayList<FileLocation> fileLocations = new ArrayList<>();
         int currentIsolate;
 
         /* First deal with the case where arg doesn't contain a ':'
@@ -4332,7 +4332,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 colonAt = arg.indexOf(':');
                 if (colonAt < 0) {
                     // catch the 'file name' string
-                    Map<String, Object> args = new HashMap<String, Object>();
+                    Map<String, Object> args = new HashMap<>();
                     args.put("token", arg); //$NON-NLS-1$
                     throw new NoMatchException(getLocalizationManager().getLocalizedTextString("noSuchFileOrFunction", args)); //$NON-NLS-1$
                 }
@@ -4368,7 +4368,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         }
 
         if (fileLocations.size() == 0) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("token", arg); //$NON-NLS-1$
             throw new NoMatchException(getLocalizationManager().getLocalizedTextString("noSuchFileOrFunction", args)); //$NON-NLS-1$
         }
@@ -4535,7 +4535,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             }
         } catch (IndexOutOfBoundsException iob) {
             String name = "#" + module1; //$NON-NLS-1$
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("line", Integer.toString(line1)); //$NON-NLS-1$
             args.put("filename", name); //$NON-NLS-1$
             args.put("total", Integer.toString(numLines)); //$NON-NLS-1$
@@ -4611,7 +4611,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                 }
             }
         } catch (FileNotFoundException fnf) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("uri", fnf.getLocalizedMessage()); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("fileDoesNotExist", args)); //$NON-NLS-1$
         } catch (SocketTimeoutException ste) {
@@ -4709,7 +4709,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         } catch (NoSuchElementException nse) {
             err(getLocalizationManager().getLocalizedTextString("sourceCommandRequiresPath")); //$NON-NLS-1$
         } catch (FileNotFoundException fnf) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("filename", name); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("fileNotFound", args)); //$NON-NLS-1$
         }
@@ -4784,7 +4784,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                             for (Object name : names) m_faultTable.action((String) name, action);
                         }
                     } catch (IllegalArgumentException iae) {
-                        Map<String, Object> args = new HashMap<String, Object>();
+                        Map<String, Object> args = new HashMap<>();
                         args.put("action", action); //$NON-NLS-1$
                         err(getLocalizationManager().getLocalizedTextString("unrecognizedAction", args)); //$NON-NLS-1$
                     }
@@ -4819,7 +4819,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             boolean first = true;
             boolean isEnd = false;
 
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("breakpointNumber", Integer.toString(id)); //$NON-NLS-1$
             out(getLocalizationManager().getLocalizedTextString("typeCommandsForBreakpoint", args)); //$NON-NLS-1$
 
@@ -4838,11 +4838,11 @@ public class DebugCLI implements Runnable, SourceLocator {
             }
             while (!isEnd);
         } catch (IndexOutOfBoundsException iob) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("breakpointNumber", m_currentToken); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("noBreakpointNumber", args)); //$NON-NLS-1$
         } catch (NumberFormatException nfe) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("token", m_currentToken); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("badBreakpointNumber", args)); //$NON-NLS-1$
         } catch (NullPointerException npe) {
@@ -4877,18 +4877,18 @@ public class DebugCLI implements Runnable, SourceLocator {
                 a.setCondition(exp, line);
             } else {
                 a.clearCondition();   // clear it
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("breakpointNumber", Integer.toString(id)); //$NON-NLS-1$
                 out(getLocalizationManager().getLocalizedTextString("breakpointNowUnconditional", args)); //$NON-NLS-1$
             }
         } catch (IllegalAccessException iae) {
             err(getLocalizationManager().getLocalizedTextString("breakpointNotChanged")); //$NON-NLS-1$
         } catch (IndexOutOfBoundsException iob) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("breakpointNumber", m_currentToken); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("noBreakpointNumber", args)); //$NON-NLS-1$
         } catch (NumberFormatException nfe) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("token", m_currentToken); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("badBreakpointNumber", args)); //$NON-NLS-1$
         } catch (NullPointerException npe) {
@@ -4947,7 +4947,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             Watch w = m_session.setWatch(v, memberName, flags);
             if (w == null) {
                 // failed
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("expression", s); //$NON-NLS-1$
                 err(getLocalizationManager().getLocalizedTextString("watchpointCouldNotBeSet", args)); //$NON-NLS-1$
             } else {
@@ -4972,7 +4972,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     int id = a.getId();
                     a.resetWatch(w);
 
-                    Map<String, Object> args = new HashMap<String, Object>();
+                    Map<String, Object> args = new HashMap<>();
                     args.put("watchpointNumber", Integer.toString(id)); //$NON-NLS-1$
                     args.put("expression", s); //$NON-NLS-1$
                     args.put("watchpointMode", getWatchpointModeString(a.getKind())); //$NON-NLS-1$
@@ -4983,7 +4983,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     watchpointAdd(a);
 
                     int which = a.getId();
-                    Map<String, Object> args = new HashMap<String, Object>();
+                    Map<String, Object> args = new HashMap<>();
                     args.put("watchpointNumber", Integer.toString(which)); //$NON-NLS-1$
                     args.put("expression", s); //$NON-NLS-1$
                     sb.append(getLocalizationManager().getLocalizedTextString("createdWatchpoint", args)); //$NON-NLS-1$
@@ -5041,7 +5041,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         }
 
         if (!worked) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("variable", b.getExpr()); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("couldNotFindWatchpoint", args)); //$NON-NLS-1$
         }
@@ -5146,11 +5146,11 @@ public class DebugCLI implements Runnable, SourceLocator {
                 }
             }
         } catch (IndexOutOfBoundsException iob) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("displayNumber", m_currentToken); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("noDisplayNumber", args)); //$NON-NLS-1$
         } catch (NumberFormatException nfe) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("token", m_currentToken); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("badDisplayNumber", args)); //$NON-NLS-1$
         } catch (NullPointerException npe) {
@@ -5198,11 +5198,11 @@ public class DebugCLI implements Runnable, SourceLocator {
                 }
             }
         } catch (IndexOutOfBoundsException iob) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("breakpointNumber", m_currentToken); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("noBreakpointNumber", args)); //$NON-NLS-1$
         } catch (NumberFormatException nfe) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("token", m_currentToken); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("badBreakpointNumber", args)); //$NON-NLS-1$
         } catch (NullPointerException npe) {
@@ -5245,11 +5245,11 @@ public class DebugCLI implements Runnable, SourceLocator {
                 }
             }
         } catch (IndexOutOfBoundsException iob) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("displayNumber", m_currentToken); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("noDisplayNumber", args)); //$NON-NLS-1$
         } catch (NumberFormatException nfe) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("token", m_currentToken); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("badDisplayNumber", args)); //$NON-NLS-1$
         }
@@ -5303,18 +5303,18 @@ public class DebugCLI implements Runnable, SourceLocator {
                     while (worked && id > -1);
 
                     if (!worked) {
-                        Map<String, Object> args = new HashMap<String, Object>();
+                        Map<String, Object> args = new HashMap<>();
                         args.put("breakpointNumber", Integer.toString(id)); //$NON-NLS-1$
                         err(getLocalizationManager().getLocalizedTextString("breakpointLocationNoLongerExists", args)); //$NON-NLS-1$
                     }
                 }
             }
         } catch (IndexOutOfBoundsException iob) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("breakpointNumber", m_currentToken); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("noBreakpointNumber", args)); //$NON-NLS-1$
         } catch (NumberFormatException nfe) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("token", m_currentToken); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("badBreakpointNumber", args)); //$NON-NLS-1$
         } catch (NullPointerException npe) {
@@ -5654,7 +5654,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             return;
         }
 
-        Map<String, Object> args = new HashMap<String, Object>();
+        Map<String, Object> args = new HashMap<>();
         args.put("id", c.getId()); //$NON-NLS-1$
         c.getId();
     }
@@ -5714,7 +5714,7 @@ public class DebugCLI implements Runnable, SourceLocator {
     } //$NON-NLS-1$
 
     void doUnknown(String what, String s) {
-        Map<String, Object> args = new HashMap<String, Object>();
+        Map<String, Object> args = new HashMap<>();
         String formatString;
         args.put("command", s); //$NON-NLS-1$
         if (what == null || what.isEmpty()) //$NON-NLS-1$
@@ -5778,7 +5778,7 @@ public class DebugCLI implements Runnable, SourceLocator {
                     requestHalt = true;
                 break;
             } else {
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("type", e); //$NON-NLS-1$
                 args.put("info", e.information); //$NON-NLS-1$
                 err(getLocalizationManager().getLocalizedTextString("unknownEvent", args)); //$NON-NLS-1$
@@ -5937,12 +5937,12 @@ public class DebugCLI implements Runnable, SourceLocator {
 
                     sb.append(m_newline);
                 } catch (NoSuchVariableException nsv) {
-                    Map<String, Object> args = new HashMap<String, Object>();
+                    Map<String, Object> args = new HashMap<>();
                     args.put("variable", nsv.getMessage()); //$NON-NLS-1$
                     sb.append(getLocalizationManager().getLocalizedTextString("variableUnknown", args)); //$NON-NLS-1$
                     sb.append(m_newline);
                 } catch (NumberFormatException nfe) {
-                    Map<String, Object> args = new HashMap<String, Object>();
+                    Map<String, Object> args = new HashMap<>();
                     args.put("value", nfe.getMessage()); //$NON-NLS-1$
                     sb.append(getLocalizationManager().getLocalizedTextString("couldNotConvertToNumber", args)); //$NON-NLS-1$
                     sb.append(m_newline);
@@ -6006,7 +6006,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         } catch (NoSuchElementException nse) {
             err(getLocalizationManager().getLocalizedTextString("noSuchElementException")); //$NON-NLS-1$
         } catch (SocketException se) {
-            Map<String, Object> args = new HashMap<String, Object>();
+            Map<String, Object> args = new HashMap<>();
             args.put("socketErrorMessage", se.getMessage()); //$NON-NLS-1$
             err(getLocalizationManager().getLocalizedTextString("problemWithConnection", args)); //$NON-NLS-1$
         } catch (Exception e) {
@@ -6040,7 +6040,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             stop = m_faultTable.is(name, "stop"); //$NON-NLS-1$
         } catch (NullPointerException npe) {
             if (Trace.error) {
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("faultName", name); //$NON-NLS-1$
                 Trace.trace(getLocalizationManager().getLocalizedTextString("faultHasNoTableEntry", args)); //$NON-NLS-1$
                 npe.printStackTrace();
@@ -6214,8 +6214,8 @@ public class DebugCLI implements Runnable, SourceLocator {
 
     private void initIsolateState() {
         m_activeIsolate = Isolate.DEFAULT_ID;
-        m_breakIsolates = new Vector<Integer>();
-        m_isolateState = new HashMap<Integer, DebugCLIIsolateState>();
+        m_breakIsolates = new Vector<>();
+        m_isolateState = new HashMap<>();
         m_isolateState.put(Isolate.DEFAULT_ID, m_mainState);
     }
 
@@ -6511,7 +6511,7 @@ public class DebugCLI implements Runnable, SourceLocator {
         // Read the help file line-by-line, looking for topic lines like [Break].
         // Build an array of the lines within the section for the specified topic.
         topic = "[" + topic + "]"; //$NON-NLS-1$ //$NON-NLS-2$
-        Vector<String> lines = new Vector<String>();
+        Vector<String> lines = new Vector<>();
         BufferedReader r = null;
         try {
             r = new BufferedReader(new InputStreamReader(helpStream, "UTF-8")); //$NON-NLS-1$
@@ -6662,7 +6662,7 @@ public class DebugCLI implements Runnable, SourceLocator {
             } else {
                 // matches more than one command dump message and go
                 StringBuilder sb = new StringBuilder();
-                Map<String, Object> args = new HashMap<String, Object>();
+                Map<String, Object> args = new HashMap<>();
                 args.put("input", input); //$NON-NLS-1$
                 sb.append(getLocalizationManager().getLocalizedTextString("ambiguousCommand", args)); //$NON-NLS-1$
                 sb.append(' ');

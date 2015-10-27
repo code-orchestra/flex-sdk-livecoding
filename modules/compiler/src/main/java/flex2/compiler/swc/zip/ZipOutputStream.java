@@ -97,7 +97,7 @@ public class ZipOutputStream extends FilterOutputStream {
      *
      * @since 1.1
      */
-    private Vector<ZipEntry> entries = new Vector<ZipEntry>();
+    private Vector<ZipEntry> entries = new Vector<>();
 
     /**
      * CRC instance to avoid parsing DEFLATED data twice.
@@ -161,7 +161,7 @@ public class ZipOutputStream extends FilterOutputStream {
      *
      * @since 1.1
      */
-    private Hashtable<ZipEntry, ZipLong> offsets = new Hashtable<ZipEntry, ZipLong>();
+    private Hashtable<ZipEntry, ZipLong> offsets = new Hashtable<>();
 
     /**
      * The encoding to use for filenames and the file comment.

@@ -26,7 +26,7 @@ import static macromedia.asc.util.BitSet.*;
  */
 public class StatementListNode extends Node
 {
-	public ObjectList<Node> items = new ObjectList<Node>(5);
+	public ObjectList<Node> items = new ObjectList<>(5);
 	public boolean dominates_program_endpoint;
     public boolean was_empty;
     public boolean is_loop;
@@ -172,7 +172,7 @@ public class StatementListNode extends Node
 
         if (items != null)
         {
-            ObjectList<Node> dst = new ObjectList<Node>(items.size());
+            ObjectList<Node> dst = new ObjectList<>(items.size());
             for (Node item: items){
 
                 if (item instanceof MetaDataNode
@@ -203,7 +203,7 @@ public class StatementListNode extends Node
         if (numberUsage != null) result.numberUsage = numberUsage.clone();
         if (items != null)
         {
-            ObjectList<Node> dst = new ObjectList<Node>(items.size());
+            ObjectList<Node> dst = new ObjectList<>(items.size());
             for (Node item: items){
                 if (item != null){
                     dst.add(item.clone());

@@ -38,13 +38,13 @@ public class TypeCache
 	public Type NULL, VOID;
 	public Type ANY;
 	
-	public Set<Type>builtinTypes = new HashSet<Type>();
-	public Set<Type>baseTypes    = new HashSet<Type>();
+	public Set<Type>builtinTypes = new HashSet<>();
+	public Set<Type>baseTypes    = new HashSet<>();
 
-	public Symtab<Type> namedTypes = new Symtab<Type>();
-	public Symtab<Typeref> globals = new Symtab<Typeref>();
+	public Symtab<Type> namedTypes = new Symtab<>();
+	public Symtab<Typeref> globals = new Symtab<>();
 
-	public Map<Namespace,Name> namespaceNames = new HashMap<Namespace,Name>();
+	public Map<Namespace,Name> namespaceNames = new HashMap<>();
 	
 	private static TypeCache the_instance = new TypeCache();
 	

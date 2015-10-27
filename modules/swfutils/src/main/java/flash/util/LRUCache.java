@@ -65,7 +65,7 @@ public abstract class LRUCache extends AbstractCache
         super();
         this.maxSize = maxSize;
         this.purgeSize = purgeSize;
-        map = new HashMap<Object, LRUListEntry>(initialSize);
+        map = new HashMap<>(initialSize);
         head = null;
         tail = null;
     }

@@ -34,7 +34,7 @@ public class ArrayNode extends Node
 
 	static
 	{
-		attributes = new HashSet<QName>();
+		attributes = new HashSet<>();
 		attributes.add(new QName("", StandardDefs.PROP_ID));
 		attributes.add(new QName("", StandardDefs.PROP_INCLUDE_STATES));
 		attributes.add(new QName("", StandardDefs.PROP_EXCLUDE_STATES));

@@ -38,7 +38,7 @@ public abstract class Element extends Token
 
 		if (size > 0)
 		{
-			attributes = new LinkedQNameMap<Object>(size);
+			attributes = new LinkedQNameMap<>(size);
 		}
 
 		prefixMappings = null;
@@ -56,7 +56,7 @@ public abstract class Element extends Token
 	{
 		if (prefixMappings == null)
 		{
-			prefixMappings = new HashMap<String, String>(8);
+			prefixMappings = new HashMap<>(8);
 		}
 		prefixMappings.put(uri, prefix);
 	}
@@ -65,7 +65,7 @@ public abstract class Element extends Token
 	{
 		if (attributes == null)
 		{
-			attributes = new LinkedQNameMap<Object>();
+			attributes = new LinkedQNameMap<>();
 		}
 		attributes.put(uri, localPart, new Attribute(uri, localPart, value, line));
 	}
@@ -213,7 +213,7 @@ public abstract class Element extends Token
 		{
 			if (children == null)
 			{
-				children = new ArrayList<Token>();
+				children = new ArrayList<>();
 			}
 			children.add(child);
 		}

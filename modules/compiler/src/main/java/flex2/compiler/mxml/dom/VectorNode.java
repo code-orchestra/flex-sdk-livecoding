@@ -35,7 +35,7 @@ public class VectorNode extends Node
 
 	static
 	{
-		attributes = new HashSet<QName>();
+		attributes = new HashSet<>();
 		attributes.add(new QName("", StandardDefs.PROP_ID));
 		attributes.add(new QName("", StandardDefs.PROP_TYPE));
 		attributes.add(new QName("", StandardDefs.PROP_FIXED));

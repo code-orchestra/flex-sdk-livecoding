@@ -26,7 +26,7 @@ import macromedia.asc.semantics.*;
  */
 public class ArgumentListNode extends Node
 {
-	public ObjectList<Node> items = new ObjectList<Node>(1);
+	public ObjectList<Node> items = new ObjectList<>(1);
 	public ObjectList<TypeInfo> expected_types; // declared argument types
 	public ByteList   decl_styles;      // for function calls, a vector of PARAM_REQUIRED, PARAM_Optional, or PARAM_Rest
     public boolean is_bracket_selector = false;  //  a[x,y,z] is a comma operator, all values but the last have void result
@@ -73,7 +73,7 @@ public class ArgumentListNode extends Node
 	public void addType(TypeInfo type)
 	{
 		if (expected_types == null)
-			expected_types = new ObjectList<TypeInfo>(2);
+			expected_types = new ObjectList<>(2);
 		expected_types.push_back(type);
 	}
 	

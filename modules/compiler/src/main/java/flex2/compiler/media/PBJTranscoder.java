@@ -63,7 +63,7 @@ public class PBJTranscoder extends AbstractTranscoder
             shaderResults.generatedCode = generateSource(className, byteArrayClassName);
 
         // Associate ByteArray subclass asset with Shader subclass asset.
-        shaderResults.additionalAssets = new ArrayList<TranscodingResults>();
+        shaderResults.additionalAssets = new ArrayList<>();
         shaderResults.additionalAssets.add(byteArrayResults);
 
         return shaderResults;

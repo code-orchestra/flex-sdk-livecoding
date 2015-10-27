@@ -79,7 +79,7 @@ public class GroupNode extends GraphicContentNode implements MaskingNode
         if (child instanceof GraphicContentNode)
         {
             if (children == null)
-                children = new ArrayList<GraphicContentNode>();
+                children = new ArrayList<>();
 
             GraphicContentNode graphicContent = (GraphicContentNode)child;
             graphicContent.setParentGraphicContext(createGraphicContext());

@@ -34,7 +34,7 @@ public class SourceMember extends AbstractMember implements IMember {
         return new SourceMember(fieldName, typeShortName, TreeNavigator.isStaticField(variableBindingNode), MemberKind.FIELD, TreeNavigator.getVisibility(fieldDefinition), parent);
     }
 
-    private List<IParameter> parameters = new ArrayList<IParameter>();
+    private List<IParameter> parameters = new ArrayList<>();
     private String typeFqName;
 
     private boolean addedDuringProcessing;

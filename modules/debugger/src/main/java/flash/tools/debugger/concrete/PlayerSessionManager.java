@@ -74,7 +74,7 @@ public class PlayerSessionManager implements SessionManager2
 		m_serverSocket = null;
 		m_connectSocket = null;
 		m_cancelConnect = false;
-		m_prefs = new HashMap<String, Object>();
+		m_prefs = new HashMap<>();
 
 		// manager
 		setPreference(PREF_ACCEPT_TIMEOUT, 120000); // 2 minutes
@@ -502,7 +502,7 @@ public class PlayerSessionManager implements SessionManager2
 	private String[] getAIRLaunchArgs(String uri, AIRLaunchInfo airLaunchInfo)
 			throws IOException
 	{
-		List<String> cmdList = new LinkedList<String>();
+		List<String> cmdList = new LinkedList<>();
 
 		cmdList.add(airLaunchInfo.airDebugLauncher.getPath());
 
@@ -622,7 +622,7 @@ public class PlayerSessionManager implements SessionManager2
 	 */
 	private List<String> splitArgs(String arguments)
 	{
-		List<String> retval = new ArrayList<String>();
+		List<String> retval = new ArrayList<>();
 
 		arguments = arguments.trim();
 

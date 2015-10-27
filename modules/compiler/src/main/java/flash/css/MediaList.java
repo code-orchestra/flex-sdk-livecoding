@@ -35,7 +35,7 @@ public class MediaList
      */
     public MediaList()
     {
-        queries = new ArrayList<String>(4);
+        queries = new ArrayList<>(4);
     }
 
     /**

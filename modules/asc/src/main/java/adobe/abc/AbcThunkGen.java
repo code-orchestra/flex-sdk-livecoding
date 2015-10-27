@@ -120,9 +120,9 @@ public class AbcThunkGen
 		this.namespaceNames = namespaceNames;
 		this.out_h = out_h;
 		this.out_c = out_c;
-		this.native_methods = new TreeMap<Integer,String>();
-		this.unique_thunks = new HashMap<String, HashMap<String, Method>>();
-		this.class_id_map = new HashMap<Type,Integer>();
+		this.native_methods = new TreeMap<>();
+		this.unique_thunks = new HashMap<>();
+		this.class_id_map = new HashMap<>();
 		for (int i = 0; i < abc.classes.length; ++i)
 			this.class_id_map.put(abc.classes[i], i);
 	}

@@ -65,17 +65,17 @@ public class ZipFile {
      * Maps ZipEntrys to Longs, recording the offsets of the local
      * file headers.
      */
-    private Hashtable<ZipEntry, Long> entries = new Hashtable<ZipEntry, Long>();
+    private Hashtable<ZipEntry, Long> entries = new Hashtable<>();
 
     /**
      * Maps String to ZipEntrys, name -> actual entry.
      */
-    private Hashtable<String, ZipEntry> nameMap = new Hashtable<String, ZipEntry>();
+    private Hashtable<String, ZipEntry> nameMap = new Hashtable<>();
 
     /**
      * Maps ZipEntrys to Longs, recording the offsets of the actual file data.
      */
-    private Hashtable<ZipEntry, Long> dataOffsets = new Hashtable<ZipEntry, Long>();
+    private Hashtable<ZipEntry, Long> dataOffsets = new Hashtable<>();
 
     /**
      * The encoding to use for filenames and the file comment.

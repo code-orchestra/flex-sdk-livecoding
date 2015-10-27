@@ -201,7 +201,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
     {
         if (aliases == null)
         {
-            aliases = new HashMap<String, String>();
+            aliases = new HashMap<>();
 
             aliases.put( "l", "compiler.library-path" );
             aliases.put( "el", "compiler.external-library-path" );
@@ -322,7 +322,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
      * Resource bundles
      */
 
-	private SortedSet<String> resourceBundles = new TreeSet<String>();
+	private SortedSet<String> resourceBundles = new TreeSet<>();
 
 	// this list is just used for resourceBundleList.  See CU.resourceBundle for the
 	// names of resource bundles that are linked in
@@ -335,7 +335,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
      * Unresolved
      */
 
-    private Set<String> unresolved = new HashSet<String>();
+    private Set<String> unresolved = new HashSet<>();
 
 	public Set<String> getUnresolved()
     {
@@ -694,7 +694,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
     // 'externs' option
     //
     
-    private Set<String> externs = new HashSet<String>();
+    private Set<String> externs = new HashSet<>();
 
     public Set<String> getExterns()
     {
@@ -847,7 +847,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
     // 'includes' option
     //
     
-	private Set<String> includes = new LinkedHashSet<String>();
+	private Set<String> includes = new LinkedHashSet<>();
 
 	public Set<String> getIncludes()
 	{
@@ -1124,7 +1124,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
     // 'resource-shared-libraries' option
     //
     
-    private List<String> rslList = new LinkedList<String>();
+    private List<String> rslList = new LinkedList<>();
     
     public List<String> getRuntimeSharedLibraries()
     {
@@ -1210,7 +1210,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
 		 */
 		public RslPathInfo()
 		{
-			rslUrls = new ArrayList<String>();
+			rslUrls = new ArrayList<>();
 		}
 
 		/**
@@ -1299,7 +1299,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
 		{
 			if (policyFileUrls == null)
 			{
-				policyFileUrls = new ArrayList<String>();
+				policyFileUrls = new ArrayList<>();
 			}
 
 			policyFileUrls.add(url == null ? "" : url); // $NON-NLS-1$
@@ -1335,7 +1335,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
 		 */
 		private void addSignedFlag(boolean isSigned) {
 			if (isSignedList == null) {
-				isSignedList = new ArrayList<Boolean>();
+				isSignedList = new ArrayList<>();
 			}
 			
 			isSignedList.add(isSigned);
@@ -1363,7 +1363,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
 			return new VirtualFile[0];	
 		}
 		
-		List<VirtualFile> libraries = new ArrayList<VirtualFile>();
+		List<VirtualFile> libraries = new ArrayList<>();
 
         for (RslPathInfo info : rslPathInfoList) {
             libraries.add(info.getSwcVirtualFile());
@@ -1436,7 +1436,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
 		// take local variables and add to overall arguments.
 		if (rslPathInfoList == null)
 		{
-			rslPathInfoList = new ArrayList<RslPathInfo>();
+			rslPathInfoList = new ArrayList<>();
 		}
 
 		rslPathInfoList.add(info);
@@ -1902,7 +1902,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
 	{
 		if (cssArchiveFiles == null)
 		{
-			cssArchiveFiles = new HashMap<String, VirtualFile>();
+			cssArchiveFiles = new HashMap<>();
 		}
 		cssArchiveFiles.putAll(m);
 	}
@@ -1916,7 +1916,7 @@ public class Configuration implements LinkerConfiguration, Cloneable
 	{
 		if (l10nArchiveFiles == null)
 		{
-			l10nArchiveFiles = new HashMap<String, VirtualFile>();
+			l10nArchiveFiles = new HashMap<>();
 		}
 		l10nArchiveFiles.putAll(m);
 	}

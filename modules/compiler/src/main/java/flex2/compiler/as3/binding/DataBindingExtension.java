@@ -938,7 +938,7 @@ public final class DataBindingExtension implements Extension
     private Map<QName, Source> generateWatcherSetupUtilClasses(CompilationUnit compilationUnit, SymbolTable symbolTable,
                                                 List dataBindingInfoList)
     {
-        Map<QName, Source> extraSources = new HashMap<QName, Source>();
+        Map<QName, Source> extraSources = new HashMap<>();
 
         for (Object aDataBindingInfoList : dataBindingInfoList) {
             DataBindingInfo dataBindingInfo = (DataBindingInfo) aDataBindingInfoList;
@@ -1194,7 +1194,7 @@ public final class DataBindingExtension implements Extension
                                                             symbolTable.emitter, defines);
         NodeFactory nodeFactory = cx.getNodeFactory();
 
-        HashSet<String> configNamespaces = new HashSet<String>();
+        HashSet<String> configNamespaces = new HashSet<>();
         StatementListNode configVars = AbstractSyntaxTreeUtil.parseConfigVars(cx, configNamespaces);
         ProgramNode program = AbstractSyntaxTreeUtil.generateProgram(cx, configVars, EMPTY_STRING);
         StatementListNode programStatementList = program.statements;

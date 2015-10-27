@@ -96,7 +96,7 @@ public class DebugDecoder
     public void readTags(DebugHandler handler) throws IOException
     {
     	// <Object> because it holds groups of {Integer, LineRecord, Integer}
-		ArrayList<Object> lineRecords = new ArrayList<Object>();
+		ArrayList<Object> lineRecords = new ArrayList<>();
 
 		do
 		{
@@ -222,7 +222,7 @@ public class DebugDecoder
      */
 	private ArrayList<Object> purgeLineRecords(ArrayList<Object> lineRecords, final int moduleId, DebugHandler handler)
 	{
-		ArrayList<Object> newLineRecords = new ArrayList<Object>();
+		ArrayList<Object> newLineRecords = new ArrayList<>();
         DebugModule module = (DebugModule) modules.get(moduleId);
 		int i = 0, size = lineRecords.size();
 		while (i < size)

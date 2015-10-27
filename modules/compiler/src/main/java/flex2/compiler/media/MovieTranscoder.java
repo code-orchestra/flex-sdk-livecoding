@@ -54,8 +54,8 @@ public class MovieTranscoder extends AbstractTranscoder
 
     public static final String SYMBOL = "symbol";
 
-    private Map<String, Dictionary> dictionaryMap = new HashMap<String, Dictionary>();
-    private Map<String, String> embedProps = new HashMap<String, String>();
+    private Map<String, Dictionary> dictionaryMap = new HashMap<>();
+    private Map<String, String> embedProps = new HashMap<>();
 
     public boolean isSupportedAttribute(String attr)
     {
@@ -438,12 +438,12 @@ public class MovieTranscoder extends AbstractTranscoder
         super.clear();
         if (dictionaryMap.size() != 0)
         {
-            dictionaryMap = new HashMap<String, Dictionary>();
+            dictionaryMap = new HashMap<>();
         }
         
         if (embedProps.size() != 0)
         {
-        	embedProps = new HashMap<String, String>();
+        	embedProps = new HashMap<>();
         }
     }
 

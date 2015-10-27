@@ -51,10 +51,10 @@ public class CatalogReader
 	// changed from private to protected to support Flash Authoring - jkamerer 2007.07.30
 	protected Versions versions = new Versions();
     protected SwcFeatures swcFeatures = new SwcFeatures();
-    protected Map<String, SwcComponent> components = new HashMap<String, SwcComponent>();
-    protected Map<String, SwcLibrary> libraries = new HashMap<String, SwcLibrary>();
-    protected Map<String, SwcFile> files = new HashMap<String, SwcFile>();
-    protected Map<String, Digest> digests = new HashMap<String, Digest>();		// keyed by library path
+    protected Map<String, SwcComponent> components = new HashMap<>();
+    protected Map<String, SwcLibrary> libraries = new HashMap<>();
+    protected Map<String, SwcFile> files = new HashMap<>();
+    protected Map<String, Digest> digests = new HashMap<>();		// keyed by library path
 
     // changed from private to protected to support Flash Authoring - jkamerer 2007.07.30
     CatalogReadElement defaultReadElement = new SwcReader();
@@ -404,7 +404,7 @@ public class CatalogReader
         {
             scriptReader.name = null;
             scriptReader.modtime = -1;
-            scriptReader.defs = new TreeSet<String>();
+            scriptReader.defs = new TreeSet<>();
             scriptReader.depSet = new SwcDependencySet();
         }
     }
@@ -476,7 +476,7 @@ public class CatalogReader
                     if (lib != null)
                     {
                         lib.setDigests(digests);
-                        digests = new HashMap<String, Digest>();
+                        digests = new HashMap<>();
                     }    
                     return;
                 }    
@@ -486,7 +486,7 @@ public class CatalogReader
                 if (digests != null)
                 {
                     currentLibrary.setDigests(digests);
-                    digests = new HashMap<String, Digest>();                    
+                    digests = new HashMap<>();
                 }
                 
             }
@@ -508,7 +508,7 @@ public class CatalogReader
     class MetadataReader extends CatalogReadElement
     {
         private SwcLibrary currentLibrary;
-        private Set<String> metadata = new HashSet<String>();
+        private Set<String> metadata = new HashSet<>();
         
         public CatalogReadElement readElement(ReadContext context)
         {
@@ -536,7 +536,7 @@ public class CatalogReader
                 if (metadata != null)
                 {
                     currentLibrary.addMetadata(metadata);
-                    metadata = new HashSet<String>();                    
+                    metadata = new HashSet<>();
                 }
             }
        }

@@ -290,7 +290,7 @@ public class Model implements LineNumberMapped
     {
         if (repeaterParents == null)
         {
-            repeaterParents = new ArrayList<Model>();
+            repeaterParents = new ArrayList<>();
 
             if (parent != null)
             {
@@ -329,7 +329,7 @@ public class Model implements LineNumberMapped
         }
         else
         {
-            (properties != null ? properties : (properties = new LinkedHashMap<String, Initializer>())).put(property.getName(), initializer);
+            (properties != null ? properties : (properties = new LinkedHashMap<>())).put(property.getName(), initializer);
         }
     }
 
@@ -348,7 +348,7 @@ public class Model implements LineNumberMapped
         }
         else
         {
-            (properties != null ? properties : (properties = new LinkedHashMap<String, Initializer>())).put(name, initializer);
+            (properties != null ? properties : (properties = new LinkedHashMap<>())).put(name, initializer);
         }
     }
 
@@ -490,7 +490,7 @@ public class Model implements LineNumberMapped
         }
         else
         {
-            (styles != null ? styles : (styles = new LinkedHashMap<String, Initializer>())).put(style.getName(), styleInitializer);
+            (styles != null ? styles : (styles = new LinkedHashMap<>())).put(style.getName(), styleInitializer);
         }
     }
 
@@ -533,7 +533,7 @@ public class Model implements LineNumberMapped
         }
         else
         {
-            (effects != null ? effects : (effects = new LinkedHashMap<String, Initializer>())).put(effect.getName(), effectInitializer);
+            (effects != null ? effects : (effects = new LinkedHashMap<>())).put(effect.getName(), effectInitializer);
         }
     }
 
@@ -617,7 +617,7 @@ public class Model implements LineNumberMapped
         }
         else
         {
-            (events != null ? events : (events = new LinkedHashMap<String, Initializer>())).put(event.getName(), eventInitializer);
+            (events != null ? events : (events = new LinkedHashMap<>())).put(event.getName(), eventInitializer);
         }
     }
     

@@ -226,7 +226,7 @@ abstract class AnonymousObjectGraphBuilder extends AbstractBuilder
 
     private Map<String, Integer> countChildren(Node node)
     {
-        Map<String, Integer> counts = new HashMap<String, Integer>();
+        Map<String, Integer> counts = new HashMap<>();
 
         for (Iterator i = node.getAttributeNames(); i != null && i.hasNext();)
         {
@@ -282,7 +282,7 @@ abstract class AnonymousObjectGraphBuilder extends AbstractBuilder
 
     private Map<String, Array> createArrays(Model parent, Map<String, Integer> counts)
     {
-        Map<String, Array> arrays = new HashMap<String, Array>();
+        Map<String, Array> arrays = new HashMap<>();
 
         for (String localPart : counts.keySet()) {
             if (counts.get(localPart) > 1) {

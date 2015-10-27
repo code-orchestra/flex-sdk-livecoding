@@ -147,7 +147,7 @@ public class FileUtils {
 
     public static List<File> listFileRecursively(File dir, FileFilter fileFilter) {
         assert dir.isDirectory();
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
 
         File[] subdirs = dir.listFiles(new FileFilter() {
             public boolean accept(File f) {

@@ -96,7 +96,7 @@ public class TCYNode extends AbstractRichTextLeafNode
                     linkActiveFormat.setParent(this);
 
                     if (properties == null)
-                        properties = new HashMap<String, TextNode>(3);
+                        properties = new HashMap<>(3);
                     properties.put(propertyName, linkActiveFormat);
                 }
                 else
@@ -113,7 +113,7 @@ public class TCYNode extends AbstractRichTextLeafNode
                     linkHoverFormat.setParent(this);
 
                     if (properties == null)
-                        properties = new HashMap<String, TextNode>(3);
+                        properties = new HashMap<>(3);
                     properties.put(propertyName, linkHoverFormat);
                 }
                 else
@@ -130,7 +130,7 @@ public class TCYNode extends AbstractRichTextLeafNode
                     linkNormalFormat.setParent(this);
 
                     if (properties == null)
-                        properties = new HashMap<String, TextNode>(3);
+                        properties = new HashMap<>(3);
                     properties.put(propertyName, linkNormalFormat);
                 }
                 else
@@ -207,7 +207,7 @@ public class TCYNode extends AbstractRichTextLeafNode
                 throw new FXGException(getStartLine(), getStartColumn(), "InvalidNestingElements");
         	}
             if (content == null)
-                content = new ArrayList<TextNode>();
+                content = new ArrayList<>();
 
             content.add((TextNode)child);        
         }

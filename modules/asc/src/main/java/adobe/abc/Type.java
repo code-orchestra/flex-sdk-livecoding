@@ -57,7 +57,7 @@ public class Type
 		this();
 		this.name = name;
 		this.base = base;
-		this.defs = new Symtab<Binding>();
+		this.defs = new Symtab<>();
 		this.obscure_natives = false;
 	}
 	

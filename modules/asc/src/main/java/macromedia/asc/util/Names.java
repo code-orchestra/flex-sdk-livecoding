@@ -244,7 +244,7 @@ public final class Names implements Serializable, Cloneable // CodeOrchestra: ma
         //FIXME --this is called in one place and should be restructured as a single iteration over the name table, except that it's really not used...
         // It would get used if Builder.removeBuilderNames == false --which is currently hardwired true...
         
-		TreeMap<String, Qualifiers> map = new TreeMap<String, Qualifiers>();
+		TreeMap<String, Qualifiers> map = new TreeMap<>();
 		for (int i=0; i<namesUsed; i++)
 		{
             String n = name[i];

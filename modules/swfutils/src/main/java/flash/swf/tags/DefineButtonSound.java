@@ -43,7 +43,7 @@ public class DefineButtonSound extends Tag
 
 	public Iterator<Tag> getReferences()
     {
-        ArrayList<Tag> list = new ArrayList<Tag>(5);
+        ArrayList<Tag> list = new ArrayList<>(5);
         list.add(button);
         if (sound0 != null)
             list.add(sound0);

@@ -48,7 +48,7 @@ public class ContextStatics
 	Emitter emitter;
 	NodeFactory nodeFactory;
 	ByteCodeFactory bytecodeFactory;
-	ObjectList<ObjectValue> scopes = new ObjectList<ObjectValue>();
+	ObjectList<ObjectValue> scopes = new ObjectList<>();
     IntList versions = new IntList();
     public int withDepth = -1;
 	public NamespacesTable internNamespaces = new NamespacesTable();
@@ -89,7 +89,7 @@ public class ContextStatics
 	Set<String> validImports;
     // maps ErrorCode to its localized error string.  Must not be static, there may be multiple different langauge contexts in use at the same time
     //  (on the flex server).
-	public HashMap<Number,String> errorCodeMap = new HashMap<Number,String>();
+	public HashMap<Number,String> errorCodeMap = new HashMap<>();
     public  int languageID	= 0;
 
 	public ObjectValue globalPrototype;
@@ -128,7 +128,7 @@ public class ContextStatics
      * 
      * Never null, you are always free to clear it.
      */
-    public final ObjectList<String> use_namespaces = new ObjectList<String>();
+    public final ObjectList<String> use_namespaces = new ObjectList<>();
     
     /**
      * Returns a list filled with namespaces that should be automatically
@@ -142,7 +142,7 @@ public class ContextStatics
      */
     public static ObjectList<String> getRequiredUseNamespaces(int targetPlayerMajorVersion)
     {
-        final ObjectList<String> use_namespaces = new ObjectList<String>();
+        final ObjectList<String> use_namespaces = new ObjectList<>();
         
         /*
         // no longer needed, but this is how you would do it
@@ -221,7 +221,7 @@ public class ContextStatics
 	public int errCount = 0;
 
 	// C: This is for tracking recursive include path.
-	public ObjectList<String> includePaths = new ObjectList<String>();
+	public ObjectList<String> includePaths = new ObjectList<>();
 
 	public void clear()
 	{

@@ -84,7 +84,7 @@ public class Name implements Comparable<Name>
 			return nsset(0) + "::" + name;
 		else
 		{
-			ArrayList<Namespace> list = new ArrayList<Namespace>();
+			ArrayList<Namespace> list = new ArrayList<>();
 			for (Namespace n : nsset)
 				list.add(n);
 			return list + "::" + name;

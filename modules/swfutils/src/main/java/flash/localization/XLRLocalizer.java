@@ -160,8 +160,8 @@ public class XLRLocalizer implements ILocalizer
         return key;
     }
 
-    private Map<String, XLRFile> filedict = new HashMap<String, XLRFile>();
-    private Map<String, XLRNode> nodedict = new HashMap<String, XLRNode>();
+    private Map<String, XLRFile> filedict = new HashMap<>();
+    private Map<String, XLRNode> nodedict = new HashMap<>();
 
     private class XLRFile
     {
@@ -272,7 +272,7 @@ public class XLRLocalizer implements ILocalizer
 
     private abstract class XLRNode
     {
-        public LinkedList<XLRNode> children = new LinkedList<XLRNode>();
+        public LinkedList<XLRNode> children = new LinkedList<>();
         public boolean execute( StringBuilder buffer, String locale, Map parameters )
         {
             boolean success = false;
@@ -430,7 +430,7 @@ public class XLRLocalizer implements ILocalizer
             this.nodedict = nodedict;   // id -> messagenode
             this.base = base;
         }
-        public Stack<XLRNode> context = new Stack<XLRNode>();
+        public Stack<XLRNode> context = new Stack<>();
         private String fileLocale = null;
         private String base = null;
         private Map<String, XLRNode> nodedict;

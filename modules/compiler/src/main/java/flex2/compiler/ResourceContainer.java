@@ -39,8 +39,8 @@ public final class ResourceContainer
 {
 	public ResourceContainer()
 	{
-		name2source = new LinkedHashMap<String, Source>();
-		qname2source = new QNameMap<Source>();
+		name2source = new LinkedHashMap<>();
+		qname2source = new QNameMap<>();
 	}
 
 	private Map<String, Source> name2source;
@@ -154,7 +154,7 @@ public final class ResourceContainer
 
 	public Map<String, Source> sources()
 	{
-        Map result = new HashMap<String, Source>(qname2source.size());
+        Map result = new HashMap<>(qname2source.size());
 
         for (Map.Entry<QName, Source> entry : qname2source.entrySet())
         {

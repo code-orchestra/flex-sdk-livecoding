@@ -141,7 +141,7 @@ public class AtEmbed implements LineNumberMapped
 
         MetaData metaData = MetaDataParser.parse(perCompileData, source, line, value);
         String sourceValue = null;
-        Map<String, Object> values = new HashMap<String, Object>();
+        Map<String, Object> values = new HashMap<>();
 
         // Embed("foo.swf", "barSymbol", ...) or Embed("foo", "image/png", ...)
         if ((metaData.count() > 1) && (metaData.getKey(0) == null) && (metaData.getKey(1) == null))
@@ -325,7 +325,7 @@ public class AtEmbed implements LineNumberMapped
 	private static Map<String, Object> getMetaDataMap(MetaData metaData)
 	{
 		int len = metaData.count();
-		Map<String, Object> values = new HashMap<String, Object>();
+		Map<String, Object> values = new HashMap<>();
 		for (int i = 0; i < len; i++)
 		{
 			String key = metaData.getKey(i);

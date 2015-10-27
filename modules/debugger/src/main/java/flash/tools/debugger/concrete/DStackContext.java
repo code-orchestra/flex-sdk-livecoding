@@ -58,9 +58,9 @@ public class DStackContext implements Frame
 		m_this = null;
 		m_functionSignature = functionSignature;
 		m_depth = depth;
-		m_args = new LinkedHashMap<String, DVariable>(); // preserves order
-		m_locals = new LinkedHashMap<String, DVariable>(); // preserves order
-		m_scopeChain = new ArrayList<DVariable>();
+		m_args = new LinkedHashMap<>(); // preserves order
+		m_locals = new LinkedHashMap<>(); // preserves order
+		m_scopeChain = new ArrayList<>();
 		m_populated = false;
 		m_isolateId = isolateId;
 		m_location = new DLocation(m_source, line, isolateId);

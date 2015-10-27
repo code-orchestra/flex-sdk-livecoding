@@ -20,7 +20,7 @@ public class LastASTHolder {
         return instance;
     }
 
-    private Map<String, ProgramNode> programNodes = new HashMap<String, ProgramNode>();
+    private Map<String, ProgramNode> programNodes = new HashMap<>();
 
     private LastASTHolder() {
     }

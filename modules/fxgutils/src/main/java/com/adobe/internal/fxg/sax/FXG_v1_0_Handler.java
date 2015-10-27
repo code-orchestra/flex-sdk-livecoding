@@ -88,15 +88,15 @@ public class FXG_v1_0_Handler extends AbstractFXGVersionHandler
         if (initialized)
             return;
 
-        Map<String, Class<? extends FXGNode>> elementNodes = new HashMap<String, Class<? extends FXGNode>>(DEFAULT_FXG_1_0_NODES.size() + 4);
+        Map<String, Class<? extends FXGNode>> elementNodes = new HashMap<>(DEFAULT_FXG_1_0_NODES.size() + 4);
         elementNodes.putAll(DEFAULT_FXG_1_0_NODES);
-        elementNodesByURI = new HashMap<String, Map<String, Class<? extends FXGNode>>>(1);
+        elementNodesByURI = new HashMap<>(1);
         elementNodesByURI.put(FXG_NAMESPACE, elementNodes);
 
         // Skip <Private> by default for FXG 1.0
-        HashSet<String> skippedElements = new HashSet<String>(1);
+        HashSet<String> skippedElements = new HashSet<>(1);
         skippedElements.add(FXG_PRIVATE_ELEMENT);
-        skippedElementsByURI = new HashMap<String, Set<String>>(1);
+        skippedElementsByURI = new HashMap<>(1);
         skippedElementsByURI.put(FXG_NAMESPACE, skippedElements);
 
         initialized = true;
@@ -106,7 +106,7 @@ public class FXG_v1_0_Handler extends AbstractFXGVersionHandler
      * The default FXGNode Classes to handle elements in the FXG 1.0 namespace
      * i.e. http://ns.adobe.com/fxg/2008
      */
-    public static Map<String, Class<? extends FXGNode>> DEFAULT_FXG_1_0_NODES = new HashMap<String, Class<? extends FXGNode>>();
+    public static Map<String, Class<? extends FXGNode>> DEFAULT_FXG_1_0_NODES = new HashMap<>();
     static
     {
         DEFAULT_FXG_1_0_NODES.put(FXG_GRAPHIC_ELEMENT, GraphicNode.class);

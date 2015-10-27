@@ -17,15 +17,15 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
     private String packageName;
     private String superClassShortName;
 
-    private List<String> asterixImports = new ArrayList<String>();
+    private List<String> asterixImports = new ArrayList<>();
     // Short name -> FQ name
-    private Map<String, String> importMap = new HashMap<String, String>();
+    private Map<String, String> importMap = new HashMap<>();
 
     private String superClassFQName;
 
-    private List<IMember> members = new ArrayList<IMember>();
-    private List<IMember> staticMembers = new ArrayList<IMember>();
-    private List<IMember> instanceMembers = new ArrayList<IMember>();
+    private List<IMember> members = new ArrayList<>();
+    private List<IMember> staticMembers = new ArrayList<>();
+    private List<IMember> instanceMembers = new ArrayList<>();
 
     private boolean live;
 
@@ -113,7 +113,7 @@ public class SourceClassDigest implements IClassDigest, ITypeResolver {
 
     @Override
     public List<IMember> getAllMembers() {
-        List<IMember> allMembers = new ArrayList<IMember>();
+        List<IMember> allMembers = new ArrayList<>();
         allMembers.addAll(getInstanceMembers());
         allMembers.addAll(getStaticMembers());
         return allMembers;

@@ -88,7 +88,7 @@ public class Compiler implements ErrorConstants
     {
         ProgramNode second = null;
 	    
-		ObjectList<ImportNode> imports = new ObjectList<ImportNode>();
+		ObjectList<ImportNode> imports = new ObjectList<>();
         for( String filespec : import_filespecs )
         {
             Context cx2 = new Context(cx.statics);
@@ -160,7 +160,7 @@ public class Compiler implements ErrorConstants
 		}
         */
 
-        ObjectList<ProgramNode> nodes = new ObjectList<ProgramNode>();
+        ObjectList<ProgramNode> nodes = new ObjectList<>();
 		
             // Assemble program from its parts
 

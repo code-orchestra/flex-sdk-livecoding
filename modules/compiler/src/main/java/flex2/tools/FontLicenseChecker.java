@@ -45,7 +45,7 @@ public class FontLicenseChecker
 	public static void listFonts(String[] args)
 	{
 		File file = new File(args[0]);
-		TreeMap<Integer, ArrayList<String>> fonts = new TreeMap<Integer, ArrayList<String>>();
+		TreeMap<Integer, ArrayList<String>> fonts = new TreeMap<>();
 		getLicenseTypes(file, fonts);
 		for (Map.Entry<Integer, ArrayList<String>> integerArrayListEntry : fonts.entrySet()) {
 			Map.Entry entry = (Map.Entry) integerArrayListEntry;
@@ -109,7 +109,7 @@ public class FontLicenseChecker
 				ArrayList<String> list = fonts.get(integ);
 				if (list == null)
 				{
-					list = new ArrayList<String>();
+					list = new ArrayList<>();
 					fonts.put(integ, list);
 				}
 				list.add(file.toString());

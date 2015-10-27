@@ -56,9 +56,9 @@ public class ImageShapeBuilder
 
         // Apply Fill Styles
         ShapeWithStyle sws = new ShapeWithStyle();
-        sws.fillstyles = new ArrayList<FillStyle>();
+        sws.fillstyles = new ArrayList<>();
         int fsIndex = sws.fillstyles.add(fs) ? sws.fillstyles.lastIndexOf(fs) + 1 : 0;
-        sws.linestyles = new ArrayList<LineStyle>();
+        sws.linestyles = new ArrayList<>();
 
         // Build Raw SWF Shape
         ShapeBuilder builder = new ShapeBuilder(new Point());

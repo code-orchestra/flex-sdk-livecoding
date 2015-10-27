@@ -35,8 +35,8 @@ public class NameMappings
 {
 	public NameMappings()
 	{
-		namespaceMap = new HashMap<String, Map<String,String>>();
-        lookupOnly = new HashMap<String, Set<String>>();
+		namespaceMap = new HashMap<>();
+        lookupOnly = new HashMap<>();
 	}
 
     private Map<String, Map<String,String>> namespaceMap;
@@ -47,7 +47,7 @@ public class NameMappings
     	NameMappings m = new NameMappings();
         for (String uri : namespaceMap.keySet()) {
             Map<String, String> classMap = namespaceMap.get(uri);
-            m.namespaceMap.put(uri, new HashMap<String, String>(classMap));
+            m.namespaceMap.put(uri, new HashMap<>(classMap));
         }
     	m.lookupOnly.putAll(lookupOnly);
     	return m;
@@ -135,7 +135,7 @@ public class NameMappings
         }
         else
         {
-            classMap = new HashMap<String, String>();
+            classMap = new HashMap<>();
             namespaceMap.put(Fcsh.livecodingSession ? namespaceURI : namespaceURI.intern(), classMap);
         }
 
@@ -161,7 +161,7 @@ public class NameMappings
 
         if (classes == null)
         {
-            classes = new HashSet<String>();
+            classes = new HashSet<>();
             lookupOnly.put(namespaceURI, classes);
     }
 

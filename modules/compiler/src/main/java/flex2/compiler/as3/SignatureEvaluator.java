@@ -1090,7 +1090,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
     {
         StringBuilder tempOut = out;
 
-        final TreeSet<String> sorted = new TreeSet<String>();
+        final TreeSet<String> sorted = new TreeSet<>();
 
         // evaluate all elements of the list to strings, and sort on that
         for (Node node : list.items)
@@ -1670,7 +1670,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
             {
                 if (imports == null)
                 {
-                    imports = new TreeSet<String>();
+                    imports = new TreeSet<>();
                 }
 
                 out = new StringBuilder();
@@ -1682,7 +1682,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
             {
                 if (useNamespaces == null)
                 {
-                    useNamespaces = new TreeSet<String>();
+                    useNamespaces = new TreeSet<>();
                 }
 
                 out = new StringBuilder();
@@ -1694,7 +1694,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
             {
                 if (classes == null)
                 {
-                    classes = new TreeMap<String, Set<String>>();
+                    classes = new TreeMap<>();
                 }
 
                 putDefinition(classes, cx, (DefinitionNode) node);
@@ -1703,7 +1703,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
             {
                 if (interfaces == null)
                 {
-                    interfaces = new TreeMap<String, Set<String>>();
+                    interfaces = new TreeMap<>();
                 }
 
                 putDefinition(interfaces, cx, (DefinitionNode) node);
@@ -1712,7 +1712,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
             {
                 if (functions == null)
                 {
-                    functions = new TreeMap<String, Set<String>>();
+                    functions = new TreeMap<>();
                 }
 
                 putDefinition(functions, cx, (DefinitionNode) node);
@@ -1721,7 +1721,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
             {
                 if (variables == null)
                 {
-                    variables = new TreeMap<String, Set<String>>();
+                    variables = new TreeMap<>();
                 }
 
                 putDefinition(variables, cx, (DefinitionNode) node);
@@ -1815,7 +1815,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
         if (definition.metaData != null)
         {
-            metaData = new TreeSet<String>();
+            metaData = new TreeSet<>();
 
             for (Node metaDataNode : definition.metaData.items)
             {
@@ -1895,7 +1895,7 @@ public class SignatureEvaluator extends EvaluatorAdapter implements Tokens
 
 class AttributeInfoCache
 {
-    private Map<DefinitionNode, AttributeInfo> attributeInfoCache = new HashMap<DefinitionNode, AttributeInfo>();
+    private Map<DefinitionNode, AttributeInfo> attributeInfoCache = new HashMap<>();
 
     /**
      * This caches computed AttributeInfo objects because:

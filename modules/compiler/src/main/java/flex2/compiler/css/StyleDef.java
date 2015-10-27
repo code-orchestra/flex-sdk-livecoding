@@ -81,7 +81,7 @@ import org.w3c.css.sac.LexicalUnit;
 public class StyleDef
 {
     private String subject;
-    private List<String> effectStyles = new ArrayList<String>();
+    private List<String> effectStyles = new ArrayList<>();
 
     // Flex 4 properties
     private Map<String, StyleDeclaration> declarations;
@@ -89,7 +89,7 @@ public class StyleDef
 
     // Deprecated Flex 3 properties
     private boolean isTypeSelector;
-    private Map<String, StyleProperty> styles = new HashMap<String, StyleProperty>();
+    private Map<String, StyleProperty> styles = new HashMap<>();
 
     private MxmlDocument mxmlDocument;
     private MxmlConfiguration mxmlConfiguration;    // may be null if passed in from a StyleModule
@@ -158,7 +158,7 @@ public class StyleDef
     void addAdvancedDeclaration(StyleDeclaration declaration, MediaList mediaList)
     {
         if (declarations == null)
-            declarations = new LinkedHashMap<String, StyleDeclaration>();
+            declarations = new LinkedHashMap<>();
 
         StyleSelector selector = declaration.getSelector();
         String selectorString = selector.toString();
@@ -253,7 +253,7 @@ public class StyleDef
     
     public Set<AtEmbed> getAtEmbeds()
     {
-        Set<AtEmbed> result = new HashSet<AtEmbed>();
+        Set<AtEmbed> result = new HashSet<>();
 
         if (advanced)
         {
@@ -317,7 +317,7 @@ public class StyleDef
 
     public Set<Import> getImports()
     {
-        Set<Import> result = new HashSet<Import>();
+        Set<Import> result = new HashSet<>();
 
         if (advanced)
         {

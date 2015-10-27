@@ -879,7 +879,7 @@ public class LocalLogger implements Logger
 
 		if (warnings == null)
 		{
-			warnings = new LinkedList<Warning>();
+			warnings = new LinkedList<>();
 		}
 
 		warnings.add(w);

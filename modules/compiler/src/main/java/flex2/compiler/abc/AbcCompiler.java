@@ -62,7 +62,7 @@ public class AbcCompiler extends AbstractSubCompiler implements flex2.compiler.S
 	public AbcCompiler(As3Configuration as3Configuration)
 	{
 		mimeTypes = new String[]{MimeMappings.ABC};
-		compilerExtensions = new ArrayList<Extension>();
+		compilerExtensions = new ArrayList<>();
 	}
 
 	private String[] mimeTypes;

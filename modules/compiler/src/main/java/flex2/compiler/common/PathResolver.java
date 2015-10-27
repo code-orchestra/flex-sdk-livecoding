@@ -118,7 +118,7 @@ public class PathResolver implements SinglePathResolver
 
         if (bases == null)
         {
-            bases = new ArrayList<SinglePathResolver>();
+            bases = new ArrayList<>();
         }
 
         bases.add(index, resolver);

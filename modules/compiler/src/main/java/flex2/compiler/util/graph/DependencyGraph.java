@@ -34,8 +34,8 @@ public class DependencyGraph<EdgeWeight> extends Graph<String, EdgeWeight>
 {
 	public DependencyGraph()
 	{
-		map = new HashMap<String, EdgeWeight>(300);
-		vertices = new HashMap<String, Vertex<String,EdgeWeight>>(300);
+		map = new HashMap<>(300);
+		vertices = new HashMap<>(300);
 	}
 
 	private Map<String, EdgeWeight> map;
@@ -113,17 +113,17 @@ public class DependencyGraph<EdgeWeight> extends Graph<String, EdgeWeight>
 
 		if ((head = vertices.get(name)) == null)
 		{
-			head = new Vertex<String,EdgeWeight>(name);
+			head = new Vertex<>(name);
 			addVertex(head);
 		}
 
 		if ((tail = vertices.get(dep)) == null)
 		{
-			tail = new Vertex<String,EdgeWeight>(dep);
+			tail = new Vertex<>(dep);
 			addVertex(tail);
 		}
 
-		addEdge(new Edge<String,EdgeWeight>(tail, head, null));
+		addEdge(new Edge<>(tail, head, null));
 	}
 
 	public boolean dependencyExists(String name, String dep) {
@@ -157,7 +157,7 @@ public class DependencyGraph<EdgeWeight> extends Graph<String, EdgeWeight>
             return Collections.emptySet();
         }
 	    
-        Set<String> dependencies = new LinkedHashSet<String>();
+        Set<String> dependencies = new LinkedHashSet<>();
         Set<Vertex<String,EdgeWeight>> predecessors = head.getPredecessors();
 
         if (predecessors != null)

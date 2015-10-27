@@ -30,8 +30,8 @@ public class PackageDefinitionNode extends DefinitionNode
 	public PackageNameNode name;
 	public StatementListNode statements;
 
-	public ObjectList<FunctionCommonNode> fexprs = new ObjectList<FunctionCommonNode>();
-	public ObjectList<ClassDefinitionNode> clsdefs = new ObjectList<ClassDefinitionNode>();
+	public ObjectList<FunctionCommonNode> fexprs = new ObjectList<>();
+	public ObjectList<ClassDefinitionNode> clsdefs = new ObjectList<>();
 
 	public ObjectValue defaultNamespace;
 	public ObjectValue publicNamespace;

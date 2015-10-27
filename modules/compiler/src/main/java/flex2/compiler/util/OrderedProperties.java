@@ -31,8 +31,8 @@ public class OrderedProperties extends Properties implements Serializable
     private static final long serialVersionUID = 8588726273721332377L;
     
     // keys ordered
-    private Vector<Object> keys = new Vector<Object>();
-    protected Map<String, Integer> lines = new HashMap<String, Integer>();
+    private Vector<Object> keys = new Vector<>();
+    protected Map<String, Integer> lines = new HashMap<>();
 
 	// uncomment comment_blocks to maintain comment blocks
     // comment blocks hashed on key+value they appear before

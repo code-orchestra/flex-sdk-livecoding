@@ -37,7 +37,7 @@ public class DefineText extends DefineTag
     public DefineText(int code)
     {
         super(code);
-        records=new LinkedList<TextRecord>();
+        records= new LinkedList<>();
     }
 
     public void visit(TagHandler h)
@@ -50,7 +50,7 @@ public class DefineText extends DefineTag
 
 	public Iterator<Tag> getReferences()
     {
-        LinkedList<Tag> refs = new LinkedList<Tag>();
+        LinkedList<Tag> refs = new LinkedList<>();
         for (TextRecord record : records) record.getReferenceList(refs);
 
         return refs.iterator();

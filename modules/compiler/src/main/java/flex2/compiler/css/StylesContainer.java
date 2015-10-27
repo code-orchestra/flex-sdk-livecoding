@@ -72,8 +72,8 @@ public class StylesContainer extends StyleModule
     private QName mxmlDocumentQName;
     protected MxmlConfiguration mxmlConfiguration;
     protected CompilationUnit compilationUnit;
-    protected Set<String> localStyleTypeNames = new HashSet<String>();
-    protected List<VirtualFile> implicitIncludes = new ArrayList<VirtualFile>();
+    protected Set<String> localStyleTypeNames = new HashSet<>();
+    protected List<VirtualFile> implicitIncludes = new ArrayList<>();
     protected StyleDefList lastStyleDefList;      // prevent generating the styles source unnecessarily
     
     /**
@@ -170,7 +170,7 @@ public class StylesContainer extends StyleModule
             extraSources.add(generateFontFaceRules(resources));
         }
 
-        Set<String> processedDefNames = new HashSet<String>();
+        Set<String> processedDefNames = new HashSet<>();
         for (String defName : defNames) {
             if (qualifiedTypeSelectors)
                 processedDefNames.add(NameFormatter.toDot(defName));
@@ -285,7 +285,7 @@ public class StylesContainer extends StyleModule
         }
         else
         {
-            classNames = new HashSet<String>();
+            classNames = new HashSet<>();
 
             for (String className : symbolTable.getClassNames())
             {
@@ -886,7 +886,7 @@ public class StylesContainer extends StyleModule
 
         public StyleDefList()
         {
-            styleDefs = new ArrayList<StyleDef>();
+            styleDefs = new ArrayList<>();
         }
 
         public List<StyleDef> getStyleDefs()
@@ -931,7 +931,7 @@ public class StylesContainer extends StyleModule
          */
         public Set<Import> getImports()
         {
-            Set<Import> result = new HashSet<Import>();
+            Set<Import> result = new HashSet<>();
 
             for (StyleDef styleDef : styleDefs)
                 result.addAll(styleDef.getImports());
@@ -944,7 +944,7 @@ public class StylesContainer extends StyleModule
          */
         public Set<AtEmbed> getAtEmbeds()
         {
-            Set<AtEmbed> result = new HashSet<AtEmbed>();
+            Set<AtEmbed> result = new HashSet<>();
 
             for (StyleDef styleDef : styleDefs)
                 result.addAll(styleDef.getAtEmbeds());

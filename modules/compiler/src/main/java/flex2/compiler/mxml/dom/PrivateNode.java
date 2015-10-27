@@ -37,7 +37,7 @@ public class PrivateNode extends Node
 
     static
     {
-        attributes = new HashSet<QName>();
+        attributes = new HashSet<>();
     }
     
 	PrivateNode(String uri, String localName, int size)

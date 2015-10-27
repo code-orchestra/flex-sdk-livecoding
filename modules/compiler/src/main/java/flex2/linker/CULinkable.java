@@ -119,8 +119,8 @@ public class CULinkable implements Linkable
         }
     }
 
-    private final Set<String> defs = new HashSet<String>();
-    private final Set<String> prereqs = new HashSet<String>();
-    private final Set<String> deps = new HashSet<String>();
+    private final Set<String> defs = new HashSet<>();
+    private final Set<String> prereqs = new HashSet<>();
+    private final Set<String> deps = new HashSet<>();
     private final CompilationUnit unit;
 }

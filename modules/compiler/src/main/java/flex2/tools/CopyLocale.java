@@ -93,7 +93,7 @@ public class CopyLocale
 	 * as determined by enumerating the .properties files
 	 * in the project's 'bundle' directory for the sourceLocale.
 	 */
-	private HashMap<String, String[]> bundleNamesForProject = new HashMap<String, String[]>();
+	private HashMap<String, String[]> bundleNamesForProject = new HashMap<>();
     
     private void run(String[] args)
     {
@@ -137,7 +137,7 @@ public class CopyLocale
 		// Return false if the any of the projects are missing the requested src locale in its "bundles" dir.
 		File projectsDir = new File(sdkDir, "frameworks/projects");
 		File[] projectDirs = projectsDir.listFiles();
-		ArrayList<String> projectList = new ArrayList<String>();
+		ArrayList<String> projectList = new ArrayList<>();
 		int n = projectDirs.length;
 		for (File projectDir : projectDirs) {
 			File bundlesDir = new File(projectDir, "bundles");
@@ -167,7 +167,7 @@ public class CopyLocale
 		
 		File[] propertiesFiles = fromSrcDir.listFiles();
 		
-		ArrayList<String> bundleNameList = new ArrayList<String>();
+		ArrayList<String> bundleNameList = new ArrayList<>();
 		int m = propertiesFiles.length;
 		for (File propertiesFile : propertiesFiles) {
 			String name = propertiesFile.getName();

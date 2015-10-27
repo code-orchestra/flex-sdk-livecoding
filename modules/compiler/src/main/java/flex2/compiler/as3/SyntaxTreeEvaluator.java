@@ -92,7 +92,7 @@ public class SyntaxTreeEvaluator extends EvaluatorAdapter
             currentClassName = NodeMagic.getUnqualifiedClassName(node);
             currentClassNode = node;
             seenConstructor = false;
-            functionMap = new HashMap<String, FunctionDefinitionNode>();
+            functionMap = new HashMap<>();
 
             super.evaluate(cx, node);
         }
@@ -652,7 +652,7 @@ public class SyntaxTreeEvaluator extends EvaluatorAdapter
     {
         if (unit.skinStates == null)
         {
-        	unit.skinStates = new HashSet<String>();
+        	unit.skinStates = new HashSet<>();
         }
         
         // Ensure someone hasn't inadvertently duplicated SkinState metadata.

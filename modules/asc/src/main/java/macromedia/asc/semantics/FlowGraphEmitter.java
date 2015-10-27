@@ -33,8 +33,8 @@ import static macromedia.asc.util.BitSet.*;
 public final class FlowGraphEmitter extends Emitter
 {
 	private boolean hasLeader;
-	private ObjectList<Block> blocks = new ObjectList<Block>();
-	private ObjectList<Node> defs = new ObjectList<Node>();
+	private ObjectList<Block> blocks = new ObjectList<>();
+	private ObjectList<Node> defs = new ObjectList<>();
 	private int cur_block;
 	// unsigned int  def_count;
 	private int def_count;
@@ -90,7 +90,7 @@ public final class FlowGraphEmitter extends Emitter
 
 	public ObjectList<Node> GetDefs(BitSet def_bits)
 	{
-		ObjectList<Node> defs = new ObjectList<Node>();
+		ObjectList<Node> defs = new ObjectList<>();
 		
 		// Iterate only over set bits
 		for(int i=BitSet.nextSetBit(def_bits,0); i>=0; i=BitSet.nextSetBit(def_bits,i+1))
@@ -414,17 +414,17 @@ B4[label="B4"]
 	protected IntList if_addrs = new IntList();
 	protected IntList else_addrs = new IntList();
 	protected IntList loopbegin_addrs = new IntList();
-	protected ObjectList<IntList> break_addrs = new ObjectList<IntList>();
-	protected ObjectList<IntList> continue_addrs = new ObjectList<IntList>();
+	protected ObjectList<IntList> break_addrs = new ObjectList<>();
+	protected ObjectList<IntList> continue_addrs = new ObjectList<>();
 	protected IntList switchbegin_addrs = new IntList();
-	protected ObjectList<IntList> case_addrs = new ObjectList<IntList>();
+	protected ObjectList<IntList> case_addrs = new ObjectList<>();
 	protected IntList default_addrs = new IntList();
 	protected IntList seen_default_case = new IntList();
 	protected int current_with_count;
     protected IntList with_count = new IntList();
     
     protected IntList try_addrs = new IntList();
-	protected ObjectList<IntList> catch_addrs = new ObjectList<IntList>();
+	protected ObjectList<IntList> catch_addrs = new ObjectList<>();
 
 	static final int scopes_register = 0;
 	static final int obj_register = 1;

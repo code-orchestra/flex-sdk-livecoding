@@ -42,9 +42,9 @@ import flash.tools.debugger.events.StackUnderFlowFault;
  */
 public class FaultActions
 {
-	HashMap<String, Integer> m_faults = new HashMap<String, Integer>();
-	HashMap<String, String> m_description = new HashMap<String, String>();  // @todo should really use an object within the faults map for this 
-	HashMap<String, Integer> m_actions = new HashMap<String, Integer>();
+	HashMap<String, Integer> m_faults = new HashMap<>();
+	HashMap<String, String> m_description = new HashMap<>();  // @todo should really use an object within the faults map for this
+	HashMap<String, Integer> m_actions = new HashMap<>();
 
 	int m_nextBitForAction = 0x1;  // the next bit to use for the action
 

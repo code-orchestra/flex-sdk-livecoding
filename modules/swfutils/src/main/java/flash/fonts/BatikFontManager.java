@@ -610,7 +610,7 @@ public class BatikFontManager extends CachedFontManager
             int count = glyph.getPointCount();
             int offset = 0;
             boolean newContour = true;
-            ArrayList<double[]> aSegments = new ArrayList<double[]>(count);
+            ArrayList<double[]> aSegments = new ArrayList<>(count);
             Point lastMove = null;
 
             while (offset < count - 1)

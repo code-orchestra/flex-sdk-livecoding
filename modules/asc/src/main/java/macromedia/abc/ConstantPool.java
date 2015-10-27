@@ -489,7 +489,7 @@ public class ConstantPool
         {
             int namespacesetIndex = in.readU32();
             String[] value = getNamespaceSet(namespacesetIndex);
-            ArrayList<String> a = new ArrayList<String>();
+            ArrayList<String> a = new ArrayList<>();
             Collections.addAll(a, value);
             in.seek(originalPos);
             return a;

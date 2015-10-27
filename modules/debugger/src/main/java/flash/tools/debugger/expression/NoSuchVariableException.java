@@ -34,7 +34,7 @@ public class NoSuchVariableException extends Exception
 
 	public String getLocalizedMessage()
 	{
-		Map<String, String> args = new HashMap<String, String>();
+		Map<String, String> args = new HashMap<>();
 		args.put("arg2", getMessage() ); //$NON-NLS-1$
 		return ASTBuilder.getLocalizationManager().getLocalizedTextString("noSuchVariable", args); //$NON-NLS-1$
 	}

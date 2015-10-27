@@ -25,8 +25,8 @@ public class Graph <V,E>
 {
 	public Graph()
 	{
-		vertices = new HashSet<Vertex<V>>();
-		edges = new HashSet<Edge<E>>();
+		vertices = new HashSet<>();
+		edges = new HashSet<>();
 	}
 
 	private int counter;

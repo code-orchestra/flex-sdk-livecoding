@@ -105,7 +105,7 @@ public class GradientBevelFilterNode extends AbstractFilterNode
         {
             if (entries == null)
             {
-                entries = new ArrayList<GradientEntryNode>(4);
+                entries = new ArrayList<>(4);
             }
             else if (entries.size() >= GRADIENT_ENTRIES_MAX_INCLUSIVE)
             {

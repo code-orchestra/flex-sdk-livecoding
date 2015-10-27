@@ -82,10 +82,10 @@ public class StyleDeclaration
     {
         this.path = path;
         this.lineNumber = lineNumber;
-        blockCache = new HashMap<String, StyleDeclarationBlock>(2);
-        declarationBlocks = new ArrayList<StyleDeclarationBlock>(2);
+        blockCache = new HashMap<>(2);
+        declarationBlocks = new ArrayList<>(2);
 
-        descriptors = new LinkedHashMap<String, Descriptor>();
+        descriptors = new LinkedHashMap<>();
     }
 
     /**

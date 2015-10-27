@@ -85,7 +85,7 @@ public class RuntimeSharedLibrarySettingsConfiguration
             return Collections.emptySet();
         }
         
-        Set<String> rslPaths = new HashSet<String>();
+        Set<String> rslPaths = new HashSet<>();
         for (VirtualFile file : forceRsls)
         {
             rslPaths.add(file.getName());
@@ -104,7 +104,7 @@ public class RuntimeSharedLibrarySettingsConfiguration
         
         if (forceRsls == null)
         {
-            forceRsls = new HashSet<VirtualFile>();
+            forceRsls = new HashSet<>();
         }
  
         // Add swc to the forceRsls set.
@@ -230,7 +230,7 @@ public class RuntimeSharedLibrarySettingsConfiguration
         
         if (applicationDomains == null)
         {
-            applicationDomains = new HashMap<VirtualFile,String>();
+            applicationDomains = new HashMap<>();
         }
  
         // Add swc and application domain target to the map.

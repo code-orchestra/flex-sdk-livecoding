@@ -43,7 +43,7 @@ public class SWCMember extends AbstractMember implements IMember {
 
     public void addParameter(String name, String type) {
         if (parameters == null) {
-            parameters = new ArrayList<IParameter>();
+            parameters = new ArrayList<>();
         }
         parameters.add(new SWCParameter(name, type));
     }

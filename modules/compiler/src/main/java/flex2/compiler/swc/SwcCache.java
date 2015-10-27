@@ -96,7 +96,7 @@ public class SwcCache
     {
         SwcGroup group;
         String path;
-        Map<String, Swc> swcs = new LinkedHashMap<String, Swc>();
+        Map<String, Swc> swcs = new LinkedHashMap<>();
 
         for (String path1 : paths) {
             path = path1;
@@ -117,7 +117,7 @@ public class SwcCache
     // todo - this could be made much more efficient by avoiding re-merging swcs
     public synchronized SwcGroup getSwcGroup(List<SwcGroup> groups, SwcGroup rslGroup)
     {
-        Map<String, Swc> swcs = new LinkedHashMap<String, Swc>();
+        Map<String, Swc> swcs = new LinkedHashMap<>();
 
         for (SwcGroup g : groups)
         {
@@ -184,7 +184,7 @@ public class SwcCache
     // changed from private to protected to support Flash Authoring - jkamerer 2007.07.30
     protected Map<String, Swc> getSwcs(String path)
     {
-        Map<String, Swc> map = new LinkedHashMap<String, Swc>();
+        Map<String, Swc> map = new LinkedHashMap<>();
         File f = new File(path);
         if (!f.exists())
         {

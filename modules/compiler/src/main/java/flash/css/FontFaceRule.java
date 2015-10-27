@@ -76,7 +76,7 @@ public class FontFaceRule extends Rule
         String alias = getFamily();
         List<Object> locations = getLocations();
 
-        embedParams = new HashMap<String, Object>();
+        embedParams = new HashMap<>();
         embedParams.put(Transcoder.MIMETYPE, "application/x-font");
         if (locations == null && alias != null)
         {
@@ -191,7 +191,7 @@ public class FontFaceRule extends Rule
             if (src != null)
             {
                 LexicalUnit lu = src.getValue();
-                result = new ArrayList<Object>(2);
+                result = new ArrayList<>(2);
 
                 while (lu != null)
                 {

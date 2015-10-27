@@ -131,7 +131,7 @@ public class ASTBuilder implements IASTBuilder
 
 		ContextStatics statics = new ContextStatics();
 		Context cx = new Context(statics);
-		final List<ErrorInfo> errors = new ArrayList<ErrorInfo>();
+		final List<ErrorInfo> errors = new ArrayList<>();
 		CompilerHandler newHandler = new CompilerHandler() {
 			public void error(final String filename, int ln, int col, String msg, String source) {
 				ErrorInfo ei = new ErrorInfo();

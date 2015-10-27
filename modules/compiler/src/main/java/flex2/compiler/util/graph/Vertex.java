@@ -52,7 +52,7 @@ public final class Vertex <VertexWeight,EdgeWeight>
 	{
 		if (incidentEdges == null)
 		{
-			incidentEdges = new HashSet<Edge<VertexWeight,EdgeWeight>>(INITIAL_CAPACITY);
+			incidentEdges = new HashSet<>(INITIAL_CAPACITY);
 		}
 		incidentEdges.add(e);
 	}
@@ -74,7 +74,7 @@ public final class Vertex <VertexWeight,EdgeWeight>
 	{
 		if (emanatingEdges == null)
 		{
-			emanatingEdges = new HashSet<Edge<VertexWeight,EdgeWeight>>(INITIAL_CAPACITY);
+			emanatingEdges = new HashSet<>(INITIAL_CAPACITY);
 		}
 		emanatingEdges.add(e);
 	}
@@ -96,7 +96,7 @@ public final class Vertex <VertexWeight,EdgeWeight>
 	{
 		if (predecessors == null)
 		{
-			predecessors = new HashSet<Vertex<VertexWeight,EdgeWeight>>(INITIAL_CAPACITY);
+			predecessors = new HashSet<>(INITIAL_CAPACITY);
 		}
 		predecessors.add(v);
 	}
@@ -118,7 +118,7 @@ public final class Vertex <VertexWeight,EdgeWeight>
 	{
 		if (successors == null)
 		{
-			successors = new ArrayList<Vertex<VertexWeight,EdgeWeight>>(INITIAL_CAPACITY);
+			successors = new ArrayList<>(INITIAL_CAPACITY);
 		}
 		successors.add(v);
 	}

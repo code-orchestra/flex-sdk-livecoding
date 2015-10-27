@@ -204,7 +204,7 @@ public class TextGraphicNode extends GraphicContentNode implements TextNode
     protected void rememberAttribute(String name, String value)
     {
         if (textAttributes == null)
-            textAttributes = new HashMap<String, String>(4);
+            textAttributes = new HashMap<>(4);
 
         textAttributes.put(name, value);
     }
@@ -226,7 +226,7 @@ public class TextGraphicNode extends GraphicContentNode implements TextNode
         {
             if (content == null)
             {
-                content = new ArrayList<TextNode>();
+                content = new ArrayList<>();
                 contiguous = true;
             }
             

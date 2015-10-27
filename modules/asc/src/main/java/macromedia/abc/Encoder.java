@@ -51,7 +51,7 @@ public class Encoder implements Visitor
 	private int poolIndex, opcodePass, exPass;
 	private boolean disableDebugging, removeMetadata, peepHole;
 
-    private HashSet<String> keep_metadata = new HashSet<String>();
+    private HashSet<String> keep_metadata = new HashSet<>();
 
 	private BytecodeBuffer2 methodInfo;
 	private ByteArrayPool2 metadataInfo;
@@ -2895,7 +2895,7 @@ public class Encoder implements Visitor
         ByteArrayPool2(int[] sizes)
         {
             this.sizes = sizes;
-            indexes = new HashMap<Integer, Integer>();
+            indexes = new HashMap<>();
         }
 
         int size = 0;
@@ -2997,7 +2997,7 @@ public class Encoder implements Visitor
 		BytecodeBuffer3(Decoder[] decoders, int estimatedSize)
 		{
 			super(estimatedSize);
-			offsets = new HashMap<Integer, Integer>();
+			offsets = new HashMap<>();
 			this.decoders = decoders;
 		}
 

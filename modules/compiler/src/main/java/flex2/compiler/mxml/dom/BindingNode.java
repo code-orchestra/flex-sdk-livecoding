@@ -33,7 +33,7 @@ public class BindingNode extends Node
 
 	static
 	{
-		attributes = new HashSet<QName>();
+		attributes = new HashSet<>();
 		attributes.add(new QName("", "destination"));
         attributes.add(new QName("", "source"));
         attributes.add(new QName("", "twoWay"));

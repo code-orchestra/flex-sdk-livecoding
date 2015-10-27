@@ -66,7 +66,7 @@ public class MultiNameMap
 
 		if (s == null)
 		{
-			s = new HashMap<MultiName, QName>(preferredSize);
+			s = new HashMap<>(preferredSize);
 		}
 
 		s.putAll(c.s);
@@ -76,7 +76,7 @@ public class MultiNameMap
 	{
 		if (s == null)
 		{
-			s = new HashMap<MultiName, QName>(preferredSize);
+			s = new HashMap<>(preferredSize);
 		}
 
 		return s.put(key, value);

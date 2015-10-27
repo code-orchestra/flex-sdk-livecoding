@@ -70,5 +70,5 @@ public abstract class FontFace
         return properties.get(name);
     }
 
-    protected HashMap<String, Object> properties = new HashMap<String, Object>();
+    protected HashMap<String, Object> properties = new HashMap<>();
 }

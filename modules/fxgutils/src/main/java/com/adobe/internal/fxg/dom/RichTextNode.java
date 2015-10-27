@@ -565,7 +565,7 @@ public class RichTextNode extends GraphicContentNode implements TextNode
                     linkActiveFormat.setParent(this);
 
                     if (properties == null)
-                        properties = new HashMap<String, TextNode>(3);
+                        properties = new HashMap<>(3);
                     properties.put(propertyName, linkActiveFormat);
                 }
                 else
@@ -582,7 +582,7 @@ public class RichTextNode extends GraphicContentNode implements TextNode
                     linkHoverFormat.setParent(this);
 
                     if (properties == null)
-                        properties = new HashMap<String, TextNode>(3);
+                        properties = new HashMap<>(3);
                     properties.put(propertyName, linkHoverFormat);
                 }
                 else
@@ -599,7 +599,7 @@ public class RichTextNode extends GraphicContentNode implements TextNode
                     linkNormalFormat.setParent(this);
 
                     if (properties == null)
-                        properties = new HashMap<String, TextNode>(3);
+                        properties = new HashMap<>(3);
                     properties.put(propertyName, linkNormalFormat);
                 }
                 else
@@ -647,7 +647,7 @@ public class RichTextNode extends GraphicContentNode implements TextNode
             
             if (content == null)
             {
-                content = new ArrayList<TextNode>();
+                content = new ArrayList<>();
                 contiguous = true;
             }
             
@@ -676,7 +676,7 @@ public class RichTextNode extends GraphicContentNode implements TextNode
     protected void rememberAttribute(String name, String value)
     {
         if (textAttributes == null)
-            textAttributes = new HashMap<String, String>(4);
+            textAttributes = new HashMap<>(4);
 
         textAttributes.put(name, value);
     }

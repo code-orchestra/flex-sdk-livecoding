@@ -1050,7 +1050,7 @@ public class AsDocUtil
         boolean customDataFlag = false;
         Element asCustoms = outputDocument.createElement("asCustoms");
 
-        ArrayList<String> handledTags = new ArrayList<String>();
+        ArrayList<String> handledTags = new ArrayList<>();
         handledTags.add("default");
         handledTags.add("description");
         handledTags.add("copy");
@@ -1711,7 +1711,7 @@ public class AsDocUtil
      */
     Element createApiMap(TreeSet<String> packageNames, Document outputObject)
     {
-        ArrayList<String> alreadyAdded = new ArrayList<String>();
+        ArrayList<String> alreadyAdded = new ArrayList<>();
         Element apiMap = outputObject.createElement("apiMap");
         String addedPackage = null;
         String currentPackage = null;
@@ -1759,7 +1759,7 @@ public class AsDocUtil
     private Element getPackageNode(Element apiMap, String packageName)
     {
         String key = packageName + ".xml";
-        Stack<Element> apiItemRefArr = new Stack<Element>();
+        Stack<Element> apiItemRefArr = new Stack<>();
 
         NodeList apiItemRefList = apiMap.getElementsByTagName("apiItemRef");
         if (apiItemRefList != null && apiItemRefList.getLength() != 0)

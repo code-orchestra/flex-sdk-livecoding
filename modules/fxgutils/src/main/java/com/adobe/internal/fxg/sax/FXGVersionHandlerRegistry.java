@@ -32,7 +32,7 @@ import com.adobe.fxg.FXGVersion;
 public class FXGVersionHandlerRegistry
 {
 
-    private static HashMap<FXGVersion, FXGVersionHandler> versionHandlers = new HashMap<FXGVersion, FXGVersionHandler>(4);
+    private static HashMap<FXGVersion, FXGVersionHandler> versionHandlers = new HashMap<>(4);
     
     /** The default FXG version. Used if FXG version from a file is not 
      * supported.*/

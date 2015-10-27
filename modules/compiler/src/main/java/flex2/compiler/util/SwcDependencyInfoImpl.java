@@ -40,7 +40,7 @@ class SwcDependencyInfoImpl implements SwcDependencyInfo
 
     public SwcDependencyInfoImpl()
     {
-        dependencies = new DependencyGraph<SwcExternalScriptInfo>();
+        dependencies = new DependencyGraph<>();
     }
     
     public boolean dependencyExists(String swcLocation1, String swcLocation2)
@@ -50,7 +50,7 @@ class SwcDependencyInfoImpl implements SwcDependencyInfo
 
     public List<String> getSwcDependencyOrder()
     {
-        final List<String> depOrder = new ArrayList<String>(dependencies.size());
+        final List<String> depOrder = new ArrayList<>(dependencies.size());
         
         Algorithms.topologicalSort(dependencies, new Visitor<Vertex<String,SwcExternalScriptInfo>>()
         {   

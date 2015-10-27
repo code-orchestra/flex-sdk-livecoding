@@ -93,7 +93,7 @@ public class DivNode extends AbstractRichBlockTextNode
                     linkActiveFormat.setParent(this);
 
                     if (properties == null)
-                        properties = new HashMap<String, TextNode>(3);
+                        properties = new HashMap<>(3);
                     properties.put(propertyName, linkActiveFormat);
                 }
                 else
@@ -110,7 +110,7 @@ public class DivNode extends AbstractRichBlockTextNode
                     linkHoverFormat.setParent(this);
 
                     if (properties == null)
-                        properties = new HashMap<String, TextNode>(3);
+                        properties = new HashMap<>(3);
                     properties.put(propertyName, linkHoverFormat);
                 }
                 else
@@ -127,7 +127,7 @@ public class DivNode extends AbstractRichBlockTextNode
                     linkNormalFormat.setParent(this);
 
                     if (properties == null)
-                        properties = new HashMap<String, TextNode>(3);
+                        properties = new HashMap<>(3);
                     properties.put(propertyName, linkNormalFormat);
                 }
                 else
@@ -198,7 +198,7 @@ public class DivNode extends AbstractRichBlockTextNode
         	}  
         	
             if (content == null)
-                content = new ArrayList<TextNode>();
+                content = new ArrayList<>();
 
             content.add((TextNode)child);
         }

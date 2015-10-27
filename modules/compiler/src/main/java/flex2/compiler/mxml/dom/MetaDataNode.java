@@ -33,7 +33,7 @@ public class MetaDataNode extends Node
 
 	static
 	{
-		attributes = new HashSet<QName>();
+		attributes = new HashSet<>();
 	}
 
 	public MetaDataNode(String uri, String localName, int size)

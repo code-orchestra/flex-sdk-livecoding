@@ -58,7 +58,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 	{
 		if (extras == null)
 		{
-			extras = new ArrayList<LineNumberMap>(5);
+			extras = new ArrayList<>(5);
 		}
 		extras.add(map);
 	}
@@ -67,7 +67,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 	{
 		if (c != null && extras == null)
 		{
-			extras = new ArrayList<LineNumberMap>(5);
+			extras = new ArrayList<>(5);
 		}
 		if (c != null)
 		{
@@ -364,7 +364,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
             {
                 if (messages == null)
                 {
-                    messages = new HashMap<String, String>();
+                    messages = new HashMap<>();
                 }
 
                 String key = map.getOldName() + map.get(line);
@@ -396,7 +396,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 	        {
 	            if (messages == null)
 	            {
-	                messages = new HashMap<String, String>();
+	                messages = new HashMap<>();
 	            }
 
 	            String key = map.getOldName() + map.get(line);
@@ -426,7 +426,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
             {
                 if (messages == null)
                 {
-                    messages = new HashMap<String, String>();
+                    messages = new HashMap<>();
                 }
 
                 String key = map.getOldName() + map.get(line);
@@ -457,7 +457,7 @@ public final class MxmlLogAdapter extends AbstractLogAdapter
 	        {
 	            if (messages == null)
 	            {
-	                messages = new HashMap<String, String>();
+	                messages = new HashMap<>();
 	            }
 
 	            String key = map.getOldName() + map.get(line);

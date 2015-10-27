@@ -412,7 +412,7 @@ public final class CompilerAPI
         }
 
         CompilerConfiguration config = (configuration != null) ? configuration.getCompilerConfiguration() : null;
-        List<Source> targets = new ArrayList<Source>(sources.size());
+        List<Source> targets = new ArrayList<>(sources.size());
 
         units.clear();
         for (Source s : sources) {
@@ -621,7 +621,7 @@ public final class CompilerAPI
         }
 
         // Map notOkay = new HashMap();
-        Set<String> processed = new HashSet<String>();
+        Set<String> processed = new HashSet<>();
 
         for (int i = sources.size() - 1; i >= 0; i--)
         {
@@ -1445,8 +1445,8 @@ public final class CompilerAPI
             meter.start();
         }
 
-        List<CompilationUnit> units = new ArrayList<CompilationUnit>();
-        DependencyGraph<CompilationUnit> igraph = new DependencyGraph<CompilationUnit>();
+        List<CompilationUnit> units = new ArrayList<>();
+        DependencyGraph<CompilationUnit> igraph = new DependencyGraph<>();
         DependencyGraph<Source> dgraph = null; // new DependencyGraph();
 
         boolean useFileSpec = false;
@@ -1838,20 +1838,20 @@ public final class CompilerAPI
         final boolean strict = configuration.getCompilerConfiguration().strict();
 
         final Map<String, Source>
-                  updated                     = new HashMap<String, Source>(), // VirtualFile.getName() -> Source
-                  updatedWithStableSignature  = new HashMap<String, Source>(), // VirtualFile.getName() -> Source
-                  affected                    = new HashMap<String, Source>(); // VirtualFile.getName() -> Source
+                  updated                     = new HashMap<>(), // VirtualFile.getName() -> Source
+                  updatedWithStableSignature  = new HashMap<>(), // VirtualFile.getName() -> Source
+                  affected                    = new HashMap<>(); // VirtualFile.getName() -> Source
 
-        final Map<QName, Source> deleted = new HashMap<QName, Source>();
+        final Map<QName, Source> deleted = new HashMap<>();
 
-        final Map<String, String> reasons = new HashMap<String, String>(); // VirtualFile.getName() -> String
-        final Map<QName, Source> qNames = new HashMap<QName, Source>();
+        final Map<String, String> reasons = new HashMap<>(); // VirtualFile.getName() -> String
+        final Map<QName, Source> qNames = new HashMap<>();
 
-        final Set<String> includeUpdated      = new HashSet<String>(),         // VirtualFile.getName()
-                  resourceDelegates           = new HashSet<String>(),         // VirtualFile.getNameForReporting()
-                  namespaces                  = new HashSet<String>();
+        final Set<String> includeUpdated      = new HashSet<>(),         // VirtualFile.getName()
+                  resourceDelegates           = new HashSet<>(),         // VirtualFile.getNameForReporting()
+                  namespaces                  = new HashSet<>();
 
-        final Map<QName, Map<String, Source>> dependents = new HashMap<QName, Map<String, Source>>();
+        final Map<QName, Map<String, Source>> dependents = new HashMap<>();
 
         Set<Source> swcSources = swcContext.cachedSources();
         Context ascContext = null;
@@ -1862,7 +1862,7 @@ public final class CompilerAPI
         }
 
         // put all the Source objects together
-        final Set<Source> sources = new HashSet<Source>();
+        final Set<Source> sources = new HashSet<>();
         {
             sources.addAll(swcSources);
             if (fileSpec != null)
@@ -2115,7 +2115,7 @@ public final class CompilerAPI
             CompilationUnit u = s.getCompilationUnit();
             if (u == null) continue;
 
-            Set<Name> dependencies = new HashSet<Name>();
+            Set<Name> dependencies = new HashSet<>();
             dependencies.addAll(u.inheritance);
             dependencies.addAll(u.namespaces);
             dependencies.addAll(u.expressions);
@@ -2226,7 +2226,7 @@ public final class CompilerAPI
         // - DependentFileModified
         if (strict)
         {
-            Map<String, Source> updatedAndAffected = new HashMap<String, Source>(updated);
+            Map<String, Source> updatedAndAffected = new HashMap<>(updated);
             updatedAndAffected.putAll(affected);
 
             for (Source source : updatedAndAffected.values())
@@ -3092,7 +3092,7 @@ public final class CompilerAPI
                                            SymbolTable symbolTable, SourceList sourceList, SourcePath sourcePath,
                                            ResourceContainer resources, CompilerSwcContext swcContext, int start, int end)
     {
-        Set<QName> qNames = new HashSet<QName>();
+        Set<QName> qNames = new HashSet<>();
 
         for (int i = start; i < end; i++)
         {
@@ -3142,7 +3142,7 @@ public final class CompilerAPI
                                          SymbolTable symbolTable, SourceList sourceList, SourcePath sourcePath,
                                          ResourceContainer resources, CompilerSwcContext swcContext, int start, int end)
     {
-        Set<QName> qNames = new HashSet<QName>();
+        Set<QName> qNames = new HashSet<>();
 
         for (int i = start; i < end; i++)
         {
@@ -3191,7 +3191,7 @@ public final class CompilerAPI
     // this will be set by asdoc. if true source from disk will be preferred over source from swc
     private static boolean skipTimestampCheck = false;
 
-    public static Set<Source> addedSources = new HashSet<Source>();  // CodeOrchestra: added
+    public static Set<Source> addedSources = new HashSet<>();  // CodeOrchestra: added
     
     private static int findDefinition(List<Source> sources, SourceList sourceList, SourcePathBase sourcePath,
                                       ResourceContainer resources, CompilerSwcContext swcContext,
@@ -3393,7 +3393,7 @@ public final class CompilerAPI
     {
         assert sources.size() == units.size();
         boolean success = true;
-        final List<CompilationUnit> tsort = new ArrayList<CompilationUnit>(units.size());
+        final List<CompilationUnit> tsort = new ArrayList<>(units.size());
 
         Algorithms.topologicalSort(graph, new Visitor<Vertex<String,CompilationUnit>>()
         {
@@ -3431,7 +3431,7 @@ public final class CompilerAPI
 
     private static boolean detectCycles(List<Source> sources, final DependencyGraph<CompilationUnit> graph)
     {
-        final Map<String, Source> tsort = new HashMap<String, Source>(sources.size());
+        final Map<String, Source> tsort = new HashMap<>(sources.size());
 
         for (Source s : sources) {
             tsort.put(s.getName(), s);
@@ -3531,7 +3531,7 @@ public final class CompilerAPI
                                     SymbolTable symbolTable, SourceList sourceList, SourcePath sourcePath,
                                     ResourceContainer resources, CompilerSwcContext swcContext, int start, int end)
     {
-        Set<QName> qNames = new HashSet<QName>();
+        Set<QName> qNames = new HashSet<>();
 
         for (int i = start; i < end; i++)
         {
@@ -3689,7 +3689,7 @@ public final class CompilerAPI
                                           CompilerSwcContext swcContext, Configuration configuration,
                                           int start, int end)
     {
-        Set<QName> qNames = new HashSet<QName>();
+        Set<QName> qNames = new HashSet<>();
 
         for (int i = start; i < end; i++)
         {
@@ -4109,7 +4109,7 @@ public final class CompilerAPI
                                           SourceList sourceList, SourcePath sourcePath, ResourceContainer resources,
                                           CompilerSwcContext swcContext, Configuration configuration)
     {
-        Set<String> includes = new LinkedHashSet<String>();
+        Set<String> includes = new LinkedHashSet<>();
         includes.addAll( configuration.getIncludes() );
         for (FrameInfo f : configuration.getFrameList()) {
             includes.addAll(f.frameClasses);
@@ -4356,7 +4356,7 @@ public final class CompilerAPI
     public static List<VirtualFile> getVirtualFileList(List<?> files)
         throws ConfigurationException
     {
-        return new ArrayList<VirtualFile>(fileSetFromPaths(files, false, null, null));
+        return new ArrayList<>(fileSetFromPaths(files, false, null, null));
     }
 
     /**
@@ -4366,7 +4366,7 @@ public final class CompilerAPI
     public static List<VirtualFile> getVirtualFileList(Collection<?> paths, Set mimeTypes)
         throws ConfigurationException
     {
-        return new ArrayList<VirtualFile>(fileSetFromPaths(paths, true, mimeTypes, null));
+        return new ArrayList<>(fileSetFromPaths(paths, true, mimeTypes, null));
     }
 
     /**
@@ -4387,8 +4387,8 @@ public final class CompilerAPI
         @SuppressWarnings("unchecked")
         List<VirtualFile>[] array = new List[2];
 
-        array[0] = new ArrayList<VirtualFile>();
-        array[1] = new ArrayList<VirtualFile>();
+        array[0] = new ArrayList<>();
+        array[1] = new ArrayList<>();
 
         if(excludedPaths != null) {
             LinkedList tempExcludedPaths = new LinkedList();
@@ -4403,7 +4403,7 @@ public final class CompilerAPI
             excludedPaths = tempExcludedPaths;
         }
 
-		List<VirtualFile> list = new ArrayList<VirtualFile>(fileSetFromPaths(paths, true, mimeTypes, null, excludedPaths));
+		List<VirtualFile> list = new ArrayList<>(fileSetFromPaths(paths, true, mimeTypes, null, excludedPaths));
 		for (int i = 0, len = list == null ? 0 : list.size(); i < len; i++)
 		{
 			VirtualFile f = list.get(i);
@@ -4422,8 +4422,8 @@ public final class CompilerAPI
         //     List<List<VirtualFile>> instead of an array, so that we can get compile-time type-checks
         @SuppressWarnings("unchecked")
         List<VirtualFile>[] array = new List[2];
-        array[0] = new ArrayList<VirtualFile>();
-        array[1] = new ArrayList<VirtualFile>();
+        array[0] = new ArrayList<>();
+        array[1] = new ArrayList<>();
 
         for (VirtualFile f : fileSet)
         {
@@ -4454,7 +4454,7 @@ public final class CompilerAPI
 		boolean topLevel;
 		if (topLevel = (fileSet == null))
 		{
-			fileSet = new HashSet<VirtualFile>(paths.size());
+			fileSet = new HashSet<>(paths.size());
 		}
         for (Object next : paths) {
             VirtualFile file;

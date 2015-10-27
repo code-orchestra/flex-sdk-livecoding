@@ -79,7 +79,7 @@ public class SwcDynamicArchive implements SwcArchive
      */
     public void load()
     {
-        files = new HashMap<String, VirtualFile>();
+        files = new HashMap<>();
 	    ZipFile zipFile = null;
 
         try
@@ -230,7 +230,7 @@ public class SwcDynamicArchive implements SwcArchive
     {
         if (files == null)
         {
-            files = new HashMap<String, VirtualFile>();
+            files = new HashMap<>();
         }
 
         files.put( file.getName(), file );
@@ -240,7 +240,7 @@ public class SwcDynamicArchive implements SwcArchive
     {
         if (files == null)
         {
-            files = new HashMap<String, VirtualFile>();
+            files = new HashMap<>();
         }
 
         InMemoryFile file = new InMemoryFile( data, path, MimeMappings.getMimeType(path), lastModified );

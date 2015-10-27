@@ -676,7 +676,7 @@ public abstract class ValueInitializer implements Initializer, Cloneable
     {
     	Model model = (Model) value;
     	
-    	Set<String> ids = new LinkedHashSet<String>();
+    	Set<String> ids = new LinkedHashSet<>();
     	if (model.isDeclared()) ids.add(model.getId());
 
     	// Collect ids (declarations) that this destructor needs to reset.
@@ -1124,7 +1124,7 @@ public abstract class ValueInitializer implements Initializer, Cloneable
     {    	
     	Model model = (Model) value;
     	
-    	Set<String> ids = new LinkedHashSet<String>();
+    	Set<String> ids = new LinkedHashSet<>();
     	if (model.isDeclared()) ids.add(model.getId());
 
     	// Collect ids (declarations) that this destructor needs to reset.
@@ -1649,7 +1649,7 @@ public abstract class ValueInitializer implements Initializer, Cloneable
 	 */
 	private static String asArrayLiteral(Array array)
 	{
-		List<String> elements = new ArrayList<String>();
+		List<String> elements = new ArrayList<>();
 
 		for (Iterator<ArrayElementInitializer> iter = array.getElementInitializerIterator(); iter.hasNext(); )
 		{
@@ -1690,7 +1690,7 @@ public abstract class ValueInitializer implements Initializer, Cloneable
 	 */
 	private static String asObjectLiteral(Model model)
 	{
-		List<String> pairs = new ArrayList<String>();
+		List<String> pairs = new ArrayList<>();
 
 		for (Iterator<Initializer> iter = model.getPropertyInitializerIterator(); iter.hasNext(); )
 		{
@@ -1728,7 +1728,7 @@ public abstract class ValueInitializer implements Initializer, Cloneable
      */
     private static String asVectorLiteral(Vector vector)
     {
-        List<String> elements = new ArrayList<String>();
+        List<String> elements = new ArrayList<>();
 
         for (Iterator<ArrayElementInitializer> iter = vector.getElementInitializerIterator(); iter.hasNext(); )
         {

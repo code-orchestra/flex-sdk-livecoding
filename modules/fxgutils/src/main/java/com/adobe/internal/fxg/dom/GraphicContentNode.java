@@ -159,7 +159,7 @@ public abstract class GraphicContentNode extends AbstractFXGNode
         if (child instanceof FilterNode)
         {
             if (filters == null)
-                filters = new ArrayList<FilterNode>();
+                filters = new ArrayList<>();
 
             filters.add((FilterNode)child);
         }

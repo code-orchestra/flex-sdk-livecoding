@@ -39,8 +39,8 @@ public abstract class TypeAnalysis
 
 	public static Map<Expr,Typeref> getExprTypes(Method m)
 	{
-		Map<Expr,Typeref> types = new HashMap<Expr,Typeref>();
-		Map<Expr,Object>  values = new HashMap<Expr,Object>();
+		Map<Expr,Typeref> types = new HashMap<>();
+		Map<Expr,Object>  values = new HashMap<>();
 		
 		analyzeTypes(m, types, values);
 		return types;
@@ -51,16 +51,16 @@ public abstract class TypeAnalysis
 		Deque<Block> code = dfs(m.entry.to);
 		EdgeMap<Expr> uses = findUses(code);
 
-		Set<Edge> reached = new TreeSet<Edge>();
+		Set<Edge> reached = new TreeSet<>();
 		
 		analyzeTypes(m, uses, values, types, reached);
 	}
 	
 	public static void analyzeTypes(Method m, EdgeMap<Expr> uses, Map<Expr, Object> values, Map<Expr, Typeref> types, Set<Edge> reached)
 	{
-		Set<Edge> flowWork = new TreeSet<Edge>();
-		Set<Expr> ssaWork = new TreeSet<Expr>();
-		Set<Expr> ready = new TreeSet<Expr>();
+		Set<Edge> flowWork = new TreeSet<>();
+		Set<Expr> ssaWork = new TreeSet<>();
+		Set<Expr> ready = new TreeSet<>();
 
 		flowWork.add(m.entry);
 		do
@@ -971,7 +971,7 @@ public abstract class TypeAnalysis
 		if (a.t == TypeCache.instance().NULL && isPointer(b.t)) return b;
 		if (b.t == TypeCache.instance().NULL && isPointer(a.t)) return a;
 		
-		Set<Type> bases = new HashSet<Type>();
+		Set<Type> bases = new HashSet<>();
 		for (Type t = a.t; t != null; t = t.base)
 			bases.add(t);
 		

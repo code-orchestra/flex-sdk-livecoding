@@ -81,8 +81,8 @@ public class VelocityManager
 	private static final String UTIL_KEY = "util";
 
 	// Use Hashtable which is synchronized so that the VelocityManager is thread-safe. 
-	private static final Map<String, VelocityEngine> engines = new Hashtable<String, VelocityEngine>();
-	private static final Map<String, Template> templates = new Hashtable<String, Template>();
+	private static final Map<String, VelocityEngine> engines = new Hashtable<>();
+	private static final Map<String, Template> templates = new Hashtable<>();
 
 	/**
 	 * Create a VelocityEngine instance configured with the given libs string

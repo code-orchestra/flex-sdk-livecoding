@@ -124,7 +124,7 @@ public class MetadataConfiguration
     // 'metadata.contributor' option
     //
  
-    private Set<String> contributors = new TreeSet<String>();
+    private Set<String> contributors = new TreeSet<>();
 
     public void cfgContributor( ConfigurationValue cv, String name )
     {
@@ -151,7 +151,7 @@ public class MetadataConfiguration
     // 'metadata.creator' option
     //
  
-    private Set<String> creators = new TreeSet<String>();
+    private Set<String> creators = new TreeSet<>();
 
     public void cfgCreator( ConfigurationValue cv, String name )
     {
@@ -200,7 +200,7 @@ public class MetadataConfiguration
     // 'metadata.description' option
     //
  
-    private Map<String, String> localizedDescriptions = new HashMap<String, String>();
+    private Map<String, String> localizedDescriptions = new HashMap<>();
 
     public void cfgDescription( ConfigurationValue cv, String text )
     {
@@ -222,7 +222,7 @@ public class MetadataConfiguration
     // 'metadata.language' option
     //
  
-    public TreeSet<String> langs = new TreeSet<String>();
+    public TreeSet<String> langs = new TreeSet<>();
 
     public void cfgLanguage( ConfigurationValue cv, String code )
     {
@@ -299,7 +299,7 @@ public class MetadataConfiguration
     // 'metadata.publisher' option
     //
  
-    private Set<String> publishers = new TreeSet<String>();
+    private Set<String> publishers = new TreeSet<>();
 
     public void cfgPublisher( ConfigurationValue cv, String name )
     {
@@ -325,7 +325,7 @@ public class MetadataConfiguration
     // 'metadata.title' option
     //
     
-    private Map<String, String> localizedTitles = new HashMap<String, String>();
+    private Map<String, String> localizedTitles = new HashMap<>();
 
     public void cfgTitle( ConfigurationValue cv, String title )
     {

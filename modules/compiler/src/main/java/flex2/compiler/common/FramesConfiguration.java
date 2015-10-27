@@ -52,14 +52,14 @@ public class FramesConfiguration
     public static class FrameInfo
     {
         public String label = null;
-        public List<String> frameClasses = new LinkedList<String>();
+        public List<String> frameClasses = new LinkedList<>();
     }
     
     //
     // 'frames.frame' option
     //
     
-    private List<FrameInfo> frameList = new LinkedList<FrameInfo>();
+    private List<FrameInfo> frameList = new LinkedList<>();
 
     public List<FrameInfo> getFrameList()
     {

@@ -73,14 +73,14 @@ public class AsClass
         fullName = "";
         baseName = "";
         href = "";
-        excludedProperties = new ArrayList<String>();
+        excludedProperties = new ArrayList<>();
 
-        innerClasses = new ArrayList<AsClass>();
+        innerClasses = new ArrayList<>();
 
-        eventCommentTable = new HashMap<String, String>();
-        fieldGetSet = new HashMap<String, Integer>();
-        privateGetSet = new HashMap<String, Integer>();
-        methodOverrideTable = new HashMap<String, String>();
+        eventCommentTable = new HashMap<>();
+        fieldGetSet = new HashMap<>();
+        privateGetSet = new HashMap<>();
+        methodOverrideTable = new HashMap<>();
     }
 
     public boolean isInnerClass()

@@ -89,7 +89,7 @@ public class ParagraphNode extends AbstractCharacterTextNode
                 || child instanceof CDATANode)
         {
             if (content == null)
-                content = new ArrayList<TextNode>();
+                content = new ArrayList<>();
 
             content.add((TextNode)child);
         }

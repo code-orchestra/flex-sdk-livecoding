@@ -47,7 +47,7 @@ public final class Vertex <W>
 	{
 		if (incidentEdges == null)
 		{
-			incidentEdges = new HashSet<Edge>(INITIAL_CAPACITY);
+			incidentEdges = new HashSet<>(INITIAL_CAPACITY);
 		}
 		incidentEdges.add(e);
 	}
@@ -61,7 +61,7 @@ public final class Vertex <W>
 	{
 		if (emanatingEdges == null)
 		{
-			emanatingEdges = new HashSet<Edge>(INITIAL_CAPACITY);
+			emanatingEdges = new HashSet<>(INITIAL_CAPACITY);
 		}
 		emanatingEdges.add(e);
 	}
@@ -75,7 +75,7 @@ public final class Vertex <W>
 	{
 		if (predecessors == null)
 		{
-			predecessors = new HashSet<Vertex<W>>(INITIAL_CAPACITY);
+			predecessors = new HashSet<>(INITIAL_CAPACITY);
 		}
 		predecessors.add(v);
 	}
@@ -89,7 +89,7 @@ public final class Vertex <W>
 	{
 		if (successors == null)
 		{
-			successors = new ArrayList<Vertex<W>>(INITIAL_CAPACITY);
+			successors = new ArrayList<>(INITIAL_CAPACITY);
 		}
 		successors.add(v);
 	}

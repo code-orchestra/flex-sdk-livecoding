@@ -32,8 +32,8 @@ public class ProgramNode extends Node
 	public StatementListNode statements;
 	public ObjectList<FunctionCommonNode> fexprs;
 	public ObjectList<ClassDefinitionNode> clsdefs;
-	public ObjectList<PackageDefinitionNode> pkgdefs = new ObjectList<PackageDefinitionNode>();
-	public ObjectList<ImportNode> imports = new ObjectList<ImportNode>();
+	public ObjectList<PackageDefinitionNode> pkgdefs = new ObjectList<>();
+	public ObjectList<ImportNode> imports = new ObjectList<>();
 
 	public int temp_count;
 	public int var_count;
@@ -54,13 +54,13 @@ public class ProgramNode extends Node
 
     public Namespaces used_def_namespaces = new Namespaces(); // don't delete
 	
-    public Set<ReferenceValue> import_def_unresolved = new HashSet<ReferenceValue>();
-    public Set<ReferenceValue> package_unresolved = new HashSet<ReferenceValue>();
-	public Set<ReferenceValue> ns_unresolved = new HashSet<ReferenceValue>();
-	public Set<ReferenceValue> fa_unresolved = new HashSet<ReferenceValue>();
-	public Set<ReferenceValue> ce_unresolved = new HashSet<ReferenceValue>();
-	public Set<ReferenceValue> body_unresolved = new HashSet<ReferenceValue>();
-	public Set<ReferenceValue> rt_unresolved = new HashSet<ReferenceValue>();
+    public Set<ReferenceValue> import_def_unresolved = new HashSet<>();
+    public Set<ReferenceValue> package_unresolved = new HashSet<>();
+	public Set<ReferenceValue> ns_unresolved = new HashSet<>();
+	public Set<ReferenceValue> fa_unresolved = new HashSet<>();
+	public Set<ReferenceValue> ce_unresolved = new HashSet<>();
+	public Set<ReferenceValue> body_unresolved = new HashSet<>();
+	public Set<ReferenceValue> rt_unresolved = new HashSet<>();
 
 	public ProgramNode(Context cx, StatementListNode statements)
 	{

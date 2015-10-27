@@ -33,10 +33,10 @@ import java.util.Map.Entry;
 public class Dictionary
 {
     private static DefineTag INVALID_TAG = new DefineTag(Tag.stagEnd) { public void visit(TagHandler t) {} };
-    Map<Integer, DefineTag> ids = new HashMap<Integer, DefineTag>();
-    Map<DefineTag, Integer> tags = new HashMap<DefineTag, Integer>();
-    Map<String, DefineTag> names = new HashMap<String, DefineTag>();
-    Map<String, DefineFont> fonts = new HashMap<String, DefineFont>();
+    Map<Integer, DefineTag> ids = new HashMap<>();
+    Map<DefineTag, Integer> tags = new HashMap<>();
+    Map<String, DefineTag> names = new HashMap<>();
+    Map<String, DefineFont> fonts = new HashMap<>();
     private int nextId = 1;
 
     public boolean contains(int id)

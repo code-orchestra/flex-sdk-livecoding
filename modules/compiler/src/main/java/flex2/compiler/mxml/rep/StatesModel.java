@@ -98,12 +98,12 @@ public final class StatesModel
         this.info = info;
         this.document = doc;
         this.standardDefs = defs;
-        states = new HashMap<String,State>();
-        sharedObjects = new TreeMap<String, SharedObject>();
-        earlyInitObjects = new ArrayList<String>();
-        statefulModels = new ArrayList<Model>();
-        initializedModels = new HashSet<Object>();
-        statesDefined = new HashSet<String>();
+        states = new HashMap<>();
+        sharedObjects = new TreeMap<>();
+        earlyInitObjects = new ArrayList<>();
+        statefulModels = new ArrayList<>();
+        initializedModels = new HashSet<>();
+        statesDefined = new HashSet<>();
         
         if ((!info.getStateNames().isEmpty()) && info.getVersion() >= 4 )
         {
@@ -403,7 +403,7 @@ public final class StatesModel
                 for (String state : extraStates) {
                     Model reparent = getReparentForState(currentModel, state);
                     if (reparent != null) {
-                        Collection<String> reparentState = new ArrayList<String>();
+                        Collection<String> reparentState = new ArrayList<>();
                         reparentState.add(state);
                         boolean result = ensureCompatibleAncestors(model, reparent, reparentState, startNode);
                         if (!result) return false;
@@ -440,7 +440,7 @@ public final class StatesModel
      */
     private Collection<String> checkForExtraStates(Model ancestor, Model model, Collection<String> states)
     {
-        Collection<String> results = new ArrayList<String>();
+        Collection<String> results = new ArrayList<>();
         if (ancestor.isStateSpecific())
         {
             for (String state : states) {
@@ -577,7 +577,7 @@ public final class StatesModel
      */
     private Set<String> expandState(String state)
     {
-        Set<String> states = new HashSet<String>();
+        Set<String> states = new HashSet<>();
         Map <String, Collection<String>> groupMap = info.getStateGroups();
         
         if (groupMap.containsKey(state))
@@ -598,7 +598,7 @@ public final class StatesModel
      */
     private Set<String> expandStateList(Collection<String> stateList)
     {
-        Set<String> expandedStates = new HashSet<String>();
+        Set<String> expandedStates = new HashSet<>();
         Map <String, Collection<String>> groupMap = info.getStateGroups();
 
         for (String state : stateList) {
@@ -675,7 +675,7 @@ public final class StatesModel
      */
     private ArrayList<Model> buildRelativeSiblingList(Model model, ArrayList siblings, int startIndex)
     {
-        ArrayList<Model> relativeSiblings = new ArrayList<Model>();
+        ArrayList<Model> relativeSiblings = new ArrayList<>();
         for (int i = startIndex; i > -1; i--)
         {
             ValueInitializer initializer = (ValueInitializer)siblings.get(i);
@@ -890,7 +890,7 @@ public final class StatesModel
      */
     private Collection<String> inverseOf(Collection<String> list) {
         
-        Collection<String> inverse = new TreeSet<String>(); 
+        Collection<String> inverse = new TreeSet<>();
         Set<String> all = info.getStateNames(); 
         Set<String> expandedList = expandStateList(list);
 
@@ -937,7 +937,7 @@ public final class StatesModel
      */
     public Collection<String> getGroupsForState(String name)
     {
-        Collection<String> groups = new ArrayList<String>();
+        Collection<String> groups = new ArrayList<>();
         Map<String, Collection<String>> stateGroups = info.getStateGroups();
 
         for (String groupName : stateGroups.keySet()) {
@@ -1002,7 +1002,7 @@ public final class StatesModel
                 iterList.add(state.getEvents());
 
                 // Override value initializers
-                ArrayList<Initializer> values = new ArrayList<Initializer>();
+                ArrayList<Initializer> values = new ArrayList<>();
                 for (Override override : state.overrides) {
                     if (override instanceof SetPropertyOverride) {
                         ValueInitializer initializer = ((SetPropertyOverride) override).value;
@@ -1033,7 +1033,7 @@ public final class StatesModel
         public State(String name)
         {
             this.name = name;
-            overrides = new ArrayList<Override>();
+            overrides = new ArrayList<>();
         }
         
         public void addOverride(Override override, int line) 

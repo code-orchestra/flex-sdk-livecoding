@@ -241,12 +241,12 @@ public final class Parser
     public Scanner scanner;
 
     private String encoding;
-    public ObjectList<Node> comments = new ObjectList<Node>(); // all comments encountered while parsing are placed here, rather than in the parse tree
+    public ObjectList<Node> comments = new ObjectList<>(); // all comments encountered while parsing are placed here, rather than in the parse tree
     public IntList block_kind_stack = new IntList();
     public String current_class_name = null;
     private boolean within_package;
     private boolean parsing_include = false;
-    public ObjectList< HashSet<String> > config_namespaces = new ObjectList< HashSet<String> >();
+    public ObjectList< HashSet<String> > config_namespaces = new ObjectList<>();
 
     private void clearUnusedBuffers() {
         comments.clear();
@@ -6235,7 +6235,7 @@ XMLElementContent
         shift(); //match(PACKAGE_TOKEN);
 
         assert config_namespaces.size() > 0; 
-        HashSet<String> conf_ns = new HashSet<String>(config_namespaces.last().size());
+        HashSet<String> conf_ns = new HashSet<>(config_namespaces.last().size());
         conf_ns.addAll(config_namespaces.last());
         config_namespaces.push_back(conf_ns);
         
@@ -6258,7 +6258,7 @@ XMLElementContent
         
         if (!ctx.statics.use_namespaces.isEmpty())
         {
-        	useDirectives = new ObjectList<UseDirectiveNode>();
+        	useDirectives = new ObjectList<>();
         	for (String u : ctx.statics.use_namespaces)
         	{
         		useDirectives.add(

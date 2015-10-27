@@ -65,15 +65,15 @@ public class Main
 
     static boolean optimize = false;
 
-	static ObjectList<String> include_filespecs = new ObjectList<String>();
-	static ObjectList<String> import_filespecs = new ObjectList<String>();
+	static ObjectList<String> include_filespecs = new ObjectList<>();
+	static ObjectList<String> import_filespecs = new ObjectList<>();
 	static ObjectList<String> use_namespaces;
 	
 	static String swf_options = "";
 	static String language = "EN";
 	static String avmplus_exe = null;
 
-    static ObjectList<ConfigVar> config_vars = new ObjectList<ConfigVar>();
+    static ObjectList<ConfigVar> config_vars = new ObjectList<>();
     static ObjectList<ConfigVar> optimizer_configs = null;
 
 	public static void main(String[] args) throws Exception
@@ -272,7 +272,7 @@ public class Main
                     	{
                     		if ( null == optimizer_configs)
                     		{
-                    			optimizer_configs = new ObjectList<ConfigVar>();
+                    			optimizer_configs = new ObjectList<>();
                     		}
                     		
                     		if ( flag.length() > 4)
@@ -313,7 +313,7 @@ public class Main
 						{
 							++i;
                             if (use_namespaces == null)
-                                use_namespaces = new ObjectList<String>();
+                                use_namespaces = new ObjectList<>();
                             use_namespaces.add(args[i].trim());
 						}
 						break;
@@ -518,7 +518,7 @@ public class Main
 
 			if (include_filespecs.size() > 0)
 			{
-				plug.includes = new ObjectList<IncludeInfo>();
+				plug.includes = new ObjectList<>();
 				for (int n = 0; n < include_filespecs.size(); ++n)
 				{
 					String filespec = include_filespecs.get(n);
@@ -552,7 +552,7 @@ public class Main
 				}
 			}
 
-			ObjectList<CompilerPlug> plugs = new ObjectList<CompilerPlug>();
+			ObjectList<CompilerPlug> plugs = new ObjectList<>();
 
 			Compiler.doCompile(plug, plugs, show_instructions,
 					show_machinecode, show_linenums, show_parsetrees,

@@ -33,14 +33,14 @@ public final class Algorithms
 {
 	public static <VertexWeight,EdgeWeight> boolean isCyclic(Graph<VertexWeight,EdgeWeight> g)
 	{
-		ConnectednessCounter<VertexWeight,EdgeWeight> counter = new ConnectednessCounter<VertexWeight,EdgeWeight>();
+		ConnectednessCounter<VertexWeight,EdgeWeight> counter = new ConnectednessCounter<>();
 		topologicalSort(g, counter);
 		return counter.count != g.getVertices().size();
 	}
 
 	public static <VertexWeight,EdgeWeight> Set<Vertex<VertexWeight,EdgeWeight>> detectCycles(Graph<VertexWeight,EdgeWeight> g)
 	{
-		ConnectednessCounter<VertexWeight,EdgeWeight> counter = new ConnectednessCounter<VertexWeight,EdgeWeight>(g.getVertices());
+		ConnectednessCounter<VertexWeight,EdgeWeight> counter = new ConnectednessCounter<>(g.getVertices());
 		topologicalSort(g, counter);
 		return counter.remained;
 	}
@@ -58,7 +58,7 @@ public final class Algorithms
 			inDegree[v.id] = v.inDegrees();
 		}
 
-		LinkedList<Vertex<VertexWeight,EdgeWeight>> queue = new LinkedList<Vertex<VertexWeight,EdgeWeight>>();
+		LinkedList<Vertex<VertexWeight,EdgeWeight>> queue = new LinkedList<>();
 		for (int i = 0, length = vertices.length; i < length; i++)
 		{
 			// in case of seeing multiple degree-zero candidates, we could
@@ -97,7 +97,7 @@ public final class Algorithms
 
 		private ConnectednessCounter(Set<Vertex<VertexWeight,EdgeWeight>> vertices)
 		{
-			this.remained = new HashSet<Vertex<VertexWeight,EdgeWeight>>(vertices);
+			this.remained = new HashSet<>(vertices);
 		}
 
 		private int count;

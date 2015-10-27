@@ -86,7 +86,7 @@ public class BreakAction
 	private void init()
 	{
 		m_id = BreakIdentifier.next();
-		m_commands = new Vector<String>();
+		m_commands = new Vector<>();
         m_propagable = true;
 	}
 

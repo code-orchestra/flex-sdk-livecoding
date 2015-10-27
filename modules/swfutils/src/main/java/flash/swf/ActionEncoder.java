@@ -64,8 +64,8 @@ public class ActionEncoder extends ActionHandler
     {
         this.writer = writer;
         this.debug = debug;
-        labels = new HashMap<Label, LabelEntry>();
-        updates = new ArrayList<UpdateEntry>();
+        labels = new HashMap<>();
+        updates = new ArrayList<>();
     }
 
 	private static class UpdateEntry

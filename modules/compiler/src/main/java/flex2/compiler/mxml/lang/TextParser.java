@@ -533,7 +533,7 @@ public abstract class TextParser
             return Collections.emptyList();
         }
 
-        Collection<Object> result = new ArrayList<Object>();
+        Collection<Object> result = new ArrayList<>();
 		StringBuilder buffer = new StringBuilder();
         char quoteChar = '\'';
         boolean inQuotes = false;
@@ -763,7 +763,7 @@ public abstract class TextParser
            text = "";
        }
 
-       Collection<String> result = new ArrayList<String>();
+       Collection<String> result = new ArrayList<>();
        StringBuilder buffer = new StringBuilder();
        char quoteChar = '\'';
        boolean inQuotes = false;

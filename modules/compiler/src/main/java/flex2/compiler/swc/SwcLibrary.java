@@ -61,17 +61,17 @@ public class SwcLibrary
     private Set<String> externs;
     private String location = null;
     private Set<String> metadata;
-    protected Map<String, Digest> digests = new HashMap<String, Digest>();
+    protected Map<String, Digest> digests = new HashMap<>();
     
     public SwcLibrary( Swc swc, String path )
     {
         this.swc = swc;
         this.path = path;
-        this.scripts = new LinkedList<SwcScript>();
+        this.scripts = new LinkedList<>();
         this.parsed = false;
-        this.name2script = new HashMap<String, SwcScript>();
-        this.externs = new HashSet<String>();
-        this.metadata = new HashSet<String>();
+        this.name2script = new HashMap<>();
+        this.externs = new HashSet<>();
+        this.metadata = new HashSet<>();
     }
 
     public Swc getSwc()
@@ -196,7 +196,7 @@ public class SwcLibrary
         }
 
         int c1 = 0;
-        def2symbol = new HashMap<String, DefineTag>();
+        def2symbol = new HashMap<>();
         for (Frame frame : movie.frames) {
             for (DoABC doABC : frame.doABCs) {
                 SwcScript script = getScript(doABC);
@@ -233,7 +233,7 @@ public class SwcLibrary
     {
     	// getSymbol() converts def from a.b:C to a.b.C
     	DefineTag t = getSymbol(def);   
-    	HashSet<Tag> visited = new HashSet<Tag>();
+    	HashSet<Tag> visited = new HashSet<>();
     	getReferencedSymbolClasses(t, symbolClasses, visited);
     }
     

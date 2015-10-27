@@ -59,17 +59,17 @@ public class FlexMovie extends SimpleMovie
 
         // C: FlexMovie should keep its own copy of externs, includes, unresolved and resourceBundles
         //    so that incremental compilation can do the single-compile-multiple-link scenario.
-        externs = new HashSet<String>(linkerConfiguration.getExterns());
-	    includes = new LinkedHashSet<String>(linkerConfiguration.getIncludes());
-        unresolved = new HashSet<String>(linkerConfiguration.getUnresolved());
+        externs = new HashSet<>(linkerConfiguration.getExterns());
+	    includes = new LinkedHashSet<>(linkerConfiguration.getIncludes());
+        unresolved = new HashSet<>(linkerConfiguration.getUnresolved());
         generateLinkReport = linkerConfiguration.generateLinkReport();
         generateRBList = linkerConfiguration.generateRBList();
-	    resourceBundles = new TreeSet<String>(linkerConfiguration.getResourceBundles());
+	    resourceBundles = new TreeSet<>(linkerConfiguration.getResourceBundles());
 
-        frameInfoList = new LinkedList<FrameInfo>();
-        configFrameInfoList = new LinkedList<FrameInfo>();
+        frameInfoList = new LinkedList<>();
+        configFrameInfoList = new LinkedList<>();
         configFrameInfoList.addAll( linkerConfiguration.getFrameList() );
-        metadata = new HashSet<String>();
+        metadata = new HashSet<>();
     }
 
     private void prelink( List<CompilationUnit> units ) throws LinkerException
@@ -77,7 +77,7 @@ public class FlexMovie extends SimpleMovie
         // Starting at the main definition, build the list of frames and frame classes.
         // No new classes can be discovered here, we're just building the frame class list.
 
-        Map<String, CompilationUnit> def2unit = new HashMap<String, CompilationUnit>();
+        Map<String, CompilationUnit> def2unit = new HashMap<>();
         for (CompilationUnit unit : units) {
             mapAll(def2unit, unit.topLevelDefinitions.getStringSet(), unit);
         }
@@ -149,7 +149,7 @@ public class FlexMovie extends SimpleMovie
             throw e;
         }
 
-        List<CULinkable> linkables = new LinkedList<CULinkable>();
+        List<CULinkable> linkables = new LinkedList<>();
 
 		//	TODO remove - see note below
         String serverConfigDef = null;
@@ -188,7 +188,7 @@ public class FlexMovie extends SimpleMovie
 
         try
         {
-            final Set<SwcLibrary> librariesProcessed = new HashSet<SwcLibrary>();
+            final Set<SwcLibrary> librariesProcessed = new HashSet<>();
             int counter = 0;
             DependencyWalker.LinkState state = new DependencyWalker.LinkState( linkables, externs, includes, unresolved );
             for (Iterator<FrameInfo> it = frameInfoList.iterator(); it.hasNext();)

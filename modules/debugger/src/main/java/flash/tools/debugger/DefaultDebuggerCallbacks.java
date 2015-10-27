@@ -353,7 +353,7 @@ public class DefaultDebuggerCallbacks implements IDebuggerCallbacks
 		Process p = null;
 		String result = null;
 
-		List<String> arguments = new ArrayList<String>(6);
+		List<String> arguments = new ArrayList<>(6);
 		arguments.add("reg.exe"); //$NON-NLS-1$
 		arguments.add("query"); //$NON-NLS-1$
 		arguments.add(key);

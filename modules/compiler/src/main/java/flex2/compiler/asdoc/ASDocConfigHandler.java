@@ -36,7 +36,7 @@ import java.util.Map;
 public class ASDocConfigHandler extends DefaultHandler
 {
 	private BufferedWriter writer;
-	private Map<String, String> configMap = new HashMap<String, String>();
+	private Map<String, String> configMap = new HashMap<>();
 	private boolean skipCharacters;
 
 	/**

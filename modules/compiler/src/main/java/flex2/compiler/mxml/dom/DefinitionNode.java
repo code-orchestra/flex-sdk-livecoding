@@ -40,7 +40,7 @@ public class DefinitionNode extends Node
     public static final Set<QName> attributes;
     static
     {
-        attributes = new HashSet<QName>();
+        attributes = new HashSet<>();
         attributes.add(new QName("", DEFINITION_NAME_ATTR));
     }
 

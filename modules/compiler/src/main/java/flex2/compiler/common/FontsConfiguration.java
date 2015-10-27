@@ -208,7 +208,7 @@ public class FontsConfiguration
 
     public void cfgLocalFontPaths(ConfigurationValue cv, List list)
     {
-        resolvedLocalFontPaths = new ArrayList<String>();
+        resolvedLocalFontPaths = new ArrayList<>();
         if (list != null)
         {
             for (Object aList : list) {

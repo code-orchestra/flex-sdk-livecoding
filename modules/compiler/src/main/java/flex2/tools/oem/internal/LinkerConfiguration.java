@@ -53,7 +53,7 @@ public class LinkerConfiguration extends ToolsConfiguration implements flex2.lin
 {
 	public static Map<String, String> getAliases()
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 	    map.putAll(Configuration.getAliases());
 	    map.remove("o");
 		return map;

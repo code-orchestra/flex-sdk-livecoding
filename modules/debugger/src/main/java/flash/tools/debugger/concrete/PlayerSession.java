@@ -90,7 +90,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	private volatile boolean m_isHalted; // WARNING -- accessed from multiple threads
 	private volatile boolean m_incoming; // WARNING -- accessed from multiple threads
 	private volatile boolean m_lastResponse;  // whether there was a reponse from the last message to the Player
-	private volatile HashMap<Integer, PlayerSessionIsolateStatus> m_isolateStatus = new HashMap<Integer, PlayerSessionIsolateStatus>();
+	private volatile HashMap<Integer, PlayerSessionIsolateStatus> m_isolateStatus = new HashMap<>();
 	
 	private int				m_watchTransactionTag;
 	private Boolean			m_playerCanCallFunctions;
@@ -122,7 +122,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 	 * A simple cache of previous "is" and "instanceof" queries, in order to
 	 * avoid having to send redundant messages to the player.
 	 */
-	private Map<String, Boolean> m_evalIsAndInstanceofCache = new HashMap<String, Boolean>();
+	private Map<String, Boolean> m_evalIsAndInstanceofCache = new HashMap<>();
 	
 	private volatile int m_lastPreIsolate = Isolate.DEFAULT_ID;
 	
@@ -438,7 +438,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 		StringBuilder retval = new StringBuilder();
 		try
 		{
-			List<String> execArgs = new LinkedList<String>();
+			List<String> execArgs = new LinkedList<>();
 			// "osascript" is the command-line way of executing AppleScript.
 			execArgs.add("/usr/bin/osascript"); //$NON-NLS-1$
 			execArgs.add("-"); //$NON-NLS-1$
@@ -486,7 +486,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 			stm = PlayerSession.class.getResourceAsStream(appleScriptFilename);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stm));
 			String line;
-			List<String> appleScriptLines = new ArrayList<String>();
+			List<String> appleScriptLines = new ArrayList<>();
 			while ( (line=reader.readLine()) != null )
 				appleScriptLines.add(line);
 			String[] lines = appleScriptLines.toArray(new String[appleScriptLines.size()]);
@@ -518,7 +518,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
         	null
 		);
 		String[] apps = running.split(", "); //$NON-NLS-1$
-		Set<String> retval = new HashSet<String>();
+		Set<String> retval = new HashSet<>();
 		Collections.addAll(retval, apps);
 		return retval;
 	}
@@ -1111,8 +1111,8 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 			return;
 		DStackContext context = m_manager.getFrame(depth, isolateId);		
 		DVariable[] frameVars = (DVariable[]) frame.getMembers(this);
-		Map<String, DVariable> varmap = new LinkedHashMap<String, DVariable>(frameVars.length); // preserves order
-		List<DVariable> activationObjects = new ArrayList<DVariable>();
+		Map<String, DVariable> varmap = new LinkedHashMap<>(frameVars.length); // preserves order
+		List<DVariable> activationObjects = new ArrayList<>();
 		Pattern activationObjectNamePattern = Pattern.compile("^.*\\$\\d+$"); //$NON-NLS-1$
 
 		// loop through all frame variables, and separate them into two
@@ -2696,7 +2696,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 
 		if (!playerCanCallFunctions(isolateId))
 		{
-			Map<String,String> parameters = new HashMap<String,String>();
+			Map<String,String> parameters = new HashMap<>();
 			parameters.put("operator", op.getName()); //$NON-NLS-1$
 			String message = PlayerSessionManager.getLocalizationManager().getLocalizedTextString("operatorNotSupported", parameters); //$NON-NLS-1$
 			throw new NotSupportedException(message);
@@ -2897,7 +2897,7 @@ public class PlayerSession implements Session, DProtocolNotifierIF, Runnable, Is
 		}
 		//SwfInfo[] swfs = m_manager.getSwfInfos();
 		
-		ArrayList<SwfInfo> swfList = new ArrayList<SwfInfo>();
+		ArrayList<SwfInfo> swfList = new ArrayList<>();
 
 		Collections.addAll(swfList, m_manager.getSwfInfos(isolateId));
 

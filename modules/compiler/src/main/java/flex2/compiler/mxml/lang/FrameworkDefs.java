@@ -36,7 +36,7 @@ public class FrameworkDefs
 	public static final Set<String> builtInEffectNames;
 	static
 	{
-		builtInEffectNames = new HashSet<String>();
+		builtInEffectNames = new HashSet<>();
 		builtInEffectNames.add("Dissolve");
 		builtInEffectNames.add("Fade");
 		builtInEffectNames.add("WipeLeft");
@@ -59,7 +59,7 @@ public class FrameworkDefs
 	public static final Set<String> requiredTopLevelDescriptorProperties;
 	static
 	{
-		requiredTopLevelDescriptorProperties = new HashSet<String>();
+		requiredTopLevelDescriptorProperties = new HashSet<>();
 		requiredTopLevelDescriptorProperties.add("height");
 		requiredTopLevelDescriptorProperties.add("width");
 		requiredTopLevelDescriptorProperties.add("creationPolicy");
@@ -76,7 +76,7 @@ public class FrameworkDefs
 	/**
 	 * (generated) binding management variable sets
 	 */
-	public static final List<VariableDeclaration> bindingManagementVars = new ArrayList<VariableDeclaration>();
+	public static final List<VariableDeclaration> bindingManagementVars = new ArrayList<>();
 	static
 	{
 		bindingManagementVars.add(new VariableDeclaration("mx_internal", "_bindings", SymbolTable.ARRAY, "[]"));

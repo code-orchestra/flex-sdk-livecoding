@@ -33,7 +33,7 @@ public class ArgumentsNode extends Node
 
 	static
 	{
-		attributes = new HashSet<QName>();
+		attributes = new HashSet<>();
 	}
 
 	ArgumentsNode(String uri, String localName, int size)

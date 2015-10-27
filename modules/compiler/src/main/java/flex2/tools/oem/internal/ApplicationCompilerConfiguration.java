@@ -49,7 +49,7 @@ public class ApplicationCompilerConfiguration extends ToolsConfiguration
 {
 	public static Map<String, String> getAliases()
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 	    map.putAll(Configuration.getAliases());
 	    map.remove("o");
 		return map;
@@ -84,7 +84,7 @@ public class ApplicationCompilerConfiguration extends ToolsConfiguration
 	//
 
 	// list of filespecs, default var for command line
-	private List<String> fileSpecs = new ArrayList<String>();
+	private List<String> fileSpecs = new ArrayList<>();
 
 	public List<String> getFileSpecs()
 	{

@@ -58,7 +58,7 @@ public final class BytecodeEmitter extends ActionBlockEmitter
 
 		if (debug)
 		{
-			lines = new HashSet<Line>();
+			lines = new HashSet<>();
 			key = new Line();
 		}
 	}

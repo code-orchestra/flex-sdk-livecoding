@@ -17,9 +17,9 @@ import java.util.Set;
  */
 public class SWCClassDigest implements IClassDigest {
 
-    private List<IMember> instanceMembers = new ArrayList<IMember>();
-    private List<IMember> staticMembers = new ArrayList<IMember>();
-    private List<IMember> members = new ArrayList<IMember>();
+    private List<IMember> instanceMembers = new ArrayList<>();
+    private List<IMember> staticMembers = new ArrayList<>();
+    private List<IMember> members = new ArrayList<>();
 
     private String fqName;
     private String superClassFqName;
@@ -72,7 +72,7 @@ public class SWCClassDigest implements IClassDigest {
 
     @Override
     public List<IMember> getAllMembers() {
-        List<IMember> allMembers = new ArrayList<IMember>();
+        List<IMember> allMembers = new ArrayList<>();
         allMembers.addAll(getInstanceMembers());
         allMembers.addAll(getStaticMembers());
         return allMembers;

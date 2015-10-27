@@ -17,8 +17,8 @@ public class MethodCONode extends CONode {
     public String methodName;
     public String returnType;
     public boolean isStatic;
-    public final List<Node> statements = new ArrayList<Node>();
-    private final List<Parameter> parameters = new ArrayList<Parameter>();
+    public final List<Node> statements = new ArrayList<>();
+    private final List<Parameter> parameters = new ArrayList<>();
     private Context cx;
 
     // Set by parent node generator

@@ -68,7 +68,7 @@ public class SpanNode extends AbstractRichTextLeafNode
         {
             if (content == null)
             {
-                content = new ArrayList<TextNode>();
+                content = new ArrayList<>();
             }
             content.add((TextNode)child);
         }

@@ -18,9 +18,9 @@ import java.util.*;
  */
 public abstract class NodeVisitor<N extends Node> {
 
-    private static Map<Node, Integer> visitedNodes = new HashMap<Node, Integer>();
+    private static Map<Node, Integer> visitedNodes = new HashMap<>();
     private static boolean testMode = true;
-    protected static final LinkedHashMap<Node, String> emptyMap = new LinkedHashMap<Node, String>();
+    protected static final LinkedHashMap<Node, String> emptyMap = new LinkedHashMap<>();
 
     /**
      * This is implemented only for comparing function bodies!
@@ -31,8 +31,8 @@ public abstract class NodeVisitor<N extends Node> {
         }
 
         // We use LinkedHashMap, so keyset iteration goes in the same order as nodes were inserted
-        List<Node> leftChildren = new ArrayList<Node>(getChildren(left).keySet());
-        List<Node> rightChildren = new ArrayList<Node>(getChildren(right).keySet());
+        List<Node> leftChildren = new ArrayList<>(getChildren(left).keySet());
+        List<Node> rightChildren = new ArrayList<>(getChildren(right).keySet());
         List<Object> leftLeaves = getLeaves(left);
         List<Object> rightLeaves = getLeaves(right);
 
@@ -96,7 +96,7 @@ public abstract class NodeVisitor<N extends Node> {
     }
 
     public static void applyToTree(Node treeRoot, INodeProcessor nodeProcessor) {
-        Queue<Node> nodesToProcess = new LinkedList<Node>();
+        Queue<Node> nodesToProcess = new LinkedList<>();
         if (treeRoot instanceof ProgramNode) {
             treeRoot = ((ProgramNode) treeRoot).pkgdefs.get(0);
         }

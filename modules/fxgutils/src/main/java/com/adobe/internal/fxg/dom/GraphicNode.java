@@ -245,7 +245,7 @@ public class GraphicNode extends AbstractFXGNode implements MaskableNode
         else if (child instanceof GraphicContentNode)
         {
             if (children == null)
-                children = new ArrayList<GraphicContentNode>();
+                children = new ArrayList<>();
 
             if (child instanceof GroupNode)
             {

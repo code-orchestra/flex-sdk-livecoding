@@ -38,7 +38,7 @@ public class CallGraph
 
 	public List<Method> traverseDepthFirstUnique()
 	{
-		List<Method> traversed_methods = new ArrayList<Method>();
+		List<Method> traversed_methods = new ArrayList<>();
 		
 		for (Type t: this.abc.scripts)
 		{

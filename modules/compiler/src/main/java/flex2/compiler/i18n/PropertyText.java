@@ -56,8 +56,8 @@ public class PropertyText extends OrderedProperties
 		this.symbolTable = symbolTable;
 		this.source = source;
 		this.locale = locale;
-		imports = new HashSet<String>();
-		atEmbeds = new HashMap<String, AtEmbed>();
+		imports = new HashSet<>();
+		atEmbeds = new HashMap<>();
 
 		imports.add(standardDefs.CLASS_RESOURCEBUNDLE_DOT);
 

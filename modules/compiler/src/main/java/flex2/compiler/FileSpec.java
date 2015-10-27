@@ -52,7 +52,7 @@ public final class FileSpec
 	{
 		this.mimeTypes = mimeTypes;
 
-		sources = new LinkedHashMap<String, Source>(files.length);
+		sources = new LinkedHashMap<>(files.length);
 
 		for (int i = 0, length = files.length; i < length; i++)
 		{
@@ -79,7 +79,7 @@ public final class FileSpec
 
 	public List<Source> retrieveSources()
 	{
-		List<Source> sources = new ArrayList<Source>(this.sources.size());
+		List<Source> sources = new ArrayList<>(this.sources.size());
 
 		for (String name : this.sources.keySet()) {
 			Source s = this.sources.get(name);

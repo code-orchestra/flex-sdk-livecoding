@@ -119,7 +119,7 @@ public class QNameList extends ArrayList<QName>
 
     public Set<String> getStringSet()
     {
-        Set<String> set = new LinkedHashSet<String>(size());
+        Set<String> set = new LinkedHashSet<>(size());
 
 		for (QName qName : this) {
 			set.add(qName.toString());

@@ -334,7 +334,7 @@ public class BindingExpression implements Comparable<BindingExpression>
      */
     private Stack<Model> generateDestinationStack()
     {
-        Stack<Model> destinationStack = new Stack<Model>();
+        Stack<Model> destinationStack = new Stack<>();
         Model model = destination;
 
         while (model != null)
@@ -815,7 +815,7 @@ public class BindingExpression implements Comparable<BindingExpression>
 	{
 		if (namespaces == null)
 		{
-			namespaces = new HashMap<Integer, String>();
+			namespaces = new HashMap<>();
 		}
 		namespaces.put(IntegerPool.getNumber(i), nsUri);
 	}
@@ -833,7 +833,7 @@ public class BindingExpression implements Comparable<BindingExpression>
      */ 	 
     public static String getAllBindingNamespaceDeclarations(List<BindingExpression> bindingExpressions) 	 
     { 	 
-        Map<Integer, String> allNs = new HashMap<Integer, String>(); 	 
+        Map<Integer, String> allNs = new HashMap<>();
 	  	 
         // Combine all the namespaces using the Integer as the unique key. 	 
         for (BindingExpression be : bindingExpressions) 	 

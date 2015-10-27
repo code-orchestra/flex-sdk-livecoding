@@ -65,7 +65,7 @@ public class StringIntArray extends AbstractList<Object>
 	 */
 	public ArrayList<Integer> elementsStartingWith(String s)
 	{
-		ArrayList<Integer> alist = new ArrayList<Integer>();
+		ArrayList<Integer> alist = new ArrayList<>();
 		for(int i=0; i<m_size; i++)
 			if ( getString(i).startsWith(s) )
 				alist.add(i);

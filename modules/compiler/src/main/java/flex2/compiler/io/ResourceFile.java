@@ -35,8 +35,8 @@ public class ResourceFile implements VirtualFile
 	public ResourceFile(String name, String[] locales, VirtualFile[] files, VirtualFile[] pathRoots)
 	{
 		this.name = name;
-		this.files = new LinkedHashMap<String, VirtualFile>();
-		this.roots = new LinkedHashMap<String, VirtualFile>();
+		this.files = new LinkedHashMap<>();
+		this.roots = new LinkedHashMap<>();
 		this.locales = new String[locales == null ? 0 : locales.length];
 		
 		for (int i = 0, len = this.locales.length; i < len; i++)

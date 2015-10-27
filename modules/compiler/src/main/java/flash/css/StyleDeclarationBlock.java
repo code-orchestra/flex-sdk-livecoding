@@ -72,8 +72,8 @@ public class StyleDeclarationBlock
         this.mediaList = mediaList;
         // TODO: For backwards compatibility, this has to remain HashMap and
         // not an ordered map.
-        properties = new HashMap<String, StyleProperty>();
-        effectStyles = new ArrayList<String>();
+        properties = new HashMap<>();
+        effectStyles = new ArrayList<>();
     }
 
     /**

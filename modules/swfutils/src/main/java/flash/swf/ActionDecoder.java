@@ -139,7 +139,7 @@ public class ActionDecoder
         reader.readUI16(); // must be 0
         a.allEventFlags = decodeClipEventFlags(reader);
 
-        ArrayList<ClipActionRecord> list = new ArrayList<ClipActionRecord>();
+        ArrayList<ClipActionRecord> list = new ArrayList<>();
 
         ClipActionRecord record = decodeClipActionRecord();
         while (record != null)

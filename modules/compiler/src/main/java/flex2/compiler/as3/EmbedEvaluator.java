@@ -63,8 +63,8 @@ class EmbedEvaluator extends EvaluatorAdapter
         this.generatedOutputDir = generatedOutputDir;
         this.transcoders = transcoders;
         this.checkDeprecation = checkDeprecation;
-        embedDataStack = new Stack<EmbedData>();
-		evaluatedClasses = new HashSet<ClassDefinitionNode>();
+        embedDataStack = new Stack<>();
+		evaluatedClasses = new HashSet<>();
 	}
 
     private EmbedData getEmbedData()
@@ -287,7 +287,7 @@ class EmbedEvaluator extends EvaluatorAdapter
     {
         MetaData metaData = new MetaData(node);
         int len = metaData.count();
-        Map<String, Object> values = new HashMap<String, Object>();
+        Map<String, Object> values = new HashMap<>();
         for (int i = 0; i < len; i++)
         {
             String key = metaData.getKey(i);
@@ -332,7 +332,7 @@ class EmbedEvaluator extends EvaluatorAdapter
 
     public Value evaluate(Context context, ProgramNode node)
     {
-        embedDataStack = new Stack<EmbedData>();
+        embedDataStack = new Stack<>();
 
         super.evaluate(context, node);
 
@@ -343,7 +343,7 @@ class EmbedEvaluator extends EvaluatorAdapter
 
     private Map<QName, Source> generateSources(String packageName, Context cx, Node node)
     {
-        Map<QName, Source> sources = new HashMap<QName, Source>();
+        Map<QName, Source> sources = new HashMap<>();
         EmbedData embedData = getEmbedData();
 
         for (Map.Entry<String, Map<String, Object>> e : embedData.class2params.entrySet()) {
@@ -482,14 +482,14 @@ class EmbedEvaluator extends EvaluatorAdapter
     class EmbedData
     {
         public String referenceClassName;
-        public Map<String, Map<String, Object>> class2params = new HashMap<String, Map<String, Object>>();    // unique prefix -> map of embed params
+        public Map<String, Map<String, Object>> class2params = new HashMap<>();    // unique prefix -> map of embed params
         public boolean inUse;
 
         public void clear()
         {
             if (hasData())
             {
-                class2params = new HashMap<String, Map<String, Object>>();
+                class2params = new HashMap<>();
             }
         }
 

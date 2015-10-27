@@ -53,7 +53,7 @@ import org.w3c.css.sac.InputSource;
 public class StyleParser
 {
     private int ruleIndex = 0;
-    private List<Rule> rules = new ArrayList<Rule>();
+    private List<Rule> rules = new ArrayList<>();
 	private String cssPath;
     private boolean errorsExist = false;
 	private String mxmlPath;

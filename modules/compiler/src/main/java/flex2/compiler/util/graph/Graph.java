@@ -32,8 +32,8 @@ public class Graph<VertexWeight,EdgeWeight>
 {
 	public Graph()
 	{
-		vertices = new HashSet<Vertex<VertexWeight,EdgeWeight>>(300);
-		edges = new HashSet<Edge<VertexWeight,EdgeWeight>>(300);
+		vertices = new HashSet<>(300);
+		edges = new HashSet<>(300);
 	}
 
 	private int counter;

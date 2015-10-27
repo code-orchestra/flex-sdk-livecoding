@@ -409,7 +409,7 @@ public class FileConfigurator
         {
             int varArgCount = cfgbuf.getVarArgCount( var );
 
-            Map<String, String> items = new HashMap<String, String>();
+            Map<String, String> items = new HashMap<>();
 
             boolean byName = (varArgCount > 1);
 
@@ -424,7 +424,7 @@ public class FileConfigurator
                     }
                 }
             }
-            List<String> args = new LinkedList<String>();
+            List<String> args = new LinkedList<>();
 
             if (byName)
             {
@@ -469,7 +469,7 @@ public class FileConfigurator
             this.locator = locator;
         }
 
-        private Stack<ParseContext> contextStack = new Stack<ParseContext>();
+        private Stack<ParseContext> contextStack = new Stack<>();
         private final ConfigurationBuffer cfgbuf;
         private final String source;
         private final String contextPath;
@@ -496,7 +496,7 @@ public class FileConfigurator
             this.base = null;
             this.var = null;
             this.varArgCount = -2;
-            this.argList = new LinkedList<ParseValue>();
+            this.argList = new LinkedList<>();
             this.append = false;
             this.ignore = false;
         }
@@ -653,7 +653,7 @@ public class FileConfigurator
                 name += "." + token;
 
             if (current.children == null)
-                current.children = new TreeMap<String, FormatNode>();
+                current.children = new TreeMap<>();
 
             if (cfgbuf.isChildConfig( name ))
             {
@@ -662,7 +662,7 @@ public class FileConfigurator
                     FormatNode node = new FormatNode();
                     node.fullname = name;
                     node.shortname = token;
-                    node.children = new TreeMap<String, FormatNode>();
+                    node.children = new TreeMap<>();
                     current.children.put( token, node );
                     current = node;
                 }

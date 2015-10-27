@@ -33,14 +33,14 @@ public class Block implements Iterable<Expr>, Comparable<Block>
 	/**
 	 *  The statement-level expressions that make up this block's code. 
 	 */
-	public Deque<Expr> exprs = new ArrayDeque<Expr>();
+	public Deque<Expr> exprs = new ArrayDeque<>();
 
 	/**
 	 *  Expressions known to be used in successor blocks.
 	 *  They're known to be used because they're inputs
 	 *  to a phi expression.
 	 */
-	Set<Expr> live_out = new HashSet<Expr>();
+	Set<Expr> live_out = new HashSet<>();
 	
 	/**
 	 *   Block ID number, unique within a Method.

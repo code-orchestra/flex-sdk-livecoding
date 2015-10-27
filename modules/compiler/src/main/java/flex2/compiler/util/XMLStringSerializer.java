@@ -34,7 +34,7 @@ public class XMLStringSerializer
 	private Writer writer;
 	private boolean writingStartTag = false;
 	private boolean noNamespaceMappings = true;
-	private Stack<String> elementStack = new Stack<String>();
+	private Stack<String> elementStack = new Stack<>();
 	private NSStack nsStack = null;
 	private int lastPrefixIndex = 1;
 	private UTF8Encoder encoder;
@@ -63,7 +63,7 @@ public class XMLStringSerializer
 	 * A list of particular namespace -> prefix mappings we should prefer.
 	 * See getPrefixForURI() below.
 	 */
-	HashMap<String, String> preferredPrefixes = new HashMap<String, String>();
+	HashMap<String, String> preferredPrefixes = new HashMap<>();
 	
 	public XMLStringSerializer(Writer writer)
 	{
@@ -218,7 +218,7 @@ public class XMLStringSerializer
 		        }
 
 		        if (qname.startsWith("xmlns")) {
-		          if (vecQNames == null) vecQNames = new ArrayList<String>();
+		          if (vecQNames == null) vecQNames = new ArrayList<>();
 		          vecQNames.add(qname);
 		        }
 		        writer.write(qname);
@@ -510,7 +510,7 @@ class NSStack {
     public ArrayList<Mapping> cloneFrame() {
         if (stack[top] == null) return null;
 
-        ArrayList<Mapping> clone = new ArrayList<Mapping>();
+        ArrayList<Mapping> clone = new ArrayList<>();
 
         for (Mapping map=topOfFrame(); map!=null; map=next()) {
             clone.add(map);

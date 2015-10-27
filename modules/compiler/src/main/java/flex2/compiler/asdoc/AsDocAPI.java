@@ -238,7 +238,7 @@ public class AsDocAPI
 		sourcePath.addPathElements( compilerConfig.getSourcePath() );
 
 		List<VirtualFile>[] array = flex2.compiler.CompilerAPI.getVirtualFileList(configuration.getDocSources(), java.util.Collections.<VirtualFile>emptySet(),
-                new HashSet<String>(Arrays.asList(sourceMimeTypes)),
+				new HashSet<>(Arrays.asList(sourceMimeTypes)),
                 sourcePath.getPaths(), configuration.getExcludeSources());		
 		
 		NameMappings mappings = flex2.compiler.CompilerAPI.getNameMappings(configuration);
@@ -257,7 +257,7 @@ public class AsDocAPI
 		ResourceContainer resources = new ResourceContainer();
 		ResourceBundlePath bundlePath = new ResourceBundlePath(configuration.getCompilerConfiguration(), null);
 
-		Map<String, Source> classes = new HashMap<String, Source>();
+		Map<String, Source> classes = new HashMap<>();
 		List nsComponents = SwcAPI.setupNamespaceComponents(configuration.getNamespaces(), mappings,
                                                             sourcePath, sourceList, classes,
                                                             configuration.getIncludeLookupOnly(),
@@ -268,7 +268,7 @@ public class AsDocAPI
 		Set<String> includeOnly = null;
 		if (configuration.excludeDependencies())
 		{
-			includeOnly = new HashSet<String>();
+			includeOnly = new HashSet<>();
 			for (Object nsComponent : nsComponents) {
 				SwcComponent component = (SwcComponent) nsComponent;
 				includeOnly.add(component.getClassName());

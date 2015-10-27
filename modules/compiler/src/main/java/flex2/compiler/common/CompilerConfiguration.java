@@ -263,7 +263,7 @@ public class CompilerConfiguration implements As3Configuration,
 	private VirtualFile[] expandLocaleToken(String[] pathlist, String[] locales, ConfigurationValue cv)
 		throws ConfigurationException
 	{
-		ArrayList<VirtualFile> list = new ArrayList<VirtualFile>(pathlist.length);
+		ArrayList<VirtualFile> list = new ArrayList<>(pathlist.length);
 
 		// Process each path element.
 		for (String pathElement : pathlist) {
@@ -339,7 +339,7 @@ public class CompilerConfiguration implements As3Configuration,
     	return fileArray;
     }
 
-    private Set<String> externs = new HashSet<String>();
+    private Set<String> externs = new HashSet<>();
 
     Set<String> getExterns()
     {
@@ -997,7 +997,7 @@ public class CompilerConfiguration implements As3Configuration,
     	}
     	else if (md != null)
     	{
-    		Set<String> s = new HashSet<String>(Arrays.asList(as3metadata));
+    		Set<String> s = new HashSet<>(Arrays.asList(as3metadata));
     		s.addAll(Arrays.asList(md));
     		as3metadata = new String[s.size()];
     		int k = 0;
@@ -1950,7 +1950,7 @@ public class CompilerConfiguration implements As3Configuration,
      * while the source directories searched when compiling the
      * ja_JP resource bundles are foo, bar/ja_JP, and baz.
      */
-    private Map<String, VirtualFile[]> resourceBundlePaths = new HashMap<String, VirtualFile[]>();
+    private Map<String, VirtualFile[]> resourceBundlePaths = new HashMap<>();
 
     public File[] getUnexpandedSourcePath()
     {
@@ -2130,7 +2130,7 @@ public class CompilerConfiguration implements As3Configuration,
         };
     }
 
-    private Set<String> themeNames = new HashSet<String>();
+    private Set<String> themeNames = new HashSet<>();
     
     private void addThemeName(String path)
     {
@@ -2180,7 +2180,7 @@ public class CompilerConfiguration implements As3Configuration,
      *    'A' should have precedence over 'B', then 'C', then SWCs
      *    defaultsCssFiles should have the order: SWCS, C, B, A
      */
-    private List<VirtualFile> defaultsCssFiles = new LinkedList<VirtualFile>();
+    private List<VirtualFile> defaultsCssFiles = new LinkedList<>();
     
     public List<VirtualFile> getDefaultsCssFiles()
     {
@@ -2232,7 +2232,7 @@ public class CompilerConfiguration implements As3Configuration,
     /**
      * Location of theme style stylesheets (css only, configured via themefiles above).
      */
-    private List<VirtualFile> themeCssFiles = new LinkedList<VirtualFile>();
+    private List<VirtualFile> themeCssFiles = new LinkedList<>();
 
     public List<VirtualFile> getThemeCssFiles()
     {

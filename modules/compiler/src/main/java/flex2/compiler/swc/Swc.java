@@ -169,7 +169,7 @@ public class Swc
         Set<String> externs = lib.getExterns();
         externs.addAll( linkerConfiguration.getUnresolved() );
         
-        Set<SwcLibrary> librariesProcessed = new HashSet<SwcLibrary>();
+        Set<SwcLibrary> librariesProcessed = new HashSet<>();
 
         for (CompilationUnit unit : movie.getExportedUnits())
         {
@@ -447,7 +447,7 @@ public class Swc
         public Map<String, SwcLibrary> libraries;
     }
 
-    private static Map<String, ReaderResult> readerCache = new HashMap<String, ReaderResult>();
+    private static Map<String, ReaderResult> readerCache = new HashMap<>();
 
     public static void clearLivecodingCache() {
         readerCache.clear();
@@ -466,14 +466,14 @@ public class Swc
                 versions = readerResult.versions;
                 swcFeatures = readerResult.swcFeatures;
                 components = readerResult.components;
-                libraries = new HashMap<String, SwcLibrary>();
+                libraries = new HashMap<>();
                 for (String path : readerResult.libraries.keySet()) {
                     SwcLibrary newLibrary = new SwcLibrary(this, path);
                     SwcLibrary oldLibrary = readerResult.libraries.get(path);
                     Iterator<SwcScript> scriptIterator = oldLibrary.getScriptIterator();
                     while (scriptIterator.hasNext()) {
                         SwcScript script = scriptIterator.next();
-                        Set<String> defs = new HashSet<String>();
+                        Set<String> defs = new HashSet<>();
                         Iterator<String> definitionIterator = script.getDefinitionIterator();
                         while (definitionIterator.hasNext()) {
                             defs.add(definitionIterator.next());
@@ -678,11 +678,11 @@ public class Swc
      *  The object is hashed into the Map with the path of the library.
      */
     // changed next 5 from private to protected to support Flash Authoring - jkamerer 2007.07.30
-    protected Map<String, SwcLibrary> libraries = new HashMap<String, SwcLibrary>();
-    protected Map<String, SwcComponent> components = new TreeMap<String, SwcComponent>();
+    protected Map<String, SwcLibrary> libraries = new HashMap<>();
+    protected Map<String, SwcComponent> components = new TreeMap<>();
 	protected Versions versions = new Versions();
     protected SwcFeatures swcFeatures = new SwcFeatures();
-    private Map<String, String> defs = new HashMap<String, String>();
+    private Map<String, String> defs = new HashMap<>();
     private boolean forceLibraryVersion1;       // if true for swc to library version 1.0
     
     

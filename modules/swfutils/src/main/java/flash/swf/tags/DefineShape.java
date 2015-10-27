@@ -61,7 +61,7 @@ public class DefineShape extends DefineTag
 
     public Iterator<Tag> getReferences()
     {
-        LinkedList<Tag> refs = new LinkedList<Tag>();
+        LinkedList<Tag> refs = new LinkedList<>();
 
         shapeWithStyle.getReferenceList( refs );
 

@@ -65,7 +65,7 @@ public class StatesGenerator {
     public StatesGenerator(StandardDefs defs)
     {
         this.standardDefs = defs;
-        bindingsQueue = new ArrayList<StatesModel.Override>();
+        bindingsQueue = new ArrayList<>();
     }
     
     /*

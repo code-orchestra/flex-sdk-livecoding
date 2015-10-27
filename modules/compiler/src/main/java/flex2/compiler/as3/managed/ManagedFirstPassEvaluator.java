@@ -285,7 +285,7 @@ public class ManagedFirstPassEvaluator extends GenerativeFirstPassEvaluator
 	{
 		if (managedClasses == null)
 		{
-			managedClasses = new LinkedHashMap<String, ManagedClassInfo>();
+			managedClasses = new LinkedHashMap<>();
 		}
 
 		managedClasses.put(info.getClassName(), info);
@@ -298,7 +298,7 @@ public class ManagedFirstPassEvaluator extends GenerativeFirstPassEvaluator
     {
         if (managedProperties == null)
         {
-            managedProperties = new HashMap<DefinitionNode, ManagedClassInfo>();
+            managedProperties = new HashMap<>();
         }
 
         managedProperties.put(node, classInfo);

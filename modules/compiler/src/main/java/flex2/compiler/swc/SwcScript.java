@@ -125,7 +125,7 @@ public class SwcScript
 	{
 		if (symbolClasses == null)
 		{
-			symbolClasses = new HashSet<String>();
+			symbolClasses = new HashSet<>();
 			for (Iterator<String> i = getDefinitionIterator(); i.hasNext(); )
 			{
 				library.getSymbolClasses(i.next(), symbolClasses);
@@ -183,7 +183,7 @@ class ScriptImpl implements Script
 		location = swcScript.getSwcLocation();
 		lastModified = swcScript.getLastModified();
 		
-		Set<String> names = new LinkedHashSet<String>();
+		Set<String> names = new LinkedHashSet<>();
 		
 		for (Iterator<String> i = swcScript.getDefinitionIterator(); i.hasNext(); )
 		{
@@ -194,7 +194,7 @@ class ScriptImpl implements Script
 
         SwcDependencySet set = swcScript.getDependencySet();
 
-		names = new TreeSet<String>();		
+		names = new TreeSet<>();
 
         for (Iterator i = set.getDependencyIterator(SwcDependencySet.INHERITANCE); i != null && i.hasNext();)
         {

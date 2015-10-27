@@ -103,7 +103,7 @@ public class CompilerHandler
 
 	public ObjectList<PackageDefinitionNode> loadPackages(String filename)
 	{
-		return new ObjectList<PackageDefinitionNode>();
+		return new ObjectList<>();
 	}
 
     public void importFile(final String filename) {}

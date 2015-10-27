@@ -84,9 +84,9 @@ public class ClassTable implements DocCommentTable {
     
     public ClassTable(boolean restoreBuiltinClasses)
     {
-        classTable = new LinkedHashMap<String, CommentsTable>();
-        packageTable = new LinkedHashMap<String, DocComment>();
-        tagNames = new HashSet<String>();
+        classTable = new LinkedHashMap<>();
+        packageTable = new LinkedHashMap<>();
+        tagNames = new HashSet<>();
         tagNames.add("author");
         tagNames.add("copy");
         tagNames.add("default");
@@ -130,10 +130,10 @@ public class ClassTable implements DocCommentTable {
         String packageName = name.getNamespace().intern();
         String className = name.getLocalPart().intern();
         //CommentNodes belonging to the public class (or function)
-        List<DocCommentNode> mainClass = new ArrayList<DocCommentNode>();
+        List<DocCommentNode> mainClass = new ArrayList<>();
         //CommentNodes belonging to private classes and their inheritance
-        LinkedHashMap<String, List<DocCommentNode>> otherClasses = new LinkedHashMap<String, List<DocCommentNode>>();
-        Map<String, Set<QName>> otherInheritance = new LinkedHashMap<String, Set<QName>>();
+        LinkedHashMap<String, List<DocCommentNode>> otherClasses = new LinkedHashMap<>();
+        Map<String, Set<QName>> otherInheritance = new LinkedHashMap<>();
         //Whether there is a public class declaration
         boolean mainDef = false;
         //asc generated package
@@ -168,7 +168,7 @@ public class ClassTable implements DocCommentTable {
                         otherPackage = pkg;
 
                     //if not the public class, we need to create our own inheritance set
-                    Set<QName> inherit = new HashSet<QName>();
+                    Set<QName> inherit = new HashSet<>();
                     otherInheritance.put(cls, inherit);
                     List inherited = cd.used_def_namespaces;
                     for (Object anInherited : inherited) {
@@ -233,7 +233,7 @@ public class ClassTable implements DocCommentTable {
                     cls = "null";
                 List<DocCommentNode> l = otherClasses.get(cls);
                 if (l == null)
-                    l = new ArrayList<DocCommentNode>();
+                    l = new ArrayList<>();
                 l.add(current);
                 otherClasses.put(cls, l);
             } else  //Add to list for public class
@@ -295,7 +295,7 @@ public class ClassTable implements DocCommentTable {
                 className = "null";
             String name = NameFormatter.toDot(new QName(packageName, className));
             CommentsTable temp = classTable.get(name);
-            return new ArrayList<DocComment>(temp.values());
+            return new ArrayList<>(temp.values());
         } catch (NullPointerException e)
         {
             return null;   //if a given class/package do not exist
@@ -318,7 +318,7 @@ public class ClassTable implements DocCommentTable {
     {
         if (packageName == null)
             packageName = "";
-        Map<String, DocComment> comments = new LinkedHashMap<String, DocComment>();
+        Map<String, DocComment> comments = new LinkedHashMap<>();
         for (String key : classTable.keySet()) {
             int dot = key.lastIndexOf(".");
 
@@ -345,7 +345,7 @@ public class ClassTable implements DocCommentTable {
     
     public Map<String, DocComment> getPackages()
     {
-        return new LinkedHashMap<String, DocComment>(packageTable);
+        return new LinkedHashMap<>(packageTable);
     }
     
     /**
@@ -398,7 +398,7 @@ public class ClassTable implements DocCommentTable {
             {
                 if (skinPartMetadataList == null)
                 {
-                    skinPartMetadataList = new ArrayList<CommentEntry>();
+                    skinPartMetadataList = new ArrayList<>();
                 }
                 
                 skinPartMetadataList.add(entry.getSkinPartMetadata());                
@@ -409,7 +409,7 @@ public class ClassTable implements DocCommentTable {
             {
                 if (functionToIgnoreSet == null)
                 {
-                    functionToIgnoreSet = new HashSet<String>();
+                    functionToIgnoreSet = new HashSet<>();
                 }
                 
                 functionToIgnoreSet.add(entry.functionToIgnore);
@@ -801,7 +801,7 @@ public class ClassTable implements DocCommentTable {
             private void inheritMetaDataComment(String debugName, MetaData meta)
             {
                 if (metadata == null)
-                    metadata = new ArrayList<CommentEntry>();
+                    metadata = new ArrayList<>();
                 CommentEntry newMetadata = new CommentEntry(debugName, meta);
                 metadata.add(newMetadata);
             }
@@ -1143,7 +1143,7 @@ public class ClassTable implements DocCommentTable {
             private void createMetaDataComment(String debugName, MetaDataNode meta, boolean isAttributeOfDefinition, MetaDataNode current)
             {
                 if (metadata == null)
-                    metadata = new ArrayList<CommentEntry>();
+                    metadata = new ArrayList<>();
                 CommentEntry newMetadata = new CommentEntry(debugName, meta, isAttributeOfDefinition, current, null, null);
                 metadata.add(newMetadata);
             }
@@ -1273,7 +1273,7 @@ public class ClassTable implements DocCommentTable {
                 //extracting @param (multiple)
                 index = id.indexOf("]]></param>");
                 if (index >= 0)
-                    paramTags = new ArrayList<String>();
+                    paramTags = new ArrayList<>();
                 while (index >= 0)
                 {
                     endCDATABefore = id.substring(0, index).lastIndexOf("]]>");
@@ -1298,7 +1298,7 @@ public class ClassTable implements DocCommentTable {
                 //extracting @author tags
                 index = id.indexOf("]]></author>");
                 if (index >= 0)
-                    authorTags = new ArrayList<String>();
+                    authorTags = new ArrayList<>();
                 while (index >= 0)
                 {
                     endCDATABefore = id.substring(0, index).lastIndexOf("]]>");
@@ -1326,7 +1326,7 @@ public class ClassTable implements DocCommentTable {
                 //extracting @event (multiple)
                 index = id.indexOf("]]></event>");
                 if (index >= 0)
-                    eventTags = new ArrayList<String>();                
+                    eventTags = new ArrayList<>();
                 while (index > 0)
                 {
                     endCDATABefore = id.substring(0, index).lastIndexOf("]]>");
@@ -1346,7 +1346,7 @@ public class ClassTable implements DocCommentTable {
                 //extracting @example (multiple)
                 index = id.indexOf("]]></example>");
                 if (index >= 0)
-                    exampleTags = new ArrayList<String>();
+                    exampleTags = new ArrayList<>();
                 while (index >= 0)
                 {
                     endCDATABefore = id.substring(0, index).lastIndexOf("]]>");
@@ -1367,7 +1367,7 @@ public class ClassTable implements DocCommentTable {
                 //extracting @includeExample (multiple)
                 index = id.indexOf("]]></includeExample>");
                 if (index >= 0)
-                    includeExampleTags = new ArrayList<String>();
+                    includeExampleTags = new ArrayList<>();
                 while (index >= 0)
                 {
                     endCDATABefore = id.substring(0, index).lastIndexOf("]]>");
@@ -1396,7 +1396,7 @@ public class ClassTable implements DocCommentTable {
                 //extracting @playerversion (multiple)
                 index = id.indexOf("]]></playerversion>");
                 if (index >= 0)
-                    playerversionTags = new ArrayList<String>();
+                    playerversionTags = new ArrayList<>();
                 while (index >= 0)
                 {
                     endCDATABefore = id.substring(0, index).lastIndexOf("]]>");
@@ -1411,7 +1411,7 @@ public class ClassTable implements DocCommentTable {
                 //extracting @productversion (multiple)
                 index = id.indexOf("]]></productversion>");
                 if (index >= 0)
-                    productversionTags = new ArrayList<String>();
+                    productversionTags = new ArrayList<>();
                 while (index >= 0)
                 {
                     endCDATABefore = id.substring(0, index).lastIndexOf("]]>");
@@ -1434,7 +1434,7 @@ public class ClassTable implements DocCommentTable {
                 //extracting @see (multiple)
                 index = id.indexOf("]]></see>");
                 if (index >= 0)
-                    seeTags = new ArrayList<String>();
+                    seeTags = new ArrayList<>();
                 while (index >= 0)
                 {
                     endCDATABefore = id.substring(0, index).lastIndexOf("]]>");
@@ -1448,7 +1448,7 @@ public class ClassTable implements DocCommentTable {
                 //extracting @throws (multiple)
                 index = id.indexOf("]]></throws>");
                 if (index >= 0)
-                    throwsTags = new ArrayList<String>();
+                    throwsTags = new ArrayList<>();
                 while (index >= 0)
                 {
                     endCDATABefore = id.substring(0, index).lastIndexOf("]]>");
@@ -1494,7 +1494,7 @@ public class ClassTable implements DocCommentTable {
                         }
                     	
                         if (customTags == null)
-                            customTags = new LinkedHashMap<String, String>();
+                            customTags = new LinkedHashMap<>();
                         endCDATABefore = id.substring(0, index).lastIndexOf("]]>");
                         String tag = "<" + tagName + "><![CDATA[";
                         begin = id.indexOf(tag, endCDATABefore) + tag.length();
@@ -1672,7 +1672,7 @@ public class ClassTable implements DocCommentTable {
              */
             public Map<String, Object> getAllTags()
             {
-                Map<String, Object> tags = new LinkedHashMap<String, Object>();
+                Map<String, Object> tags = new LinkedHashMap<>();
                 tags.put("author", getAuthorTags());
                 tags.put("copy", getCopyTag());
                 tags.put("default", getDefaultTag());

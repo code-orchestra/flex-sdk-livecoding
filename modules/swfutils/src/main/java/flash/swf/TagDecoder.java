@@ -451,7 +451,7 @@ public final class TagDecoder
 		SymbolClass t = new SymbolClass();
 		int count = r.readUI16();
 
-		t.class2tag = new HashMap<String, Tag>(count);
+		t.class2tag = new HashMap<>(count);
 
 		for (int i=0; i < count; i++)
 		{
@@ -703,7 +703,7 @@ public final class TagDecoder
         }
         
         int count = r.readUI16();
-        t.importRecords = new ArrayList<ImportRecord>();
+        t.importRecords = new ArrayList<>();
 
         for (int i=0; i < count; i++)
         {
@@ -724,7 +724,7 @@ public final class TagDecoder
 
         int count = r.readUI16();
 
-        t.exports = new ArrayList<Tag>(count);
+        t.exports = new ArrayList<>(count);
 
         for (int i=0; i < count; i++)
         {
@@ -1342,7 +1342,7 @@ public final class TagDecoder
         int actionOffset = r.readUI16();
 
         // read button data
-        ArrayList<Object> list = new ArrayList<Object>(5);
+        ArrayList<Object> list = new ArrayList<>(5);
         ButtonRecord record;
         while ((record = decodeButtonRecord(t.code)) != null)
         {
@@ -1355,7 +1355,7 @@ public final class TagDecoder
 
         if (actionOffset > 0)
         {
-            list = new ArrayList<Object>();
+            list = new ArrayList<>();
 
             int pos = r.getOffset();
             while ((actionOffset = r.readUI16()) > 0)
@@ -1474,7 +1474,7 @@ public final class TagDecoder
 
     private List<Filter> decodeFilterList() throws IOException
     {
-        LinkedList<Filter> filters = new LinkedList<Filter>();
+        LinkedList<Filter> filters = new LinkedList<>();
         int count = r.readUI8();
         for (int i = 0; i < count; ++i)
         {
@@ -2023,7 +2023,7 @@ public final class TagDecoder
         int glyphBits = r.readUI8();
         int advanceBits = r.readUI8();
         // todo range check - glyphBits and advanceBits must be <= 32
-        ArrayList<TextRecord> list = new ArrayList<TextRecord>(2);
+        ArrayList<TextRecord> list = new ArrayList<>(2);
 
         int code;
         while ((code = r.readUI8()) != 0)
@@ -2159,7 +2159,7 @@ public final class TagDecoder
         t = new DefineButton(stagDefineButton);
         int id = r.readUI16();
 
-        ArrayList<ButtonRecord> list = new ArrayList<ButtonRecord>();
+        ArrayList<ButtonRecord> list = new ArrayList<>();
         ButtonRecord record;
         do
         {
@@ -2344,7 +2344,7 @@ public final class TagDecoder
 
     private ArrayList<LineStyle> decodeLinestyles(int shape) throws IOException
     {
-        ArrayList<LineStyle> a = new ArrayList<LineStyle>();
+        ArrayList<LineStyle> a = new ArrayList<>();
 
         int count = r.readUI8();
         if (count == 0xFF)
@@ -2389,7 +2389,7 @@ public final class TagDecoder
 
     private ArrayList<FillStyle> decodeFillstyles(int shape) throws IOException
     {
-        ArrayList<FillStyle> a = new ArrayList<FillStyle>();
+        ArrayList<FillStyle> a = new ArrayList<>();
 
         int count = r.readUI8();
         if (count == 0xFF)
@@ -2580,7 +2580,7 @@ public final class TagDecoder
 
     private List<ShapeRecord> decodeShapeRecords(int shape, int[] numFillBits, int[] numLineBits) throws IOException
     {
-        ArrayList<ShapeRecord> list = new ArrayList<ShapeRecord>();
+        ArrayList<ShapeRecord> list = new ArrayList<>();
         boolean endShapeRecord = false;
         do
         {

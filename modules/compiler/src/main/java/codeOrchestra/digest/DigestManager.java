@@ -39,21 +39,21 @@ public class DigestManager {
     }
 
     // package name -> set of short names
-    private Map<String, Set<String>> compiledClasses = new HashMap<String, Set<String>>();
+    private Map<String, Set<String>> compiledClasses = new HashMap<>();
 
-    private Set<String> availableFqNames = new HashSet<String>();
+    private Set<String> availableFqNames = new HashSet<>();
 
     // namespace name -> URI  map
-    private Map<String, String> namespaceToURI = new HashMap<String, String>();
+    private Map<String, String> namespaceToURI = new HashMap<>();
 
-    private Map<String, IClassDigest> digestsMap = new HashMap<String, IClassDigest>();
-    private Map<String, SourceClassDigest> unresolvedDigests = new HashMap<String, SourceClassDigest>();
+    private Map<String, IClassDigest> digestsMap = new HashMap<>();
+    private Map<String, SourceClassDigest> unresolvedDigests = new HashMap<>();
 
     // full path -> list of embeds
-    private Map<String, List<EmbedDigest>> embedDigests = new HashMap<String, List<EmbedDigest>>();
+    private Map<String, List<EmbedDigest>> embedDigests = new HashMap<>();
 
     public Set<IMember> getVisibleInstanceProtectedMembers(String classFqName) {
-        Set<IMember> result = new HashSet<IMember>();
+        Set<IMember> result = new HashSet<>();
 
         IClassDigest classDigest = digestsMap.get(classFqName);
         while (classDigest != null) {
@@ -124,7 +124,7 @@ public class DigestManager {
             public Iterator<IClassDigest> iterator() {
                 return new Iterator<IClassDigest>() {
                     {
-                        directDescendants = new ArrayList<IClassDigest>();
+                        directDescendants = new ArrayList<>();
                         setRoot(root);
                     }
 
@@ -147,7 +147,7 @@ public class DigestManager {
                         boolean currentIteratorHasNext = directDescendantsIterator.hasNext();
 
                         if (!currentIteratorHasNext && !directDescendants.isEmpty()) {
-                            ArrayList<IClassDigest> savedDirectDescendants = new ArrayList<IClassDigest>(directDescendants);
+                            ArrayList<IClassDigest> savedDirectDescendants = new ArrayList<>(directDescendants);
                             for (IClassDigest newRoot : savedDirectDescendants) {
                                 setRoot(newRoot);
                                 return hasNext();
@@ -250,7 +250,7 @@ public class DigestManager {
 
             Set<String> packageShortNames = compiledClasses.get(packageName);
             if (packageShortNames == null) {
-                packageShortNames = new HashSet<String>();
+                packageShortNames = new HashSet<>();
                 compiledClasses.put(packageName, packageShortNames);
             }
             packageShortNames.add(shortName);
@@ -322,7 +322,7 @@ public class DigestManager {
 
                 List<EmbedDigest> embeds = getEmbedDigests(fullPath);
                 if (embeds == null) {
-                    embeds = new ArrayList<EmbedDigest>();
+                    embeds = new ArrayList<>();
                     embedDigests.put(fullPath, embeds);
                 }
 
@@ -340,7 +340,7 @@ public class DigestManager {
     }
 
     private List<EmbedDigest> getAllEmbedDigests() {
-        List<EmbedDigest> result = new ArrayList<EmbedDigest>();
+        List<EmbedDigest> result = new ArrayList<>();
 
         for (List<EmbedDigest> digests : embedDigests.values()) {
             for (EmbedDigest digest : digests) {

@@ -55,8 +55,8 @@ public class Styles
 
 	public Styles(int preferredSize)
 	{
-		declMap = new HashMap<String, MetaData>(preferredSize);
-		locationMap = new HashMap<String, Source>(preferredSize);
+		declMap = new HashMap<>(preferredSize);
+		locationMap = new HashMap<>(preferredSize);
 	}
 
 	public Styles()
@@ -123,7 +123,7 @@ public class Styles
 
     public Set<String> getInheritingStyles()
     {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         Iterator<String> iterator = getStyleNames();
 
         while ( iterator.hasNext() )

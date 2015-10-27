@@ -34,7 +34,7 @@ public final class Algorithms
 			inDegree[v.id] = v.inDegrees();
 		}
 
-		LinkedList<Vertex> queue = new LinkedList<Vertex>();
+		LinkedList<Vertex> queue = new LinkedList<>();
 		for (int i = 0, length = vertices.length; i < length; i++)
 		{
 			// in case of seeing multiple degree-zero candidates, we could

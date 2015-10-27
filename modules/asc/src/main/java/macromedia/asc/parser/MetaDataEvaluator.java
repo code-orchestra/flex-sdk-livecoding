@@ -228,7 +228,7 @@ public class MetaDataEvaluator implements Evaluator, ErrorConstants
 		return null;
 	}
 
-	public ObjectList<DocCommentNode> doccomments = new ObjectList<DocCommentNode>();
+	public ObjectList<DocCommentNode> doccomments = new ObjectList<>();
 
     public Value evaluate(Context cx, DocCommentNode node)
 	{

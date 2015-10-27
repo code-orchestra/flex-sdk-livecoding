@@ -45,7 +45,7 @@ public class TraceManager
 
 	public TraceManager()
 	{
-		activeElements = new Stack<TraceElement>();
+		activeElements = new Stack<>();
 	}
 
 	public void enable(PrintWriter sink)

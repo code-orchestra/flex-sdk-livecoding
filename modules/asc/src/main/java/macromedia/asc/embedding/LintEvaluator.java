@@ -1949,7 +1949,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
         {
             if (node.signature != null && node.signature.parameter != null)
             {
-                HashMap<String,Boolean> paramNames = new HashMap<String,Boolean>(node.signature.parameter.items.size());
+                HashMap<String,Boolean> paramNames = new HashMap<>(node.signature.parameter.items.size());
 				for(ParameterNode item : node.signature.parameter.items)
                 {
                     Boolean exists = paramNames.get(item.ref.name);
@@ -2502,7 +2502,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
         return null;
 	}
 
-    private ObjectList< Namespaces > open_namespaces = new ObjectList< Namespaces >();
+    private ObjectList< Namespaces > open_namespaces = new ObjectList<>();
 	public Value evaluate( Context cx, ImportDirectiveNode node )
 	{
 		return null;
@@ -2766,17 +2766,17 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 				"XMLNode"
 			};
 
-	private Map<Integer, String> warningConstantsMap = new HashMap<Integer, String>(kNumWarningConstants);   // maps WarningCode enum to its warning string
+	private Map<Integer, String> warningConstantsMap = new HashMap<>(kNumWarningConstants);   // maps WarningCode enum to its warning string
 	// maps a property name and base type pair to a WarningCode for unsupported properties
-	private Map<String, Map<TypeValue, Integer>> unsupportedPropsMap = new HashMap<String, Map<TypeValue, Integer>>(kNumPropertyWarnings);
+	private Map<String, Map<TypeValue, Integer>> unsupportedPropsMap = new HashMap<>(kNumPropertyWarnings);
 	// maps a property name and base type pair to a WarningCode for unsupported methods
-	private Map<String, Map<TypeValue, Integer>> unsupportedMethodsMap = new HashMap<String, Map<TypeValue, Integer>>(kNumMethodWarnings);
+	private Map<String, Map<TypeValue, Integer>> unsupportedMethodsMap = new HashMap<>(kNumMethodWarnings);
 	// maps a property name and base type pair to a WarningCode for an event handler which is no longer called automatically by the player
-	private Map<String, Map<TypeValue, Integer>> unsupportedEventsMap = new HashMap<String, Map<TypeValue, Integer>>(kNumEventWarnings);
+	private Map<String, Map<TypeValue, Integer>> unsupportedEventsMap = new HashMap<>(kNumEventWarnings);
 
 	/* Hack to ignore warnings for things which should be in playerglobal.as
 	but aren't yet (usually because there are some problems with its current definition) (like 'Stage') */
-	private static final Map<String, Boolean> hackIgnoreIdentifierMap = new HashMap<String, Boolean>();
+	private static final Map<String, Boolean> hackIgnoreIdentifierMap = new HashMap<>();
 	// TODO remove this once playerGlobal.as defines these
 	private static final String toIgnore[] = {
 		"_global",
@@ -2794,9 +2794,9 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 	// ----------------------------------------------
 
 	// Table of warningRecord vectors indexable via WarningCode
-	private TreeMap<Integer, ObjectList<WarningRecord>> pWarnings = new TreeMap<Integer, ObjectList<WarningRecord>>();
+	private TreeMap<Integer, ObjectList<WarningRecord>> pWarnings = new TreeMap<>();
 	// Table of warningRecord vectors indexed by source file and line
-	private TreeMap<String, TreeMap<Integer, Set<WarningRecord>>> warningsByLoc = new TreeMap<String, TreeMap<Integer, Set<WarningRecord>>>();
+	private TreeMap<String, TreeMap<Integer, Set<WarningRecord>>> warningsByLoc = new TreeMap<>();
 
 	//  This is where WarningRecords are logged when encountered,
 	//  and how we dump them out by category at the end of the evaluation
@@ -2821,17 +2821,17 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 	private TypeValue expected_returnType;
 
 	// keeps track of the type of the currently evaluating member expressions base
-	public ObjectList<TypeValue>					baseType_context = new ObjectList<TypeValue>();
+	public ObjectList<TypeValue>					baseType_context = new ObjectList<>();
 	// keeps track of the referenceValue for the currently evaluating member expression's base
 	//  (if it is a simple MemberExpression/GetExpression of an identifier, its ref is pushed,
 	//   else, NULL is pushed).
-	public ObjectList<ReferenceValue>				baseRef_context = new ObjectList<ReferenceValue>();
+	public ObjectList<ReferenceValue>				baseRef_context = new ObjectList<>();
 
 	// keeps track of what 'this' means in the currently evaluating expression
 	private IntList                                 this_contexts = new IntList();
 	//std::vector<int>								super_context;		 //
 	// Keeps track of the function we are currently evaluating
-	public ObjectList<ReferenceValue>				currentFunctionRef = new ObjectList<ReferenceValue>();
+	public ObjectList<ReferenceValue>				currentFunctionRef = new ObjectList<>();
 
     private boolean in_with;
 
@@ -3055,7 +3055,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 			// add to pWarnings
 			ObjectList<WarningRecord> warnList = pWarnings.get(code);
 			if (warnList == null)
-				warnList = new ObjectList<WarningRecord>();
+				warnList = new ObjectList<>();
 			
 			// Check for duplicates
 			for(WarningRecord test : warnList) {
@@ -3076,7 +3076,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
             
 			if (locMap == null)
 			{
-				locMap = new TreeMap<Integer, Set<WarningRecord>>();
+				locMap = new TreeMap<>();
 				warningsByLoc.put(origin, locMap);
 			}
 
@@ -3084,7 +3084,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 
             if (records == null)
             {
-                records = new HashSet<WarningRecord>(1);
+                records = new HashSet<>(1);
                 locMap.put(rec.lineNum, records);
             }
 
@@ -3157,7 +3157,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 			 * 			(unsupportedProperties.get(key))[subkey] = value;
 			 */
 			Map<TypeValue,Integer> subMap = unsupportedPropsMap.get(unsupportedProperties[x].name);
-			if (subMap == null) { subMap = new HashMap<TypeValue,Integer>(2); }
+			if (subMap == null) { subMap = new HashMap<>(2); }
 			
 			subMap.put(types[unsupportedProperties[x].baseType], unsupportedProperties[x].code);
 			unsupportedPropsMap.put(unsupportedProperties[x].name, subMap);
@@ -3166,7 +3166,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 		for(x = 0; x < kNumMethodWarnings; x++)
 		{
 			Map<TypeValue,Integer> subMap = unsupportedMethodsMap.get(unsupportedMethods[x].name);
-			if (subMap == null) { subMap = new HashMap<TypeValue,Integer>(2); }
+			if (subMap == null) { subMap = new HashMap<>(2); }
 			
 			subMap.put(types[unsupportedMethods[x].baseType], unsupportedMethods[x].code);
 			unsupportedMethodsMap.put(unsupportedMethods[x].name, subMap);
@@ -3175,7 +3175,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 		for(x = 0; x < kNumEventWarnings; x++)
 		{
 			Map<TypeValue,Integer> subMap = unsupportedEventsMap.get(unsupportedEvents[x].name);
-			if (subMap == null) { subMap = new HashMap<TypeValue,Integer>(2); }
+			if (subMap == null) { subMap = new HashMap<>(2); }
 			
 			subMap.put(types[unsupportedEvents[x].baseType], unsupportedEvents[x].code);
 			unsupportedEventsMap.put(unsupportedEvents[x].name, subMap);
@@ -3204,7 +3204,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 			}
 			catch (IOException ex)
 			{
-				enabledMap = new HashMap<Integer, Boolean>();
+				enabledMap = new HashMap<>();
 			}
 		}
 	}
@@ -3214,7 +3214,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
         if(warningConstantsEN[0] == null) initWarningConstants();
         AscWarning[] warningConsts = allWarningConstants[ContextStatics.LANG_EN];    // language doesn't really matter here
 
-        HashMap<Integer, Boolean> enabledMap = new HashMap<Integer, Boolean>();
+        HashMap<Integer, Boolean> enabledMap = new HashMap<>();
         for(int x = 0; x < kNumWarningConstants; x++)
         {
             enabledMap.put(warningConsts[x].code,true);
@@ -3400,7 +3400,7 @@ public final class LintEvaluator extends Emitter implements Evaluator, ErrorCons
 		}
 	}
 
-	private ObjectList<Slot>  slotsToClean = new ObjectList<Slot>();  // store what we allocate so we can clean it up
+	private ObjectList<Slot>  slotsToClean = new ObjectList<>();  // store what we allocate so we can clean it up
 
 	private LintDataRecord slot_GetComplianceRecord(Slot s)
 	{

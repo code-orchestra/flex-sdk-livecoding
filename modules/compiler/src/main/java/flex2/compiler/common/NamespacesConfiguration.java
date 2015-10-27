@@ -63,7 +63,7 @@ public class NamespacesConfiguration
     {
         if (manifestMappings != null)
         {
-            List<VirtualFile> fileList = new ArrayList<VirtualFile>();
+            List<VirtualFile> fileList = new ArrayList<>();
 
             for (List<VirtualFile> files : manifestMappings.values()) {
                 if (files != null) {
@@ -133,11 +133,11 @@ public class NamespacesConfiguration
                 VirtualFile file = ConfigurationPathResolver.getVirtualFile(manifest, configResolver, cfgval);
 
                 if (manifestMappings == null)
-                    manifestMappings = new LinkedHashMap<String, List<VirtualFile>>();
+                    manifestMappings = new LinkedHashMap<>();
 
                 List<VirtualFile> files = manifestMappings.get(uri);
                 if (files == null)
-                    files = new ArrayList<VirtualFile>();
+                    files = new ArrayList<>();
                 files.add(file);
 
                 manifestMappings.put(uri, files);

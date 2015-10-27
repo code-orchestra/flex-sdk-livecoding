@@ -70,8 +70,8 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
             return;
         }
 
-        ArrayList<String> liveCodingClassNames = new ArrayList<String>();
-        Map<FunctionDefinitionNode, String> functionToClassNames = new HashMap<FunctionDefinitionNode, String>();
+        ArrayList<String> liveCodingClassNames = new ArrayList<>();
+        Map<FunctionDefinitionNode, String> functionToClassNames = new HashMap<>();
 
         List<FunctionDefinitionNode> changedMethods = findChangedMethods(originalClass, modifiedClass);
         List<VariableBindingNode> newFields = findNewFields(originalClass, modifiedClass);
@@ -118,7 +118,7 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
         List<Pair<VariableDefinitionNode, VariableBindingNode>> originalFieldDefinitions = TreeNavigator.getFieldDefinitionsVars(originalClass);
         List<Pair<VariableDefinitionNode, VariableBindingNode>> modifiedFieldDefinitions = TreeNavigator.getFieldDefinitionsVars(modifiedClass);
 
-        ArrayList<VariableBindingNode> result = new ArrayList<VariableBindingNode>();
+        ArrayList<VariableBindingNode> result = new ArrayList<>();
         for (Pair<VariableDefinitionNode, VariableBindingNode> modifiedField : modifiedFieldDefinitions) {
             Pair<VariableDefinitionNode, VariableBindingNode> matchingOriginalField = null;
             for (Pair<VariableDefinitionNode, VariableBindingNode> originalField : originalFieldDefinitions) {
@@ -164,7 +164,7 @@ public class LCIncrementalExtension extends AbstractTreeModificationExtension {
         List<FunctionDefinitionNode> originalMethodDefinitions = TreeNavigator.getMethodDefinitions(originalClass);
         List<FunctionDefinitionNode> modifiedMethodDefinitions = TreeNavigator.getMethodDefinitions(modifiedClass);
 
-        ArrayList<FunctionDefinitionNode> result = new ArrayList<FunctionDefinitionNode>();
+        ArrayList<FunctionDefinitionNode> result = new ArrayList<>();
         for (FunctionDefinitionNode modifiedMethod : modifiedMethodDefinitions) {
             // COLT-77
             if (TreeNavigator.hasAnnotation(modifiedMethod, LiveCodingUtil.LIVE_CODE_DISABLE_ANNOTATION)) {

@@ -193,7 +193,7 @@ public class ManagedSecondPassEvaluator extends GenerativeSecondPassEvaluator
 	 */
 	protected Map<String, ManagedClassInfo> getTemplateVars()
 	{
-		Map<String, ManagedClassInfo> vars = new HashMap<String, ManagedClassInfo>();
+		Map<String, ManagedClassInfo> vars = new HashMap<>();
 		vars.put("managedInfo", currentInfo);
 
 		return vars;

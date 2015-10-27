@@ -665,7 +665,7 @@ public final class Decoder
 		public void addTarget(int pos)
 		{
 			if (targetSet == null)
-				targetSet = new HashSet<Integer>();
+				targetSet = new HashSet<>();
 			targetSet.add(pos);
 		}
 		public void reset()

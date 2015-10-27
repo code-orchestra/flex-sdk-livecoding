@@ -174,8 +174,8 @@ public class GlobalOptimizer
 	{
 		GlobalOptimizer go = new GlobalOptimizer();
 		
- 		List<InputAbc> a = new ArrayList<InputAbc>();
- 		List<Integer> lengths = new ArrayList<Integer>();
+ 		List<InputAbc> a = new ArrayList<>();
+ 		List<Integer> lengths = new ArrayList<>();
 		String filename = null;
 		byte[] before = null;
 		//  Index of first export in the file list.
@@ -319,7 +319,7 @@ public class GlobalOptimizer
 		// TODO this is not right, it only works for builtin ABCs and only under TT...
 		// we really need to construct a new script (that calls all the scripts in the initScripts list)
 		// and append it to the end as the new initscript.
-		List<Integer> initScripts = new ArrayList<Integer>();
+		List<Integer> initScripts = new ArrayList<>();
 		InputAbc first = a.get(first_exported_file);
  		int before_length = lengths.get(first_exported_file);
 		initScripts.add(first.scripts.length - 1);
@@ -371,10 +371,10 @@ public class GlobalOptimizer
 		PluginData(OptimizerPlugin plugin)
 		{
 			this.plugin  = plugin;
-			this.options = new Vector<String>();
+			this.options = new Vector<>();
 		}
 	}
-	private Map<String, PluginData> analysis_phase_plugins = new HashMap<String, PluginData>();
+	private Map<String, PluginData> analysis_phase_plugins = new HashMap<>();
 	
 	private void loadPlugin(String plugin_class_fqn)
 	{
@@ -420,7 +420,7 @@ public class GlobalOptimizer
 		boolean containsObject = false;
 		
 		Set<Type> toResolve;
-		List<InputAbc> mergedAbcs = new ArrayList<InputAbc>();
+		List<InputAbc> mergedAbcs = new ArrayList<>();
 		public String src_filename;
 		
 		InputAbc()
@@ -500,7 +500,7 @@ public class GlobalOptimizer
 			for (int i = 0, n = metadata.length; i < n; i++)
 				metadata[i] = readMetadata(p);
 		
-			toResolve = new HashSet<Type>();
+			toResolve = new HashSet<>();
 		
 			Type[] instances = new Type[p.readU30()];
 			for (int i = 0, n = instances.length; i < n; i++)
@@ -816,7 +816,7 @@ public class GlobalOptimizer
 		void readTraits(Reader p, Type t)
 		{
 			toResolve.add(t);
-			t.defs = new Symtab<Binding>();
+			t.defs = new Symtab<>();
 			
 			//  Start counting slots either from
 			//  the base type's last-used slot 
@@ -1040,8 +1040,8 @@ public class GlobalOptimizer
 			// initial state of frame
 			
 			Expr[] frame = new Expr[local_count + m.max_scope + m.max_stack];
-			Map<Integer,Block> blocks = new TreeMap<Integer,Block>();
-			Map<Block,FrameState> states = new TreeMap<Block,FrameState>();
+			Map<Integer,Block> blocks = new TreeMap<>();
+			Map<Block,FrameState> states = new TreeMap<>();
 			int scopep = local_count;
 			int sp = local_count+m.max_scope;
 			traceEntry("InitialFrame");
@@ -1201,7 +1201,7 @@ public class GlobalOptimizer
 
 					addTraceAttr("offset", pos - code_start);
 					
-					List<Edge> xsucc = new ArrayList<Edge>();
+					List<Edge> xsucc = new ArrayList<>();
 					ptry.pos = try_start;
 					int n=ptry.readU30();
 					addTraceAttr("NumHandlers", n);
@@ -1972,7 +1972,7 @@ public class GlobalOptimizer
 	 * Populated by readyMethod(), called from readyType()
 	 * and by initial processing of the OP_newfunction Expr.
 	 */
-	List<Method> ready = new ArrayList<Method>();
+	List<Method> ready = new ArrayList<>();
 
 	/** 
 	 * Track already-processed methods so they never go on the ready list twice.
@@ -1981,7 +1981,7 @@ public class GlobalOptimizer
 	 * If Method.hashCode() is modified, then Method will need a unique ID to 
 	 * make this set work.
 	 */
-	Set<Method> already_processed = new HashSet<Method>();
+	Set<Method> already_processed = new HashSet<>();
 	
 	
 	void readyType(Type t)
@@ -2029,21 +2029,21 @@ public class GlobalOptimizer
 	 */
 	class Abc
 	{
-		Pool<Integer> intPool = new Pool<Integer>(1);
-		Pool<Long> uintPool = new Pool<Long>(1);
-		Pool<Double> doublePool = new Pool<Double>(1);
-		Pool<String> stringPool = new Pool<String>(1);
-		Pool<Namespace> nsPool = new Pool<Namespace>(1);
-		Pool<Nsset> nssetPool = new Pool<Nsset>(1);
-		Pool<Name> namePool = new Pool<Name>(1);
-		Pool<Method> methodPool1 = new Pool<Method>(0);
-		Pool<Method> methodPool2 = new Pool<Method>(0);
-		Pool<Metadata> metaPool = new Pool<Metadata>(0);
+		Pool<Integer> intPool = new Pool<>(1);
+		Pool<Long> uintPool = new Pool<>(1);
+		Pool<Double> doublePool = new Pool<>(1);
+		Pool<String> stringPool = new Pool<>(1);
+		Pool<Namespace> nsPool = new Pool<>(1);
+		Pool<Nsset> nssetPool = new Pool<>(1);
+		Pool<Name> namePool = new Pool<>(1);
+		Pool<Method> methodPool1 = new Pool<>(0);
+		Pool<Method> methodPool2 = new Pool<>(0);
+		Pool<Metadata> metaPool = new Pool<>(0);
 		int bodyCount;
 		boolean haveNatives;
 
-		List<Type> scripts = new ArrayList<Type>();
-		List<Type> classes = new ArrayList<Type>();
+		List<Type> scripts = new ArrayList<>();
+		List<Type> classes = new ArrayList<>();
 		
 		int typeRef(Typeref tref)
 		{
@@ -2399,10 +2399,8 @@ public class GlobalOptimizer
 			{
 				//  HACK ALERT: This sort is incorrect, but the topological
 				//  sort causes tamarin-tracing builds to fail in shell.abc.
-				TreeSet<Type> cs = new TreeSet<Type>(new Comparator<Type>()
-				{
-					public int compare(Type a, Type b)
-					{
+				TreeSet<Type> cs = new TreeSet<>(new Comparator<Type>() {
+					public int compare(Type a, Type b) {
 						if (a == b) return 0;
 // no, this is subtly wrong: we might be comparing two classes that have no parent-child relationship
 // (eg SyntaxError and EvalError). this logic will push UP subclasses and push DOWN no-rel-classes and superclasses.
@@ -2525,7 +2523,7 @@ public class GlobalOptimizer
 		
 		StringWriter b = new StringWriter();
 		PrintWriter out_t = new PrintWriter(b);
-		Map<Integer,String> impls = new TreeMap<Integer,String>();
+		Map<Integer,String> impls = new TreeMap<>();
 
 		for (Type s: abc.scripts)
 			emitSourceTraits("", abc, s, out_h, impls, out_t, out_c);
@@ -3251,9 +3249,9 @@ public class GlobalOptimizer
 
 		addTraceAttr("Method", m);
 		
-		Map<Block,Integer> padding = new HashMap<Block,Integer>();
+		Map<Block,Integer> padding = new HashMap<>();
 		Deque<Block> code = schedule(m.entry.to);
-		Map<Block,AbcWriter> writers = new HashMap<Block,AbcWriter>();
+		Map<Block,AbcWriter> writers = new HashMap<>();
 		
 		//  Find back edges to see where we need labels
 		//  Note: can't use isBackedge() here b/c schedule
@@ -3273,10 +3271,10 @@ public class GlobalOptimizer
 
 		// emit the code and leave room for the branch offsets,
 		// and compute the final position of each block.
-		Map<Block,Integer> pos = new HashMap<Block,Integer>();
-		Map<Block,Integer> blockends = new HashMap<Block,Integer>();
+		Map<Block,Integer> pos = new HashMap<>();
+		Map<Block,Integer> blockends = new HashMap<>();
 		int code_len = 0;
-		Deque<Block> work = new ArrayDeque<Block>(code);
+		Deque<Block> work = new ArrayDeque<>(code);
 		while (!work.isEmpty())
 		{
 			Block b = work.removeFirst();
@@ -4322,9 +4320,9 @@ public class GlobalOptimizer
 		Deque<Block> code = dfs(m.entry.to);
 		EdgeMap<Expr> uses = findUses(code);
 
-		Map<Expr,Object> values = new TreeMap<Expr,Object>();
-		Map<Expr,Typeref> types = new TreeMap<Expr,Typeref>();
-		Set<Edge> reached = new TreeSet<Edge>();
+		Map<Expr,Object> values = new TreeMap<>();
+		Map<Expr,Typeref> types = new TreeMap<>();
+		Set<Edge> reached = new TreeSet<>();
 		
 		sccp_analyze(m, uses, values, types, reached);
 
@@ -4344,7 +4342,7 @@ public class GlobalOptimizer
 		// * capture scope types for OP_newclass & OP_newfunction
 		// * turn expressions into constants
 		
-		TreeSet<Expr> work = new TreeSet<Expr>();
+		TreeSet<Expr> work = new TreeSet<>();
 		for (Block b: code)
 			for (Expr e: b)
 				work.add(e);
@@ -4363,7 +4361,7 @@ public class GlobalOptimizer
 
 	void sccp_cfgopt(Map<Expr, Object> values, Map<Expr,Typeref> types, Set<Edge> reached)
 	{
-		Set<Block> blocks = new TreeSet<Block>();
+		Set<Block> blocks = new TreeSet<>();
 		for (Edge e: reached)
 			blocks.add(e.to);
 
@@ -4924,8 +4922,8 @@ public class GlobalOptimizer
 	Map<Expr,Typeref> verify_types(Method m, Deque<Block> code, Map<Block,Block> idom)
 	{
 		EdgeMap<Expr> uses = findUses(code);
-		Map<Expr,Typeref> types = new TreeMap<Expr,Typeref>();
-		Set<Expr> work = new TreeSet<Expr>();
+		Map<Expr,Typeref> types = new TreeMap<>();
+		Set<Expr> work = new TreeSet<>();
 		for (Block b: code)
 			work.addAll(b.exprs);
 		do
@@ -4950,9 +4948,9 @@ public class GlobalOptimizer
 
 		addTraceAttr("Method", m);
 	
-		Set<Edge> flowWork = new TreeSet<Edge>();
-		Set<Expr> ssaWork = new TreeSet<Expr>();
-		Set<Expr> ready = new TreeSet<Expr>();
+		Set<Edge> flowWork = new TreeSet<>();
+		Set<Expr> ssaWork = new TreeSet<>();
+		Set<Expr> ready = new TreeSet<>();
 
 		flowWork.add(m.entry);
 		do
@@ -6337,8 +6335,8 @@ public class GlobalOptimizer
 		Deque<Block> code = dfs(m.entry.to);
 		SetMap<Block,Edge> pred = preds(code);
 
-		Map<Integer,Integer> locals = new TreeMap<Integer,Integer>();
-		Map<Block,Deque<Expr>> exprs = new TreeMap<Block,Deque<Expr>>();
+		Map<Integer,Integer> locals = new TreeMap<>();
+		Map<Block,Deque<Expr>> exprs = new TreeMap<>();
 		ConflictGraph conflicts = new ConflictGraph();
 		
 		printMethod(m, "BEFORE SCHED");
@@ -6368,7 +6366,7 @@ public class GlobalOptimizer
 		
 		
 		// insert phi copies on edges where needed
-		Set<Edge> splits = new TreeSet<Edge>();
+		Set<Edge> splits = new TreeSet<>();
 		for (Block b: code)
 		{
 			// identify the edges that need copies, split them, add copies.
@@ -6455,8 +6453,8 @@ public class GlobalOptimizer
 		int max_stack = 0;
 		int max_scope = 0;
 		
-		Map<Block,Integer>stkin = new TreeMap<Block,Integer>();
-		Map<Block,Integer>scpin = new TreeMap<Block,Integer>();
+		Map<Block,Integer>stkin = new TreeMap<>();
+		Map<Block,Integer>scpin = new TreeMap<>();
 		stkin.put(m.entry.to, 0);
 		scpin.put(m.entry.to, 0);
 		
@@ -6511,7 +6509,7 @@ public class GlobalOptimizer
 		
 		Deque<Block> code = schedule(m.entry.to);
 		SetMap<Block, Edge> pred = preds(code);
-		Set<Edge> single_path_to_exit = new HashSet<Edge>();
+		Set<Edge> single_path_to_exit = new HashSet<>();
 	
 		Map<Block,LocalVarState> reg_state_by_block = getLocalVarState(m);
 		
@@ -6798,11 +6796,11 @@ public class GlobalOptimizer
 		
 		//  A fair number of expressions can be coerced
 		//  when they're defined.
-		Map<Expr,Expr> coerce_in_place = new HashMap<Expr,Expr>();
+		Map<Expr,Expr> coerce_in_place = new HashMap<>();
 		
 		if ( block_state != null )
 		{
-			Set<Integer> coerced_locals = new HashSet<Integer>(bc.coercions.keySet());
+			Set<Integer> coerced_locals = new HashSet<>(bc.coercions.keySet());
 			
 			for ( Integer r: coerced_locals )
 			{
@@ -6820,7 +6818,7 @@ public class GlobalOptimizer
 			
 			if ( !coerce_in_place.isEmpty() )
 			{
-				Deque<Expr> replaced_exprs = new ArrayDeque<Expr>();
+				Deque<Expr> replaced_exprs = new ArrayDeque<>();
 				
 				while ( !b.exprs.isEmpty())
 				{
@@ -7057,8 +7055,8 @@ public class GlobalOptimizer
 	
 	Map<Block,LocalVarState> getLocalVarState(Method m)
 	{
-		Map<Block,LocalVarState> result = new TreeMap<Block,LocalVarState>();
-		Map<Block, Typeref[]> frames_by_block = new TreeMap<Block, Typeref[]>();
+		Map<Block,LocalVarState> result = new TreeMap<>();
+		Map<Block, Typeref[]> frames_by_block = new TreeMap<>();
 		
 		Deque<Block> code = schedule(m.entry.to);
 
@@ -7226,7 +7224,7 @@ public class GlobalOptimizer
 	
 	static class ConflictGraph
 	{
-		Map<Integer,Set<Integer>> conflicts = new TreeMap<Integer,Set<Integer>>();
+		Map<Integer,Set<Integer>> conflicts = new TreeMap<>();
 		
 		void add(Expr e1, Expr e2)
 		{
@@ -7248,7 +7246,7 @@ public class GlobalOptimizer
 		{
 			Set<Integer> s = conflicts.get(i);
 			if (s == null)
-				conflicts.put(i, s = new TreeSet<Integer>());
+				conflicts.put(i, s = new TreeSet<>());
 			return s;
 		}
 	}
@@ -7337,15 +7335,15 @@ public class GlobalOptimizer
 
 		addTraceAttr(m);
 		
-		SetMap<Block,Expr> liveout = new SetMap<Block,Expr>();
-		Map<Block,Deque<Expr>> stkout = new TreeMap<Block,Deque<Expr>>();
-		Map<Block,Deque<Expr>> scpout = new TreeMap<Block,Deque<Expr>>();
-		HashMap<Block,Deque<Object>> listings = new HashMap<Block,Deque<Object>>();
+		SetMap<Block,Expr> liveout = new SetMap<>();
+		Map<Block,Deque<Expr>> stkout = new TreeMap<>();
+		Map<Block,Deque<Expr>> scpout = new TreeMap<>();
+		HashMap<Block,Deque<Object>> listings = new HashMap<>();
 		
 		// low postorder numbers are first, 
-		PriorityQueue<Block> work = new PriorityQueue<Block>(code.size(),new Comparator<Block>() {
-			public int compare(Block b1,Block b2) {
-				return b1.postorder-b2.postorder;
+		PriorityQueue<Block> work = new PriorityQueue<>(code.size(), new Comparator<Block>() {
+			public int compare(Block b1, Block b2) {
+				return b1.postorder - b2.postorder;
 			}
 		});
 		
@@ -7357,14 +7355,14 @@ public class GlobalOptimizer
 			while (work.peek() == b) 
 				work.remove(); // remove dups
 
-			Set<Expr> live = new TreeSet<Expr>();
-			Deque<Expr> in = new ArrayDeque<Expr>(b.exprs);
-			Deque<Expr> stk = new ArrayDeque<Expr>();
-			Deque<Expr> scp = new ArrayDeque<Expr>();
-			Deque<Object> verbose = new LinkedDeque<Object>();
-			Deque<Expr> out = new LinkedDeque<Expr>();
+			Set<Expr> live = new TreeSet<>();
+			Deque<Expr> in = new ArrayDeque<>(b.exprs);
+			Deque<Expr> stk = new ArrayDeque<>();
+			Deque<Expr> scp = new ArrayDeque<>();
+			Deque<Object> verbose = new LinkedDeque<>();
+			Deque<Expr> out = new LinkedDeque<>();
 
-			Set<Expr> out_of_order = new TreeSet<Expr>();
+			Set<Expr> out_of_order = new TreeSet<>();
 			
 
 			addTraceAttr(b);
@@ -7379,7 +7377,7 @@ public class GlobalOptimizer
 			exprs.put(b,out);
 			listings.put(b,verbose);
 
-			Set<Expr>phis = new TreeSet<Expr>();
+			Set<Expr>phis = new TreeSet<>();
 			while (!in.isEmpty() || !stk.isEmpty())
 			{
 				while (!stk.isEmpty() && hasStackEffect(in.peekLast()))
@@ -7668,15 +7666,15 @@ public class GlobalOptimizer
 			Map<Block,Deque<Expr>> exprs,
 			ConflictGraph cg)
 	{
-		SetMap<Block,Expr> liveout = new SetMap<Block,Expr>();
-		Map<Block,Deque<Expr>> stkout = new TreeMap<Block,Deque<Expr>>();
-		Map<Block,Deque<Expr>> scpout = new TreeMap<Block,Deque<Expr>>();
-		HashMap<Block,Deque<Object>> listings = new HashMap<Block,Deque<Object>>();
+		SetMap<Block,Expr> liveout = new SetMap<>();
+		Map<Block,Deque<Expr>> stkout = new TreeMap<>();
+		Map<Block,Deque<Expr>> scpout = new TreeMap<>();
+		HashMap<Block,Deque<Object>> listings = new HashMap<>();
 		
 		// low postorder numbers are first, 
-		PriorityQueue<Block> work = new PriorityQueue<Block>(code.size(),new Comparator<Block>() {
-			public int compare(Block b1,Block b2) {
-				return b1.postorder-b2.postorder;
+		PriorityQueue<Block> work = new PriorityQueue<>(code.size(), new Comparator<Block>() {
+			public int compare(Block b1, Block b2) {
+				return b1.postorder - b2.postorder;
 			}
 		});
 		
@@ -7687,12 +7685,12 @@ public class GlobalOptimizer
 			while (work.peek() == b) 
 				work.remove(); // remove dups
 
-			Set<Expr> live = new TreeSet<Expr>();
-			Deque<Expr> in = new ArrayDeque<Expr>(b.exprs);
-			Deque<Expr> stk = new ArrayDeque<Expr>();
-			Deque<Expr> scp = new ArrayDeque<Expr>();
-			Deque<Object> verbose = new LinkedDeque<Object>();
-			Deque<Expr> out = new LinkedDeque<Expr>();
+			Set<Expr> live = new TreeSet<>();
+			Deque<Expr> in = new ArrayDeque<>(b.exprs);
+			Deque<Expr> stk = new ArrayDeque<>();
+			Deque<Expr> scp = new ArrayDeque<>();
+			Deque<Object> verbose = new LinkedDeque<>();
+			Deque<Expr> out = new LinkedDeque<>();
 
 			// if any succ has defined an expected stack, use it.
 			// if more than one have then they all have to match.
@@ -7708,7 +7706,7 @@ public class GlobalOptimizer
 			exprs.put(b,out);
 			listings.put(b,verbose);
 			
-			Set<Expr>phis = new TreeSet<Expr>();
+			Set<Expr>phis = new TreeSet<>();
 
 			while (!in.isEmpty())
 			{
@@ -7837,7 +7835,7 @@ public class GlobalOptimizer
 			Deque<Object> verbose, Deque<Expr> out, Set<Expr> phis)
 	{
 		// first prune stack to something safe to forward.
-		TreeMap<Block,Deque<Expr>>stkout2 = new TreeMap<Block,Deque<Expr>>(stkout);
+		TreeMap<Block,Deque<Expr>>stkout2 = new TreeMap<>(stkout);
 		
 		for (Edge p: pred.get(b))
 		{
@@ -7901,7 +7899,7 @@ public class GlobalOptimizer
 	{
 		if (phis.isEmpty() || live.isEmpty())
 			return live;
-		Set<Expr> copy = new TreeSet<Expr>();
+		Set<Expr> copy = new TreeSet<>();
 		for (Expr e: live)
 			copy.add(phis.contains(e) ? e.args[findPhiArg(e, p)] : e);
 		return copy;
@@ -7920,7 +7918,7 @@ public class GlobalOptimizer
 	{
 		if (phis.isEmpty() || stk.isEmpty())
 			return stk;
-		Deque<Expr> copy = new ArrayDeque<Expr>();
+		Deque<Expr> copy = new ArrayDeque<>();
 		for (Expr e: stk)
 			copy.add(phis.contains(e) ? e.args[findPhiArg(e, p)] : e);
 		return copy;
@@ -8070,8 +8068,8 @@ public class GlobalOptimizer
 	{
 
 		EdgeMap<Expr> uses = findUses(code);
-		Map<Expr,Expr> map = new HashMap<Expr,Expr>();
-		Set<Expr> work = new TreeSet<Expr>();
+		Map<Expr,Expr> map = new HashMap<>();
+		Set<Expr> work = new TreeSet<>();
 		
 		for (Block b: code)
 		{
@@ -8166,7 +8164,7 @@ public class GlobalOptimizer
 	Deque<Block> schedule(Block entry)
 	{
 		Deque<Block>code = dfs(entry);
-		Deque<Block>scheduled = new ArrayDeque<Block>();
+		Deque<Block>scheduled = new ArrayDeque<>();
 		SetMap<Block,Edge> pred = preds(code);
 		Map<Block,Block> idom = idoms(code,pred);
 		EdgeMap<Block> loops = findLoops(code,idom,pred);
@@ -8187,9 +8185,9 @@ public class GlobalOptimizer
 		//  Rearrange conditional branches so that fall-through edges
 		//  occur in the optimizer's natural flow, and flag any
 		//  backwards branch targets.
-		Deque<Block> branch_analysis = new ArrayDeque<Block>();
+		Deque<Block> branch_analysis = new ArrayDeque<>();
 		branch_analysis.addAll(scheduled);
-		Set<Block> already_seen = new HashSet<Block>();
+		Set<Block> already_seen = new HashSet<>();
 		
 		while (branch_analysis.size()>1)
 		{
@@ -8265,7 +8263,7 @@ public class GlobalOptimizer
 	
 	EdgeMap<Block> findLoops(Deque<Block> code, Map<Block,Block>idom, SetMap<Block,Edge>pred)
 	{
-		EdgeMap<Block> loops = new EdgeMap<Block>();
+		EdgeMap<Block> loops = new EdgeMap<>();
 		for (Block b: code)
 			for (Edge s: b.succ())
 				if (isLoop(s, idom))
@@ -8274,7 +8272,7 @@ public class GlobalOptimizer
 					Block h = s.to;
 					// find the set of blocks that are in the loop body.
 					Set<Block> loop = loops.get(h);
-					Set<Block> work = new TreeSet<Block>();
+					Set<Block> work = new TreeSet<>();
 					for (Edge p: pred.get(h))
 					{
 						if (isLoop(p,idom) && !loop.contains(p.from) && p.from != h)
@@ -8980,7 +8978,7 @@ public class GlobalOptimizer
 	
 	void dot(Edge e, PrintWriter out)
 	{
-		ArrayList<String> attrs = new ArrayList<String>();
+		ArrayList<String> attrs = new ArrayList<>();
 		if (e.isThrowEdge())
 		{
 			attrs.add("style=dashed");
@@ -9063,7 +9061,7 @@ public class GlobalOptimizer
 		 *  candidates for coercion before the variable's set, saving a
 		 *  considerable amount of hassle down the CFG.
 		 */
-		private Map<Integer, Expr> generating_exprs = new HashMap<Integer, Expr>();
+		private Map<Integer, Expr> generating_exprs = new HashMap<>();
 		
 		/**
 		 *  Set on backwards branch targets, catch
@@ -9404,8 +9402,8 @@ public class GlobalOptimizer
 	
 	static class TypeConstraints implements Comparable
 	{	
-		Set<Integer> killregs = new TreeSet<Integer>();
-		Map<Integer, Typeref> coercions = new HashMap<Integer, Typeref>();
+		Set<Integer> killregs = new TreeSet<>();
+		Map<Integer, Typeref> coercions = new HashMap<>();
 		
 		/**
 		 *  Path to the destination block.

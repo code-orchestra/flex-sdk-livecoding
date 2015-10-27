@@ -729,9 +729,7 @@ public class OEMReport implements Report
 		{
 			if (sets[i] != null)
 			{
-				(sets[i]).stream().filter(obj -> (obj instanceof String) && (locations == null || locations.containsKey(obj))).forEach(obj -> {
-					set.add((String) obj);
-				});
+				(sets[i]).stream().filter(obj -> (obj instanceof String) && (locations == null || locations.containsKey(obj))).forEach(obj -> set.add((String) obj));
 			}
 		}
 

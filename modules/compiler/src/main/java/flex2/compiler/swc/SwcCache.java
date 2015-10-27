@@ -119,9 +119,7 @@ public class SwcCache
     {
         Map<String, Swc> swcs = new LinkedHashMap<>();
 
-        groups.stream().filter(g -> g != null).forEach(g -> {
-            swcs.putAll(g.getSwcs());
-        });
+        groups.stream().filter(g -> g != null).forEach(g -> swcs.putAll(g.getSwcs()));
 
         SwcGroup group = null;
 

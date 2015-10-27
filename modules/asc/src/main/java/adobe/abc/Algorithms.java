@@ -442,9 +442,7 @@ public abstract class Algorithms
 						found_sorted_element = true;
 
 						//  Remove this dependency from the remaining elements.
-						unsorted.stream().filter(dep::containsKey).forEach(y -> {
-							dep.get(y).remove(x);
-						});
+						unsorted.stream().filter(dep::containsKey).forEach(y -> dep.get(y).remove(x));
 						
 						dep.remove(x);
 						break;

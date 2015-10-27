@@ -90,10 +90,8 @@ public class PreLink implements flex2.compiler.PreLink
 
         Set<IPreLinkExtension> extensions = 
             ExtensionManager.getPreLinkExtensions( configuration.getCompilerConfiguration().getExtensionsConfiguration().getExtensionMappings() );
-        extensions.stream().filter(extension -> ThreadLocalToolkit.errorCount() == 0).forEach(extension -> {
-            extension.run(sources, units, fileSpec, sourceList, sourcePath, bundlePath, resources, symbolTable,
-                    swcContext, configuration);
-        });
+        extensions.stream().filter(extension -> ThreadLocalToolkit.errorCount() == 0).forEach(extension -> extension.run(sources, units, fileSpec, sourceList, sourcePath, bundlePath, resources, symbolTable,
+                swcContext, configuration));
         boolean reRunPrelink = processMainUnit(sources, units, resources, symbolTable, nameMappings, configuration);
 
         // Check if additional sources were generated after processing the

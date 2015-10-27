@@ -176,11 +176,9 @@ public class WindowWrapper extends ImporterTopLevel {
         AccessControlContext acc =
             ((RhinoInterpreter)window.getInterpreter()).getAccessControlContext();
 
-        Object ret = AccessController.doPrivileged((PrivilegedAction) () -> {
-            return window.parseXML
-                ((String)Context.jsToJava(args[0], String.class),
-                 (Document)Context.jsToJava(args[1], Document.class));
-        }, acc);
+        Object ret = AccessController.doPrivileged((PrivilegedAction) () -> window.parseXML
+            ((String)Context.jsToJava(args[0], String.class),
+             (Document)Context.jsToJava(args[1], Document.class)), acc);
         return Context.toObject(ret, thisObj);
     }
 

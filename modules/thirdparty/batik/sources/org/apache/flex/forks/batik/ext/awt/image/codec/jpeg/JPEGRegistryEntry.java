@@ -18,27 +18,26 @@
  */
 package org.apache.flex.forks.batik.ext.awt.image.codec.jpeg;
 
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageDecoder;
+import com.sun.image.codec.jpeg.TruncatedFileException;
+import org.apache.flex.forks.batik.ext.awt.image.GraphicsUtil;
+import org.apache.flex.forks.batik.ext.awt.image.renderable.DeferRable;
+import org.apache.flex.forks.batik.ext.awt.image.renderable.Filter;
+import org.apache.flex.forks.batik.ext.awt.image.renderable.RedRable;
+import org.apache.flex.forks.batik.ext.awt.image.rendered.Any2sRGBRed;
+import org.apache.flex.forks.batik.ext.awt.image.rendered.CachableRed;
+import org.apache.flex.forks.batik.ext.awt.image.rendered.FormatRed;
+import org.apache.flex.forks.batik.ext.awt.image.spi.ImageTagRegistry;
+import org.apache.flex.forks.batik.ext.awt.image.spi.MagicNumberRegistryEntry;
+import org.apache.flex.forks.batik.util.ParsedURL;
+
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.apache.flex.forks.batik.ext.awt.image.GraphicsUtil;
-import org.apache.flex.forks.batik.ext.awt.image.renderable.DeferRable;
-import org.apache.flex.forks.batik.ext.awt.image.renderable.Filter;
-import org.apache.flex.forks.batik.ext.awt.image.renderable.RedRable;
-import org.apache.flex.forks.batik.ext.awt.image.rendered.Any2sRGBRed;
-import org.apache.flex.forks.batik.ext.awt.image.rendered.FormatRed;
-import org.apache.flex.forks.batik.ext.awt.image.rendered.CachableRed;
-import org.apache.flex.forks.batik.ext.awt.image.spi.ImageTagRegistry;
-import org.apache.flex.forks.batik.ext.awt.image.spi.MagicNumberRegistryEntry;
-import org.apache.flex.forks.batik.util.ParsedURL;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageDecoder;
-import com.sun.image.codec.jpeg.TruncatedFileException;
 
 /**
  *
@@ -98,36 +97,28 @@ public class JPEGRegistryEntry
                             // Should probably draw some indication
                             // that this is a partial image....
                             if (image == null)
-                                throw new IOException
-                                    ("JPEG File was truncated");
+                                throw new IOException("JPEG File was truncated");
                         }
-                        dr.setBounds(new Rectangle2D.Double
-                                     (0, 0, image.getWidth(),
-                                      image.getHeight()));
+                        dr.setBounds(new Rectangle2D.Double(0, 0, image.getWidth(), image.getHeight()));
                         CachableRed cr;
                         cr = GraphicsUtil.wrap(image);
                         cr = new Any2sRGBRed(cr);
                         cr = new FormatRed(cr, GraphicsUtil.sRGB_Unpre);
                         WritableRaster wr = (WritableRaster)cr.getData();
                         ColorModel cm = cr.getColorModel();
-                        image = new BufferedImage
-                            (cm, wr, cm.isAlphaPremultiplied(), null);
+                        image = new BufferedImage(cm, wr, cm.isAlphaPremultiplied(), null);
                         cr = GraphicsUtil.wrap(image);
                         filt = new RedRable(cr);
                     } catch (IOException ioe) {
                         // Something bad happened here...
-                        filt = ImageTagRegistry.getBrokenLinkImage
-                            (JPEGRegistryEntry.this, errCode, errParam);
+                        filt = ImageTagRegistry.getBrokenLinkImage(JPEGRegistryEntry.this, errCode, errParam);
                     } catch (ThreadDeath td) {
-                        filt = ImageTagRegistry.getBrokenLinkImage
-                            (JPEGRegistryEntry.this, errCode, errParam);
+                        filt = ImageTagRegistry.getBrokenLinkImage(JPEGRegistryEntry.this, errCode, errParam);
                         dr.setSource(filt);
                         throw td;
                     } catch (Throwable t) {
-                        filt = ImageTagRegistry.getBrokenLinkImage
-                            (JPEGRegistryEntry.this, errCode, errParam);
+                        filt = ImageTagRegistry.getBrokenLinkImage(JPEGRegistryEntry.this, errCode, errParam);
                     }
-
                     dr.setSource(filt);
                 }
             };

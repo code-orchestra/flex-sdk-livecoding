@@ -222,10 +222,8 @@ public class SVGDOMImplementation
      */
     public DocumentEventSupport createDocumentEventSupport() {
         DocumentEventSupport result =  new DocumentEventSupport();
-        result.registerEventFactory("SVGEvents",
-                () -> new SVGOMEvent());
-        result.registerEventFactory("TimeEvent",
-                () -> new DOMTimeEvent());
+        result.registerEventFactory("SVGEvents", SVGOMEvent::new);
+        result.registerEventFactory("TimeEvent", DOMTimeEvent::new);
         return result;
     }
 

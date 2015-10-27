@@ -18,13 +18,6 @@
  */
 package org.apache.flex.forks.batik.ext.awt.image.codec.png;
 
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.apache.flex.forks.batik.ext.awt.image.GraphicsUtil;
 import org.apache.flex.forks.batik.ext.awt.image.renderable.DeferRable;
 import org.apache.flex.forks.batik.ext.awt.image.renderable.Filter;
@@ -35,6 +28,13 @@ import org.apache.flex.forks.batik.ext.awt.image.rendered.FormatRed;
 import org.apache.flex.forks.batik.ext.awt.image.spi.ImageTagRegistry;
 import org.apache.flex.forks.batik.ext.awt.image.spi.MagicNumberRegistryEntry;
 import org.apache.flex.forks.batik.util.ParsedURL;
+
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  *
@@ -82,7 +82,6 @@ public class PNGRegistryEntry
                     try {
                         PNGDecodeParam param = new PNGDecodeParam();
                         param.setExpandPalette(true);
-
                         if (raw)
                             param.setPerformGammaCorrection(false);
                         else {
@@ -90,31 +89,24 @@ public class PNGRegistryEntry
                             param.setDisplayExponent(2.2f); // sRGB gamma
                         }
                         CachableRed cr = new PNGRed(is, param);
-                        dr.setBounds(new Rectangle2D.Double
-                                     (0, 0, cr.getWidth(), cr.getHeight()));
-
+                        dr.setBounds(new Rectangle2D.Double(0, 0, cr.getWidth(), cr.getHeight()));
                         cr = new Any2sRGBRed(cr);
                         cr = new FormatRed(cr, GraphicsUtil.sRGB_Unpre);
                         WritableRaster wr = (WritableRaster)cr.getData();
                         ColorModel cm = cr.getColorModel();
                         BufferedImage image;
-                        image = new BufferedImage
-                            (cm, wr, cm.isAlphaPremultiplied(), null);
+                        image = new BufferedImage(cm, wr, cm.isAlphaPremultiplied(), null);
                         cr = GraphicsUtil.wrap(image);
                         filt = new RedRable(cr);
                     } catch (IOException ioe) {
-                        filt = ImageTagRegistry.getBrokenLinkImage
-                            (PNGRegistryEntry.this, errCode, errParam);
+                        filt = ImageTagRegistry.getBrokenLinkImage(PNGRegistryEntry.this, errCode, errParam);
                     } catch (ThreadDeath td) {
-                        filt = ImageTagRegistry.getBrokenLinkImage
-                            (PNGRegistryEntry.this, errCode, errParam);
+                        filt = ImageTagRegistry.getBrokenLinkImage(PNGRegistryEntry.this, errCode, errParam);
                         dr.setSource(filt);
                         throw td;
                     } catch (Throwable t) {
-                        filt = ImageTagRegistry.getBrokenLinkImage
-                            (PNGRegistryEntry.this, errCode, errParam);
+                        filt = ImageTagRegistry.getBrokenLinkImage(PNGRegistryEntry.this, errCode, errParam);
                     }
-
                     dr.setSource(filt);
                 }
             };

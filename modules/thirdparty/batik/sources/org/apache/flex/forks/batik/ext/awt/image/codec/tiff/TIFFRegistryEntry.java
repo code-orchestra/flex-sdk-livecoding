@@ -18,9 +18,6 @@
  */
 package org.apache.flex.forks.batik.ext.awt.image.codec.tiff;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.apache.flex.forks.batik.ext.awt.image.codec.util.SeekableStream;
 import org.apache.flex.forks.batik.ext.awt.image.renderable.DeferRable;
 import org.apache.flex.forks.batik.ext.awt.image.renderable.Filter;
@@ -30,6 +27,9 @@ import org.apache.flex.forks.batik.ext.awt.image.rendered.CachableRed;
 import org.apache.flex.forks.batik.ext.awt.image.spi.ImageTagRegistry;
 import org.apache.flex.forks.batik.ext.awt.image.spi.MagicNumberRegistryEntry;
 import org.apache.flex.forks.batik.util.ParsedURL;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  *
@@ -62,14 +62,11 @@ public class TIFFRegistryEntry
      *                    any default color correction the file may
      *                    specify applied.
      */
-    public Filter handleStream(InputStream inIS,
-                               ParsedURL   origURL,
-                               boolean needRawData) {
-
+    public Filter handleStream(InputStream inIS, ParsedURL origURL, boolean needRawData) {
         final DeferRable  dr  = new DeferRable();
         final InputStream is  = inIS;
-        final String      errCode;
-        final Object []   errParam;
+        final String errCode;
+        final Object [] errParam;
         if (origURL != null) {
             errCode  = ERR_URL_FORMAT_UNREADABLE;
             errParam = new Object[] {"TIFF", origURL};
@@ -77,30 +74,24 @@ public class TIFFRegistryEntry
             errCode  = ERR_STREAM_FORMAT_UNREADABLE;
             errParam = new Object[] {"TIFF"};
         }
-
         Thread t = new Thread() {
                 public void run() {
                     Filter filt;
                     try {
                         TIFFDecodeParam param = new TIFFDecodeParam();
-                        SeekableStream ss =
-                            SeekableStream.wrapInputStream(is, true);
+                        SeekableStream ss = SeekableStream.wrapInputStream(is, true);
                         CachableRed cr = new TIFFImage(ss, param, 0);
                         cr = new Any2sRGBRed(cr);
                         filt = new RedRable(cr);
                     } catch (IOException ioe) {
-                        filt = ImageTagRegistry.getBrokenLinkImage
-                            (TIFFRegistryEntry.this, errCode, errParam);
+                        filt = ImageTagRegistry.getBrokenLinkImage(TIFFRegistryEntry.this, errCode, errParam);
                     } catch (ThreadDeath td) {
-                        filt = ImageTagRegistry.getBrokenLinkImage
-                            (TIFFRegistryEntry.this, errCode, errParam);
+                        filt = ImageTagRegistry.getBrokenLinkImage(TIFFRegistryEntry.this, errCode, errParam);
                         dr.setSource(filt);
                         throw td;
                     } catch (Throwable t) {
-                        filt = ImageTagRegistry.getBrokenLinkImage
-                            (TIFFRegistryEntry.this, errCode, errParam);
+                        filt = ImageTagRegistry.getBrokenLinkImage(TIFFRegistryEntry.this, errCode, errParam);
                     }
-
                     dr.setSource(filt);
                 }
             };

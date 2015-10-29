@@ -1,7 +1,7 @@
-#branches:
-#  only:
-#    - master
-#    - develop
+branches:
+  only:
+    - master
+    - develop
 language: java
 jdk:
   - oraclejdk8

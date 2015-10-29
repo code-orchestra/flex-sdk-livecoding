@@ -10,4 +10,4 @@ before_script:
   - brew update >brew-update.log
   # Install Brew Packages silently
   - brew install ant gradle >brew-install.log
-script: gradle
+script: cd ./modules && ant

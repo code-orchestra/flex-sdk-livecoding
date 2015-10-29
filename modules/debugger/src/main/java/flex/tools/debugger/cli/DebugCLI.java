@@ -471,33 +471,27 @@ public class DebugCLI implements Runnable, SourceLocator {
             if (arg.charAt(0) == '-') {
                 // its an option
                 switch (arg) {
-                    case "-unit":
-// unit-testing mode //$NON-NLS-1$
+                    case "-unit":// unit-testing mode //$NON-NLS-1$
                         System.setProperty("fdbunit", ""); //$NON-NLS-1$ //$NON-NLS-2$
                         break;
-                    case "-fullname":
-                    case "-f":
-//$NON-NLS-1$ //$NON-NLS-2$
+                    case "-fullname"://$NON-NLS-1$
+                    case "-f"://$NON-NLS-1$
                         m_fullnameOption = true; // emacs mode
                         break;
-                    case "-cd":
-//$NON-NLS-1$
+                    case "-cd"://$NON-NLS-1$
                         // consume the path
                         if (i + 1 < args.length)
                             m_cdPath = args[i++];
                         break;
-                    case "-p":
-//$NON-NLS-1$
+                    case "-p"://$NON-NLS-1$
                         // consume the port
                         if (i + 1 < args.length)
                             m_connectPort = args[++i];
                         break;
-                    case "-ide":
-//$NON-NLS-1$
+                    case "-ide"://$NON-NLS-1$
                         m_isIde = true;
                         break;
-                    case "-lang":
-//$NON-NLS-1$
+                    case "-lang"://$NON-NLS-1$
                         if (i + 1 < args.length)
                             getLocalizationManager().setLocale(LocaleUtility.langToLocale(args[++i]));
                         break;

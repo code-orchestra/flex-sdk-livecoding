@@ -4,7 +4,4 @@ branches:
 language: java
 jdk:
   - oraclejdk8
-before_script:
-  - brew update >brew-update.log
-  - brew install ant gradle >brew-install.log
 script: cd ./modules && ant

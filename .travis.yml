@@ -7,9 +7,13 @@ jdk:
 script: cd ./modules && ant
 before_deploy
 - wget -O flex_sdk.zip http://mirrors.gigenet.com/apache/flex/4.14.1/binaries/apache-flex-sdk-4.14.1-bin.zip
-- unzip -q flex_sdk.zip -d flex_sdk
-- cp $TRAVIS_BUILD_DIR/lib flex_sdk/liblc
-- zip flex_sdk flex_sdk_win
+- unzip -q flex_sdk.zip -d flex_sdk_win
+- wget -O http://www.apache.org/dyn/closer.lua/flex/4.14.1/binaries/apache-flex-sdk-4.14.1-bin.tar.gz
+- tar -xjf flex_sdk.tar.gz -d flex_sdk_mac
+- cp $TRAVIS_BUILD_DIR/lib flex_sdk_min/liblc
+- cp $TRAVIS_BUILD_DIR/lib flex_sdk_mac/liblc
+- zip flex_sdk_win flex_sdk_win.zip
+- tar -сzvf flex_sdk_mac.tar.gz flex_sdk_mac
 deploy:
   provider: releases
   api_key:

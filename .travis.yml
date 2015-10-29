@@ -6,8 +6,6 @@ language: java
 jdk:
   - oraclejdk8
 before_script:
-  # Update Brew silently
   - brew update >brew-update.log
-  # Install Brew Packages silently
   - brew install ant gradle >brew-install.log
 script: cd ./modules && ant

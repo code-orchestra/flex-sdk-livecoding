@@ -1168,18 +1168,6 @@ public class Fcsh extends Tool {
         }
     }
 
-    private static String getPlayer() {
-        String osName = System.getProperty("os.name").toLowerCase();
-
-        if (osName.startsWith("windows")) {
-            return "SAFlashPlayer";
-        } else if (osName.startsWith("mac os x")) {
-            return "SAFlashPlayer";
-        } else {
-            return "flashplayer";
-        }
-    }
-
     private static void intro() {
         LocalizationManager l10n = ThreadLocalToolkit.getLocalizationManager();
         System.out.println(l10n.getLocalizedTextString(new ShellMessage("fcsh", VersionInfo.buildMessage())));

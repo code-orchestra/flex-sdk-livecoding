@@ -1,6 +1,6 @@
 #
-AppVeyor: [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/code-orchestra/flex-sdk-livecoding?branch=master&svg=true)](https://ci.appveyor.com/api/projects/status/github/code-orchestra/flex-sdk-livecoding)
-Travis: [![Travis Build Status](https://travis-ci.org/code-orchestra/flex-sdk-livecoding.svg)](https://travis-ci.org/code-orchestra/flex-sdk-livecoding)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/code-orchestra/flex-sdk-livecoding?branch=master&svg=true)](https://ci.appveyor.com/api/projects/status/github/code-orchestra/flex-sdk-livecoding)
+[![Travis Build Status](https://travis-ci.org/code-orchestra/flex-sdk-livecoding.svg)](https://travis-ci.org/code-orchestra/flex-sdk-livecoding)
 ##This repository includes only the apache flex compiler sources
 
 Removed items are:

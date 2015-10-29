@@ -23,4 +23,3 @@ deploy:
 	- flex_sdk_win.zip
   on:
     repo: SlavaRa/flex-sdk-livecoding
-    branch: develop

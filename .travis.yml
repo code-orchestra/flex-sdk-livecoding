@@ -1,7 +1,21 @@
 branches:
   only:
-    - master
+  - master
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
 script: cd ./modules && ant
+before_deploy
+- wget -O flex_sdk.zip http://mirrors.gigenet.com/apache/flex/4.14.1/binaries/apache-flex-sdk-4.14.1-bin.zip
+- unzip -q flex_sdk.zip -d flex_sdk
+- cp $TRAVIS_BUILD_DIR/lib flex_sdk/liblc
+- zip flex_sdk flex_sdk_win
+deploy:
+  provider: releases
+  api_key:
+    secure: RHmYu77JIm9f/C50Wax13ZZw1C/O2IzLa4uyS4Q8uFf7D1dJVo551UGOi+sAN0C2FnqQ4kD7jd2nccp9ew/KvnuTpMwNuDMtoIjt8hCe+NZS77k1o2sYB5SK0PbP+DpE9z77qEfr9e6U1Vna8TvavU+OOfarsqRyiVmBmG8/kRE=
+  file: 
+	- flex_sdk_win.zip
+  on:
+    repo: SlavaRa/flex-sdk-livecoding
+    branch: develop

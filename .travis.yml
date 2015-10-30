@@ -21,7 +21,7 @@ before_deploy:
 - zip -r flex_sdk_win.zip flex_sdk_win
 - wget -O flex_sdk.tar.gz http://www.apache.org/dyn/closer.lua/flex/4.14.1/binaries/apache-flex-sdk-4.14.1-bin.tar.gz
 - mkdir -p flex_sdk_mac
-- tar -xzf flex_sdk.tar.gz -C flex_sdk_mac
+- gzip -dc flex_sdk.tar.gz -C flex_sdk_mac
 - cp -r lib flex_sdk_mac/liblc
 - tar -czf flex_sdk_mac.tar.gz flex_sdk_mac
 deploy:

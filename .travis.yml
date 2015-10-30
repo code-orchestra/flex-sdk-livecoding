@@ -33,4 +33,3 @@ deploy:
   skip_cleanup: true
   on:
     repo: code-orchestra/flex-sdk-livecoding
-#    tags: true

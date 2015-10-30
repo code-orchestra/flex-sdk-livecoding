@@ -1098,7 +1098,7 @@ public class Parser implements ExtendedParser, Localizable {
             }
             nextIgnoreSpaces();
         
-            LexicalUnit exp;
+            LexicalUnit exp = null;
             
             try {
                 exp = parseExpression(false);

@@ -101,9 +101,7 @@ public class CSSPseudoClassCondition extends AbstractAttributeCondition {
      * Tests whether this selector matches the given element.
      */
     public boolean match(Element e, String pseudoE) {
-        return (e instanceof CSSStylableElement)
-            ? ((CSSStylableElement)e).isPseudoInstanceOf(getValue())
-            : false;
+        return (e instanceof CSSStylableElement) && ((CSSStylableElement) e).isPseudoInstanceOf(getValue());
     }
 
     /**

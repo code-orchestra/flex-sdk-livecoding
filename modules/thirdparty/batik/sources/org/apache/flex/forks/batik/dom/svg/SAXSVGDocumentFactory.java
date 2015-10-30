@@ -372,7 +372,7 @@ public class SAXSVGDocumentFactory
                 return null; // Let SAX Parser find it.
 
             if (!isValidating &&
-                (skippable_dtdids.indexOf(publicId) != -1)) {
+                (skippable_dtdids.contains(publicId))) {
                 // We are not validating and this is a DTD we can
                 // safely skip so do it...  Here we provide just enough
                 // of the DTD to keep stuff running (set svg and
@@ -380,12 +380,12 @@ public class SAXSVGDocumentFactory
                 return new InputSource(new StringReader(skip_dtd));
             }
 
-            if (dtdids.indexOf(publicId) != -1) {
+            if (dtdids.contains(publicId)) {
                 String localSystemId =
                     dtdProps.getProperty(KEY_SYSTEM_ID +
                                          publicId.replace(' ', '_'));
 
-                if (localSystemId != null && !"".equals(localSystemId)) {
+                if (localSystemId != null && !localSystemId.isEmpty()) {
                     return new InputSource
                         (getClass().getResource(localSystemId).toString());
                 }

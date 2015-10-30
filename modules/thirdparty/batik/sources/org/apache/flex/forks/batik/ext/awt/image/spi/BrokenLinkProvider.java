@@ -18,9 +18,9 @@
  */
 package org.apache.flex.forks.batik.ext.awt.image.spi;
 
-import java.awt.Image;
-
 import org.apache.flex.forks.batik.ext.awt.image.renderable.Filter;
+
+import java.awt.*;
 
 /**
  * This interface is to be used to provide alternate ways of
@@ -56,14 +56,11 @@ public abstract class BrokenLinkProvider {
      * @param params This is more detailed information about
      *        the circumstances of the failure.
      */
-    public abstract Filter getBrokenLinkImage(Object base,
-                                              String code, Object[] params);
+    public abstract Filter getBrokenLinkImage(Object base, String code, Object[] params);
 
     public static boolean hasBrokenLinkProperty(Filter f) {
         Object o = f.getProperty(BROKEN_LINK_PROPERTY);
-        if (o == null) return false;
-        if (o == Image.UndefinedProperty) return false;
-        return true;
+        return o != null && o != Image.UndefinedProperty;
     }
 
 }

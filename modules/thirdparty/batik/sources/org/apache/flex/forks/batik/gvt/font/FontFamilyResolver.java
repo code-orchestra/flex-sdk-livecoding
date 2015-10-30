@@ -97,9 +97,8 @@ public class FontFamilyResolver {
         awtFonts.add(new AWTGVTFont(defaultFont.getFamilyName(), 0, 12));
 
         Collection fontValues = fonts.values();
-        Iterator iter = fontValues.iterator();
-        while(iter.hasNext()) {
-            String fontFamily = (String)iter.next();
+        for (Object fontValue : fontValues) {
+            String fontFamily = (String) fontValue;
             AWTFontFamily awtFontFamily = new AWTFontFamily(fontFamily);
             awtFontFamilies.add(awtFontFamily);
             AWTGVTFont font = new AWTGVTFont(fontFamily, 0, 12);
@@ -182,7 +181,7 @@ public class FontFamilyResolver {
         for (int i = 0; i < awtFontFamilies.size(); i++) {
             AWTFontFamily fontFamily = (AWTFontFamily)awtFontFamilies.get(i);
             AWTGVTFont font = (AWTGVTFont)awtFonts.get(i);
-            if (font.canDisplay(c) && fontFamily.getFamilyName().indexOf("Song") == -1) {
+            if (font.canDisplay(c) && !fontFamily.getFamilyName().contains("Song")) {
                 // the awt font for "MS Song" doesn't display chinese glyphs correctly
                 return fontFamily;
             }

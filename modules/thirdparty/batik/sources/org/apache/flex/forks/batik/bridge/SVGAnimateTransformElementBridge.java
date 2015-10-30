@@ -89,16 +89,17 @@ public class SVGAnimateTransformElementBridge extends SVGAnimateElementBridge {
      */
     protected short parseType() {
         String typeString = element.getAttributeNS(null, SVG_TYPE_ATTRIBUTE);
-        if (typeString.equals("translate")) {
-            return SVGTransform.SVG_TRANSFORM_TRANSLATE;
-        } else if (typeString.equals("scale")) {
-            return SVGTransform.SVG_TRANSFORM_SCALE;
-        } else if (typeString.equals("rotate")) {
-            return SVGTransform.SVG_TRANSFORM_ROTATE;
-        } else if (typeString.equals("skewX")) {
-            return SVGTransform.SVG_TRANSFORM_SKEWX;
-        } else if (typeString.equals("skewY")) {
-            return SVGTransform.SVG_TRANSFORM_SKEWY;
+        switch (typeString) {
+            case "translate":
+                return SVGTransform.SVG_TRANSFORM_TRANSLATE;
+            case "scale":
+                return SVGTransform.SVG_TRANSFORM_SCALE;
+            case "rotate":
+                return SVGTransform.SVG_TRANSFORM_ROTATE;
+            case "skewX":
+                return SVGTransform.SVG_TRANSFORM_SKEWX;
+            case "skewY":
+                return SVGTransform.SVG_TRANSFORM_SKEWY;
         }
         throw new BridgeException
             (ctx, element, ErrorConstants.ERR_ATTRIBUTE_VALUE_MALFORMED,
@@ -241,7 +242,7 @@ public class SVGAnimateTransformElementBridge extends SVGAnimateElementBridge {
             return null;
         }
         ArrayList values = new ArrayList(7);
-        int i = 0, start = 0, end;
+        int i = 0, start, end;
         char c;
 outer:  while (i < len) {
             while (valuesString.charAt(i) == ' ') {

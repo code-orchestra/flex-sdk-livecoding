@@ -22,15 +22,12 @@
 <project name="fxgutils" default="main" basedir=".">
 
     <property name="FLEX_HOME" location="../.."/>
-
-    <!-- properties -->
     <property file="${FLEX_HOME}/build.properties" />
-
     <property name="lib.dir" value="${FLEX_HOME}/lib"/>
     <property name="module.dir" value="${basedir}"/>
-    <property name="module.src" value="${module.dir}/src/java"/>
-	<property name="javac.src" value="1.5"/>
-	<property name="module.classes" value="${module.dir}/classes"/>
+    <property name="module.src" value="src/main/java"/>
+	<property name="javac.src" value="1.8"/>
+	<property name="module.classes" value="${basedir}/build/classes"/>
 	<property name="build.number" value=""/>
              
     <target name="main" depends="clean,dev" description="cleans and runs the full build"/>
@@ -58,7 +55,6 @@
 		<mkdir dir="${module.classes}/META-INF"/>
         <copy file="${FLEX_HOME}/LICENSE.base" tofile="${module.classes}/META-INF/LICENSE"/>
         <copy file="${FLEX_HOME}/NOTICE.base" tofile="${module.classes}/META-INF/NOTICE"/>
-        
 		<echo message="Building lib/fxgutils.jar"/>
         <jar file="${lib.dir}/fxgutils.jar" basedir="${module.classes}" includes="**/*">
             <manifest>
@@ -93,6 +89,4 @@
         <echo level="info" message="Removing class files that changed and dependent class files."/>
         <depend cache="${module.classes}" srcdir="${module.src}" destdir="${module.classes}"/>
     </target>
-
-
 </project>

@@ -286,10 +286,9 @@ public class PadRed extends AbstractRed {
         if (ar.x+ar.width > srcR.x+srcR.width) {
             int w = (ar.x+ar.width) - (srcR.x+srcR.width);
             if (w > ar.width) w=ar.width;
-            int x0 = ar.x+ar.width-w; // the +/-1 cancel (?)
 
             // g2d.fillRect(x0, y, w, height);
-            dr.x      = x0;
+            dr.x      = ar.x+ar.width-w;
             dr.y      = ar.y;
             dr.width  = w;
             dr.height = ar.height;

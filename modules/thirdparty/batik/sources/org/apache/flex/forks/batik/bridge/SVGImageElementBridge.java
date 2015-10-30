@@ -237,7 +237,7 @@ public class SVGImageElementBridge extends AbstractGraphicsNodeBridge {
          * it hides the mark/reset methods so only we get to
          * use them.
          */
-        ProtectedStream reference = null;
+        ProtectedStream reference;
         try {
             reference = openStream(e, purl);
         } catch (SecurityException secEx ) {
@@ -268,7 +268,6 @@ public class SVGImageElementBridge extends AbstractGraphicsNodeBridge {
             reference.retry();
         } catch (IOException ioe) {
             reference.release();
-            reference = null;
             try {
                 // Couldn't reset stream so reopen it.
                 reference = openStream(e, purl);
@@ -286,7 +285,7 @@ public class SVGImageElementBridge extends AbstractGraphicsNodeBridge {
             Document doc = loader.loadDocument(purl.toString(), reference);
             imgDocument = (SVGDocument)doc;
             return createSVGImageNode(ctx, e, imgDocument);
-        } catch (BridgeException ex) {
+        } catch (BridgeException | InterruptedBridgeException ex) {
             throw ex;
         } catch (SecurityException secEx ) {
             throw new BridgeException(ctx, e, secEx, ERR_URI_UNSECURE,
@@ -295,8 +294,6 @@ public class SVGImageElementBridge extends AbstractGraphicsNodeBridge {
             if (HaltingThread.hasBeenHalted())
                 throw new InterruptedBridgeException();
 
-        } catch (InterruptedBridgeException ibe) {
-            throw ibe;
         } catch (Exception ex) {
             /* Nothing to do */
             // ex.printStackTrace();
@@ -306,7 +303,6 @@ public class SVGImageElementBridge extends AbstractGraphicsNodeBridge {
             reference.retry();
         } catch (IOException ioe) {
             reference.release();
-            reference = null;
             try {
                 // Couldn't reset stream so reopen it.
                 reference = openStream(e, purl);
@@ -430,30 +426,31 @@ public class SVGImageElementBridge extends AbstractGraphicsNodeBridge {
             String ns = alav.getNamespaceURI();
             String ln = alav.getLocalName();
             if (ns == null) {
-                if (ln.equals(SVG_X_ATTRIBUTE)
-                        || ln.equals(SVG_Y_ATTRIBUTE)) {
-                    updateImageBounds();
-                    return;
-                } else if (ln.equals(SVG_WIDTH_ATTRIBUTE)
-                        || ln.equals(SVG_HEIGHT_ATTRIBUTE)) {
-                    SVGImageElement ie = (SVGImageElement) e;
-                    ImageNode imageNode = (ImageNode) node;
-                    AbstractSVGAnimatedLength _attr;
-                    if (ln.charAt(0) == 'w') {
-                        _attr = (AbstractSVGAnimatedLength) ie.getWidth();
-                    } else {
-                        _attr = (AbstractSVGAnimatedLength) ie.getHeight();
-                    }
-                    float val = _attr.getCheckedValue();
-                    if (val == 0 || imageNode.getImage() instanceof ShapeNode) {
-                        rebuildImageNode();
-                    } else {
+                switch (ln) {
+                    case SVG_X_ATTRIBUTE:
+                    case SVG_Y_ATTRIBUTE:
                         updateImageBounds();
-                    }
-                    return;
-                } else if (ln.equals(SVG_PRESERVE_ASPECT_RATIO_ATTRIBUTE)) {
-                    updateImageBounds();
-                    return;
+                        return;
+                    case SVG_WIDTH_ATTRIBUTE:
+                    case SVG_HEIGHT_ATTRIBUTE:
+                        SVGImageElement ie = (SVGImageElement) e;
+                        ImageNode imageNode = (ImageNode) node;
+                        AbstractSVGAnimatedLength _attr;
+                        if (ln.charAt(0) == 'w') {
+                            _attr = (AbstractSVGAnimatedLength) ie.getWidth();
+                        } else {
+                            _attr = (AbstractSVGAnimatedLength) ie.getHeight();
+                        }
+                        float val = _attr.getCheckedValue();
+                        if (val == 0 || imageNode.getImage() instanceof ShapeNode) {
+                            rebuildImageNode();
+                        } else {
+                            updateImageBounds();
+                        }
+                        return;
+                    case SVG_PRESERVE_ASPECT_RATIO_ATTRIBUTE:
+                        updateImageBounds();
+                        return;
                 }
             } else if (ns.equals(XLINK_NAMESPACE_URI)
                     && ln.equals(XLINK_HREF_ATTRIBUTE)) {
@@ -907,7 +904,7 @@ public class SVGImageElementBridge extends AbstractGraphicsNodeBridge {
                     Filter filter = node.getGraphicsNodeRable(true);
                     clip = at.createTransformedShape(clip);
                     node.setClip(new ClipRable8Bit(filter, clip));
-                } catch (java.awt.geom.NoninvertibleTransformException ex) {}
+                } catch (java.awt.geom.NoninvertibleTransformException ignored) {}
             }
         } catch (LiveAttributeException ex) {
             throw new BridgeException(ctx, ex);

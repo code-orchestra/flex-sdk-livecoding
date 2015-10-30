@@ -80,8 +80,7 @@ public class SVGAnimateMotionElementBridge extends SVGAnimateElementBridge {
         boolean rotateAuto = false, rotateAutoReverse = false;
         float rotateAngle = 0;
         short rotateAngleUnit = SVGAngle.SVG_ANGLETYPE_UNKNOWN;
-        String rotateString = element.getAttributeNS(null,
-                                                     SVG_ROTATE_ATTRIBUTE);
+        String rotateString = element.getAttributeNS(null, SVG_ROTATE_ATTRIBUTE);
         if (rotateString.length() != 0) {
             if (rotateString.equals("auto")) {
                 rotateAuto = true;
@@ -115,10 +114,7 @@ public class SVGAnimateMotionElementBridge extends SVGAnimateElementBridge {
                 try {
                     ap.parse(rotateString);
                 } catch (ParseException pEx ) {
-                    throw new BridgeException
-                        (ctx, element,
-                         pEx, ErrorConstants.ERR_ATTRIBUTE_VALUE_MALFORMED,
-                         new Object[] { SVG_ROTATE_ATTRIBUTE, rotateString });
+                    throw new BridgeException(ctx, element, pEx, ErrorConstants.ERR_ATTRIBUTE_VALUE_MALFORMED, new Object[] { SVG_ROTATE_ATTRIBUTE, rotateString });
                 }
                 rotateAngle = h.theAngle;
                 rotateAngleUnit = h.theUnit;
@@ -150,21 +146,15 @@ public class SVGAnimateMotionElementBridge extends SVGAnimateElementBridge {
     protected ExtendedGeneralPath parsePath() {
         Node n = element.getFirstChild();
         while (n != null) {
-            if (n.getNodeType() == Node.ELEMENT_NODE
-                    && SVG_NAMESPACE_URI.equals(n.getNamespaceURI())
-                    && SVG_MPATH_TAG.equals(n.getLocalName())) {
+            if (n.getNodeType() == Node.ELEMENT_NODE && SVG_NAMESPACE_URI.equals(n.getNamespaceURI()) && SVG_MPATH_TAG.equals(n.getLocalName())) {
                 String uri = XLinkSupport.getXLinkHref((Element) n);
                 Element path = ctx.getReferencedElement(element, uri);
-                if (!SVG_NAMESPACE_URI.equals(path.getNamespaceURI())
-                        || !SVG_PATH_TAG.equals(path.getLocalName())) {
-                    throw new BridgeException
-                        (ctx, element, ErrorConstants.ERR_URI_BAD_TARGET,
-                         new Object[] { uri });
+                if (!SVG_NAMESPACE_URI.equals(path.getNamespaceURI()) || !SVG_PATH_TAG.equals(path.getLocalName())) {
+                    throw new BridgeException(ctx, element, ErrorConstants.ERR_URI_BAD_TARGET, new Object[] { uri });
                 }
                 SVGOMPathElement pathElt = (SVGOMPathElement) path;
                 AWTPathProducer app = new AWTPathProducer();
-                SVGAnimatedPathDataSupport.handlePathSegList
-                    (pathElt.getPathSegList(), app);
+                SVGAnimatedPathDataSupport.handlePathSegList(pathElt.getPathSegList(), app);
                 return (ExtendedGeneralPath) app.getShape();
             }
             n = n.getNextSibling();
@@ -180,9 +170,7 @@ public class SVGAnimateMotionElementBridge extends SVGAnimateElementBridge {
             pp.parse(pathString);
             return (ExtendedGeneralPath) app.getShape();
         } catch (ParseException pEx ) {
-            throw new BridgeException
-                (ctx, element, pEx, ErrorConstants.ERR_ATTRIBUTE_VALUE_MALFORMED,
-                 new Object[] { SVG_PATH_ATTRIBUTE, pathString });
+            throw new BridgeException(ctx, element, pEx, ErrorConstants.ERR_ATTRIBUTE_VALUE_MALFORMED, new Object[] { SVG_PATH_ATTRIBUTE, pathString });
         }
     }
 
@@ -190,14 +178,13 @@ public class SVGAnimateMotionElementBridge extends SVGAnimateElementBridge {
      * Returns the parsed 'keyPoints' attribute from the animation element.
      */
     protected float[] parseKeyPoints() {
-        String keyPointsString =
-            element.getAttributeNS(null, SVG_KEY_POINTS_ATTRIBUTE);
+        String keyPointsString = element.getAttributeNS(null, SVG_KEY_POINTS_ATTRIBUTE);
         int len = keyPointsString.length();
         if (len == 0) {
             return null;
         }
         List keyPoints = new ArrayList(7);
-        int i = 0, start = 0, end;
+        int i = 0, start, end;
         char c;
 outer:  while (i < len) {
             while (keyPointsString.charAt(i) == ' ') {
@@ -219,19 +206,16 @@ outer:  while (i < len) {
             }
             end = i++;
             try {
-                float keyPointCoord =
-                    Float.parseFloat(keyPointsString.substring(start, end));
-                keyPoints.add(new Float(keyPointCoord));
+                float keyPointCoord = Float.parseFloat(keyPointsString.substring(start, end));
+                keyPoints.add(keyPointCoord);
             } catch (NumberFormatException nfEx ) {
-                throw new BridgeException
-                    (ctx, element, nfEx, ErrorConstants.ERR_ATTRIBUTE_VALUE_MALFORMED,
-                     new Object[] { SVG_KEY_POINTS_ATTRIBUTE, keyPointsString });
+                throw new BridgeException(ctx, element, nfEx, ErrorConstants.ERR_ATTRIBUTE_VALUE_MALFORMED, new Object[] { SVG_KEY_POINTS_ATTRIBUTE, keyPointsString });
             }
         }
         len = keyPoints.size();
         float[] ret = new float[len];
         for (int j = 0; j < len; j++) {
-            ret[j] = ((Float) keyPoints.get(j)).floatValue();
+            ret[j] = (Float) keyPoints.get(j);
         }
         return ret;
     }
@@ -247,8 +231,7 @@ outer:  while (i < len) {
      * Returns the parsed 'values' attribute from the animation element.
      */
     protected AnimatableValue[] parseValues() {
-        String valuesString = element.getAttributeNS(null,
-                                                     SVG_VALUES_ATTRIBUTE);
+        String valuesString = element.getAttributeNS(null, SVG_VALUES_ATTRIBUTE);
         int len = valuesString.length();
         if (len == 0) {
             return null;
@@ -266,17 +249,13 @@ outer:  while (i < len) {
             float[] values = lap.getLengthValueArray();
             AnimatableValue[] ret = new AnimatableValue[types.length / 2];
             for (int i = 0; i < types.length; i += 2) {
-                float x = animationTarget.svgToUserSpace
-                    (values[i], types[i], AnimationTarget.PERCENTAGE_VIEWPORT_WIDTH);
-                float y = animationTarget.svgToUserSpace
-                    (values[i + 1], types[i + 1], AnimationTarget.PERCENTAGE_VIEWPORT_HEIGHT);
+                float x = animationTarget.svgToUserSpace(values[i], types[i], AnimationTarget.PERCENTAGE_VIEWPORT_WIDTH);
+                float y = animationTarget.svgToUserSpace(values[i + 1], types[i + 1], AnimationTarget.PERCENTAGE_VIEWPORT_HEIGHT);
                 ret[i / 2] = new AnimatableMotionPointValue(animationTarget, x, y, 0);
             }
             return ret;
         } catch (ParseException pEx ) {
-            throw new BridgeException
-                (ctx, element, pEx, ErrorConstants.ERR_ATTRIBUTE_VALUE_MALFORMED,
-                 new Object[] { SVG_VALUES_ATTRIBUTE, s });
+            throw new BridgeException(ctx, element, pEx, ErrorConstants.ERR_ATTRIBUTE_VALUE_MALFORMED, new Object[] { SVG_VALUES_ATTRIBUTE, s });
         }
     }
 
@@ -314,9 +293,7 @@ outer:  while (i < len) {
         } else {
             t = ctx.getReferencedElement(element, uri);
             if (t.getOwnerDocument() != element.getOwnerDocument()) {
-                throw new BridgeException
-                    (ctx, element, ErrorConstants.ERR_URI_BAD_TARGET,
-                     new Object[] { uri });
+                throw new BridgeException(ctx, element, ErrorConstants.ERR_URI_BAD_TARGET, new Object[] { uri });
             }
         }
         animationTarget = null;
@@ -325,15 +302,12 @@ outer:  while (i < len) {
             animationTarget = targetElement;
         }
         if (animationTarget == null) {
-            throw new BridgeException
-                (ctx, element, ErrorConstants.ERR_URI_BAD_TARGET,
-                 new Object[] { uri });
+            throw new BridgeException(ctx, element, ErrorConstants.ERR_URI_BAD_TARGET, new Object[] { uri });
         }
 
         // Add the animation.
         timedElement = createTimedElement();
         animation = createAnimation(animationTarget);
-        eng.addAnimation(animationTarget, AnimationEngine.ANIM_TYPE_OTHER,
-                         attributeNamespaceURI, attributeLocalName, animation);
+        eng.addAnimation(animationTarget, AnimationEngine.ANIM_TYPE_OTHER, attributeNamespaceURI, attributeLocalName, animation);
     }
 }

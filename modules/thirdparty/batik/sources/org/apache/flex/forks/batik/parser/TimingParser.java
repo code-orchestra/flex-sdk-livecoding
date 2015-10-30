@@ -94,7 +94,7 @@ public abstract class TimingParser extends AbstractParser {
         if (current == '+' || (current == '-' && !escaped)
                 || (current >= '0' && current <= '9')) {
             float offset = parseOffset();
-            ret = new Object[] { new Integer(TIME_OFFSET), new Float(offset) };
+            ret = new Object[] {TIME_OFFSET, offset};
         } else if (XMLUtilities.isXMLNameFirstCharacter((char) current)) {
             ret = parseIDValue(escaped);
         } else {
@@ -107,8 +107,8 @@ public abstract class TimingParser extends AbstractParser {
      * Parses an XML name with optional escaping in the middle.
      */
     protected String parseName() throws ParseException, IOException {
-        StringBuffer sb = new StringBuffer();
-        boolean midEscaped = false;
+        StringBuilder sb = new StringBuilder();
+        boolean midEscaped;
         do {
             sb.append((char) current);
             current = reader.read();
@@ -150,15 +150,15 @@ public abstract class TimingParser extends AbstractParser {
             if (current == '+' || current == '-') {
                 offset = parseOffset();
             }
-            return new Object[] { new Integer(TIME_ACCESSKEY),
-                                  new Float(offset),
-                                  new Character(key) };
+            return new Object[] {TIME_ACCESSKEY,
+                    offset,
+                    key};
         } else if (id.equals("accessKey") && useSVG12AccessKeys && !escaped) {
             if (current != '(') {
                 reportUnexpectedCharacterError( current );
             }
             current = reader.read();
-            StringBuffer keyName = new StringBuffer();
+            StringBuilder keyName = new StringBuilder();
             while (current >= 'A' && current <= 'Z'
                     || current >= 'a' && current <= 'z'
                     || current >= '0' && current <= '9'
@@ -175,8 +175,8 @@ public abstract class TimingParser extends AbstractParser {
             if (current == '+' || current == '-') {
                 offset = parseOffset();
             }
-            return new Object[] { new Integer(TIME_ACCESSKEY_SVG12),
-                                  new Float(offset),
+            return new Object[] {TIME_ACCESSKEY_SVG12,
+                    offset,
                                   keyName.toString() };
         } else if (id.equals("wallclock") && !escaped) {
             if (current != '(') {
@@ -188,12 +188,12 @@ public abstract class TimingParser extends AbstractParser {
             skipSpaces();
             if (current != ')') {
                 reportError("character.unexpected",
-                            new Object[] { new Integer(current) });
+                            new Object[] {current});
             }
             current = reader.read();
-            return new Object[] { new Integer(TIME_WALLCLOCK), wallclockValue };
+            return new Object[] {TIME_WALLCLOCK, wallclockValue };
         } else if (id.equals("indefinite") && !escaped) {
-            return new Object[] { new Integer(TIME_INDEFINITE) };
+            return new Object[] {TIME_INDEFINITE};
         } else {
             if (current == '.') {
                 current = reader.read();
@@ -211,15 +211,15 @@ public abstract class TimingParser extends AbstractParser {
                     if (current == '+' || current == '-') {
                         offset = parseOffset();
                     }
-                    return new Object[] { new Integer(TIME_SYNCBASE),
-                                          new Float(offset),
+                    return new Object[] {TIME_SYNCBASE,
+                            offset,
                                           id,
                                           id2 };
                 } else if (id2.equals("repeat") && !escaped) {
                     Integer repeatIteration = null;
                     if (current == '(') {
                         current = reader.read();
-                        repeatIteration = new Integer(parseDigits());
+                        repeatIteration = parseDigits();
                         if (current != ')') {
                             reportUnexpectedCharacterError( current );
                         }
@@ -230,8 +230,8 @@ public abstract class TimingParser extends AbstractParser {
                     if (current == '+' || current == '-') {
                         offset = parseOffset();
                     }
-                    return new Object[] { new Integer(TIME_REPEAT),
-                                          new Float(offset),
+                    return new Object[] {TIME_REPEAT,
+                            offset,
                                           id,
                                           repeatIteration };
                 } else if (id2.equals("marker") && !escaped) {
@@ -243,7 +243,7 @@ public abstract class TimingParser extends AbstractParser {
                         reportUnexpectedCharacterError( current );
                     }
                     current = reader.read();
-                    return new Object[] { new Integer(TIME_MEDIA_MARKER),
+                    return new Object[] {TIME_MEDIA_MARKER,
                                           id,
                                           markerName };
                 } else {
@@ -252,8 +252,8 @@ public abstract class TimingParser extends AbstractParser {
                     if (current == '+' || current == '-') {
                         offset = parseOffset();
                     }
-                    return new Object[] { new Integer(TIME_EVENTBASE),
-                                          new Float(offset),
+                    return new Object[] {TIME_EVENTBASE,
+                            offset,
                                           id,
                                           id2 };
                 }
@@ -263,8 +263,8 @@ public abstract class TimingParser extends AbstractParser {
                 if (current == '+' || current == '-') {
                     offset = parseOffset();
                 }
-                return new Object[] { new Integer(TIME_EVENTBASE),
-                                      new Float(offset),
+                return new Object[] {TIME_EVENTBASE,
+                        offset,
                                       null,
                                       id };
             }
@@ -431,7 +431,7 @@ public abstract class TimingParser extends AbstractParser {
                     tzn = "UTC";
                     current = reader.read();
                 } else if (current == '+' || current == '-') {
-                    StringBuffer tznb = new StringBuffer();
+                    StringBuilder tznb = new StringBuilder();
                     tzSpecified = true;
                     if (current == '-') {
                         tzNegative = true;

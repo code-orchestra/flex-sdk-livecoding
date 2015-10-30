@@ -96,8 +96,7 @@ public class XMLEditorKit extends DefaultEditorKit {
     
     /** {@inheritDoc} */
     public Document createDefaultDocument() {
-        XMLDocument doc = new XMLDocument(context);
-        return doc;
+        return new XMLDocument(context);
     }
     
     /** {@inheritDoc} */

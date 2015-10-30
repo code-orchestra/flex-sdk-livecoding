@@ -278,7 +278,7 @@ public class StrokingTextPainter extends BasicTextPainter {
 
         while (aci.setIndex(chunkStartIndex) != CharacterIterator.DONE) {
             TextPath prevTextPath = null;
-            for (int start=chunkStartIndex, end=0;
+            for (int start = chunkStartIndex, end;
                  aci.setIndex(start) != CharacterIterator.DONE; start=end) {
 
                 TextPath textPath = (TextPath) aci.getAttribute(TEXTPATH);
@@ -428,7 +428,7 @@ public class StrokingTextPainter extends BasicTextPainter {
             float fontSize = 12;
             Float fsFloat = (Float)aci.getAttribute(TextAttribute.SIZE);
             if (fsFloat != null)
-                fontSize = fsFloat.floatValue();
+                fontSize = fsFloat;
 
             // if could not resolve at least one of the fontFamilies
             // then use the default font
@@ -449,24 +449,24 @@ public class StrokingTextPainter extends BasicTextPainter {
             int numSet=0;
             int firstUnset=start;
             boolean firstUnsetSet;
-            for (int i = 0; i < fonts.size(); i++) {
+            for (Object font1 : fonts) {
                 // assign this font to all characters it can display if it has
                 // not already been assigned
                 int currentIndex = firstUnset;
                 firstUnsetSet = false;
                 aci.setIndex(currentIndex);
 
-                GVTFont font = (GVTFont)fonts.get(i);
+                GVTFont font = (GVTFont) font1;
                 if (defaultFont == null)
                     defaultFont = font;
 
                 while (currentIndex < end) {
                     int displayUpToIndex = font.canDisplayUpTo
-                        (aci, currentIndex, end);
+                            (aci, currentIndex, end);
 
                     Object altGlyphElement;
                     altGlyphElement = aci.getAttribute(ALT_GLYPH_HANDLER);
-                    if ( altGlyphElement != null ){
+                    if (altGlyphElement != null) {
                         //found all the glyph to be displayed
                         //consider the font matching done
                         displayUpToIndex = -1;
@@ -494,8 +494,8 @@ public class StrokingTextPainter extends BasicTextPainter {
                                 if (runStart != -1) {
                                     // System.out.println("Font 1: " + font);
                                     as.addAttribute(GVT_FONT, font,
-                                                    runStart-begin, j-begin);
-                                    runStart=-1;
+                                            runStart - begin, j - begin);
+                                    runStart = -1;
                                 }
                             } else {
                                 if (runStart == -1)
@@ -507,13 +507,13 @@ public class StrokingTextPainter extends BasicTextPainter {
                         if (runStart != -1) {
                             // System.out.println("Font 2: " + font);
                             as.addAttribute(GVT_FONT, font,
-                                            runStart-begin,
-                                            displayUpToIndex-begin);
+                                    runStart - begin,
+                                    displayUpToIndex - begin);
                         }
 
                         // set currentIndex to be one after the char
                         // that couldn't display
-                        currentIndex = displayUpToIndex+1;
+                        currentIndex = displayUpToIndex + 1;
                     }
                 }
 
@@ -574,7 +574,6 @@ public class StrokingTextPainter extends BasicTextPainter {
             if (aci.setIndex(end) == AttributedCharacterIterator.DONE) {
                 moreChunks = false;
             }
-            start = end;
         }
         if (as != null)
             return as.getIterator();
@@ -603,7 +602,7 @@ public class StrokingTextPainter extends BasicTextPainter {
         Point2D.Float offset        = new Point2D.Float(0,0);
         Point2D.Float advance       = new Point2D.Float(0,0);
         boolean isChunkStart  = true;
-        TextSpanLayout layout = null;
+        TextSpanLayout layout;
         do {
             int start = aci.getRunStart(extendedAtts);
             int end   = aci.getRunLimit(extendedAtts);
@@ -718,25 +717,25 @@ public class StrokingTextPainter extends BasicTextPainter {
             if (layout.isVertical()) {
                 if (lengthAdj == ADJUST_SPACING) {
                     yScale = (float)
-                        ((length.floatValue()-lastH)/
+                        ((length -lastH)/
                          (advance.getY()-lastMetrics.getVerticalAdvance()));
                 } else {
                     double adv =(advance.getY()-
                                  lastMetrics.getVerticalAdvance() + lastH);
-                    yScale = (float)(length.floatValue()/adv);
+                    yScale = (float)(length /adv);
                 }
-                visualAdvance = new Point2D.Float(0, length.floatValue());
+                visualAdvance = new Point2D.Float(0, length);
             } else {
                 if (lengthAdj == ADJUST_SPACING) {
                     xScale = (float)
-                        ((length.floatValue()-lastW)/
+                        ((length -lastW)/
                          (advance.getX()-lastMetrics.getHorizontalAdvance()));
                 } else {
                     double adv = (advance.getX() + lastW -
                                   lastMetrics.getHorizontalAdvance());
-                    xScale = (float)(length.floatValue()/adv);
+                    xScale = (float)(length /adv);
                 }
-                visualAdvance = new Point2D.Float(length.floatValue(), 0);
+                visualAdvance = new Point2D.Float(length, 0);
             }
 
             // System.out.println("Adv: " + advance + " Len: " + length +
@@ -791,12 +790,12 @@ public class StrokingTextPainter extends BasicTextPainter {
         // Of course X and Y override that, but they don't apply for
         // text on a path.
         if ((runX != null) && (!runX.isNaN())) {
-            absX = runX.floatValue();
+            absX = runX;
             tpShiftX = absX;
         }
 
         if ((runY != null) && (!runY.isNaN())) {
-            absY = runY.floatValue();
+            absY = runY;
             tpShiftY = absY;
         }
 
@@ -824,12 +823,12 @@ public class StrokingTextPainter extends BasicTextPainter {
             if (vertical) {
                 runX = (Float) runaci.getAttribute(XPOS);
                 if ((runX != null) && (!runX.isNaN())) {
-                    absX = runX.floatValue();
+                    absX = runX;
                 }
             } else {
                 runY = (Float) runaci.getAttribute(YPOS);
                 if ((runY != null) && (!runY.isNaN())) {
-                    absY = runY.floatValue();
+                    absY = runY;
                 }
             }
 
@@ -866,54 +865,54 @@ public class StrokingTextPainter extends BasicTextPainter {
         Rectangle2D decorationRect = null;
         double yLoc = 0, height = 0;
 
-        for (int i = 0; i < textRuns.size(); i++) {
-            TextRun textRun = (TextRun)textRuns.get(i);
+        for (Object textRun1 : textRuns) {
+            TextRun textRun = (TextRun) textRun1;
             AttributedCharacterIterator runaci = textRun.getACI();
             runaci.first();
 
-            TextPaintInfo tpi = (TextPaintInfo)runaci.getAttribute(PAINT_INFO);
+            TextPaintInfo tpi = (TextPaintInfo) runaci.getAttribute(PAINT_INFO);
             if ((tpi != null) && (tpi.composite != null)) {
                 g2d.setComposite(tpi.composite);
             }
 
-            Paint  paint       = null;
-            Stroke stroke      = null;
-            Paint  strokePaint = null;
+            Paint paint = null;
+            Stroke stroke = null;
+            Paint strokePaint = null;
             if (tpi != null) {
                 switch (decorationType) {
-                case TextSpanLayout.DECORATION_UNDERLINE :
-                    paint       = tpi.underlinePaint;
-                    stroke      = tpi.underlineStroke;
-                    strokePaint = tpi.underlineStrokePaint;
-                    break;
-                case TextSpanLayout.DECORATION_OVERLINE :
-                    paint       = tpi.overlinePaint;
-                    stroke      = tpi.overlineStroke;
-                    strokePaint = tpi.overlineStrokePaint;
-                    break;
-                case TextSpanLayout.DECORATION_STRIKETHROUGH :
-                    paint       = tpi.strikethroughPaint;
-                    stroke      = tpi.strikethroughStroke;
-                    strokePaint = tpi.strikethroughStrokePaint;
-                    break;
-                default:
-                    // should never get here
-                    return;
+                    case TextSpanLayout.DECORATION_UNDERLINE:
+                        paint = tpi.underlinePaint;
+                        stroke = tpi.underlineStroke;
+                        strokePaint = tpi.underlineStrokePaint;
+                        break;
+                    case TextSpanLayout.DECORATION_OVERLINE:
+                        paint = tpi.overlinePaint;
+                        stroke = tpi.overlineStroke;
+                        strokePaint = tpi.overlineStrokePaint;
+                        break;
+                    case TextSpanLayout.DECORATION_STRIKETHROUGH:
+                        paint = tpi.strikethroughPaint;
+                        stroke = tpi.strikethroughStroke;
+                        strokePaint = tpi.strikethroughStrokePaint;
+                        break;
+                    default:
+                        // should never get here
+                        return;
                 }
             }
 
             if (textRun.isFirstRunInChunk()) {
                 Shape s = textRun.getLayout().getDecorationOutline
-                    (decorationType);
+                        (decorationType);
                 Rectangle2D r2d = s.getBounds2D();
-                yLoc   = r2d.getY();
+                yLoc = r2d.getY();
                 height = r2d.getHeight();
             }
 
             if (textRun.isFirstRunInChunk() ||
-                (paint != prevPaint) ||
-                (stroke != prevStroke) ||
-                (strokePaint != prevStrokePaint)) {
+                    (paint != prevPaint) ||
+                    (stroke != prevStroke) ||
+                    (strokePaint != prevStrokePaint)) {
                 // if there is a current decoration, draw it now
                 if (decorationRect != null) {
 
@@ -933,8 +932,8 @@ public class StrokingTextPainter extends BasicTextPainter {
             }
 
             if ((paint != null || strokePaint != null)
-                && !textRun.getLayout().isVertical()
-                && !textRun.getLayout().isOnATextPath()) {
+                    && !textRun.getLayout().isVertical()
+                    && !textRun.getLayout().isOnATextPath()) {
 
                 // this text run should be decorated with the
                 // specified decoration type
@@ -942,20 +941,20 @@ public class StrokingTextPainter extends BasicTextPainter {
                 // horizontal layouts
 
                 Shape decorationShape =
-                    textRun.getLayout().getDecorationOutline(decorationType);
+                        textRun.getLayout().getDecorationOutline(decorationType);
                 if (decorationRect == null) {
                     // create a new one
                     Rectangle2D r2d = decorationShape.getBounds2D();
                     decorationRect = new Rectangle2D.Double
-                        (r2d.getX(), yLoc, r2d.getWidth(), height);
+                            (r2d.getX(), yLoc, r2d.getWidth(), height);
                 } else {
                     // extend the current one
                     Rectangle2D bounds = decorationShape.getBounds2D();
                     double minX = Math.min(decorationRect.getX(),
-                                           bounds.getX());
+                            bounds.getX());
                     double maxX = Math.max(decorationRect.getMaxX(),
-                                           bounds.getMaxX());
-                    decorationRect.setRect(minX, yLoc, maxX-minX, height);
+                            bounds.getMaxX());
+                    decorationRect.setRect(minX, yLoc, maxX - minX, height);
                 }
             }
             prevPaint = paint;
@@ -987,12 +986,12 @@ public class StrokingTextPainter extends BasicTextPainter {
      */
     protected void paintTextRuns(List textRuns,
                                Graphics2D g2d) {
-        for (int i = 0; i < textRuns.size(); i++) {
-            TextRun textRun = (TextRun)textRuns.get(i);
+        for (Object textRun1 : textRuns) {
+            TextRun textRun = (TextRun) textRun1;
             AttributedCharacterIterator runaci = textRun.getACI();
             runaci.first();
 
-            TextPaintInfo tpi = (TextPaintInfo)runaci.getAttribute(PAINT_INFO);
+            TextPaintInfo tpi = (TextPaintInfo) runaci.getAttribute(PAINT_INFO);
             if ((tpi != null) && (tpi.composite != null)) {
                 g2d.setComposite(tpi.composite);
             }
@@ -1018,14 +1017,14 @@ public class StrokingTextPainter extends BasicTextPainter {
         // for each text run, get its outline and append it to the overall
         // outline
 
-        for (int i = 0; i < textRuns.size(); ++i) {
-            TextRun textRun = (TextRun)textRuns.get(i);
+        for (Object textRun1 : textRuns) {
+            TextRun textRun = (TextRun) textRun1;
             TextSpanLayout textRunLayout = textRun.getLayout();
             GeneralPath textRunOutline =
-                new GeneralPath(textRunLayout.getOutline());
+                    new GeneralPath(textRunLayout.getOutline());
 
             if (outline == null) {
-               outline = textRunOutline;
+                outline = textRunOutline;
             } else {
                 outline.setWindingRule(GeneralPath.WIND_NON_ZERO);
                 outline.append(textRunOutline, false);
@@ -1087,18 +1086,18 @@ public class StrokingTextPainter extends BasicTextPainter {
         Rectangle2D bounds = null;
         // for each text run, get its stroke outline and append it to
         // the overall outline
-        for (int i = 0; i < textRuns.size(); ++i) {
-            TextRun textRun = (TextRun)textRuns.get(i);
-            TextSpanLayout textRunLayout = textRun.getLayout();
-            Rectangle2D runBounds = textRunLayout.getBounds2D();
-            if (runBounds != null) {
-                if (bounds == null)
-                    bounds = runBounds;
-                else
-                    //bounds = bounds.createUnion(runBounds);
-                    bounds.add( runBounds );
-            }
-        }
+         for (Object textRun1 : textRuns) {
+             TextRun textRun = (TextRun) textRun1;
+             TextSpanLayout textRunLayout = textRun.getLayout();
+             Rectangle2D runBounds = textRunLayout.getBounds2D();
+             if (runBounds != null) {
+                 if (bounds == null)
+                     bounds = runBounds;
+                 else
+                     //bounds = bounds.createUnion(runBounds);
+                     bounds.add(runBounds);
+             }
+         }
 
 
         // append any stroked decoration outlines
@@ -1155,50 +1154,50 @@ public class StrokingTextPainter extends BasicTextPainter {
         Rectangle2D decorationRect = null;
         double yLoc = 0, height = 0;
 
-        for (int i = 0; i < textRuns.size(); i++) {
-            TextRun textRun = (TextRun)textRuns.get(i);
+        for (Object textRun1 : textRuns) {
+            TextRun textRun = (TextRun) textRun1;
             AttributedCharacterIterator runaci = textRun.getACI();
             runaci.first();
 
             Paint paint = null;
             Stroke stroke = null;
             Paint strokePaint = null;
-            TextPaintInfo tpi = (TextPaintInfo)runaci.getAttribute(PAINT_INFO);
+            TextPaintInfo tpi = (TextPaintInfo) runaci.getAttribute(PAINT_INFO);
             if (tpi != null) {
                 switch (decorationType) {
-                case TextSpanLayout.DECORATION_UNDERLINE :
-                    paint       = tpi.underlinePaint;
-                    stroke      = tpi.underlineStroke;
-                    strokePaint = tpi.underlineStrokePaint;
-                    break;
-                case TextSpanLayout.DECORATION_OVERLINE :
-                    paint       = tpi.overlinePaint;
-                    stroke      = tpi.overlineStroke;
-                    strokePaint = tpi.overlineStrokePaint;
-                    break;
-                case TextSpanLayout.DECORATION_STRIKETHROUGH :
-                    paint       = tpi.strikethroughPaint;
-                    stroke      = tpi.strikethroughStroke;
-                    strokePaint = tpi.strikethroughStrokePaint;
-                    break;
-                default:
-                    // should never get here
-                    return null;
+                    case TextSpanLayout.DECORATION_UNDERLINE:
+                        paint = tpi.underlinePaint;
+                        stroke = tpi.underlineStroke;
+                        strokePaint = tpi.underlineStrokePaint;
+                        break;
+                    case TextSpanLayout.DECORATION_OVERLINE:
+                        paint = tpi.overlinePaint;
+                        stroke = tpi.overlineStroke;
+                        strokePaint = tpi.overlineStrokePaint;
+                        break;
+                    case TextSpanLayout.DECORATION_STRIKETHROUGH:
+                        paint = tpi.strikethroughPaint;
+                        stroke = tpi.strikethroughStroke;
+                        strokePaint = tpi.strikethroughStrokePaint;
+                        break;
+                    default:
+                        // should never get here
+                        return null;
                 }
             }
 
             if (textRun.isFirstRunInChunk()) {
                 Shape s = textRun.getLayout().getDecorationOutline
-                    (decorationType);
+                        (decorationType);
                 Rectangle2D r2d = s.getBounds2D();
-                yLoc   = r2d.getY();
+                yLoc = r2d.getY();
                 height = r2d.getHeight();
             }
 
             if (textRun.isFirstRunInChunk() ||
-                paint != prevPaint ||
-                stroke != prevStroke ||
-                strokePaint != prevStrokePaint) {
+                    paint != prevPaint ||
+                    stroke != prevStroke ||
+                    strokePaint != prevStrokePaint) {
 
                 // if there is a current decoration, added it to the overall
                 // outline
@@ -1213,28 +1212,28 @@ public class StrokingTextPainter extends BasicTextPainter {
             }
 
             if ((paint != null || strokePaint != null)
-                && !textRun.getLayout().isVertical()
-                && !textRun.getLayout().isOnATextPath()) {
+                    && !textRun.getLayout().isVertical()
+                    && !textRun.getLayout().isOnATextPath()) {
 
                 // this text run should be decorated with the specified
                 // decoration type note: decorations are only supported for
                 // plain horizontal layouts
 
                 Shape decorationShape =
-                    textRun.getLayout().getDecorationOutline(decorationType);
+                        textRun.getLayout().getDecorationOutline(decorationType);
                 if (decorationRect == null) {
                     // create a new one
                     Rectangle2D r2d = decorationShape.getBounds2D();
                     decorationRect = new Rectangle2D.Double
-                        (r2d.getX(), yLoc, r2d.getWidth(), height);
+                            (r2d.getX(), yLoc, r2d.getWidth(), height);
                 } else {
                     // extend the current one
                     Rectangle2D bounds = decorationShape.getBounds2D();
                     double minX = Math.min(decorationRect.getX(),
-                                           bounds.getX());
+                            bounds.getX());
                     double maxX = Math.max(decorationRect.getMaxX(),
-                                           bounds.getMaxX());
-                    decorationRect.setRect(minX, yLoc, maxX-minX, height);
+                            bounds.getMaxX());
+                    decorationRect.setRect(minX, yLoc, maxX - minX, height);
                 }
             }
 
@@ -1276,51 +1275,51 @@ public class StrokingTextPainter extends BasicTextPainter {
         Rectangle2D decorationRect = null;
         double yLoc = 0, height = 0;
 
-        for (int i = 0; i < textRuns.size(); i++) {
+        for (Object textRun1 : textRuns) {
 
-            TextRun textRun = (TextRun)textRuns.get(i);
+            TextRun textRun = (TextRun) textRun1;
             AttributedCharacterIterator runaci = textRun.getACI();
             runaci.first();
 
             Paint paint = null;
             Stroke stroke = null;
             Paint strokePaint = null;
-            TextPaintInfo tpi = (TextPaintInfo)runaci.getAttribute(PAINT_INFO);
+            TextPaintInfo tpi = (TextPaintInfo) runaci.getAttribute(PAINT_INFO);
             if (tpi != null) {
                 switch (decorationType) {
-                case TextSpanLayout.DECORATION_UNDERLINE :
-                    paint       = tpi.underlinePaint;
-                    stroke      = tpi.underlineStroke;
-                    strokePaint = tpi.underlineStrokePaint;
-                    break;
-                case TextSpanLayout.DECORATION_OVERLINE :
-                    paint       = tpi.overlinePaint;
-                    stroke      = tpi.overlineStroke;
-                    strokePaint = tpi.overlineStrokePaint;
-                    break;
-                case TextSpanLayout.DECORATION_STRIKETHROUGH :
-                    paint       = tpi.strikethroughPaint;
-                    stroke      = tpi.strikethroughStroke;
-                    strokePaint = tpi.strikethroughStrokePaint;
-                    break;
-                default:
-                    // should never get here
-                    return null;
+                    case TextSpanLayout.DECORATION_UNDERLINE:
+                        paint = tpi.underlinePaint;
+                        stroke = tpi.underlineStroke;
+                        strokePaint = tpi.underlineStrokePaint;
+                        break;
+                    case TextSpanLayout.DECORATION_OVERLINE:
+                        paint = tpi.overlinePaint;
+                        stroke = tpi.overlineStroke;
+                        strokePaint = tpi.overlineStrokePaint;
+                        break;
+                    case TextSpanLayout.DECORATION_STRIKETHROUGH:
+                        paint = tpi.strikethroughPaint;
+                        stroke = tpi.strikethroughStroke;
+                        strokePaint = tpi.strikethroughStrokePaint;
+                        break;
+                    default:
+                        // should never get here
+                        return null;
                 }
             }
 
             if (textRun.isFirstRunInChunk()) {
                 Shape s = textRun.getLayout().getDecorationOutline
-                    (decorationType);
+                        (decorationType);
                 Rectangle2D r2d = s.getBounds2D();
-                yLoc   = r2d.getY();
+                yLoc = r2d.getY();
                 height = r2d.getHeight();
             }
 
             if (textRun.isFirstRunInChunk() ||
-                paint != prevPaint ||
-                stroke != prevStroke ||
-                strokePaint != prevStrokePaint) {
+                    paint != prevPaint ||
+                    stroke != prevStroke ||
+                    strokePaint != prevStrokePaint) {
 
                 // if there is a current decoration, added it to the overall
                 // outline
@@ -1328,7 +1327,7 @@ public class StrokingTextPainter extends BasicTextPainter {
 
                     Shape s = null;
                     if (prevStroke != null &&
-                        prevStrokePaint != null)
+                            prevStrokePaint != null)
                         s = prevStroke.createStrokedShape(decorationRect);
                     else if (prevPaint != null)
                         s = decorationRect;
@@ -1343,29 +1342,29 @@ public class StrokingTextPainter extends BasicTextPainter {
             }
 
             if ((paint != null || strokePaint != null)
-                && !textRun.getLayout().isVertical()
-                && !textRun.getLayout().isOnATextPath()) {
+                    && !textRun.getLayout().isVertical()
+                    && !textRun.getLayout().isOnATextPath()) {
 
                 // this text run should be decorated with the specified
                 // decoration type note: decorations are only supported for
                 // plain horizontal layouts
 
                 Shape decorationShape =
-                    textRun.getLayout().getDecorationOutline(decorationType);
+                        textRun.getLayout().getDecorationOutline(decorationType);
 
                 if (decorationRect == null) {
                     // create a new one
                     Rectangle2D r2d = decorationShape.getBounds2D();
                     decorationRect = new Rectangle2D.Double
-                        (r2d.getX(), yLoc, r2d.getWidth(), height);
+                            (r2d.getX(), yLoc, r2d.getWidth(), height);
                 } else {
                     // extend the current one
                     Rectangle2D bounds = decorationShape.getBounds2D();
                     double minX = Math.min(decorationRect.getX(),
-                                           bounds.getX());
+                            bounds.getX());
                     double maxX = Math.max(decorationRect.getMaxX(),
-                                           bounds.getMaxX());
-                    decorationRect.setRect(minX, yLoc, maxX-minX, height);
+                            bounds.getMaxX());
+                    decorationRect.setRect(minX, yLoc, maxX - minX, height);
                 }
             }
 
@@ -1419,12 +1418,12 @@ public class StrokingTextPainter extends BasicTextPainter {
         List textRuns = getTextRuns(node, aci);
 
         // for each text run, see if its been hit
-        for (int i = 0; i < textRuns.size(); ++i) {
-            TextRun textRun = (TextRun)textRuns.get(i);
+        for (Object textRun1 : textRuns) {
+            TextRun textRun = (TextRun) textRun1;
             TextSpanLayout layout = textRun.getLayout();
             TextHit textHit = layout.hitTestChar((float) x, (float) y);
-            if (textHit != null && layout.getBounds2D().contains(x,y)) {
-                return new BasicTextPainter.BasicMark(node, textHit);
+            if (textHit != null && layout.getBounds2D().contains(x, y)) {
+                return new BasicMark(node, textHit);
             }
         }
 
@@ -1581,7 +1580,6 @@ public class StrokingTextPainter extends BasicTextPainter {
         if (beginIndex > endIndex) {
             // Swap them...
             BasicTextPainter.BasicMark tmpMark = begin;
-            begin = end; end = tmpMark;
 
             int tmpIndex = beginIndex;
             beginIndex = endIndex; endIndex = tmpIndex;
@@ -1594,17 +1592,17 @@ public class StrokingTextPainter extends BasicTextPainter {
 
         // for each text run, append any highlight it may contain for
         // the current selection
-        for (int i = 0; i < textRuns.size(); ++i) {
-            TextRun textRun = (TextRun)textRuns.get(i);
+        for (Object textRun1 : textRuns) {
+            TextRun textRun = (TextRun) textRun1;
             TextSpanLayout layout = textRun.getLayout();
 
             Shape layoutHighlightedShape = layout.getHighlightShape
-                (beginIndex, endIndex);
+                    (beginIndex, endIndex);
 
             // append the highlighted shape of this layout to the
             // overall hightlighted shape
-            if (( layoutHighlightedShape != null) &&
-                (!layoutHighlightedShape.getBounds().isEmpty())) {
+            if ((layoutHighlightedShape != null) &&
+                    (!layoutHighlightedShape.getBounds().isEmpty())) {
                 highlightedShape.append(layoutHighlightedShape, false);
             }
         }

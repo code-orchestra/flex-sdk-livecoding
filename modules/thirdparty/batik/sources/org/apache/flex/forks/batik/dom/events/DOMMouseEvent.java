@@ -18,6 +18,7 @@
  */
 package org.apache.flex.forks.batik.dom.events;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -157,7 +158,7 @@ public class DOMMouseEvent extends DOMUIEvent implements MouseEvent {
         if (modifierKeys.isEmpty()) {
             return "";
         }
-        StringBuffer sb = new StringBuffer(modifierKeys.size() * 8);
+        StringBuilder sb = new StringBuilder(modifierKeys.size() * 8);
         Iterator i = modifierKeys.iterator();
         sb.append((String) i.next());
         while (i.hasNext()) {
@@ -267,8 +268,6 @@ public class DOMMouseEvent extends DOMUIEvent implements MouseEvent {
         relatedTarget = relatedTargetArg;
         modifierKeys.clear();
         String[] modifiers = split(modifiersList);
-        for (int i = 0; i < modifiers.length; i++) {
-            modifierKeys.add(modifiers[i]);
-        }
+        Collections.addAll(modifierKeys, modifiers);
     }
 }

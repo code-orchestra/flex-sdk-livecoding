@@ -202,7 +202,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
             // Don't support (unsigned) short palette-color images.
             throw new Error("TIFFImageEncoder6");
         }
-        IndexColorModel icm = null;
+        IndexColorModel icm;
         int sizeOfColormap = 0;
         char[] colormap = null;
 
@@ -323,7 +323,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
             }
         }
 
-        int photometricInterpretation = -1;
+        int photometricInterpretation;
         switch (imageType) {
 
         case TIFF_BILEVEL_WHITE_IS_ZERO:
@@ -709,17 +709,15 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         TIFFField[] extraFields = encodeParam.getExtraFields();
         if(extraFields != null) {
             List extantTags = new ArrayList(fields.size());
-            Iterator fieldIter = fields.iterator();
-            while(fieldIter.hasNext()) {
-                TIFFField fld = (TIFFField)fieldIter.next();
-                extantTags.add(new Integer(fld.getTag()));
+            for (Object field : fields) {
+                TIFFField fld = (TIFFField) field;
+                extantTags.add(fld.getTag());
             }
 
             int numExtraFields = extraFields.length;
-            for(int i = 0; i < numExtraFields; i++) {
-                TIFFField fld = extraFields[i];
-                Integer tagValue = new Integer(fld.getTag());
-                if(!extantTags.contains(tagValue)) {
+            for (TIFFField fld : extraFields) {
+                Integer tagValue = fld.getTag();
+                if (!extantTags.contains(tagValue)) {
                     fields.add(fld);
                     extantTags.add(tagValue);
                 }
@@ -822,7 +820,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
                 }
             }
 
-            int bufSize = 0;
+            int bufSize;
             switch(compression) {
             case COMP_PACKBITS:
                 bufSize = (int)(bytesPerTile +
@@ -942,7 +940,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
 
                 int index;
 
-                int pixel = 0;
+                int pixel;
                 int k = 0;
                 switch(sampleSize[0]) {
 
@@ -1129,7 +1127,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
                         }
 
                         if(jpegRGBToYCbCr) {
-                            WritableRaster wRas = null;
+                            WritableRaster wRas;
                             if(src instanceof WritableRaster) {
                                 wRas = (WritableRaster)src;
                             } else {
@@ -1345,16 +1343,15 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         int dirSize = 2 + numEntries*12 + 4;
 
         // Loop over fields adding the size of all values > 4 bytes.
-        Iterator iter = fields.iterator();
-        while(iter.hasNext()) {
+        for (Object field1 : fields) {
             // Get the field.
-            TIFFField field = (TIFFField)iter.next();
+            TIFFField field = (TIFFField) field1;
 
             // Determine the size of the field value.
-            int valueSize = field.getCount()*sizeOfType[field.getType()];
+            int valueSize = field.getCount() * sizeOfType[field.getType()];
 
             // Add any excess size.
-            if(valueSize > 4) {
+            if (valueSize > 4) {
                 dirSize += valueSize;
             }
         }
@@ -1390,11 +1387,10 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         // Write number of fields in the IFD
         writeUnsignedShort(numEntries);
 
-        Iterator iter = fields.iterator();
-        while(iter.hasNext()) {
+        for (Object field1 : fields) {
 
             // 12 byte field entry TIFFField
-            TIFFField field = (TIFFField)iter.next();
+            TIFFField field = (TIFFField) field1;
 
             // byte 0-1 Tag that identifies a field
             int tag = field.getTag();
@@ -1428,8 +1424,8 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         writeLong(nextIFDOffset);
 
         // Write the tag values that did not fit into 4 bytes
-        for (int i = 0; i < tooBig.size(); i++) {
-            writeValues((TIFFField)tooBig.get(i));
+        for (Object aTooBig : tooBig) {
+            writeValues((TIFFField) aTooBig);
         }
     }
 

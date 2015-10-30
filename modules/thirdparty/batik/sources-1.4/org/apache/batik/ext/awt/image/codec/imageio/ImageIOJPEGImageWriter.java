@@ -142,7 +142,6 @@ public class ImageIOJPEGImageWriter extends ImageIOImageWriter {
     protected ImageWriteParam getDefaultWriteParam(
             ImageWriter iiowriter, RenderedImage image,
             ImageWriterParams params) {
-        JPEGImageWriteParam param = new JPEGImageWriteParam(iiowriter.getLocale());
         //ImageTypeSpecifier type = ImageTypeSpecifier.createFromRenderedImage(image);
         /*
         ImageTypeSpecifier type = new ImageTypeSpecifier(
@@ -154,7 +153,7 @@ public class ImageIOJPEGImageWriter extends ImageIOImageWriter {
         param.setDestinationType(type);
         param.setSourceBands(new int[] {0, 1, 2});
         */
-        return param;
+        return new JPEGImageWriteParam(iiowriter.getLocale());
     }
     
     

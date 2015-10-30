@@ -62,11 +62,11 @@ public class InterpreterPool {
     static {
         Iterator iter = Service.providers(InterpreterFactory.class);
         while (iter.hasNext()) {
-            InterpreterFactory factory = null;
+            InterpreterFactory factory;
             factory = (InterpreterFactory)iter.next();
             String[] mimeTypes = factory.getMimeTypes();
-            for (int i = 0; i < mimeTypes.length; i++) {
-                defaultFactories.put(mimeTypes[i], factory);
+            for (String mimeType : mimeTypes) {
+                defaultFactories.put(mimeType, factory);
             }
         }
     }
@@ -96,7 +96,7 @@ public class InterpreterPool {
         try {
             URL url = new URL(svgDoc.getDocumentURI());
             interpreter = factory.createInterpreter(url, svgDoc.isSVG12());
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException ignored) {
         }
 
         if (interpreter == null) return null;

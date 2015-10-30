@@ -85,8 +85,7 @@ public class GenericDocument
      * for this document.
      */
     public boolean isId(Attr node) {
-        if (node.getNamespaceURI() != null) return false;
-        return ATTR_ID.equals(node.getNodeName());
+        return node.getNamespaceURI() == null && ATTR_ID.equals(node.getNodeName());
     }
 
     /**

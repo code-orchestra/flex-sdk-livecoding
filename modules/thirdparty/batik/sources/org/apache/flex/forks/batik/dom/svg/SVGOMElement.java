@@ -213,7 +213,7 @@ public abstract class SVGOMElement
      * <b>DOM</b>: Implements {@link Node#getNodeName()}.
      */
     public String getNodeName() {
-        if (prefix == null || prefix.equals("")) {
+        if (prefix == null || prefix.isEmpty()) {
             return getLocalName();
         }
 
@@ -234,15 +234,15 @@ public abstract class SVGOMElement
         if (isReadonly()) {
             throw createDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                      "readonly.node",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName() });
         }
         if (prefix != null &&
-            !prefix.equals("") &&
+                !prefix.isEmpty() &&
             !DOMUtilities.isValidName(prefix)) {
             throw createDOMException(DOMException.INVALID_CHARACTER_ERR,
                                      "prefix",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName(),
                                                     prefix });
         }
@@ -600,10 +600,7 @@ public abstract class SVGOMElement
     public final boolean isAttributeAnimatable(String ns, String ln) {
         DoublyIndexedTable t = getTraitInformationTable();
         TraitInformation ti = (TraitInformation) t.get(ns, ln);
-        if (ti != null) {
-            return ti.isAnimatable();
-        }
-        return false;
+        return ti != null && ti.isAnimatable();
     }
 
     /**
@@ -839,9 +836,8 @@ public abstract class SVGOMElement
     void fireBaseAttributeListeners(String ns, String ln) {
         if (targetListeners != null) {
             LinkedList ll = (LinkedList) targetListeners.get(ns, ln);
-            Iterator it = ll.iterator();
-            while (it.hasNext()) {
-                AnimationTargetListener l = (AnimationTargetListener) it.next();
+            for (Object aLl : ll) {
+                AnimationTargetListener l = (AnimationTargetListener) aLl;
                 l.baseValueChanged(this, ns, ln, false);
             }
         }

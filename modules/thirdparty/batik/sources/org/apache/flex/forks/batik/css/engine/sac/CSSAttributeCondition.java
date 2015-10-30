@@ -120,7 +120,7 @@ public class CSSAttributeCondition extends AbstractAttributeCondition {
     public boolean match(Element e, String pseudoE) {
         String val = getValue();
         if (val == null) {
-            return !e.getAttribute(getLocalName()).equals("");
+            return !e.getAttribute(getLocalName()).isEmpty();
         }
         return e.getAttribute(getLocalName()).equals(val);
     }

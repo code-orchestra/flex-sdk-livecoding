@@ -54,7 +54,7 @@ public class ASTAndNode extends SimpleNode
     public Object value(InternalContextAdapter context )
         throws MethodInvocationException
     {
-        return new Boolean( evaluate( context ) );
+        return Boolean.valueOf(evaluate(context));
     }
 
     /**

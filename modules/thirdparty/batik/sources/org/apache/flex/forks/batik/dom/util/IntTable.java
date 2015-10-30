@@ -69,7 +69,7 @@ public class IntTable implements Serializable {
         table = new Entry[t.table.length];
         for (int i = 0; i < table.length; i++) {
             Entry e = t.table[i];
-            Entry n = null;
+            Entry n;
             if (e != null) {
                 n = new Entry(e.hash, e.key, e.value, null);
                 table[i] = n;

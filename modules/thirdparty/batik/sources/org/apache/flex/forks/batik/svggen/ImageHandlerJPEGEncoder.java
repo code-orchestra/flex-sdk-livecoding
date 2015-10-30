@@ -77,16 +77,13 @@ public class ImageHandlerJPEGEncoder extends AbstractImageHandlerEncoder {
     public void encodeImage(BufferedImage buf, File imageFile)
         throws SVGGraphics2DIOException {
         try{
-            OutputStream os = new FileOutputStream(imageFile);
-            try {
+            try (OutputStream os = new FileOutputStream(imageFile)) {
                 ImageWriter writer = ImageWriterRegistry.getInstance()
-                    .getWriterFor("image/jpeg");
+                        .getWriterFor("image/jpeg");
                 ImageWriterParams params = new ImageWriterParams();
                 params.setJPEGQuality(1, false);
                 writer.writeImage(buf, os, params);
-                
-            } finally {
-                os.close();
+
             }
         } catch(IOException e) {
             throw new SVGGraphics2DIOException(ERR_WRITE+imageFile.getName());

@@ -118,11 +118,10 @@ public class Parse extends InputBase
         if ( templateStack.length >= 
                 rsvc.getInt(RuntimeConstants.PARSE_DIRECTIVE_MAXDEPTH, 20) )
         {
-            StringBuffer path = new StringBuffer();
+            StringBuilder path = new StringBuilder();
 
-            for( int i = 0; i < templateStack.length; ++i)
-            {
-                path.append( " > " + templateStack[i] );
+            for (Object aTemplateStack : templateStack) {
+                path.append(" > ").append(aTemplateStack);
             }
 
             rsvc.error( "Max recursion depth reached (" + 

@@ -74,7 +74,7 @@ public class TextLineBreaks {
         char ch = aci.current(), prevCh = (char)-1;
         byte         cls = getCharCharClass(ch);
         if (cls == CHAR_CLASS_LF) cls = CHAR_CLASS_BK;
-        byte      curCls = cls;
+        byte      curCls;
         byte     prevCls = cls;
         byte prevPrevCls = -1;
         int  wordCnt = 0;
@@ -92,7 +92,7 @@ public class TextLineBreaks {
              prevPrevCls = prevCls, prevCls = curCls) {
 
             if (ich == lineEnd) {
-                as.addAttribute(WORD_LIMIT, new Integer(wordCnt++),
+                as.addAttribute(WORD_LIMIT, wordCnt++,
                                 wordBegin, ich);
                 wordBegin = ich;
 
@@ -131,14 +131,14 @@ public class TextLineBreaks {
                 continue; // Don't allow break around JOINER.
 
             if ((curCls == CHAR_CLASS_BK) || (curCls == CHAR_CLASS_LF)) {
-                as.addAttribute(WORD_LIMIT, new Integer(wordCnt++),
+                as.addAttribute(WORD_LIMIT, wordCnt++,
                                 wordBegin, ich);
                 wordBegin = ich;
                 cls = CHAR_CLASS_BK;
                 continue;
             }
             if (prevCls == CHAR_CLASS_CR) {
-                as.addAttribute(WORD_LIMIT, new Integer(wordCnt++),
+                as.addAttribute(WORD_LIMIT, wordCnt++,
                                 wordBegin, ich-1);
                 wordBegin = ich-1;
                 cls = CHAR_CLASS_BK;
@@ -155,7 +155,7 @@ public class TextLineBreaks {
                     if (prevPrevCls != -1) {
                         if (brkPairs[prevPrevCls][CHAR_CLASS_ID] ==
                             BREAK_ACTION_DIRECT) {
-                            as.addAttribute(WORD_LIMIT, new Integer(wordCnt++),
+                            as.addAttribute(WORD_LIMIT, wordCnt++,
                                             wordBegin, ich-1);
                             wordBegin = ich-1;
                             // pbrk[ich-2] = BREAK_ACTION_DIRECT;
@@ -177,13 +177,13 @@ public class TextLineBreaks {
             byte brk = brkPairs[cls][curCls];
 
             if (brk == BREAK_ACTION_DIRECT) {
-                as.addAttribute(WORD_LIMIT, new Integer(wordCnt++),
+                as.addAttribute(WORD_LIMIT, wordCnt++,
                                 wordBegin, ich);
                 wordBegin = ich;
                 // pbrk[ich-1] = brk;
             } else if (brk == BREAK_ACTION_INDIRECT) {
                 if (prevCls == CHAR_CLASS_SP) {
-                    as.addAttribute(WORD_LIMIT, new Integer(wordCnt++),
+                    as.addAttribute(WORD_LIMIT, wordCnt++,
                                     wordBegin, ich);
                     wordBegin = ich;
                 }
@@ -195,9 +195,8 @@ public class TextLineBreaks {
         }
 
         // always break at the end
-        as.addAttribute(WORD_LIMIT, new Integer(wordCnt++),
+        as.addAttribute(WORD_LIMIT, wordCnt++,
                         wordBegin, ich);
-        wordBegin = ich;
         // pbrk[ich-1] = BREAK_ACTION_DIRECT;
 
         return;

@@ -161,7 +161,7 @@ public class ConcreteTextSelector implements Selector {
             else {
                  try {
                      t = t.createInverse();
-                 } catch (NoninvertibleTransformException ni) {
+                 } catch (NoninvertibleTransformException ignored) {
                  }
             }
             p = t.transform(p, null);

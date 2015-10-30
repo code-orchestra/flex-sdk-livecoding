@@ -19,18 +19,14 @@
 
 package org.apache.flex.forks.batik.svggen;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.Image;
-import java.awt.Paint;
-import java.awt.Shape;
-import java.awt.Stroke;
+import org.apache.flex.forks.batik.ext.awt.g2d.AbstractGraphics2D;
+import org.apache.flex.forks.batik.ext.awt.g2d.GraphicContext;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+import java.awt.*;
 import java.awt.font.GlyphVector;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
@@ -50,14 +46,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.flex.forks.batik.ext.awt.g2d.AbstractGraphics2D;
-import org.apache.flex.forks.batik.ext.awt.g2d.GraphicContext;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.DocumentFragment;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
  * This implementation of the java.awt.Graphics2D abstract class
@@ -684,7 +672,7 @@ public class SVGGraphics2D extends AbstractGraphics2D
         if (xform == null) {
             domGroupManager.addElement(imageElement);
         } else {
-            AffineTransform inverseTransform = null;
+            AffineTransform inverseTransform;
             try {
                 inverseTransform = xform.createInverse();
             } catch(NoninvertibleTransformException e) {
@@ -747,7 +735,7 @@ public class SVGGraphics2D extends AbstractGraphics2D
         if (xform == null) {
             domGroupManager.addElement(imageElement);
         } else {
-            AffineTransform inverseTransform = null;
+            AffineTransform inverseTransform;
             try {
                 inverseTransform = xform.createInverse();
             } catch(NoninvertibleTransformException e) {
@@ -850,12 +838,12 @@ public class SVGGraphics2D extends AbstractGraphics2D
     public boolean drawImage(Image img,
                              AffineTransform xform,
                              ImageObserver obs){
-        boolean retVal = true;
+        boolean retVal;
 
         if (xform == null) {
             retVal = drawImage(img, 0, 0, null);
         } else if(xform.getDeterminant() != 0){
-            AffineTransform inverseTransform = null;
+            AffineTransform inverseTransform;
             try{
                 inverseTransform = xform.createInverse();
             }   catch(NoninvertibleTransformException e){
@@ -1048,7 +1036,7 @@ public class SVGGraphics2D extends AbstractGraphics2D
         if(xform == null) {
             domGroupManager.addElement(image);
         } else if(xform.getDeterminant() != 0){
-            AffineTransform inverseTransform = null;
+            AffineTransform inverseTransform;
             try{
                 inverseTransform = xform.createInverse();
             }catch(NoninvertibleTransformException e){
@@ -1128,7 +1116,7 @@ public class SVGGraphics2D extends AbstractGraphics2D
         if (xform == null) {
             domGroupManager.addElement(image);
         } else if(xform.getDeterminant() != 0){
-            AffineTransform inverseTransform = null;
+            AffineTransform inverseTransform;
             try{
                 inverseTransform = xform.createInverse();
             }catch(NoninvertibleTransformException e){
@@ -1320,7 +1308,7 @@ public class SVGGraphics2D extends AbstractGraphics2D
             int start = ati.getIndex();
             int end   = ati.getRunLimit()-1;
 
-            StringBuffer buf = new StringBuffer( end - start );
+            StringBuilder buf = new StringBuilder( end - start );
             buf.append(ch);
 
             for (int i=start; i<end; i++) {
@@ -1437,17 +1425,11 @@ public class SVGGraphics2D extends AbstractGraphics2D
      */
     private boolean isBold(AttributedCharacterIterator ati) {
         Object weight = ati.getAttribute(TextAttribute.WEIGHT);
-        if (weight == null)
-            return false;
-        if (weight.equals(TextAttribute.WEIGHT_REGULAR))
-            return false;
-        if (weight.equals(TextAttribute.WEIGHT_DEMILIGHT))
-            return false;
-        if (weight.equals(TextAttribute.WEIGHT_EXTRA_LIGHT))
-            return false;
-        if (weight.equals(TextAttribute.WEIGHT_LIGHT))
-            return false;
-        return true;
+        return weight != null
+                && !weight.equals(TextAttribute.WEIGHT_REGULAR)
+                && !weight.equals(TextAttribute.WEIGHT_DEMILIGHT)
+                && !weight.equals(TextAttribute.WEIGHT_EXTRA_LIGHT)
+                && !weight.equals(TextAttribute.WEIGHT_LIGHT);
     }
 
     /** Return true if the AttributedCharacterIterator is italic (at
@@ -1455,8 +1437,7 @@ public class SVGGraphics2D extends AbstractGraphics2D
      */
     private boolean isItalic(AttributedCharacterIterator ati) {
         Object attr = ati.getAttribute(TextAttribute.POSTURE);
-        if (TextAttribute.POSTURE_OBLIQUE.equals(attr)) return true;
-        return false;
+        return TextAttribute.POSTURE_OBLIQUE.equals(attr);
     }
 
     /** Return true if the AttributedCharacterIterator is underlined
@@ -1464,10 +1445,9 @@ public class SVGGraphics2D extends AbstractGraphics2D
      */
     private boolean isUnderline(AttributedCharacterIterator ati) {
         Object attr = ati.getAttribute(TextAttribute.UNDERLINE);
-        if (TextAttribute.UNDERLINE_ON.equals(attr)) return true;
         // What to do about UNDERLINE_LOW_*?  Right now we don't
-        // draw them since we can't really model them...
-        else return false;
+// draw them since we can't really model them...
+        return TextAttribute.UNDERLINE_ON.equals(attr);
     }
 
     /** Return true if the AttributedCharacterIterator is striked
@@ -1475,8 +1455,7 @@ public class SVGGraphics2D extends AbstractGraphics2D
      */
     private boolean isStrikeThrough(AttributedCharacterIterator ati) {
         Object attr = ati.getAttribute(TextAttribute.STRIKETHROUGH);
-        if (TextAttribute.STRIKETHROUGH_ON.equals(attr)) return true;
-        return false;
+        return TextAttribute.STRIKETHROUGH_ON.equals(attr);
     }
 
     /**
@@ -1527,9 +1506,8 @@ public class SVGGraphics2D extends AbstractGraphics2D
         if (unsupportedAttributes == null) return false;
 
         Set      allAttrs = aci.getAllAttributeKeys();
-        Iterator iter     = allAttrs.iterator();
-        while (iter.hasNext()) {
-            if (unsupportedAttributes.contains(iter.next())) {
+        for (Object allAttr : allAttrs) {
+            if (unsupportedAttributes.contains(allAttr)) {
                 return true;
             }
         }

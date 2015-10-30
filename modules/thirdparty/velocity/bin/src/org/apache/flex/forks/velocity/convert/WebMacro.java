@@ -127,10 +127,9 @@ public class WebMacro
             ds.addDefaultExcludes();
             ds.scan();
             String[] files = ds.getIncludedFiles();
-            
-            for (int i = 0; i < files.length; i++)
-            {
-                writeTemplate(files[i], basedir, newBasedir);
+
+            for (String file1 : files) {
+                writeTemplate(file1, basedir, newBasedir);
             }
         }
         else
@@ -146,7 +145,7 @@ public class WebMacro
     private boolean writeTemplate(String file, String basedir,
                                   String newBasedir)
     {
-        if (file.indexOf(WM_EXT) < 0)
+        if (!file.contains(WM_EXT))
         {
             return false;
         }
@@ -199,7 +198,7 @@ public class WebMacro
      * Gets the path segment of the full path to a file (i.e. one
      * which originally included the file name).
      */
-    private final String extractPath(String file)
+    private String extractPath(String file)
     {
         int lastSepPos = file.lastIndexOf(File.separator);
         return (lastSepPos == -1 ? "" :
@@ -224,7 +223,7 @@ public class WebMacro
     /**
      * How to use this little puppy :-)
      */
-    private static final void usage()
+    private static void usage()
     {
         System.err.println("Usage: convert-wm <template.wm | directory>");
         System.exit(1);
@@ -270,7 +269,7 @@ public class WebMacro
     /**
      * Makes a Perl 5 regular expression for use by ORO.
      */
-    private final String makeSubstRE(int i)
+    private String makeSubstRE(int i)
     {
         return ("s/" + perLineREs[i] + '/' + perLineREs[i + 1] + "/g");
     }
@@ -282,10 +281,9 @@ public class WebMacro
     {
         if (args.length > 0)
         {
-            for (int x=0; x < args.length; x++)
-            {
+            for (String arg : args) {
                 WebMacro converter = new WebMacro();
-                converter.convert(args[x]);
+                converter.convert(arg);
             }
         }
         else

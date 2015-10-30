@@ -43,7 +43,7 @@ public class BidiAttributedCharacterIterator implements AttributedCharacterItera
     private FontRenderContext frc;
     private int chunkStart;
     private int [] newCharOrder;
-    private static final Float FLOAT_NAN = new Float(Float.NaN);
+    private static final Float FLOAT_NAN = Float.NaN;
 
 
     protected BidiAttributedCharacterIterator
@@ -84,7 +84,7 @@ public class BidiAttributedCharacterIterator implements AttributedCharacterItera
             // of null keys/values).
             as = new AttributedString(aci);
         } else {
-            StringBuffer strB = new StringBuffer( numChars );
+            StringBuilder strB = new StringBuilder( numChars );
             char c = aci.first();
             for (int i = 0; i < numChars; i++) {
                 strB.append(c);
@@ -99,11 +99,10 @@ public class BidiAttributedCharacterIterator implements AttributedCharacterItera
                 Map attrMap = aci.getAttributes();
                 int extent  = aci.getRunLimit();
                 Map destMap = new HashMap(attrMap.size());
-                Iterator it  = attrMap.entrySet().iterator();
-                while (it.hasNext()) {
+                for (Object o : attrMap.entrySet()) {
                     // Font doesn't like getting attribute sets with
                     // null keys or values so we strip them here.
-                    Map.Entry e = (Map.Entry)it.next();
+                    Map.Entry e = (Map.Entry) o;
                     Object key = e.getKey();
                     if (key == null) continue;
                     Object value = e.getValue();
@@ -138,7 +137,7 @@ public class BidiAttributedCharacterIterator implements AttributedCharacterItera
             if (newBiDi != currBiDi) {
                 as.addAttribute
                     (GVTAttributedCharacterIterator.TextAttribute.BIDI_LEVEL,
-                     new Integer(currBiDi), runStart, i);
+                            currBiDi, runStart, i);
                 runStart = i;
                 currBiDi  = newBiDi;
                 if (newBiDi > maxBiDi) maxBiDi = newBiDi;
@@ -146,7 +145,7 @@ public class BidiAttributedCharacterIterator implements AttributedCharacterItera
         }
         as.addAttribute
             (GVTAttributedCharacterIterator.TextAttribute.BIDI_LEVEL,
-             new Integer(currBiDi), runStart, numChars);
+                    currBiDi, runStart, numChars);
 
         aci = as.getIterator();
 
@@ -166,7 +165,7 @@ public class BidiAttributedCharacterIterator implements AttributedCharacterItera
                                      numChars, maxBiDi);
 
         // construct the string in the new order
-        StringBuffer reorderedString = new StringBuffer( numChars );
+        StringBuilder reorderedString = new StringBuilder( numChars );
         int reorderedFirstChar = 0;
         for (int i = 0; i < numChars; i++) {
             int srcIdx = newCharOrder[i];
@@ -411,7 +410,7 @@ public class BidiAttributedCharacterIterator implements AttributedCharacterItera
     public Object clone() {
         return new BidiAttributedCharacterIterator
             ((AttributedCharacterIterator)reorderedACI.clone(),
-             frc, chunkStart, (int [])newCharOrder.clone());
+             frc, chunkStart, newCharOrder.clone());
     }
 
     /**

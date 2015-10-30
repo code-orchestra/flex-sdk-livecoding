@@ -191,10 +191,7 @@ public abstract class AbstractElement
      */
     protected boolean resetAttribute(String ns, String prefix, String ln) {
         AttributeInitializer ai = getAttributeInitializer();
-        if (ai == null) {
-            return false;
-        }
-        return ai.resetAttribute(this, ns, prefix, ln);
+        return ai != null && ai.resetAttribute(this, ns, prefix, ln);
     }
 
     /**

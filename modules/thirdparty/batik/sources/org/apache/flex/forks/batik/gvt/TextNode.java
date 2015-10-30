@@ -155,7 +155,7 @@ public class TextNode extends AbstractGraphicsNode implements Selectable {
         if (aci == null) {
             text = "";
         } else {
-            StringBuffer buf = new StringBuffer(aci.getEndIndex());
+            StringBuilder buf = new StringBuilder(aci.getEndIndex());
             for (char c = aci.first();
                  c != CharacterIterator.DONE;
                  c = aci.next()) {
@@ -423,12 +423,12 @@ public class TextNode extends AbstractGraphicsNode implements Selectable {
         }
         List list = getTextRuns();
         // place coords in text node coordinate system
-        for (int i = 0 ; i < list.size(); i++) {
+        for (Object aList : list) {
             StrokingTextPainter.TextRun run =
-                (StrokingTextPainter.TextRun)list.get(i);
+                    (StrokingTextPainter.TextRun) aList;
             TextSpanLayout layout = run.getLayout();
-            float x = (float)p.getX();
-            float y = (float)p.getY();
+            float x = (float) p.getX();
+            float y = (float) p.getY();
             TextHit textHit = layout.hitTestChar(x, y);
             if (textHit != null && contains(p, layout.getBounds2D())) {
                 return true;

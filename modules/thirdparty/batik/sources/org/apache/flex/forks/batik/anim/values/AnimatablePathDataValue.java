@@ -184,11 +184,11 @@ public class AnimatablePathDataValue extends AnimatableValue {
      * Returns a string representation of this object.
      */
     public String toStringRep() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int k = 0;
-        for (int i = 0; i < commands.length; i++) {
-            sb.append(PATH_COMMANDS[commands[i]]);
-            for (int j = 0; j < PATH_PARAMS[commands[i]]; j++) {
+        for (short command : commands) {
+            sb.append(PATH_COMMANDS[command]);
+            for (int j = 0; j < PATH_PARAMS[command]; j++) {
                 sb.append(' ');
                 sb.append(parameters[k++]);
             }

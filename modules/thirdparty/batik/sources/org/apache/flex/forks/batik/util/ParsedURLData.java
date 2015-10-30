@@ -503,7 +503,7 @@ loop2:          while (i < len) {
 
         hasBeenOpened = true;
 
-        URL url = null;
+        URL url;
         try {
             url = buildURL();
         } catch (MalformedURLException mue) {
@@ -570,16 +570,10 @@ loop2:          while (i < len) {
 
         // Check if the rest of the two PURLs matche other than
         // the 'ref'
-        if ((port      == other.port) &&
-            ((path     == other.path)
-             || ((path!=null) && path.equals(other.path))) &&
-            ((host     == other.host)
-             || ((host!=null) && host.equals(other.host))) &&
-            ((protocol == other.protocol)
-             || ((protocol!=null) && protocol.equals(other.protocol))))
-            return true;
-
-        return false;
+        return (port == other.port) &&
+                ((path == other.path) || ((path != null) && path.equals(other.path))) &&
+                ((host == other.host) || ((host != null) && host.equals(other.host))) &&
+                ((protocol == other.protocol) || ((protocol != null) && protocol.equals(other.protocol)));
     }
 
 

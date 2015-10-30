@@ -92,10 +92,8 @@ public abstract class ExtensibleDOMImplementation
     public ExtensibleDOMImplementation() {
         initLocalizable();
 
-        Iterator iter = getDomExtensions().iterator();
-
-        while(iter.hasNext()) {
-            DomExtension de = (DomExtension)iter.next();
+        for (Object o : getDomExtensions()) {
+            DomExtension de = (DomExtension) o;
             de.registerTags(this);
         }
     }

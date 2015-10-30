@@ -937,7 +937,7 @@ public abstract class AbstractSAXParserMMImpl
                 if (type.equals("NOTATION") || 
                     type.equals("ENUMERATION")) {
 
-                    StringBuffer str = new StringBuffer();
+                    StringBuilder str = new StringBuilder();
                     if (type.equals("NOTATION")) {
                       str.append(type);
                       str.append(" (");
@@ -2307,7 +2307,7 @@ public abstract class AbstractSAXParserMMImpl
         }
 
         public String getType(String uri, String localName) {
-            return uri.equals("") ? fAttributes.getType(null, localName) :
+            return uri.isEmpty() ? fAttributes.getType(null, localName) :
                                     fAttributes.getType(uri, localName);
         }
 
@@ -2320,7 +2320,7 @@ public abstract class AbstractSAXParserMMImpl
         }
 
         public String getValue(String uri, String localName) {
-            return uri.equals("") ? fAttributes.getValue(null, localName) :
+            return uri.isEmpty() ? fAttributes.getValue(null, localName) :
                                     fAttributes.getValue(uri, localName);
         }
 
@@ -2329,7 +2329,7 @@ public abstract class AbstractSAXParserMMImpl
         }
 
         public int getIndex(String uri, String localPart) {
-            return uri.equals("") ? fAttributes.getIndex(null, localPart) :
+            return uri.isEmpty() ? fAttributes.getIndex(null, localPart) :
                                     fAttributes.getIndex(uri, localPart);
         }
 

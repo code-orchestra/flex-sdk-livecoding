@@ -188,7 +188,7 @@ public class AnimatableTransformListValue extends AnimatableValue {
                         res.transforms.setElementAt(t, index);
                     }
                 }
-                float x, y, r = 0;
+                float x, y, r;
                 switch (type) {
                     case SVGTransform.SVG_TRANSFORM_SKEWX:
                     case SVGTransform.SVG_TRANSFORM_SKEWY:
@@ -558,7 +558,7 @@ public class AnimatableTransformListValue extends AnimatableValue {
      * Returns the CSS text representation of the value.
      */
     public String toStringRep() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         Iterator i = transforms.iterator();
         while (i.hasNext()) {
             AbstractSVGTransform t = (AbstractSVGTransform) i.next();

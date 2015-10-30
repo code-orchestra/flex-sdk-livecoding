@@ -103,7 +103,7 @@ public abstract class ImageCacher implements SVGSyntax, ErrorConstants {
         // need to check on actual byte-for-byte equality as well.
         // The checksum will be sufficient in most cases.
         int     checksum = getChecksum(os.toByteArray());
-        Integer key      = new Integer(checksum);
+        Integer key      = checksum;
         String  href     = null;
 
         Object data = getCacheableData(os);
@@ -326,7 +326,7 @@ public abstract class ImageCacher implements SVGSyntax, ErrorConstants {
 
         boolean imagesMatch(Object o1, Object o2)
                 throws SVGGraphics2DIOException {
-            boolean match = false;
+            boolean match;
             try {
                 FileInputStream imageStream =
                                     new FileInputStream((File) o1);

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ResourceBundleManager">
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_da.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_de.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_en.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_es.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_fi.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_fr.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_it.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_ja.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_ko.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_nb.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_nl.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_pt.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_ru.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_sv.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_zh_CN.properties" />
-    <file url="file://$PROJECT_DIR$/../modules/compiler/src/java/flex2/tools_zh_TW.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_da.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_de.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_en.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_es.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_fi.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_fr.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_it.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_ja.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_ko.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_nb.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_nl.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_pt.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_ru.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_sv.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_zh_CN.properties" />
+    <file url="file://$PROJECT_DIR$/../modules/compiler/src/main/java/flex2/tools_zh_TW.properties" />
   </component>
 </project>

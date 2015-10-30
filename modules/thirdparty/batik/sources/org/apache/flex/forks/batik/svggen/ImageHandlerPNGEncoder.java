@@ -76,14 +76,11 @@ public class ImageHandlerPNGEncoder extends AbstractImageHandlerEncoder {
     public void encodeImage(BufferedImage buf, File imageFile)
         throws SVGGraphics2DIOException {
         try {
-            OutputStream os = new FileOutputStream(imageFile);
-            try {
+            try (OutputStream os = new FileOutputStream(imageFile)) {
                 ImageWriter writer = ImageWriterRegistry.getInstance()
-                    .getWriterFor("image/png");
+                        .getWriterFor("image/png");
                 writer.writeImage(buf, os);
-                
-            } finally {
-                os.close();
+
             }
         } catch (IOException e) {
             throw new SVGGraphics2DIOException(ERR_WRITE+imageFile.getName());

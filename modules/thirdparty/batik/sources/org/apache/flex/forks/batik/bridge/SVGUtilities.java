@@ -223,10 +223,7 @@ public abstract class SVGUtilities implements SVGConstants, ErrorConstants {
         while (st.hasMoreTokens()) {
             String t = st.nextToken();
             if (s.startsWith(t)) {
-                if (s.length() > t.length()) {
-                    return (s.charAt(t.length()) == '-');
-                }
-                return true;
+                return s.length() <= t.length() || (s.charAt(t.length()) == '-');
             }
         }
         return false;
@@ -260,15 +257,14 @@ public abstract class SVGUtilities implements SVGConstants, ErrorConstants {
             if (uriStr.length() == 0) { // exit if no more xlink:href
                 return "";
             }
-            String baseURI = ((AbstractNode) e).getBaseURI();
+            String baseURI = e.getBaseURI();
             ParsedURL purl = new ParsedURL(baseURI, uriStr);
 
-            Iterator iter = refs.iterator();
-            while (iter.hasNext()) {
-                if (purl.equals(iter.next()))
+            for (Object ref : refs) {
+                if (purl.equals(ref))
                     throw new BridgeException
-                        (ctx, e, ERR_XLINK_HREF_CIRCULAR_DEPENDENCIES,
-                         new Object[] {uriStr});
+                            (ctx, e, ERR_XLINK_HREF_CIRCULAR_DEPENDENCIES,
+                                    new Object[]{uriStr});
             }
 
             try {
@@ -512,7 +508,7 @@ public abstract class SVGUtilities implements SVGConstants, ErrorConstants {
         if (vals[0] == null)
             filterRes[0] = -1;
         else {
-            filterRes[0] = vals[0].floatValue();
+            filterRes[0] = vals[0];
             if (filterRes[0] < 0)
                 throw new BridgeException
                     (ctx, filterElement, ERR_ATTRIBUTE_VALUE_MALFORMED,
@@ -522,7 +518,7 @@ public abstract class SVGUtilities implements SVGConstants, ErrorConstants {
         if (vals[1] == null)
             filterRes[1] = filterRes[0];
         else {
-            filterRes[1] = vals[1].floatValue();
+            filterRes[1] = vals[1];
             if (filterRes[1] < 0)
                 throw new BridgeException
                     (ctx, filterElement, ERR_ATTRIBUTE_VALUE_MALFORMED,
@@ -547,9 +543,9 @@ public abstract class SVGUtilities implements SVGConstants, ErrorConstants {
 
         try {
             StringTokenizer tokens = new StringTokenizer(attrValue, " ");
-            ret[0] = new Float(Float.parseFloat(tokens.nextToken()));
+            ret[0] = Float.parseFloat(tokens.nextToken());
             if (tokens.hasMoreTokens()) {
-                ret[1] = new Float(Float.parseFloat(tokens.nextToken()));
+                ret[1] = Float.parseFloat(tokens.nextToken());
             }
 
             if (tokens.hasMoreTokens()) {

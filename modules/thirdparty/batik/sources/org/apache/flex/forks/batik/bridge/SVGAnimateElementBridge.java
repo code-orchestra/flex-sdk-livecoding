@@ -148,7 +148,7 @@ public class SVGAnimateElementBridge extends SVGAnimationElementBridge {
             return null;
         }
         ArrayList values = new ArrayList(7);
-        int i = 0, start = 0, end;
+        int i = 0, start, end;
         char c;
 outer:  while (i < len) {
             while (valuesString.charAt(i) == ' ') {
@@ -194,7 +194,7 @@ outer:  while (i < len) {
             return null;
         }
         ArrayList keyTimes = new ArrayList(7);
-        int i = 0, start = 0, end;
+        int i = 0, start, end;
         char c;
 outer:  while (i < len) {
             while (keyTimesString.charAt(i) == ' ') {
@@ -218,7 +218,7 @@ outer:  while (i < len) {
             try {
                 float keyTime =
                     Float.parseFloat(keyTimesString.substring(start, end));
-                keyTimes.add(new Float(keyTime));
+                keyTimes.add(keyTime);
             } catch (NumberFormatException nfEx ) {
                 throw new BridgeException
                     (ctx, element, nfEx, ErrorConstants.ERR_ATTRIBUTE_VALUE_MALFORMED,
@@ -228,7 +228,7 @@ outer:  while (i < len) {
         len = keyTimes.size();
         float[] ret = new float[len];
         for (int j = 0; j < len; j++) {
-            ret[j] = ((Float) keyTimes.get(j)).floatValue();
+            ret[j] = (Float) keyTimes.get(j);
         }
         return ret;
     }
@@ -244,7 +244,7 @@ outer:  while (i < len) {
             return null;
         }
         List keySplines = new ArrayList(7);
-        int count = 0, i = 0, start = 0, end;
+        int count = 0, i = 0, start, end;
         char c;
 outer:  while (i < len) {
             while (keySplinesString.charAt(i) == ' ') {
@@ -294,7 +294,7 @@ outer:  while (i < len) {
             try {
                 float keySplineValue =
                     Float.parseFloat(keySplinesString.substring(start, end));
-                keySplines.add(new Float(keySplineValue));
+                keySplines.add(keySplineValue);
             } catch (NumberFormatException nfEx ) {
                 throw new BridgeException
                     (ctx, element, nfEx, ErrorConstants.ERR_ATTRIBUTE_VALUE_MALFORMED,
@@ -304,7 +304,7 @@ outer:  while (i < len) {
         len = keySplines.size();
         float[] ret = new float[len];
         for (int j = 0; j < len; j++) {
-            ret[j] = ((Float) keySplines.get(j)).floatValue();
+            ret[j] = (Float) keySplines.get(j);
         }
         return ret;
     }

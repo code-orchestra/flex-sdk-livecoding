@@ -93,7 +93,7 @@ public class ASTModNode extends SimpleNode
          *  check for divide by 0
          */
 
-        if ( ( (Integer) right).intValue() == 0 )
+        if ((Integer) right == 0 )
         {
             rsvc.error( "Right side of modulus operation is zero. Must be non-zero. "
                            + context.getCurrentTemplateName() + " [line " + getLine() 
@@ -102,7 +102,7 @@ public class ASTModNode extends SimpleNode
             return null;
         }
 
-        return new Integer( ( (Integer) left ).intValue() % (  (Integer) right ).intValue() );
+        return new Integer((Integer) left % (Integer) right);
     }
 }
 

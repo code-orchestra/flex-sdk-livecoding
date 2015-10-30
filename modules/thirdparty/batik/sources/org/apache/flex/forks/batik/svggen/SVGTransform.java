@@ -115,8 +115,8 @@ public class SVGTransform extends AbstractSVGConverter{
                 return element;
             }
         };
-        boolean canConcatenate = false;
-        int i = 0, j = 0, next = 0;
+        boolean canConcatenate;
+        int i = 0, j, next;
         TransformStackElement element = null;
 
         // We keep a separate 'presentation' stack, which contains
@@ -138,7 +138,6 @@ public class SVGTransform extends AbstractSVGConverter{
             }
 
             // try to concatenate as much as possible
-            canConcatenate = true;
             for(j = next; j < nTransforms; j++) {
                 canConcatenate = element.concatenate(transformStack[j]);
                 if(!canConcatenate)
@@ -172,21 +171,20 @@ public class SVGTransform extends AbstractSVGConverter{
         //
         int nPresentations = presentation.size();
 
-        StringBuffer transformStackBuffer = new StringBuffer( nPresentations * 8 );
+        StringBuilder transformStackBuffer = new StringBuilder( nPresentations * 8 );
         for(i = 0; i < nPresentations; i++) {
             transformStackBuffer.append(convertTransform((TransformStackElement) presentation.get(i)));
             transformStackBuffer.append(SPACE);
         }
 
-        String transformValue = transformStackBuffer.toString().trim();
-        return transformValue;
+        return transformStackBuffer.toString().trim();
     }
 
     /**
      * Converts an AffineTransform to an SVG transform string
      */
     final String convertTransform(TransformStackElement transformElement){
-        StringBuffer transformString = new StringBuffer();
+        StringBuilder transformString = new StringBuilder();
         double[] transformParameters = transformElement.getTransformParameters();
         switch(transformElement.getType().toInt()){
         case TransformType.TRANSFORM_TRANSLATE:

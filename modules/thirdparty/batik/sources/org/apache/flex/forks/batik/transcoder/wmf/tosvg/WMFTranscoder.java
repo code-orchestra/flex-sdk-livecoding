@@ -127,30 +127,29 @@ public class WMFTranscoder extends ToSVGAbstractTranscoder {
         float conv = 1.0f; // conversion factor
 
         if (hints.containsKey(KEY_INPUT_WIDTH)) {
-            wmfwidth = ((Integer)hints.get(KEY_INPUT_WIDTH)).intValue();
-            wmfheight = ((Integer)hints.get(KEY_INPUT_HEIGHT)).intValue();
+            wmfwidth = (Integer) hints.get(KEY_INPUT_WIDTH);
+            wmfheight = (Integer) hints.get(KEY_INPUT_HEIGHT);
         } else {
             wmfwidth = currentStore.getWidthPixels();
             wmfheight = currentStore.getHeightPixels();
         }
-        float width = wmfwidth;
+        float width;
         float height = wmfheight;
 
         // change the output width and height if required
         if (hints.containsKey(KEY_WIDTH)) {
-            width = ((Float)hints.get(KEY_WIDTH)).floatValue();
+            width = (Float) hints.get(KEY_WIDTH);
             conv = width / wmfwidth;
-            height = height * width / wmfwidth;
         }
 
         // determine the offset values
         int xOffset = 0;
         int yOffset = 0;
         if (hints.containsKey(KEY_XOFFSET)) {
-            xOffset = ((Integer)hints.get(KEY_XOFFSET)).intValue();
+            xOffset = (Integer) hints.get(KEY_XOFFSET);
         }
         if (hints.containsKey(KEY_YOFFSET)) {
-            yOffset = ((Integer)hints.get(KEY_YOFFSET)).intValue();
+            yOffset = (Integer) hints.get(KEY_YOFFSET);
         }
 
         // Set the size and viewBox on the output document
@@ -163,8 +162,8 @@ public class WMFTranscoder extends ToSVGAbstractTranscoder {
         int vpH;
         // if we took only a part of the image, we use its dimension for computing
         if (hints.containsKey(KEY_INPUT_WIDTH)) {
-            vpW = (int)(((Integer)hints.get(KEY_INPUT_WIDTH)).intValue() * conv);
-            vpH = (int)(((Integer)hints.get(KEY_INPUT_HEIGHT)).intValue() * conv);
+            vpW = (int)((Integer) hints.get(KEY_INPUT_WIDTH) * conv);
+            vpH = (int)((Integer) hints.get(KEY_INPUT_HEIGHT) * conv);
         // else we took the whole image dimension
         } else {
             vpW = (int)(currentStore.getWidthUnits() * sizeFactor);
@@ -222,8 +221,6 @@ public class WMFTranscoder extends ToSVGAbstractTranscoder {
                 URL url = new URL(uri);
                 in = url.openStream();
                 return new DataInputStream(new BufferedInputStream(in));
-            } catch (MalformedURLException e){
-                handler.fatalError(new TranscoderException(e));
             } catch (IOException e){
                 handler.fatalError(new TranscoderException(e));
             }
@@ -248,13 +245,11 @@ public class WMFTranscoder extends ToSVGAbstractTranscoder {
         WMFTranscoder transcoder = new WMFTranscoder();
         int nFiles = args.length;
 
-        for(int i=0; i<nFiles; i++){
-            String fileName = args[i];
-            if(!fileName.toLowerCase().endsWith(WMF_EXTENSION)){
-                System.err.println(args[i] + " does not have the " + WMF_EXTENSION + " extension. It is ignored");
-            }
-            else{
-                System.out.print("Processing : " + args[i] + "...");
+        for (String fileName : args) {
+            if (!fileName.toLowerCase().endsWith(WMF_EXTENSION)) {
+                System.err.println(fileName + " does not have the " + WMF_EXTENSION + " extension. It is ignored");
+            } else {
+                System.out.print("Processing : " + fileName + "...");
                 String outputFileName = fileName.substring(0, fileName.toLowerCase().indexOf(WMF_EXTENSION)) + SVG_EXTENSION;
                 File inputFile = new File(fileName);
                 File outputFile = new File(outputFileName);
@@ -262,9 +257,7 @@ public class WMFTranscoder extends ToSVGAbstractTranscoder {
                     TranscoderInput input = new TranscoderInput(inputFile.toURL().toString());
                     TranscoderOutput output = new TranscoderOutput(new FileOutputStream(outputFile));
                     transcoder.transcode(input, output);
-                }catch(MalformedURLException e){
-                    throw new TranscoderException(e);
-                }catch(IOException e){
+                } catch (IOException e) {
                     throw new TranscoderException(e);
                 }
                 System.out.println(".... Done");

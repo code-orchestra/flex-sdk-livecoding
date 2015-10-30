@@ -60,7 +60,7 @@ public abstract class XBLOMElement extends SVGOMElement
      * <b>DOM</b>: Implements {@link Node#getNodeName()}.
      */
     public String getNodeName() {
-        if (prefix == null || prefix.equals("")) {
+        if (prefix == null || prefix.isEmpty()) {
             return getLocalName();
         }
 
@@ -81,15 +81,15 @@ public abstract class XBLOMElement extends SVGOMElement
         if (isReadonly()) {
             throw createDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                      "readonly.node",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName() });
         }
         if (prefix != null &&
-            !prefix.equals("") &&
+                !prefix.isEmpty() &&
             !DOMUtilities.isValidName(prefix)) {
             throw createDOMException(DOMException.INVALID_CHARACTER_ERR,
                                      "prefix",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName(),
                                                     prefix });
         }

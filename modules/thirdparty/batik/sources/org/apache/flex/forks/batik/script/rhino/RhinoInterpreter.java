@@ -169,7 +169,7 @@ public class RhinoInterpreter implements Interpreter {
                 ClassCache cache = ClassCache.get(globalObject);
                 cache.setCachingEnabled(rhinoClassLoader != null);
                 // import Java lang package & DOM Level 3 & SVG DOM packages
-                StringBuffer sb = new StringBuffer("importPackage(Packages.");
+                StringBuilder sb = new StringBuilder("importPackage(Packages.");
                 for (int i = 0; i < TO_BE_IMPORTED.length - 1; i++) {
                     sb.append(TO_BE_IMPORTED[i]);
                     sb.append(");importPackage(Packages.");
@@ -323,16 +323,14 @@ public class RhinoInterpreter implements Interpreter {
                     // forgotten since the compilation:
                     // compile it and store it for future use.
 
-                    PrivilegedAction compile = new PrivilegedAction() {
-                        public Object run() {
-                            try {
-                                return cx.compileReader
-                                    (new StringReader(scriptStr),
-                                     SOURCE_NAME_SVG, 1, rhinoClassLoader);
-                            } catch (IOException ioEx ) {
-                                // Should never happen: using a string
-                                throw new Error( ioEx.getMessage() );
-                            }
+                    PrivilegedAction compile = () -> {
+                        try {
+                            return cx.compileReader
+                                (new StringReader(scriptStr),
+                                 SOURCE_NAME_SVG, 1, rhinoClassLoader);
+                        } catch (IOException ioEx ) {
+                            // Should never happen: using a string
+                            throw new Error( ioEx.getMessage() );
                         }
                     };
                     script = (Script)AccessController.doPrivileged(compile);

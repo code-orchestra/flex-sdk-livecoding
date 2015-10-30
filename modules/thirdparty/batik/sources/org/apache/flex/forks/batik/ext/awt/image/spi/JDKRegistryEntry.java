@@ -18,9 +18,13 @@
  */
 package org.apache.flex.forks.batik.ext.awt.image.spi;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
+import org.apache.flex.forks.batik.ext.awt.image.GraphicsUtil;
+import org.apache.flex.forks.batik.ext.awt.image.renderable.DeferRable;
+import org.apache.flex.forks.batik.ext.awt.image.renderable.Filter;
+import org.apache.flex.forks.batik.ext.awt.image.renderable.RedRable;
+import org.apache.flex.forks.batik.util.ParsedURL;
+
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
@@ -28,12 +32,6 @@ import java.awt.image.RenderedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-
-import org.apache.flex.forks.batik.ext.awt.image.GraphicsUtil;
-import org.apache.flex.forks.batik.ext.awt.image.renderable.DeferRable;
-import org.apache.flex.forks.batik.ext.awt.image.renderable.Filter;
-import org.apache.flex.forks.batik.ext.awt.image.renderable.RedRable;
-import org.apache.flex.forks.batik.util.ParsedURL;
 
 /**
  * This Image tag registy entry is setup to wrap the core JDK
@@ -113,7 +111,6 @@ public class JDKRegistryEntry extends AbstractRegistryEntry
                     try {
                         Toolkit tk = Toolkit.getDefaultToolkit();
                         Image img = tk.createImage(url);
-
                         if (img != null) {
                             RenderedImage ri = loadImage(img, dr);
                             if (ri != null) {
@@ -121,15 +118,12 @@ public class JDKRegistryEntry extends AbstractRegistryEntry
                             }
                         }
                     } catch (ThreadDeath td) {
-                        filt = ImageTagRegistry.getBrokenLinkImage
-                            (JDKRegistryEntry.this, errCode, errParam);
+                        filt = ImageTagRegistry.getBrokenLinkImage(JDKRegistryEntry.this, errCode, errParam);
                         dr.setSource(filt);
                         throw td;
-                    } catch (Throwable t) { }
+                    } catch (Throwable ignored) { }
                     if (filt == null)
-                        filt = ImageTagRegistry.getBrokenLinkImage
-                            (JDKRegistryEntry.this, errCode, errParam);
-
+                        filt = ImageTagRegistry.getBrokenLinkImage(JDKRegistryEntry.this, errCode, errParam);
                     dr.setSource(filt);
                 }
             };

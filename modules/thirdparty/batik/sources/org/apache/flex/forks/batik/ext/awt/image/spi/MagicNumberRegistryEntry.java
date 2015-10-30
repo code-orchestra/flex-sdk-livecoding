@@ -56,7 +56,7 @@ public abstract class MagicNumberRegistryEntry
          */
         public MagicNumber(int offset, byte[]magicNumber) {
             this.offset = offset;
-            this.magicNumber = (byte[])magicNumber.clone();
+            this.magicNumber = magicNumber.clone();
             buffer = new byte[magicNumber.length];
         }
 
@@ -273,8 +273,8 @@ public abstract class MagicNumberRegistryEntry
      */
     public int getReadlimit() {
         int maxbuf = 0;
-        for (int i=0; i<magicNumbers.length; i++) {
-            int req = magicNumbers[i].getReadlimit();
+        for (MagicNumber magicNumber : magicNumbers) {
+            int req = magicNumber.getReadlimit();
             if (req > maxbuf) maxbuf = req;
         }
         return maxbuf;
@@ -286,8 +286,8 @@ public abstract class MagicNumberRegistryEntry
      */
     public boolean isCompatibleStream(InputStream is)
         throws StreamCorruptedException {
-        for (int i=0; i<magicNumbers.length; i++) {
-            if (magicNumbers[i].isMatch(is))
+        for (MagicNumber magicNumber : magicNumbers) {
+            if (magicNumber.isMatch(is))
                 return true;
         }
 

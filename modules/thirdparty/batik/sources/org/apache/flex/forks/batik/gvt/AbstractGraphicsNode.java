@@ -18,22 +18,6 @@
  */
 package org.apache.flex.forks.batik.gvt;
 
-import java.awt.AlphaComposite;
-import java.awt.Composite;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.lang.ref.WeakReference;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.event.EventListenerList;
-
 import org.apache.flex.forks.batik.ext.awt.RenderingHintsKeyExt;
 import org.apache.flex.forks.batik.ext.awt.image.renderable.ClipRable;
 import org.apache.flex.forks.batik.ext.awt.image.renderable.Filter;
@@ -43,6 +27,17 @@ import org.apache.flex.forks.batik.gvt.filter.GraphicsNodeRable;
 import org.apache.flex.forks.batik.gvt.filter.GraphicsNodeRable8Bit;
 import org.apache.flex.forks.batik.gvt.filter.Mask;
 import org.apache.flex.forks.batik.util.HaltingThread;
+
+import javax.swing.event.EventListenerList;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.lang.ref.WeakReference;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A partial implementation of the <tt>GraphicsNode</tt> interface.
@@ -477,17 +472,14 @@ public abstract class AbstractGraphicsNode implements GraphicsNode {
         }
 
         Shape curClip = g2d.getClip();
-        g2d.setRenderingHint(RenderingHintsKeyExt.KEY_AREA_OF_INTEREST,
-                             curClip);
+        g2d.setRenderingHint(RenderingHintsKeyExt.KEY_AREA_OF_INTEREST, curClip);
 
         // Check if any painting is needed at all. Get the clip (in user space)
         // and see if it intersects with this node's bounds (in user space).
         boolean paintNeeded = true;
-        Shape g2dClip = curClip; //g2d.getClip();
-        if (g2dClip != null) {
-            Rectangle2D cb = g2dClip.getBounds2D();
-            if(!bounds.intersects(cb.getX(),     cb.getY(),
-                                  cb.getWidth(), cb.getHeight()))
+        if (curClip != null) {
+            Rectangle2D cb = curClip.getBounds2D();
+            if(!bounds.intersects(cb.getX(),  cb.getY(), cb.getWidth(), cb.getHeight()))
                 paintNeeded = false;
         }
 
@@ -508,7 +500,7 @@ public abstract class AbstractGraphicsNode implements GraphicsNode {
                 // Render on this canvas.
                 primitivePaint(g2d);
             } else {
-                Filter filteredImage = null;
+                Filter filteredImage;
 
                 if(filter == null){
                     filteredImage = getGraphicsNodeRable(true);
@@ -591,18 +583,13 @@ public abstract class AbstractGraphicsNode implements GraphicsNode {
      * otherwise.
      */
     protected boolean isOffscreenBufferNeeded() {
-        return ((filter != null) ||
-                (mask != null) ||
-                (composite != null &&
-                 !AlphaComposite.SrcOver.equals(composite)));
+        return filter != null || mask != null || composite != null && !AlphaComposite.SrcOver.equals(composite);
     }
 
     /**
      * Returns true if there is a clip and it should be antialiased
      */
-    protected boolean isAntialiasedClip(AffineTransform usr2dev,
-                                        RenderingHints hints,
-                                        Shape clip){
+    protected boolean isAntialiasedClip(AffineTransform usr2dev, RenderingHints hints, Shape clip) {
         // Antialias clip if:
         // + The KEY_CLIP_ANTIALIASING is true.
         // *and*
@@ -618,16 +605,9 @@ public abstract class AbstractGraphicsNode implements GraphicsNode {
         if (clip == null) return false;
 
         Object val = hints.get(RenderingHintsKeyExt.KEY_TRANSCODING);
-        if ((val == RenderingHintsKeyExt.VALUE_TRANSCODING_PRINTING) ||
-            (val == RenderingHintsKeyExt.VALUE_TRANSCODING_VECTOR))
-            return false;
+        return !((val == RenderingHintsKeyExt.VALUE_TRANSCODING_PRINTING) ||
+                (val == RenderingHintsKeyExt.VALUE_TRANSCODING_VECTOR)) && !(clip instanceof Rectangle2D && usr2dev.getShearX() == 0 && usr2dev.getShearY() == 0);
 
-        if(!(clip instanceof Rectangle2D &&
-             usr2dev.getShearX() == 0 &&
-             usr2dev.getShearY() == 0))
-            return true;
-
-        return false;
     }
 
     //
@@ -814,7 +794,7 @@ public abstract class AbstractGraphicsNode implements GraphicsNode {
         // The painted region, before cliping, masking and compositing
         // is either the area painted by the primitive paint or the
         // area painted by the filter.
-        Rectangle2D tBounds = null;
+        Rectangle2D tBounds;
         if (filter == null) {
             // Use txf, not t
             tBounds = getTransformedPrimitiveBounds(txf);
@@ -825,18 +805,12 @@ public abstract class AbstractGraphicsNode implements GraphicsNode {
         // Factor in the clipping area, if any
         if (tBounds != null) {
             if (clip != null) {
-                Rectangle2D.intersect
-                    (tBounds,
-                     t.createTransformedShape(clip.getClipPath()).getBounds2D(),
-                     tBounds);
+                Rectangle2D.intersect(tBounds, t.createTransformedShape(clip.getClipPath()).getBounds2D(), tBounds);
             }
 
             // Factor in the mask, if any
             if(mask != null) {
-                Rectangle2D.intersect
-                    (tBounds,
-                     t.createTransformedShape(mask.getBounds2D()).getBounds2D(),
-                     tBounds);
+                Rectangle2D.intersect(tBounds, t.createTransformedShape(mask.getBounds2D()).getBounds2D(), tBounds);
             }
         }
 
@@ -948,9 +922,8 @@ public abstract class AbstractGraphicsNode implements GraphicsNode {
      */
     public boolean intersects(Rectangle2D r) {
         Rectangle2D b = getBounds();
-        if (b == null) return false;
+        return b != null && b.intersects(r);
 
-        return b.intersects(r);
     }
 
     /**
@@ -977,23 +950,18 @@ public abstract class AbstractGraphicsNode implements GraphicsNode {
             if (bounds.getHeight() < EPSILON) {
                 AffineTransform gt = getGlobalTransform();
                 double det = Math.sqrt(gt.getDeterminant());
-                return new Rectangle2D.Double
-                    (bounds.getX(), bounds.getY(), EPSILON/det, EPSILON/det);
+                return new Rectangle2D.Double(bounds.getX(), bounds.getY(), EPSILON/det, EPSILON/det);
             } else {
                 double tmpW = bounds.getHeight()*EPSILON;
                 if (tmpW < bounds.getWidth())
                     tmpW = bounds.getWidth();
-                return new Rectangle2D.Double
-                    (bounds.getX(), bounds.getY(),
-                     tmpW, bounds.getHeight());
+                return new Rectangle2D.Double(bounds.getX(), bounds.getY(), tmpW, bounds.getHeight());
             }
         } else if (bounds.getHeight() < EPSILON) {
             double tmpH = bounds.getWidth()*EPSILON;
             if (tmpH < bounds.getHeight())
                 tmpH = bounds.getHeight();
-            return new Rectangle2D.Double
-                (bounds.getX(), bounds.getY(),
-                 bounds.getWidth(), tmpH);
+            return new Rectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth(), tmpH);
         }
         return bounds;
     }

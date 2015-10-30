@@ -21,13 +21,13 @@
 <project name="modules" default="main" basedir=".">
 
 	<property name="FLEX_HOME" location=".."/>
-	<property name="build.compiler" value="javac1.7" />
+	<property name="build.compiler" value="javac1.8" />
 
 	<!-- properties -->
 	<property file="${FLEX_HOME}/build.properties"/>
 
 	<property name="FLEX_LIB" value="${FLEX_HOME}/lib"/>
-	<property name="javac.src" value="1.5"/>
+	<property name="javac.src" value="1.8"/>
 	
 	<!-- Property for the platform.  -->
     <condition property="isMac" value="true">
@@ -85,13 +85,12 @@
     </target>
 
     <target name="clean" depends="batik-clean,velocity-clean">
-		<ant dir="${basedir}/asc/build/java" target="clean"/>
+		<ant dir="${basedir}/asc" target="clean"/>
 		<ant dir="${basedir}/swfutils" target="clean"/>
 		<ant dir="${basedir}/fxgutils" target="clean"/>
 		<ant dir="${basedir}/debugger" target="clean"/>
 		<ant dir="${basedir}/compiler" target="clean"/>
-		<ant dir="${basedir}/antTasks" target="clean"/>
-        <ant dir="${basedir}/asc/build/java" target="clean"/>
+        <ant dir="${basedir}/asc" target="clean"/>
         <ant dir="${basedir}/thirdparty/xerces-patch" target="clean"/>
         <delete includeemptydirs="true" failonerror="false">
             <fileset dir="${FLEX_LIB}">
@@ -105,20 +104,21 @@
 		Build Java module JARs.
 	-->
 
-	<target name="modules" depends="thirdparty,asc,swfutils,fxgutils,compiler,debugger,antTasks" description="Full build of all JARs"/>
+	<target name="modules" depends="thirdparty,asc,swfutils,fxgutils,compiler,debugger
+	" description="Full build of all JARs"/>
 
 	<!--
 	   dev does not do a clean first and the batik and velocity libraries are not rebuilt.
 	-->
-	<target name="modules-dev" depends="asc-dev,swfutils-dev,fxgutils-dev,compiler-dev,debugger-dev,antTasks-dev" description="Build src.depend JARs"/>
+	<target name="modules-dev" depends="asc-dev,swfutils-dev,fxgutils-dev,compiler-dev,debugger-dev" description="Build src.depend JARs"/>
 
 	<target name="asc" description="Full build of asc.jar">
-		<ant dir="${basedir}/asc/build/java"/>
-		<copy file="${basedir}/asc/lib/asc.jar" tofile="${FLEX_LIB}/asc.jar"/>
+		<ant dir="${basedir}/asc"/>
+		<copy file="${basedir}/asc/build/lib/asc.jar" tofile="${FLEX_LIB}/asc.jar"/>
 	</target>
 
 	<target name="asc-dev" description="Build src.depend asc">
-		<ant dir="${basedir}/asc/build/java" target="dev"/>
+		<ant dir="${basedir}/asc" target="dev"/>
 	</target>
 
 	<target name="swfutils" description="Full build of swfutils.jar">
@@ -153,16 +153,7 @@
 		<ant dir="${basedir}/compiler" target="dev"/>
 	</target>
 
-	<target name="antTasks" description="Full build of antTasks" unless="antTasks.compiled" >
-		<ant dir="${basedir}/antTasks"/>
-		<property name="antTasks.compiled" value="true"/>
-	</target>
-
-	<target name="antTasks-dev" description="Build src.depend antTasks" >
-		<ant dir="${basedir}/antTasks" target="dev"/>
-	</target>
-
-    <target name="thirdparty" depends="xerces-patch,batik,velocity" />
+	<target name="thirdparty" depends="xerces-patch,batik,velocity" />
     
 	<target name="xerces-patch" description="Build xercesPatch.jar based on xerces 2.9.1" >
         <ant dir="${basedir}/thirdparty/xerces-patch"/>
@@ -186,12 +177,12 @@
 		<echo message="Note that velocity builds with several 'enum' is a keyword warnings."/>
 
         <ant antfile="${basedir}/downloads.xml" target="velocity-jars" dir="${basedir}"/>
-		<ant dir="${basedir}/thirdparty/velocity/build" target="jar-dep-flex"/>
+		<ant dir="${basedir}/thirdparty/velocity" target="jar-dep-flex"/>
 	</target>
 
     <target name="velocity-clean">
 	    <mkdir dir="${basedir}/thirdparty/velocity/build/lib"/>
-		<ant dir="${basedir}/thirdparty/velocity/build" target="jar-dep-flex-clean"/>
+		<ant dir="${basedir}/thirdparty/velocity" target="jar-dep-flex-clean"/>
 	    <delete dir="${basedir}/thirdparty/velocity/build/lib"/>
     </target>
 

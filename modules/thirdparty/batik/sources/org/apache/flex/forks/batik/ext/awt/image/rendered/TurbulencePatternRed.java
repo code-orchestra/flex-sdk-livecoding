@@ -239,8 +239,7 @@ public final class TurbulencePatternRed extends AbstractRed {
 
     public boolean[] getChannels(){
         boolean[] channels = new boolean[4];
-        for(int i=0; i<this.channels.length; i++)
-            channels[this.channels[i]] = true;
+        for (int channel : this.channels) channels[channel] = true;
 
         return channels;
     }
@@ -298,11 +297,11 @@ public final class TurbulencePatternRed extends AbstractRed {
     }
 
 
-    private static final double s_curve(final double t) {
+    private static double s_curve(final double t) {
         return (t * t * (3 - 2 * t) );
     }
 
-    private static final double lerp(double t, double a, double b) {
+    private static double lerp(double t, double a, double b) {
         return ( a + t * (b - a) );
     }
 
@@ -314,7 +313,7 @@ public final class TurbulencePatternRed extends AbstractRed {
      * @param vec0  The X coordiate to generate noise for
      * @param vec1  The Y coordiate to generate noise for
      */
-    private final void noise2(final double[] noise, double vec0, double vec1) {
+    private void noise2(final double[] noise, double vec0, double vec1) {
         int b0, b1;
         final int i, j;
         final double rx0, rx1, ry0, ry1, sx, sy;
@@ -374,11 +373,11 @@ public final class TurbulencePatternRed extends AbstractRed {
             noise[0] =
                 lerp(sy,
                      lerp(sx,
-                          rx0*gradient[b0+0] + ry0*gradient[b0+1],
-                          rx1*gradient[b1+0] + ry0*gradient[b1+1]),
+                          rx0*gradient[b0] + ry0*gradient[b0+1],
+                          rx1*gradient[b1] + ry0*gradient[b1+1]),
                      lerp(sx,
-                          rx0*gradient[b0+8+0] + ry1*gradient[b0+8+1],
-                          rx1*gradient[b1+8+0] + ry1*gradient[b1+8+1]));
+                          rx0*gradient[(b0 + 8)] + ry1*gradient[b0+8+1],
+                          rx1*gradient[(b1 + 8)] + ry1*gradient[b1+8+1]));
         }
     }
 
@@ -392,9 +391,9 @@ public final class TurbulencePatternRed extends AbstractRed {
      * @param vec1  The Y coordiate to generate noise for
      * @param stitchInfo The stitching information for the noise function.
      */
-    private final void noise2Stitch(final double[] noise,
-                                    final double vec0, final double vec1,
-                                    final StitchInfo stitchInfo){
+    private void noise2Stitch(final double[] noise,
+                              final double vec0, final double vec1,
+                              final StitchInfo stitchInfo){
         int b0, b1;
         final int i, j, b00, b10, b01, b11;
         double t;
@@ -477,11 +476,11 @@ public final class TurbulencePatternRed extends AbstractRed {
             noise[0] =
                 lerp(sy,
                      lerp(sx,
-                          rx0*gradient[b00+0] + ry0*gradient[b00+1],
-                          rx1*gradient[b10+0] + ry0*gradient[b10+1]),
+                          rx0*gradient[b00] + ry0*gradient[b00+1],
+                          rx1*gradient[b10] + ry0*gradient[b10+1]),
                      lerp(sx,
-                          rx0*gradient[b01+0] + ry1*gradient[b01+1],
-                          rx1*gradient[b11+0] + ry1*gradient[b11+1]));
+                          rx0*gradient[b01] + ry1*gradient[b01+1],
+                          rx1*gradient[b11] + ry1*gradient[b11+1]));
         }
     }
 
@@ -495,9 +494,9 @@ public final class TurbulencePatternRed extends AbstractRed {
      * @param fSum array used to avoid reallocating double array for each pixel
      * @return The ARGB pixel value.
      */
-    private final int turbulence_4(double pointX,
-                                   double pointY,
-                                   final double[] fSum) {
+    private int turbulence_4(double pointX,
+                             double pointY,
+                             final double[] fSum) {
         double n, ratio = 255;
         int i, j, b0, b1, nOctave;
         double px, py, rx0, rx1, ry0, ry1, sx, sy;
@@ -519,7 +518,6 @@ public final class TurbulencePatternRed extends AbstractRed {
 
             py = pointY+PerlinN;
             b0 = ((int)py) & BM;
-            b1 = (b0+1) & BM;
 
             b1 = ((j + b0)&BM)<<3;
             b0 = ((i + b0)&BM)<<3;
@@ -530,11 +528,11 @@ public final class TurbulencePatternRed extends AbstractRed {
 
             n = lerp(sy,
                      lerp(sx,
-                          rx0*gradient[b0+0] + ry0*gradient[b0+1],
-                          rx1*gradient[b1+0] + ry0*gradient[b1+1]),
+                          rx0*gradient[b0] + ry0*gradient[b0+1],
+                          rx1*gradient[b1] + ry0*gradient[b1+1]),
                      lerp(sx,
-                          rx0*gradient[b0+8+0] + ry1*gradient[b0+8+1],
-                          rx1*gradient[b1+8+0] + ry1*gradient[b1+8+1]));
+                          rx0*gradient[(b0 + 8)] + ry1*gradient[b0+8+1],
+                          rx1*gradient[(b1 + 8)] + ry1*gradient[b1+8+1]));
 
             if (n<0) fSum[0] -= (n * ratio);
             else     fSum[0] += (n * ratio);
@@ -605,11 +603,11 @@ public final class TurbulencePatternRed extends AbstractRed {
      * @param noise array used to avoid reallocating double array for
      *        each pixel
      */
-    private final void turbulence(final int[] rgb,
-                                  double pointX,
-                                  double pointY,
-                                  final double[] fSum,
-                                  final double[] noise) {
+    private void turbulence(final int[] rgb,
+                            double pointX,
+                            double pointY,
+                            final double[] fSum,
+                            final double[] noise) {
         fSum[0] = fSum[1] = fSum[2] = fSum[3] = 0;
         double ratio = 255;
         pointX *= baseFrequencyX;
@@ -718,11 +716,11 @@ public final class TurbulencePatternRed extends AbstractRed {
      * each pixel
      * @param stitchInfo The stitching information for the noise function
      */
-    private final void turbulenceStitch(final int[] rgb,
-                                        double pointX, double pointY,
-                                        final double[] fSum,
-                                        final double[] noise,
-                                        StitchInfo stitchInfo){
+    private void turbulenceStitch(final int[] rgb,
+                                  double pointX, double pointY,
+                                  final double[] fSum,
+                                  final double[] noise,
+                                  StitchInfo stitchInfo){
         double ratio = 1;
         pointX *= baseFrequencyX;
         pointY *= baseFrequencyY;
@@ -831,9 +829,9 @@ public final class TurbulencePatternRed extends AbstractRed {
      * @param fSum array used to avoid reallocating double array for each pixel
      * @return The ARGB pixel
      */
-    private final int turbulenceFractal_4( double pointX,
-                                           double pointY,
-                                           final double[] fSum) {
+    private int turbulenceFractal_4(double pointX,
+                                    double pointY,
+                                    final double[] fSum) {
         int b0, b1, nOctave, i, j;
         double px, py, rx0, rx1, ry0, ry1, sx, sy, ratio = 127.5;
 
@@ -854,7 +852,6 @@ public final class TurbulencePatternRed extends AbstractRed {
 
             py = pointY+PerlinN;
             b0 = ((int)py) & BM;
-            b1 = (b0+1) & BM;
 
             b1 = ((j + b0)&BM)<<3;
             b0 = ((i + b0)&BM)<<3;
@@ -865,11 +862,11 @@ public final class TurbulencePatternRed extends AbstractRed {
 
             fSum[0] += lerp(sy,
                      lerp(sx,
-                          rx0*gradient[b0+0] + ry0*gradient[b0+1],
-                          rx1*gradient[b1+0] + ry0*gradient[b1+1]),
+                          rx0*gradient[b0] + ry0*gradient[b0+1],
+                          rx1*gradient[b1] + ry0*gradient[b1+1]),
                      lerp(sx,
-                          rx0*gradient[b0+8+0] + ry1*gradient[b0+8+1],
-                          rx1*gradient[b1+8+0] + ry1*gradient[b1+8+1]))*ratio;
+                          rx0*gradient[(b0 + 8)] + ry1*gradient[b0+8+1],
+                          rx1*gradient[(b1 + 8)] + ry1*gradient[b1+8+1]))*ratio;
 
             fSum[1] += lerp(sy,
                      lerp(sx,
@@ -928,11 +925,11 @@ public final class TurbulencePatternRed extends AbstractRed {
      * @param noise array used to avoid reallocating double array for
      * each pixel
      */
-    private final void turbulenceFractal(final int[] rgb,
-                                         double pointX,
-                                         double pointY,
-                                         final double[] fSum,
-                                         final double[] noise){
+    private void turbulenceFractal(final int[] rgb,
+                                   double pointX,
+                                   double pointY,
+                                   final double[] fSum,
+                                   final double[] noise){
         double ratio = 127.5;
         int    nOctave;
         fSum[0] = fSum[1] = fSum[2] = fSum[3] = 127.5;
@@ -988,12 +985,12 @@ public final class TurbulencePatternRed extends AbstractRed {
      * each pixel
      * @param stitchInfo The stitching information for the noise function
      */
-    private final void turbulenceFractalStitch(final int[] rgb,
-                                               double pointX,
-                                               double pointY,
-                                               final double[] fSum,
-                                               final double[] noise,
-                                               StitchInfo stitchInfo){
+    private void turbulenceFractalStitch(final int[] rgb,
+                                         double pointX,
+                                         double pointY,
+                                         final double[] fSum,
+                                         final double[] noise,
+                                         StitchInfo stitchInfo){
         double ratio = 127.5;
         int    nOctave;
         fSum[0] = fSum[1] = fSum[2] = fSum[3] = 127.5;

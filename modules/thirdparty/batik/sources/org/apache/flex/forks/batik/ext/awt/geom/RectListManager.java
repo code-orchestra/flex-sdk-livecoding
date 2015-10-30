@@ -368,7 +368,7 @@ public class RectListManager implements Collection {
 
     public boolean containsAll(RectListManager rlm) {
         int x, xChange = 0;
-        for (int j=0, i=0; j<rlm.size; j++) {
+        for (int j = 0, i; j<rlm.size; j++) {
             i=xChange;
             while(rects[i].x < rlm.rects[j].x) {
                 i++;
@@ -453,7 +453,7 @@ public class RectListManager implements Collection {
     public boolean removeAll(RectListManager rlm) {
         int x, xChange = 0;
         boolean ret = false;
-        for (int j=0, i=0; j<rlm.size; j++) {
+        for (int j = 0, i; j<rlm.size; j++) {
             i=xChange;
             while ((rects[i] == null) ||
                    (rects[i].x < rlm.rects[j].x)) {
@@ -504,7 +504,7 @@ public class RectListManager implements Collection {
         int x, xChange = 0;
         boolean ret = false;
 
-        for (int j=0, i=0; j<size; j++) {
+        for (int j = 0, i; j<size; j++) {
             i=xChange;
             while (rlm.rects[i].x < rects[j].x) {
                 i++;
@@ -891,8 +891,7 @@ public class RectListManager implements Collection {
         ensureCapacity(size+len);
 
         // Move everything after pos up...
-        for (int i=size-1; i>=dstPos; i--)
-            this.rects[i+len] = this.rects[i];
+        System.arraycopy(this.rects, dstPos, this.rects, dstPos + len, size - dstPos);
 
         // Put the new rects in.
         System.arraycopy( rects, srcPos, this.rects, dstPos, len );

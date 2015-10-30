@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<project name="asc" default="main" basedir=".">
+	<property file="${basedir}/build.properties" />
+	<property name="root.dir" value="${basedir}/../.."/>
+	<property name="java.src.dir" value="${basedir}/src/main/java"/>
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="javac.src" value="1.8"/>
+	<property name="lib.dir" value="${build.dir}/lib"/>
+    <property name="build.number" value="cyclone" />
+
+	<target name="main" depends="clean,jar"/>
+
+	<target name="dev" depends="jar" description="runs src.depend build for development"/>
+
+	<target name="authoring" depends="jar">
+		<jar file="${lib.dir}/asc_authoring.jar" basedir="${basedir}/classes" includes="macromedia/asc/**/*,macromedia/abc/**/*,adobe/asc/**/*">
+			<manifest>
+				<attribute name="Main-Class" value="macromedia.asc.embedding.Main"/>
+				<attribute name="Class-Path" value=""/>
+                <attribute name="Implementation-Title" value="ActionScript Compiler (asc)"/>
+                <attribute name="Implementation-Version" value="1.0 build ${build.number}"/> 
+			</manifest>
+		</jar>
+	</target>
+	<target name="jar" depends="classes" >
+		<mkdir dir="${lib.dir}" />
+		<mkdir dir="${build.dir}/classes/META-INF"/>
+        <copy file="${root.dir}/LICENSE.base" tofile="${build.dir}/classes/META-INF/LICENSE"/>
+        <copy file="${root.dir}/NOTICE.asc" tofile="${build.dir}/classes/META-INF/NOTICE"/>
+		<jar file="${lib.dir}/asc.jar" basedir="${build.dir}/classes" includes="macromedia/asc/**/*,macromedia/abc/**/*,adobe/abc/**/*">
+		    <include name="META-INF/LICENSE"/>
+            <include name="META-INF/NOTICE"/>
+            <manifest>
+                <attribute name="Main-Class" value="macromedia.asc.embedding.Main"/>
+                <attribute name="Class-Path" value=""/>
+                <attribute name="Implementation-Title" value="ActionScript Compiler (asc)"/>
+                <attribute name="Implementation-Version" value="1.0 build ${build.number}"/>
+            </manifest>
+        </jar>
+		<jar file="${lib.dir}/abcdump.jar">
+            <manifest>
+                <attribute name="Main-Class" value="macromedia.abc.Printer"/>
+                <attribute name="Class-Path" value="asc.jar"/>
+                <attribute name="Implementation-Version" value="1.0 build ${build.number}"/>
+            </manifest>
+        </jar>
+		<jar file="${lib.dir}/ash.jar">
+            <manifest>
+                <attribute name="Main-Class" value="macromedia.asc.embedding.Shell"/>
+                <attribute name="Class-Path" value="asc.jar"/>
+                <attribute name="Implementation-Version" value="1.0 build ${build.number}"/>
+            </manifest>
+        </jar>
+	</target>
+	
+	<target name="asc-coverage-jar" depends="classes" >
+		<mkdir dir="${lib.dir}" />
+		<jar file="${lib.dir}/asc.jar" basedir="${build.dir}/classes" includes="macromedia/asc/**/*,macromedia/abc/**/*,adobe/abc/**/*">
+            <manifest>
+                <attribute name="Main-Class" value="macromedia.asc.embedding.Main"/>
+                <attribute name="Class-Path" value="${lib.dir}/clover.jar"/>
+                <attribute name="Implementation-Version" value="1.0 build ${build.number}"/>
+            </manifest>
+        </jar>
+	</target>
+
+    <target name="run-depend" if="src.depend">
+        <echo level="info" message="Removing class files that changed and dependent class files."/>
+        <depend cache="${build.dir}/classes" srcdir="${java.src.dir}" destdir="${build.dir}/classes"/>
+    </target>
+
+    <target name="classes" depends="run-depend">
+	    <mkdir dir="${lib.dir}" />
+        <mkdir dir="${build.dir}/classes"/>
+        <javac source="${javac.src}" target="${javac.src}" encoding="UTF-8" debug="${src.debug}" destdir="${build.dir}/classes" srcdir="${java.src.dir}" includes="**/*.java">
+			<classpath>
+				<fileset dir="${lib.dir}" includes="*.jar"/>
+			</classpath>
+ 		</javac>
+        <!-- Create a version.properties file with the build number. -->
+        <!-- This file is read by getBuild() in Version.java -->
+        <!-- It is created in the same directory as Version.class -->
+        <tstamp>
+        	<format property="build.number.date" pattern="yyyyMMdd" />
+        </tstamp>
+        <echo file="${build.dir}/classes/macromedia/asc/util/version.properties" append="false">build=${build.number.date}</echo>
+    </target>
+	<target name="clean">
+		<delete failonerror="false" >
+			<fileset file="${root.dir}/lib/abcdump.jar"/>
+			<fileset file="${root.dir}/lib/ash.jar"/>
+			<fileset file="${root.dir}/lib/asc.jar"/>
+			<fileset file="${root.dir}/lib/asc_authoring.jar"/>
+			<fileset file="${root.dir}/lib/global.abc"/>
+		</delete>
+		<delete dir="${build.dir}/classes" failonerror="false"/>
+        <delete dir="${lib.dir}"/>
+	</target>
+</project>

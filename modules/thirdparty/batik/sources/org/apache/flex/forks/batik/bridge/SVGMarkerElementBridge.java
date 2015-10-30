@@ -237,10 +237,9 @@ public class SVGMarkerElementBridge extends AnimatableGenericSVGBridge
         //
         float[] ref = {refX, refY};
         markerTxf.transform(ref, 0, ref, 0, 1);
-        Marker marker = new Marker(markerContentNode,
+
+        return new Marker(markerContentNode,
                                    new Point2D.Float(ref[0], ref[1]),
                                    orient);
-
-        return marker;
     }
 }

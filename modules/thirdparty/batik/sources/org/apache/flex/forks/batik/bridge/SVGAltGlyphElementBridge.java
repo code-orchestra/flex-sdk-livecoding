@@ -288,7 +288,7 @@ public class SVGAltGlyphElementBridge extends AbstractSVGBridge
         // if not local, import both the glyph and its font-face element
         Element localGlyphElement = null;
         Element localFontFaceElement = null;
-        Element localFontElement = null;
+        Element localFontElement;
         if (isLocal) {
             localGlyphElement = refGlyphElement;
             localFontElement = (Element)localGlyphElement.getParentNode();

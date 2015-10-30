@@ -89,7 +89,7 @@ public class MultiResGraphicsNode
         double scy = Math.sqrt(at.getShearX()*at.getShearX()+
                                at.getScaleY()*at.getScaleY());
 
-        GraphicsNode gn = null;
+        GraphicsNode gn;
         int idx =-1;
         double w = bounds.getWidth()*scx;
         double minDist = calcDist(w, minSz[0], maxSz[0]);

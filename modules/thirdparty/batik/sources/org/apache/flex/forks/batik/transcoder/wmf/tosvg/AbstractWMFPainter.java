@@ -138,7 +138,7 @@ public class AbstractWMFPainter {
         // 8 bit image
         } else if (_nbit == 8) {
             // Determine the number of colors
-            int nbColors = 0;
+            int nbColors;
             if (_clrused > 0) nbColors = _clrused;
             else nbColors = (1 & 0x00ff) << 8;
             // Read the palette colors.
@@ -223,7 +223,7 @@ public class AbstractWMFPainter {
     protected AttributedString getAttributedString(Graphics2D g2d, String sr, WMFFont wmffont) {
         AttributedString ats = new AttributedString(sr);
         Font font = g2d.getFont();
-        ats.addAttribute(TextAttribute.SIZE, new Float(font.getSize2D()));
+        ats.addAttribute(TextAttribute.SIZE, font.getSize2D());
         ats.addAttribute(TextAttribute.FONT, font);
         if (wmfFont.underline != 0)
             ats.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);

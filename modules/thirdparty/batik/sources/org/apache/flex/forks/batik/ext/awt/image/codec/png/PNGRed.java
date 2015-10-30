@@ -18,42 +18,19 @@
  */
 package org.apache.flex.forks.batik.ext.awt.image.codec.png;
 
-import org.apache.flex.forks.batik.ext.awt.image.codec.util.PropertyUtil;
-
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Transparency;
-import java.awt.color.ColorSpace;
-import java.awt.image.ColorModel;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferUShort;
-import java.awt.image.IndexColorModel;
-import java.awt.image.Raster;
-import java.awt.image.SampleModel;
-import java.awt.image.WritableRaster;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.SequenceInputStream;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Collections;
-import java.util.zip.Inflater;
-import java.util.zip.InflaterInputStream;
-
 import org.apache.flex.forks.batik.ext.awt.image.GraphicsUtil;
+import org.apache.flex.forks.batik.ext.awt.image.codec.util.PropertyUtil;
 import org.apache.flex.forks.batik.ext.awt.image.rendered.AbstractRed;
 import org.apache.flex.forks.batik.ext.awt.image.rendered.CachableRed;
+
+import java.awt.*;
+import java.awt.color.ColorSpace;
+import java.awt.image.*;
+import java.io.*;
+import java.util.*;
+import java.util.List;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 /**
  *
@@ -119,7 +96,7 @@ public class PNGRed extends AbstractRed {
         }
 
         public String getString4(int offset) {
-            String s = new String();
+            String s = "";
             s += (char)data[offset];
             s += (char)data[offset + 1];
             s += (char)data[offset + 2];
@@ -392,73 +369,91 @@ public class PNGRed extends AbstractRed {
             throw new RuntimeException(msg);
         }
 
+        label:
         do {
             try {
                 PNGChunk chunk;
-
                 String chunkType = getChunkType(distream);
-                if (chunkType.equals("IHDR")) {
-                    chunk = readChunk(distream);
-                    parse_IHDR_chunk(chunk);
-                } else if (chunkType.equals("PLTE")) {
-                    chunk = readChunk(distream);
-                    parse_PLTE_chunk(chunk);
-                } else if (chunkType.equals("IDAT")) {
-                    chunk = readChunk(distream);
-                    streamVec.add(new ByteArrayInputStream(chunk.getData()));
-                } else if (chunkType.equals("IEND")) {
-                    chunk = readChunk(distream);
-                    parse_IEND_chunk(chunk);
-                    break; // fall through to the bottom
-                } else if (chunkType.equals("bKGD")) {
-                    chunk = readChunk(distream);
-                    parse_bKGD_chunk(chunk);
-                } else if (chunkType.equals("cHRM")) {
-                    chunk = readChunk(distream);
-                    parse_cHRM_chunk(chunk);
-                } else if (chunkType.equals("gAMA")) {
-                    chunk = readChunk(distream);
-                    parse_gAMA_chunk(chunk);
-                } else if (chunkType.equals("hIST")) {
-                    chunk = readChunk(distream);
-                    parse_hIST_chunk(chunk);
-                } else if (chunkType.equals("iCCP")) {
-                    chunk = readChunk(distream);
-                    parse_iCCP_chunk(chunk);
-                } else if (chunkType.equals("pHYs")) {
-                    chunk = readChunk(distream);
-                    parse_pHYs_chunk(chunk);
-                } else if (chunkType.equals("sBIT")) {
-                    chunk = readChunk(distream);
-                    parse_sBIT_chunk(chunk);
-                } else if (chunkType.equals("sRGB")) {
-                    chunk = readChunk(distream);
-                    parse_sRGB_chunk(chunk);
-                } else if (chunkType.equals("tEXt")) {
-                    chunk = readChunk(distream);
-                    parse_tEXt_chunk(chunk);
-                } else if (chunkType.equals("tIME")) {
-                    chunk = readChunk(distream);
-                    parse_tIME_chunk(chunk);
-                } else if (chunkType.equals("tRNS")) {
-                    chunk = readChunk(distream);
-                    parse_tRNS_chunk(chunk);
-                } else if (chunkType.equals("zTXt")) {
-                    chunk = readChunk(distream);
-                    parse_zTXt_chunk(chunk);
-                } else {
-                    chunk = readChunk(distream);
-                    // Output the chunk data in raw form
+                switch (chunkType) {
+                    case "IHDR":
+                        chunk = readChunk(distream);
+                        parse_IHDR_chunk(chunk);
+                        break;
+                    case "PLTE":
+                        chunk = readChunk(distream);
+                        parse_PLTE_chunk(chunk);
+                        break;
+                    case "IDAT":
+                        chunk = readChunk(distream);
+                        streamVec.add(new ByteArrayInputStream(chunk.getData()));
+                        break;
+                    case "IEND":
+                        chunk = readChunk(distream);
+                        parse_IEND_chunk(chunk);
+                        break label;
 
-                    String type = chunk.getTypeString();
-                    byte[] data = chunk.getData();
-                    if (encodeParam != null) {
-                        encodeParam.addPrivateChunk(type, data);
-                    }
-                    if (emitProperties) {
-                        String key = "chunk_" + chunkIndex++ + ':' + type;
-                        properties.put(key.toLowerCase(), data);
-                    }
+                    case "bKGD":
+                        chunk = readChunk(distream);
+                        parse_bKGD_chunk(chunk);
+                        break;
+                    case "cHRM":
+                        chunk = readChunk(distream);
+                        parse_cHRM_chunk(chunk);
+                        break;
+                    case "gAMA":
+                        chunk = readChunk(distream);
+                        parse_gAMA_chunk(chunk);
+                        break;
+                    case "hIST":
+                        chunk = readChunk(distream);
+                        parse_hIST_chunk(chunk);
+                        break;
+                    case "iCCP":
+                        chunk = readChunk(distream);
+                        parse_iCCP_chunk(chunk);
+                        break;
+                    case "pHYs":
+                        chunk = readChunk(distream);
+                        parse_pHYs_chunk(chunk);
+                        break;
+                    case "sBIT":
+                        chunk = readChunk(distream);
+                        parse_sBIT_chunk(chunk);
+                        break;
+                    case "sRGB":
+                        chunk = readChunk(distream);
+                        parse_sRGB_chunk(chunk);
+                        break;
+                    case "tEXt":
+                        chunk = readChunk(distream);
+                        parse_tEXt_chunk(chunk);
+                        break;
+                    case "tIME":
+                        chunk = readChunk(distream);
+                        parse_tIME_chunk(chunk);
+                        break;
+                    case "tRNS":
+                        chunk = readChunk(distream);
+                        parse_tRNS_chunk(chunk);
+                        break;
+                    case "zTXt":
+                        chunk = readChunk(distream);
+                        parse_zTXt_chunk(chunk);
+                        break;
+                    default:
+                        chunk = readChunk(distream);
+                        // Output the chunk data in raw form
+
+                        String type = chunk.getTypeString();
+                        byte[] data = chunk.getData();
+                        if (encodeParam != null) {
+                            encodeParam.addPrivateChunk(type, data);
+                        }
+                        if (emitProperties) {
+                            String key = "chunk_" + chunkIndex++ + ':' + type;
+                            properties.put(key.toLowerCase(), data);
+                        }
+                        break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -488,12 +483,11 @@ public class PNGRed extends AbstractRed {
             int type      =    distream.readInt();
             distream.reset();
 
-            String typeString = ""
+            return ""
                               + (char)((type >> 24) & 0xff)
                               + (char)((type >> 16) & 0xff)
                               + (char)((type >>  8) & 0xff)
                               + (char)( type        & 0xff);
-            return typeString;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -584,7 +578,7 @@ public class PNGRed extends AbstractRed {
             encodeParam.setBitDepth(bitDepth);
         }
         if (emitProperties) {
-            properties.put("bit_depth", new Integer(bitDepth));
+            properties.put("bit_depth", bitDepth);
         }
 
         if (performGammaCorrection) {
@@ -594,7 +588,7 @@ public class PNGRed extends AbstractRed {
                 encodeParam.setGamma(gamma);
             }
             if (emitProperties) {
-                properties.put("gamma", new Float(gamma));
+                properties.put("gamma", gamma);
             }
         }
 
@@ -1075,14 +1069,14 @@ public class PNGRed extends AbstractRed {
             encodeParam.setChromaticity(chromaticity);
         }
         if (emitProperties) {
-            properties.put("white_point_x", new Float(chromaticity[0]));
-            properties.put("white_point_y", new Float(chromaticity[1]));
-            properties.put("red_x", new Float(chromaticity[2]));
-            properties.put("red_y", new Float(chromaticity[3]));
-            properties.put("green_x", new Float(chromaticity[4]));
-            properties.put("green_y", new Float(chromaticity[5]));
-            properties.put("blue_x", new Float(chromaticity[6]));
-            properties.put("blue_y", new Float(chromaticity[7]));
+            properties.put("white_point_x", chromaticity[0]);
+            properties.put("white_point_y", chromaticity[1]);
+            properties.put("red_x", chromaticity[2]);
+            properties.put("red_y", chromaticity[3]);
+            properties.put("green_x", chromaticity[4]);
+            properties.put("green_y", chromaticity[5]);
+            properties.put("blue_x", chromaticity[6]);
+            properties.put("blue_y", chromaticity[7]);
         }
     }
 
@@ -1100,7 +1094,7 @@ public class PNGRed extends AbstractRed {
             encodeParam.setGamma(fileGamma*exp);
         }
         if (emitProperties) {
-            properties.put("gamma", new Float(fileGamma*exp));
+            properties.put("gamma", fileGamma * exp);
         }
     }
 
@@ -1142,10 +1136,10 @@ public class PNGRed extends AbstractRed {
                                              unitSpecifier);
         }
         if (emitProperties) {
-            properties.put("x_pixels_per_unit", new Integer(xPixelsPerUnit));
-            properties.put("y_pixels_per_unit", new Integer(yPixelsPerUnit));
+            properties.put("x_pixels_per_unit", xPixelsPerUnit);
+            properties.put("y_pixels_per_unit", yPixelsPerUnit);
             properties.put("pixel_aspect_ratio",
-                           new Float((float)xPixelsPerUnit/yPixelsPerUnit));
+                    (float) xPixelsPerUnit / yPixelsPerUnit);
             if (unitSpecifier == 1) {
                 properties.put("pixel_units", "Meters");
             } else if (unitSpecifier != 0) {
@@ -1207,22 +1201,22 @@ public class PNGRed extends AbstractRed {
                 encodeParam.setChromaticity(chromaticity);
             }
             if (emitProperties) {
-                properties.put("gamma", new Float(gamma));
-                properties.put("white_point_x", new Float(chromaticity[0]));
-                properties.put("white_point_y", new Float(chromaticity[1]));
-                properties.put("red_x", new Float(chromaticity[2]));
-                properties.put("red_y", new Float(chromaticity[3]));
-                properties.put("green_x", new Float(chromaticity[4]));
-                properties.put("green_y", new Float(chromaticity[5]));
-                properties.put("blue_x", new Float(chromaticity[6]));
-                properties.put("blue_y", new Float(chromaticity[7]));
+                properties.put("gamma", gamma);
+                properties.put("white_point_x", chromaticity[0]);
+                properties.put("white_point_y", chromaticity[1]);
+                properties.put("red_x", chromaticity[2]);
+                properties.put("red_y", chromaticity[3]);
+                properties.put("green_x", chromaticity[4]);
+                properties.put("green_y", chromaticity[5]);
+                properties.put("blue_x", chromaticity[6]);
+                properties.put("blue_y", chromaticity[7]);
             }
         }
     }
 
     private void parse_tEXt_chunk(PNGChunk chunk) {
-        StringBuffer key = new StringBuffer();
-        StringBuffer value = new StringBuffer();
+        StringBuilder key = new StringBuilder();
+        StringBuilder value = new StringBuilder();
         byte b;
 
         int textIndex = 0;
@@ -1340,8 +1334,8 @@ public class PNGRed extends AbstractRed {
     }
 
     private void parse_zTXt_chunk(PNGChunk chunk) {
-        StringBuffer key = new StringBuffer();
-        StringBuffer value = new StringBuffer();
+        StringBuilder key = new StringBuilder();
+        StringBuilder value = new StringBuilder();
         byte b;
 
         int textIndex = 0;
@@ -1374,7 +1368,7 @@ public class PNGRed extends AbstractRed {
                                         int bitDepth) {
 
         DataBuffer dataBuffer;
-        WritableRaster ras = null;
+        WritableRaster ras;
         Point origin = new Point(0, 0);
         if ((bitDepth < 8) && (bands == 1)) {
             dataBuffer = new DataBufferByte(height*scanlineStride);

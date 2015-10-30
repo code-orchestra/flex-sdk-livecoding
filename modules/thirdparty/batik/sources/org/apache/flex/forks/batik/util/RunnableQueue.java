@@ -130,7 +130,7 @@ public class RunnableQueue implements Runnable {
             while (result.getThread() == null) {
                 try {
                     result.wait();
-                } catch (InterruptedException ie) {
+                } catch (InterruptedException ignored) {
                 }
             }
         }
@@ -177,7 +177,7 @@ public class RunnableQueue implements Runnable {
                         // Wait until resumeExecution called.
                         try {
                             stateLock.wait();
-                        } catch(InterruptedException ie) { }
+                        } catch(InterruptedException ignored) { }
                     }
 
                     if (wasResumed) {
@@ -406,7 +406,7 @@ public class RunnableQueue implements Runnable {
                 while (state == SUSPENDING) {
                     try {
                         stateLock.wait();
-                    } catch(InterruptedException ie) { }
+                    } catch(InterruptedException ignored) { }
                 }
             }
         }
@@ -449,13 +449,7 @@ public class RunnableQueue implements Runnable {
                 Link head = (Link)list.getHead();
                 Link link;
                 public boolean hasNext() {
-                    if (head == null) {
-                        return false;
-                    }
-                    if (link == null) {
-                        return true;
-                    }
-                    return link != head;
+                    return head != null && (link == null || link != head);
                 }
                 public Object next() {
                     if (head == null || head == link) {

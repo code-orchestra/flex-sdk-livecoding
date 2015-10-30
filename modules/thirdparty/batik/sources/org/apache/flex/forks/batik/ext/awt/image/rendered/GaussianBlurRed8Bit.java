@@ -223,7 +223,7 @@ public class GaussianBlurRed8Bit extends AbstractRed {
 
         ColorModel srcCM = src.getColorModel();
 
-        WritableRaster tmpR1=null, tmpR2=null;
+        WritableRaster tmpR1, tmpR2=null;
 
         tmpR1 = srcCM.createCompatibleWritableRaster(r.width, r.height);
         {

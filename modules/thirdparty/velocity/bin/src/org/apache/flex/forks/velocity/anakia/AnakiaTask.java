@@ -289,9 +289,8 @@ public class AnakiaTask extends MatchingTask
 
         // get a list of files to work on
         list = scanner.getIncludedFiles();
-        for (int i = 0;i < list.length; ++i)
-        {
-            process( baseDir, list[i], destDir, projectDocument );
+        for (String aList : list) {
+            process(baseDir, aList, destDir, projectDocument);
         }
     }    
     
@@ -315,7 +314,7 @@ public class AnakiaTask extends MatchingTask
                             xmlFile.lastIndexOf('.')) + extension);
 
             // only process files that have changed
-            if (lastModifiedCheck == false || 
+            if (!lastModifiedCheck ||
                     (inFile.lastModified() > outFile.lastModified() ||
                     styleSheetLastModified > outFile.lastModified() ||
                     projectFileLastModified > outFile.lastModified()))
@@ -436,7 +435,7 @@ public class AnakiaTask extends MatchingTask
         StringTokenizer st = new StringTokenizer(file, "/\\");
         // needs to be -1 cause ST returns 1 even if there are no matches. huh?
         int slashCount = st.countTokens() - 1;
-        StringBuffer sb = new StringBuffer();        
+        StringBuilder sb = new StringBuilder();
         for (int i=0;i<slashCount ;i++ )
         {
             sb.append ("../");

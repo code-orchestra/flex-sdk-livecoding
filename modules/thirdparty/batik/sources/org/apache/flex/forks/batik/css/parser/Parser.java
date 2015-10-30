@@ -394,7 +394,7 @@ public class Parser implements ExtendedParser, Localizable {
 	throws CSSException, IOException {
         nextIgnoreSpaces();
         
-        LexicalUnit exp = null;
+        LexicalUnit exp;
 
         try {
             exp = parseExpression(false);
@@ -440,7 +440,7 @@ public class Parser implements ExtendedParser, Localizable {
         case LexicalUnits.IMPORT_SYMBOL:
             return true;
         default:
-            reportError("token", new Object[] { new Integer(current) });
+            reportError("token", new Object[] {current});
             return false;
         }
     }
@@ -492,7 +492,7 @@ public class Parser implements ExtendedParser, Localizable {
      * Parses an import rule. Assumes the current token is '@import'.
      */
     protected void parseImportRule() {
-        String uri = null;
+        String uri;
         switch (current) {
         default:
             reportError("string.or.uri");
@@ -555,7 +555,7 @@ public class Parser implements ExtendedParser, Localizable {
 
         // Record prefix mappings for qualified element selector names 
         if (uri != null) {
-            if (prefix == null || "".equals(prefix))
+            if (prefix == null || prefix.isEmpty())
                 defaultNamespace = uri;
             else
                 namespaces.put(prefix, uri);
@@ -769,7 +769,7 @@ public class Parser implements ExtendedParser, Localizable {
      * Parses a ruleset.
      */
     protected void parseRuleSet() {
-        SelectorList sl = null;
+        SelectorList sl;
 
         try {
             sl = parseSelectorList();
@@ -893,7 +893,7 @@ public class Parser implements ExtendedParser, Localizable {
             next();
 
             if (current == LexicalUnits.NAMESPACE_QUALIFIED) {
-                if (name == null || "".equals(name))
+                if (name == null || name.isEmpty())
                     uri = ""; // No namespace
                 else if ("*".equals(name))
                     uri = null; // All namespaces, including no namespace
@@ -961,7 +961,7 @@ public class Parser implements ExtendedParser, Localizable {
                 case LexicalUnits.EQUAL:
                 case LexicalUnits.INCLUDES:
                 case LexicalUnits.DASHMATCH:
-                    String val = null;
+                    String val;
                     switch (nextIgnoreSpaces()) {
                     default:
                         throw createCSSParseException("identifier.or.string");
@@ -1145,7 +1145,7 @@ public class Parser implements ExtendedParser, Localizable {
                 if (current == LexicalUnits.RIGHT_BRACE) {
                     if (op) {
                         throw createCSSParseException
-                            ("token", new Object[] { new Integer(current) });
+                            ("token", new Object[] {current});
                     }
                     return result;
                 }
@@ -1158,7 +1158,7 @@ public class Parser implements ExtendedParser, Localizable {
                 case LexicalUnits.EOF:
                     if (op) {
                         throw createCSSParseException
-                            ("token", new Object[] { new Integer(current) });
+                            ("token", new Object[] {current});
                     }
                     return result;
                 default:
@@ -1264,7 +1264,7 @@ public class Parser implements ExtendedParser, Localizable {
             if (sgn) {
                 throw createCSSParseException
                     ("token",
-                     new Object[] { new Integer(current) });
+                     new Object[] {current});
             }
         }
         switch (current) {
@@ -1302,7 +1302,7 @@ public class Parser implements ExtendedParser, Localizable {
         default:
             throw createCSSParseException
                 ("token",
-                 new Object[] { new Integer(current) });
+                 new Object[] {current});
         }
     }
 
@@ -1318,7 +1318,7 @@ public class Parser implements ExtendedParser, Localizable {
         if (current != LexicalUnits.RIGHT_BRACE) {
             throw createCSSParseException
                 ("token",
-                 new Object[] { new Integer(current) });
+                 new Object[] {current});
         }
         int line = getLineNumber();
         nextIgnoreSpaces();
@@ -1654,7 +1654,7 @@ public class Parser implements ExtendedParser, Localizable {
     protected LexicalUnit hexcolor(LexicalUnit prev) {
         String val = scanner.getStringValue();
         int len = val.length();
-        LexicalUnit params = null;
+        LexicalUnit params;
         switch (len) {
         case 3:
             char rc = Character.toLowerCase(val.charAt(0));

@@ -137,11 +137,11 @@ public class TIFFImage extends AbstractRed {
      * @param minX the X position of the returned Raster.
      * @param minY the Y position of the returned Raster.
      */
-    private static final Raster decodeJPEG(byte[] data,
-                                           JPEGDecodeParam decodeParam,
-                                           boolean colorConvert,
-                                           int minX,
-                                           int minY) {
+    private static Raster decodeJPEG(byte[] data,
+                                     JPEGDecodeParam decodeParam,
+                                     boolean colorConvert,
+                                     int minX,
+                                     int minY) {
         // Create an InputStream from the compressed data array.
         ByteArrayInputStream jpegStream = new ByteArrayInputStream(data);
 
@@ -169,7 +169,7 @@ public class TIFFImage extends AbstractRed {
      * Inflates <code>deflated</code> into <code>inflated</code> using the
      * <code>Inflater</code> constructed during class instantiation.
      */
-    private final void inflate(byte[] deflated, byte[] inflated) {
+    private void inflate(byte[] deflated, byte[] inflated) {
         inflater.setInput(deflated);
         try {
             inflater.inflate(inflated);
@@ -194,7 +194,7 @@ public class TIFFImage extends AbstractRed {
      * Return as a long[] the value of a TIFF_LONG or TIFF_SHORT field.
      */
     private long[] getFieldAsLongs(TIFFField field) {
-        long[] value = null;
+        long[] value;
 
         if(field.getType() == TIFFField.TIFF_SHORT) {
             char[] charValue = field.getAsChars();
@@ -235,7 +235,7 @@ public class TIFFImage extends AbstractRed {
         // Read the specified directory.
         TIFFDirectory dir = param.getIFDOffset() == null ?
             new TIFFDirectory(stream, directory) :
-            new TIFFDirectory(stream, param.getIFDOffset().longValue(),
+            new TIFFDirectory(stream, param.getIFDOffset(),
                               directory);
 
         // Get the number of samples per pixel
@@ -257,7 +257,7 @@ public class TIFFImage extends AbstractRed {
             // Read the TIFF_BITS_PER_SAMPLE field
             TIFFField bitsField =
                 dir.getField(TIFFImageDecoder.TIFF_BITS_PER_SAMPLE);
-            char[] bitsPerSample = null;
+            char[] bitsPerSample;
             if(bitsField != null) {
                 bitsPerSample = bitsField.getAsChars();
             } else {
@@ -277,7 +277,7 @@ public class TIFFImage extends AbstractRed {
             TIFFField sampleFormatField =
                 dir.getField(TIFFImageDecoder.TIFF_SAMPLE_FORMAT);
 
-            char[] sampleFormat = null;
+            char[] sampleFormat;
             if (sampleFormatField != null) {
                 sampleFormat = sampleFormatField.getAsChars();
 
@@ -599,7 +599,7 @@ public class TIFFImage extends AbstractRed {
                 throw new RuntimeException("TIFFImage10");
             }
 
-            ColorModel  colorModel  = null;
+            ColorModel  colorModel;
             SampleModel sampleModel = null;
             switch(imageType) {
             case TYPE_BILEVEL:
@@ -755,7 +755,6 @@ public class TIFFImage extends AbstractRed {
                     byte[] g = new byte[bandLength];
                     byte[] b = new byte[bandLength];
 
-                    int gIndex = bandLength;
                     int bIndex = bandLength * 2;
 
                     if (dataType == DataBuffer.TYPE_SHORT) {
@@ -764,7 +763,7 @@ public class TIFFImage extends AbstractRed {
                             r[i] = param.decodeSigned16BitsTo8Bits
                                 ((short)colormap[i]);
                             g[i] = param.decodeSigned16BitsTo8Bits
-                                ((short)colormap[gIndex+i]);
+                                ((short)colormap[bandLength +i]);
                             b[i] = param.decodeSigned16BitsTo8Bits
                                 ((short)colormap[bIndex+i]);
                         }
@@ -775,7 +774,7 @@ public class TIFFImage extends AbstractRed {
                             r[i] = param.decode16BitsTo8Bits
                                 (colormap[i] & 0xffff);
                             g[i] = param.decode16BitsTo8Bits
-                                (colormap[gIndex+i] & 0xffff);
+                                (colormap[bandLength +i] & 0xffff);
                             b[i] = param.decode16BitsTo8Bits
                                 (colormap[bIndex+i] & 0xffff);
                         }
@@ -856,7 +855,7 @@ public class TIFFImage extends AbstractRed {
         int iswap;
 
         // Save original file pointer position and seek to tile data location.
-        long save_offset = 0;
+        long save_offset;
         try {
             save_offset = stream.getFilePointer();
             stream.seek(tileOffsets[tileY*tilesX + tileX]);
@@ -1604,14 +1603,13 @@ public class TIFFImage extends AbstractRed {
                 int[] pixels = new int[samplesPerDataUnit];
 
                 int bOffset = 0;
-                int offsetCb = pixelsPerDataUnit;
-                int offsetCr = offsetCb + 1;
+                int offsetCr = pixelsPerDataUnit + 1;
 
                 int y = newRect.y;
                 for(int j = 0; j < numV; j++) {
                     int x = newRect.x;
                     for(int i = 0; i < numH; i++) {
-                        int Cb = tempData[bOffset + offsetCb];
+                        int Cb = tempData[bOffset + pixelsPerDataUnit];
                         int Cr = tempData[bOffset + offsetCr];
                         int k = 0;
                         while(k < samplesPerDataUnit) {
@@ -1769,9 +1767,9 @@ public class TIFFImage extends AbstractRed {
     (int dataType, int numBands,
      boolean isAlphaPremultiplied, int transparency) {
 
-        ComponentColorModel ccm = null;
-        int[] RGBBits = null;
-        ColorSpace cs = null;
+        ComponentColorModel ccm;
+        int[] RGBBits;
+        ColorSpace cs;
         switch(numBands) {
             case 2: // gray+alpha
                 cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);
@@ -1783,7 +1781,7 @@ public class TIFFImage extends AbstractRed {
                 throw new IllegalArgumentException();
         }
 
-        int componentSize = 0;
+        int componentSize;
         switch(dataType) {
             case DataBuffer.TYPE_BYTE:
                 componentSize = 8;

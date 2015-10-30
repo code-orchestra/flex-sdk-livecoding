@@ -212,7 +212,7 @@ public class SAXParserMMImpl extends javax.xml.parsers.SAXParser
         if (features != null) {
             for (Enumeration e = features.keys(); e.hasMoreElements();) {
                 String feature = (String)e.nextElement();
-                boolean value = ((Boolean)features.get(feature)).booleanValue();
+                boolean value = (Boolean) features.get(feature);
                 xmlReader.setFeature0(feature, value);
             }
         }
@@ -221,7 +221,7 @@ public class SAXParserMMImpl extends javax.xml.parsers.SAXParser
     public Parser getParser() throws SAXException {
         // Xerces2 AbstractSAXParser implements SAX1 Parser
         // assert(xmlReader instanceof Parser);
-        return (Parser) xmlReader;
+        return xmlReader;
     }
 
     /**
@@ -387,14 +387,7 @@ public class SAXParserMMImpl extends javax.xml.parsers.SAXParser
                 try {
                     setProperty(SECURITY_MANAGER, value ? new SecurityManager() : null);
                 }
-                catch (SAXNotRecognizedException exc) {
-                    // If the property is not supported 
-                    // re-throw the exception if the value is true.
-                    if (value) {
-                        throw exc;
-                    }
-                }
-                catch (SAXNotSupportedException exc) {
+                catch (SAXNotRecognizedException | SAXNotSupportedException exc) {
                     // If the property is not supported 
                     // re-throw the exception if the value is true.
                     if (value) {
@@ -533,7 +526,7 @@ public class SAXParserMMImpl extends javax.xml.parsers.SAXParser
                 while (iter.hasNext()) {
                     Map.Entry entry = (Map.Entry) iter.next();
                     String name = (String) entry.getKey();
-                    boolean value = ((Boolean) entry.getValue()).booleanValue();
+                    boolean value = (Boolean) entry.getValue();
                     super.setFeature(name, value);
                 }
                 fInitFeatures.clear();

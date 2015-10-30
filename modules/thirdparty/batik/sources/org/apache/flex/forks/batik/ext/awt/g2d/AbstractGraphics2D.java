@@ -871,10 +871,10 @@ public abstract class AbstractGraphics2D extends Graphics2D implements Cloneable
     public boolean drawImage(Image img,
                              AffineTransform xform,
                              ImageObserver obs){
-        boolean retVal = true;
+        boolean retVal;
 
         if(xform.getDeterminant() != 0){
-            AffineTransform inverseTransform = null;
+            AffineTransform inverseTransform;
             try{
                 inverseTransform = xform.createInverse();
             }   catch(NoninvertibleTransformException e){

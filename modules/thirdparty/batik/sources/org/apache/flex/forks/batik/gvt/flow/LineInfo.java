@@ -358,8 +358,7 @@ public class LineInfo {
         rangeG[r]+= ggi.getLastGlyphCount()-ggi.getGlyphCount();
 
         int currRange = -1;
-        double         locX=0, range=0, rAdv=0;
-        r=-1;
+        double         locX=0, range, rAdv;
         ggi = null;
         for (int i=0; i<size; i++) {
             GlyphGroupInfo pggi = ggi;

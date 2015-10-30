@@ -18,12 +18,6 @@
  */
 package org.apache.flex.forks.batik.dom;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.apache.flex.forks.batik.dom.events.DOMMutationEvent;
 import org.apache.flex.forks.batik.dom.events.EventSupport;
 import org.apache.flex.forks.batik.dom.events.NodeEventTarget;
@@ -33,20 +27,17 @@ import org.apache.flex.forks.batik.dom.xbl.NodeXBL;
 import org.apache.flex.forks.batik.dom.xbl.XBLManagerData;
 import org.apache.flex.forks.batik.util.ParsedURL;
 import org.apache.flex.forks.batik.util.XMLConstants;
-
-import org.w3c.dom.Attr;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.UserDataHandler;
+import org.w3c.dom.*;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 import org.w3c.dom.events.MutationEvent;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * This class implements the {@link org.w3c.dom.Node} interface.
@@ -114,7 +105,7 @@ public abstract class AbstractNode
     public void setSpecified(boolean v) {
         throw createDOMException(DOMException.INVALID_STATE_ERR,
                                  "node.type",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName()});
     }
 
@@ -148,7 +139,7 @@ public abstract class AbstractNode
     public void setParentNode(Node v) {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "parent.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName() });
     }
 
@@ -183,7 +174,7 @@ public abstract class AbstractNode
     public void setPreviousSibling(Node n) {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "sibling.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName() });
     }
 
@@ -202,7 +193,7 @@ public abstract class AbstractNode
     public void setNextSibling(Node n) {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "sibling.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName() });
     }
 
@@ -255,7 +246,7 @@ public abstract class AbstractNode
         throws DOMException {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "children.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName() });
     }
 
@@ -268,7 +259,7 @@ public abstract class AbstractNode
         throws DOMException {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "children.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName()});
     }
 
@@ -279,7 +270,7 @@ public abstract class AbstractNode
     public Node removeChild(Node oldChild) throws DOMException {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "children.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName() });
     }
 
@@ -290,7 +281,7 @@ public abstract class AbstractNode
     public Node appendChild(Node newChild) throws DOMException {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "children.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName() });
     }
 
@@ -343,14 +334,14 @@ public abstract class AbstractNode
         if (isReadonly()) {
             throw createDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                      "readonly.node",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName() });
         }
         String uri = getNamespaceURI();
         if (uri == null) {
             throw createDOMException(DOMException.NAMESPACE_ERR,
                                      "namespace",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName() });
         }
 
@@ -362,17 +353,17 @@ public abstract class AbstractNode
         }
 
         // prefix is guaranteed to be non-null here...
-        if (!prefix.equals("") && !DOMUtilities.isValidName(prefix)) {
+        if (!prefix.isEmpty() && !DOMUtilities.isValidName(prefix)) {
             throw createDOMException(DOMException.INVALID_CHARACTER_ERR,
                                      "prefix",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName(),
                                                     prefix });
         }
         if (!DOMUtilities.isValidPrefix(prefix)) {
             throw createDOMException(DOMException.NAMESPACE_ERR,
                                      "prefix",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName(),
                                                     prefix });
         }
@@ -382,7 +373,7 @@ public abstract class AbstractNode
              !XMLSupport.XMLNS_NAMESPACE_URI.equals(uri))) {
             throw createDOMException(DOMException.NAMESPACE_ERR,
                                      "namespace.uri",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName(),
                                                     uri });
         }
@@ -462,7 +453,7 @@ public abstract class AbstractNode
     }
 
     public static String getBaseURI(Node n) {
-        return ((AbstractNode) n).getBaseURI();
+        return n.getBaseURI();
     }
 
     // DocumentPosition constants from DOM Level 3 Core org.w3c.dom.Node
@@ -496,7 +487,7 @@ public abstract class AbstractNode
             if (other.getNodeType() == ATTRIBUTE_NODE) {
                 Attr otherAttr = (Attr) other;
                 if (n == otherAttr.getOwnerElement()) {
-                    if (hashCode() < ((Attr) other).hashCode()) {
+                    if (hashCode() < other.hashCode()) {
                         return DOCUMENT_POSITION_PRECEDING
                             | DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC;
                     } else {
@@ -577,7 +568,7 @@ public abstract class AbstractNode
         if (isReadonly()) {
             throw createDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                      "readonly.node",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName() });
         }
         if (getNodeType() != DOCUMENT_TYPE_NODE) {
@@ -627,7 +618,7 @@ public abstract class AbstractNode
                         n != null;
                         n = n.getParentNode()) {
                     if (n.getNodeType() == ELEMENT_NODE) {
-                        return ((AbstractNode) n).lookupPrefix(namespaceURI);
+                        return n.lookupPrefix(namespaceURI);
                     }
                 }
                 return null;
@@ -645,7 +636,7 @@ public abstract class AbstractNode
                 && ns.equals(namespaceURI)
                 && prefix != null) {
             String pns =
-                ((AbstractNode) originalElement).lookupNamespaceURI(prefix);
+                originalElement.lookupNamespaceURI(prefix);
             if (pns != null && pns.equals(namespaceURI)) {
                 return prefix;
             }
@@ -682,7 +673,7 @@ public abstract class AbstractNode
         switch (getNodeType()) {
             case DOCUMENT_NODE:
                 AbstractNode de
-                    = (AbstractNode) ((Document) this).getDocumentElement();
+                        = (AbstractNode) ((Document) this).getDocumentElement();
                 return de.isDefaultNamespace(namespaceURI);
             case ENTITY_NODE:
             case NOTATION_NODE:
@@ -691,16 +682,13 @@ public abstract class AbstractNode
                 return false;
             case ATTRIBUTE_NODE:
                 AbstractNode owner
-                    = (AbstractNode) ((Attr) this).getOwnerElement();
-                if (owner != null) {
-                    return owner.isDefaultNamespace(namespaceURI);
-                }
-                return false;
+                        = (AbstractNode) ((Attr) this).getOwnerElement();
+                return owner != null && owner.isDefaultNamespace(namespaceURI);
             case ELEMENT_NODE:
                 if (getPrefix() == null) {
                     String ns = getNamespaceURI();
                     return ns == null && namespaceURI == null
-                        || ns != null && ns.equals(namespaceURI);
+                            || ns != null && ns.equals(namespaceURI);
                 }
                 NamedNodeMap nnm = getAttributes();
                 if (nnm != null) {
@@ -819,7 +807,7 @@ public abstract class AbstractNode
         Node n = getFirstChild();
         Node m = other.getFirstChild();
         if (n != null && m != null) {
-            if (!((AbstractNode) n).isEqualNode(m)) {
+            if (!n.isEqualNode(m)) {
                 return false;
             }
         }
@@ -856,7 +844,7 @@ public abstract class AbstractNode
                 } else {
                     n2 = nnm2.getNamedItem(n1.getNodeName());
                 }
-                if (!((AbstractNode) n1).isEqualNode(n2)) {
+                if (!n1.isEqualNode(n2)) {
                     return false;
                 }
             }
@@ -907,17 +895,16 @@ public abstract class AbstractNode
                                         Node newNode) {
         AbstractNode an = (AbstractNode) oldNode;
         if (an.userData != null) {
-            Iterator i = an.userData.entrySet().iterator();
-            while (i.hasNext()) {
-                Map.Entry e = (Map.Entry) i.next();
+            for (Object o : an.userData.entrySet()) {
+                Map.Entry e = (Map.Entry) o;
                 UserDataHandler h
-                    = (UserDataHandler) an.userDataHandlers.get(e.getKey());
+                        = (UserDataHandler) an.userDataHandlers.get(e.getKey());
                 if (h != null) {
                     h.handle(type,
-                             (String) e.getKey(),
-                             e.getValue(),
-                             oldNode,
-                             newNode);
+                            (String) e.getKey(),
+                            e.getValue(),
+                            oldNode,
+                            newNode);
                 }
             }
         }
@@ -1182,7 +1169,7 @@ public abstract class AbstractNode
     protected void checkChildType(Node n, boolean replace) {
         throw createDOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                  "children.not.allowed",
-                                 new Object[] { new Integer(getNodeType()),
+                                 new Object[] {(int) getNodeType(),
                                                 getNodeName() });
     }
 

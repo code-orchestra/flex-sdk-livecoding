@@ -61,7 +61,7 @@ public class Generator
      * tools placed in the context.
      */
     private static final String DEFAULT_TEXEN_PROPERTIES =
-        "org/apache/flex/forks/velocity/texen/defaults/texen.properties";
+            "org/apache/flex/forks/velocity/texen/defaults/texen.properties";
 
     /**
      * Default properties used by texen.
@@ -364,7 +364,7 @@ public class Generator
         
         Template template = getTemplate(inputTemplate, inputEncoding != null ? inputEncoding : this.inputEncoding);
         
-        if (outputFile == null || outputFile.equals(""))
+        if (outputFile == null || outputFile.isEmpty())
         {
             StringWriter sw = new StringWriter();
             template.merge (controlContext,sw);
@@ -513,19 +513,14 @@ public class Generator
      */
     public void shutdown()
     {
-        Iterator iterator = writers.values().iterator();
-        
-        while(iterator.hasNext())
-        {
-            Writer writer = (Writer) iterator.next();
-                        
-            try
-            {
+
+        for (Object o : writers.values()) {
+            Writer writer = (Writer) o;
+
+            try {
                 writer.flush();
                 writer.close();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 /* do nothing */
             }
         }

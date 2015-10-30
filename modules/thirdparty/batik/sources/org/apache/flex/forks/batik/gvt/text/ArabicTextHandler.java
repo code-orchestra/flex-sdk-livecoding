@@ -106,7 +106,7 @@ public class ArabicTextHandler {
 
         if (charOrder != null) {
             // need to reconstruct the reordered attributed string
-            StringBuffer reorderedString = new StringBuffer(numChars);
+            StringBuilder reorderedString = new StringBuilder(numChars);
             char c;
             for (int i = 0; i < numChars; i++) {
                 c = aci.setIndex(charOrder[i]);
@@ -134,7 +134,7 @@ public class ArabicTextHandler {
                 if (x != null && !x.isNaN()) {
                     reorderedAS.addAttribute
                         (GVTAttributedCharacterIterator.TextAttribute.X,
-                         new Float(Float.NaN), charOrder[0], charOrder[0]+1);
+                                Float.NaN, charOrder[0], charOrder[0]+1);
                     reorderedAS.addAttribute
                         (GVTAttributedCharacterIterator.TextAttribute.X,
                          x, 0, 1);
@@ -142,7 +142,7 @@ public class ArabicTextHandler {
                 if (y != null && !y.isNaN()) {
                     reorderedAS.addAttribute
                         (GVTAttributedCharacterIterator.TextAttribute.Y,
-                         new Float(Float.NaN), charOrder[0], charOrder[0]+1);
+                                Float.NaN, charOrder[0], charOrder[0]+1);
                     reorderedAS.addAttribute
                         (GVTAttributedCharacterIterator.TextAttribute.Y,
                          y, 0, 1);
@@ -172,7 +172,7 @@ public class ArabicTextHandler {
         aci = as.getIterator();  // Make sure ACI tracks ARABIC_FORM
         int end   = aci.getBeginIndex();
 
-        Integer currentForm = ARABIC_NONE;
+        Integer currentForm;
         // for each run of arabic chars, assign the appropriate form
         while (aci.setIndex(end) != AttributedCharacterIterator.DONE) {
             int start = aci.getRunStart(ARABIC_FORM);
@@ -207,7 +207,7 @@ public class ArabicTextHandler {
                     if (arabicCharShapesRight(prevChar)
                         && arabicCharShapesLeft(currentChar)) {
                         // Increment the form of the previous char
-                        prevForm = new Integer(prevForm.intValue()+1);
+                        prevForm = prevForm + 1;
                         as.addAttribute(ARABIC_FORM, prevForm,
                                         prevCharIndex, prevCharIndex+1);
 
@@ -242,10 +242,7 @@ public class ArabicTextHandler {
      * @return True if the char is arabic, false otherwise.
      */
     public static boolean arabicChar(char c) {
-        if (c >= arabicStart && c <= arabicEnd) {
-            return true;
-        }
-        return false;
+        return c >= arabicStart && c <= arabicEnd;
     }
 
     /**
@@ -282,18 +279,8 @@ public class ArabicTextHandler {
      * @return True if the character is transparent, false otherwise.
      */
     public static boolean arabicCharTransparent(char c) {
-        int charVal = c;
-        if ((charVal  < 0x064B) || (charVal > 0x06ED))
-            return false;
-
-        if ((charVal <= 0x0655)                      ||
-            (charVal == 0x0670)                      ||
-            (charVal >= 0x06D6 && charVal <= 0x06E4) ||
-            (charVal >= 0x06E7 && charVal <= 0x06E8) ||
-            (charVal >= 0x06EA)) {
-            return true;
-        }
-        return false;
+        return !(((int) c < 0x064B) || ((int) c > 0x06ED))
+                && (((int) c <= 0x0655) || ((int) c == 0x0670) || ((int) c >= 0x06D6 && (int) c <= 0x06E4) || ((int) c >= 0x06E7 && (int) c <= 0x06E8) || ((int) c >= 0x06EA));
     }
 
     /**
@@ -304,25 +291,21 @@ public class ArabicTextHandler {
      * @return True if the character shapes to the right, false otherwise.
      */
     private static boolean arabicCharShapesRight(char c) {
-        int charVal = c;
-        if ((charVal >= 0x0622 && charVal <= 0x0625)
-         || (charVal == 0x0627)
-         || (charVal == 0x0629)
-         || (charVal >= 0x062F && charVal <= 0x0632)
-         || (charVal == 0x0648)
-         || (charVal >= 0x0671 && charVal <= 0x0673)
-         || (charVal >= 0x0675 && charVal <= 0x0677)
-         || (charVal >= 0x0688 && charVal <= 0x0699)
-         || (charVal == 0x06C0)
-         || (charVal >= 0x06C2 && charVal <= 0x06CB)
-         || (charVal == 0x06CD)
-         || (charVal == 0x06CF)
-         || (charVal >= 0x06D2 && charVal <= 0x06D3)
-         // check for duel shaping too
-         || arabicCharShapesDuel(c)) {
-            return true;
-        }
-        return false;
+        return ((int) c >= 0x0622 && (int) c <= 0x0625)
+                || ((int) c == 0x0627)
+                || ((int) c == 0x0629)
+                || ((int) c >= 0x062F && (int) c <= 0x0632)
+                || ((int) c == 0x0648)
+                || ((int) c >= 0x0671 && (int) c <= 0x0673)
+                || ((int) c >= 0x0675 && (int) c <= 0x0677)
+                || ((int) c >= 0x0688 && (int) c <= 0x0699)
+                || ((int) c == 0x06C0)
+                || ((int) c >= 0x06C2 && (int) c <= 0x06CB)
+                || ((int) c == 0x06CD)
+                || ((int) c == 0x06CF)
+                || ((int) c >= 0x06D2 && (int) c <= 0x06D3)
+                // check for duel shaping too
+                || arabicCharShapesDuel(c);
     }
 
     /**
@@ -332,24 +315,20 @@ public class ArabicTextHandler {
      * @return True if the character is duel shaping, false otherwise.
      */
     private static boolean arabicCharShapesDuel(char c) {
-        int charVal = c;
 
-        if ((charVal == 0x0626)
-         || (charVal == 0x0628)
-         || (charVal >= 0x062A && charVal <= 0x062E)
-         || (charVal >= 0x0633 && charVal <= 0x063A)
-         || (charVal >= 0x0641 && charVal <= 0x0647)
-         || (charVal >= 0x0649 && charVal <= 0x064A)
-         || (charVal >= 0x0678 && charVal <= 0x0687)
-         || (charVal >= 0x069A && charVal <= 0x06BF)
-         || (charVal == 0x6C1)
-         || (charVal == 0x6CC)
-         || (charVal == 0x6CE)
-         || (charVal >= 0x06D0 && charVal <= 0x06D1)
-         || (charVal >= 0x06FA && charVal <= 0x06FC)) {
-            return true;
-        }
-        return false;
+        return ((int) c == 0x0626)
+                || ((int) c == 0x0628)
+                || ((int) c >= 0x062A && (int) c <= 0x062E)
+                || ((int) c >= 0x0633 && (int) c <= 0x063A)
+                || ((int) c >= 0x0641 && (int) c <= 0x0647)
+                || ((int) c >= 0x0649 && (int) c <= 0x064A)
+                || ((int) c >= 0x0678 && (int) c <= 0x0687)
+                || ((int) c >= 0x069A && (int) c <= 0x06BF)
+                || ((int) c == 0x6C1)
+                || ((int) c == 0x6CC)
+                || ((int) c == 0x6CE)
+                || ((int) c >= 0x06D0 && (int) c <= 0x06D1)
+                || ((int) c >= 0x06FA && (int) c <= 0x06FC);
     }
 
     /**
@@ -378,8 +357,8 @@ public class ArabicTextHandler {
 
         int [][]remaps = doubleCharRemappings[ch1-doubleCharFirst];
         if (remaps == null) return false;
-        for (int i=0; i<remaps.length; i++) {
-            if (remaps[i][0] == ch2)
+        for (int[] remap : remaps) {
+            if (remap[0] == ch2)
                 return true;
         }
         return false;
@@ -402,9 +381,9 @@ public class ArabicTextHandler {
 
         int [][]remaps = doubleCharRemappings[ch1-doubleCharFirst];
         if (remaps == null) return -1;
-        for (int i=0; i<remaps.length; i++) {
-            if (remaps[i][0] == ch2)
-                return remaps[i][form];
+        for (int[] remap : remaps) {
+            if (remap[0] == ch2)
+                return remap[form];
         }
         return -1;
     }
@@ -435,7 +414,7 @@ public class ArabicTextHandler {
         int start = aci.getBeginIndex();
         int end   = aci.getEndIndex();
         int numChar = end-start;
-        StringBuffer substString = new StringBuffer(numChar);
+        StringBuilder substString = new StringBuilder(numChar);
         for (int i=start; i< end; i++) {
             char c = aci.setIndex(i);
             if (!arabicChar(c)) {
@@ -453,7 +432,7 @@ public class ArabicTextHandler {
                         && nextForm.equals(ARABIC_INITIAL)) {
                         // look for an isolated ligature
                         int substChar = ArabicTextHandler.getSubstituteChar
-                            (c, nextChar,ARABIC_ISOLATED.intValue());
+                            (c, nextChar, ARABIC_ISOLATED);
                         if (substChar > -1) {
                             substString.append((char)substChar);
                             i++;
@@ -462,7 +441,7 @@ public class ArabicTextHandler {
                     } else if (form.equals(ARABIC_TERMINAL)) {
                         // look for a terminal ligature
                         int substChar = ArabicTextHandler.getSubstituteChar
-                            (c, nextChar,ARABIC_TERMINAL.intValue());
+                            (c, nextChar, ARABIC_TERMINAL);
                         if (substChar > -1) {
                             substString.append((char)substChar);
                             i++;
@@ -472,7 +451,7 @@ public class ArabicTextHandler {
                                && nextForm.equals(ARABIC_MEDIAL)) {
                         // look for a medial ligature
                         int substChar = ArabicTextHandler.getSubstituteChar
-                            (c, nextChar,ARABIC_MEDIAL.intValue());
+                            (c, nextChar, ARABIC_MEDIAL);
                         if (substChar > -1) {
                             substString.append((char)substChar);
                             i++;
@@ -484,8 +463,8 @@ public class ArabicTextHandler {
 
             // couldn't find a matching ligature so just look for a
             // simple substitution
-            if (form != null && form.intValue() > 0) {
-                int substChar = getSubstituteChar(c, form.intValue());
+            if (form != null && form > 0) {
+                int substChar = getSubstituteChar(c, form);
                 if (substChar > -1) {
                     c = (char)substChar;
                 }
@@ -504,14 +483,10 @@ public class ArabicTextHandler {
      * @return True if there is a ligature that starts with c, false otherwise.
      */
     public static boolean charStartsLigature(char c) {
-        int charVal = c;
-        if (charVal == 0x064B || charVal == 0x064C || charVal == 0x064D
-         || charVal == 0x064E || charVal == 0x064F || charVal == 0x0650
-         || charVal == 0x0651 || charVal == 0x0652 || charVal == 0x0622
-         || charVal == 0x0623 || charVal == 0x0625 || charVal == 0x0627) {
-            return true;
-        }
-        return false;
+        return (int) c == 0x064B || (int) c == 0x064C || (int) c == 0x064D
+                || (int) c == 0x064E || (int) c == 0x064F || (int) c == 0x0650
+                || (int) c == 0x0651 || (int) c == 0x0652 || (int) c == 0x0622
+                || (int) c == 0x0623 || (int) c == 0x0625 || (int) c == 0x0627;
     }
 
     /**
@@ -538,17 +513,8 @@ public class ArabicTextHandler {
      * @return True if c is a ligature, false otherwise.
      */
     public static boolean isLigature(char c) {
-        int charVal = c;
-        if ((charVal < 0xFE70) || (charVal > 0xFEFC))
-            return false;
+        return !(((int) c < 0xFE70) || ((int) c > 0xFEFC)) && (((int) c <= 0xFE72) || ((int) c == 0xFE74) || ((int) c >= 0xFE76 && (int) c <= 0xFE7F) || ((int) c >= 0xFEF5));
 
-        if ((charVal <= 0xFE72)                      ||
-            (charVal == 0xFE74)                      ||
-            (charVal >= 0xFE76 && charVal <= 0xFE7F) ||
-            (charVal >= 0xFEF5)) {
-            return true;
-        }
-        return false;
     }
 
 

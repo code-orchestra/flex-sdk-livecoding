@@ -169,7 +169,7 @@ public class DOMUtilities extends XMLUtilities {
      * characters with entities.
      */
     public static String contentToString(String s) {
-        StringBuffer result = new StringBuffer( s.length() );
+        StringBuilder result = new StringBuilder( s.length() );
 
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
@@ -246,8 +246,8 @@ public class DOMUtilities extends XMLUtilities {
      */
     public static boolean isAnyNodeAncestorOf(ArrayList ancestorNodes, Node node) {
         int n = ancestorNodes.size();
-        for (int i = 0; i < n; i++) {
-            Node ancestor = (Node) ancestorNodes.get(i);
+        for (Object ancestorNode : ancestorNodes) {
+            Node ancestor = (Node) ancestorNode;
             if (isAncestorOf(ancestor, node)) {
                 return true;
             }
@@ -287,11 +287,7 @@ public class DOMUtilities extends XMLUtilities {
      * @return True if a node is a child of the given parent node
      */
     public static boolean isParentOf(Node node, Node parentNode) {
-        if (node == null || parentNode == null
-                || node.getParentNode() != parentNode) {
-            return false;
-        }
-        return true;
+        return !(node == null || parentNode == null || node.getParentNode() != parentNode);
     }
 
     /**
@@ -304,11 +300,7 @@ public class DOMUtilities extends XMLUtilities {
      * @return True if the given node can be appended on the parent node
      */
     public static boolean canAppend(Node node, Node parentNode) {
-        if (node == null || parentNode == null || node == parentNode
-                || isAncestorOf(node, parentNode)) {
-            return false;
-        }
-        return true;
+        return !(node == null || parentNode == null || node == parentNode || isAncestorOf(node, parentNode));
     }
 
     /**
@@ -326,8 +318,8 @@ public class DOMUtilities extends XMLUtilities {
             return false;
         }
         int n = children.size();
-        for (int i = 0; i < n; i++) {
-            Node child = (Node) children.get(i);
+        for (Object aChildren : children) {
+            Node child = (Node) aChildren;
             if (canAppend(child, parentNode)) {
                 return true;
             }
@@ -393,9 +385,8 @@ public class DOMUtilities extends XMLUtilities {
             if (prefixes != null) {
                 wrapperElementPrefix += " ";
                 Set keySet = prefixes.keySet();
-                Iterator iter = keySet.iterator();
-                while (iter.hasNext()) {
-                    String currentKey = (String) iter.next();
+                for (Object aKeySet : keySet) {
+                    String currentKey = (String) aKeySet;
                     String currentValue = (String) prefixes.get(currentKey);
                     wrapperElementPrefix += currentKey + "=\"" + currentValue
                             + "\" ";
@@ -419,13 +410,13 @@ public class DOMUtilities extends XMLUtilities {
                         .appendChild(doc.importNode(d.getDocumentElement(),
                                 true));
                 return result;
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
 
             }
         }
 
         // Try and parse as a document fragment
-        StringBuffer sb = new StringBuffer(wrapperElementPrefix.length()
+        StringBuilder sb = new StringBuilder(wrapperElementPrefix.length()
                 + text.length() + wrapperElementSuffix.length());
         sb.append(wrapperElementPrefix);
         sb.append(text);
@@ -446,7 +437,7 @@ public class DOMUtilities extends XMLUtilities {
                     return result;
                 }
             }
-        } catch (Exception exc) {
+        } catch (Exception ignored) {
 
         }
         return null;
@@ -596,7 +587,7 @@ public class DOMUtilities extends XMLUtilities {
                 throw new DOMException(DOMException.INVALID_CHARACTER_ERR,
                                        "Wrong name initial:  " + c);
             }
-            StringBuffer ident = new StringBuffer();
+            StringBuilder ident = new StringBuilder();
             ident.append(c);
             while (++i < data.length()) {
                 c = data.charAt(i);
@@ -644,7 +635,7 @@ public class DOMUtilities extends XMLUtilities {
             // The next char must be '\'' or '"'
             c = data.charAt(i);
             i++;
-            StringBuffer value = new StringBuffer();
+            StringBuilder value = new StringBuilder();
             if (c == '\'') {
                 while (i < data.length()) {
                     c = data.charAt(i);

@@ -98,7 +98,7 @@ import org.w3c.dom.svg.SVGTextPositioningElement;
 public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
     implements SVGTextContent {
 
-    protected static final Integer ZERO = new Integer(0);
+    protected static final Integer ZERO = 0;
 
     public static final
         AttributedCharacterIterator.Attribute TEXT_COMPOUND_DELIMITER =
@@ -713,30 +713,30 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
         hasNewACI = false;
         int [] properties = evt.getProperties();
         // first try to find CSS properties that change the layout
-        for (int i=0; i < properties.length; ++i) {
-            switch(properties[i]) {         // fall-through is intended
-            case SVGCSSEngine.BASELINE_SHIFT_INDEX:
-            case SVGCSSEngine.DIRECTION_INDEX:
-            case SVGCSSEngine.DISPLAY_INDEX:
-            case SVGCSSEngine.FONT_FAMILY_INDEX:
-            case SVGCSSEngine.FONT_SIZE_INDEX:
-            case SVGCSSEngine.FONT_STRETCH_INDEX:
-            case SVGCSSEngine.FONT_STYLE_INDEX:
-            case SVGCSSEngine.FONT_WEIGHT_INDEX:
-            case SVGCSSEngine.GLYPH_ORIENTATION_HORIZONTAL_INDEX:
-            case SVGCSSEngine.GLYPH_ORIENTATION_VERTICAL_INDEX:
-            case SVGCSSEngine.KERNING_INDEX:
-            case SVGCSSEngine.LETTER_SPACING_INDEX:
-            case SVGCSSEngine.TEXT_ANCHOR_INDEX:
-            case SVGCSSEngine.UNICODE_BIDI_INDEX:
-            case SVGCSSEngine.WORD_SPACING_INDEX:
-            case SVGCSSEngine.WRITING_MODE_INDEX: {
-                if (!hasNewACI) {
-                    hasNewACI = true;
-                    computeLaidoutText(ctx, e, getTextNode());
+        for (int property : properties) {
+            switch (property) {         // fall-through is intended
+                case SVGCSSEngine.BASELINE_SHIFT_INDEX:
+                case SVGCSSEngine.DIRECTION_INDEX:
+                case SVGCSSEngine.DISPLAY_INDEX:
+                case SVGCSSEngine.FONT_FAMILY_INDEX:
+                case SVGCSSEngine.FONT_SIZE_INDEX:
+                case SVGCSSEngine.FONT_STRETCH_INDEX:
+                case SVGCSSEngine.FONT_STYLE_INDEX:
+                case SVGCSSEngine.FONT_WEIGHT_INDEX:
+                case SVGCSSEngine.GLYPH_ORIENTATION_HORIZONTAL_INDEX:
+                case SVGCSSEngine.GLYPH_ORIENTATION_VERTICAL_INDEX:
+                case SVGCSSEngine.KERNING_INDEX:
+                case SVGCSSEngine.LETTER_SPACING_INDEX:
+                case SVGCSSEngine.TEXT_ANCHOR_INDEX:
+                case SVGCSSEngine.UNICODE_BIDI_INDEX:
+                case SVGCSSEngine.WORD_SPACING_INDEX:
+                case SVGCSSEngine.WRITING_MODE_INDEX: {
+                    if (!hasNewACI) {
+                        hasNewACI = true;
+                        computeLaidoutText(ctx, e, getTextNode());
+                    }
+                    break;
                 }
-                break;
-            }
             }
         }
         //optimize the calculation of
@@ -886,7 +886,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
         String s = XMLSupport.getXMLSpace(element);
         boolean preserve = s.equals(SVG_PRESERVE_VALUE);
         boolean prevEndsWithSpace;
-        Element nodeElement = element;
+        Element nodeElement;
         int elementStartChar = asb.length();
 
         if (top) {
@@ -911,115 +911,114 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
              n != null;
              n = getNextSibling(n)) {
 
-            if (preserve) {
-                prevEndsWithSpace = false;
-            } else {
-                if (asb.length() == 0) {
-                    prevEndsWithSpace = true;
-                } else {
-                    prevEndsWithSpace = (asb.getLastChar() == ' ');
-                }
-            }
+            prevEndsWithSpace = !preserve && (asb.length() == 0 || (asb.getLastChar() == ' '));
 
             switch (n.getNodeType()) {
-            case Node.ELEMENT_NODE:
-                if (!SVG_NAMESPACE_URI.equals(n.getNamespaceURI()))
-                    break;
+                case Node.ELEMENT_NODE:
+                    if (!SVG_NAMESPACE_URI.equals(n.getNamespaceURI()))
+                        break;
 
-                nodeElement = (Element)n;
+                    nodeElement = (Element) n;
 
-                String ln = n.getLocalName();
+                    String ln = n.getLocalName();
 
-                if (ln.equals(SVG_TSPAN_TAG) ||
-                    ln.equals(SVG_ALT_GLYPH_TAG)) {
-                    int before = asb.count;
-                    fillAttributedStringBuffer(ctx,
-                                               nodeElement,
-                                               false,
-                                               textPath,
-                                               subBidiLevel,
-                                               initialAttributes,
-                                               asb);
-                    if (asb.count != before) {
-                        initialAttributes = null;
-                    }
-                } else if (ln.equals(SVG_TEXT_PATH_TAG)) {
-                    SVGTextPathElementBridge textPathBridge
-                        = (SVGTextPathElementBridge)ctx.getBridge(nodeElement);
-                    TextPath newTextPath
-                        = textPathBridge.createTextPath(ctx, nodeElement);
-                    if (newTextPath != null) {
-                        int before = asb.count;
-                        fillAttributedStringBuffer(ctx,
-                                                   nodeElement,
-                                                   false,
-                                                   newTextPath,
-                                                   subBidiLevel,
-                                                   initialAttributes,
-                                                   asb);
-                        if (asb.count != before) {
-                            initialAttributes = null;
+                    switch (ln) {
+                        case SVG_TSPAN_TAG:
+                        case SVG_ALT_GLYPH_TAG: {
+                            int before = asb.count;
+                            fillAttributedStringBuffer(ctx,
+                                    nodeElement,
+                                    false,
+                                    textPath,
+                                    subBidiLevel,
+                                    initialAttributes,
+                                    asb);
+                            if (asb.count != before) {
+                                initialAttributes = null;
+                            }
+                            break;
+                        }
+                        case SVG_TEXT_PATH_TAG:
+                            SVGTextPathElementBridge textPathBridge
+                                    = (SVGTextPathElementBridge) ctx.getBridge(nodeElement);
+                            TextPath newTextPath
+                                    = textPathBridge.createTextPath(ctx, nodeElement);
+                            if (newTextPath != null) {
+                                int before = asb.count;
+                                fillAttributedStringBuffer(ctx,
+                                        nodeElement,
+                                        false,
+                                        newTextPath,
+                                        subBidiLevel,
+                                        initialAttributes,
+                                        asb);
+                                if (asb.count != before) {
+                                    initialAttributes = null;
+                                }
+                            }
+                            break;
+                        case SVG_TREF_TAG:
+                            String uriStr = XLinkSupport.getXLinkHref((Element) n);
+                            Element ref = ctx.getReferencedElement((Element) n, uriStr);
+                            s = TextUtilities.getElementContent(ref);
+                            s = normalizeString(s, preserve, prevEndsWithSpace);
+                            if (s.length() != 0) {
+                                int trefStart = asb.length();
+                                Map m = initialAttributes == null
+                                        ? new HashMap()
+                                        : new HashMap(initialAttributes);
+                                getAttributeMap
+                                        (ctx, nodeElement, textPath, bidiLevel, m);
+                                asb.append(s, m);
+                                int trefEnd = asb.length() - 1;
+                                TextPaintInfo tpi;
+                                tpi = (TextPaintInfo) elemTPI.get(nodeElement);
+                                tpi.startChar = trefStart;
+                                tpi.endChar = trefEnd;
+                                initialAttributes = null;
+                            }
+                            break;
+                        case SVG_A_TAG: {
+                            NodeEventTarget target = (NodeEventTarget) nodeElement;
+                            UserAgent ua = ctx.getUserAgent();
+                            SVGAElementBridge.CursorHolder ch;
+                            ch = new SVGAElementBridge.CursorHolder
+                                    (CursorManager.DEFAULT_CURSOR);
+                            EventListener l;
+                            l = new SVGAElementBridge.AnchorListener(ua, ch);
+                            target.addEventListenerNS
+                                    (XMLConstants.XML_EVENTS_NAMESPACE_URI,
+                                            SVG_EVENT_CLICK, l, false, null);
+                            ctx.storeEventListenerNS
+                                    (target, XMLConstants.XML_EVENTS_NAMESPACE_URI,
+                                            SVG_EVENT_CLICK, l, false);
+
+                            int before = asb.count;
+                            fillAttributedStringBuffer(ctx,
+                                    nodeElement,
+                                    false,
+                                    textPath,
+                                    subBidiLevel,
+                                    initialAttributes,
+                                    asb);
+                            if (asb.count != before) {
+                                initialAttributes = null;
+                            }
+                            break;
                         }
                     }
-                } else if (ln.equals(SVG_TREF_TAG)) {
-                    String uriStr = XLinkSupport.getXLinkHref((Element)n);
-                    Element ref = ctx.getReferencedElement((Element)n, uriStr);
-                    s = TextUtilities.getElementContent(ref);
+                    break;
+                case Node.TEXT_NODE:                     // fall-through is intended
+                case Node.CDATA_SECTION_NODE:
+                    s = n.getNodeValue();
                     s = normalizeString(s, preserve, prevEndsWithSpace);
                     if (s.length() != 0) {
-                        int trefStart = asb.length();
-                        Map m = initialAttributes == null
-                                ? new HashMap()
-                                : new HashMap(initialAttributes);
-                        getAttributeMap
-                            (ctx, nodeElement, textPath, bidiLevel, m);
-                        asb.append(s, m);
-                        int trefEnd = asb.length() - 1;
-                        TextPaintInfo tpi;
-                        tpi = (TextPaintInfo)elemTPI.get(nodeElement);
-                        tpi.startChar = trefStart;
-                        tpi.endChar   = trefEnd;
+                        asb.append(s, map);
+                        if (preserve) {
+                            endLimit = asb.length();
+                        }
                         initialAttributes = null;
                     }
-                } else if (ln.equals(SVG_A_TAG)) {
-                    NodeEventTarget target = (NodeEventTarget)nodeElement;
-                    UserAgent ua = ctx.getUserAgent();
-                    SVGAElementBridge.CursorHolder ch;
-                    ch = new SVGAElementBridge.CursorHolder
-                        (CursorManager.DEFAULT_CURSOR);
-                    EventListener l;
-                    l = new SVGAElementBridge.AnchorListener(ua, ch);
-                    target.addEventListenerNS
-                        (XMLConstants.XML_EVENTS_NAMESPACE_URI,
-                         SVG_EVENT_CLICK, l, false, null);
-                    ctx.storeEventListenerNS
-                        (target, XMLConstants.XML_EVENTS_NAMESPACE_URI,
-                         SVG_EVENT_CLICK, l, false);
-
-                    int before = asb.count;
-                    fillAttributedStringBuffer(ctx,
-                                               nodeElement,
-                                               false,
-                                               textPath,
-                                               subBidiLevel,
-                                               initialAttributes,
-                                               asb);
-                    if (asb.count != before) {
-                        initialAttributes = null;
-                    }
-                }
-                break;
-            case Node.TEXT_NODE:                     // fall-through is intended
-            case Node.CDATA_SECTION_NODE:
-                s = n.getNodeValue();
-                s = normalizeString(s, preserve, prevEndsWithSpace);
-                if (s.length() != 0) {
-                    asb.append(s, map);
-                    if (preserve) {
-                        endLimit = asb.length();
-                    }
-                    initialAttributes = null;
-                }
             }
         }
 
@@ -1030,11 +1029,10 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                 strippedSome = true;
             }
             if (strippedSome) {
-                Iterator iter = elemTPI.values().iterator();
-                while (iter.hasNext()) {
-                    TextPaintInfo tpi = (TextPaintInfo)iter.next();
+                for (Object o1 : elemTPI.values()) {
+                    TextPaintInfo tpi = (TextPaintInfo) o1;
                     if (tpi.endChar >= asb.length()) {
-                        tpi.endChar = asb.length()-1;
+                        tpi.endChar = asb.length() - 1;
                         if (tpi.startChar > tpi.endChar)
                             tpi.startChar = tpi.endChar;
                     }
@@ -1053,7 +1051,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
     protected String normalizeString(String s,
                                      boolean preserve,
                                      boolean stripfirst) {
-        StringBuffer sb = new StringBuffer(s.length());
+        StringBuilder sb = new StringBuilder(s.length());
         if (preserve) {
             for (int i = 0; i < s.length(); i++) {
                 char c = s.charAt(i);
@@ -1231,10 +1229,9 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                                             (Map)attributes.get(0));
             }
 
-            StringBuffer sb = new StringBuffer( strings.size() * 5 );
-            Iterator it = strings.iterator();
-            while (it.hasNext()) {
-                sb.append((String)it.next());
+            StringBuilder sb = new StringBuilder( strings.size() * 5 );
+            for (Object string : strings) {
+                sb.append((String) string);
             }
 
             AttributedString result = new AttributedString(sb.toString());
@@ -1269,10 +1266,9 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                 return (String)strings.get(0);
             }
 
-            StringBuffer sb = new StringBuffer( strings.size() * 5 );
-            Iterator it = strings.iterator();
-            while (it.hasNext()) {
-                sb.append((String)it.next());
+            StringBuilder sb = new StringBuilder( strings.size() * 5 );
+            for (Object string : strings) {
+                sb.append((String) string);
             }
             return sb.toString();
         }
@@ -1393,7 +1389,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
             len = rs.getNumberOfItems();
             if (len == 1) {  // not a list
                 // each char will have the same rotate value
-                Float rad = new Float(Math.toRadians(rs.getItem(0).getValue()));
+                Float rad = (float) Math.toRadians(rs.getItem(0).getValue());
                 as.addAttribute
                     (GVTAttributedCharacterIterator.TextAttribute.ROTATION,
                      rad, firstChar, lastChar + 1);
@@ -1401,7 +1397,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
             } else if (len > 1) {  // it's a list
                 // set each rotate value from the list
                 for (int i = 0; i < len && firstChar + i <= lastChar; i++) {
-                    Float rad = new Float(Math.toRadians(rs.getItem(i).getValue()));
+                    Float rad = (float) Math.toRadians(rs.getItem(i).getValue());
                     as.addAttribute
                         (GVTAttributedCharacterIterator.TextAttribute.ROTATION,
                          rad, firstChar + i, firstChar + i + 1);
@@ -1483,7 +1479,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
         result.put(TEXT_COMPOUND_ID, new SoftReference(element));
 
         Float fsFloat = TextUtilities.convertFontSize(element);
-        float fontSize = fsFloat.floatValue();
+        float fontSize = fsFloat;
         // Font size.
         result.put(TextAttribute.SIZE, fsFloat);
 
@@ -1640,7 +1636,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                 (element, SVGCSSEngine.DIRECTION_INDEX);
             String rs = val.getStringValue();
             int cbidi = 0;
-            if (bidiLevel != null) cbidi = bidiLevel.intValue();
+            if (bidiLevel != null) cbidi = bidiLevel;
 
             // We don't care if it was embed or override we just want
             // it's level here. So map override to positive value.
@@ -1667,7 +1663,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                 break;
             }
 
-            result.put(TextAttribute.BIDI_EMBEDDING, new Integer(cbidi));
+            result.put(TextAttribute.BIDI_EMBEDDING, cbidi);
         }
 
         // Writing mode
@@ -1715,7 +1711,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                        TextAttribute.ORIENTATION_ANGLE);
             result.put(GVTAttributedCharacterIterator.
                        TextAttribute.VERTICAL_ORIENTATION_ANGLE,
-                       new Float(val.getFloatValue()));
+                    val.getFloatValue());
             break;
         case CSSPrimitiveValue.CSS_RAD:
             result.put(GVTAttributedCharacterIterator.
@@ -1724,7 +1720,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                        TextAttribute.ORIENTATION_ANGLE);
             result.put(GVTAttributedCharacterIterator.
                        TextAttribute.VERTICAL_ORIENTATION_ANGLE,
-                       new Float( Math.toDegrees( val.getFloatValue() ) ));
+                    (float) Math.toDegrees(val.getFloatValue()));
             break;
         case CSSPrimitiveValue.CSS_GRAD:
             result.put(GVTAttributedCharacterIterator.
@@ -1733,7 +1729,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                        TextAttribute.ORIENTATION_ANGLE);
             result.put(GVTAttributedCharacterIterator.
                        TextAttribute.VERTICAL_ORIENTATION_ANGLE,
-                       new Float(val.getFloatValue() * 9 / 5));
+                    val.getFloatValue() * 9 / 5);
             break;
         default:
             // Cannot happen
@@ -1749,17 +1745,17 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
         case CSSPrimitiveValue.CSS_DEG:
             result.put(GVTAttributedCharacterIterator.
                        TextAttribute.HORIZONTAL_ORIENTATION_ANGLE,
-                       new Float(val.getFloatValue()));
+                    val.getFloatValue());
             break;
         case CSSPrimitiveValue.CSS_RAD:
             result.put(GVTAttributedCharacterIterator.
                        TextAttribute.HORIZONTAL_ORIENTATION_ANGLE,
-                       new Float( Math.toDegrees( val.getFloatValue() ) ));
+                    (float) Math.toDegrees(val.getFloatValue()));
             break;
         case CSSPrimitiveValue.CSS_GRAD:
             result.put(GVTAttributedCharacterIterator.
                        TextAttribute.HORIZONTAL_ORIENTATION_ANGLE,
-                       new Float(val.getFloatValue() * 9 / 5));
+                    val.getFloatValue() * 9 / 5);
             break;
         default:
             // Cannot happen
@@ -1813,7 +1809,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                     inheritMap = new HashMap();
                 }
 
-                Object value = new Float(textLength.getCheckedValue());
+                Object value = textLength.getCheckedValue();
                 result.put
                     (GVTAttributedCharacterIterator.TextAttribute.BBOX_WIDTH,
                      value);
@@ -2619,7 +2615,7 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                 AffineTransform glyphTransform = it.getGlyphTransform(k);
                 if ( glyphTransform == null ) continue;
 
-                double glyphAngle = 0.0;
+                double glyphAngle;
                 double cosTheta = glyphTransform.getScaleX();
                 double sinTheta = glyphTransform.getShearX();
 
@@ -2911,11 +2907,11 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
         CharacterInformation info = new CharacterInformation();
         info.characterIndex = startIndex+charnum;
 
-        for (int i = 0; i < list.size(); i++) {
+        for (Object aList : list) {
             StrokingTextPainter.TextRun run;
-            run = (StrokingTextPainter.TextRun)list.get(i);
+            run = (StrokingTextPainter.TextRun) aList;
 
-            if (!run.getLayout().hasCharacterIndex(info.characterIndex) )
+            if (!run.getLayout().hasCharacterIndex(info.characterIndex))
                 continue;
 
             info.layout = run.getLayout();
@@ -2923,20 +2919,19 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
             aci.setIndex(info.characterIndex);
 
             //check is it is a altGlyph
-            if (aci.getAttribute(ALT_GLYPH_HANDLER) != null){
+            if (aci.getAttribute(ALT_GLYPH_HANDLER) != null) {
                 info.glyphIndexStart = 0;
-                info.glyphIndexEnd = info.layout.getGlyphCount()-1;
+                info.glyphIndexEnd = info.layout.getGlyphCount() - 1;
             } else {
                 info.glyphIndexStart = info.layout.getGlyphIndex
-                    (info.characterIndex);
+                        (info.characterIndex);
 
                 //special case when the glyph does not have a unicode
                 //associated to it, it will return -1
-                if ( info.glyphIndexStart == -1 ){
+                if (info.glyphIndexStart == -1) {
                     info.glyphIndexStart = 0;
-                    info.glyphIndexEnd = info.layout.getGlyphCount()-1;
-                }
-                else{
+                    info.glyphIndexEnd = info.layout.getGlyphCount() - 1;
+                } else {
                     info.glyphIndexEnd = info.glyphIndexStart;
                 }
             }
@@ -2981,19 +2976,19 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
         if (list == null)
             return elems;
 
-        for (int i = 0 ; i < list.size(); i++) {
+        for (Object aList : list) {
             StrokingTextPainter.TextRun run;
-            run = (StrokingTextPainter.TextRun)list.get(i);
+            run = (StrokingTextPainter.TextRun) aList;
             TextSpanLayout layout = run.getLayout();
             AttributedCharacterIterator aci = run.getACI();
             aci.first();
             SoftReference sr;
-            sr =(SoftReference)aci.getAttribute(TEXT_COMPOUND_ID);
-            Element elem = (Element)sr.get();
+            sr = (SoftReference) aci.getAttribute(TEXT_COMPOUND_ID);
+            Element elem = (Element) sr.get();
 
             if (elem == null) continue;
             if (elems.contains(elem)) continue;
-            if (!isTextSensitive(elem))   continue;
+            if (!isTextSensitive(elem)) continue;
 
             Rectangle2D glBounds = layout.getBounds2D();
             if (glBounds != null) {
@@ -3003,13 +2998,13 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                     continue;
                 }
             }
-            
+
             GVTGlyphVector gv = layout.getGlyphVector();
             for (int g = 0; g < gv.getNumGlyphs(); g++) {
                 Shape gBounds = gv.getGlyphLogicalBounds(g);
                 if (gBounds != null) {
                     gBounds = at.createTransformedShape
-                        (gBounds).getBounds2D();
+                            (gBounds).getBounds2D();
 
                     if (gBounds.intersects(rect)) {
                         elems.add(elem);
@@ -3031,15 +3026,15 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
             return elems;
 
         Set reject = new HashSet();
-        for (int i = 0 ; i < list.size(); i++) {
+        for (Object aList : list) {
             StrokingTextPainter.TextRun run;
-            run = (StrokingTextPainter.TextRun)list.get(i);
+            run = (StrokingTextPainter.TextRun) aList;
             TextSpanLayout layout = run.getLayout();
             AttributedCharacterIterator aci = run.getACI();
             aci.first();
             SoftReference sr;
-            sr =(SoftReference)aci.getAttribute(TEXT_COMPOUND_ID);
-            Element elem = (Element)sr.get();
+            sr = (SoftReference) aci.getAttribute(TEXT_COMPOUND_ID);
+            Element elem = (Element) sr.get();
 
             if (elem == null) continue;
             if (reject.contains(elem)) continue;
@@ -3049,11 +3044,11 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
             }
 
             Rectangle2D glBounds = layout.getBounds2D();
-            if ( glBounds == null ){
+            if (glBounds == null) {
                 continue;
             }
 
-            glBounds = at.createTransformedShape( glBounds ).getBounds2D();
+            glBounds = at.createTransformedShape(glBounds).getBounds2D();
 
             if (rect.contains(glBounds)) {
                 elems.add(elem);
@@ -3101,15 +3096,15 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
         tnRect = at.createTransformedShape(tnRect).getBounds2D();
         if (!rect.intersects(tnRect)) return false;
 
-        for (int i = 0 ; i < list.size(); i++) {
+        for (Object aList : list) {
             StrokingTextPainter.TextRun run;
-            run = (StrokingTextPainter.TextRun)list.get(i);
+            run = (StrokingTextPainter.TextRun) aList;
             TextSpanLayout layout = run.getLayout();
             AttributedCharacterIterator aci = run.getACI();
             aci.first();
             SoftReference sr;
-            sr =(SoftReference)aci.getAttribute(TEXT_COMPOUND_ID);
-            Element runElem = (Element)sr.get();
+            sr = (SoftReference) aci.getAttribute(TEXT_COMPOUND_ID);
+            Element runElem = (Element) sr.get();
             if (runElem == null) continue;
 
             // Only consider runElem if it is sensitive.
@@ -3132,9 +3127,9 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
                 Shape gBounds = gv.getGlyphLogicalBounds(g);
                 if (gBounds != null) {
                     gBounds = at.createTransformedShape
-                        (gBounds).getBounds2D();
+                            (gBounds).getBounds2D();
 
-                    if (gBounds.intersects(rect)){
+                    if (gBounds.intersects(rect)) {
                         return true;
                     }
                 }
@@ -3168,15 +3163,15 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
         Element  txtElem = txtBridge.e;
         Rectangle2D ret = null;
 
-        for (int i = 0 ; i < list.size(); i++) {
+        for (Object aList : list) {
             StrokingTextPainter.TextRun run;
-            run = (StrokingTextPainter.TextRun)list.get(i);
+            run = (StrokingTextPainter.TextRun) aList;
             TextSpanLayout layout = run.getLayout();
             AttributedCharacterIterator aci = run.getACI();
             aci.first();
             SoftReference sr;
-            sr =(SoftReference)aci.getAttribute(TEXT_COMPOUND_ID);
-            Element runElem = (Element)sr.get();
+            sr = (SoftReference) aci.getAttribute(TEXT_COMPOUND_ID);
+            Element runElem = (Element) sr.get();
             if (runElem == null) continue;
 
             // Only consider runElem if it is sensitive.
@@ -3191,8 +3186,8 @@ public class SVGTextElementBridge extends AbstractGraphicsNodeBridge
             // runElem is a child of elem so include it's bounds.
             Rectangle2D glBounds = layout.getBounds2D();
             if (glBounds != null) {
-                if (ret == null) ret = (Rectangle2D)glBounds.clone();
-                else             ret.add(glBounds);
+                if (ret == null) ret = (Rectangle2D) glBounds.clone();
+                else ret.add(glBounds);
             }
         }
         return ret;

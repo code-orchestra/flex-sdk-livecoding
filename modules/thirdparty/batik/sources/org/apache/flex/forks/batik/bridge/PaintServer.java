@@ -327,7 +327,7 @@ public abstract class PaintServer
         try {
             paint = convertURIPaint(paintedElement, paintedNode,
                                     paintDef, opacity, ctx);
-        } catch (BridgeException ex) {
+        } catch (BridgeException ignored) {
         }
         return paint;
     }
@@ -489,8 +489,8 @@ public abstract class PaintServer
             // negative values
             if ( dashoffset < 0 ) {
                 float dashpatternlength = 0;
-                for ( int i=0; i<dasharray.length; i++ ) {
-                    dashpatternlength += dasharray[i];
+                for (float aDasharray : dasharray) {
+                    dashpatternlength += aDasharray;
                 }
                 // if the dash pattern consists of an odd number of elements,
                 // the pattern length must be doubled

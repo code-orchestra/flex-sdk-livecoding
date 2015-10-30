@@ -98,7 +98,7 @@ public abstract class ToSVGAbstractTranscoder extends AbstractTranscoder
     }
 
     public static final int TRANSCODER_ERROR_BASE = 0xff00;
-    public static final int ERROR_NULL_INPUT = TRANSCODER_ERROR_BASE + 0;
+    public static final int ERROR_NULL_INPUT = TRANSCODER_ERROR_BASE;
     public static final int ERROR_INCOMPATIBLE_INPUT_TYPE = TRANSCODER_ERROR_BASE + 1;
     public static final int ERROR_INCOMPATIBLE_OUTPUT_TYPE = TRANSCODER_ERROR_BASE + 2;
 
@@ -185,7 +185,7 @@ public abstract class ToSVGAbstractTranscoder extends AbstractTranscoder
         try {
             boolean escaped = false;
             if (hints.containsKey(KEY_ESCAPED))
-                escaped = ((Boolean)hints.get(KEY_ESCAPED)).booleanValue();
+                escaped = (Boolean) hints.get(KEY_ESCAPED);
             // Output stream
             OutputStream os = output.getOutputStream();
             if (os != null) {
@@ -209,8 +209,6 @@ public abstract class ToSVGAbstractTranscoder extends AbstractTranscoder
                     os = urlCnx.getOutputStream();
                     svgGenerator.stream(svgRoot, new OutputStreamWriter(os), false, escaped);
                     return;
-                } catch (MalformedURLException e){
-                    handler.fatalError(new TranscoderException(e));
                 } catch (IOException e){
                     handler.fatalError(new TranscoderException(e));
                 }

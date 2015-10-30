@@ -238,14 +238,14 @@ public class URIChooser extends JDialog implements ActionMap {
      * To update the state of the OK button
      */
     protected void updateOKButtonAction() {
-        okButton.setEnabled(!textField.getText().equals(""));
+        okButton.setEnabled(!textField.getText().isEmpty());
     }
 
     /**
      * To update the state of the Clear button
      */
     protected void updateClearButtonAction() {
-        clearButton.setEnabled(!textField.getText().equals(""));
+        clearButton.setEnabled(!textField.getText().isEmpty());
     }
 
     /**
@@ -286,7 +286,7 @@ public class URIChooser extends JDialog implements ActionMap {
                 File f = fileChooser.getSelectedFile();
                 try {
                     textField.setText(currentPath = f.getCanonicalPath());
-                } catch (IOException ex) {
+                } catch (IOException ignored) {
                 }
             }
         }

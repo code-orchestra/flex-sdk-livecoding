@@ -107,7 +107,7 @@ public abstract class XMLAbstractTranscoder extends AbstractTranscoder {
             // parse the XML document
             DocumentFactory f = createDocumentFactory(domImpl, parserClassname);
             boolean b =
-                ((Boolean)hints.get(KEY_XML_PARSER_VALIDATING)).booleanValue();
+                    (Boolean) hints.get(KEY_XML_PARSER_VALIDATING);
             f.setValidating(b);
             try {
                 if (input.getInputStream() != null) {
@@ -130,9 +130,7 @@ public abstract class XMLAbstractTranscoder extends AbstractTranscoder {
                                                 documentElement,
                                                 uri);
                 } 
-            } catch (DOMException ex) {
-                handler.fatalError(new TranscoderException(ex));
-            } catch (IOException ex) {
+            } catch (DOMException | IOException ex) {
                 handler.fatalError(new TranscoderException(ex));
             }
         }

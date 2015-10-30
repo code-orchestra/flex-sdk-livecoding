@@ -133,12 +133,8 @@ public class DropDownComponent extends JPanel {
             // the dropdown buttons should be disabled as well
             popupMenu.addPropertyChangeListener
                 ("enabled",
-                 new PropertyChangeListener() {
-                     public void propertyChange(PropertyChangeEvent evt) {
-                         setEnabled
-                            (((Boolean) evt.getNewValue()).booleanValue());
-                     }
-                 });
+                        evt -> setEnabled
+                           ((Boolean) evt.getNewValue()));
 
             // Listens for the changes in the scrollable pop up menu
             popupMenu.addListener
@@ -246,7 +242,7 @@ public class DropDownComponent extends JPanel {
     /**
      * The scrollable pop up menu item.
      */
-    public static interface ScrollablePopupMenuItem {
+    public interface ScrollablePopupMenuItem {
 
         /**
          * Selects and deselects the item.
@@ -401,7 +397,7 @@ public class DropDownComponent extends JPanel {
     /**
      * The scrollable popup menu model.
      */
-    public static interface ScrollablePopupMenuModel {
+    public interface ScrollablePopupMenuModel {
 
         /**
          * Gets the footer text for the ScrollablePopupMenu's footer item.
@@ -579,8 +575,8 @@ public class DropDownComponent extends JPanel {
         private int getPreferredWidth() {
             Component[] components = menuPanel.getComponents();
             int maxWidth = 0;
-            for (int i = 0; i < components.length; i++) {
-                int currentWidth = components[i].getPreferredSize().width;
+            for (Component component : components) {
+                int currentWidth = component.getPreferredSize().width;
                 if (maxWidth < currentWidth) {
                     maxWidth = currentWidth;
                 }
@@ -627,8 +623,8 @@ public class DropDownComponent extends JPanel {
                     item.setSelected(wasSelected);
                 }
             } else {
-                for (int i = 0; i < n; i++) {
-                    ScrollablePopupMenuItem item = (ScrollablePopupMenuItem) comps[i];
+                for (Component comp : comps) {
+                    ScrollablePopupMenuItem item = (ScrollablePopupMenuItem) comp;
                     if (item == targetItem) {
                         break;
                     }
@@ -667,8 +663,8 @@ public class DropDownComponent extends JPanel {
         public int getSelectedItemsCount() {
             int selectionCount = 0;
             Component[] components = menuPanel.getComponents();
-            for (int i = 0; i < components.length; i++) {
-                ScrollablePopupMenuItem item = (ScrollablePopupMenuItem) components[i];
+            for (Component component : components) {
+                ScrollablePopupMenuItem item = (ScrollablePopupMenuItem) component;
                 if (item.isSelected()) {
                     selectionCount++;
                 }
@@ -842,7 +838,7 @@ public class DropDownComponent extends JPanel {
      * The ScrollablePopupMenu listener. Handles the events that
      * ScrollablePopupMenu fires
      */
-    public static interface ScrollablePopupMenuListener extends EventListener {
+    public interface ScrollablePopupMenuListener extends EventListener {
 
         /**
          * Handles the 'itemsWereAdded' event.

@@ -18,15 +18,15 @@
  */
 package org.apache.flex.forks.batik.bridge.svg12;
 
-import java.util.Collections;
-import java.util.Iterator;
-
 import org.apache.flex.forks.batik.bridge.BridgeContext;
 import org.apache.flex.forks.batik.bridge.SVGBridgeExtension;
-import org.apache.flex.forks.batik.util.SVGConstants;
 import org.apache.flex.forks.batik.util.SVG12Constants;
+import org.apache.flex.forks.batik.util.SVGConstants;
 import org.apache.flex.forks.batik.util.XBLConstants;
 import org.w3c.dom.Element;
+
+import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * This is a Service interface for classes that want to extend the
@@ -135,12 +135,9 @@ public class SVG12BridgeExtension extends SVGBridgeExtension {
             return false;
         }
         String ln = e.getLocalName();
-        if (ln.equals(SVGConstants.SVG_SCRIPT_TAG)
+        return ln.equals(SVGConstants.SVG_SCRIPT_TAG)
                 || ln.equals(SVG12Constants.SVG_HANDLER_TAG)
                 || ln.startsWith("animate")
-                || ln.equals("set")) {
-            return true;
-        }
-        return false;
+                || ln.equals("set");
     }
 }

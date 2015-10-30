@@ -182,9 +182,8 @@ public class CSSMediaPanel extends JPanel implements ActionMap {
      */
     public void setMedia(List mediaList) {
         listModel.removeAllElements();
-        Iterator iter = mediaList.iterator();
-        while (iter.hasNext()) {
-            listModel.addElement(iter.next());
+        for (Object aMediaList : mediaList) {
+            listModel.addElement(aMediaList);
         }
     }
 
@@ -218,7 +217,7 @@ public class CSSMediaPanel extends JPanel implements ActionMap {
      * Returns the media list as a string separated by space.
      */
     public String getMediaAsString() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         Enumeration e = listModel.elements();
         while (e.hasMoreElements()) {
             buffer.append((String)e.nextElement());

@@ -215,7 +215,7 @@ class EventTargetWrapper extends NativeJavaObject {
                     args[i] = Context.jsToJava(args[i], paramTypes[i]);
                 ((EventTarget)njo.unwrap()).addEventListener
                     ((String)args[0], evtListener,
-                     ((Boolean)args[2]).booleanValue());
+                            (Boolean) args[2]);
                 return Undefined.instance;
             }
             if (args[1] instanceof NativeObject) {
@@ -236,7 +236,7 @@ class EventTargetWrapper extends NativeJavaObject {
                     args[i] = Context.jsToJava(args[i], paramTypes[i]);
                 ((EventTarget)njo.unwrap()).addEventListener
                     ((String)args[0], evtListener,
-                     ((Boolean)args[2]).booleanValue());
+                            (Boolean) args[2]);
                 return Undefined.instance;
             }
             return delegate.call(ctx, scope, thisObj, args);
@@ -268,7 +268,7 @@ class EventTargetWrapper extends NativeJavaObject {
                 for (int i = 0; i < args.length; i++)
                     args[i] = Context.jsToJava(args[i], paramTypes[i]);
                 ((EventTarget)njo.unwrap()).removeEventListener
-                    ((String)args[0], el, ((Boolean)args[2]).booleanValue());
+                    ((String)args[0], el, (Boolean) args[2]);
                 return Undefined.instance;
             }
             if (args[1] instanceof NativeObject) {
@@ -284,7 +284,7 @@ class EventTargetWrapper extends NativeJavaObject {
                 for (int i = 0; i < args.length; i++)
                     args[i] = Context.jsToJava(args[i], paramTypes[i]);
                 ((EventTarget)njo.unwrap()).removeEventListener
-                    ((String)args[0], el, ((Boolean)args[2]).booleanValue());
+                    ((String)args[0], el, (Boolean) args[2]);
                 return Undefined.instance;
             }
             return delegate.call(ctx, scope, thisObj, args);
@@ -320,7 +320,7 @@ class EventTargetWrapper extends NativeJavaObject {
                     ((String)args[0],
                      (String)args[1],
                      evtListener,
-                     ((Boolean)args[3]).booleanValue(),
+                            (Boolean) args[3],
                      args[4]);
                 return Undefined.instance;
             }
@@ -339,7 +339,7 @@ class EventTargetWrapper extends NativeJavaObject {
                     ((String)args[0],
                      (String)args[1],
                      evtListener,
-                     ((Boolean)args[3]).booleanValue(),
+                            (Boolean) args[3],
                      args[4]);
                 return Undefined.instance;
             }
@@ -375,7 +375,7 @@ class EventTargetWrapper extends NativeJavaObject {
                     ((String)args[0],
                      (String)args[1],
                      el,
-                     ((Boolean)args[3]).booleanValue());
+                            (Boolean) args[3]);
                 return Undefined.instance;
             }
             if (args[2] instanceof NativeObject) {
@@ -396,7 +396,7 @@ class EventTargetWrapper extends NativeJavaObject {
                     ((String)args[0],
                      (String)args[1],
                      el,
-                     ((Boolean)args[3]).booleanValue());
+                            (Boolean) args[3]);
                 return Undefined.instance;
             }
             return delegate.call(ctx, scope, thisObj, args);
@@ -426,21 +426,23 @@ class EventTargetWrapper extends NativeJavaObject {
      */
     public Object get(String name, Scriptable start) {
         Object method = super.get(name, start);
-        if (name.equals(ADD_NAME)) {
-            // prevent creating a Map for all JavaScript objects
-            // when we need it only from time to time...
-            method = new FunctionAddProxy(interpreter,
-                                          (Function)method, initMap());
-        } else if (name.equals(REMOVE_NAME)) {
-            // prevent creating a Map for all JavaScript objects
-            // when we need it only from time to time...
-            method = new FunctionRemoveProxy
-                ((Function)method, initMap());
-        } else if (name.equals(ADDNS_NAME)) {
-            method = new FunctionAddNSProxy(interpreter,
-                                            (Function) method, initMap());
-        } else if (name.equals(REMOVENS_NAME)) {
-            method = new FunctionRemoveNSProxy((Function) method, initMap());
+        switch (name) {
+            case ADD_NAME:
+                // prevent creating a Map for all JavaScript objects
+                // when we need it only from time to time...
+                method = new FunctionAddProxy(interpreter, (Function) method, initMap());
+                break;
+            case REMOVE_NAME:
+                // prevent creating a Map for all JavaScript objects
+                // when we need it only from time to time...
+                method = new FunctionRemoveProxy((Function) method, initMap());
+                break;
+            case ADDNS_NAME:
+                method = new FunctionAddNSProxy(interpreter, (Function) method, initMap());
+                break;
+            case REMOVENS_NAME:
+                method = new FunctionRemoveNSProxy((Function) method, initMap());
+                break;
         }
         return method;
     }
@@ -449,7 +451,7 @@ class EventTargetWrapper extends NativeJavaObject {
     // several EventTargetWrapper may be created for the exact
     // same underlying Java object.
     public Map initMap() {
-        Map map = null;
+        Map map;
         if (mapOfListenerMap == null)
             mapOfListenerMap = new WeakHashMap(10);
         if ((map = (Map)mapOfListenerMap.get(unwrap())) == null) {

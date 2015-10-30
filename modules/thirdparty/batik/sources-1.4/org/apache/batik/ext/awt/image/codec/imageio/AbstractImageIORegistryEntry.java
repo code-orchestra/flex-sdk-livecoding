@@ -107,23 +107,17 @@ public abstract class AbstractImageIORegistryEntry
         Thread t = new Thread() {
                 public void run() {
                     Filter filt;
-                    try{
-                        Iterator iter = ImageIO.getImageReadersByMIMEType(
-                                getMimeTypes().get(0).toString());
+                    try {
+                        Iterator iter = ImageIO.getImageReadersByMIMEType(getMimeTypes().get(0).toString());
                         if (!iter.hasNext()) {
-                            throw new UnsupportedOperationException(
-                                    "No image reader for " 
-                                        + getFormatName() + " available!");
+                            throw new UnsupportedOperationException("No image reader for " + getFormatName() + " available!");
                         }
                         ImageReader reader = (ImageReader)iter.next();
                         ImageInputStream imageIn = ImageIO.createImageInputStream(is);
                         reader.setInput(imageIn, true);
                         
                         int imageIndex = 0;
-                        dr.setBounds(new Rectangle2D.Double
-                                     (0, 0, 
-                                      reader.getWidth(imageIndex), 
-                                      reader.getHeight(imageIndex)));
+                        dr.setBounds(new Rectangle2D.Double(0, 0, reader.getWidth(imageIndex), reader.getHeight(imageIndex)));
                         CachableRed cr;
                         //Naïve approach probably wasting lots of memory
                         //and ignoring the gamma correction done by PNGRed :-(
@@ -133,32 +127,23 @@ public abstract class AbstractImageIORegistryEntry
                         cr = new FormatRed(cr, GraphicsUtil.sRGB_Unpre);
                         WritableRaster wr = (WritableRaster)cr.getData();
                         ColorModel cm = cr.getColorModel();
-                        BufferedImage image = new BufferedImage
-                            (cm, wr, cm.isAlphaPremultiplied(), null);
+                        BufferedImage image = new BufferedImage(cm, wr, cm.isAlphaPremultiplied(), null);
                         cr = GraphicsUtil.wrap(image);
                         filt = new RedRable(cr);
                     } catch (IOException ioe) {
                         // Something bad happened here...
-                        filt = ImageTagRegistry.getBrokenLinkImage
-                            (AbstractImageIORegistryEntry.this, 
-                             errCode, errParam);
+                        filt = ImageTagRegistry.getBrokenLinkImage(AbstractImageIORegistryEntry.this, errCode, errParam);
                     } catch (ThreadDeath td) {
-                        filt = ImageTagRegistry.getBrokenLinkImage
-                            (AbstractImageIORegistryEntry.this, 
-                             errCode, errParam);
+                        filt = ImageTagRegistry.getBrokenLinkImage(AbstractImageIORegistryEntry.this, errCode, errParam);
                         dr.setSource(filt);
                         throw td;
                     } catch (Throwable t) {
-                        filt = ImageTagRegistry.getBrokenLinkImage
-                            (AbstractImageIORegistryEntry.this, 
-                             errCode, errParam);
+                        filt = ImageTagRegistry.getBrokenLinkImage(AbstractImageIORegistryEntry.this, errCode, errParam);
                     }
-
                     dr.setSource(filt);
                 }
             };
         t.start();
         return dr;
     }
-
 }

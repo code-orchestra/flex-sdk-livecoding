@@ -367,7 +367,7 @@ public class LanguageDialog extends JDialog implements ActionMap {
          * Returns the selected user languages.
          */
         public String getLanguages() {
-            StringBuffer result = new StringBuffer();
+            StringBuilder result = new StringBuilder();
             if (userListModel.getSize() > 0) {
                 result.append(userListModel.getElementAt(0));
 
@@ -454,7 +454,7 @@ public class LanguageDialog extends JDialog implements ActionMap {
 
         private static Icon computeCountryIcon(Class ref,
                                                String code) {
-            ImageIcon icon = null;
+            ImageIcon icon;
             try {
                 if ((icon = (ImageIcon)iconMap.get(code)) != null)
                     return icon;
@@ -464,7 +464,7 @@ public class LanguageDialog extends JDialog implements ActionMap {
                     iconMap.put(code, icon = new ImageIcon(url));
                     return icon;
                 }
-            } catch (MissingResourceException e) {
+            } catch (MissingResourceException ignored) {
             }
             return new ImageIcon(ref.getResource("resources/blank.gif"));
         }

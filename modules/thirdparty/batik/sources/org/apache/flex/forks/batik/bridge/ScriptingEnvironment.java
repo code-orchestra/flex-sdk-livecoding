@@ -898,17 +898,15 @@ public class ScriptingEnvironment extends BaseScriptingEnvironment {
         public Object setTimeout(final Runnable r, long timeout) {
             TimerTask tt = new TimerTask() {
                     public void run() {
-                        updateRunnableQueue.invokeLater(new Runnable() {
-                                public void run() {
-                                    try {
-                                        r.run();
-                                    } catch (Exception e) {
-                                        if (userAgent != null) {
-                                            userAgent.displayError(e);
-                                        }
-                                    }
+                        updateRunnableQueue.invokeLater(() -> {
+                            try {
+                                r.run();
+                            } catch (Exception e) {
+                                if (userAgent != null) {
+                                    userAgent.displayError(e);
                                 }
-                            });
+                            }
+                        });
                     }
                 };
 
@@ -1022,7 +1020,7 @@ public class ScriptingEnvironment extends BaseScriptingEnvironment {
                                 }
                             }
                             r = new BufferedReader(r);
-                            final StringBuffer sb = new StringBuffer();
+                            final StringBuilder sb = new StringBuilder();
                             int read;
                             char[] buf = new char[4096];
                             while ((read = r.read(buf, 0, buf.length)) != -1) {
@@ -1030,34 +1028,30 @@ public class ScriptingEnvironment extends BaseScriptingEnvironment {
                             }
                             r.close();
 
-                            updateRunnableQueue.invokeLater(new Runnable() {
-                                    public void run() {
-                                        try {
-                                            h.getURLDone(true,
-                                                         purl.getContentType(),
-                                                         sb.toString());
-                                        } catch (Exception e){
-                                            if (userAgent != null) {
-                                                userAgent.displayError(e);
-                                            }
-                                        }
+                            updateRunnableQueue.invokeLater(() -> {
+                                try {
+                                    h.getURLDone(true,
+                                                 purl.getContentType(),
+                                                 sb.toString());
+                                } catch (Exception e1){
+                                    if (userAgent != null) {
+                                        userAgent.displayError(e1);
                                     }
-                                });
+                                }
+                            });
                         } catch (Exception e) {
                             if (e instanceof SecurityException) {
                                 userAgent.displayError(e);
                             }
-                            updateRunnableQueue.invokeLater(new Runnable() {
-                                    public void run() {
-                                        try {
-                                            h.getURLDone(false, null, null);
-                                        } catch (Exception e){
-                                            if (userAgent != null) {
-                                                userAgent.displayError(e);
-                                            }
-                                        }
+                            updateRunnableQueue.invokeLater(() -> {
+                                try {
+                                    h.getURLDone(false, null, null);
+                                } catch (Exception e1){
+                                    if (userAgent != null) {
+                                        userAgent.displayError(e1);
                                     }
-                                });
+                                }
+                            });
                         }
                     }
 
@@ -1087,7 +1081,7 @@ public class ScriptingEnvironment extends BaseScriptingEnvironment {
                     public void run() {
                         try {
                             String base =
-                                ((SVGOMDocument)document).getDocumentURI();
+                                document.getDocumentURI();
                             URL url;
                             if (base == null) {
                                 url = new URL(uri);
@@ -1149,7 +1143,7 @@ public class ScriptingEnvironment extends BaseScriptingEnvironment {
                                 r = new InputStreamReader(is, e);
                             r = new BufferedReader(r);
 
-                            final StringBuffer sb = new StringBuffer();
+                            final StringBuilder sb = new StringBuilder();
                             int read;
                             char[] buf = new char[4096];
                             while ((read = r.read(buf, 0, buf.length)) != -1) {
@@ -1157,34 +1151,30 @@ public class ScriptingEnvironment extends BaseScriptingEnvironment {
                             }
                             r.close();
 
-                            updateRunnableQueue.invokeLater(new Runnable() {
-                                    public void run() {
-                                        try {
-                                            h.getURLDone(true,
-                                                         conn.getContentType(),
-                                                         sb.toString());
-                                        } catch (Exception e){
-                                            if (userAgent != null) {
-                                                userAgent.displayError(e);
-                                            }
-                                        }
+                            updateRunnableQueue.invokeLater(() -> {
+                                try {
+                                    h.getURLDone(true,
+                                                 conn.getContentType(),
+                                                 sb.toString());
+                                } catch (Exception e1){
+                                    if (userAgent != null) {
+                                        userAgent.displayError(e1);
                                     }
-                                });
+                                }
+                            });
                         } catch (Exception e) {
                             if (e instanceof SecurityException) {
                                 userAgent.displayError(e);
                             }
-                            updateRunnableQueue.invokeLater(new Runnable() {
-                                    public void run() {
-                                        try {
-                                            h.getURLDone(false, null, null);
-                                        } catch (Exception e){
-                                            if (userAgent != null) {
-                                                userAgent.displayError(e);
-                                            }
-                                        }
+                            updateRunnableQueue.invokeLater(() -> {
+                                try {
+                                    h.getURLDone(false, null, null);
+                                } catch (Exception e1){
+                                    if (userAgent != null) {
+                                        userAgent.displayError(e1);
                                     }
-                                });
+                                }
+                            });
                         }
                     }
 
@@ -1206,10 +1196,7 @@ public class ScriptingEnvironment extends BaseScriptingEnvironment {
          * Displays a confirm dialog box.
          */
         public boolean confirm(String message) {
-            if (userAgent != null) {
-                return userAgent.showConfirm(message);
-            }
-            return false;
+            return userAgent != null && userAgent.showConfirm(message);
         }
 
         /**
@@ -1306,7 +1293,7 @@ public class ScriptingEnvironment extends BaseScriptingEnvironment {
             int line = dl.getLineNumber(elt);
             final String desc = Messages.formatMessage
                 (EVENT_SCRIPT_DESCRIPTION,
-                 new Object [] {d.getURL(), attribute, new Integer(line)});
+                 new Object [] {d.getURL(), attribute, line});
 
             // Find the scripting language
             Element e = elt;

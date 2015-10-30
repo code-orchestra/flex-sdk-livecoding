@@ -140,8 +140,7 @@ public class TileBlock {
      */
     static int getWork(TileBlock [] blocks) {
         int ret=0;
-        for (int i=0; i<blocks.length; i++)
-            ret += blocks[i].getWork();
+        for (TileBlock block : blocks) ret += block.getWork();
         return ret;
     }
 
@@ -162,7 +161,7 @@ public class TileBlock {
     }
 
     public TileBlock [] splitOneGo() {
-        boolean [] filled = (boolean [])occupied.clone();
+        boolean [] filled = occupied.clone();
         List items = new ArrayList();
         for (int y=yOff; y<yOff+h; y++)
             for (int x=xOff; x<xOff+w; x++) {

@@ -443,26 +443,26 @@ public abstract class BridgeEventSupport implements SVGConstants {
                 // place coords in text node coordinate system
                 try {
                     node.getGlobalTransform().createInverse().transform(pt, pt);
-                } catch (NoninvertibleTransformException ex) {
+                } catch (NoninvertibleTransformException ignored) {
                 }
                 if (list != null){
-                    for (int i = 0 ; i < list.size(); i++) {
+                    for (Object aList : list) {
                         StrokingTextPainter.TextRun run =
-                            (StrokingTextPainter.TextRun)list.get(i);
+                                (StrokingTextPainter.TextRun) aList;
                         AttributedCharacterIterator aci = run.getACI();
                         TextSpanLayout layout = run.getLayout();
-                        float x = (float)pt.getX();
-                        float y = (float)pt.getY();
+                        float x = (float) pt.getX();
+                        float y = (float) pt.getY();
                         TextHit textHit = layout.hitTestChar(x, y);
                         Rectangle2D bounds = layout.getBounds2D();
                         if ((textHit != null) &&
-                            (bounds != null) && bounds.contains(x, y)) {
+                                (bounds != null) && bounds.contains(x, y)) {
                             SoftReference sr;
-                            sr =(SoftReference)aci.getAttribute
-                                (TEXT_COMPOUND_ID);
+                            sr = (SoftReference) aci.getAttribute
+                                    (TEXT_COMPOUND_ID);
                             Object delimiter = sr.get();
                             if (delimiter instanceof Element) {
-                                return (Element)delimiter;
+                                return (Element) delimiter;
                             }
                         }
                     }

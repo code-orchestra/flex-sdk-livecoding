@@ -679,8 +679,7 @@ public abstract class CSSEngine {
 
             if (pseudoElementNames != null) {
                 int len = pseudoElementNames.length;
-                for (int i = 0; i < len; i++) {
-                    String pe = pseudoElementNames[i];
+                for (String pe : pseudoElementNames) {
                     sm = srceng.getCascadedStyleMap(csrc, pe);
                     cdest.setComputedStyleMap(pe, sm);
                 }
@@ -795,14 +794,14 @@ public abstract class CSSEngine {
             int slen = snodes.size();
             if (slen > 0) {
                 ArrayList rules = new ArrayList();
-                for (int i = 0; i < slen; i++) {
-                    CSSStyleSheetNode ssn = (CSSStyleSheetNode)snodes.get(i);
+                for (Object snode : snodes) {
+                    CSSStyleSheetNode ssn = (CSSStyleSheetNode) snode;
                     StyleSheet ss = ssn.getCSSStyleSheet();
                     if (ss != null &&
-                        (!ss.isAlternate() ||
-                         ss.getTitle() == null ||
-                         ss.getTitle().equals(alternateStyleSheet)) &&
-                        mediaMatch(ss.getMedia())) {
+                            (!ss.isAlternate() ||
+                                    ss.getTitle() == null ||
+                                    ss.getTitle().equals(alternateStyleSheet)) &&
+                            mediaMatch(ss.getMedia())) {
                         addMatchingRules(rules, ss, elt, pseudo);
                     }
                 }
@@ -926,9 +925,9 @@ public abstract class CSSEngine {
             // Find all the style-sheets in the document.
             findStyleSheetNodes(document);
             int len = styleSheetNodes.size();
-            for (int i = 0; i < len; i++) {
+            for (Object styleSheetNode : styleSheetNodes) {
                 CSSStyleSheetNode ssn;
-                ssn = (CSSStyleSheetNode)styleSheetNodes.get(i);
+                ssn = (CSSStyleSheetNode) styleSheetNode;
                 StyleSheet ss = ssn.getCSSStyleSheet();
                 if (ss != null) {
                     findSelectorAttributes(selectorAttributes, ss);
@@ -993,16 +992,12 @@ public abstract class CSSEngine {
         void setMainProperty(String name, Value v, boolean important);
     }
 
-    public void setMainProperties
-        (CSSStylableElement elt, final MainPropertyReceiver dst,
-         String pname, String value, boolean important){
+    public void setMainProperties(CSSStylableElement elt, final MainPropertyReceiver dst, String pname, String value, boolean important){
         try {
             element = elt;
             LexicalUnit lu = parser.parsePropertyValue(value);
-            ShorthandManager.PropertyHandler ph =
-                new ShorthandManager.PropertyHandler() {
-                    public void property(String pname, LexicalUnit lu,
-                                         boolean important) {
+            ShorthandManager.PropertyHandler ph = new ShorthandManager.PropertyHandler() {
+                    public void property(String pname, LexicalUnit lu, boolean important) {
                         int idx = getPropertyIndex(pname);
                         if (idx != -1) {
                             ValueManager vm = valueManagers[idx];
@@ -1022,11 +1017,8 @@ public abstract class CSSEngine {
         } catch (Exception e) {
             String m = e.getMessage();
             if (m == null) m = "";                  // todo - better handling of NPE
-            String u = ((documentURI == null)?"<unknown>":
-                        documentURI.toString());
-            String s = Messages.formatMessage
-                ("property.syntax.error.at",
-                 new Object[] { u, pname, value, m});
+            String u = ((documentURI == null) ? "<unknown>" : documentURI.toString());
+            String s = Messages.formatMessage("property.syntax.error.at", new Object[] { u, pname, value, m});
             DOMException de = new DOMException(DOMException.SYNTAX_ERR, s);
             if (userAgent == null) throw de;
             userAgent.displayError(de);
@@ -1042,8 +1034,7 @@ public abstract class CSSEngine {
      * @param prop The property name.
      * @param value The property value.
      */
-    public Value parsePropertyValue(CSSStylableElement elt,
-                                    String prop, String value) {
+    public Value parsePropertyValue(CSSStylableElement elt, String prop, String value) {
         int idx = getPropertyIndex(prop);
         if (idx == -1) return null;
         ValueManager vm = valueManagers[idx];
@@ -1353,21 +1344,21 @@ public abstract class CSSEngine {
         int rlen = rules.size();
 
         if (origin == StyleMap.AUTHOR_ORIGIN) {
-            for (int r = 0; r < rlen; r++) {
-                StyleRule sr = (StyleRule)rules.get(r);
+            for (Object rule : rules) {
+                StyleRule sr = (StyleRule) rule;
                 StyleDeclaration sd = sr.getStyleDeclaration();
                 int len = sd.size();
                 for (int i = 0; i < len; i++) {
                     putAuthorProperty(sm,
-                                      sd.getIndex(i),
-                                      sd.getValue(i),
-                                      sd.getPriority(i),
-                                      origin);
+                            sd.getIndex(i),
+                            sd.getValue(i),
+                            sd.getPriority(i),
+                            origin);
                 }
             }
         } else {
-            for (int r = 0; r < rlen; r++) {
-                StyleRule sr = (StyleRule)rules.get(r);
+            for (Object rule : rules) {
+                StyleRule sr = (StyleRule) rule;
                 StyleDeclaration sd = sr.getStyleDeclaration();
                 int len = sd.size();
                 for (int i = 0; i < len; i++) {
@@ -1830,13 +1821,13 @@ public abstract class CSSEngine {
      */
     protected void firePropertiesChangedEvent(Element target, int[] props) {
         CSSEngineListener[] ll =
-            (CSSEngineListener[])listeners.toArray(LISTENER_ARRAY);
+            (CSSEngineListener[]) listeners.toArray(new CSSEngineListener[listeners.size()]);
 
         int len = ll.length;
         if (len > 0) {
             CSSEngineEvent evt = new CSSEngineEvent(this, target, props);
-            for (int i = 0; i < len; i++) {
-                ll[i].propertiesChanged(evt);
+            for (CSSEngineListener aLl : ll) {
+                aLl.propertiesChanged(evt);
             }
         }
     }
@@ -1908,15 +1899,9 @@ public abstract class CSSEngine {
             } else {
                 int count = 0;
                 // Invalidate the relative values
-                boolean fs = (fontSizeIndex == -1)
-                    ? false
-                    : updated[fontSizeIndex];
-                boolean lh = (lineHeightIndex == -1)
-                    ? false
-                    : updated[lineHeightIndex];
-                boolean cl = (colorIndex == -1)
-                    ? false
-                    : updated[colorIndex];
+                boolean fs = fontSizeIndex != -1 && updated[fontSizeIndex];
+                boolean lh = lineHeightIndex != -1 && updated[lineHeightIndex];
+                boolean cl = colorIndex != -1 && updated[colorIndex];
 
                 for (int i = getNumberOfProperties() - 1; i >= 0; --i) {
                     if (updated[i]) {
@@ -1985,14 +1970,14 @@ public abstract class CSSEngine {
             System.arraycopy( updated, 0, diffs, 0, updated.length );
         }
         if (properties != null) {
-            for (int i=0; i<properties.length; i++) {
-                diffs[properties[i]] = true;
+            for (int property : properties) {
+                diffs[property] = true;
             }
         }
         int count =0;
         if (!recascade) {
-            for (int i=0; i<diffs.length; i++) {
-                if (diffs[i]) {
+            for (boolean diff : diffs) {
+                if (diff) {
                     count++;
                 }
             }
@@ -2067,15 +2052,9 @@ public abstract class CSSEngine {
             }
 
             // Invalidate the relative values
-            boolean fs = (fontSizeIndex == -1)
-                ? false
-                : updated[fontSizeIndex];
-            boolean lh = (lineHeightIndex == -1)
-                ? false
-                : updated[lineHeightIndex];
-            boolean cl = (colorIndex == -1)
-                ? false
-                : updated[colorIndex];
+            boolean fs = fontSizeIndex != -1 && updated[fontSizeIndex];
+            boolean lh = lineHeightIndex != -1 && updated[lineHeightIndex];
+            boolean cl = colorIndex != -1 && updated[colorIndex];
 
             int count = 0;
             for (int i = getNumberOfProperties() - 1; i >= 0; --i) {
@@ -2122,9 +2101,9 @@ public abstract class CSSEngine {
             } else {
                 inherited = new int[count];
                 count=0;
-                for (int i=0; i<props.length; i++)
-                    if (props[i] != -1)
-                        inherited[count++] = props[i];
+                for (int prop : props)
+                    if (prop != -1)
+                        inherited[count++] = prop;
             }
         }
 

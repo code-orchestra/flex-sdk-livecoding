@@ -602,20 +602,17 @@ public abstract class TimedElement implements SMILConstants {
         // Trace.enter(this, "sampleAt", new Object[] { new Float(parentSimpleTime) } ); try {
         isSampling = true;
 
-        float time = parentSimpleTime; // No time containers in SVG.
-
         // First, process any events that occurred since the last sampling,
         // taking into account event sensitivity.
-        Iterator i = handledEvents.entrySet().iterator();
-        while (i.hasNext()) {
-            Map.Entry e = (Map.Entry) i.next();
+        for (Object o : handledEvents.entrySet()) {
+            Map.Entry e = (Map.Entry) o;
             Event evt = (Event) e.getKey();
             Set ts = (Set) e.getValue();
             Iterator j = ts.iterator();
             boolean hasBegin = false, hasEnd = false;
             while (j.hasNext() && !(hasBegin && hasEnd)) {
                 EventLikeTimingSpecifier t =
-                    (EventLikeTimingSpecifier) j.next();
+                        (EventLikeTimingSpecifier) j.next();
                 if (t.isBegin()) {
                     hasBegin = true;
                 } else {
@@ -627,7 +624,7 @@ public abstract class TimedElement implements SMILConstants {
                 useBegin = !isActive || restartMode == RESTART_ALWAYS;
                 useEnd = !useBegin;
             } else if (hasBegin && (!isActive ||
-                        restartMode == RESTART_ALWAYS)) {
+                    restartMode == RESTART_ALWAYS)) {
                 useBegin = true;
                 useEnd = false;
             } else if (hasEnd && isActive) {
@@ -639,7 +636,7 @@ public abstract class TimedElement implements SMILConstants {
             j = ts.iterator();
             while (j.hasNext()) {
                 EventLikeTimingSpecifier t =
-                    (EventLikeTimingSpecifier) j.next();
+                        (EventLikeTimingSpecifier) j.next();
                 boolean isBegin = t.isBegin();
                 if (isBegin && useBegin || !isBegin && useEnd) {
                     t.resolve(evt);
@@ -652,7 +649,7 @@ public abstract class TimedElement implements SMILConstants {
         // Now process intervals.
         if (currentInterval != null) {
             float begin = currentInterval.getBegin();
-            if (lastSampleTime < begin && time >= begin) {
+            if (lastSampleTime < begin && parentSimpleTime >= begin) {
                 if (!isActive) {
                     toActive(begin);
                 }
@@ -667,14 +664,14 @@ public abstract class TimedElement implements SMILConstants {
         // begin and end times, or end the current interval and compute
         // a new one.
         boolean hasEnded = currentInterval != null
-            && time >= currentInterval.getEnd();
+            && parentSimpleTime >= currentInterval.getEnd();
         // Fire any repeat events that should have been fired since the
         // last sample.
         if (currentInterval != null) {
             float begin = currentInterval.getBegin();
-            if (time >= begin) {
+            if (parentSimpleTime >= begin) {
                 float d = getSimpleDur();
-                while (time - lastRepeatTime >= d
+                while (parentSimpleTime - lastRepeatTime >= d
                         && lastRepeatTime + d < begin + repeatDuration) {
                     lastRepeatTime += d;
                     currentRepeatIteration++;
@@ -726,7 +723,7 @@ public abstract class TimedElement implements SMILConstants {
                     if (interval == null) {
                         currentInterval = null;
                     } else {
-                        float dmt = selectNewInterval(time, interval);
+                        float dmt = selectNewInterval(parentSimpleTime, interval);
                         if (dmt < dependentMinTime) {
                             dependentMinTime = dmt;
                         }
@@ -736,7 +733,7 @@ public abstract class TimedElement implements SMILConstants {
                 }
             } else {
                 float currentBegin = currentInterval.getBegin();
-                if (currentBegin > time) {
+                if (currentBegin > parentSimpleTime) {
                     // Interval hasn't started yet.
                     float beginAfter;
                     boolean incl = true;
@@ -757,7 +754,7 @@ public abstract class TimedElement implements SMILConstants {
                     if (interval == null) {
                         currentInterval = null;
                     } else {
-                        dmt = selectNewInterval(time, interval);
+                        dmt = selectNewInterval(parentSimpleTime, interval);
                         if (dmt < dependentMinTime) {
                             dependentMinTime = dmt;
                         }
@@ -779,19 +776,19 @@ public abstract class TimedElement implements SMILConstants {
             }
             shouldUpdateCurrentInterval = false;
             hyperlinking = false;
-            hasEnded = currentInterval != null && time >= currentInterval.getEnd();
+            hasEnded = currentInterval != null && parentSimpleTime >= currentInterval.getEnd();
         }
         // Trace.print("end loop");
 
         float d = getSimpleDur();
         if (isActive && !isFrozen) {
-            if (time - currentInterval.getBegin() >= repeatDuration) {
+            if (parentSimpleTime - currentInterval.getBegin() >= repeatDuration) {
                 // Trace.print("element between repeat and active duration");
                 isFrozen = fillMode == FILL_FREEZE;
                 toInactive(true, isFrozen);
             } else {
                 // Trace.print("element active, sampling at simple time " + (time - lastRepeatTime));
-                sampledAt(time - lastRepeatTime, d, currentRepeatIteration);
+                sampledAt(parentSimpleTime - lastRepeatTime, d, currentRepeatIteration);
             }
         }
         if (isFrozen) {
@@ -818,11 +815,11 @@ public abstract class TimedElement implements SMILConstants {
 
         isSampling = false;
 
-        lastSampleTime = time;
+        lastSampleTime = parentSimpleTime;
         if (currentInterval != null) {
-            float t = currentInterval.getBegin() - time;
+            float t = currentInterval.getBegin() - parentSimpleTime;
             if (t <= 0) {
-                t = isConstantAnimation() || isFrozen ? currentInterval.getEnd() - time : 0;
+                t = isConstantAnimation() || isFrozen ? currentInterval.getEnd() - parentSimpleTime : 0;
             }
             if (dependentMinTime < t) {
                 return dependentMinTime;
@@ -838,8 +835,8 @@ public abstract class TimedElement implements SMILConstants {
      * accesskey or repeat timing specifiers.
      */
     protected boolean endHasEventConditions() {
-        for (int i = 0; i < endTimes.length; i++) {
-            if (endTimes[i].isEventCondition()) {
+        for (TimingSpecifier endTime : endTimes) {
+            if (endTime.isEventCondition()) {
                 return true;
             }
         }
@@ -1014,10 +1011,9 @@ public abstract class TimedElement implements SMILConstants {
                         endInstanceTime = nextBeginInstanceTime;
                     }
                 }
-                Interval i = new Interval(tempBegin, tempEnd,
-                                          beginInstanceTime, endInstanceTime);
                 // Trace.print("returning interval: " + i);
-                return i;
+                return new Interval(tempBegin, tempEnd,
+                                          beginInstanceTime, endInstanceTime);
             }
             if (fixedBegin) {
                 // Trace.print("returning null interval");
@@ -1289,11 +1285,11 @@ public abstract class TimedElement implements SMILConstants {
      * Initializes this timed element.
      */
     public void initialize() {
-        for (int i = 0; i < beginTimes.length; i++) {
-            beginTimes[i].initialize();
+        for (TimingSpecifier beginTime : beginTimes) {
+            beginTime.initialize();
         }
-        for (int i = 0; i < endTimes.length; i++) {
-            endTimes[i].initialize();
+        for (TimingSpecifier endTime : endTimes) {
+            endTime.initialize();
         }
     }
 
@@ -1301,11 +1297,11 @@ public abstract class TimedElement implements SMILConstants {
      * Deinitializes this timed element.
      */
     public void deinitialize() {
-        for (int i = 0; i < beginTimes.length; i++) {
-            beginTimes[i].deinitialize();
+        for (TimingSpecifier beginTime : beginTimes) {
+            beginTime.deinitialize();
         }
-        for (int i = 0; i < endTimes.length; i++) {
-            endTimes[i].deinitialize();
+        for (TimingSpecifier endTime : endTimes) {
+            endTime.deinitialize();
         }
     }
 

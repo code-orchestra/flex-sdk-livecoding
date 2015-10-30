@@ -200,7 +200,7 @@ public class ComponentTransferRable8Bit
     private static TransferFunction getTransferFunction
         (ComponentTransferFunction function){
 
-        TransferFunction txfFunc = null;
+        TransferFunction txfFunc;
         if(function == null){
             txfFunc = new IdentityTransfer();
         }

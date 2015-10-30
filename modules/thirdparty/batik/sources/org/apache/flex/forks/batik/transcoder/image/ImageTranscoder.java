@@ -111,7 +111,6 @@ public abstract class ImageTranscoder extends SVGAbstractTranscoder {
             renderer.repaint(curTxf.createInverse().
                              createTransformedShape(raoi));
             BufferedImage rend = renderer.getOffScreen();
-            renderer = null; // We're done with it...
 
             BufferedImage dest = createImage(w, h);
 
@@ -126,7 +125,6 @@ public abstract class ImageTranscoder extends SVGAbstractTranscoder {
                 g2d.drawRenderedImage(rend, new AffineTransform());
             }
             g2d.dispose();
-            rend = null; // We're done with it...
             writeImage(dest, output);
         } catch (Exception ex) {
             throw new TranscoderException(ex);
@@ -163,7 +161,7 @@ public abstract class ImageTranscoder extends SVGAbstractTranscoder {
         int[] pixels = biDB.getBankData()[0];
         int p = dbOffset;
         int adjust = scanStride - w;
-        int a=0, r=0, g=0, b=0, pel=0;
+        int a, r, g, b, pel;
         for(int i=0; i<h; i++){
             for(int j=0; j<w; j++){
                 pel = pixels[p];

@@ -26,15 +26,12 @@ build outputs: sdk/lib/fdb.jar
 <project name="debugger" default="main" basedir=".">
 
     <property name="FLEX_HOME" location="../.."/>
-
-    	<!-- properties -->
     <property file="${FLEX_HOME}/build.properties" />
-
     <property name="lib.dir" value="${FLEX_HOME}/lib"/>
     <property name="module.dir" value="${basedir}"/>
-	<property name="javac.src" value="1.5"/>    
-    <property name="module.src" value="${module.dir}/src/java"/>    
-    <property name="module.classes" value="${module.dir}/classes"/>
+	<property name="javac.src" value="1.8"/>
+    <property name="module.src" value="src/main/java"/>
+    <property name="module.classes" value="${module.dir}/build/classes"/>
     <property name="module.jar" value="${lib.dir}/fdb.jar"/>
     <property name="fdb.classpath" value="swfutils.jar mxmlc.jar asc.jar"/>
     <property name="build.number" value=""/>
@@ -112,6 +109,4 @@ build outputs: sdk/lib/fdb.jar
         <echo level="info" message="Removing class files that changed and dependent class files."/>
         <depend cache="${module.classes}" srcdir="${module.src}" destdir="${module.classes}"/>
     </target>
-
-
 </project>

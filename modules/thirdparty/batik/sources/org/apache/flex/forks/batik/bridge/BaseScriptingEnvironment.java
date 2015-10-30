@@ -94,30 +94,14 @@ public class BaseScriptingEnvironment {
         if ((elt != null) &&
             SVGConstants.SVG_NAMESPACE_URI.equals(elt.getNamespaceURI())) {
             if (elt.getAttributeNS
-                (null, SVGConstants.SVG_ONABORT_ATTRIBUTE).length() > 0) {
+                    (null, SVGConstants.SVG_ONABORT_ATTRIBUTE).length() > 0) {
                 return true;
             }
             if (elt.getAttributeNS
-                (null, SVGConstants.SVG_ONERROR_ATTRIBUTE).length() > 0) {
+                    (null, SVGConstants.SVG_ONERROR_ATTRIBUTE).length() > 0) {
                 return true;
             }
-            if (elt.getAttributeNS
-                (null, SVGConstants.SVG_ONRESIZE_ATTRIBUTE).length() > 0) {
-                return true;
-            }
-            if (elt.getAttributeNS
-                (null, SVGConstants.SVG_ONUNLOAD_ATTRIBUTE).length() > 0) {
-                return true;
-            }
-            if (elt.getAttributeNS
-                (null, SVGConstants.SVG_ONSCROLL_ATTRIBUTE).length() > 0) {
-                return true;
-            }
-            if (elt.getAttributeNS
-                (null, SVGConstants.SVG_ONZOOM_ATTRIBUTE).length() > 0) {
-                return true;
-            }
-            return isDynamicElement(ctx, doc.getDocumentElement());
+            return elt.getAttributeNS(null, SVGConstants.SVG_ONRESIZE_ATTRIBUTE).length() > 0 || elt.getAttributeNS(null, SVGConstants.SVG_ONUNLOAD_ATTRIBUTE).length() > 0 || elt.getAttributeNS(null, SVGConstants.SVG_ONSCROLL_ATTRIBUTE).length() > 0 || elt.getAttributeNS(null, SVGConstants.SVG_ONZOOM_ATTRIBUTE).length() > 0 || isDynamicElement(ctx, doc.getDocumentElement());
         }
         return false;
     }
@@ -132,9 +116,8 @@ public class BaseScriptingEnvironment {
      */
     public static boolean isDynamicElement
         (Element elt, BridgeContext ctx, List bridgeExtensions) {
-        Iterator i = bridgeExtensions.iterator();
-        while (i.hasNext()) {
-            BridgeExtension bridgeExtension = (BridgeExtension) i.next();
+        for (Object bridgeExtension1 : bridgeExtensions) {
+            BridgeExtension bridgeExtension = (BridgeExtension) bridgeExtension1;
             if (bridgeExtension.isDynamicElement(elt)) {
                 return true;
             }
@@ -408,7 +391,7 @@ public class BaseScriptingEnvironment {
 
             try {
                 String href = XLinkSupport.getXLinkHref(script);
-                String desc = null;
+                String desc;
                 Reader reader = null;
 
                 if (href.length() > 0) {
@@ -486,18 +469,17 @@ public class BaseScriptingEnvironment {
                 } else {
                     checkCompatibleScriptURL(type, docPURL);
                     DocumentLoader dl = bridgeContext.getDocumentLoader();
-                    Element e = script;
-                    SVGDocument d = (SVGDocument)e.getOwnerDocument();
+                    SVGDocument d = (SVGDocument) script.getOwnerDocument();
                     int line = dl.getLineNumber(script);
                     desc = Messages.formatMessage
                         (INLINE_SCRIPT_DESCRIPTION,
                          new Object [] {d.getURL(),
                                         "<"+script.getNodeName()+">",
-                                        new Integer(line)});
+                                 line});
                     // Inline script.
                     Node n = script.getFirstChild();
                     if (n != null) {
-                        StringBuffer sb = new StringBuffer();
+                        StringBuilder sb = new StringBuilder();
                         while (n != null) {
                             if (n.getNodeType() == Node.CDATA_SECTION_NODE
                                 || n.getNodeType() == Node.TEXT_NODE)
@@ -598,7 +580,6 @@ public class BaseScriptingEnvironment {
         if (checkCanRun) {
             // Check that it is ok to run embeded scripts
             checkCompatibleScriptURL(lang, docPURL);
-            checkCanRun = false; // we only check once for onload handlers
         }
 
         DocumentLoader dl = bridgeContext.getDocumentLoader();
@@ -608,26 +589,24 @@ public class BaseScriptingEnvironment {
             (EVENT_SCRIPT_DESCRIPTION,
              new Object [] {d.getURL(),
                             SVGConstants.SVG_ONLOAD_ATTRIBUTE,
-                            new Integer(line)});
+                     line});
 
-        EventListener l = new EventListener() {
-                public void handleEvent(Event evt) {
-                    try {
-                        Object event;
-                        if (evt instanceof ScriptEventWrapper) {
-                            event = ((ScriptEventWrapper) evt).getEventObject();
-                        } else {
-                            event = evt;
-                        }
-                        interp.bindObject(EVENT_NAME, event);
-                        interp.bindObject(ALTERNATE_EVENT_NAME, event);
-                        interp.evaluate(new StringReader(s), desc);
-                    } catch (IOException io) {
-                    } catch (InterpreterException e) {
-                        handleInterpreterException(e);
-                    }
+        EventListener l = evt -> {
+            try {
+                Object event;
+                if (evt instanceof ScriptEventWrapper) {
+                    event = ((ScriptEventWrapper) evt).getEventObject();
+                } else {
+                    event = evt;
                 }
-            };
+                interp.bindObject(EVENT_NAME, event);
+                interp.bindObject(ALTERNATE_EVENT_NAME, event);
+                interp.evaluate(new StringReader(s), desc);
+            } catch (IOException ignored) {
+            } catch (InterpreterException e) {
+                handleInterpreterException(e);
+            }
+        };
         t.addEventListenerNS
             (XMLConstants.XML_EVENTS_NAMESPACE_URI, type,
              l, false, null);
@@ -671,10 +650,7 @@ public class BaseScriptingEnvironment {
     }
 
     protected void dispatchSVGDocEvent(String eventType) {
-        SVGSVGElement root =
-            (SVGSVGElement)document.getDocumentElement();
         // Event is dispatched on outermost SVG element.
-        EventTarget t = root;
 
         DocumentEvent de = (DocumentEvent)document;
         AbstractEvent ev = (AbstractEvent) de.createEvent("SVGEvents");
@@ -682,7 +658,7 @@ public class BaseScriptingEnvironment {
                        eventType,
                        false,
                        false);
-        t.dispatchEvent(ev);
+        ((EventTarget) (SVGSVGElement)document.getDocumentElement()).dispatchEvent(ev);
     }
 
     /**

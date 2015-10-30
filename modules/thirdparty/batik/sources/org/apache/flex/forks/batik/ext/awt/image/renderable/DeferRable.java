@@ -150,7 +150,7 @@ public class DeferRable implements Filter {
                 try {
                     // Wait for someone to set src | props
                     wait();
-                } catch(InterruptedException ie) { }
+                } catch(InterruptedException ignored) { }
             }
         }
         if (src != null)
@@ -167,7 +167,7 @@ public class DeferRable implements Filter {
                 try {
                     // Wait for someone to set src | props
                     wait();
-                } catch(InterruptedException ie) { }
+                } catch(InterruptedException ignored) { }
             }
         }
         if (src != null)

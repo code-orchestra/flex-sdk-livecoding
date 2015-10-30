@@ -153,7 +153,7 @@ public class SVGSVGElementBridge
                 AffineTransform vtInv = viewingTransform.createInverse();
                 actualWidth = (float) (w*vtInv.getScaleX());
                 actualHeight = (float) (h*vtInv.getScaleY());
-            } catch (NoninvertibleTransformException ex) {}
+            } catch (NoninvertibleTransformException ignored) {}
 
             AffineTransform positionTransform =
                 AffineTransform.getTranslateInstance(x, y);
@@ -197,7 +197,7 @@ public class SVGSVGElementBridge
                     clip = at.createTransformedShape(clip);
                     Filter filter = cgn.getGraphicsNodeRable(true);
                     cgn.setClip(new ClipRable8Bit(filter, clip));
-                } catch (NoninvertibleTransformException ex) {}
+                } catch (NoninvertibleTransformException ignored) {}
             }
             RenderingHints hints = null;
             hints = CSSUtilities.convertColorRendering(e, hints);
@@ -269,115 +269,122 @@ public class SVGSVGElementBridge
             boolean rebuild = false;
             if (alav.getNamespaceURI() == null) {
                 String ln = alav.getLocalName();
-                if (ln.equals(SVG_WIDTH_ATTRIBUTE)
-                        || ln.equals(SVG_HEIGHT_ATTRIBUTE)) {
-                    rebuild = true;
-                } else if (ln.equals(SVG_X_ATTRIBUTE)
-                        || ln.equals(SVG_Y_ATTRIBUTE)) {
-                    SVGDocument doc = (SVGDocument)e.getOwnerDocument();
-                    SVGOMSVGElement se = (SVGOMSVGElement) e;
-                    // X & Y are ignored on outermost SVG.
-                    boolean isOutermost = doc.getRootElement() == e;
-                    if (!isOutermost) {
-                        // 'x' attribute - default is 0
-                        AbstractSVGAnimatedLength _x =
-                            (AbstractSVGAnimatedLength) se.getX();
-                        float x = _x.getCheckedValue();
-
-                        // 'y' attribute - default is 0
-                        AbstractSVGAnimatedLength _y =
-                            (AbstractSVGAnimatedLength) se.getY();
-                        float y = _y.getCheckedValue();
-
-                        AffineTransform positionTransform =
-                            AffineTransform.getTranslateInstance(x, y);
-                        CanvasGraphicsNode cgn;
-                        cgn = (CanvasGraphicsNode)node;
-
-                        cgn.setPositionTransform(positionTransform);
-                        return;
-                    }
-                } else if (ln.equals(SVG_VIEW_BOX_ATTRIBUTE)
-                        || ln.equals(SVG_PRESERVE_ASPECT_RATIO_ATTRIBUTE)) {
-                    SVGDocument doc = (SVGDocument)e.getOwnerDocument();
-                    SVGOMSVGElement se = (SVGOMSVGElement) e;
-                    boolean isOutermost = doc.getRootElement() == e;
-
-                    // X & Y are ignored on outermost SVG.
-                    float x = 0;
-                    float y = 0;
-                    if (!isOutermost) {
-                        // 'x' attribute - default is 0
-                        AbstractSVGAnimatedLength _x =
-                            (AbstractSVGAnimatedLength) se.getX();
-                        x = _x.getCheckedValue();
-
-                        // 'y' attribute - default is 0
-                        AbstractSVGAnimatedLength _y =
-                            (AbstractSVGAnimatedLength) se.getY();
-                        y = _y.getCheckedValue();
-                    }
-                    
-                    // 'width' attribute - default is 100%
-                    AbstractSVGAnimatedLength _width =
-                        (AbstractSVGAnimatedLength) se.getWidth();
-                    float w = _width.getCheckedValue();
-                    
-                    // 'height' attribute - default is 100%
-                    AbstractSVGAnimatedLength _height =
-                        (AbstractSVGAnimatedLength) se.getHeight();
-                    float h = _height.getCheckedValue();
-                    
-                    CanvasGraphicsNode cgn;
-                    cgn = (CanvasGraphicsNode)node;
-                    
-                    // 'viewBox' and "preserveAspectRatio' attributes
-                    SVGOMAnimatedRect vb = (SVGOMAnimatedRect) se.getViewBox();
-                    SVGAnimatedPreserveAspectRatio par = se.getPreserveAspectRatio();
-                    AffineTransform newVT = ViewBox.getPreserveAspectRatioTransform
-                        (e, vb, par, w, h, ctx);
-
-                    AffineTransform oldVT = cgn.getViewingTransform();
-                    if ((newVT.getScaleX() != oldVT.getScaleX()) ||
-                        (newVT.getScaleY() != oldVT.getScaleY()) ||
-                        (newVT.getShearX() != oldVT.getShearX()) ||
-                        (newVT.getShearY() != oldVT.getShearY()))
+                switch (ln) {
+                    case SVG_WIDTH_ATTRIBUTE:
+                    case SVG_HEIGHT_ATTRIBUTE:
                         rebuild = true;
-                    else {
-                        // Only differs in translate.
-                        cgn.setViewingTransform(newVT);
-                        
-                        // 'overflow' and 'clip'
-                        Shape clip = null;
-                        if (CSSUtilities.convertOverflow(e)) { // overflow:hidden
-                            float [] offsets = CSSUtilities.convertClip(e);
-                            if (offsets == null) { // clip:auto
-                                clip = new Rectangle2D.Float(x, y, w, h);
-                            } else { // clip:rect(<x> <y> <w> <h>)
-                                // offsets[0] = top
-                                // offsets[1] = right
-                                // offsets[2] = bottom
-                                // offsets[3] = left
-                                clip = new Rectangle2D.Float(x+offsets[3],
-                                                             y+offsets[0],
-                                                             w-offsets[1]-offsets[3],
-                                                             h-offsets[2]-offsets[0]);
+                        break;
+                    case SVG_X_ATTRIBUTE:
+                    case SVG_Y_ATTRIBUTE: {
+                        SVGDocument doc = (SVGDocument) e.getOwnerDocument();
+                        SVGOMSVGElement se = (SVGOMSVGElement) e;
+                        // X & Y are ignored on outermost SVG.
+                        boolean isOutermost = doc.getRootElement() == e;
+                        if (!isOutermost) {
+                            // 'x' attribute - default is 0
+                            AbstractSVGAnimatedLength _x =
+                                    (AbstractSVGAnimatedLength) se.getX();
+                            float x = _x.getCheckedValue();
+
+                            // 'y' attribute - default is 0
+                            AbstractSVGAnimatedLength _y =
+                                    (AbstractSVGAnimatedLength) se.getY();
+                            float y = _y.getCheckedValue();
+
+                            AffineTransform positionTransform =
+                                    AffineTransform.getTranslateInstance(x, y);
+                            CanvasGraphicsNode cgn;
+                            cgn = (CanvasGraphicsNode) node;
+
+                            cgn.setPositionTransform(positionTransform);
+                            return;
+                        }
+                        break;
+                    }
+                    case SVG_VIEW_BOX_ATTRIBUTE:
+                    case SVG_PRESERVE_ASPECT_RATIO_ATTRIBUTE: {
+                        SVGDocument doc = (SVGDocument) e.getOwnerDocument();
+                        SVGOMSVGElement se = (SVGOMSVGElement) e;
+                        boolean isOutermost = doc.getRootElement() == e;
+
+                        // X & Y are ignored on outermost SVG.
+                        float x = 0;
+                        float y = 0;
+                        if (!isOutermost) {
+                            // 'x' attribute - default is 0
+                            AbstractSVGAnimatedLength _x =
+                                    (AbstractSVGAnimatedLength) se.getX();
+                            x = _x.getCheckedValue();
+
+                            // 'y' attribute - default is 0
+                            AbstractSVGAnimatedLength _y =
+                                    (AbstractSVGAnimatedLength) se.getY();
+                            y = _y.getCheckedValue();
+                        }
+
+                        // 'width' attribute - default is 100%
+                        AbstractSVGAnimatedLength _width =
+                                (AbstractSVGAnimatedLength) se.getWidth();
+                        float w = _width.getCheckedValue();
+
+                        // 'height' attribute - default is 100%
+                        AbstractSVGAnimatedLength _height =
+                                (AbstractSVGAnimatedLength) se.getHeight();
+                        float h = _height.getCheckedValue();
+
+                        CanvasGraphicsNode cgn;
+                        cgn = (CanvasGraphicsNode) node;
+
+                        // 'viewBox' and "preserveAspectRatio' attributes
+                        SVGOMAnimatedRect vb = (SVGOMAnimatedRect) se.getViewBox();
+                        SVGAnimatedPreserveAspectRatio par = se.getPreserveAspectRatio();
+                        AffineTransform newVT = ViewBox.getPreserveAspectRatioTransform
+                                (e, vb, par, w, h, ctx);
+
+                        AffineTransform oldVT = cgn.getViewingTransform();
+                        if ((newVT.getScaleX() != oldVT.getScaleX()) ||
+                                (newVT.getScaleY() != oldVT.getScaleY()) ||
+                                (newVT.getShearX() != oldVT.getShearX()) ||
+                                (newVT.getShearY() != oldVT.getShearY()))
+                            rebuild = true;
+                        else {
+                            // Only differs in translate.
+                            cgn.setViewingTransform(newVT);
+
+                            // 'overflow' and 'clip'
+                            Shape clip = null;
+                            if (CSSUtilities.convertOverflow(e)) { // overflow:hidden
+                                float[] offsets = CSSUtilities.convertClip(e);
+                                if (offsets == null) { // clip:auto
+                                    clip = new Rectangle2D.Float(x, y, w, h);
+                                } else { // clip:rect(<x> <y> <w> <h>)
+                                    // offsets[0] = top
+                                    // offsets[1] = right
+                                    // offsets[2] = bottom
+                                    // offsets[3] = left
+                                    clip = new Rectangle2D.Float(x + offsets[3],
+                                            y + offsets[0],
+                                            w - offsets[1] - offsets[3],
+                                            h - offsets[2] - offsets[0]);
+                                }
+                            }
+
+                            if (clip != null) {
+                                try {
+                                    AffineTransform at;
+                                    at = cgn.getPositionTransform();
+                                    if (at == null) at = new AffineTransform();
+                                    else at = new AffineTransform(at);
+                                    at.concatenate(newVT);
+                                    at = at.createInverse(); // clip in user space
+                                    clip = at.createTransformedShape(clip);
+                                    Filter filter = cgn.getGraphicsNodeRable(true);
+                                    cgn.setClip(new ClipRable8Bit(filter, clip));
+                                } catch (NoninvertibleTransformException ignored) {
+                                }
                             }
                         }
-                        
-                        if (clip != null) {
-                            try {
-                                AffineTransform at;
-                                at = cgn.getPositionTransform();
-                                if (at == null) at = new AffineTransform();
-                                else            at = new AffineTransform(at);
-                                at.concatenate(newVT);
-                                at = at.createInverse(); // clip in user space
-                                clip = at.createTransformedShape(clip);
-                                Filter filter = cgn.getGraphicsNodeRable(true);
-                                cgn.setClip(new ClipRable8Bit(filter, clip));
-                            } catch (NoninvertibleTransformException ex) {}
-                        }
+                        break;
                     }
                 }
 
@@ -451,7 +458,7 @@ public class SVGSVGElementBridge
         AffineTransform ati = svgGN.getGlobalTransform();
         try {
             ati = ati.createInverse();
-        } catch (NoninvertibleTransformException e) {
+        } catch (NoninvertibleTransformException ignored) {
         }
         
         Element curr;
@@ -585,7 +592,7 @@ public class SVGSVGElementBridge
         AffineTransform ati = svgGN.getGlobalTransform();
         try {
             ati = ati.createInverse();
-        } catch (NoninvertibleTransformException e) {
+        } catch (NoninvertibleTransformException ignored) {
         }
         
         Element curr;
@@ -701,9 +708,9 @@ public class SVGSVGElementBridge
 
         try {
             ati = ati.createInverse();
-        } catch (NoninvertibleTransformException e) {  }
+        } catch (NoninvertibleTransformException ignored) {  }
 
-        SVGContext svgctx = null;
+        SVGContext svgctx;
         if (element instanceof SVGOMElement) {
             svgctx  = ((SVGOMElement)element).getSVGContext();
             if ((svgctx instanceof SVGTextElementBridge) ||
@@ -736,18 +743,14 @@ public class SVGSVGElementBridge
         ShapeNode sn = (ShapeNode)gn;
         Shape sensitive = sn.getSensitiveArea();
         if (sensitive == null) return false;
-
         sensitive = at.createTransformedShape(sensitive);
-        if (sensitive.intersects(rect))
-            return true;
-
-        return false;
+        return sensitive.intersects(rect);
     }
 
     public boolean checkEnclosure (Element element, SVGRect svgRect ) {
         GraphicsNode gn    = ctx.getGraphicsNode(element);
         Rectangle2D gnBounds = null;
-        SVGContext svgctx = null;
+        SVGContext svgctx;
         if (element instanceof SVGOMElement) {
             svgctx  = ((SVGOMElement)element).getSVGContext();
             if ((svgctx instanceof SVGTextElementBridge) ||
@@ -777,7 +780,7 @@ public class SVGSVGElementBridge
         AffineTransform ati = svgGN.getGlobalTransform();
         try {
             ati = ati.createInverse();
-        } catch (NoninvertibleTransformException e) {  }
+        } catch (NoninvertibleTransformException ignored) {  }
 
         AffineTransform at = gn.getGlobalTransform();
         at.preConcatenate(ati);
@@ -858,9 +861,7 @@ public class SVGSVGElementBridge
     }
     public boolean      unsuspendRedraw ( int suspend_handle_id ) {
         UpdateManager um = ctx.getUpdateManager();
-        if (um != null)
-            return um.releaseRedrawSuspension(suspend_handle_id);
-        return false; // no UM so couldn't have issued an id...
+        return um != null && um.releaseRedrawSuspension(suspend_handle_id);
     }
     public void         unsuspendRedrawAll (  ) {
         UpdateManager um = ctx.getUpdateManager();

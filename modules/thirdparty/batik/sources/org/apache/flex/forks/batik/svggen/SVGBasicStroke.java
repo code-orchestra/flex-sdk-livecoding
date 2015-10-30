@@ -76,7 +76,7 @@ public class SVGBasicStroke extends AbstractSVGConverter{
 
         // Dash array
         float[] array = stroke.getDashArray();
-        String dashArray = null;
+        String dashArray;
         if(array != null)
             dashArray = dashArrayToSVG(array);
         else
@@ -93,8 +93,8 @@ public class SVGBasicStroke extends AbstractSVGConverter{
     /**
      * @param dashArray float array to convert to a string
      */
-    private final String dashArrayToSVG(float[] dashArray){
-        StringBuffer dashArrayBuf = new StringBuffer( dashArray.length * 8 );
+    private String dashArrayToSVG(float[] dashArray){
+        StringBuilder dashArrayBuf = new StringBuilder( dashArray.length * 8 );
         if(dashArray.length > 0)
             dashArrayBuf.append(doubleString(dashArray[0]));
 

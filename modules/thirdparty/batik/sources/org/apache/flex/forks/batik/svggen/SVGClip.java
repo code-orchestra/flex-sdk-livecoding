@@ -68,10 +68,10 @@ public class SVGClip extends AbstractSVGConverter {
     public SVGDescriptor toSVG(GraphicContext gc) {
         Shape clip = gc.getClip();
 
-        SVGClipDescriptor clipDesc = null;
+        SVGClipDescriptor clipDesc;
 
         if (clip != null) {
-            StringBuffer clipPathAttrBuf = new StringBuffer(URL_PREFIX);
+            StringBuilder clipPathAttrBuf = new StringBuilder(URL_PREFIX);
 
             // First, convert to a GeneralPath so that the
             GeneralPath clipPath = new GeneralPath(clip);

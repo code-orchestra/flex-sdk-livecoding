@@ -116,9 +116,8 @@ public class CompositeRable8Bit
 
         // System.out.println("drawImage : " + g2dCS +
         //                    crCS);
-        Iterator i = getSources().iterator();
-        while (i.hasNext()) {
-            GraphicsUtil.drawImage(g2d, (Filter)i.next());
+        for (Object o : getSources()) {
+            GraphicsUtil.drawImage(g2d, (Filter) o);
         }
         return true;
     }
@@ -154,10 +153,9 @@ public class CompositeRable8Bit
         // note: this hides a member in a superclass!
         List srcs = new ArrayList();
 
-        Iterator i = getSources().iterator();
-        while (i.hasNext()) {
+        for (Object o : getSources()) {
             // Get the source to work with...
-            Filter filt = (Filter)i.next();
+            Filter filt = (Filter) o;
 
             // Get our sources image...
             RenderedImage ri = filt.createRendering(rc);
@@ -169,25 +167,25 @@ public class CompositeRable8Bit
 
                 // Blank image...
                 switch (rule.getRule()) {
-                case CompositeRule.RULE_IN:
-                    // For Mode IN One blank image kills all output
-                    // (including any "future" images to be drawn).
-                    return null;
+                    case CompositeRule.RULE_IN:
+                        // For Mode IN One blank image kills all output
+                        // (including any "future" images to be drawn).
+                        return null;
 
-                case CompositeRule.RULE_OUT:
-                    // For mode OUT blank image clears output
-                    // up to this point, so ignore inputs to this point.
-                    srcs.clear();
-                    break;
+                    case CompositeRule.RULE_OUT:
+                        // For mode OUT blank image clears output
+                        // up to this point, so ignore inputs to this point.
+                        srcs.clear();
+                        break;
 
-                case CompositeRule.RULE_ARITHMETIC:
-                    srcs.add(new FloodRed(devRect));
-                    break;
+                    case CompositeRule.RULE_ARITHMETIC:
+                        srcs.add(new FloodRed(devRect));
+                        break;
 
-                default:
-                    // All other cases we simple pretend the image didn't
-                    // exist (fully transparent image has no affect).
-                    break;
+                    default:
+                        // All other cases we simple pretend the image didn't
+                        // exist (fully transparent image has no affect).
+                        break;
                 }
             }
         }
@@ -196,7 +194,6 @@ public class CompositeRable8Bit
             return null;
 
         // System.out.println("Done General: " + rule);
-        CachableRed cr = new CompositeRed(srcs, rule);
-        return cr;
+        return new CompositeRed(srcs, rule);
     }
 }

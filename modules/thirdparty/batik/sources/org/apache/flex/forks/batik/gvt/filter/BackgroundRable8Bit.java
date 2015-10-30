@@ -291,9 +291,8 @@ public class BackgroundRable8Bit
         if (child != null) {
             CompositeGraphicsNode cgn = (CompositeGraphicsNode)gn;
             List children = cgn.getChildren();
-            Iterator i = children.iterator();
-            while (i.hasNext()) {
-                GraphicsNode childGN = (GraphicsNode)i.next();
+            for (Object aChildren : children) {
+                GraphicsNode childGN = (GraphicsNode) aChildren;
                 // System.out.println("Parent: "      + cgn +
                 //                    "\n  Child: "   + child +
                 //                    "\n  ChildGN: " + childGN);
@@ -312,7 +311,7 @@ public class BackgroundRable8Bit
 
                 if (aoi.intersects(cbounds)) {
                     srcs.add(childGN.getEnableBackgroundGraphicsNodeRable
-                             (true));
+                            (true));
                 }
             }
         }
@@ -320,7 +319,7 @@ public class BackgroundRable8Bit
         if (srcs.size() == 0)
             return null;
 
-        Filter ret = null;
+        Filter ret;
         if (srcs.size() == 1)
             ret = (Filter)srcs.get(0);
         else
@@ -397,14 +396,13 @@ public class BackgroundRable8Bit
         background = new PadRable8Bit(background, r2d, PadMode.ZERO_PAD);
 
 
-        RenderedImage ri = background.createRendering
-            (new RenderContext(renderContext.getTransform(), r2d,
-                               renderContext.getRenderingHints()));
         // System.out.println("RI: [" + ri.getMinX() + ", "
         //                    + ri.getMinY() + ", " +
         //                    + ri.getWidth() + ", " +
         //                    + ri.getHeight() + "]");
         // org.ImageDisplay.showImage("BG: ", ri);
-        return ri;
+        return background.createRendering
+            (new RenderContext(renderContext.getTransform(), r2d,
+                               renderContext.getRenderingHints()));
     }
 }

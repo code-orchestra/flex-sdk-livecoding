@@ -61,8 +61,7 @@ public class UpdateManager  {
             String s = System.getProperty
             ("org.apache.flex.forks.batik.min_repaint_time", "20");
             value = Integer.parseInt(s);
-        } catch (SecurityException se) {
-        } catch (NumberFormatException nfe){
+        } catch (SecurityException | NumberFormatException ignored) {
         } finally {
             MIN_REPAINT_TIME = value;
         }
@@ -171,7 +170,7 @@ public class UpdateManager  {
         // primary document also need to have their scripting
         // environments initialized.
         secondaryBridgeContexts =
-            (BridgeContext[]) ctx.getChildContexts().clone();
+                ctx.getChildContexts().clone();
         secondaryScriptingEnvironments =
             new ScriptingEnvironment[secondaryBridgeContexts.length];
         for (int i = 0; i < secondaryBridgeContexts.length; i++) {
@@ -272,28 +271,26 @@ public class UpdateManager  {
      * Finishes the UpdateManager initialization.
      */
     public void manageUpdates(final ImageRenderer r) {
-        updateRunnableQueue.preemptLater(new Runnable() {
-                public void run() {
-                    synchronized (UpdateManager.this) {
-                        running = true;
+        updateRunnableQueue.preemptLater(() -> {
+            synchronized (UpdateManager.this) {
+                running = true;
 
-                        updateTracker = new UpdateTracker();
-                        RootGraphicsNode root = graphicsNode.getRoot();
-                        if (root != null){
-                            root.addTreeGraphicsNodeChangeListener
-                                (updateTracker);
-                        }
-
-                        repaintManager = new RepaintManager(r);
-
-                        // Send the UpdateManagerStarted event.
-                        UpdateManagerEvent ev = new UpdateManagerEvent
-                            (UpdateManager.this, null, null);
-                        fireEvent(startedDispatcher, ev);
-                        started = true;
-                    }
+                updateTracker = new UpdateTracker();
+                RootGraphicsNode root = graphicsNode.getRoot();
+                if (root != null){
+                    root.addTreeGraphicsNodeChangeListener
+                        (updateTracker);
                 }
-            });
+
+                repaintManager = new RepaintManager(r);
+
+                // Send the UpdateManagerStarted event.
+                UpdateManagerEvent ev = new UpdateManagerEvent
+                    (UpdateManager.this, null, null);
+                fireEvent(startedDispatcher, ev);
+                started = true;
+            }
+        });
         resume();
     }
 
@@ -380,19 +377,17 @@ public class UpdateManager  {
      * Interrupts the manager tasks.
      */
     public void interrupt() {
-        Runnable r = new Runnable() {
-                public void run() {
-                    synchronized (UpdateManager.this) {
-                        if (started) {
-                            dispatchSVGUnLoadEvent();
-                        } else {
-                            running = false;
-                            scriptingEnvironment.interrupt();
-                            updateRunnableQueue.getThread().halt();
-                        }
-                    }
+        Runnable r = () -> {
+            synchronized (UpdateManager.this) {
+                if (started) {
+                    dispatchSVGUnLoadEvent();
+                } else {
+                    running = false;
+                    scriptingEnvironment.interrupt();
+                    updateRunnableQueue.getThread().halt();
                 }
-            };
+            }
+        };
         try {
             // Preempt to cancel the pending tasks
             updateRunnableQueue.preemptLater(r);
@@ -414,39 +409,37 @@ public class UpdateManager  {
         }
 
         // Invoke first to cancel the pending tasks
-        updateRunnableQueue.preemptLater(new Runnable() {
-                public void run() {
-                    synchronized (UpdateManager.this) {
-                        AbstractEvent evt = (AbstractEvent)
-                            ((DocumentEvent)document).createEvent("SVGEvents");
-                        String type;
-                        if (bridgeContext.isSVG12()) {
-                            type = "unload";
-                        } else {
-                            type = "SVGUnload";
-                        }
-                        evt.initEventNS(XMLConstants.XML_EVENTS_NAMESPACE_URI,
-                                        type,
-                                        false,    // canBubbleArg
-                                        false);   // cancelableArg
-                        ((EventTarget)(document.getDocumentElement())).
-                            dispatchEvent(evt);
-                        running = false;
-
-                        // Now shut everything down and disconnect
-                        // everything before we send the
-                        // UpdateMangerStopped event.
-                        scriptingEnvironment.interrupt();
-                        updateRunnableQueue.getThread().halt();
-                        bridgeContext.dispose();
-
-                        // Send the UpdateManagerStopped event.
-                        UpdateManagerEvent ev = new UpdateManagerEvent
-                            (UpdateManager.this, null, null);
-                        fireEvent(stoppedDispatcher, ev);
-                    }
+        updateRunnableQueue.preemptLater(() -> {
+            synchronized (UpdateManager.this) {
+                AbstractEvent evt = (AbstractEvent)
+                    ((DocumentEvent)document).createEvent("SVGEvents");
+                String type;
+                if (bridgeContext.isSVG12()) {
+                    type = "unload";
+                } else {
+                    type = "SVGUnload";
                 }
-            });
+                evt.initEventNS(XMLConstants.XML_EVENTS_NAMESPACE_URI,
+                                type,
+                                false,    // canBubbleArg
+                                false);   // cancelableArg
+                ((EventTarget)(document.getDocumentElement())).
+                    dispatchEvent(evt);
+                running = false;
+
+                // Now shut everything down and disconnect
+                // everything before we send the
+                // UpdateMangerStopped event.
+                scriptingEnvironment.interrupt();
+                updateRunnableQueue.getThread().halt();
+                bridgeContext.dispose();
+
+                // Send the UpdateManagerStopped event.
+                UpdateManagerEvent ev = new UpdateManagerEvent
+                    (UpdateManager.this, null, null);
+                fireEvent(stoppedDispatcher, ev);
+            }
+        });
         resume();
     }
 
@@ -629,9 +622,7 @@ public class UpdateManager  {
         public void run() {
             RunnableQueue rq = um.getUpdateRunnableQueue();
             if (rq == null) return;
-            rq.invokeLater(new Runnable() {
-                    public void run() { }
-                });
+            rq.invokeLater(() -> { });
         }
     }
 
@@ -729,9 +720,8 @@ public class UpdateManager  {
 
     long findNewAllResumeTime() {
         long ret = -1;
-        Iterator i = suspensionList.iterator();
-        while (i.hasNext()) {
-            SuspensionInfo si = (SuspensionInfo)i.next();
+        for (Object aSuspensionList : suspensionList) {
+            SuspensionInfo si = (SuspensionInfo) aSuspensionList;
             long t = si.getResumeMilli();
             if (t > ret) ret = t;
         }
@@ -761,85 +751,50 @@ public class UpdateManager  {
      * Dispatches a UpdateManagerEvent to notify that the manager was
      * started
      */
-    static Dispatcher startedDispatcher = new Dispatcher() {
-            public void dispatch(Object listener,
-                                 Object event) {
-                ((UpdateManagerListener)listener).managerStarted
-                    ((UpdateManagerEvent)event);
-            }
-        };
+    static Dispatcher startedDispatcher = (listener, event) -> ((UpdateManagerListener)listener).managerStarted
+        ((UpdateManagerEvent)event);
 
     /**
      * Dispatches a UpdateManagerEvent to notify that the manager was
      * stopped.
      */
-    static Dispatcher stoppedDispatcher = new Dispatcher() {
-            public void dispatch(Object listener,
-                                 Object event) {
-                ((UpdateManagerListener)listener).managerStopped
-                    ((UpdateManagerEvent)event);
-            }
-        };
+    static Dispatcher stoppedDispatcher = (listener, event) -> ((UpdateManagerListener)listener).managerStopped
+        ((UpdateManagerEvent)event);
 
     /**
      * Dispatches a UpdateManagerEvent to notify that the manager was
      * suspended.
      */
-    static Dispatcher suspendedDispatcher = new Dispatcher() {
-            public void dispatch(Object listener,
-                                 Object event) {
-                ((UpdateManagerListener)listener).managerSuspended
-                    ((UpdateManagerEvent)event);
-            }
-        };
+    static Dispatcher suspendedDispatcher = (listener, event) -> ((UpdateManagerListener)listener).managerSuspended
+        ((UpdateManagerEvent)event);
 
     /**
      * Dispatches a UpdateManagerEvent to notify that the manager was
      * resumed.
      */
-    static Dispatcher resumedDispatcher = new Dispatcher() {
-            public void dispatch(Object listener,
-                                 Object event) {
-                ((UpdateManagerListener)listener).managerResumed
-                    ((UpdateManagerEvent)event);
-            }
-        };
+    static Dispatcher resumedDispatcher = (listener, event) -> ((UpdateManagerListener)listener).managerResumed
+        ((UpdateManagerEvent)event);
 
     /**
      * Dispatches a UpdateManagerEvent to notify that an update
      * started
      */
-    static Dispatcher updateStartedDispatcher = new Dispatcher() {
-            public void dispatch(Object listener,
-                                 Object event) {
-                ((UpdateManagerListener)listener).updateStarted
-                    ((UpdateManagerEvent)event);
-            }
-        };
+    static Dispatcher updateStartedDispatcher = (listener, event) -> ((UpdateManagerListener)listener).updateStarted
+        ((UpdateManagerEvent)event);
 
     /**
      * Dispatches a UpdateManagerEvent to notify that an update
      * completed
      */
-    static Dispatcher updateCompletedDispatcher = new Dispatcher() {
-            public void dispatch(Object listener,
-                                 Object event) {
-                ((UpdateManagerListener)listener).updateCompleted
-                    ((UpdateManagerEvent)event);
-            }
-        };
+    static Dispatcher updateCompletedDispatcher = (listener, event) -> ((UpdateManagerListener)listener).updateCompleted
+        ((UpdateManagerEvent)event);
 
     /**
      * Dispatches a UpdateManagerEvent to notify that an update
      * failed
      */
-    static Dispatcher updateFailedDispatcher = new Dispatcher() {
-            public void dispatch(Object listener,
-                                 Object event) {
-                ((UpdateManagerListener)listener).updateFailed
-                    ((UpdateManagerEvent)event);
-            }
-        };
+    static Dispatcher updateFailedDispatcher = (listener, event) -> ((UpdateManagerListener)listener).updateFailed
+        ((UpdateManagerEvent)event);
 
 
 

@@ -21,12 +21,7 @@ package org.apache.flex.forks.batik.bridge;
 import java.awt.Color;
 import java.awt.Paint;
 import java.lang.ref.WeakReference;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Arrays;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.flex.forks.batik.anim.AnimationEngine;
 import org.apache.flex.forks.batik.anim.AnimationException;
@@ -252,16 +247,12 @@ public class SVGAnimationEngine extends AnimationEngine {
         String[] eventNamesSVG12 = {
             "load", "resize", "scroll", "zoom"
         };
-        for (int i = 0; i < eventNamesCommon.length; i++) {
-            animationEventNames11.add(eventNamesCommon[i]);
-            animationEventNames12.add(eventNamesCommon[i]);
+        for (String anEventNamesCommon : eventNamesCommon) {
+            animationEventNames11.add(anEventNamesCommon);
+            animationEventNames12.add(anEventNamesCommon);
         }
-        for (int i = 0; i < eventNamesSVG11.length; i++) {
-            animationEventNames11.add(eventNamesSVG11[i]);
-        }
-        for (int i = 0; i < eventNamesSVG12.length; i++) {
-            animationEventNames12.add(eventNamesSVG12[i]);
-        }
+        Collections.addAll(animationEventNames11, eventNamesSVG11);
+        Collections.addAll(animationEventNames12, eventNamesSVG12);
     }
 
     /**
@@ -351,7 +342,7 @@ public class SVGAnimationEngine extends AnimationEngine {
                 over.removeProperty(pn);
             }
             Value v = cssEngine.getComputedStyle(e, null, idx);
-            if (oldValue != null && !oldValue.equals("")) {
+            if (oldValue != null && !oldValue.isEmpty()) {
                 over.setProperty(pn, oldValue, null);
             }
             return factories[type].createValue(target, pn, v);
@@ -428,14 +419,14 @@ public class SVGAnimationEngine extends AnimationEngine {
                 timedDocumentRoot.resetDocument(cal);
                 Object[] bridges = initialBridges.toArray();
                 initialBridges = null;
-                for (int i = 0; i < bridges.length; i++) {
+                for (Object bridge2 : bridges) {
                     SVGAnimationElementBridge bridge =
-                        (SVGAnimationElementBridge) bridges[i];
+                            (SVGAnimationElementBridge) bridge2;
                     bridge.initializeAnimation();
                 }
-                for (int i = 0; i < bridges.length; i++) {
+                for (Object bridge1 : bridges) {
                     SVGAnimationElementBridge bridge =
-                        (SVGAnimationElementBridge) bridges[i];
+                            (SVGAnimationElementBridge) bridge1;
                     bridge.initializeTimedElement();
                 }
                 // tick(0, false);
@@ -519,12 +510,13 @@ public class SVGAnimationEngine extends AnimationEngine {
          * animation event name.
          */
         protected String getEventType(String eventName) {
-            if (eventName.equals("focusin")) {
-                return "DOMFocusIn";
-            } else if (eventName.equals("focusout")) {
-                return "DOMFocusOut";
-            } else if (eventName.equals("activate")) {
-                return "DOMActivate";
+            switch (eventName) {
+                case "focusin":
+                    return "DOMFocusIn";
+                case "focusout":
+                    return "DOMFocusOut";
+                case "activate":
+                    return "DOMActivate";
             }
             if (isSVG12) {
                 if (animationEventNames12.contains(eventName)) {
@@ -911,7 +903,7 @@ public class SVGAnimationEngine extends AnimationEngine {
                     // so we don't steal too much time from the Swing thread
                     try {
                         Thread.sleep(1);
-                    } catch (InterruptedException ie) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
             }
@@ -965,7 +957,7 @@ public class SVGAnimationEngine extends AnimationEngine {
                 while (ticker.t < 10) {
                     try {
                         Thread.sleep(1000);
-                    } catch (InterruptedException ie) {
+                    } catch (InterruptedException ignored) {
                     }
                     try {
                         runnableQueue.invokeAndWait(ticker);

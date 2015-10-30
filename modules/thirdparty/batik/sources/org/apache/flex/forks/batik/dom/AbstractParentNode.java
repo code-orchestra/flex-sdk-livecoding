@@ -18,15 +18,14 @@
  */
 package org.apache.flex.forks.batik.dom;
 
-import java.io.Serializable;
-
 import org.apache.flex.forks.batik.dom.events.DOMMutationEvent;
 import org.apache.flex.forks.batik.util.XMLConstants;
-
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.events.MutationEvent;
+
+import java.io.Serializable;
 
 /**
  * This class implements the Node interface with support for children.
@@ -78,7 +77,7 @@ public abstract class AbstractParentNode extends AbstractNode {
             throw createDOMException
                 (DOMException.NOT_FOUND_ERR,
                  "child.missing",
-                 new Object[] { new Integer(refChild.getNodeType()),
+                 new Object[] {(int) refChild.getNodeType(),
                                 refChild.getNodeName() });
 
         checkAndRemove(newChild, false);
@@ -119,7 +118,7 @@ public abstract class AbstractParentNode extends AbstractNode {
             throw createDOMException
                 (DOMException.NOT_FOUND_ERR,
                  "child.missing",
-                 new Object[] { new Integer(oldChild.getNodeType()),
+                 new Object[] {(int) oldChild.getNodeType(),
                                 oldChild.getNodeName() });
 
         checkAndRemove(newChild, true);
@@ -171,13 +170,13 @@ public abstract class AbstractParentNode extends AbstractNode {
             throw createDOMException
                 (DOMException.NOT_FOUND_ERR,
                  "child.missing",
-                 new Object[] { new Integer(oldChild.getNodeType()),
+                 new Object[] {(int) oldChild.getNodeType(),
                                 oldChild.getNodeName() });
         }
         if (isReadonly()) {
             throw createDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                      "readonly.node",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName() });
         }
 
@@ -304,7 +303,7 @@ public abstract class AbstractParentNode extends AbstractNode {
      * <b>DOM</b>: Implements {@link org.w3c.dom.Node#getTextContent()}.
      */
     public String getTextContent() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (Node n = getFirstChild(); n != null; n = n.getNextSibling()) {
             switch (n.getNodeType()) {
                 case COMMENT_NODE:
@@ -457,13 +456,13 @@ public abstract class AbstractParentNode extends AbstractNode {
         if (isReadonly())
             throw createDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                      "readonly.node",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName() });
 
         if (n.getOwnerDocument() != getCurrentDocument())
             throw createDOMException(DOMException.WRONG_DOCUMENT_ERR,
                                      "node.from.wrong.document",
-                                     new Object[] { new Integer(getNodeType()),
+                                     new Object[] {(int) getNodeType(),
                                                     getNodeName() });
         if (this == n)
             throw createDOMException
@@ -479,7 +478,7 @@ public abstract class AbstractParentNode extends AbstractNode {
                 throw createDOMException
                     (DOMException.HIERARCHY_REQUEST_ERR,
                      "add.ancestor",
-                     new Object[] { new Integer(getNodeType()),
+                     new Object[] {(int) getNodeType(),
                                     getNodeName() });
         }
 
@@ -695,16 +694,7 @@ public abstract class AbstractParentNode extends AbstractNode {
         }
 
         private boolean nsMatch(String s1, String s2) {
-            if (s1 == null && s2 == null) {
-                return true;
-            }
-            if (s1 == null || s2 == null) {
-                return false;
-            }
-            if (s1.equals("*")) {
-                return true;
-            }
-            return s1.equals(s2);
+            return s1 == null && s2 == null || !(s1 == null || s2 == null) && (s1.equals("*") || s1.equals(s2));
         }
     }
 
@@ -835,7 +825,7 @@ public abstract class AbstractParentNode extends AbstractNode {
             throw createDOMException
                 (DOMException.NOT_FOUND_ERR,
                  "child.missing",
-                 new Object[] { new Integer(r.getNodeType()),
+                 new Object[] {(int) r.getNodeType(),
                                 r.getNodeName() });
         }
 
@@ -901,7 +891,7 @@ public abstract class AbstractParentNode extends AbstractNode {
             throw createDOMException
                 (DOMException.NOT_FOUND_ERR,
                  "child.missing",
-                 new Object[] { new Integer(o.getNodeType()),
+                 new Object[] {(int) o.getNodeType(),
                                 o.getNodeName() });
         }
 
@@ -959,7 +949,7 @@ public abstract class AbstractParentNode extends AbstractNode {
             throw createDOMException
                 (DOMException.NOT_FOUND_ERR,
                  "child.missing",
-                 new Object[] { new Integer(n.getNodeType()),
+                 new Object[] {(int) n.getNodeType(),
                                 n.getNodeName() });
         }
     }

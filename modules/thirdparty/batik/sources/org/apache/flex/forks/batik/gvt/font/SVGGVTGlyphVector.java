@@ -18,8 +18,11 @@
  */
 package org.apache.flex.forks.batik.gvt.font;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
+import org.apache.flex.forks.batik.gvt.text.ArabicTextHandler;
+import org.apache.flex.forks.batik.gvt.text.GVTAttributedCharacterIterator;
+import org.apache.flex.forks.batik.gvt.text.TextPaintInfo;
+
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphJustificationInfo;
 import java.awt.geom.AffineTransform;
@@ -27,10 +30,6 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.text.AttributedCharacterIterator;
-
-import org.apache.flex.forks.batik.gvt.text.ArabicTextHandler;
-import org.apache.flex.forks.batik.gvt.text.GVTAttributedCharacterIterator;
-import org.apache.flex.forks.batik.gvt.text.TextPaintInfo;
 
 /**
  * A GVTGlyphVector class for SVG fonts.
@@ -216,29 +215,25 @@ public final class SVGGVTGlyphVector implements GVTGlyphVector {
             if (glyphBounds.isEmpty()) {
                 // can't tell if rotated or not, make it
                 // the same as the previous glyph, if we have one...
-                if (i > 0) {
-                    rotated[i] = rotated[i-1];
-                } else {
-                    rotated [i] = true;
-                }
+                rotated[i] = i <= 0 || rotated[i - 1];
             } else {
                 // get three corner points so we can determine
                 // whether the glyph is rotated
                 Point2D p1 = new Point2D.Double(glyphBounds.getMinX(),
-                                                glyphBounds.getMinY());
+                        glyphBounds.getMinY());
                 Point2D p2 = new Point2D.Double(glyphBounds.getMaxX(),
-                                                glyphBounds.getMinY());
+                        glyphBounds.getMinY());
                 Point2D p3 = new Point2D.Double(glyphBounds.getMinX(),
-                                                glyphBounds.getMaxY());
+                        glyphBounds.getMaxY());
                 Point2D gpos = getGlyphPosition(i);
                 AffineTransform tr = AffineTransform.getTranslateInstance
-                    (gpos.getX(), gpos.getY());
+                        (gpos.getX(), gpos.getY());
 
                 if (glyphTransform != null)
                     tr.concatenate(glyphTransform);
 
                 tempLogicalBounds[i] =
-                    tr.createTransformedShape(glyphBounds);
+                        tr.createTransformedShape(glyphBounds);
 
                 Point2D tp1 = new Point2D.Double();
                 Point2D tp2 = new Point2D.Double();
@@ -246,24 +241,14 @@ public final class SVGGVTGlyphVector implements GVTGlyphVector {
                 tr.transform(p1, tp1);
                 tr.transform(p2, tp2);
                 tr.transform(p3, tp3);
-                double tdx12 = tp1.getX()-tp2.getX();
-                double tdx13 = tp1.getX()-tp3.getX();
-                double tdy12 = tp1.getY()-tp2.getY();
-                double tdy13 = tp1.getY()-tp3.getY();
+                double tdx12 = tp1.getX() - tp2.getX();
+                double tdx13 = tp1.getX() - tp3.getX();
+                double tdy12 = tp1.getY() - tp2.getY();
+                double tdy13 = tp1.getY() - tp3.getY();
 
-                if ((Math.abs(tdx12) < 0.001) &&
-                    (Math.abs(tdy13) < 0.001)) {
-                    // If these are both zero then it is axially aligned
-                    // on it's "side"...
-                    rotated[i] = false;
-                } else if ((Math.abs(tdx13) < 0.001) &&
-                           (Math.abs(tdy12) < 0.001)) {
-                    // If these are both zero then it is axially aligned
-                    // vertically.
-                    rotated[i] = false;
-                } else {
-                    rotated[i] = true;
-                }
+                // If these are both zero then it is axially aligned
+// on it's "side"...
+                rotated[i] = !((Math.abs(tdx12) < 0.001) && (Math.abs(tdy13) < 0.001)) && !((Math.abs(tdx13) < 0.001) && (Math.abs(tdy12) < 0.001));
 
                 Rectangle2D rectBounds;
                 rectBounds = tempLogicalBounds[i].getBounds2D();
@@ -561,8 +546,7 @@ public final class SVGGVTGlyphVector implements GVTGlyphVector {
     public Shape getOutline(float x, float y) {
         Shape outline = getOutline();
         AffineTransform tr = AffineTransform.getTranslateInstance(x,y);
-        Shape translatedOutline = tr.createTransformedShape(outline);
-        return translatedOutline;
+        return tr.createTransformedShape(outline);
     }
 
     /**

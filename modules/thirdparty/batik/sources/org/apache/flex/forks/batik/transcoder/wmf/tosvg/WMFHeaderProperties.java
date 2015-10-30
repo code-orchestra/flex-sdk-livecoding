@@ -45,7 +45,7 @@ import org.apache.flex.forks.batik.transcoder.wmf.WMFConstants;
  */
 public class WMFHeaderProperties extends AbstractWMFReader {
 
-    private static final Integer INTEGER_0 = new Integer( 0 );
+    private static final Integer INTEGER_0 = 0;
 
     protected DataInputStream stream;
     private int _bleft, _bright, _btop, _bbottom, _bwidth, _bheight;
@@ -88,7 +88,7 @@ public class WMFHeaderProperties extends AbstractWMFReader {
     public void closeResource() {
         try {
             if (stream != null) stream.close();
-            } catch (IOException e) {
+            } catch (IOException ignored) {
         }
     }
 
@@ -138,7 +138,7 @@ public class WMFHeaderProperties extends AbstractWMFReader {
     protected boolean readRecords(DataInputStream is) throws IOException {
         // effective reading of the rest of the file
         short functionId = 1;
-        int recSize = 0;
+        int recSize;
         int gdiIndex; // the last Object index
         int brushObject = -1; // the last brush
         int penObject = -1; // the last pen
@@ -239,7 +239,6 @@ public class WMFHeaderProperties extends AbstractWMFReader {
                         x2 =  (int)(readShort( is ) * scaleXY);
                         y2 =  readShort( is );
                         read += 4;
-                        clipped = true;
                     }
                     byte[] bstr = new byte[ lenText ];
                     int i = 0;
@@ -311,7 +310,7 @@ public class WMFHeaderProperties extends AbstractWMFReader {
                     int italic = (int)is.readByte();
                     int underline = (int)is.readByte();
                     int strikeOut = (int)is.readByte();
-                    int charset = (int)(is.readByte() & 0x00ff);
+                    int charset = is.readByte() & 0x00ff;
                     int lfOutPrecision = is.readByte();
                     int lfClipPrecision = is.readByte();
                     int lfQuality = is.readByte();

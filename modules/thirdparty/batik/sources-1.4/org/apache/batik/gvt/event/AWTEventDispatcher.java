@@ -100,8 +100,8 @@ public class AWTEventDispatcher extends AbstractAWTEventDispatcher
             GraphicsNodeMouseWheelListener[] listeners =
                 (GraphicsNodeMouseWheelListener[])
                 getListeners(GraphicsNodeMouseWheelListener.class);
-            for (int i = 0; i < listeners.length; i++) {
-                listeners[i].mouseWheelMoved(evt);
+            for (GraphicsNodeMouseWheelListener listener : listeners) {
+                listener.mouseWheelMoved(evt);
             }
         }
     }

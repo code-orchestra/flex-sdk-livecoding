@@ -360,8 +360,8 @@ abstract class MultipleGradientPaintContext implements PaintContext {
             estimatedSize = Integer.MAX_VALUE;
             hasDiscontinuity = true;
         } else {
-            for (int i = 0; i < workTbl.length; i++) {
-                estimatedSize += (workTbl[i]/Imin) * GRADIENT_SIZE;
+            for (float aWorkTbl : workTbl) {
+                estimatedSize += (aWorkTbl / Imin) * GRADIENT_SIZE;
             }
         }
 
@@ -486,10 +486,10 @@ abstract class MultipleGradientPaintContext implements PaintContext {
         // Put all gradients in a single array
         gradient = new int[gradientsTot];
         int curOffset = 0;
-        for(int i = 0; i < gradients.length; i++){
-            System.arraycopy(gradients[i], 0, gradient,
-                             curOffset, gradients[i].length);
-            curOffset += gradients[i].length;
+        for (int[] gradient1 : gradients) {
+            System.arraycopy(gradient1, 0, gradient,
+                    curOffset, gradient1.length);
+            curOffset += gradient1.length;
         }
         gradient[gradient.length-1] = hiColors[hiColors.length-1].getRGB();
 
@@ -674,12 +674,11 @@ abstract class MultipleGradientPaintContext implements PaintContext {
         nSteps--;                       // upto, but not including the last slot
         output[ nSteps ] = rgb2;        // the last color is also fixed
         for (int i = 1; i < nSteps; i++) {
-            float fI = i;
             output[i] =
-                (( a1 + ((((int) ( fI * tempA )) +1) >> 1 ) & 0xff ) << 24) |
-                (( r1 + ((((int) ( fI * tempR )) +1) >> 1 ) & 0xff ) << 16) |
-                (( g1 + ((((int) ( fI * tempG )) +1) >> 1 ) & 0xff ) <<  8) |
-                (( b1 + ((((int) ( fI * tempB )) +1) >> 1 ) & 0xff )      );
+                (( a1 + ((((int) ( (float) i * tempA )) +1) >> 1 ) & 0xff ) << 24) |
+                (( r1 + ((((int) ( (float) i * tempR )) +1) >> 1 ) & 0xff ) << 16) |
+                (( g1 + ((((int) ( (float) i * tempG )) +1) >> 1 ) & 0xff ) <<  8) |
+                (( b1 + ((((int) ( (float) i * tempB )) +1) >> 1 ) & 0xff )      );
         }
 
     }
@@ -1036,9 +1035,9 @@ abstract class MultipleGradientPaintContext implements PaintContext {
     }
 
 
-    private final int getAntiAlias(float p1, boolean p1_up,
-                                   float p2, boolean p2_up,
-                                   float sz, float weight) {
+    private int getAntiAlias(float p1, boolean p1_up,
+                             float p2, boolean p2_up,
+                             float sz, float weight) {
 
         // Until the last set of ops these are 28.4 fixed point values.
         int ach=0, rch=0, gch=0, bch=0;
@@ -1328,9 +1327,8 @@ abstract class MultipleGradientPaintContext implements PaintContext {
         } else {
             output = (float) Math.pow((input + 0.055) / 1.055, 2.4);
         }
-        int o = Math.round(output * 255.0f);
 
-        return o;
+        return Math.round(output * 255.0f);
     }
 
      /** Helper function to convert a color component in linear RGB space to
@@ -1349,9 +1347,7 @@ abstract class MultipleGradientPaintContext implements PaintContext {
             output = (1.055f * ((float) Math.pow(input, (1.0 / 2.4)))) - 0.055f;
         }
 
-        int o = Math.round(output * 255.0f);
-
-        return o;
+        return Math.round(output * 255.0f);
     }
 
 
@@ -1408,7 +1404,7 @@ abstract class MultipleGradientPaintContext implements PaintContext {
      * rasters for use by any other instance, as long as they are sufficiently
      * large.
      */
-    protected static final
+    protected static
     synchronized WritableRaster getCachedRaster
         (ColorModel cm, int w, int h) {
         if (cm == cachedModel) {
@@ -1433,7 +1429,7 @@ abstract class MultipleGradientPaintContext implements PaintContext {
      * rasters for use by any other instance, as long as they are sufficiently
      * large.
      */
-    protected static final
+    protected static
     synchronized void putCachedRaster(ColorModel cm,
                                              WritableRaster ras) {
         if (cached != null) {

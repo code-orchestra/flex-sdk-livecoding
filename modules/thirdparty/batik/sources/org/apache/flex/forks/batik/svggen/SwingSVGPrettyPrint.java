@@ -167,12 +167,12 @@ public abstract class SwingSVGPrettyPrint implements SVGSyntax {
             Component comp = cmp.getComponent(i);
 
             if( comp != null && JComponent.isLightweightComponent(comp) && comp.isVisible() ) {
-                Rectangle cr = null;
+                Rectangle cr;
                 boolean isJComponent = (comp instanceof JComponent);
 
                 if(isJComponent) {
                     cr = tmpRect;
-                    ((JComponent)comp).getBounds(cr);
+                    comp.getBounds(cr);
                 } else {
                     cr = comp.getBounds();
                 }

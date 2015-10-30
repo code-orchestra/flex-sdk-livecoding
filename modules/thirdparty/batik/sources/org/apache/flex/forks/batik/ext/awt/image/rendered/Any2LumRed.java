@@ -72,7 +72,7 @@ public class Any2LumRed extends AbstractRed {
         if (srcCM == null) {
             // We don't really know much about this source.
 
-            float [][] matrix = null;
+            float [][] matrix;
             if (sm.getNumBands() == 2) {
                 matrix = new float[2][2];
                 matrix[0][0] = 1;

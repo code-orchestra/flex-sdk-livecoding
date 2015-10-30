@@ -212,7 +212,7 @@ public class ApplicationSecurityEnforcer {
         String securityPolicyProperty 
             = System.getProperty(PROPERTY_JAVA_SECURITY_POLICY);
 
-        if (securityPolicyProperty == null || securityPolicyProperty.equals("")) {
+        if (securityPolicyProperty == null || securityPolicyProperty.isEmpty()) {
             // Specify app's security policy in the
             // system property. 
             URL policyURL = getPolicyURL();
@@ -253,7 +253,7 @@ public class ApplicationSecurityEnforcer {
         // Forces re-loading of the security policy
         policy.refresh();
 
-        if (securityPolicyProperty == null || securityPolicyProperty.equals("")) {
+        if (securityPolicyProperty == null || securityPolicyProperty.isEmpty()) {
             System.setProperty(PROPERTY_JAVA_SECURITY_POLICY, "");
         }
     }

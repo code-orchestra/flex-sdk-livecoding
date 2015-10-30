@@ -141,7 +141,7 @@ public class FieldMethodizer
         {
             Field f = (Field) fieldHash.get( fieldName );
             if (f != null)
-                return f.get( (Class) classHash.get(fieldName) );
+                return f.get(classHash.get(fieldName));
         }
         catch( Exception e )
         {
@@ -156,16 +156,14 @@ public class FieldMethodizer
     private void inspect(Class clas)
     {
         Field[] fields = clas.getFields();
-        for( int i = 0; i < fields.length; i++)
-        {
+        for (Field field : fields) {
             /*
              *  only if public and static
              */
-            int mod = fields[i].getModifiers();
-            if ( Modifier.isStatic(mod) && Modifier.isPublic(mod) )
-            {
-                fieldHash.put(fields[i].getName(), fields[i]);
-                classHash.put(fields[i].getName(), clas);
+            int mod = field.getModifiers();
+            if (Modifier.isStatic(mod) && Modifier.isPublic(mod)) {
+                fieldHash.put(field.getName(), field);
+                classHash.put(field.getName(), clas);
             }
         }
     }

@@ -452,13 +452,12 @@ public class IndexImage{
                     for (int k=minIdx[c1]; k<=maxIdx[c1]; k++) {
                         int idx = idx2 | (k<<c1Sh4);
                         Counter[] v = colors[idx];
-                        for( int iColor = 0; iColor < v.length; iColor++ ){
-                            Counter c = v[ iColor ];
-                            vals = c.getRgb( vals );
-                            if ( contains( vals )){
+                        for (Counter c : v) {
+                            vals = c.getRgb(vals);
+                            if (contains(vals)) {
                                 // The vals[] lies completly within
                                 // this cube so count it.
-                                counts[ vals[splitChannel] ] += c.count;
+                                counts[vals[splitChannel]] += c.count;
                                 tcount += c.count;
                             }
                         }
@@ -530,14 +529,13 @@ public class IndexImage{
                     for (int k=minIdx[2]; k<=maxIdx[2]; k++) {
                         int idx = idx2 | k;
                         Counter[] v = colors[idx];
-                        for( int iColor = 0; iColor < v.length; iColor++ ){
-                            Counter c = v[ iColor ];
-                            vals = c.getRgb( vals );
-                            if ( contains( vals ) ) {
-                                float weight = (c.count/(float)count);
-                                red += (vals[0]*weight);
-                                grn += (vals[1]*weight);
-                                blu += (vals[2]*weight);
+                        for (Counter c : v) {
+                            vals = c.getRgb(vals);
+                            if (contains(vals)) {
+                                float weight = (c.count / (float) count);
+                                red += (vals[0] * weight);
+                                grn += (vals[1] * weight);
+                                blu += (vals[2] * weight);
                             }
                         }
                     }
@@ -594,7 +592,7 @@ public class IndexImage{
      */
     static void logRGB( byte[] r, byte[] g, byte[] b ){
 
-        StringBuffer buff = new StringBuffer( 100 );
+        StringBuilder buff = new StringBuilder( 100 );
         int nColors = r.length;
         for( int i= 0; i < nColors; i++ ) {
             String rgbStr= "(" + (r[i]+128) + ',' + (g[i] +128 ) + ',' + (b[i] + 128) + ")," ;
@@ -706,7 +704,6 @@ public class IndexImage{
         Counter[][] colorTbl = convertColorList( colors );
 
         // this is no longer needed: discard
-        colors = null;
 
         int nCubes=1;
         int fCube=0;
@@ -746,8 +743,7 @@ public class IndexImage{
                         break;
                     j++;
                 }
-                for (int i=nCubes; i>j; i--)
-                    cubes[i] = cubes[i-1];
+                System.arraycopy(cubes, j, cubes, j + 1, nCubes - j);
                 cubes[j++] = nc;
                 nCubes++;
             }

@@ -50,12 +50,7 @@ public class TileLRUMember implements LRUCache.LRUObj {
         }
 
         public boolean checkRaster() {
-            if (hRaster != null) return true;
-
-            if ((wRaster       != null) &&
-            (wRaster.get() != null)) return true;
-
-            return false;
+            return hRaster != null || (wRaster != null) && (wRaster.get() != null);
         }
 
         public Raster retrieveRaster() {

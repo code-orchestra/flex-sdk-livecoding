@@ -130,7 +130,7 @@ public class SoftReferenceCache {
                     // When something is cleared or put we will be notified.
                     wait();
                 }
-                catch (InterruptedException ie) { }
+                catch (InterruptedException ignored) { }
 
                 // check if key was cleared, if so it will most likely
                 // never be 'put'.

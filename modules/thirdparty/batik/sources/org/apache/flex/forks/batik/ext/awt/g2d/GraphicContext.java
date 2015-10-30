@@ -889,9 +889,8 @@ public class GraphicContext implements Cloneable{
            == RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
             useFractionalMetrics = false;
 
-        FontRenderContext frc = new FontRenderContext(defaultTransform,
+        return new FontRenderContext(defaultTransform,
                                                       isAntialiased,
                                                       useFractionalMetrics);
-        return frc;
     }
 }

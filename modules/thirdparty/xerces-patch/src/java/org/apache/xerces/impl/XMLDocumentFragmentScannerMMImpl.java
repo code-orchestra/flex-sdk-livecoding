@@ -414,7 +414,7 @@ public class XMLDocumentFragmentScannerMMImpl
      * are recognized by this component.
      */
     public String[] getRecognizedFeatures() {
-        return (String[])(RECOGNIZED_FEATURES.clone());
+        return RECOGNIZED_FEATURES.clone();
     } // getRecognizedFeatures():String[]
 
     /**
@@ -454,7 +454,7 @@ public class XMLDocumentFragmentScannerMMImpl
      * are recognized by this component.
      */
     public String[] getRecognizedProperties() {
-        return (String[])(RECOGNIZED_PROPERTIES.clone());
+        return RECOGNIZED_PROPERTIES.clone();
     } // getRecognizedProperties():String[]
 
     /**
@@ -1569,7 +1569,7 @@ public class XMLDocumentFragmentScannerMMImpl
          * @throws IOException  Thrown on i/o error.
          * @throws XNIException Thrown on parse error.
          */
-        public boolean dispatch(boolean complete) 
+        boolean dispatch(boolean complete)
             throws IOException, XNIException;
 
     } // interface Dispatcher

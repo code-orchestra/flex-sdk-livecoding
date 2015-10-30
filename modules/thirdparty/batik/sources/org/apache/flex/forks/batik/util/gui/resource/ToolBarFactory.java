@@ -83,10 +83,9 @@ public class ToolBarFactory extends ResourceManager {
                MissingListenerException {
         JToolBar result  = new JToolBar();
         List     buttons = getStringList(name);
-        Iterator it      = buttons.iterator();
 
-        while (it.hasNext()) {
-            String s = (String)it.next();
+        for (Object button : buttons) {
+            String s = (String) button;
             if (s.equals(SEPARATOR)) {
                 result.add(new JToolbarSeparator());
             } else {

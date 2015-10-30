@@ -66,7 +66,7 @@ public class WMFPainter extends AbstractWMFPainter {
      */
     private static final int INPUT_BUFFER_SIZE = 30720;
 
-    private static final Integer INTEGER_0 = new Integer( 0 );
+    private static final Integer INTEGER_0 = 0;
 
     private float scale, scaleX, scaleY, conv;
     private float xOffset, yOffset;
@@ -87,12 +87,7 @@ public class WMFPainter extends AbstractWMFPainter {
                            BasicStroke.CAP_BUTT,
                            BasicStroke.JOIN_ROUND );
 
-    private transient ImageObserver observer = new ImageObserver() {
-        public boolean imageUpdate(Image img, int flags, int x,
-            int y, int width, int height) {
-                return false;
-        }
-    };
+    private transient ImageObserver observer = (img, flags, x, y, width, height) -> false;
 
     /** Basic constructor.
      *  @param currentStore where the WMF records are stored
@@ -136,9 +131,9 @@ public class WMFPainter extends AbstractWMFPainter {
         float penWidth = 0;
         float startX = 0;
         float startY = 0;
-        int brushObject = -1;
-        int penObject = -1;
-        int fontObject = -1;
+        int brushObject;
+        int penObject;
+        int fontObject;
         Font font = null;
         int lastObjectIdx;
         Stack dcStack = new Stack();
@@ -282,8 +277,6 @@ public class WMFPainter extends AbstractWMFPainter {
 
                         if ( size < 0 ) size = -size /* * -1.3 */;
                         int objIndex = 0;
-
-                        fontHeight = size;
 
                         Font f = new Font(face, style, (int)size);
                         f = f.deriveFont(size);
@@ -557,7 +550,7 @@ public class WMFPainter extends AbstractWMFPainter {
                         TextLayout layout = new TextLayout( sr, g2d.getFont(), frc );
 
                         int flag = mr.elementAt( 2 );
-                        int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+                        int x1, y1, x2, y2;
                         boolean clipped = false;
                         Shape clip = null;
                         // process clipped texts
@@ -578,7 +571,7 @@ public class WMFPainter extends AbstractWMFPainter {
                             getCharacterIterator(g2d, sr, wmfFont, currentHorizAlign),
                             x, y, layout, wmfFont, currentHorizAlign);
                         if (clipped) g2d.setClip(clip);
-                    } catch ( Exception e ) {
+                    } catch ( Exception ignored) {
                     }
                     break;
 
@@ -605,7 +598,7 @@ public class WMFPainter extends AbstractWMFPainter {
                         drawString(-1, g2d,
                             getCharacterIterator(g2d, sr, wmfFont),
                             x, y, layout, wmfFont, currentHorizAlign);
-                    } catch ( Exception e ) {
+                    } catch ( Exception ignored) {
                     }
                     break;
 
@@ -673,12 +666,12 @@ public class WMFPainter extends AbstractWMFPainter {
                     break;
 
                 case WMFConstants.META_SAVEDC:
-                    dcStack.push( new Float( penWidth ));
-                    dcStack.push( new Float( startX ));
-                    dcStack.push( new Float( startY ));
-                    dcStack.push( new Integer( brushObject ));
-                    dcStack.push( new Integer( penObject ));
-                    dcStack.push( new Integer( fontObject ));
+                    dcStack.push(penWidth);
+                    dcStack.push(startX);
+                    dcStack.push(startY);
+                    dcStack.push(brushObject);
+                    dcStack.push(penObject);
+                    dcStack.push(fontObject);
                     dcStack.push( frgdColor );
                     dcStack.push( bkgdColor );
                     break;
@@ -686,12 +679,12 @@ public class WMFPainter extends AbstractWMFPainter {
                 case WMFConstants.META_RESTOREDC:
                     bkgdColor = (Color)dcStack.pop();
                     frgdColor = (Color)dcStack.pop();
-                    fontObject = ((Integer)(dcStack.pop())).intValue();
-                    penObject = ((Integer)(dcStack.pop())).intValue();
-                    brushObject = ((Integer)(dcStack.pop())).intValue();
-                    startY = ((Float)(dcStack.pop())).floatValue();
-                    startX = ((Float)(dcStack.pop())).floatValue();
-                    penWidth = ((Float)(dcStack.pop())).floatValue();
+                    fontObject = (Integer) (dcStack.pop());
+                    penObject = (Integer) (dcStack.pop());
+                    brushObject = (Integer) (dcStack.pop());
+                    startY = (Float) (dcStack.pop());
+                    startX = (Float) (dcStack.pop());
+                    penWidth = (Float) (dcStack.pop());
                     break;
 
                 case WMFConstants.META_POLYBEZIER16:
@@ -719,15 +712,13 @@ public class WMFPainter extends AbstractWMFPainter {
                                 float endY = scaleY * ( vpY + yOffset + mr.elementAt( j6+8 ) );
 
                                 gp.curveTo( cp1X, cp1Y, cp2X, cp2Y, endX, endY );
-                                _startX = endX;
-                                _startY = endY;
                             }
                                 //gp.closePath();
                             g2d.setStroke( solid );
                             g2d.draw( gp );
                             firstEffectivePaint = false;
                         }
-                    catch ( Exception e ) {
+                    catch ( Exception ignored) {
                     }
                     break;
 
@@ -755,7 +746,7 @@ public class WMFPainter extends AbstractWMFPainter {
                     //UPDATED : added SETROP2
                 case WMFConstants.META_SETROP2:
                     {
-                        float rop = (float)(mr.ElementAt( 0 ).intValue());
+                        float rop = (float)(mr.ElementAt(0));
                         Paint paint = null;
                         boolean ok = false;
                         if (rop == WMFConstants.META_BLACKNESS) {
@@ -874,19 +865,19 @@ public class WMFPainter extends AbstractWMFPainter {
                     break;                                        
                 case WMFConstants.META_DIBBITBLT:
                     {
-                        int rop = mr.ElementAt( 0 ).intValue();
-                        float height = (mr.ElementAt( 1 ).intValue() *
+                        int rop = mr.ElementAt(0);
+                        float height = (mr.ElementAt(1) *
                                         conv * currentStore.getVpWFactor());
-                        float width  = (mr.ElementAt( 2 ).intValue() *
+                        float width  = (mr.ElementAt(2) *
                                         conv * currentStore.getVpHFactor());
-                        int sy = mr.ElementAt( 3 ).intValue();
-                        int sx = mr.ElementAt( 4 ).intValue();
+                        int sy = mr.ElementAt(3);
+                        int sx = mr.ElementAt(4);
                         float dy = (conv * currentStore.getVpWFactor() *
                                     (vpY + yOffset +
-                                     (float)mr.ElementAt( 5 ).intValue()));
+                                     (float) mr.ElementAt(5)));
                         float dx = (conv * currentStore.getVpHFactor() *
                                     (vpX + xOffset +
-                                     (float)mr.ElementAt( 6 ).intValue()));
+                                     (float) mr.ElementAt(6)));
                         if (mr instanceof MetaRecord.ByteRecord) {
                             byte[] bitmap = ((MetaRecord.ByteRecord)mr).bstr;
 
@@ -957,8 +948,7 @@ public class WMFPainter extends AbstractWMFPainter {
         Dimension d = getImageDimension(bit);
         BufferedImage img = getImage(bit);
         Rectangle2D rec = new Rectangle2D.Float(0, 0, (float)d.width, (float)d.height);
-        TexturePaint paint = new TexturePaint(img, rec);
-        return paint;
+        return new TexturePaint(img, rec);
     }
 
     /** Draw an AttributedCharacterIterator taking into account the following characteristics. :
@@ -1036,9 +1026,8 @@ public class WMFPainter extends AbstractWMFPainter {
     /** Just to be consistent with PolyPolygon filling.
      */
     private void drawPolyPolygon(Graphics2D g2d, List pols) {
-        Iterator it = pols.iterator();
-        while (it.hasNext()) {
-            Polygon2D pol = (Polygon2D)(it.next());
+        for (Object pol1 : pols) {
+            Polygon2D pol = (Polygon2D) (pol1);
             g2d.draw(pol);
         }
     }
@@ -1052,8 +1041,8 @@ public class WMFPainter extends AbstractWMFPainter {
         // the real stuff : we create an EVEN_ODD path, and add all the Shapes to it
         else {
             GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
-            for (int i = 0; i < pols.size(); i++) {
-                Polygon2D pol = (Polygon2D)(pols.get(i));
+            for (Object pol1 : pols) {
+                Polygon2D pol = (Polygon2D) pol1;
                 path.append(pol, false);
             }
             g2d.fill(path);
@@ -1101,7 +1090,6 @@ public class WMFPainter extends AbstractWMFPainter {
         if ( penObject >= 0 ) {
             GdiObject gdiObj = currentStore.getObject( penObject );
             g2d.setColor( (Color)gdiObj.obj );
-            penObject = -1;
         }
     }
 
@@ -1120,7 +1108,6 @@ public class WMFPainter extends AbstractWMFPainter {
             if (gdiObj.obj instanceof Color) g2d.setColor( (Color)gdiObj.obj );
             else if (gdiObj.obj instanceof Paint) g2d.setPaint( (Paint)gdiObj.obj );
             else g2d.setPaint(getPaint((byte[])gdiObj.obj));
-            brushObject = -1;
         }
     }
 

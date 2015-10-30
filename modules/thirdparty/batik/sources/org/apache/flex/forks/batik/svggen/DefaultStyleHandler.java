@@ -74,13 +74,12 @@ public class DefaultStyleHandler implements StyleHandler, SVGConstants {
     public void setStyle(Element element, Map styleMap,
                          SVGGeneratorContext generatorContext) {
         String tagName = element.getTagName();
-        Iterator iter = styleMap.keySet().iterator();
-        while (iter.hasNext()) {
-            String styleName = (String)iter.next();
-            if (element.getAttributeNS(null, styleName).length() == 0){
+        for (Object o : styleMap.keySet()) {
+            String styleName = (String) o;
+            if (element.getAttributeNS(null, styleName).length() == 0) {
                 if (appliesTo(styleName, tagName)) {
                     element.setAttributeNS(null, styleName,
-                                           (String)styleMap.get(styleName));
+                            (String) styleMap.get(styleName));
                 }
             }
         }
@@ -91,11 +90,7 @@ public class DefaultStyleHandler implements StyleHandler, SVGConstants {
      * element.
      */
     protected boolean appliesTo(String styleName, String tagName) {
-        Set s = (Set)ignoreAttributes.get(tagName);
-        if (s == null) {
-            return true;
-        } else {
-            return !s.contains(styleName);
-        }
+        Set s = (Set) ignoreAttributes.get(tagName);
+        return s == null || !s.contains(styleName);
     }
 }

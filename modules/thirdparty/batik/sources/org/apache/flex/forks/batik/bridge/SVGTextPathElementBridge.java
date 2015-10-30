@@ -80,7 +80,7 @@ public class SVGTextPathElementBridge extends AnimatableGenericSVGBridge
 
         // construct a shape for the referenced path element
         String s = pathElement.getAttributeNS(null, SVG_D_ATTRIBUTE);
-        Shape pathShape = null;
+        Shape pathShape;
         if (s.length() != 0) {
             AWTPathProducer app = new AWTPathProducer();
             app.setWindingRule(CSSUtilities.convertFillRule(pathElement));
@@ -116,13 +116,13 @@ public class SVGTextPathElementBridge extends AnimatableGenericSVGBridge
         // set the start offset if specified
         s = textPathElement.getAttributeNS(null, SVG_START_OFFSET_ATTRIBUTE);
         if (s.length() > 0) {
-            float startOffset = 0;
+            float startOffset;
             int percentIndex = s.indexOf('%');
             if (percentIndex != -1) {
                 // its a percentage of the length of the path
                 float pathLength = textPath.lengthOfPath();
                 String percentString = s.substring(0,percentIndex);
-                float startOffsetPercent = 0;
+                float startOffsetPercent;
                 try {
                     startOffsetPercent = SVGUtilities.convertSVGNumber(percentString);
                 } catch (NumberFormatException e) {

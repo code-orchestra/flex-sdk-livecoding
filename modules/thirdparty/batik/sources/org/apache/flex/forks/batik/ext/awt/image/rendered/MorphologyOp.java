@@ -18,24 +18,13 @@
  */
 package org.apache.flex.forks.batik.ext.awt.image.rendered;
 
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import org.apache.flex.forks.batik.ext.awt.image.GraphicsUtil;
+
+import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.ColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferInt;
-import java.awt.image.DirectColorModel;
-import java.awt.image.Raster;
-import java.awt.image.RasterOp;
-import java.awt.image.SampleModel;
-import java.awt.image.SinglePixelPackedSampleModel;
-import java.awt.image.WritableRaster;
-
-import org.apache.flex.forks.batik.ext.awt.image.GraphicsUtil;
+import java.awt.image.*;
 
 /**
  * This class provides an implementation for the SVG
@@ -149,33 +138,25 @@ public class MorphologyOp implements BufferedImageOp, RasterOp {
     }
 
     private boolean isCompatible(ColorModel colorModel,
-                                 SampleModel sampleModel){
+                                 SampleModel sampleModel) {
         ColorSpace cs = colorModel.getColorSpace();
         // Check that model is sRGB or linear RGB
-        if((cs != ColorSpace.getInstance(ColorSpace.CS_sRGB))
-           &&
-           (cs != ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB)))
+        if ((cs != ColorSpace.getInstance(ColorSpace.CS_sRGB))
+                &&
+                (cs != ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB)))
             return false;
 
         // Check ColorModel is of type DirectColorModel
-        if(!(colorModel instanceof DirectColorModel))
+        if (!(colorModel instanceof DirectColorModel))
             return false;
 
         // Check transfer type
-        if(sampleModel.getDataType() != DataBuffer.TYPE_INT)
+        if (sampleModel.getDataType() != DataBuffer.TYPE_INT)
             return false;
 
         // Check red, green, blue and alpha mask
-        DirectColorModel dcm = (DirectColorModel)colorModel;
-        if(dcm.getRedMask() != 0x00ff0000)
-            return false;
-        if(dcm.getGreenMask() != 0x0000ff00)
-            return false;
-        if(dcm.getBlueMask() != 0x000000ff)
-            return false;
-        if(dcm.getAlphaMask() != 0xff000000)
-            return false;
-        return true;
+        DirectColorModel dcm = (DirectColorModel) colorModel;
+        return dcm.getRedMask() == 0x00ff0000 && dcm.getGreenMask() == 0x0000ff00 && dcm.getBlueMask() == 0x000000ff && dcm.getAlphaMask() == 0xff000000;
     }
 
     private void checkCompatible(SampleModel model){
@@ -216,7 +197,7 @@ public class MorphologyOp implements BufferedImageOp, RasterOp {
 
     public BufferedImage createCompatibleDestImage(BufferedImage src,
                                                    ColorModel destCM){
-        BufferedImage dest = null;
+        BufferedImage dest;
         if(destCM==null)
             destCM = src.getColorModel();
 
@@ -234,12 +215,10 @@ public class MorphologyOp implements BufferedImageOp, RasterOp {
      * This method compares the two input variables according
      * to the doDilation boolean variable.
      */
-    static final boolean isBetter (final int v1, final int v2, final boolean doDilation) {
+    static boolean isBetter (final int v1, final int v2, final boolean doDilation) {
         if (v1 > v2)
             return doDilation;
-        if (v1 < v2)
-            return !doDilation;
-        return true;
+        return v1 >= v2 || !doDilation;
     }
 
     /*

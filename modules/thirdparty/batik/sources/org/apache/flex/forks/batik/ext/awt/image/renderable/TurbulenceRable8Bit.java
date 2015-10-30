@@ -234,7 +234,7 @@ public class TurbulenceRable8Bit
         AffineTransform patternTxf = new AffineTransform();
         try{
             patternTxf = usr2dev.createInverse();
-        }catch(NoninvertibleTransformException e){
+        }catch(NoninvertibleTransformException ignored){
         }
 
         return new TurbulencePatternRed

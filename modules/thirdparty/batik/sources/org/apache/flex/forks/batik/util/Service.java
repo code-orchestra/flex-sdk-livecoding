@@ -128,9 +128,7 @@ public class Service {
                     }
                     line = br.readLine();
                 }
-            } catch (Exception ex) {
-                // Just try the next file...
-            } catch (LinkageError le) {
+            } catch (Exception | LinkageError ex) {
                 // Just try the next file...
             } finally {
                 // close and release all io-resources to avoid leaks
@@ -138,19 +136,16 @@ public class Service {
                     try {
                         is.close();
                     } catch ( IOException ignored ){}
-                    is = null;
                 }
                 if ( r != null ){
                     try{
                         r.close();
                     } catch ( IOException ignored ){}
-                    r = null;
                 }
                 if ( br == null ){
                     try{
                         br.close();
                     } catch ( IOException ignored ){}
-                    br = null;
                 }
             }
         }

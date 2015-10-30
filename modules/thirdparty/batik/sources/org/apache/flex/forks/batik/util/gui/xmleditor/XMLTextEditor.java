@@ -57,11 +57,7 @@ public class XMLTextEditor extends JEditorPane {
                 
         // add undoable edit
         undoManager = new UndoManager();
-        UndoableEditListener undoableEditHandler = new UndoableEditListener() {
-            public void undoableEditHappened(UndoableEditEvent e) {
-                undoManager.addEdit(e.getEdit());
-            }
-        };
+        UndoableEditListener undoableEditHandler = e -> undoManager.addEdit(e.getEdit());
         getDocument().addUndoableEditListener(undoableEditHandler);
     }
     
@@ -77,14 +73,14 @@ public class XMLTextEditor extends JEditorPane {
     public void undo() {
         try {
             undoManager.undo();
-        } catch (CannotUndoException ex) { }
+        } catch (CannotUndoException ignored) { }
     }
     
     /** Redo */
     public void redo() {
         try {
             undoManager.redo();
-        } catch (CannotRedoException ex) { }
+        } catch (CannotRedoException ignored) { }
     }
     
     

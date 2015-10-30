@@ -66,32 +66,29 @@ public class MultiplyAlphaRed extends AbstractRed {
 
     public boolean is_INT_PACK_BYTE_COMP(SampleModel srcSM,
                                          SampleModel alpSM) {
-          // Check SampleModel types DirectColorModel
-        if(!(srcSM instanceof SinglePixelPackedSampleModel)) return false;
-        if(!(alpSM instanceof ComponentSampleModel))         return false;
+        // Check SampleModel types DirectColorModel
+        if (!(srcSM instanceof SinglePixelPackedSampleModel)) return false;
+        if (!(alpSM instanceof ComponentSampleModel)) return false;
 
         // Check transfer types
-        if(srcSM.getDataType() != DataBuffer.TYPE_INT)       return false;
-        if(alpSM.getDataType() != DataBuffer.TYPE_BYTE)      return false;
+        if (srcSM.getDataType() != DataBuffer.TYPE_INT) return false;
+        if (alpSM.getDataType() != DataBuffer.TYPE_BYTE) return false;
 
 
         SinglePixelPackedSampleModel sppsm;
-        sppsm = (SinglePixelPackedSampleModel)srcSM;
+        sppsm = (SinglePixelPackedSampleModel) srcSM;
 
-        int [] masks = sppsm.getBitMasks();
-        if(masks.length != 4) return false;
-        if(masks[0] != 0x00ff0000) return false;
-        if(masks[1] != 0x0000ff00) return false;
-        if(masks[2] != 0x000000ff) return false;
-        if(masks[3] != 0xff000000) return false;
+        int[] masks = sppsm.getBitMasks();
+        if (masks.length != 4) return false;
+        if (masks[0] != 0x00ff0000) return false;
+        if (masks[1] != 0x0000ff00) return false;
+        if (masks[2] != 0x000000ff) return false;
+        if (masks[3] != 0xff000000) return false;
 
         ComponentSampleModel csm;
-        csm = (ComponentSampleModel)alpSM;
-        if (csm.getNumBands()    != 1) return false;
-        if (csm.getPixelStride() != 1) return false;
-
-        return true;
-   }
+        csm = (ComponentSampleModel) alpSM;
+        return csm.getNumBands() == 1 && csm.getPixelStride() == 1;
+    }
 
     public WritableRaster INT_PACK_BYTE_COMP_Impl (WritableRaster wr) {
           // Get my source.
@@ -210,26 +207,32 @@ public class MultiplyAlphaRed extends AbstractRed {
                           // 2 is probably next most common...
                     switch (bands) {
                     case 2:
-                        for (int x=0; x<alphaData.length; x++) {
-                            a = alphaData[x]&0xFF;
-                            wrData[i] = ((wrData[i]&0xFF)*a)>>8; ++i;
-                            wrData[i] = ((wrData[i]&0xFF)*a)>>8; ++i;
+                        for (int anAlphaData2 : alphaData) {
+                            a = anAlphaData2 & 0xFF;
+                            wrData[i] = ((wrData[i] & 0xFF) * a) >> 8;
+                            ++i;
+                            wrData[i] = ((wrData[i] & 0xFF) * a) >> 8;
+                            ++i;
                         }
                         break;
                     case 4:
-                        for (int x=0; x<alphaData.length; x++) {
-                            a = alphaData[x]&0xFF;
-                            wrData[i] = ((wrData[i]&0xFF)*a)>>8; ++i;
-                            wrData[i] = ((wrData[i]&0xFF)*a)>>8; ++i;
-                            wrData[i] = ((wrData[i]&0xFF)*a)>>8; ++i;
-                            wrData[i] = ((wrData[i]&0xFF)*a)>>8; ++i;
+                        for (int anAlphaData1 : alphaData) {
+                            a = anAlphaData1 & 0xFF;
+                            wrData[i] = ((wrData[i] & 0xFF) * a) >> 8;
+                            ++i;
+                            wrData[i] = ((wrData[i] & 0xFF) * a) >> 8;
+                            ++i;
+                            wrData[i] = ((wrData[i] & 0xFF) * a) >> 8;
+                            ++i;
+                            wrData[i] = ((wrData[i] & 0xFF) * a) >> 8;
+                            ++i;
                         }
                         break;
                     default:
-                        for (int x=0; x<alphaData.length; x++) {
-                            a = alphaData[x]&0xFF;
-                            for (b=0; b<bands; b++) {
-                                wrData[i] = ((wrData[i]&0xFF)*a)>>8;
+                        for (int anAlphaData : alphaData) {
+                            a = anAlphaData & 0xFF;
+                            for (b = 0; b < bands; b++) {
+                                wrData[i] = ((wrData[i] & 0xFF) * a) >> 8;
                                 ++i;
                             }
                         }

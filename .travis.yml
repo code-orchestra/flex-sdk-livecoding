@@ -13,7 +13,7 @@ before_script:
 - brew cask install java
 - java -version
 script: cd ./modules && ant
-defore_deploy:
+before_deploy:
 - wget -O flex_sdk.zip http://mirrors.gigenet.com/apache/flex/4.14.1/binaries/apache-flex-sdk-4.14.1-bin.zip
 - unzip -q flex_sdk.zip -d flex_sdk_win
 - cp lib flex_sdk_win/liblc

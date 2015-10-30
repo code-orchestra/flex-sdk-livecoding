@@ -2,7 +2,7 @@ os: osx
 branches:
   only:
   - master
-language: java
+language: objective-c
 jdk:
 - oraclejdk8
 before_script:

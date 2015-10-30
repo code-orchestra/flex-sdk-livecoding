@@ -5,10 +5,9 @@ language: java
 jdk:
 - oraclejdk8
 before_script:
-- brew update >brew-update.log
-- brew tap caskroom/cask
-- brew install brew-cask
-- brew cask install java
+- sudo apt-get update
+- sudo apt-get install oracle-java8-installer
+- java -version
 script: cd ./modules && ant
 defore_deploy:
 - wget -O flex_sdk.zip http://mirrors.gigenet.com/apache/flex/4.14.1/binaries/apache-flex-sdk-4.14.1-bin.zip

@@ -14,11 +14,10 @@ before_script:
 - java -version
 script: cd ./modules && ant
 before_deploy:
-- pwd
-- ls
+- cd $TRAVIS_BUILD_DIR
 - wget -O flex_sdk.zip http://mirrors.gigenet.com/apache/flex/4.14.1/binaries/apache-flex-sdk-4.14.1-bin.zip
 - unzip -q flex_sdk.zip -d flex_sdk_win
-- cp $TRAVIS_BUILD_DIR/lib flex_sdk_win/liblc
+- cp -r lib flex_sdk_win/liblc
 - zip -r flex_sdk_win.zip flex_sdk_win
 deploy:
   provider: releases

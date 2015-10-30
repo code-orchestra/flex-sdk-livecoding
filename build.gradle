@@ -1,3 +1,6 @@
 group 'CodeOrchestra'
 version '4.14.1'
 ant.importBuild('modules/build.xml')
+task assemble << {
+  build
+}

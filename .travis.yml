@@ -20,6 +20,7 @@ script:
 after_success:
   - cd $TRAVIS_BUILD_DIR
   - wget $APACHE_FLEX_SDK_URL -O apache_flex_sdk.tar.gz
+  - mkdir apache_flex_sdk
   - tar xopf apache_flex_sdk.tar.gz -C apache_flex_sdk
   - rm apache_flex_sdk.tar.gz
   - mv lib apache_flex_sdk\liblc

@@ -8,7 +8,7 @@ jdk:
 before_script:
   - brew update >brew-update.log
   - brew install ant >brew-install.log
-  - brew install 7zip
+  - brew install p7zip
   - brew tap caskroom/cask
   - brew install brew-cask
   - brew cask install java

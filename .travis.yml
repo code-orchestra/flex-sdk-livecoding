@@ -8,7 +8,9 @@ jdk:
 before_script:
   - ant -version
   - java -version
-script: cm modules && ant
+script:
+  - cd modules
+  - ant
 after_success:
   - cd $TRAVIS_BUILD_DIR
   - wget $APACHE_FLEX_SDK_URL -O apache_flex_sdk.zip

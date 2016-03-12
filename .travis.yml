@@ -2,7 +2,7 @@ os: osx
 env:
   APACHE_FLEX_SDK_URL=http://apache-mirror.rbc.ru/pub/apache/flex/4.15.0/binaries/apache-flex-sdk-4.15.0-bin.zip
   SDK_VERSION=4.15.0
-language: java
+language: objective-c
 jdk:
   - oraclejdk8
 before_script:

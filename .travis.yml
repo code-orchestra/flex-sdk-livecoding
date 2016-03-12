@@ -6,6 +6,12 @@ language: objective-c
 jdk:
   - oraclejdk8
 before_script:
+  - brew update >brew-update.log
+  - brew install ant >brew-install.log
+  - brew install 7zip
+  - brew tap caskroom/cask
+  - brew install brew-cask
+  - brew cask install java
   - ant -version
   - java -version
 script:

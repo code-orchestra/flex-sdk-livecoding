@@ -16,6 +16,7 @@ build_script:
   - cd %APPVEYOR_BUILD_FOLDER%\modules
   - ant
 after_build:
+  - cd %APPVEYOR_BUILD_FOLDER%
   - wget %APACHE_FLEX_SDK_URL% -O apache_flex_sdk.zip
   - 7z x apache_flex_sdk.zip -oapache_flex_sdk
   - rm apache_flex_sdk.zip

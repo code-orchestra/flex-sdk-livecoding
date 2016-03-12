@@ -23,3 +23,11 @@ after_build:
   - copy lib apache_flex_sdk\liblc
   - 7z a flex_sdk_win.zip apache_flex_sdk\
   - rm -rf apache_flex_sdk
+deploy:
+- provider: GitHub
+  release: $(appveyor_build_version)
+  auth_token:
+    secure: HK9ej9WVysHQHeTEQ/QTOJmh08xCtDQyDBy5uXWrWV/xROMNkQrTeQv1j2tYOxVw
+  artifact: /flex_sdk_win.zip/
+  on:
+    branch: master

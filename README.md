@@ -60,7 +60,7 @@ For more information about the Apache Flex project, please visit:
 
     http://flex.apache.org/
 
-The Apache Flex SDK 4.14.1 is a follow up release to version 4.14.0. It is
+The Apache Flex SDK 4.15.0 is a follow up release to version 4.14.1. It is
 compatible with most code written for the original Adobe Flex 4.6 SDK.
 
 

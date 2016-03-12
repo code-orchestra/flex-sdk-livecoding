@@ -7,11 +7,13 @@ skip_tags: true
 clone_depth: 10
 clone_folder: C:\projects\CodeOrchestra\flex-sdk-livecoding
 install:
-   - cinst ant
-build_script:
+  - cinst wget
+  - cinst ant
+before_build:
   - ant -version
   - java -version
-  - cd C:\projects\CodeOrchestra\flex-sdk-livecoding\modules
+build_script:
+  - cd %APPVEYOR_BUILD_FOLDER%\modules
   - ant
 after_build:
   - wget %APACHE_FLEX_SDK_URL% -O apache_flex_sdk.zip

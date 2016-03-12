@@ -1,10 +1,11 @@
+environment:
+  APACHE_FLEX_SDK_URL: http://apache-mirror.rbc.ru/pub/apache/flex/4.15.0/binaries/apache-flex-sdk-4.15.0-bin.zip
+  matrix:
+    - JAVA_HOME: C:\Program Files (x86)\Java\jdk1.8.0
 version: '{build}'
 skip_tags: true
 clone_depth: 10
 clone_folder: C:\projects\CodeOrchestra\flex-sdk-livecoding
-environment:
-  matrix:
-    - JAVA_HOME: C:\Program Files (x86)\Java\jdk1.8.0
 install:
    - cinst ant
 build_script:
@@ -12,3 +13,10 @@ build_script:
   - java -version
   - cd C:\projects\CodeOrchestra\flex-sdk-livecoding\modules
   - ant
+after_build:
+  - wget %APACHE_FLEX_SDK_URL% -O apache_flex_sdk.zip
+  - 7z x apache_flex_sdk.zip -oapache_flex_sdk
+  - rm apache_flex_sdk.zip
+  - cp lib apache_flex_sdk\liblc
+  - 7z a flex_sdk_win.zip apache_flex_sdk\
+  - rm -rf apache_flex_sdk

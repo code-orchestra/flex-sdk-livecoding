@@ -20,6 +20,6 @@ after_build:
   - wget %APACHE_FLEX_SDK_URL% -O apache_flex_sdk.zip
   - 7z x apache_flex_sdk.zip -oapache_flex_sdk
   - rm apache_flex_sdk.zip
-  - cp lib apache_flex_sdk\liblc
+  - copy lib apache_flex_sdk\liblc
   - 7z a flex_sdk_win.zip apache_flex_sdk\
   - rm -rf apache_flex_sdk

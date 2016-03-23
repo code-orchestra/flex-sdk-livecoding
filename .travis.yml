@@ -1,40 +1,29 @@
 os: osx
-branches:
-  only:
-  - master
+env:
+  APACHE_FLEX_SDK_URL=http://apache-mirror.rbc.ru/pub/apache/flex/4.15.0/binaries/apache-flex-sdk-4.15.0-bin.tar.gz
+  SDK_VERSION=4.15.0
 language: objective-c
 jdk:
-- oraclejdk8
+  - oraclejdk8
 before_script:
-- brew update >brew-update.log
-- brew install ant >brew-install.log
-- brew tap caskroom/cask
-- brew install brew-cask
-- brew cask install java
-- java -version
-script: cd ./modules && ant
-before_deploy:
-- cd $TRAVIS_BUILD_DIR
-- wget -O flex_sdk.zip http://mirrors.gigenet.com/apache/flex/4.14.1/binaries/apache-flex-sdk-4.14.1-bin.zip
-- unzip -q flex_sdk.zip -d flex_sdk_win
-- cp -r lib flex_sdk_win/liblc
-- zip -r flex_sdk_win.zip flex_sdk_win
-- wget -O flex_sdk.tar.gz http://archive.eu.apache.org/dist/flex/4.14.1/binaries/apache-flex-sdk-4.14.1-bin.tar.gz
-- ls
-- tar xopf flex_sdk.tar.gz -C .
-- ls
-- mv ./apache-flex-sdk-4.14.1-bin ./flex_sdk_mac
-- ls ./flex_sdk_mac
-- cp -r lib flex_sdk_mac/liblc
-- tar -czf flex_sdk_mac.tar.gz flex_sdk_mac
-deploy:
-  provider: releases
-  api_key:
-    secure: UV8Mro5LwKKGYvhTcIvfH/+ZRvUEsOATKnxXV8LWWxHeIJkwk8fCBCpKk4lEJ2Ft8UISz80MnN00ZYGukNZaU2KxmqSi2geqeANZFDRG+s7Ok4JH3P+s0wR5XZ80N9AkIu+RaLTlNMTo6zhnjsp/rZXqhoNcnsavVmwyamirueA=
-  file:
-  - flex_sdk_win.zip
-  - flex_sdk_mac.tar.gz
-  skip_cleanup: true
-  on:
-    repo: code-orchestra/flex-sdk-livecoding
-    tag: true
+  - brew update >brew-update.log
+  - brew install ant >brew-install.log
+  - brew install p7zip
+  - brew tap caskroom/cask
+  - brew install brew-cask
+  - brew cask install java
+  - ant -version
+  - java -version
+script:
+  - cd modules
+  - ant
+after_success:
+  - cd $TRAVIS_BUILD_DIR
+  - wget $APACHE_FLEX_SDK_URL -O apache_flex_sdk.tar.gz
+  - mkdir apache_flex_sdk
+  - tar xopf apache_flex_sdk.tar.gz -C apache_flex_sdk
+  - rm apache_flex_sdk.tar.gz
+  - mv lib apache_flex_sdk\liblc
+  - 7z a flex_sdk_mac.zip apache_flex_sdk\
+  - rm -rf apache_flex_sdk
+

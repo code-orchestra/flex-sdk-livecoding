@@ -535,7 +535,7 @@
             description="Downloads and copies ant.jar to the lib directory.">
 
         <antcall target="download-jar">
-            <param name="srcUrl" value="http://repo1.maven.org/maven2/org/apache/ant/ant/1.9.4/"/>
+            <param name="srcUrl" value="http://repo1.maven.org/maven2/org/apache/ant/ant/1.9.4"/>
             <param name="md5" value="53a32fc286a44982c829de096becfa3b"/>
             <param name="srcJarFile" value="${ant.name}.jar"/>
             <param name="destJarFile" value="${download.dir}/${ant.name}.jar"/>

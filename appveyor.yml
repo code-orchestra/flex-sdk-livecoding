@@ -1,14 +1,34 @@
-version: '{build}'
+environment:
+  APACHE_FLEX_SDK_URL: http://apache-mirror.rbc.ru/pub/apache/flex/4.15.0/binaries/apache-flex-sdk-4.15.0-bin.zip
+  SDK_VERSION: 4.15.0
+  matrix:
+    - JAVA_HOME: C:\Program Files (x86)\Java\jdk1.8.0
+version: $(PLUGIN_VERSION).{build}
 skip_tags: true
 clone_depth: 10
 clone_folder: C:\projects\CodeOrchestra\flex-sdk-livecoding
-environment:
-  matrix:
-    - JAVA_HOME: C:\Program Files (x86)\Java\jdk1.8.0
 install:
-   - cinst ant
-build_script:
+  - cinst wget
+  - cinst ant
+before_build:
   - ant -version
   - java -version
-  - cd C:\projects\CodeOrchestra\flex-sdk-livecoding\modules
+build_script:
+  - cd %APPVEYOR_BUILD_FOLDER%\modules
   - ant
+after_build:
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - wget %APACHE_FLEX_SDK_URL% -O apache_flex_sdk.zip
+  - 7z x apache_flex_sdk.zip -oapache_flex_sdk
+  - rm apache_flex_sdk.zip
+  - mv lib apache_flex_sdk\liblc
+  - 7z a flex_sdk_win.zip apache_flex_sdk\
+  - rm -rf apache_flex_sdk
+deploy:
+- provider: GitHub
+  release: $(appveyor_build_version)
+  auth_token:
+    secure: HK9ej9WVysHQHeTEQ/QTOJmh08xCtDQyDBy5uXWrWV/xROMNkQrTeQv1j2tYOxVw
+  artifact: /flex_sdk_win.zip/
+  on:
+    branch: master
